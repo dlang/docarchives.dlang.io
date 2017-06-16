@@ -1,0 +1,1520 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2017 by Digital Mars
+    All Rights Reserved Written by Walter Bright
+    http://digitalmars.com
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Templates - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Templates' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href=".."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.freenode.net/d'>IRC</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.php'>Issues</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option selected value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+<div class="subnav-helper"></div> <div class="subnav">    
+    <div class="head">        <h2>Language Reference</h2>
+        <p class="subnav-duplicate">            <a href="../spec/spec.html">table of contents</a></p>
+    </div>
+    <ul>        <li><a href='            ../spec/intro.html'>Introduction</a></li><li><a href='            ../spec/lex.html'>Lexical</a></li><li><a href='            ../spec/grammar.html'>Grammar</a></li><li><a href='            ../spec/module.html'>Modules</a></li><li><a href='            ../spec/declaration.html'>Declarations</a></li><li><a href='            ../spec/type.html'>Types</a></li><li><a href='            ../spec/property.html'>Properties</a></li><li><a href='            ../spec/attribute.html'>Attributes</a></li><li><a href='            ../spec/pragma.html'>Pragmas</a></li><li><a href='            ../spec/expression.html'>Expressions</a></li><li><a href='            ../spec/statement.html'>Statements</a></li><li><a href='            ../spec/arrays.html'>Arrays</a></li><li><a href='            ../spec/hash-map.html'>Associative Arrays</a></li><li><a href='            ../spec/struct.html'>Structs and Unions</a></li><li><a href='            ../spec/class.html'>Classes</a></li><li><a href='            ../spec/interface.html'>Interfaces</a></li><li><a href='            ../spec/enum.html'>Enums</a></li><li><a href='            ../spec/const3.html'>Type Qualifiers</a></li><li><a href='            ../spec/function.html'>Functions</a></li><li><a href='            ../spec/operatoroverloading.html'>Operator Overloading</a></li><li><a href='            ../spec/template.html'>Templates</a></li><li><a href='            ../spec/template-mixin.html'>Template Mixins</a></li><li><a href='            ../spec/contracts.html'>Contract Programming</a></li><li><a href='            ../spec/version.html'>Conditional Compilation</a></li><li><a href='            ../spec/traits.html'>Traits</a></li><li><a href='            ../spec/errors.html'>Error Handling</a></li><li><a href='            ../spec/unittest.html'>Unit Tests</a></li><li><a href='            ../spec/garbage.html'>Garbage Collection</a></li><li><a href='            ../spec/float.html'>Floating Point</a></li><li><a href='            ../spec/iasm.html'>D x86 Inline Assembler</a></li><li><a href='            ../spec/ddoc.html'>Embedded Documentation</a></li><li><a href='            ../spec/interfaceToC.html'>Interfacing to C</a></li><li><a href='            ../spec/cpp_interface.html'>Interfacing to C++</a></li><li><a href='            ../spec/objc_interface.html'>Interfacing to Objective-C</a></li><li><a href='            ../spec/portability.html'>Portability Guide</a></li><li><a href='            ../spec/entity.html'>Named Character Entities</a></li><li><a href='            ../spec/memory-safe-d.html'>Memory Safety</a></li><li><a href='            ../spec/abi.html'>Application Binary Interface</a></li><li><a href='            ../spec/simd.html'>Vector Extensions
+        </a></li>
+    </ul>
+</div>
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;bug_severity=enhancement&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BTemplates%5D&amp;version=D2">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/spec/template.dd">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Templates</h1>
+        
+        
+
+
+<blockquote><p>I think that I can safely say that nobody understands C++ template mechanics. <cite>Richard Deyman</cite></p></blockquote>
+
+    <p>Templates are D's approach to generic programming.
+        Templates are defined with a <i>TemplateDeclaration</i>:
+    </p>
+
+<pre class="bnf notranslate"><a id="TemplateDeclaration"><span class="gname">TemplateDeclaration</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">template</span> <i>Identifier</i> <a href="#TemplateParameters"><i>TemplateParameters</i></a> <a href="#Constraint"><i>Constraint</i></a><sub>opt</sub> <span class="d_inlinecode donthyphenate notranslate">{</span> <a href="../spec/module.html#DeclDefs"><i>DeclDefs</i></a><sub>opt</sub> <span class="d_inlinecode donthyphenate notranslate">}</span>
+
+<a id="TemplateParameters"><span class="gname">TemplateParameters</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">(</span> <a href="#TemplateParameterList"><i>TemplateParameterList</i></a><sub>opt</sub> <span class="d_inlinecode donthyphenate notranslate">)</span>
+
+<a id="TemplateParameterList"><span class="gname">TemplateParameterList</span></a>:
+    <a href="#TemplateParameter"><i>TemplateParameter</i></a>
+    <a href="#TemplateParameter"><i>TemplateParameter</i></a> ,
+    <a href="#TemplateParameter"><i>TemplateParameter</i></a> , <i>TemplateParameterList</i>
+
+<a id="TemplateParameter"><span class="gname">TemplateParameter</span></a>:
+    <a href="#TemplateTypeParameter"><i>TemplateTypeParameter</i></a>
+    <a href="#TemplateValueParameter"><i>TemplateValueParameter</i></a>
+    <a href="#TemplateAliasParameter"><i>TemplateAliasParameter</i></a>
+    <a href="#TemplateSequenceParameter"><i>TemplateSequenceParameter</i></a>
+    <a href="#TemplateThisParameter"><i>TemplateThisParameter</i></a>
+</pre>
+
+    <p>The body of the <i>TemplateDeclaration</i> must be syntactically correct
+        even if never instantiated. Semantic analysis is not done until
+        instantiated. A template forms its own scope, and the template
+        body can contain classes, structs, types, enums, variables,
+        functions, and other templates.
+    </p>
+
+    <p>Template parameters can be types, values, symbols, or sequences.
+        Types can be any type.
+        Value parameters must be of an integral type, floating point
+        type, or string type and
+        specializations for them must resolve to an integral constant,
+        floating point constant, null, or a string literal.
+        Symbols can be any non-local symbol.
+        Sequences can contain zero or more types, values or symbols.
+    </p>
+
+    <p>Template parameter specializations
+        constrain the values or types the <i>TemplateParameter</i> can
+        accept.
+    </p>
+    <p>Template parameter defaults are the value or type to use for the
+        <i>TemplateParameter</i> in case one is not supplied.
+    </p>
+
+<h2><a class="anchor" title="Permalink to this section" id="explicit_tmp_instantiation" href="#explicit_tmp_instantiation">Explicit Template Instantiation</a></h2>
+
+    <p>Templates are explicitly instantiated with:
+    </p>
+
+<pre class="bnf notranslate"><a id="TemplateInstance"><span class="gname">TemplateInstance</span></a>:
+    <i>Identifier</i> <a href="#TemplateArguments"><i>TemplateArguments</i></a>
+
+<a id="TemplateArguments"><span class="gname">TemplateArguments</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">! (</span> <a href="#TemplateArgumentList"><i>TemplateArgumentList</i></a><sub>opt</sub> <span class="d_inlinecode donthyphenate notranslate">)</span>
+    <span class="d_inlinecode donthyphenate notranslate">!</span> <a href="#TemplateSingleArgument"><i>TemplateSingleArgument</i></a>
+
+<a id="TemplateArgumentList"><span class="gname">TemplateArgumentList</span></a>:
+    <a href="#TemplateArgument"><i>TemplateArgument</i></a>
+    <a href="#TemplateArgument"><i>TemplateArgument</i></a> ,
+    <a href="#TemplateArgument"><i>TemplateArgument</i></a> , <i>TemplateArgumentList</i>
+
+<a id="TemplateArgument"><span class="gname">TemplateArgument</span></a>:
+    <a href="../spec/declaration.html#Type"><i>Type</i></a>
+    <a href="../spec/expression.html#AssignExpression"><i>AssignExpression</i></a>
+    <a href="#Symbol"><i>Symbol</i></a>
+
+<a id="Symbol"><span class="gname">Symbol</span></a>:
+    <a href="#SymbolTail"><i>SymbolTail</i></a>
+    <span class="d_inlinecode donthyphenate notranslate">.</span> <a href="#SymbolTail"><i>SymbolTail</i></a>
+
+<a id="SymbolTail"><span class="gname">SymbolTail</span></a>:
+    <i>Identifier</i>
+    <i>Identifier</i> <span class="d_inlinecode donthyphenate notranslate">.</span> <i>SymbolTail</i>
+    <a href="#TemplateInstance"><i>TemplateInstance</i></a>
+    <a href="#TemplateInstance"><i>TemplateInstance</i></a> <span class="d_inlinecode donthyphenate notranslate">.</span> <i>SymbolTail</i>
+
+<a id="TemplateSingleArgument"><span class="gname">TemplateSingleArgument</span></a>:
+    <i>Identifier</i>
+    <a href="../spec/declaration.html#BasicTypeX"><i>BasicTypeX</i></a>
+    <a href="../spec/lex.html#CharacterLiteral"><i>CharacterLiteral</i></a>
+    <a href="../spec/lex.html#StringLiteral"><i>StringLiteral</i></a>
+    <a href="../spec/lex.html#IntegerLiteral"><i>IntegerLiteral</i></a>
+    <a href="../spec/lex.html#FloatLiteral"><i>FloatLiteral</i></a>
+    <span class="d_inlinecode donthyphenate notranslate">true</span>
+    <span class="d_inlinecode donthyphenate notranslate">false</span>
+    <span class="d_inlinecode donthyphenate notranslate">null</span>
+    <span class="d_inlinecode donthyphenate notranslate">this</span>
+    <a href="../spec/traits.html#SpecialKeyword"><i>SpecialKeyword</i></a>
+</pre>
+
+    <p>Once instantiated, the declarations inside the template, called
+        the template members, are in the scope
+        of the <i>TemplateInstance</i>:
+
+<pre class="d_code notranslate"><span class="d_keyword">template</span> TFoo(T) { <span class="d_keyword">alias</span> t = T*; }
+...
+TFoo!(<span class="d_keyword">int</span>).t x; <span class="d_comment">// declare x to be of type int*
+</span></pre>
+    </p>
+
+    <p>If the <a href="#TemplateArgument"><i>TemplateArgument</i></a> is one token long, the parentheses can be omitted:
+
+<pre class="d_code notranslate">TFoo!<span class="d_keyword">int</span>.t x;   <span class="d_comment">// same as TFoo!(int).t x;
+</span></pre>
+        </p>
+
+    <p>A template instantiation can be aliased:
+
+<pre class="d_code notranslate"><span class="d_keyword">template</span> TFoo(T) { <span class="d_keyword">alias</span> t = T*; }
+<span class="d_keyword">alias</span> abc = TFoo!(<span class="d_keyword">int</span>);
+abc.t x;        <span class="d_comment">// declare x to be of type int*
+</span></pre>
+    </p>
+
+    <p>Multiple instantiations of a <i>TemplateDeclaration</i> with the same
+        <i>TemplateArgumentList</i> all will refer to the same instantiation.
+        For example:
+
+<pre class="d_code notranslate"><span class="d_keyword">template</span> TFoo(T) { T f; }
+<span class="d_keyword">alias</span> a = TFoo!(<span class="d_keyword">int</span>);
+<span class="d_keyword">alias</span> b = TFoo!(<span class="d_keyword">int</span>);
+...
+a.f = 3;
+<span class="d_keyword">assert</span>(b.f == 3);  <span class="d_comment">// a and b refer to the same instance of TFoo
+</span></pre>
+    </p>
+
+    <p>This is true even if the <i>TemplateInstance</i>s are done in
+        different modules.
+    </p>
+
+    <p>Even if template arguments are implicitly converted to the same
+        template parameter type, they still refer to same instance:
+
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> TFoo(<span class="d_keyword">int</span> x) { }
+
+<span class="d_comment">// 3 and 2+1 are both 3 of type int
+</span><span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">is</span>(TFoo!(3) == TFoo!(2 + 1)));
+
+<span class="d_comment">// 3u is implicitly converted to 3 to match int parameter,
+</span><span class="d_comment">// and refers exactly same instance with TFoo!(3).
+</span><span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">is</span>(TFoo!(3) == TFoo!(3u)));
+</pre>
+    </p>
+
+    <p>If multiple templates with the same <i>Identifier</i> are
+        declared, they are distinct if they have a different number of
+        arguments or are differently specialized.
+    </p>
+
+    <p>For example, a simple generic copy template would be:
+
+<pre class="d_code notranslate"><span class="d_keyword">template</span> TCopy(T)
+{
+    <span class="d_keyword">void</span> copy(<span class="d_keyword">out</span> T to, T from)
+    {
+        to = from;
+    }
+}
+</pre>
+    </p>
+
+    <p>To use the template, it must first be instantiated with a specific
+        type:
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span> i;
+TCopy!(<span class="d_keyword">int</span>).copy(i, 3);
+</pre>
+    </p>
+
+<h2><a class="anchor" title="Permalink to this section" id="instantiation_scope" href="#instantiation_scope">Instantiation Scope</a></h2>
+
+    <p><i>TemplateInstantance</i>s are always performed in the scope of where
+        the <i>TemplateDeclaration</i> is declared, with the addition of the
+        template parameters being declared as aliases for their deduced types.
+    </p>
+    <p>For example:
+
+        <br><br>
+        <em class="u">module a</em>
+<pre class="d_code notranslate"><span class="d_keyword">template</span> TFoo(T) { <span class="d_keyword">void</span> bar() { func(); } }
+</pre>
+
+        <em class="u">module b</em>
+<pre class="d_code notranslate"><span class="d_keyword">import</span> a;
+
+<span class="d_keyword">void</span> func() { }
+<span class="d_keyword">alias</span> f = TFoo!(<span class="d_keyword">int</span>); <span class="d_comment">// error: func not defined in module a
+</span></pre>
+    </p>
+
+    <p>and:
+
+        <br><br>
+        <em class="u">module a</em>
+<pre class="d_code notranslate"><span class="d_keyword">template</span> TFoo(T) { <span class="d_keyword">void</span> bar() { func(1); } }
+<span class="d_keyword">void</span> func(<span class="d_keyword">double</span> d) { }
+</pre>
+
+        <em class="u">module b</em>
+<pre class="d_code notranslate"><span class="d_keyword">import</span> a;
+
+<span class="d_keyword">void</span> func(<span class="d_keyword">int</span> i) { }
+<span class="d_keyword">alias</span> f = TFoo!(<span class="d_keyword">int</span>);
+...
+f.bar();  <span class="d_comment">// will call a.func(double)
+</span></pre>
+    </p>
+
+    <p><i>TemplateParameter</i> specializations and default
+        values are evaluated in the scope of the <i>TemplateDeclaration</i>.
+    </p>
+
+<h2>Argument Deduction</h2>
+
+    <p>The types of template parameters are deduced for a particular
+        template instantiation by comparing the template argument with
+        the corresponding template parameter.
+    </p>
+
+    <p>For each template parameter, the following rules are applied in
+        order until a type is deduced for each parameter:
+    </p>
+
+    <ol>        <li>If there is no type specialization for the parameter,
+        the type of the parameter is set to the template argument.</li>
+
+        <li>If the type specialization is dependent on a type parameter,
+        the type of that parameter is set to be the corresponding part
+        of the type argument.</li>
+
+        <li>If after all the type arguments are examined there are any
+        type parameters left with no type assigned, they are assigned
+        types corresponding to the template argument in the same position
+        in the <i>TemplateArgumentList</i>.</li>
+
+        <li>If applying the above rules does not result in exactly one
+        type for each template parameter, then it is an error.</li>
+    </ol>
+
+    <p>For example:
+
+<pre class="d_code notranslate"><span class="d_keyword">template</span> TFoo(T) { }
+<span class="d_keyword">alias</span> Foo1 = TFoo!(<span class="d_keyword">int</span>);     <span class="d_comment">// (1) T is deduced to be int
+</span><span class="d_keyword">alias</span> Foo2 = TFoo!(<span class="d_keyword">char</span>*);   <span class="d_comment">// (1) T is deduced to be char*
+</span>
+<span class="d_keyword">template</span> TBar(T : T*) { }
+<span class="d_keyword">alias</span> Foo3 = TBar!(<span class="d_keyword">char</span>*);   <span class="d_comment">// (2) T is deduced to be char
+</span>
+<span class="d_keyword">template</span> TAbc(D, U : D[]) { }
+<span class="d_keyword">alias</span> Bar1 = TAbc!(<span class="d_keyword">int</span>, <span class="d_keyword">int</span>[]);  <span class="d_comment">// (2) D is deduced to be int, U is int[]
+</span><span class="d_keyword">alias</span> Bar2 = TAbc!(<span class="d_keyword">char</span>, <span class="d_keyword">int</span>[]); <span class="d_comment">// (4) error, D is both char and int
+</span>
+<span class="d_keyword">template</span> TDef(D : E*, E) { }
+<span class="d_keyword">alias</span> Bar3 = TDef!(<span class="d_keyword">int</span>*, <span class="d_keyword">int</span>); <span class="d_comment">// (1) E is int
+</span>                               <span class="d_comment">// (3) D is int*
+</span></pre>
+    </p>
+
+    <p>Deduction from a specialization can provide values
+        for more than one parameter:
+
+<pre class="d_code notranslate"><span class="d_keyword">template</span> Foo(T: T[U], U)
+{
+    ...
+}
+
+Foo!(<span class="d_keyword">int</span>[<span class="d_keyword">long</span>])  <span class="d_comment">// instantiates Foo with T set to int, U set to long
+</span></pre>
+    </p>
+
+    <p>When considering matches, a class is
+        considered to be a match for any super classes or interfaces:
+
+<pre class="d_code notranslate"><span class="d_keyword">class</span> A { }
+<span class="d_keyword">class</span> B : A { }
+
+<span class="d_keyword">template</span> TFoo(T : A) { }
+<span class="d_keyword">alias</span> Foo4 = TFoo!(B);     <span class="d_comment">// (3) T is B
+</span>
+<span class="d_keyword">template</span> TBar(T : U*, U : A) { }
+<span class="d_keyword">alias</span> Foo5 = TBar!(B*, B); <span class="d_comment">// (2) T is B*
+</span>                           <span class="d_comment">// (3) U is B
+</span></pre>
+    </p>
+
+<h2>Template Type Parameters</h2>
+
+<pre class="bnf notranslate"><a id="TemplateTypeParameter"><span class="gname">TemplateTypeParameter</span></a>:
+    <i>Identifier</i>
+    <i>Identifier</i> <a href="#TemplateTypeParameterSpecialization"><i>TemplateTypeParameterSpecialization</i></a>
+    <i>Identifier</i> <a href="#TemplateTypeParameterDefault"><i>TemplateTypeParameterDefault</i></a>
+    <i>Identifier</i> <a href="#TemplateTypeParameterSpecialization"><i>TemplateTypeParameterSpecialization</i></a> <a href="#TemplateTypeParameterDefault"><i>TemplateTypeParameterDefault</i></a>
+
+<a id="TemplateTypeParameterSpecialization"><span class="gname">TemplateTypeParameterSpecialization</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">:</span> <a href="../spec/declaration.html#Type"><i>Type</i></a>
+
+<a id="TemplateTypeParameterDefault"><span class="gname">TemplateTypeParameterDefault</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">=</span> <a href="../spec/declaration.html#Type"><i>Type</i></a>
+</pre>
+
+<h3><a class="anchor" title="Permalink to this section" id="parameters_specialization" href="#parameters_specialization">Specialization</a></h3>
+
+    <p>Templates may be specialized for particular types of arguments
+        by following the template parameter identifier with a : and the
+        specialized type.
+        For example:
+
+<pre class="d_code notranslate"><span class="d_keyword">template</span> TFoo(T)        { ... } <span class="d_comment">// #1
+</span><span class="d_keyword">template</span> TFoo(T : T[])  { ... } <span class="d_comment">// #2
+</span><span class="d_keyword">template</span> TFoo(T : <span class="d_keyword">char</span>) { ... } <span class="d_comment">// #3
+</span><span class="d_keyword">template</span> TFoo(T, U, V)  { ... } <span class="d_comment">// #4
+</span>
+<span class="d_keyword">alias</span> foo1 = TFoo!(<span class="d_keyword">int</span>);            <span class="d_comment">// instantiates #1
+</span><span class="d_keyword">alias</span> foo2 = TFoo!(<span class="d_keyword">double</span>[]);       <span class="d_comment">// instantiates #2 with T being double
+</span><span class="d_keyword">alias</span> foo3 = TFoo!(<span class="d_keyword">char</span>);           <span class="d_comment">// instantiates #3
+</span><span class="d_keyword">alias</span> fooe = TFoo!(<span class="d_keyword">char</span>, <span class="d_keyword">int</span>);      <span class="d_comment">// error, number of arguments mismatch
+</span><span class="d_keyword">alias</span> foo4 = TFoo!(<span class="d_keyword">char</span>, <span class="d_keyword">int</span>, <span class="d_keyword">int</span>); <span class="d_comment">// instantiates #4
+</span></pre>
+    </p>
+
+    <p>The template picked to instantiate is the one that is most specialized
+        that fits the types of the <i>TemplateArgumentList</i>.
+        Determine which is more specialized is done the same way as the
+        C++ partial ordering rules.
+        If the result is ambiguous, it is an error.
+    </p>
+
+
+<h2><a class="anchor" title="Permalink to this section" id="template_this_parameter" href="#template_this_parameter">Template This Parameters</a></h2>
+
+<pre class="bnf notranslate"><a id="TemplateThisParameter"><span class="gname">TemplateThisParameter</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">this</span> <i>TemplateTypeParameter</i>
+</pre>
+
+    <p><i>TemplateThisParameter</i>s are used in member function templates
+        to pick up the type of the <i>this</i> reference.
+
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">const</span> <span class="d_keyword">void</span> foo(<span class="d_keyword">this</span> T)(<span class="d_keyword">int</span> i)
+    {
+        writeln(<span class="d_keyword">typeid</span>(T));
+    }
+}
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">const</span>(S) s;
+    (&amp;s).foo(1);
+    S s2;
+    s2.foo(2);
+    <span class="d_keyword">immutable</span>(S) s3;
+    s3.foo(3);
+}
+</pre>
+    </p>
+
+    <p>Prints:
+
+<pre class="console notranslate">const(S)
+S
+immutable(S)
+</pre>
+    </p>
+
+    <p>This is especially useful when used with inheritance. For example,
+        you might want to implement a final base method which returns a derived
+        class type. Typically you would return a base type, but this won't allow
+        you to call or access derived properties of the type:
+
+<pre class="d_code notranslate"><span class="d_keyword">interface</span> Addable(T)
+{
+    <span class="d_keyword">final</span> <span class="d_keyword">auto</span> add(T t)
+    {
+        <span class="d_keyword">return</span> <span class="d_keyword">this</span>;
+    }
+}
+
+<span class="d_keyword">class</span> List(T) : Addable!T
+{
+    List remove(T t)
+    {
+        <span class="d_keyword">return</span> <span class="d_keyword">this</span>;
+    }
+}
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">auto</span> list = <span class="d_keyword">new</span> List!<span class="d_keyword">int</span>;
+    list.add(1).remove(1);  <span class="d_comment">// error: no 'remove' method for Addable!int
+</span>}
+</pre>
+    </p>
+
+    <p>Here the method <span class="d_inlinecode donthyphenate notranslate">add</span> returns the base type, which doesn't implement the
+        <span class="d_inlinecode donthyphenate notranslate">remove</span> method. The <span class="d_inlinecode donthyphenate notranslate">template this</span> parameter can be used for this purpose:
+
+<pre class="d_code notranslate"><span class="d_keyword">interface</span> Addable(T)
+{
+    <span class="d_keyword">final</span> R add(<span class="d_keyword">this</span> R)(T t)
+    {
+        <span class="d_keyword">return</span> <span class="d_keyword">cast</span>(R)<span class="d_keyword">this</span>;  <span class="d_comment">// cast is necessary, but safe
+</span>    }
+}
+
+<span class="d_keyword">class</span> List(T) : Addable!T
+{
+    List remove(T t)
+    {
+        <span class="d_keyword">return</span> <span class="d_keyword">this</span>;
+    }
+}
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">auto</span> list = <span class="d_keyword">new</span> List!<span class="d_keyword">int</span>;
+    list.add(1).remove(1);  <span class="d_comment">// ok
+</span>}
+</pre>
+    </p>
+
+<h2><a class="anchor" title="Permalink to this section" id="template_value_parameter" href="#template_value_parameter">Template Value Parameters</a></h2>
+
+<pre class="bnf notranslate"><a id="TemplateValueParameter"><span class="gname">TemplateValueParameter</span></a>:
+    <a href="../spec/declaration.html#BasicType"><i>BasicType</i></a> <a href="../spec/declaration.html#Declarator"><i>Declarator</i></a>
+    <a href="../spec/declaration.html#BasicType"><i>BasicType</i></a> <a href="../spec/declaration.html#Declarator"><i>Declarator</i></a> <a href="#TemplateValueParameterSpecialization"><i>TemplateValueParameterSpecialization</i></a>
+    <a href="../spec/declaration.html#BasicType"><i>BasicType</i></a> <a href="../spec/declaration.html#Declarator"><i>Declarator</i></a> <a href="#TemplateValueParameterDefault"><i>TemplateValueParameterDefault</i></a>
+    <a href="../spec/declaration.html#BasicType"><i>BasicType</i></a> <a href="../spec/declaration.html#Declarator"><i>Declarator</i></a> <a href="#TemplateValueParameterSpecialization"><i>TemplateValueParameterSpecialization</i></a> <a href="#TemplateValueParameterDefault"><i>TemplateValueParameterDefault</i></a>
+
+<a id="TemplateValueParameterSpecialization"><span class="gname">TemplateValueParameterSpecialization</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">:</span> <a href="../spec/expression.html#ConditionalExpression"><i>ConditionalExpression</i></a>
+
+<a id="TemplateValueParameterDefault"><span class="gname">TemplateValueParameterDefault</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">=</span> <a href="../spec/expression.html#AssignExpression"><i>AssignExpression</i></a>
+    <span class="d_inlinecode donthyphenate notranslate">=</span> <a href="../spec/traits.html#SpecialKeyword"><i>SpecialKeyword</i></a>
+</pre>
+
+    <p>Template value parameter types can be any type which can
+        be statically initialized at compile time.
+        Template value arguments can be integer values, floating point values,
+        nulls, string values, array literals of template value arguments,
+        associative array literals of template value arguments,
+        or struct literals of template value arguments.
+
+<pre class="d_code notranslate"><span class="d_keyword">template</span> foo(string s)
+{
+    string bar() { <span class="d_keyword">return</span> s ~ <span class="d_string">" betty"</span>; }
+}
+
+<span class="d_keyword">void</span> main()
+{
+    writefln(<span class="d_string">"%s"</span>, foo!(<span class="d_string">"hello"</span>).bar()); <span class="d_comment">// prints: hello betty
+</span>}
+</pre>
+    </p>
+
+    <p>This example of template foo has a value parameter that
+        is specialized for 10:
+
+<pre class="d_code notranslate"><span class="d_keyword">template</span> foo(U : <span class="d_keyword">int</span>, <span class="d_keyword">int</span> T : 10)
+{
+    U x = T;
+}
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">assert</span>(foo!(<span class="d_keyword">int</span>, 10).x == 10);
+}
+</pre>
+    </p>
+
+
+<h2><a class="anchor" title="Permalink to this section" id="aliasparameters" href="#aliasparameters">Template Alias Parameters</a></h2>
+
+<pre class="bnf notranslate"><a id="TemplateAliasParameter"><span class="gname">TemplateAliasParameter</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">alias</span> <i>Identifier</i> <a href="#TemplateAliasParameterSpecialization"><i>TemplateAliasParameterSpecialization</i></a><sub>opt</sub> <a href="#TemplateAliasParameterDefault"><i>TemplateAliasParameterDefault</i></a><sub>opt</sub>
+    <span class="d_inlinecode donthyphenate notranslate">alias</span> <a href="../spec/declaration.html#BasicType"><i>BasicType</i></a> <a href="../spec/declaration.html#Declarator"><i>Declarator</i></a> <a href="#TemplateAliasParameterSpecialization"><i>TemplateAliasParameterSpecialization</i></a><sub>opt</sub> <a href="#TemplateAliasParameterDefault"><i>TemplateAliasParameterDefault</i></a><sub>opt</sub>
+
+<a id="TemplateAliasParameterSpecialization"><span class="gname">TemplateAliasParameterSpecialization</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">:</span> <a href="../spec/declaration.html#Type"><i>Type</i></a>
+    <span class="d_inlinecode donthyphenate notranslate">:</span> <a href="../spec/expression.html#ConditionalExpression"><i>ConditionalExpression</i></a>
+
+<a id="TemplateAliasParameterDefault"><span class="gname">TemplateAliasParameterDefault</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">=</span> <a href="../spec/declaration.html#Type"><i>Type</i></a>
+    <span class="d_inlinecode donthyphenate notranslate">=</span> <a href="../spec/expression.html#ConditionalExpression"><i>ConditionalExpression</i></a>
+</pre>
+
+    <p>Alias parameters enable templates to be parameterized with
+        almost any kind of D symbol, including user-defined type names,
+        global names, local names, module names, template names, and
+        template instance names.
+        Literals can also be used as arguments to alias parameters.
+    </p>
+
+    <p><b>Examples:</b></p>
+
+    <ul>        <li>User-defined type names
+
+<pre class="d_code notranslate"><span class="d_keyword">class</span> Foo
+{
+    <span class="d_keyword">static</span> <span class="d_keyword">int</span> p;
+}
+
+<span class="d_keyword">template</span> Bar(<span class="d_keyword">alias</span> T)
+{
+    <span class="d_keyword">alias</span> q = T.p;
+}
+
+<span class="d_keyword">void</span> test()
+{
+    <span class="d_keyword">alias</span> bar = Bar!(Foo);
+    bar.q = 3;  <span class="d_comment">// sets Foo.p to 3
+</span>}
+</pre>
+        </li>
+
+        <li>Global names
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span> x;
+
+<span class="d_keyword">template</span> Foo(<span class="d_keyword">alias</span> X)
+{
+    <span class="d_keyword">static</span> <span class="d_keyword">int</span>* p = &amp;X;
+}
+
+<span class="d_keyword">void</span> test()
+{
+    <span class="d_keyword">alias</span> bar = Foo!(x);
+    *bar.p = 3;       <span class="d_comment">// set x to 3
+</span>    <span class="d_keyword">static</span> <span class="d_keyword">int</span> y;
+    <span class="d_keyword">alias</span> abc = Foo!(y);
+    *abc.p = 3;       <span class="d_comment">// set y to 3
+</span>}
+</pre>
+        </li>
+
+        <li>Module names
+
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.string;
+
+<span class="d_keyword">template</span> Foo(<span class="d_keyword">alias</span> X)
+{
+    <span class="d_keyword">alias</span> y = X.toString;
+}
+
+<span class="d_keyword">void</span> test()
+{
+    <span class="d_keyword">alias</span> bar = Foo!(std.string);
+    bar.y(3);   <span class="d_comment">// calls std.string.toString(3)
+</span>}
+</pre>
+        </li>
+
+        <li>Template names
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span> x;
+
+<span class="d_keyword">template</span> Foo(<span class="d_keyword">alias</span> X)
+{
+    <span class="d_keyword">static</span> <span class="d_keyword">int</span>* p = &amp;X;
+}
+
+<span class="d_keyword">template</span> Bar(<span class="d_keyword">alias</span> T)
+{
+    <span class="d_keyword">alias</span> abc = T!(x);
+}
+
+<span class="d_keyword">void</span> test()
+{
+    <span class="d_keyword">alias</span> bar = Bar!(Foo);
+    *bar.abc.p = 3;  <span class="d_comment">// sets x to 3
+</span>}
+</pre>
+        </li>
+
+        <li>Template instance names
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span> x;
+
+<span class="d_keyword">template</span> Foo(<span class="d_keyword">alias</span> X)
+{
+    <span class="d_keyword">static</span> <span class="d_keyword">int</span>* p = &amp;X;
+}
+
+<span class="d_keyword">template</span> Bar(<span class="d_keyword">alias</span> T)
+{
+    <span class="d_keyword">alias</span> q = T.p;
+}
+
+<span class="d_keyword">void</span> test()
+{
+    <span class="d_keyword">alias</span> foo = Foo!(x);
+    <span class="d_keyword">alias</span> bar = Bar!(foo);
+    *bar.q = 3;  <span class="d_comment">// sets x to 3
+</span>}
+</pre>
+        </li>
+
+        <li>Literals
+
+<pre class="d_code notranslate"><span class="d_keyword">template</span> Foo(<span class="d_keyword">alias</span> X, <span class="d_keyword">alias</span> Y)
+{
+    <span class="d_keyword">static</span> <span class="d_keyword">int</span> i = X;
+    <span class="d_keyword">static</span> string s = Y;
+}
+
+<span class="d_keyword">void</span> test()
+{
+    <span class="d_keyword">alias</span> foo = Foo!(3, <span class="d_string">"bar"</span>);
+    writeln(foo.i, foo.s);  <span class="d_comment">// prints 3bar
+</span>}
+</pre>
+        </li>
+    </ul>
+
+<h3><a class="anchor" title="Permalink to this section" id="typed_alias_op" href="#typed_alias_op">Typed alias parameters</a></h3>
+
+    <p>Alias parameters can also be typed.
+        These parameters will accept symbols of that type:
+
+<pre class="d_code notranslate"><span class="d_keyword">template</span> Foo(<span class="d_keyword">alias</span> <span class="d_keyword">int</span> x) { }
+<span class="d_keyword">int</span> x;
+<span class="d_keyword">float</span> f;
+
+Foo!x;  <span class="d_comment">// ok
+</span>Foo!f;  <span class="d_comment">// fails to instantiate
+</span></pre>
+    </p>
+
+<h3><a class="anchor" title="Permalink to this section" id="alias_parameter_specialization" href="#alias_parameter_specialization">Specialization</a></h3>
+
+    <p>Alias parameters can accept both literals and user-defined type symbols,
+        but they are less specialized than the matches to type parameters and
+        value parameters:
+
+<pre class="d_code notranslate"><span class="d_keyword">template</span> Foo(T)         { ... }  <span class="d_comment">// #1
+</span><span class="d_keyword">template</span> Foo(<span class="d_keyword">int</span> n)     { ... }  <span class="d_comment">// #2
+</span><span class="d_keyword">template</span> Foo(<span class="d_keyword">alias</span> sym) { ... }  <span class="d_comment">// #3
+</span>
+<span class="d_keyword">struct</span> S {}
+<span class="d_keyword">int</span> var;
+
+<span class="d_keyword">alias</span> foo1  = Foo!(S);      <span class="d_comment">// instantiates #1
+</span><span class="d_keyword">alias</span> foo2  = Foo!(1);      <span class="d_comment">// instantiates #2
+</span><span class="d_keyword">alias</span> foo3a = Foo!([1,2]);  <span class="d_comment">// instantiates #3
+</span><span class="d_keyword">alias</span> foo3b = Foo!(var);    <span class="d_comment">// instantiates #3
+</span></pre>
+
+<pre class="d_code notranslate"><span class="d_keyword">template</span> Bar(<span class="d_keyword">alias</span> A) { ... }                 <span class="d_comment">// #4
+</span><span class="d_keyword">template</span> Bar(T : U!V, <span class="d_keyword">alias</span> U, V...) { ... }  <span class="d_comment">// #5
+</span>
+<span class="d_keyword">class</span> C(T) {}
+<span class="d_keyword">alias</span> bar = Bar!(C!<span class="d_keyword">int</span>);    <span class="d_comment">// instantiates #5
+</span></pre>
+    </p>
+
+<h2><a class="anchor" title="Permalink to this section" id="variadic-templates" href="#variadic-templates">Template Sequence Parameters</a></h2>
+
+<pre class="bnf notranslate"><a id="TemplateSequenceParameter"><span class="gname">TemplateSequenceParameter</span></a>:
+    <i>Identifier</i> <span class="d_inlinecode donthyphenate notranslate">...</span>
+</pre>
+
+    <p>If the last template parameter in the <i>TemplateParameterList</i>
+        is declared as a <i>TemplateSequenceParameter</i>,
+        it is a match with any trailing template arguments.
+        Such a sequence of arguments can be defined using the template
+        <a href="../phobos/std_meta.html#.AliasSeq"><span class="d_inlinecode donthyphenate notranslate">std.meta.AliasSeq</span></a> and will thus henceforth
+        be referred to by that name for clarity.
+        An <i>AliasSeq</i> is not itself a type, value, or symbol.
+        It is a compile-time sequence of any mix of types, values or symbols.
+    </p>
+
+    <p>An <i>AliasSeq</i> whose elements consist entirely of types is
+        called a type sequence or <i>TypeSeq</i>.
+        An <i>AliasSeq</i> whose elements consist entirely of values is
+        called a value sequence or <i>ValueSeq</i>.
+    </p>
+
+    <p>An <i>AliasSeq</i> can be used as an argument list to instantiate
+        another template, or as the list of parameters for a function.
+
+<pre class="d_code notranslate"><span class="d_keyword">template</span> print(args...)
+{
+    <span class="d_keyword">void</span> print()
+    {
+        writeln(<span class="d_string">"args are "</span>, args); <span class="d_comment">// args is a ValueSeq
+</span>    }
+}
+
+<span class="d_keyword">template</span> write(Args...)
+{
+    <span class="d_keyword">void</span> write(Args args) <span class="d_comment">// Args is a TypeSeq
+</span>                          <span class="d_comment">// args is a ValueSeq
+</span>    {
+        writeln(<span class="d_string">"args are "</span>, args);
+    }
+}
+
+<span class="d_keyword">void</span> main()
+{
+    print!(1,'a',6.8).print();                    <span class="d_comment">// prints: args are 1a6.8
+</span>    write!(<span class="d_keyword">int</span>, <span class="d_keyword">char</span>, <span class="d_keyword">double</span>).write(1, 'a', 6.8); <span class="d_comment">// prints: args are 1a6.8
+</span>}
+</pre>
+    </p>
+
+    <p>The number of elements in an <i>AliasSeq</i> can be retrieved with
+        the <span class="d_inlinecode donthyphenate notranslate">.length</span> property. The <i>n</i>th element can be retrieved
+        by indexing the <i>AliasSeq</i> with [<i>n</i>],
+        and sub-sequences are denoted by the slicing syntax.
+    </p>
+
+    <p><i>AliasSeq</i>-s are static compile-time entities, there is no way
+        to dynamically change, add, or remove elements either at compile-time or run-time.
+    </p>
+
+    <p>Type sequences can be deduced from the trailing parameters
+        of an implicitly instantiated function template:
+
+<pre class="d_code notranslate"><span class="d_keyword">template</span> print(T, Args...)
+{
+    <span class="d_keyword">void</span> print(T first, Args args)
+    {
+        writeln(first);
+        <span class="d_keyword">static</span> <span class="d_keyword">if</span> (args.length) <span class="d_comment">// if more arguments
+</span>            print(args);        <span class="d_comment">// recurse for remaining arguments
+</span>    }
+}
+
+<span class="d_keyword">void</span> main()
+{
+    print(1, 'a', 6.8);
+}
+</pre>
+    </p>
+
+    <p>prints:
+
+<pre class="console notranslate">1
+a
+6.8
+</pre>
+    </p>
+
+    <p>Type sequences can also be deduced from the type of a delegate
+        or function parameter list passed as a function argument:
+
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_comment">/* Partially applies a delegate by tying its first argument to a particular value.
+ * R = return type
+ * T = first argument type
+ * Args = TypeSeq of remaining argument types
+ */</span>
+R <span class="d_keyword">delegate</span>(Args) partial(R, T, Args...)(R <span class="d_keyword">delegate</span>(T, Args) dg, T first)
+{
+    <span class="d_comment">// return a closure
+</span>    <span class="d_keyword">return</span> (Args args) =&gt; dg(first, args);
+}
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">int</span> plus(<span class="d_keyword">int</span> x, <span class="d_keyword">int</span> y, <span class="d_keyword">int</span> z)
+    {
+        <span class="d_keyword">return</span> x + y + z;
+    }
+
+    <span class="d_keyword">auto</span> plus_two = partial(&amp;plus, 2);
+    writefln(<span class="d_string">"%d"</span>, plus_two(6, 8)); <span class="d_comment">// prints 16
+</span>}
+</pre>
+        See also: <a href="../phobos/std_functional.html#.partial"><span class="d_inlinecode donthyphenate notranslate">std.functional.partial</span></a>
+    </p>
+
+<h3><a class="anchor" title="Permalink to this section" id="variadic_template_specialization" href="#variadic_template_specialization">Specialization</a></h3>
+
+    <p>If both a template with a sequence parameter and a template
+        without a sequence parameter exactly match a template instantiation,
+        the template without a <i>TemplateSequenceParameter</i> is selected.
+
+<pre class="d_code notranslate"><span class="d_keyword">template</span> Foo(T)         { <span class="d_keyword">pragma</span>(msg, <span class="d_string">"1"</span>); }   <span class="d_comment">// #1
+</span><span class="d_keyword">template</span> Foo(<span class="d_keyword">int</span> n)     { <span class="d_keyword">pragma</span>(msg, <span class="d_string">"2"</span>); }   <span class="d_comment">// #2
+</span><span class="d_keyword">template</span> Foo(<span class="d_keyword">alias</span> sym) { <span class="d_keyword">pragma</span>(msg, <span class="d_string">"3"</span>); }   <span class="d_comment">// #3
+</span><span class="d_keyword">template</span> Foo(Args...)   { <span class="d_keyword">pragma</span>(msg, <span class="d_string">"4"</span>); }   <span class="d_comment">// #4
+</span>
+<span class="d_keyword">import</span> std.stdio;
+
+<span class="d_comment">// Any sole template argument will never match to #4
+</span><span class="d_keyword">alias</span> foo1 = Foo!(<span class="d_keyword">int</span>);          <span class="d_comment">// instantiates #1
+</span><span class="d_keyword">alias</span> foo2 = Foo!(3);            <span class="d_comment">// instantiates #2
+</span><span class="d_keyword">alias</span> foo3 = Foo!(std);          <span class="d_comment">// instantiates #3
+</span>
+<span class="d_keyword">alias</span> foo4 = Foo!(<span class="d_keyword">int</span>, 3, std);  <span class="d_comment">// instantiates #4
+</span></pre>
+    </p>
+
+<h2><a class="anchor" title="Permalink to this section" id="template_parameter_def_values" href="#template_parameter_def_values">Template Parameter Default Values</a></h2>
+
+    <p>Trailing template parameters can be given default values:
+
+<pre class="d_code notranslate"><span class="d_keyword">template</span> Foo(T, U = <span class="d_keyword">int</span>) { ... }
+Foo!(<span class="d_keyword">uint</span>,<span class="d_keyword">long</span>); <span class="d_comment">// instantiate Foo with T as uint, and U as long
+</span>Foo!(<span class="d_keyword">uint</span>);      <span class="d_comment">// instantiate Foo with T as uint, and U as int
+</span>
+<span class="d_keyword">template</span> Foo(T, U = T*) { ... }
+Foo!(<span class="d_keyword">uint</span>);      <span class="d_comment">// instantiate Foo with T as uint, and U as uint*
+</span></pre>
+    </p>
+
+<h2><a class="anchor" title="Permalink to this section" id="implicit_template_properties" href="#implicit_template_properties">Eponymous Templates</a></h2>
+
+    <p>If a template contains members whose the name is the same as the
+        template identifier and if the type or the parameters type of these
+        members include at least all the template parameters then these members
+        are assumed to be referred to in a template instantiation:
+
+<pre class="d_code notranslate"><span class="d_keyword">template</span> foo(T)
+{
+    T foo; <span class="d_comment">// declare variable foo of type T
+</span>}
+
+<span class="d_keyword">void</span> main()
+{
+    foo!(<span class="d_keyword">int</span>) = 6; <span class="d_comment">// instead of foo!(int).foo
+</span>}
+</pre>
+
+        Using functions and more types than the template:
+
+<pre class="d_code notranslate"><span class="d_keyword">template</span> foo(S, T)
+{
+    <span class="d_comment">// each member contains all the template parameters
+</span>    <span class="d_keyword">void</span> foo(S s, T t) {}
+    <span class="d_keyword">void</span> foo(S s, T t, string) {}
+}
+
+<span class="d_keyword">void</span> main()
+{
+    foo(1, 2, <span class="d_string">"test"</span>); <span class="d_comment">// foo!(int, int).foo(1, 2, "test")
+</span>    foo(1, 2); <span class="d_comment">// foo!(int, int).foo(1, 2)
+</span>}
+</pre>
+
+        When the template parameters must be deduced, the eponymous members
+        can't rely on a <a href="version.html#StaticIfCondition"><span class="d_inlinecode donthyphenate notranslate">static if</span></a>
+        condition since the deduction relies on how the in members are used:
+
+<pre class="d_code notranslate"><span class="d_keyword">template</span> foo(T)
+{
+    <span class="d_keyword">static</span> <span class="d_keyword">if</span> (<span class="d_keyword">is</span>(T)) <span class="d_comment">// T is not yet known...
+</span>        <span class="d_keyword">void</span> foo(T t) {} <span class="d_comment">// T is deduced from the member usage
+</span>}
+
+<span class="d_keyword">void</span> main()
+{
+    foo(0); <span class="d_comment">// Error: cannot deduce function from argument types
+</span>    foo!<span class="d_keyword">int</span>(0); <span class="d_comment">// Ok since no deduction necessary
+</span>}
+</pre>
+    </p>
+
+<h2><a class="anchor" title="Permalink to this section" id="template_ctors" href="#template_ctors">Template Constructors</a></h2>
+
+<pre class="bnf notranslate"><a id="ConstructorTemplate"><span class="gname">ConstructorTemplate</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">this</span> <a href="../spec/template.html#TemplateParameters"><i>TemplateParameters</i></a> <a href="../spec/function.html#Parameters"><i>Parameters</i></a> <a href="../spec/function.html#MemberFunctionAttributes"><i>MemberFunctionAttributes</i></a><sub>opt</sub> <a href="#Constraint"><i>Constraint</i></a><sub>opt</sub> <span class="d_inlinecode donthyphenate notranslate">:</span>
+    <span class="d_inlinecode donthyphenate notranslate">this</span> <a href="../spec/template.html#TemplateParameters"><i>TemplateParameters</i></a> <a href="../spec/function.html#Parameters"><i>Parameters</i></a> <a href="../spec/function.html#MemberFunctionAttributes"><i>MemberFunctionAttributes</i></a><sub>opt</sub> <a href="#Constraint"><i>Constraint</i></a><sub>opt</sub> <a href="../spec/function.html#FunctionBody"><i>FunctionBody</i></a>
+</pre>
+
+    <p>Templates can be used to form constructors for classes  and structs.
+    </p>
+
+<h2><a class="anchor" title="Permalink to this section" id="aggregate_templates" href="#aggregate_templates">Aggregate Templates</a></h2>
+
+<pre class="bnf notranslate"><a id="ClassTemplateDeclaration"><span class="gname">ClassTemplateDeclaration</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">class</span> <i>Identifier</i> <a href="#TemplateParameters"><i>TemplateParameters</i></a> <a href="#Constraint"><i>Constraint</i></a><sub>opt</sub> <a href="../spec/class.html#BaseClassList"><i>BaseClassList</i></a><sub>opt</sub> <a href="../spec/struct.html#AggregateBody"><i>AggregateBody</i></a>
+    <span class="d_inlinecode donthyphenate notranslate">class</span> <i>Identifier</i> <a href="#TemplateParameters"><i>TemplateParameters</i></a> <a href="../spec/class.html#BaseClassList"><i>BaseClassList</i></a><sub>opt</sub> <a href="#Constraint"><i>Constraint</i></a><sub>opt</sub> <a href="../spec/struct.html#AggregateBody"><i>AggregateBody</i></a>
+
+<a id="InterfaceTemplateDeclaration"><span class="gname">InterfaceTemplateDeclaration</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">interface</span> <i>Identifier</i> <a href="#TemplateParameters"><i>TemplateParameters</i></a> <a href="#Constraint"><i>Constraint</i></a><sub>opt</sub> <a href="../spec/interface.html#BaseInterfaceList"><i>BaseInterfaceList</i></a><sub>opt</sub> <a href="../spec/struct.html#AggregateBody"><i>AggregateBody</i></a>
+    <span class="d_inlinecode donthyphenate notranslate">interface</span> <i>Identifier</i> <a href="#TemplateParameters"><i>TemplateParameters</i></a> <a href="../spec/interface.html#BaseInterfaceList"><i>BaseInterfaceList</i></a> <a href="#Constraint"><i>Constraint</i></a> <a href="../spec/struct.html#AggregateBody"><i>AggregateBody</i></a>
+
+<a id="StructTemplateDeclaration"><span class="gname">StructTemplateDeclaration</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">struct</span> <i>Identifier</i> <a href="#TemplateParameters"><i>TemplateParameters</i></a> <a href="#Constraint"><i>Constraint</i></a><sub>opt</sub> <a href="../spec/struct.html#AggregateBody"><i>AggregateBody</i></a>
+
+<a id="UnionTemplateDeclaration"><span class="gname">UnionTemplateDeclaration</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">union</span> <i>Identifier</i> <a href="#TemplateParameters"><i>TemplateParameters</i></a> <a href="#Constraint"><i>Constraint</i></a><sub>opt</sub> <a href="../spec/struct.html#AggregateBody"><i>AggregateBody</i></a>
+</pre>
+
+    <p>If a template declares exactly one member, and that member is a class
+        with the same name as the template:
+
+<pre class="d_code notranslate"><span class="d_keyword">template</span> <b><i>Bar</i></b>(T)
+{
+    <span class="d_keyword">class</span> <b><i>Bar</i></b>
+    {
+        T member;
+    }
+}
+</pre>
+
+        then the semantic equivalent, called a <i>ClassTemplateDeclaration</i>
+        can be written as:
+
+<pre class="d_code notranslate"><span class="d_keyword">class</span> Bar(T)
+{
+    T member;
+}
+</pre>
+    </p>
+
+    <p>Analogously to class templates, struct, union and interfaces
+        can be transformed into templates by supplying a template parameter list.
+    </p>
+
+<h2><a class="anchor" title="Permalink to this section" id="function-templates" href="#function-templates">Function Templates</a></h2>
+
+    <p>If a template declares exactly one member, and that member is a function
+        with the same name as the template, it is a function template declaration.
+        Alternatively, a function template declaration is a function declaration
+        with a <a href="#TemplateParameterList"><i>TemplateParameterList</i></a> immediately preceding the
+        <a href="../spec/function.html#Parameters"><i>Parameters</i></a>.
+    </p>
+
+    <p>A function template to compute the square of type <i>T</i> is:
+
+<pre class="d_code notranslate">T <b><i>Square</i></b>(T)(T t)
+{
+    <span class="d_keyword">return</span> t * t;
+}
+</pre>
+    </p>
+
+    <p>Function templates can be explicitly instantiated with a
+        !(<i>TemplateArgumentList</i>):
+
+<pre class="d_code notranslate">writefln(<span class="d_string">"The square of %s is %s"</span>, 3, Square!(<span class="d_keyword">int</span>)(3));
+</pre>
+    </p>
+
+    <p>or implicitly, where the <i>TemplateArgumentList</i> is deduced
+        from the types of the function arguments:
+
+<pre class="d_code notranslate">writefln(<span class="d_string">"The square of %s is %s"</span>, 3, Square(3));  <span class="d_comment">// T is deduced to be int
+</span></pre>
+    </p>
+
+    <p>If there are fewer arguments supplied in the <i>TemplateArgumentList</i>
+        than parameters in the <i>TemplateParameterList</i>, the arguments fulfill
+        parameters from left to right, and the rest of the parameters are then deduced
+        from the function arguments.
+    </p>
+
+    <p>Function template type parameters that are to be implicitly
+        deduced may not have specializations:
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span> <b><i>Foo</i></b>(T : T*)(T t) { ... }
+
+<span class="d_keyword">int</span> x,y;
+Foo!(<span class="d_keyword">int</span>*)(x);   <span class="d_comment">// ok, T is not deduced from function argument
+</span>Foo(&amp;y);         <span class="d_comment">// error, T has specialization
+</span></pre>
+    </p>
+
+    <p>Template arguments not implicitly deduced can have default values:
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span> <b><i>Foo</i></b>(T, U=T*)(T t) { U p; ... }
+
+<span class="d_keyword">int</span> x;
+Foo(x);    <span class="d_comment">// T is int, U is int*
+</span></pre>
+    </p>
+
+    <p>The deduced type parameter for dynamic array and pointer arguments
+        has an unqualified head:
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span> foo(T)(T arg) { <span class="d_keyword">pragma</span>(msg, T); }
+
+<span class="d_keyword">int</span>[] marr;
+<span class="d_keyword">const</span>(<span class="d_keyword">int</span>[]) carr;
+<span class="d_keyword">immutable</span>(<span class="d_keyword">int</span>[]) iarr;
+foo(marr);  <span class="d_comment">// T == int[]
+</span>foo(carr);  <span class="d_comment">// T == const(int)[]
+</span>foo(iarr);  <span class="d_comment">// T == immutable(int)[]
+</span>
+<span class="d_keyword">int</span>* mptr;
+<span class="d_keyword">const</span>(<span class="d_keyword">int</span>*) cptr;
+<span class="d_keyword">immutable</span>(<span class="d_keyword">int</span>*) iptr;
+foo(mptr);  <span class="d_comment">// T == int*
+</span>foo(cptr);  <span class="d_comment">// T == const(int)*
+</span>foo(iptr);  <span class="d_comment">// T == immutable(int)*
+</span></pre>
+    </p>
+
+    <p>Function templates can have their return types deduced based on the
+        first <a href="../spec/statement.html#ReturnStatement"><i>ReturnStatement</i></a> in the function:
+
+<pre class="d_code notranslate"><span class="d_keyword">auto</span> <b><i>Square</i></b>(T)(T t)
+{
+    <span class="d_keyword">return</span> t * t;
+}
+</pre>
+    </p>
+
+    <p>If there is more than one return statement, then the
+        types of the return statement expressions must match.
+        If there are no return statements, then the return type of the
+        function template is <span class="d_inlinecode donthyphenate notranslate">void</span>.
+    </p>
+
+<h2><a class="anchor" title="Permalink to this section" id="variable-template" href="#variable-template">Variable Templates</a></h2>
+
+    <p>Same as aggregates and functions, variable declarations with
+        <a href="../spec/declaration.html#Initializer"><i>Initializer</i></a> can have optional template parameters:
+
+<pre class="d_code notranslate"><span class="d_keyword">enum</span> string constant(TL...) = TL.stringof;
+<span class="d_keyword">ubyte</span>[T.sizeof] storage(T) = 0;
+<span class="d_keyword">auto</span> array(<span class="d_keyword">alias</span> a) = a;
+</pre>
+    </p>
+
+    <p>These declarations are transformed into templates:
+
+<pre class="d_code notranslate"><span class="d_keyword">template</span> constant(TL...)
+{
+    <span class="d_keyword">enum</span> string constant = TL.stringof;
+}
+<span class="d_keyword">template</span> storage(T)
+{
+    <span class="d_keyword">ubyte</span>[T.sizeof] storage = 0;
+}
+<span class="d_keyword">template</span> array(<span class="d_keyword">alias</span> a)
+{
+    <span class="d_keyword">auto</span> array = a;
+}
+</pre>
+    </p>
+
+<h2><a class="anchor" title="Permalink to this section" id="alias-template" href="#alias-template">Alias Templates</a></h2>
+
+    <p><a href="../spec/declaration.html#AliasDeclaration"><i>AliasDeclaration</i></a> can also have optional template
+        parameters:
+
+<pre class="d_code notranslate"><span class="d_keyword">alias</span> Sequence(TL...) = TL;
+</pre>
+    </p>
+
+    <p>It is lowered to:
+
+<pre class="d_code notranslate"><span class="d_keyword">template</span> Sequence(TL...)
+{
+    <span class="d_keyword">alias</span> Sequence = TL;
+}
+</pre>
+    </p>
+
+<h3><a class="anchor" title="Permalink to this section" id="auto-ref-parameters" href="#auto-ref-parameters">Function Templates with Auto Ref Parameters</a></h3>
+
+    <p>An auto ref function template parameter becomes a ref parameter
+        if its corresponding argument is an lvalue, otherwise it becomes
+        a value parameter:
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span> foo(Args...)(<span class="d_keyword">auto</span> <span class="d_keyword">ref</span> Args args)
+{
+    <span class="d_keyword">int</span> result;
+
+    <span class="d_keyword">foreach</span> (i, v; args)
+    {
+        <span class="d_keyword">if</span> (v == 10)
+            <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isRef, args[i]));
+        <span class="d_keyword">else</span>
+            <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(isRef, args[i]));
+        result += v;
+    }
+    <span class="d_keyword">return</span> result;
+}
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">int</span> y = 10;
+    <span class="d_keyword">int</span> r;
+    r = foo(8);       <span class="d_comment">// returns 8
+</span>    r = foo(y);       <span class="d_comment">// returns 10
+</span>    r = foo(3, 4, y); <span class="d_comment">// returns 17
+</span>    r = foo(4, 5, y); <span class="d_comment">// returns 19
+</span>    r = foo(y, 6, y); <span class="d_comment">// returns 26
+</span>}
+</pre>
+    </p>
+
+    <p>Auto ref parameters can be combined with auto ref return
+        attributes:
+
+<pre class="d_code notranslate"><span class="d_keyword">auto</span> <span class="d_keyword">ref</span> min(T, U)(<span class="d_keyword">auto</span> <span class="d_keyword">ref</span> T lhs, <span class="d_keyword">auto</span> <span class="d_keyword">ref</span> U rhs)
+{
+    <span class="d_keyword">return</span> lhs &gt; rhs ? rhs : lhs;
+}
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">int</span> x = 7, y = 8;
+    <span class="d_keyword">int</span> i;
+
+    i = min(4, 3);     <span class="d_comment">// returns 3
+</span>    i = min(x, y);     <span class="d_comment">// returns 7
+</span>    min(x, y) = 10;    <span class="d_comment">// sets x to 10
+</span>    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(compiles, min(3, y) = 10));
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(compiles, min(y, 3) = 10));
+}
+</pre>
+    </p>
+
+<h2><a class="anchor" title="Permalink to this section" id="nested-templates" href="#nested-templates">Nested Templates</a></h2>
+
+    <p>If a template is declared in aggregate or function local scope, the
+        instantiated functions will implicitly capture the context of the
+        enclosing scope.
+
+<pre class="d_code notranslate"><span class="d_keyword">class</span> C
+{
+    <span class="d_keyword">int</span> num;
+
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> n) { num = n; }
+
+    <span class="d_keyword">template</span> Foo()
+    {
+        <span class="d_comment">// 'foo' can access 'this' reference of class C object.
+</span>        <span class="d_keyword">void</span> foo(<span class="d_keyword">int</span> n) { <span class="d_keyword">this</span>.num = n; }
+    }
+}
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">auto</span> c = <span class="d_keyword">new</span> C(1);
+    <span class="d_keyword">assert</span>(c.num == 1);
+
+    c.Foo!().foo(5);
+    <span class="d_keyword">assert</span>(c.num == 5);
+
+    <span class="d_keyword">template</span> Bar()
+    {
+        <span class="d_comment">// 'bar' can access local variable of 'main' function.
+</span>        <span class="d_keyword">void</span> bar(<span class="d_keyword">int</span> n) { c.num = n; }
+    }
+    Bar!().bar(10);
+    <span class="d_keyword">assert</span>(c.num == 10);
+}
+</pre>
+    </p>
+
+    <p>Above, <span class="d_inlinecode donthyphenate notranslate">Foo!().foo</span> will work just the same as a member function
+        of class <span class="d_inlinecode donthyphenate notranslate">C</span>, and <span class="d_inlinecode donthyphenate notranslate">Bar!().bar</span> will work just the same as a nested
+        function within function <span class="d_inlinecode donthyphenate notranslate">main()</span>.</p>
+
+    <p>If a template has a <a href="#aliasparameters">template alias parameter</a>,
+        and is instantiated with a local symbol, the instantiated function will
+        implicitly become nested in order to access runtime data of the given
+        local symbol.
+
+<pre class="d_code notranslate"><span class="d_keyword">template</span> Foo(<span class="d_keyword">alias</span> sym)
+{
+    <span class="d_keyword">void</span> foo() { sym = 10; }
+}
+
+<span class="d_keyword">class</span> C
+{
+    <span class="d_keyword">int</span> num;
+
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> n) { num = n; }
+
+    <span class="d_keyword">void</span> main()
+    {
+        <span class="d_keyword">assert</span>(<span class="d_keyword">this</span>.num == 1);
+
+        <span class="d_keyword">alias</span> fooX = Foo!(C.num).foo;
+
+        <span class="d_comment">// fooX will become member function implicitly, so &amp;fooX returns delegate object.
+</span>        <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">is</span>(<span class="d_keyword">typeof</span>(&amp;fooX) == <span class="d_keyword">delegate</span>));
+
+        fooX(); <span class="d_comment">// called by using valid 'this' reference.
+</span>        <span class="d_keyword">assert</span>(<span class="d_keyword">this</span>.num == 10);  <span class="d_comment">// OK
+</span>    }
+}
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">new</span> C(1).main();
+
+    <span class="d_keyword">int</span> num;
+    <span class="d_keyword">alias</span> fooX = Foo!num.foo;
+
+    <span class="d_comment">// fooX will become nested function implicitly, so &amp;fooX returns delegate object.
+</span>    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">is</span>(<span class="d_keyword">typeof</span>(&amp;fooX) == <span class="d_keyword">delegate</span>));
+
+    fooX();
+    <span class="d_keyword">assert</span>(num == 10);  <span class="d_comment">// OK
+</span>}
+</pre>
+    </p>
+
+    <p>Not only functions, but also instantiated class and struct types can
+        become nested via implicitly captured context.
+
+<pre class="d_code notranslate"><span class="d_keyword">class</span> C
+{
+    <span class="d_keyword">int</span> num;
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> n) { num = n; }
+
+    <span class="d_keyword">class</span> N(T)
+    {
+        <span class="d_comment">// instantiated class N!T can become nested in C
+</span>        T foo() { <span class="d_keyword">return</span> num * 2; }
+    }
+}
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">auto</span> c = <span class="d_keyword">new</span> C(10);
+    <span class="d_keyword">auto</span> n = c.<span class="d_keyword">new</span> N!<span class="d_keyword">int</span>();
+    <span class="d_keyword">assert</span>(n.foo() == 20);
+}
+</pre>
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">int</span> num = 10;
+    <span class="d_keyword">struct</span> S(T)
+    {
+        <span class="d_comment">// instantiated struct S!T can become nested in main()
+</span>        T foo() { <span class="d_keyword">return</span> num * 2; }
+    }
+    S!<span class="d_keyword">int</span> s;
+    <span class="d_keyword">assert</span>(s.foo() == 20);
+}
+</pre>
+    </p>
+
+    <p>A templated <span class="d_inlinecode donthyphenate notranslate">struct</span> can become a nested <span class="d_inlinecode donthyphenate notranslate">struct</span> if it
+        is instantiated with a local symbol passed as an aliased argument:
+
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> A(<span class="d_keyword">alias</span> F)
+{
+    <span class="d_keyword">int</span> fun(<span class="d_keyword">int</span> i) { <span class="d_keyword">return</span> F(i); }
+}
+
+A!F makeA(<span class="d_keyword">alias</span> F)() { <span class="d_keyword">return</span> A!F(); }
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">int</span> x = 40;
+    <span class="d_keyword">int</span> fun(<span class="d_keyword">int</span> i) { <span class="d_keyword">return</span> x + i; }
+    A!fun a = makeA!fun();
+    <span class="d_keyword">assert</span>(a.fun(2) == 42);
+}
+</pre>
+    </p>
+
+    <h3><a class="anchor" title="Permalink to this section" id="nested_template_limitation" href="#nested_template_limitation">Limitation:</a></h3>
+
+    <p>Currently nested templates can capture at most one context. As a typical
+        example, non-static template member functions cannot take local symbol
+        by using template alias parameter.
+
+<pre class="d_code notranslate"><span class="d_keyword">class</span> C
+{
+    <span class="d_keyword">int</span> num;
+    <span class="d_keyword">void</span> foo(<span class="d_keyword">alias</span> sym)() { num = sym * 2; }
+}
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">auto</span> c = <span class="d_keyword">new</span> C();
+    <span class="d_keyword">int</span> var = 10;
+    c.foo!var();    <span class="d_comment">// NG, foo!var requires two contexts, 'this' and 'main()'
+</span>}
+</pre>
+    </p>
+
+    <p>But, if one context is indirectly accessible from other context, it is allowed.
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span> sum(<span class="d_keyword">alias</span> x, <span class="d_keyword">alias</span> y)() { <span class="d_keyword">return</span> x + y; }
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">int</span> a = 10;
+    <span class="d_keyword">void</span> nested()
+    {
+        <span class="d_keyword">int</span> b = 20;
+        <span class="d_keyword">assert</span>(sum!(a, b)() == 30);
+    }
+    nested();
+}
+</pre>
+
+        Two local variables <span class="d_inlinecode donthyphenate notranslate">a</span> and <span class="d_inlinecode donthyphenate notranslate">b</span> are in different contexts, but
+        outer context is indirectly accessible from innter context, so nested
+        template instance <span class="d_inlinecode donthyphenate notranslate">sum!(a, b)</span> will capture only
+        inner context.
+    </p>
+
+<h2><a class="anchor" title="Permalink to this section" id="recursive_templates" href="#recursive_templates">Recursive Templates</a></h2>
+
+    <p>Template features can be combined to produce some interesting
+        effects, such as compile time evaluation of non-trivial functions.
+        For example, a factorial template can be written:
+
+<pre class="d_code notranslate"><span class="d_keyword">template</span> factorial(<span class="d_keyword">int</span> n : 1)
+{
+    <span class="d_keyword">enum</span> { factorial = 1 }
+}
+
+<span class="d_keyword">template</span> factorial(<span class="d_keyword">int</span> n)
+{
+    <span class="d_keyword">enum</span> { factorial = n* factorial!(n-1) }
+}
+
+<span class="d_keyword">void</span> test()
+{
+    writefln(<span class="d_string">"%s"</span>, factorial!(4)); <span class="d_comment">// prints 24
+</span>}
+</pre>
+    </p>
+
+<h2><a class="anchor" title="Permalink to this section" id="template_constraints" href="#template_constraints">Template Constraints</a></h2>
+
+<pre class="bnf notranslate"><a id="Constraint"><span class="gname">Constraint</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">if</span> <span class="d_inlinecode donthyphenate notranslate">(</span> <a href="../spec/expression.html#Expression"><i>Expression</i></a> <span class="d_inlinecode donthyphenate notranslate">)</span>
+</pre>
+
+    <p><i>Constraint</i>s are used to impose additional constraints
+        on matching arguments to a template beyond what is possible
+        in the <a href="#TemplateParameterList"><i>TemplateParameterList</i></a>.
+        The <i>Expression</i> is computed at compile time
+        and returns a result that is converted to a boolean value.
+        If that value is true, then the template is matched,
+        otherwise the template is not matched.
+    </p>
+
+    <p>For example, the following function template only
+        matches with odd values of <span class="d_inlinecode donthyphenate notranslate">N</span>:
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span> foo(<span class="d_keyword">int</span> N)()
+    <span class="d_keyword">if</span> (N &amp; 1)
+{
+    ...
+}
+...
+foo!(3)();  <span class="d_comment">// OK, matches
+</span>foo!(4)();  <span class="d_comment">// Error, no match
+</span></pre>
+    </p>
+
+    <p>Template constraints can be used with aggregate types (structs, classes, unions).
+        Constraints are effectively used with library module "std.traits":
+
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.traits;
+
+<span class="d_keyword">struct</span> Bar(T)
+    <span class="d_keyword">if</span> (isIntegral!T)
+{
+    ...
+}
+...
+<span class="d_keyword">auto</span> x = Bar!<span class="d_keyword">int</span>;       <span class="d_comment">// OK, int is an integral type
+</span><span class="d_keyword">auto</span> y = Bar!<span class="d_keyword">double</span>;    <span class="d_comment">// Error, double does not satisfy constraint
+</span></pre>
+    </p>
+
+<h2><a class="anchor" title="Permalink to this section" id="limitations" href="#limitations">Limitations</a></h2>
+
+    <p>Templates cannot be used to add non-static fields or
+        virtual functions to classes or interfaces.
+        For example:
+
+<pre class="d_code notranslate"><span class="d_keyword">class</span> Foo
+{
+    <span class="d_keyword">template</span> TBar(T)
+    {
+        T xx;               <span class="d_comment">// becomes a static field of Foo
+</span>        <span class="d_keyword">int</span> func(T) { ... } <span class="d_comment">// non-virtual
+</span>
+        <span class="d_keyword">static</span> T yy;                        <span class="d_comment">// Ok
+</span>        <span class="d_keyword">static</span> <span class="d_keyword">int</span> func(T t, <span class="d_keyword">int</span> y) { ... } <span class="d_comment">// Ok
+</span>    }
+}
+</pre>
+    </p>
+
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2017 by the <a href="../foundation.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on (no date time)</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

@@ -1,0 +1,416 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2017 by Digital Mars
+    All Rights Reserved Written by Walter Bright
+    http://digitalmars.com
+  -->
+<head>
+<meta charset="utf-8" />
+<meta name="keywords" content="D Programming Language, template metaprogramming,
+variadic templates, tuples, currying" />
+<meta name="description" content="Tuples in the D programming language" />
+<title>Tuples - D Programming Language</title>
+<link rel="stylesheet" href="css/codemirror.css" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/print.css" media="print" />
+<link rel="stylesheet" href="css/cssmenu.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+<link rel="shortcut icon" href="favicon.ico" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0" />
+</head>
+<body id='Tuples' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript';</script>
+<div id="top">	<div id="header">		<a class="logo" href="."><img id="logo" width="125" height="95" alt="D Logo" src="images/dlogo.svg"></a>
+		<span id="d-language-mobilehelper"><a href="." id="d-language">D Programming Language</a></span>
+	</div>
+</div>
+<div id="navigation">    <div id="search-box">        <form method="get" action="http://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org" />
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search" />
+            <span id="search-query"><input id="q" name="q" placeholder="Search" /></span><span id="search-dropdown">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire D Site</option>
+                    <option  value="dlang.org/phobos">Library Reference</option>
+                    <option value="digitalmars.com/d/archives">Newsgroup Archives</option>
+                </select>
+            </span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    
+<div id="cssmenu"><ul>    <li><a href='index.html'><span>D 2.067.0</span></a></li>
+    <li><a href='download.html'><span><b>Download</b></span></a></li>
+    <li><a href='getstarted.html'><span>Getting Started</span></a></li>
+    <li><a href='changelog.html'><span>Change Log</span></a></li>
+    <li class='has-sub'><a href='#'><span>D Reference</span></a>
+      <ul><li><a href='        intro.html'>Introduction</a></li><li><a href='        lex.html'>Lexical</a></li><li><a href='        grammar.html'>Grammar</a></li><li><a href='        module.html'>Modules</a></li><li><a href='        declaration.html'>Declarations</a></li><li><a href='        type.html'>Types</a></li><li><a href='        property.html'>Properties</a></li><li><a href='        attribute.html'>Attributes</a></li><li><a href='        pragma.html'>Pragmas</a></li><li><a href='        expression.html'>Expressions</a></li><li><a href='        statement.html'>Statements</a></li><li><a href='        arrays.html'>Arrays</a></li><li><a href='        hash-map.html'>Associative Arrays</a></li><li><a href='        struct.html'>Structs and Unions</a></li><li><a href='        class.html'>Classes</a></li><li><a href='        interface.html'>Interfaces</a></li><li><a href='        enum.html'>Enums</a></li><li><a href='        const3.html'>Const and Immutable</a></li><li><a href='        function.html'>Functions</a></li><li><a href='        operatoroverloading.html'>Operator Overloading</a></li><li><a href='        template.html'>Templates</a></li><li><a href='        template-mixin.html'>Template Mixins</a></li><li><a href='        contracts.html'>Contract Programming</a></li><li><a href='        version.html'>Conditional Compilation</a></li><li><a href='        traits.html'>Traits</a></li><li><a href='        errors.html'>Error Handling</a></li><li><a href='        unittest.html'>Unit Tests</a></li><li><a href='        garbage.html'>Garbage Collection</a></li><li><a href='        float.html'>Floating Point</a></li><li><a href='        iasm.html'>D x86 Inline Assembler</a></li><li><a href='        ddoc.html'>Embedded Documentation</a></li><li><a href='        interfaceToC.html'>Interfacing to C</a></li><li><a href='        cpp_interface.html'>Interfacing to C++</a></li><li><a href='        portability.html'>Portability Guide</a></li><li><a href='        entity.html'>Named Character Entities</a></li><li><a href='        memory-safe-d.html'>Memory Safety</a></li><li><a href='        abi.html'>Application Binary Interface</a></li><li><a href='        simd.html'>Vector Extensions
+      </a></li></ul>
+    <li><a href='phobos/index.html'><span>Standard library</span></a></li>
+    <li><a href='http://code.dlang.org'><span>More libraries</span></a></li>
+    <li class='has-sub'><a href='#'><span>Community</span></a>
+      <ul><li><a href='        http://forum.dlang.org'>Forums</a></li><li><a href='        irc://irc.freenode.net/d'>IRC</a></li><li><a href='        http://github.com/D-Programming-Language'>D on GitHub</a></li><li><a href='        http://wiki.dlang.org'>Wiki</a></li><li><a href='        http://wiki.dlang.org/Review_Queue'>Review Queue</a></li><li><a href='        http://twitter.com/search?q=%23dlang'>Twitter</a></li><li><a href='        http://digitalmars.com/d/dlinks.html'>More Links
+      </a></li></ul>
+    <li class='has-sub'><a href='#'><span>Compilers &amp; Tools</span></a>
+      <ul><li><a href='        dmd-windows.html'>dmd &ndash; reference compiler</a></li><li><a href='        http://gdcproject.org'>gdc &ndash; gcc-based compiler</a></li><li><a href='        http://wiki.dlang.org/LDC'>ldc &ndash; LLVM-based compiler</a></li><li><a href='        rdmd.html'>rdmd &ndash; build tool</a></li><li><a href='        htod.html'>htod &ndash; .h to .d
+      </a></li></ul>
+    <li class='has-sub'><a href='#'><span>Books &amp; Articles</span></a>
+      <ul><li><a href='        http://ddili.org/ders/d.en/index.html'>Online Book (free)</a></li><li><a href='        http://wiki.dlang.org/Books'>More Books</a></li><li><a href='        howtos.html'>How-tos</a></li><li><a href='        faq.html'>FAQ</a></li><li><a href='        const-faq.html'>const(FAQ)</a></li><li><a href='        comparison.html'>Feature Overview</a></li><li><a href='        d-floating-point.html'>Floating Point</a></li><li><a href='        wc.html'>Example: wc</a></li><li><a href='        warnings.html'>Warnings</a></li><li><a href='        rationale.html'>Rationale</a></li><li><a href='        builtin.html'>Builtin Rationale</a></li><li><a href='        ctod.html'>C to D</a></li><li><a href='        cpptod.html'>C++ to D</a></li><li><a href='        pretod.html'>C Preprocessor vs D</a></li><li><a href='        code_coverage.html'>Code coverage analysis</a></li><li><a href='        exception-safe.html'>Exception Safety</a></li><li><a href='        hijack.html'>Hijacking</a></li><li><a href='        intro-to-datetime.html'>Introduction to std.datetime</a></li><li><a href='        lazy-evaluation.html'>Lazy Evaluation</a></li><li><a href='        migrate-to-shared.html'>Migrating to Shared</a></li><li><a href='        mixin.html'>Mixins</a></li><li><a href='        regular-expression.html'>Regular Expressions</a></li><li><a href='        safed.html'>SafeD</a></li><li><a href='        templates-revisited.html'>Templates Revisited</a></li><li><a href='        tuple.html'>Tuples</a></li><li><a href='        variadic-function-templates.html'>Variadic Templates</a></li><li><a href='        d-array-article.html'>D Slices
+      </a></li></ul>
+    <li class='has-sub'><a href='#'><span>Resources</span></a>
+      <ul><li><a href='        library/index.html'>NEW Library Reference Preview</a></li><li><a href='        bugstats.php'>Bug Tracker</a></li><li><a href='        http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li><li><a href='        http://wiki.dlang.org/Editors'>Editors</a></li><li><a href='        http://wiki.dlang.org/IDEs'>IDEs</a></li><li><a href='        dstyle.html'>The D Style</a></li><li><a href='        glossary.html'>Glossary</a></li><li><a href='        acknowledgements.html'>Acknowledgments</a></li><li><a href='        sitemap.html'>Sitemap
+      </a></li></ul>
+</ul></div>
+</div>
+
+<div class="hyphenate" id="content">    
+<div id="tools">	<span class="tip">		<a href="https://github.com/D-Programming-Language/dlang.org/edit/master/tuple.dd" class="button">Improve this page</a>
+		<span >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			local clone.
+		</span>
+	</span>
+	<span class="tip">		<a href="http://wiki.dlang.org/DocComments/Tuples" class="button">Page wiki</a>
+		<span >			View or edit the community-maintained wiki page associated with this page.
+		</span>
+	</span>
+</div>
+    <h1>Tuples</h1>
+    
+    <!--Generated by Ddoc from tuple.dd-->
+
+
+
+    <p>A tuple is a sequence of elements. Those elements can
+    be types, expressions, or aliases.
+    The number and elements of a tuple are fixed at compile time;
+    they cannot be changed at run time.
+    </p>
+
+    <p>Tuples have characteristics of both
+    structs and arrays. Like structs, the tuple
+    elements can be of different types. Like arrays,
+    the elements can be accessed via indexing.
+    </p>
+
+    <p>So how does one construct a tuple? There isn't a specific
+    tuple literal syntax. But since variadic template parameters
+    create tuples, we can define a template to create one:
+    </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">template</span> Tuple(E...)
+{
+    <span class="d_keyword">alias</span> Tuple = E;
+}
+</pre>
+
+    <p>and it's used like:</p>
+
+<pre class="d_code notranslate">Tuple!(<span class="d_keyword">int</span>, <span class="d_keyword">long</span>, <span class="d_keyword">float</span>)    <span class="d_comment">// create a tuple of 3 types
+</span>Tuple!(3, 7, 'c')           <span class="d_comment">// create a tuple of 3 expressions
+</span>Tuple!(<span class="d_keyword">int</span>, 8)              <span class="d_comment">// create a tuple of a type and an expression
+</span></pre>
+
+    <p>In order to symbolically refer to a tuple, use an alias:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">alias</span> TP = Tuple!(<span class="d_keyword">float</span>, <span class="d_keyword">float</span>, 3); <span class="d_comment">// TP is now a tuple of two floats and 3
+</span></pre>
+
+    <p>Tuples can be used as arguments to templates, and if so
+    they are &lsquo;flattened&rsquo; out into a list of arguments.
+    This makes it straightforward to append a new element to
+    an existing tuple or concatenate tuples:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">alias</span> TR = Tuple!(TP, 8);  <span class="d_comment">// TR is now float,float,3,8
+</span><span class="d_keyword">alias</span> TS = Tuple!(TP, TP); <span class="d_comment">// TS is float,float,3,float,float,3
+</span></pre>
+
+    <p>Tuples share many characteristics with arrays.
+    For starters, the number of elements in a tuple can
+    be retrieved with the <span class="d_inlinecode donthyphenate notranslate">.length</span> property:</p>
+
+<pre class="d_code notranslate">TP.length       <span class="d_comment">// evaluates to 3
+</span></pre>
+
+    <p>Tuples can be indexed:</p>
+
+<pre class="d_code notranslate">TP[1] f = TP[2];    <span class="d_comment">// f is declared as a float and initialized to 3
+</span></pre>
+
+    <p>and even sliced:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">alias</span> TQ = TP[0..$-1]; <span class="d_comment">// TQ is now the same as Tuple!(float, float)
+</span></pre>
+
+    <p>There is one restriction: the indices for indexing and slicing
+    must be evaluatable at compile time.
+    When used within [ ]s $ is defined as the length of the tuple
+    being indexed or sliced.
+    </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span> foo(<span class="d_keyword">int</span> i)
+{
+    TQ[i] x;    <span class="d_comment">// error, i is not constant
+</span>}
+</pre>
+
+    <p>These make it simple to produce the &lsquo;head&rsquo; and &lsquo;tail&rsquo;
+    of a tuple. The head is just TP[0], the tail
+    is TP[1 .. $].
+    Given the head and tail, mix with a little conditional
+    compilation, and we can implement some classic recursive
+    algorithms with templates.
+    For example, this template returns a tuple consisting
+    of the trailing type arguments <i>TL</i> with the first occurrence
+    of the first type argument <i>T</i> removed:
+    </p>
+<pre class="d_code notranslate"><span class="d_keyword">template</span> Erase(T, TL...)
+{
+    <span class="d_keyword">static</span> <span class="d_keyword">if</span> (TL.length == 0)
+    <span class="d_comment">// 0 length tuple, return self
+</span>        <span class="d_keyword">alias</span> Erase = TL;
+    <span class="d_keyword">else</span> <span class="d_keyword">static</span> <span class="d_keyword">if</span> (<span class="d_keyword">is</span>(T == TL[0]))
+    <span class="d_comment">// match with first in tuple, return tail
+</span>        <span class="d_keyword">alias</span> Erase = TL[1 .. $];
+    <span class="d_keyword">else</span>
+    <span class="d_comment">// no match, return head concatenated with recursive tail operation
+</span>        <span class="d_keyword">alias</span> Erase = Tuple!(TL[0], Erase!(T, TL[1 .. $]));
+}
+</pre>
+
+<h3>Type Tuples</h3>
+
+    <p>If a tuple's elements are solely types,
+    it is called a <i>TypeTuple</i>
+    (sometimes called a type list).
+    Since function parameter lists are a list of types,
+    a type tuple can be retrieved from them.
+    One way is using an <a href="expression.html#IsExpression"><i>IsExpression</i></a>:
+    </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span> foo(<span class="d_keyword">int</span> x, <span class="d_keyword">long</span> y);
+
+...
+<span class="d_keyword">static</span> <span class="d_keyword">if</span> (<span class="d_keyword">is</span>(<span class="d_keyword">typeof</span>(foo) P == <span class="d_keyword">function</span>))
+    <span class="d_keyword">alias</span> TP = P;
+<span class="d_comment">// TP is now the same as Tuple!(int, long)
+</span></pre>
+
+    <p>This is generalized in the template
+    <a href="phobos/std_traits.html">std.traits</a>.ParameterTypeTuple:
+    </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.traits;
+
+...
+<span class="d_keyword">alias</span> TP = ParameterTypeTuple!(foo);    <span class="d_comment">// TP is the tuple (int, long)
+</span></pre>
+
+    <p><i>TypeTuple</i>s can be used to declare a function:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">float</span> bar(TP);  <span class="d_comment">// same as float bar(int, long)
+</span></pre>
+
+    <p>If implicit function template instantiation is being done,
+    the type tuple representing the parameter types can be deduced:
+    </p>
+<pre class="d_code notranslate"><span class="d_keyword">int</span> foo(<span class="d_keyword">int</span> x, <span class="d_keyword">long</span> y);
+
+<span class="d_keyword">void</span> Bar(R, P...)(R <span class="d_keyword">function</span>(P))
+{
+    writeln(<span class="d_string">"return type is "</span>, <span class="d_keyword">typeid</span>(R));
+    writeln(<span class="d_string">"parameter types are "</span>, <span class="d_keyword">typeid</span>(P));
+}
+
+...
+Bar(&amp;foo);
+</pre>
+
+    <p>Prints:</p>
+
+<pre class="console notranslate">return type is int
+parameter types are (int,long)
+</pre>
+
+    <p>Type deduction can be used to create a function that
+    takes an arbitrary number and type of arguments:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span> Abc(P...)(P p)
+{
+    writeln(<span class="d_string">"parameter types are "</span>, <span class="d_keyword">typeid</span>(P));
+}
+
+Abc(3, 7L, 6.8);
+</pre>
+
+    <p>Prints:</p>
+
+<pre class="console notranslate">parameter types are (int,long,double)
+</pre>
+
+    <p>For a more comprehensive treatment of this aspect, see
+    <a href="variadic-function-templates.html">Variadic Templates</a>.
+    </p>
+
+
+<h3>Expression Tuples</h3>
+
+    <p>If a tuple's elements are solely expressions,
+    it is called an <i>ExpressionTuple</i>.
+    The Tuple template can be used to create one:
+    </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">alias</span> ET = Tuple!(3, 7L, 6.8);
+
+...
+writeln(ET);            <span class="d_comment">// prints 376.8
+</span>writeln(ET[1]);         <span class="d_comment">// prints 7
+</span>writeln(ET[1..$]);      <span class="d_comment">// prints 76.8
+</span></pre>
+
+    <p>It can be used to create an array literal:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">alias</span> AT = Tuple!(3, 7, 6);
+
+...
+<span class="d_keyword">int</span>[] a = [AT];         <span class="d_comment">// same as [3,7,6]
+</span></pre>
+
+    <p>The data fields of a struct or class can be
+    turned into an expression tuple using the <span class="d_inlinecode donthyphenate notranslate">.tupleof</span>
+    property:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S { <span class="d_keyword">int</span> x; <span class="d_keyword">long</span> y; }
+
+<span class="d_keyword">void</span> foo(<span class="d_keyword">int</span> a, <span class="d_keyword">long</span> b)
+{
+    writeln(a, b);
+}
+
+...
+S s;
+s.x = 7;
+s.y = 8;
+foo(s.x, s.y);      <span class="d_comment">// prints 78
+</span>foo(s.tupleof);     <span class="d_comment">// prints 78
+</span>s.tupleof[1] = 9;
+s.tupleof[0] = 10;
+foo(s.tupleof);     <span class="d_comment">// prints 109
+</span>s.tupleof[2] = 11;  <span class="d_comment">// error, no third field of S
+</span></pre>
+
+    <p>A type tuple can be created from the data fields
+    of a struct using <span class="d_inlinecode donthyphenate notranslate">typeof</span>:</p>
+
+<pre class="d_code notranslate">writeln(<span class="d_keyword">typeid</span>(<span class="d_keyword">typeof</span>(S.tupleof))); <span class="d_comment">// prints (int,long)
+</span></pre>
+
+    <p>This is encapsulated in the template
+    <a href="phobos/std_traits.html">std.traits</a>.FieldTypeTuple.
+    </p>
+
+<h3>Looping</h3>
+
+    <p>While the head-tail style of functional programming works
+    with tuples, it's often more convenient to use a loop.
+    The <i>ForeachStatement</i> can loop over either <i>TypeTuple</i>s
+    or <i>ExpressionTuple</i>s.
+    </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">alias</span> TL = Tuple!(<span class="d_keyword">int</span>, <span class="d_keyword">long</span>, <span class="d_keyword">float</span>);
+<span class="d_keyword">foreach</span> (i, T; TL)
+    writefln(<span class="d_string">"TL[%d] = %s"</span>, i, <span class="d_keyword">typeid</span>(T));
+
+<span class="d_keyword">alias</span> ET = Tuple!(3, 7L, 6.8);
+<span class="d_keyword">foreach</span> (i, E; ET)
+    writefln(<span class="d_string">"ET[%d] = %s"</span>, i, E);
+</pre>
+
+    <p>Prints:</p>
+
+<pre class="console notranslate">TL[0] = int
+TL[1] = long
+TL[2] = float
+ET[0] = 3
+ET[1] = 7
+ET[2] = 6.8
+</pre>
+
+<h3>Tuple Declarations</h3>
+
+    <p>A variable declared with a <i>TypeTuple</i> becomes an
+    <i>ExpressionTuple</i>:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">alias</span> TL = Tuple!(<span class="d_keyword">int</span>, <span class="d_keyword">long</span>);
+
+<span class="d_keyword">void</span> foo(TL tl)
+{
+    writeln(tl, tl[1]);
+}
+
+foo(1, 6L);     <span class="d_comment">// prints 166
+</span></pre>
+
+<h3>Putting It All Together</h3>
+
+    <p>These capabilities can be put together to implement
+    a template that will partially encapsulate arguments to
+    a function, and allow calling the function with the
+    rest of the arguments. This is called a
+    <i>partial function application</i>:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.traits;
+
+<span class="d_comment">/**
+    An implementation of a partial function application.
+    See also std.functional.partial for a more complete implementation.
+*/</span>
+<span class="d_keyword">template</span> partial(<span class="d_keyword">alias</span> fun, args1...)
+    <span class="d_keyword">if</span> (isSomeFunction!(<span class="d_keyword">typeof</span>(fun)))  <span class="d_comment">// constraint
+</span>{
+    <span class="d_keyword">auto</span> partial(T...)(T args2)
+    {
+        <span class="d_keyword">return</span> fun(args1, args2);
+    }
+}
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">static</span> <span class="d_keyword">int</span> plus(<span class="d_keyword">int</span> x, <span class="d_keyword">int</span> y, <span class="d_keyword">int</span> z)
+    {
+        <span class="d_keyword">return</span> x + y + z;
+    }
+
+    <span class="d_comment">// encapsulates two arguments, creates a function that takes only one argument.
+</span>    <span class="d_keyword">alias</span> takes_one = partial!(plus, 1, 2);
+    <span class="d_keyword">assert</span>(takes_one(3) == 6);
+
+    <span class="d_comment">// encapsulates one arguments, creates a function that takes two arguments.
+</span>    <span class="d_keyword">alias</span> takes_two = partial!(plus, 1);
+    <span class="d_keyword">assert</span>(takes_two(2, 3) == 6);
+}
+</pre>
+
+<h3>Future Directions</h3>
+
+    <ul>    <li>Return tuples from functions.</li>
+    <li>Use operators on tuples, like =, +=, etc.</li>
+    <li>Have tuple properties like <span class="d_inlinecode donthyphenate notranslate">.init</span> which will apply
+    the property to each of the tuple members.</li>
+    </ul>
+
+
+
+
+</div>
+<div id="copyright">Copyright &copy; 1999-2017 by Digital Mars &reg;, All Rights Reserved | Page generated by <a href="http://dlang.org/ddoc.html">Ddoc</a> on (no date time)</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('<script src="js/jquery-1.7.2.min.js">\x3C/script>')</script>
+    <script type="text/javascript" src="js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="js/run.js"></script>
+    <script type="text/javascript" src="js/cssmenu.js"></script>
+
+<script type="text/javascript" src="js/run-main-website.js"></script>
+</body>
+</html>

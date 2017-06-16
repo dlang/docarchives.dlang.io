@@ -1,0 +1,1084 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2017 by Digital Mars
+    All Rights Reserved Written by Walter Bright
+    http://digitalmars.com
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>std.algorithm.searching - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="stylesheet" href="../css/cssmenu.css">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='std.algorithm.searching' class='std'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top">	<div id="header">		<img src="../images/hamburger.svg" id="mobile-hamburger">
+		<a class="logo" href=".."><img id="logo" width="125" height="95" alt="D Logo" src="../images/dlogo.svg"></a>
+		<span id="d-language-mobilehelper"><a href=".." id="d-language">D Programming Language</a></span>
+	</div>
+</div>
+<div id="navigation">    
+    <div id="search-box">        <form method="get" action="http://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search" tabindex="1000"></span><span id="search-dropdown">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire D Site</option>
+                    <option  value="dlang.org/spec">Language Reference</option>
+                    <option selected value="dlang.org/phobos">Library Reference</option>
+                    <option  value="forum.dlang.org">Discussion Forums</option>
+                    
+                </select>
+            </span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    
+<div id="cssmenu"><ul>    <li><a href='index.html'><span>D Lib Prerelease</span></a></li>
+    <li><a href='../phobos/index.html'><span>Current Release (2.070.0)</span></a></li>
+    
+<li><a href='object.html'><span><em class="tt">object</em></span></a></li>
+
+<li class='has-sub'><a href='#'><span><em class="tt">std</em></span></a>
+<ul><li>  <a href="std_algorithm.html" title="std.algorithm"><span class="d_inlinecode donthyphenate notranslate">algorithm</span></a><ul><li>    <a href="std_algorithm_comparison.html" title="std.algorithm.comparison"><span class="d_inlinecode donthyphenate notranslate">comparison</span></a></li><li>    <a href="std_algorithm_iteration.html" title="std.algorithm.iteration"><span class="d_inlinecode donthyphenate notranslate">iteration</span></a></li><li>    <a href="std_algorithm_mutation.html" title="std.algorithm.mutation"><span class="d_inlinecode donthyphenate notranslate">mutation</span></a></li><li>    <a href="std_algorithm_searching.html" title="std.algorithm.searching"><span class="d_inlinecode donthyphenate notranslate">searching</span></a></li><li>    <a href="std_algorithm_setops.html" title="std.algorithm.setops"><span class="d_inlinecode donthyphenate notranslate">setops</span></a></li><li>    <a href="std_algorithm_sorting.html" title="std.algorithm.sorting"><span class="d_inlinecode donthyphenate notranslate">sorting</span></a>
+  </li></ul></li><li>  <a href="std_array.html" title="std.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>  <a href="std_ascii.html" title="std.ascii"><span class="d_inlinecode donthyphenate notranslate">ascii</span></a></li><li>  <a href="std_base64.html" title="std.base64"><span class="d_inlinecode donthyphenate notranslate">base64</span></a></li><li>  <a href="std_bigint.html" title="std.bigint"><span class="d_inlinecode donthyphenate notranslate">bigint</span></a></li><li>  <a href="std_bitmanip.html" title="std.bitmanip"><span class="d_inlinecode donthyphenate notranslate">bitmanip</span></a></li><li>  <a href="std_compiler.html" title="std.compiler"><span class="d_inlinecode donthyphenate notranslate">compiler</span></a></li><li>  <a href="std_complex.html" title="std.complex"><span class="d_inlinecode donthyphenate notranslate">complex</span></a></li><li>  <a href="std_concurrency.html" title="std.concurrency"><span class="d_inlinecode donthyphenate notranslate">concurrency</span></a></li><li>  <a href="std_concurrencybase.html" title="std.concurrencybase"><span class="d_inlinecode donthyphenate notranslate">concurrencybase</span></a></li><li>  <a href="std_container.html" title="std.container"><span class="d_inlinecode donthyphenate notranslate">container</span></a><ul><li>    <a href="std_container_array.html" title="std.container.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>    <a href="std_container_binaryheap.html" title="std.container.binaryheap"><span class="d_inlinecode donthyphenate notranslate">binaryheap</span></a></li><li>    <a href="std_container_dlist.html" title="std.container.dlist"><span class="d_inlinecode donthyphenate notranslate">dlist</span></a></li><li>    <a href="std_container_rbtree.html" title="std.container.rbtree"><span class="d_inlinecode donthyphenate notranslate">rbtree</span></a></li><li>    <a href="std_container_slist.html" title="std.container.slist"><span class="d_inlinecode donthyphenate notranslate">slist</span></a></li><li>    <a href="std_container_util.html" title="std.container.util"><span class="d_inlinecode donthyphenate notranslate">util</span></a>
+  </li></ul></li><li>  <a href="std_conv.html" title="std.conv"><span class="d_inlinecode donthyphenate notranslate">conv</span></a></li><li>  <a href="std_csv.html" title="std.csv"><span class="d_inlinecode donthyphenate notranslate">csv</span></a></li><li>  <a href="std_datetime.html" title="std.datetime"><span class="d_inlinecode donthyphenate notranslate">datetime</span></a></li><li>  <a href="std_demangle.html" title="std.demangle"><span class="d_inlinecode donthyphenate notranslate">demangle</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">digest</span></h7><ul><li>    <a href="std_digest_crc.html" title="std.digest.crc"><span class="d_inlinecode donthyphenate notranslate">crc</span></a></li><li>    <a href="std_digest_digest.html" title="std.digest.digest"><span class="d_inlinecode donthyphenate notranslate">digest</span></a></li><li>    <a href="std_digest_hmac.html" title="std.digest.hmac"><span class="d_inlinecode donthyphenate notranslate">hmac</span></a></li><li>    <a href="std_digest_md.html" title="std.digest.md"><span class="d_inlinecode donthyphenate notranslate">md</span></a></li><li>    <a href="std_digest_ripemd.html" title="std.digest.ripemd"><span class="d_inlinecode donthyphenate notranslate">ripemd</span></a></li><li>    <a href="std_digest_sha.html" title="std.digest.sha"><span class="d_inlinecode donthyphenate notranslate">sha</span></a>
+  </li></ul></li><li>  <a href="std_encoding.html" title="std.encoding"><span class="d_inlinecode donthyphenate notranslate">encoding</span></a></li><li>  <a href="std_exception.html" title="std.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">experimental</span></h7><ul><li>    <a href="std_experimental_allocator.html" title="std.experimental.allocator"><span class="d_inlinecode donthyphenate notranslate">allocator</span></a><ul><li>      <a href="std_experimental_allocator_building_blocks.html" title="std.experimental.allocator.building_blocks"><span class="d_inlinecode donthyphenate notranslate">building_blocks</span></a><ul><li>        <a href="std_experimental_allocator_building_blocks_affix_allocator.html" title="std.experimental.allocator.building_blocks.affix_allocator"><span class="d_inlinecode donthyphenate notranslate">affix_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_allocator_list.html" title="std.experimental.allocator.building_blocks.allocator_list"><span class="d_inlinecode donthyphenate notranslate">allocator_list</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_bitmapped_block.html" title="std.experimental.allocator.building_blocks.bitmapped_block"><span class="d_inlinecode donthyphenate notranslate">bitmapped_block</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_bucketizer.html" title="std.experimental.allocator.building_blocks.bucketizer"><span class="d_inlinecode donthyphenate notranslate">bucketizer</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_fallback_allocator.html" title="std.experimental.allocator.building_blocks.fallback_allocator"><span class="d_inlinecode donthyphenate notranslate">fallback_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_free_list.html" title="std.experimental.allocator.building_blocks.free_list"><span class="d_inlinecode donthyphenate notranslate">free_list</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_free_tree.html" title="std.experimental.allocator.building_blocks.free_tree"><span class="d_inlinecode donthyphenate notranslate">free_tree</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_kernighan_ritchie.html" title="std.experimental.allocator.building_blocks.kernighan_ritchie"><span class="d_inlinecode donthyphenate notranslate">kernighan_ritchie</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_null_allocator.html" title="std.experimental.allocator.building_blocks.null_allocator"><span class="d_inlinecode donthyphenate notranslate">null_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_quantizer.html" title="std.experimental.allocator.building_blocks.quantizer"><span class="d_inlinecode donthyphenate notranslate">quantizer</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_region.html" title="std.experimental.allocator.building_blocks.region"><span class="d_inlinecode donthyphenate notranslate">region</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_scoped_allocator.html" title="std.experimental.allocator.building_blocks.scoped_allocator"><span class="d_inlinecode donthyphenate notranslate">scoped_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_segregator.html" title="std.experimental.allocator.building_blocks.segregator"><span class="d_inlinecode donthyphenate notranslate">segregator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_stats_collector.html" title="std.experimental.allocator.building_blocks.stats_collector"><span class="d_inlinecode donthyphenate notranslate">stats_collector</span></a>
+      </li></ul></li><li>      <a href="std_experimental_allocator_common.html" title="std.experimental.allocator.common"><span class="d_inlinecode donthyphenate notranslate">common</span></a></li><li>      <a href="std_experimental_allocator_gc_allocator.html" title="std.experimental.allocator.gc_allocator"><span class="d_inlinecode donthyphenate notranslate">gc_allocator</span></a></li><li>      <a href="std_experimental_allocator_mallocator.html" title="std.experimental.allocator.mallocator"><span class="d_inlinecode donthyphenate notranslate">mallocator</span></a></li><li>      <a href="std_experimental_allocator_mmap_allocator.html" title="std.experimental.allocator.mmap_allocator"><span class="d_inlinecode donthyphenate notranslate">mmap_allocator</span></a></li><li>      <a href="std_experimental_allocator_showcase.html" title="std.experimental.allocator.showcase"><span class="d_inlinecode donthyphenate notranslate">showcase</span></a></li><li>      <a href="std_experimental_allocator_typed.html" title="std.experimental.allocator.typed"><span class="d_inlinecode donthyphenate notranslate">typed</span></a>
+    </li></ul></li><li>    <a href="std_experimental_logger.html" title="std.experimental.logger"><span class="d_inlinecode donthyphenate notranslate">logger</span></a><ul><li>      <a href="std_experimental_logger_core.html" title="std.experimental.logger.core"><span class="d_inlinecode donthyphenate notranslate">core</span></a></li><li>      <a href="std_experimental_logger_filelogger.html" title="std.experimental.logger.filelogger"><span class="d_inlinecode donthyphenate notranslate">filelogger</span></a></li><li>      <a href="std_experimental_logger_multilogger.html" title="std.experimental.logger.multilogger"><span class="d_inlinecode donthyphenate notranslate">multilogger</span></a></li><li>      <a href="std_experimental_logger_nulllogger.html" title="std.experimental.logger.nulllogger"><span class="d_inlinecode donthyphenate notranslate">nulllogger</span></a>
+    </li></ul></li><li>    <a href="std_experimental_ndslice.html" title="std.experimental.ndslice"><span class="d_inlinecode donthyphenate notranslate">ndslice</span></a><ul><li>      <a href="std_experimental_ndslice_iteration.html" title="std.experimental.ndslice.iteration"><span class="d_inlinecode donthyphenate notranslate">iteration</span></a></li><li>      <a href="std_experimental_ndslice_selection.html" title="std.experimental.ndslice.selection"><span class="d_inlinecode donthyphenate notranslate">selection</span></a></li><li>      <a href="std_experimental_ndslice_slice.html" title="std.experimental.ndslice.slice"><span class="d_inlinecode donthyphenate notranslate">slice</span></a>
+    </li></ul>
+  </li></ul></li><li>  <a href="std_file.html" title="std.file"><span class="d_inlinecode donthyphenate notranslate">file</span></a></li><li>  <a href="std_format.html" title="std.format"><span class="d_inlinecode donthyphenate notranslate">format</span></a></li><li>  <a href="std_functional.html" title="std.functional"><span class="d_inlinecode donthyphenate notranslate">functional</span></a></li><li>  <a href="std_getopt.html" title="std.getopt"><span class="d_inlinecode donthyphenate notranslate">getopt</span></a></li><li>  <a href="std_json.html" title="std.json"><span class="d_inlinecode donthyphenate notranslate">json</span></a></li><li>  <a href="std_math.html" title="std.math"><span class="d_inlinecode donthyphenate notranslate">math</span></a></li><li>  <a href="std_mathspecial.html" title="std.mathspecial"><span class="d_inlinecode donthyphenate notranslate">mathspecial</span></a></li><li>  <a href="std_meta.html" title="std.meta"><span class="d_inlinecode donthyphenate notranslate">meta</span></a></li><li>  <a href="std_mmfile.html" title="std.mmfile"><span class="d_inlinecode donthyphenate notranslate">mmfile</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">net</span></h7><ul><li>    <a href="std_net_curl.html" title="std.net.curl"><span class="d_inlinecode donthyphenate notranslate">curl</span></a></li><li>    <a href="std_net_isemail.html" title="std.net.isemail"><span class="d_inlinecode donthyphenate notranslate">isemail</span></a>
+  </li></ul></li><li>  <a href="std_numeric.html" title="std.numeric"><span class="d_inlinecode donthyphenate notranslate">numeric</span></a></li><li>  <a href="std_outbuffer.html" title="std.outbuffer"><span class="d_inlinecode donthyphenate notranslate">outbuffer</span></a></li><li>  <a href="std_parallelism.html" title="std.parallelism"><span class="d_inlinecode donthyphenate notranslate">parallelism</span></a></li><li>  <a href="std_path.html" title="std.path"><span class="d_inlinecode donthyphenate notranslate">path</span></a></li><li>  <a href="std_process.html" title="std.process"><span class="d_inlinecode donthyphenate notranslate">process</span></a></li><li>  <a href="std_random.html" title="std.random"><span class="d_inlinecode donthyphenate notranslate">random</span></a></li><li>  <a href="std_range.html" title="std.range"><span class="d_inlinecode donthyphenate notranslate">range</span></a><ul><li>    <a href="std_range_interfaces.html" title="std.range.interfaces"><span class="d_inlinecode donthyphenate notranslate">interfaces</span></a></li><li>    <a href="std_range_primitives.html" title="std.range.primitives"><span class="d_inlinecode donthyphenate notranslate">primitives</span></a>
+  </li></ul></li><li>  <a href="std_regex.html" title="std.regex"><span class="d_inlinecode donthyphenate notranslate">regex</span></a></li><li>  <a href="std_signals.html" title="std.signals"><span class="d_inlinecode donthyphenate notranslate">signals</span></a></li><li>  <a href="std_socket.html" title="std.socket"><span class="d_inlinecode donthyphenate notranslate">socket</span></a></li><li>  <a href="std_stdint.html" title="std.stdint"><span class="d_inlinecode donthyphenate notranslate">stdint</span></a></li><li>  <a href="std_stdio.html" title="std.stdio"><span class="d_inlinecode donthyphenate notranslate">stdio</span></a></li><li>  <a href="std_stdiobase.html" title="std.stdiobase"><span class="d_inlinecode donthyphenate notranslate">stdiobase</span></a></li><li>  <a href="std_string.html" title="std.string"><span class="d_inlinecode donthyphenate notranslate">string</span></a></li><li>  <a href="std_syserror.html" title="std.syserror"><span class="d_inlinecode donthyphenate notranslate">syserror</span></a></li><li>  <a href="std_system.html" title="std.system"><span class="d_inlinecode donthyphenate notranslate">system</span></a></li><li>  <a href="std_traits.html" title="std.traits"><span class="d_inlinecode donthyphenate notranslate">traits</span></a></li><li>  <a href="std_typecons.html" title="std.typecons"><span class="d_inlinecode donthyphenate notranslate">typecons</span></a></li><li>  <a href="std_typetuple.html" title="std.typetuple"><span class="d_inlinecode donthyphenate notranslate">typetuple</span></a></li><li>  <a href="std_uni.html" title="std.uni"><span class="d_inlinecode donthyphenate notranslate">uni</span></a></li><li>  <a href="std_uri.html" title="std.uri"><span class="d_inlinecode donthyphenate notranslate">uri</span></a></li><li>  <a href="std_utf.html" title="std.utf"><span class="d_inlinecode donthyphenate notranslate">utf</span></a></li><li>  <a href="std_uuid.html" title="std.uuid"><span class="d_inlinecode donthyphenate notranslate">uuid</span></a></li><li>  <a href="std_variant.html" title="std.variant"><span class="d_inlinecode donthyphenate notranslate">variant</span></a></li><li>  <a href="std_xml.html" title="std.xml"><span class="d_inlinecode donthyphenate notranslate">xml</span></a></li><li>  <a href="std_zip.html" title="std.zip"><span class="d_inlinecode donthyphenate notranslate">zip</span></a></li><li>  <a href="std_zlib.html" title="std.zlib"><span class="d_inlinecode donthyphenate notranslate">zlib</span></a>
+</li></ul>
+</li>
+
+<li class='has-sub'><a href='#'><span><em class="tt">etc</em></span></a>
+<ul><li>  <h7><span class="d_inlinecode donthyphenate notranslate">c</span></h7><ul><li>    <a href="etc_c_curl.html" title="etc.c.curl"><span class="d_inlinecode donthyphenate notranslate">curl</span></a></li><li>    <h7><span class="d_inlinecode donthyphenate notranslate">odbc</span></h7><ul><li>      <a href="etc_c_odbc_sql.html" title="etc.c.odbc.sql"><span class="d_inlinecode donthyphenate notranslate">sql</span></a></li><li>      <a href="etc_c_odbc_sqlext.html" title="etc.c.odbc.sqlext"><span class="d_inlinecode donthyphenate notranslate">sqlext</span></a></li><li>      <a href="etc_c_odbc_sqltypes.html" title="etc.c.odbc.sqltypes"><span class="d_inlinecode donthyphenate notranslate">sqltypes</span></a></li><li>      <a href="etc_c_odbc_sqlucode.html" title="etc.c.odbc.sqlucode"><span class="d_inlinecode donthyphenate notranslate">sqlucode</span></a>
+    </li></ul></li><li>    <a href="etc_c_sqlite3.html" title="etc.c.sqlite3"><span class="d_inlinecode donthyphenate notranslate">sqlite3</span></a></li><li>    <a href="etc_c_zlib.html" title="etc.c.zlib"><span class="d_inlinecode donthyphenate notranslate">zlib</span></a>
+  </li></ul>
+</li></ul>
+</li>
+
+<li class='has-sub'><a href='#'><span><em class="tt">core</em></span></a>
+<ul><li>  <a href="core_atomic.html" title="core.atomic"><span class="d_inlinecode donthyphenate notranslate">atomic</span></a></li><li>  <a href="core_attribute.html" title="core.attribute"><span class="d_inlinecode donthyphenate notranslate">attribute</span></a></li><li>  <a href="core_bitop.html" title="core.bitop"><span class="d_inlinecode donthyphenate notranslate">bitop</span></a></li><li>  <a href="core_checkedint.html" title="core.checkedint"><span class="d_inlinecode donthyphenate notranslate">checkedint</span></a></li><li>  <a href="core_cpuid.html" title="core.cpuid"><span class="d_inlinecode donthyphenate notranslate">cpuid</span></a></li><li>  <a href="core_demangle.html" title="core.demangle"><span class="d_inlinecode donthyphenate notranslate">demangle</span></a></li><li>  <a href="core_exception.html" title="core.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>  <a href="core_math.html" title="core.math"><span class="d_inlinecode donthyphenate notranslate">math</span></a></li><li>  <a href="core_memory.html" title="core.memory"><span class="d_inlinecode donthyphenate notranslate">memory</span></a></li><li>  <a href="core_runtime.html" title="core.runtime"><span class="d_inlinecode donthyphenate notranslate">runtime</span></a></li><li>  <a href="core_simd.html" title="core.simd"><span class="d_inlinecode donthyphenate notranslate">simd</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">stdc</span></h7><ul><li>    <a href="core_stdc_complex.html" title="core.stdc.complex"><span class="d_inlinecode donthyphenate notranslate">complex</span></a></li><li>    <a href="core_stdc_ctype.html" title="core.stdc.ctype"><span class="d_inlinecode donthyphenate notranslate">ctype</span></a></li><li>    <a href="core_stdc_errno.html" title="core.stdc.errno"><span class="d_inlinecode donthyphenate notranslate">errno</span></a></li><li>    <a href="core_stdc_fenv.html" title="core.stdc.fenv"><span class="d_inlinecode donthyphenate notranslate">fenv</span></a></li><li>    <a href="core_stdc_float_.html" title="core.stdc.float_"><span class="d_inlinecode donthyphenate notranslate">float_</span></a></li><li>    <a href="core_stdc_inttypes.html" title="core.stdc.inttypes"><span class="d_inlinecode donthyphenate notranslate">inttypes</span></a></li><li>    <a href="core_stdc_limits.html" title="core.stdc.limits"><span class="d_inlinecode donthyphenate notranslate">limits</span></a></li><li>    <a href="core_stdc_locale.html" title="core.stdc.locale"><span class="d_inlinecode donthyphenate notranslate">locale</span></a></li><li>    <a href="core_stdc_math.html" title="core.stdc.math"><span class="d_inlinecode donthyphenate notranslate">math</span></a></li><li>    <a href="core_stdc_signal.html" title="core.stdc.signal"><span class="d_inlinecode donthyphenate notranslate">signal</span></a></li><li>    <a href="core_stdc_stdarg.html" title="core.stdc.stdarg"><span class="d_inlinecode donthyphenate notranslate">stdarg</span></a></li><li>    <a href="core_stdc_stddef.html" title="core.stdc.stddef"><span class="d_inlinecode donthyphenate notranslate">stddef</span></a></li><li>    <a href="core_stdc_stdint.html" title="core.stdc.stdint"><span class="d_inlinecode donthyphenate notranslate">stdint</span></a></li><li>    <a href="core_stdc_stdio.html" title="core.stdc.stdio"><span class="d_inlinecode donthyphenate notranslate">stdio</span></a></li><li>    <a href="core_stdc_stdlib.html" title="core.stdc.stdlib"><span class="d_inlinecode donthyphenate notranslate">stdlib</span></a></li><li>    <a href="core_stdc_string.html" title="core.stdc.string"><span class="d_inlinecode donthyphenate notranslate">string</span></a></li><li>    <a href="core_stdc_tgmath.html" title="core.stdc.tgmath"><span class="d_inlinecode donthyphenate notranslate">tgmath</span></a></li><li>    <a href="core_stdc_time.html" title="core.stdc.time"><span class="d_inlinecode donthyphenate notranslate">time</span></a></li><li>    <a href="core_stdc_wchar_.html" title="core.stdc.wchar_"><span class="d_inlinecode donthyphenate notranslate">wchar_</span></a></li><li>    <a href="core_stdc_wctype.html" title="core.stdc.wctype"><span class="d_inlinecode donthyphenate notranslate">wctype</span></a>
+  </li></ul></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">sync</span></h7><ul><li>    <a href="core_sync_barrier.html" title="core.sync.barrier"><span class="d_inlinecode donthyphenate notranslate">barrier</span></a></li><li>    <a href="core_sync_condition.html" title="core.sync.condition"><span class="d_inlinecode donthyphenate notranslate">condition</span></a></li><li>    <a href="core_sync_config.html" title="core.sync.config"><span class="d_inlinecode donthyphenate notranslate">config</span></a></li><li>    <a href="core_sync_exception.html" title="core.sync.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>    <a href="core_sync_mutex.html" title="core.sync.mutex"><span class="d_inlinecode donthyphenate notranslate">mutex</span></a></li><li>    <a href="core_sync_rwmutex.html" title="core.sync.rwmutex"><span class="d_inlinecode donthyphenate notranslate">rwmutex</span></a></li><li>    <a href="core_sync_semaphore.html" title="core.sync.semaphore"><span class="d_inlinecode donthyphenate notranslate">semaphore</span></a>
+  </li></ul></li><li>  <a href="core_thread.html" title="core.thread"><span class="d_inlinecode donthyphenate notranslate">thread</span></a></li><li>  <a href="core_time.html" title="core.time"><span class="d_inlinecode donthyphenate notranslate">time</span></a></li><li>  <a href="core_vararg.html" title="core.vararg"><span class="d_inlinecode donthyphenate notranslate">vararg</span></a>
+</li></ul>
+</li>
+    <li><a href='http://code.dlang.org'><span>3rd Party Packages</span></a></li>
+</ul></div>
+</div>
+
+<div class="hyphenate" id="content">    
+<div id="tools">	<span class="tip">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/phobos/&amp;bug_severity=enhancement&amp;component=phobos&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5Bstd.algorithm.searching%5D&amp;version=D2" class="button">Report a bug</a>
+		<span >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</span>
+	</span>
+	<span class="tip">		<a href="https://github.com/D-Programming-Language/phobos/edit/master/std/algorithm/searching.d" class="button">Improve this page</a>
+		<span >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			local clone.
+		</span>
+	</span>
+</div>
+    <h1><span class="d_inlinecode donthyphenate notranslate">std.algorithm.searching</span></h1>
+    <div class="quickindex" id="quickindex"></div>
+    <div class="summary">This is a submodule of <a href="std_algorithm.html">std.algorithm</a>.
+It contains generic searching algorithms.
+</div>
+<div class="description"><table class="book"><caption>Cheat Sheet</caption><p></p>
+
+<tr><th scope="col">Function Name</th> <th scope="col">Description</th></tr>
+<p></p>
+
+<tr><td class="donthyphenate nobr"><a href="#all"><span class="d_inlinecode donthyphenate notranslate">all</span></a></td> <td>        <span class="d_inlinecode donthyphenate notranslate">all!"a &gt; 0"([1, 2, 3, 4])</span> returns <span class="d_inlinecode donthyphenate notranslate"><b>true</b></span> because all elements
+        are positive</td></tr>
+<tr><td class="donthyphenate nobr"><a href="#any"><span class="d_inlinecode donthyphenate notranslate">any</span></a></td> <td>        <span class="d_inlinecode donthyphenate notranslate">any!"a &gt; 0"([1, 2, -3, -4])</span> returns <span class="d_inlinecode donthyphenate notranslate"><b>true</b></span> because at least one
+        element is positive</td></tr>
+<tr><td class="donthyphenate nobr"><a href="#balancedParens"><span class="d_inlinecode donthyphenate notranslate">balancedParens</span></a></td> <td>        <span class="d_inlinecode donthyphenate notranslate">balancedParens("((1 + 1) / 2)")</span> returns <span class="d_inlinecode donthyphenate notranslate"><b>true</b></span> because the
+        string has balanced parentheses.</td></tr>
+<tr><td class="donthyphenate nobr"><a href="#boyerMooreFinder"><span class="d_inlinecode donthyphenate notranslate">boyerMooreFinder</span></a></td> <td>        <span class="d_inlinecode donthyphenate notranslate">find("hello world", boyerMooreFinder("or"))</span> returns <span class="d_inlinecode donthyphenate notranslate">"orld"</span>
+        using the <a href="http://google.com/search?btnI=I%27m+Feeling+Lucky&amp;ie=UTF-8&amp;oe=UTF-8&amp;q=Boyer-Moore algorithm">Boyer-Moore algorithm</a>.</td></tr>
+<tr><td class="donthyphenate nobr"><a href="#canFind"><span class="d_inlinecode donthyphenate notranslate">canFind</span></a></td> <td>        <span class="d_inlinecode donthyphenate notranslate">canFind("hello world", "or")</span> returns <span class="d_inlinecode donthyphenate notranslate"><b>true</b></span>.</td></tr>
+<tr><td class="donthyphenate nobr"><a href="#count"><span class="d_inlinecode donthyphenate notranslate">count</span></a></td> <td>        Counts elements that are equal to a specified value or satisfy a
+        predicate.  <span class="d_inlinecode donthyphenate notranslate">count([1, 2, 1], 1)</span> returns <span class="d_inlinecode donthyphenate notranslate">2</span> and
+        <span class="d_inlinecode donthyphenate notranslate">count!"a &lt; 0"([1, -3, 0])</span> returns <span class="d_inlinecode donthyphenate notranslate">1</span>.</td></tr>
+<tr><td class="donthyphenate nobr"><a href="#countUntil"><span class="d_inlinecode donthyphenate notranslate">countUntil</span></a></td> <td>        <span class="d_inlinecode donthyphenate notranslate">countUntil(a, b)</span> returns the number of steps taken in <span class="d_inlinecode donthyphenate notranslate">a</span> to
+        reach <span class="d_inlinecode donthyphenate notranslate">b</span>; for example, <span class="d_inlinecode donthyphenate notranslate">countUntil("hello!", "o")</span> returns
+        <span class="d_inlinecode donthyphenate notranslate">4</span>.</td></tr>
+<tr><td class="donthyphenate nobr"><a href="#commonPrefix"><span class="d_inlinecode donthyphenate notranslate">commonPrefix</span></a></td> <td>        <span class="d_inlinecode donthyphenate notranslate">commonPrefix("parakeet", "parachute")</span> returns <span class="d_inlinecode donthyphenate notranslate">"para"</span>.</td></tr>
+<tr><td class="donthyphenate nobr"><a href="#endsWith"><span class="d_inlinecode donthyphenate notranslate">endsWith</span></a></td> <td>        <span class="d_inlinecode donthyphenate notranslate">endsWith("rocks", "ks")</span> returns <span class="d_inlinecode donthyphenate notranslate"><b>true</b></span>.</td></tr>
+<tr><td class="donthyphenate nobr"><a href="#find"><span class="d_inlinecode donthyphenate notranslate">find</span></a></td> <td>        <span class="d_inlinecode donthyphenate notranslate">find("hello world", "or")</span> returns <span class="d_inlinecode donthyphenate notranslate">"orld"</span> using linear search.
+        (For binary search refer to <span class="libref"><a href="http://dlang.org/phobos/std_range.html#sortedRange"><span class="d_inlinecode donthyphenate notranslate">std.range.sortedRange</span></a></span>.)</td></tr>
+<tr><td class="donthyphenate nobr"><a href="#findAdjacent"><span class="d_inlinecode donthyphenate notranslate">findAdjacent</span></a></td> <td>        <span class="d_inlinecode donthyphenate notranslate">findAdjacent([1, 2, 3, 3, 4])</span> returns the subrange starting with
+        two equal adjacent elements, i.e. <span class="d_inlinecode donthyphenate notranslate">[3, 3, 4]</span>.</td></tr>
+<tr><td class="donthyphenate nobr"><a href="#findAmong"><span class="d_inlinecode donthyphenate notranslate">findAmong</span></a></td> <td>        <span class="d_inlinecode donthyphenate notranslate">findAmong("abcd", "qcx")</span> returns <span class="d_inlinecode donthyphenate notranslate">"cd"</span> because <span class="d_inlinecode donthyphenate notranslate">'c'</span> is
+        among <span class="d_inlinecode donthyphenate notranslate">"qcx"</span>.</td></tr>
+<tr><td class="donthyphenate nobr"><a href="#findSkip"><span class="d_inlinecode donthyphenate notranslate">findSkip</span></a></td> <td>        If <span class="d_inlinecode donthyphenate notranslate">a = "abcde"</span>, then <span class="d_inlinecode donthyphenate notranslate">findSkip(a, "x")</span> returns <span class="d_inlinecode donthyphenate notranslate"><b>false</b></span> and
+        leaves <span class="d_inlinecode donthyphenate notranslate">a</span> unchanged, whereas <span class="d_inlinecode donthyphenate notranslate">findSkip(a, "c")</span> advances <span class="d_inlinecode donthyphenate notranslate">a</span>
+        to <span class="d_inlinecode donthyphenate notranslate">"de"</span> and returns <span class="d_inlinecode donthyphenate notranslate"><b>true</b></span>.</td></tr>
+<tr><td class="donthyphenate nobr"><a href="#findSplit"><span class="d_inlinecode donthyphenate notranslate">findSplit</span></a></td> <td>        <span class="d_inlinecode donthyphenate notranslate">findSplit("abcdefg", "de")</span> returns the three ranges <span class="d_inlinecode donthyphenate notranslate">"abc"</span>,
+        <span class="d_inlinecode donthyphenate notranslate">"de"</span>, and <span class="d_inlinecode donthyphenate notranslate">"fg"</span>.</td></tr>
+<tr><td class="donthyphenate nobr"><a href="#findSplitAfter"><span class="d_inlinecode donthyphenate notranslate">findSplitAfter</span></a></td> <td>        <span class="d_inlinecode donthyphenate notranslate">findSplitAfter("abcdefg", "de")</span> returns the two ranges
+        <span class="d_inlinecode donthyphenate notranslate">"abcde"</span> and <span class="d_inlinecode donthyphenate notranslate">"fg"</span>.</td></tr>
+<tr><td class="donthyphenate nobr"><a href="#findSplitBefore"><span class="d_inlinecode donthyphenate notranslate">findSplitBefore</span></a></td> <td>        <span class="d_inlinecode donthyphenate notranslate">findSplitBefore("abcdefg", "de")</span> returns the two ranges <span class="d_inlinecode donthyphenate notranslate">"abc"</span>
+        and <span class="d_inlinecode donthyphenate notranslate">"defg"</span>.</td></tr>
+<tr><td class="donthyphenate nobr"><a href="#minCount"><span class="d_inlinecode donthyphenate notranslate">minCount</span></a></td> <td>        <span class="d_inlinecode donthyphenate notranslate">minCount([2, 1, 1, 4, 1])</span> returns <span class="d_inlinecode donthyphenate notranslate">tuple(1, 3)</span>.</td></tr>
+<tr><td class="donthyphenate nobr"><a href="#minPos"><span class="d_inlinecode donthyphenate notranslate">minPos</span></a></td> <td>        <span class="d_inlinecode donthyphenate notranslate">minPos([2, 3, 1, 3, 4, 1])</span> returns the subrange <span class="d_inlinecode donthyphenate notranslate">[1, 3, 4, 1]</span>,
+        i.e., positions the range at the first occurrence of its minimal
+        element.</td></tr>
+<tr><td class="donthyphenate nobr"><a href="#mismatch"><span class="d_inlinecode donthyphenate notranslate">mismatch</span></a></td> <td>        <span class="d_inlinecode donthyphenate notranslate">mismatch("parakeet", "parachute")</span> returns the two ranges
+        <span class="d_inlinecode donthyphenate notranslate">"keet"</span> and <span class="d_inlinecode donthyphenate notranslate">"chute"</span>.</td></tr>
+<tr><td class="donthyphenate nobr"><a href="#skipOver"><span class="d_inlinecode donthyphenate notranslate">skipOver</span></a></td> <td>        Assume <span class="d_inlinecode donthyphenate notranslate">a = "blah"</span>. Then <span class="d_inlinecode donthyphenate notranslate">skipOver(a, "bi")</span> leaves <span class="d_inlinecode donthyphenate notranslate">a</span>
+        unchanged and returns <span class="d_inlinecode donthyphenate notranslate"><b>false</b></span>, whereas <span class="d_inlinecode donthyphenate notranslate">skipOver(a, "bl")</span>
+        advances <span class="d_inlinecode donthyphenate notranslate">a</span> to refer to <span class="d_inlinecode donthyphenate notranslate">"ah"</span> and returns <span class="d_inlinecode donthyphenate notranslate"><b>true</b></span>.</td></tr>
+<tr><td class="donthyphenate nobr"><a href="#startsWith"><span class="d_inlinecode donthyphenate notranslate">startsWith</span></a></td> <td>        <span class="d_inlinecode donthyphenate notranslate">startsWith("hello, world", "hello")</span> returns <span class="d_inlinecode donthyphenate notranslate"><b>true</b></span>.</td></tr>
+<tr><td class="donthyphenate nobr"><a href="#until"><span class="d_inlinecode donthyphenate notranslate">until</span></a></td> <td>        Lazily iterates a range until a specific value is found.</td></tr>
+</table>
+
+</div>
+<div class="keyval License"><span class="key keyLicense">License:</span> <div class="val valLicense"><a href="http://boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
+
+</div></div>
+<div class="keyval Authors"><span class="key keyAuthors">Authors:</span> <div class="val valAuthors"><a href="http://erdani.com">Andrei Alexandrescu</a>
+
+</div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Source:</span>
+<span class="phobos_src"><a class="https" href="https://github.com/D-Programming-Language/phobos/blob/master/std/algorithm/searching.d">std/algorithm/searching.d</a></span>
+
+</p></div>
+
+<dl><dt class="d_decl"><a name=".all"></a><div class="quickindex" id="quickindex.all"></div>template <a name="all"></a><span class="ddoc_psymbol">all</span>(alias pred = "a")</dt>
+<dd><div class="summary">Checks if <i>all</i> of the elements verify <span class="d_inlinecode donthyphenate notranslate">pred</span>.</div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_keyword">assert</span>( <span class="d_psymbol">all</span>!<span class="d_string">"a &amp; 1"</span>([1, 3, 5, 7, 9]));
+<span class="d_keyword">assert</span>(!<span class="d_psymbol">all</span>!<span class="d_string">"a &amp; 1"</span>([1, 2, 3, 5, 7, 9]));
+</pre>
+</div></div><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><span class="d_inlinecode donthyphenate notranslate"><a name="all"></a><span class="ddoc_psymbol">all</span></span> can also be used without a predicate, if its items can be
+evaluated to <b>true</b> or <b>false</b> in a conditional statement. This can be a
+convenient way to quickly evaluate that <i>all</i> of the elements of a range
+are <b>true</b>.
+<pre class="d_code notranslate">
+<span class="d_keyword">int</span>[3] vals = [5, 3, 18];
+<span class="d_keyword">assert</span>( <span class="d_psymbol">all</span>(vals[]));
+</pre>
+</div></div>
+<dl><dt class="d_decl"><a name=".all.all"></a><div class="quickindex" id="quickindex.all.all"></div>bool <a name="all"></a><span class="ddoc_psymbol">all</span>(Range)(Range <i>range</i>) if (isInputRange!Range &amp;&amp; is(typeof(unaryFun!pred(<i>range</i>.front))));
+</dt>
+<dd><div class="summary">Returns <span class="d_inlinecode donthyphenate notranslate"><b>true</b></span> if and only if <i>all</i> values <span class="d_inlinecode donthyphenate notranslate">v</span> found in the
+    input range <span class="d_inlinecode donthyphenate notranslate"><i>range</i></span> satisfy the predicate <span class="d_inlinecode donthyphenate notranslate">pred</span>.
+    Performs (at most) <span class="bigoh">&Omicron;(<span class="d_inlinecode donthyphenate notranslate"><i>range</i>.length</span>)</span> evaluations of <span class="d_inlinecode donthyphenate notranslate">pred</span>.</div>
+
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><a name=".any"></a><div class="quickindex" id="quickindex.any"></div>template <a name="any"></a><span class="ddoc_psymbol">any</span>(alias pred = "a")</dt>
+<dd><div class="summary">Checks if <i>any</i> of the elements verifies <span class="d_inlinecode donthyphenate notranslate">pred</span>.
+<span class="d_inlinecode donthyphenate notranslate">!<a name="any"></a><span class="ddoc_psymbol">any</span></span> can be used to verify that <i>none</i> of the elements verify
+<span class="d_inlinecode donthyphenate notranslate">pred</span>.</div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_keyword">import</span> std.ascii : isWhite;
+<span class="d_keyword">assert</span>( all!(<span class="d_psymbol">any</span>!isWhite)([<span class="d_string">"a a"</span>, <span class="d_string">"b b"</span>]));
+<span class="d_keyword">assert</span>(!<span class="d_psymbol">any</span>!(all!isWhite)([<span class="d_string">"a a"</span>, <span class="d_string">"b b"</span>]));
+</pre>
+</div></div><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><span class="d_inlinecode donthyphenate notranslate"><a name="any"></a><span class="ddoc_psymbol">any</span></span> can also be used without a predicate, if its items can be
+evaluated to <b>true</b> or <b>false</b> in a conditional statement. <span class="d_inlinecode donthyphenate notranslate">!<a name="any"></a><span class="ddoc_psymbol">any</span></span> can be a
+convenient way to quickly test that <i>none</i> of the elements of a range
+evaluate to <b>true</b>.
+<pre class="d_code notranslate">
+<span class="d_keyword">int</span>[3] vals1 = [0, 0, 0];
+<span class="d_keyword">assert</span>(!<span class="d_psymbol">any</span>(vals1[])); <span class="d_comment">//none of vals1 evaluate to true
+</span>
+<span class="d_keyword">int</span>[3] vals2 = [2, 0, 2];
+<span class="d_keyword">assert</span>( <span class="d_psymbol">any</span>(vals2[]));
+<span class="d_keyword">assert</span>(!all(vals2[]));
+
+<span class="d_keyword">int</span>[3] vals3 = [3, 3, 3];
+<span class="d_keyword">assert</span>( <span class="d_psymbol">any</span>(vals3[]));
+<span class="d_keyword">assert</span>( all(vals3[]));
+</pre>
+</div></div>
+<dl><dt class="d_decl"><a name=".any.any"></a><div class="quickindex" id="quickindex.any.any"></div>bool <a name="any"></a><span class="ddoc_psymbol">any</span>(Range)(Range <i>range</i>) if (isInputRange!Range &amp;&amp; is(typeof(unaryFun!pred(<i>range</i>.front))));
+</dt>
+<dd><div class="summary">Returns <span class="d_inlinecode donthyphenate notranslate"><b>true</b></span> if and only if <i>any</i> value <span class="d_inlinecode donthyphenate notranslate">v</span> found in the
+    input range <span class="d_inlinecode donthyphenate notranslate"><i>range</i></span> satisfies the predicate <span class="d_inlinecode donthyphenate notranslate">pred</span>.
+    Performs (at most) <span class="bigoh">&Omicron;(<span class="d_inlinecode donthyphenate notranslate"><i>range</i>.length</span>)</span> evaluations of <span class="d_inlinecode donthyphenate notranslate">pred</span>.</div>
+
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><a name=".balancedParens"></a><div class="quickindex" id="quickindex.balancedParens"></div>bool <a name="balancedParens"></a><span class="ddoc_psymbol">balancedParens</span>(Range, E)(Range <i>r</i>, E <i>lPar</i>, E <i>rPar</i>, size_t <i>maxNestingLevel</i> = size_t.max) if (isInputRange!Range &amp;&amp; is(typeof(<i>r</i>.front == <i>lPar</i>)));
+</dt>
+<dd><div class="summary">Checks whether <span class="d_inlinecode donthyphenate notranslate"><i>r</i></span> has "balanced parentheses", i.e. all instances
+of <span class="d_inlinecode donthyphenate notranslate"><i>lPar</i></span> are closed by corresponding instances of <span class="d_inlinecode donthyphenate notranslate"><i>rPar</i></span>. The
+parameter <span class="d_inlinecode donthyphenate notranslate"><i>maxNestingLevel</i></span> controls the nesting level allowed. The
+most common uses are the default or <span class="d_inlinecode donthyphenate notranslate">0</span>. In the latter case, no
+nesting is allowed.
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">Range <i>r</i></td>
+<td class="param_desc">The range to check.</td></tr>
+<tr class="param"><td class="param_id">E <i>lPar</i></td>
+<td class="param_desc">The element corresponding with a left (opening) parenthesis.</td></tr>
+<tr class="param"><td class="param_id">E <i>rPar</i></td>
+<td class="param_desc">The element corresponding with a right (closing) parenthesis.</td></tr>
+<tr class="param"><td class="param_id">size_t <i>maxNestingLevel</i></td>
+<td class="param_desc">The maximum allowed nesting level.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns"><b>true</b> if the given range has balanced parenthesis within the given maximum
+    nesting level; <b>false</b> otherwise.</div></div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_keyword">auto</span> s = <span class="d_string">"1 + (2 * (3 + 1 / 2)"</span>;
+<span class="d_keyword">assert</span>(!<span class="d_psymbol">balancedParens</span>(s, '(', ')'));
+s = <span class="d_string">"1 + (2 * (3 + 1) / 2)"</span>;
+<span class="d_keyword">assert</span>(<span class="d_psymbol">balancedParens</span>(s, '(', ')'));
+s = <span class="d_string">"1 + (2 * (3 + 1) / 2)"</span>;
+<span class="d_keyword">assert</span>(!<span class="d_psymbol">balancedParens</span>(s, '(', ')', 0));
+s = <span class="d_string">"1 + (2 * 3 + 1) / (2 - 5)"</span>;
+<span class="d_keyword">assert</span>(<span class="d_psymbol">balancedParens</span>(s, '(', ')', 0));
+</pre>
+</div></div>
+</dd>
+<dt class="d_decl"><a name=".boyerMooreFinder"></a><div class="quickindex" id="quickindex.boyerMooreFinder"></div>BoyerMooreFinder!(binaryFun!pred, Range) <a name="boyerMooreFinder"></a><span class="ddoc_psymbol">boyerMooreFinder</span>(alias pred = "a == b", Range)(Range <i>needle</i>) if (isRandomAccessRange!Range || isSomeString!Range);
+<br><a name=".BoyerMooreFinder"></a><div class="quickindex" id="quickindex.BoyerMooreFinder"></div>struct <a name="BoyerMooreFinder"></a><span class="ddoc_psymbol">BoyerMooreFinder</span>(alias pred, Range);
+</dt>
+<dd><div class="summary">Sets up Boyer-Moore matching for use with <span class="d_inlinecode donthyphenate notranslate">find</span> below.
+ By default, elements are compared for equality.
+</div>
+<div class="description"><span class="d_inlinecode donthyphenate notranslate"><a name="BoyerMooreFinder"></a><span class="ddoc_psymbol">BoyerMooreFinder</span></span> allocates GC memory.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">pred</td>
+<td class="param_desc">Predicate used to compare elements.</td></tr>
+<tr class="param"><td class="param_id">Range <i>needle</i></td>
+<td class="param_desc">A random-access range with length and slicing.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">An instance of <span class="d_inlinecode donthyphenate notranslate"><a name="BoyerMooreFinder"></a><span class="ddoc_psymbol">BoyerMooreFinder</span></span> that can be used with <span class="d_inlinecode donthyphenate notranslate">find()</span> to
+ invoke the Boyer-Moore matching algorithm for finding of <span class="d_inlinecode donthyphenate notranslate"><i>needle</i></span> in a
+ given haystack.</div></div>
+
+</dd>
+<dt class="d_decl"><a name=".commonPrefix"></a><div class="quickindex" id="quickindex.commonPrefix"></div>auto <a name="commonPrefix"></a><span class="ddoc_psymbol">commonPrefix</span>(alias pred = "a == b", R1, R2)(R1 <i>r1</i>, R2 <i>r2</i>) if (isForwardRange!R1 &amp;&amp; isInputRange!R2 &amp;&amp; !isNarrowString!R1 &amp;&amp; is(typeof(binaryFun!pred(<i>r1</i>.front, <i>r2</i>.front))));
+<br>auto <a name="commonPrefix"></a><span class="ddoc_psymbol">commonPrefix</span>(alias pred, R1, R2)(R1 <i>r1</i>, R2 <i>r2</i>) if (isNarrowString!R1 &amp;&amp; isInputRange!R2 &amp;&amp; is(typeof(binaryFun!pred(<i>r1</i>.front, <i>r2</i>.front))));
+<br>auto <a name="commonPrefix"></a><span class="ddoc_psymbol">commonPrefix</span>(R1, R2)(R1 <i>r1</i>, R2 <i>r2</i>) if (isNarrowString!R1 &amp;&amp; isInputRange!R2 &amp;&amp; !isNarrowString!R2 &amp;&amp; is(typeof(<i>r1</i>.front == <i>r2</i>.front)));
+<br>auto <a name="commonPrefix"></a><span class="ddoc_psymbol">commonPrefix</span>(R1, R2)(R1 <i>r1</i>, R2 <i>r2</i>) if (isNarrowString!R1 &amp;&amp; isNarrowString!R2);
+</dt>
+<dd><div class="summary">Returns the common prefix of two ranges.
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">pred</td>
+<td class="param_desc">The predicate to use in comparing elements for commonality. Defaults
+        to equality <span class="d_inlinecode donthyphenate notranslate">"a == b"</span>.</td></tr>
+<tr class="param"><td class="param_id">R1 <i>r1</i></td>
+<td class="param_desc">A <span class="libref"><a href="http://dlang.org/phobos/std_range_primitives.html#isForwardRange">forward range</a></span> of
+        elements.</td></tr>
+<tr class="param"><td class="param_id">R2 <i>r2</i></td>
+<td class="param_desc">An <span class="libref"><a href="http://dlang.org/phobos/std_range_primitives.html#isInputRange">input range</a></span> of
+        elements.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">A slice of <span class="d_inlinecode donthyphenate notranslate"><i>r1</i></span> which contains the characters that both ranges start with,
+if the first argument is a string; otherwise, the same as the result of
+<span class="d_inlinecode donthyphenate notranslate">takeExactly(<i>r1</i>, n)</span>, where <span class="d_inlinecode donthyphenate notranslate">n</span> is the number of elements in the common
+prefix of both ranges.
+
+</div></div>
+<div class="keyval SeeAlso"><span class="key keySeeAlso">See Also:</span> <div class="val valSeeAlso"><span class="libref"><a href="http://dlang.org/phobos/std_range.html#takeExactly"><span class="d_inlinecode donthyphenate notranslate">std.range.takeExactly</span></a></span></div></div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_keyword">assert</span>(<span class="d_psymbol">commonPrefix</span>(<span class="d_string">"hello, world"</span>, <span class="d_string">"hello, there"</span>) == <span class="d_string">"hello, "</span>);
+</pre>
+</div></div>
+</dd>
+<dt class="d_decl"><a name=".count"></a><div class="quickindex" id="quickindex.count"></div>size_t <a name="count"></a><span class="ddoc_psymbol">count</span>(alias pred = "a == b", Range, E)(Range <i>haystack</i>, E <i>needle</i>) if (isInputRange!Range &amp;&amp; !isInfinite!Range &amp;&amp; is(typeof(binaryFun!pred(<i>haystack</i>.front, <i>needle</i>)) : bool));
+<br>size_t <a name="count"></a><span class="ddoc_psymbol">count</span>(alias pred = "a == b", R1, R2)(R1 <i>haystack</i>, R2 <i>needle</i>) if (isForwardRange!R1 &amp;&amp; !isInfinite!R1 &amp;&amp; isForwardRange!R2 &amp;&amp; is(typeof(binaryFun!pred(<i>haystack</i>.front, <i>needle</i>.front)) : bool));
+<br>size_t <a name="count"></a><span class="ddoc_psymbol">count</span>(alias pred = "true", R)(R <i>haystack</i>) if (isInputRange!R &amp;&amp; !isInfinite!R &amp;&amp; is(typeof(unaryFun!pred(<i>haystack</i>.front)) : bool));
+</dt>
+<dd><div class="summary">The first version counts the number of elements <span class="d_inlinecode donthyphenate notranslate">x</span> in <span class="d_inlinecode donthyphenate notranslate">r</span> for
+which <span class="d_inlinecode donthyphenate notranslate">pred(x, value)</span> is <span class="d_inlinecode donthyphenate notranslate"><b>true</b></span>. <span class="d_inlinecode donthyphenate notranslate">pred</span> defaults to
+equality. Performs <span class="bigoh">&Omicron;(<span class="d_inlinecode donthyphenate notranslate"><i>haystack</i>.length</span>)</span> evaluations of <span class="d_inlinecode donthyphenate notranslate">pred</span>.
+</div>
+<div class="description">The second version returns the number of times <span class="d_inlinecode donthyphenate notranslate"><i>needle</i></span> occurs in
+<span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span>. Throws an exception if <span class="d_inlinecode donthyphenate notranslate"><i>needle</i>.empty</span>, as the count
+of the empty range in any range would be infinite. Overlapped counts
+are not considered, for example <span class="d_inlinecode donthyphenate notranslate"><a name="count"></a><span class="ddoc_psymbol">count</span>("aaa", "aa")</span> is <span class="d_inlinecode donthyphenate notranslate">1</span>, not
+<span class="d_inlinecode donthyphenate notranslate">2</span>.
+<p></p>
+
+The third version counts the elements for which <span class="d_inlinecode donthyphenate notranslate">pred(x)</span> is <span class="d_inlinecode donthyphenate notranslate"><b>true</b></span>. Performs <span class="bigoh">&Omicron;(<span class="d_inlinecode donthyphenate notranslate"><i>haystack</i>.length</span>)</span> evaluations of <span class="d_inlinecode donthyphenate notranslate">pred</span>.
+
+</div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Note:</span>
+Regardless of the overload, <span class="d_inlinecode donthyphenate notranslate"><a name="count"></a><span class="ddoc_psymbol">count</span></span> will not accept
+infinite ranges for <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span>.
+
+</p></div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">pred</td>
+<td class="param_desc">The predicate to evaluate.</td></tr>
+<tr class="param"><td class="param_id">Range <i>haystack</i></td>
+<td class="param_desc">The range to count.</td></tr>
+<tr class="param"><td class="param_id">E <i>needle</i></td>
+<td class="param_desc">The element or sub-range to count in the <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span>.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">The number of positions in the <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span> for which <span class="d_inlinecode donthyphenate notranslate">pred</span> returned <b>true</b>.</div></div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_keyword">import</span> std.uni : toLower;
+
+<span class="d_comment">// count elements in range
+</span><span class="d_keyword">int</span>[] a = [ 1, 2, 4, 3, 2, 5, 3, 2, 4 ];
+<span class="d_keyword">assert</span>(<span class="d_psymbol">count</span>(a, 2) == 3);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">count</span>!(<span class="d_string">"a &gt; b"</span>)(a, 2) == 5);
+<span class="d_comment">// count range in range
+</span><span class="d_keyword">assert</span>(<span class="d_psymbol">count</span>(<span class="d_string">"abcadfabf"</span>, <span class="d_string">"ab"</span>) == 2);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">count</span>(<span class="d_string">"ababab"</span>, <span class="d_string">"abab"</span>) == 1);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">count</span>(<span class="d_string">"ababab"</span>, <span class="d_string">"abx"</span>) == 0);
+<span class="d_comment">// fuzzy count range in range
+</span><span class="d_keyword">assert</span>(<span class="d_psymbol">count</span>!((a, b) =&gt; std.uni.toLower(a) == std.uni.toLower(b))(<span class="d_string">"AbcAdFaBf"</span>, <span class="d_string">"ab"</span>) == 2);
+<span class="d_comment">// count predicate in range
+</span><span class="d_keyword">assert</span>(<span class="d_psymbol">count</span>!(<span class="d_string">"a &gt; 1"</span>)(a) == 8);
+</pre>
+</div></div>
+</dd>
+<dt class="d_decl"><a name=".countUntil"></a><div class="quickindex" id="quickindex.countUntil"></div>ptrdiff_t <a name="countUntil"></a><span class="ddoc_psymbol">countUntil</span>(alias pred = "a == b", R, Rs...)(R <i>haystack</i>, Rs <i>needles</i>) if (isForwardRange!R &amp;&amp; Rs.length &gt; 0 &amp;&amp; isForwardRange!(Rs[0]) == isInputRange!(Rs[0]) &amp;&amp; is(typeof(startsWith!pred(<i>haystack</i>, <i>needles</i>[0]))) &amp;&amp; (Rs.length == 1 || is(typeof(<a name="countUntil"></a><span class="ddoc_psymbol">countUntil</span>!pred(<i>haystack</i>, <i>needles</i>[1..$])))));
+<br>ptrdiff_t <a name="countUntil"></a><span class="ddoc_psymbol">countUntil</span>(alias pred = "a == b", R, N)(R <i>haystack</i>, N <i>needle</i>) if (isInputRange!R &amp;&amp; is(typeof(binaryFun!pred(<i>haystack</i>.front, <i>needle</i>)) : bool));
+</dt>
+<dd><div class="summary">Counts elements in the given
+    <span class="libref"><a href="http://dlang.org/phobos/std_range_primitives.html#isForwardRange">forward range</a></span>
+    until the given predicate is <b>true</b> for one of the given <span class="d_inlinecode donthyphenate notranslate"><i>needles</i></span>.
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">pred</td>
+<td class="param_desc">The predicate for determining when to stop counting.</td></tr>
+<tr class="param"><td class="param_id">R <i>haystack</i></td>
+<td class="param_desc">The
+            <span class="libref"><a href="http://dlang.org/phobos/std_range_primitives.html#isInputRange">input range</a></span> to be
+            counted.</td></tr>
+<tr class="param"><td class="param_id">Rs <i>needles</i></td>
+<td class="param_desc">Either a single element, or a
+            <span class="libref"><a href="http://dlang.org/phobos/std_range_primitives.html#isForwardRange">forward range</a></span>
+            of elements, to be evaluated in turn against each
+            element in <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span> under the given predicate.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">The number of elements which must be popped from the front of
+    <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span> before reaching an element for which
+    <span class="d_inlinecode donthyphenate notranslate">startsWith!pred(<i>haystack</i>, <i>needles</i>)</span> is <span class="d_inlinecode donthyphenate notranslate"><b>true</b></span>. If
+    <span class="d_inlinecode donthyphenate notranslate">startsWith!pred(<i>haystack</i>, <i>needles</i>)</span> is not <span class="d_inlinecode donthyphenate notranslate"><b>true</b></span> for any element in
+    <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span>, then <span class="d_inlinecode donthyphenate notranslate">-1</span> is returned.</div></div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_keyword">assert</span>(<span class="d_psymbol">countUntil</span>(<span class="d_string">"hello world"</span>, <span class="d_string">"world"</span>) == 6);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">countUntil</span>(<span class="d_string">"hello world"</span>, 'r') == 8);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">countUntil</span>(<span class="d_string">"hello world"</span>, <span class="d_string">"programming"</span>) == -1);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">countUntil</span>(<span class="d_string">"日本語"</span>, <span class="d_string">"本語"</span>) == 1);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">countUntil</span>(<span class="d_string">"日本語"</span>, '語')   == 2);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">countUntil</span>(<span class="d_string">"日本語"</span>, <span class="d_string">"五"</span>) == -1);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">countUntil</span>(<span class="d_string">"日本語"</span>, '五') == -1);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">countUntil</span>([0, 7, 12, 22, 9], [12, 22]) == 2);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">countUntil</span>([0, 7, 12, 22, 9], 9) == 4);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">countUntil</span>!<span class="d_string">"a &gt; b"</span>([0, 7, 12, 22, 9], 20) == 3);
+</pre>
+</div></div>
+</dd>
+<dt class="d_decl"><a name=".countUntil.2"></a><div class="quickindex" id="quickindex.countUntil.2"></div>ptrdiff_t <a name="countUntil"></a><span class="ddoc_psymbol">countUntil</span>(alias pred, R)(R <i>haystack</i>) if (isInputRange!R &amp;&amp; is(typeof(unaryFun!pred(<i>haystack</i>.front)) : bool));
+</dt>
+<dd><div class="summary">Similar to the previous overload of <span class="d_inlinecode donthyphenate notranslate"><a name="countUntil"></a><span class="ddoc_psymbol">countUntil</span></span>, except that this one
+    evaluates only the predicate <span class="d_inlinecode donthyphenate notranslate">pred</span>.
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">pred</td>
+<td class="param_desc">Predicate to when to stop counting.</td></tr>
+<tr class="param"><td class="param_id">R <i>haystack</i></td>
+<td class="param_desc">An
+          <span class="libref"><a href="http://dlang.org/phobos/std_range_primitives.html#isInputRange">input range</a></span> of
+          elements to be counted.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">The number of elements which must be popped from <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span>
+    before <span class="d_inlinecode donthyphenate notranslate">pred(<i>haystack</i>.front)</span> is <span class="d_inlinecode donthyphenate notranslate"><b>true</b></span>.</div></div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_keyword">import</span> std.ascii : isDigit;
+<span class="d_keyword">import</span> std.uni : isWhite;
+
+<span class="d_keyword">assert</span>(<span class="d_psymbol">countUntil</span>!(std.uni.isWhite)(<span class="d_string">"hello world"</span>) == 5);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">countUntil</span>!(std.ascii.isDigit)(<span class="d_string">"hello world"</span>) == -1);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">countUntil</span>!<span class="d_string">"a &gt; 20"</span>([0, 7, 12, 22, 9]) == 3);
+</pre>
+</div></div>
+</dd>
+<dt class="d_decl"><a name=".endsWith"></a><div class="quickindex" id="quickindex.endsWith"></div>uint <a name="endsWith"></a><span class="ddoc_psymbol">endsWith</span>(alias pred = "a == b", Range, Needles...)(Range <i>doesThisEnd</i>, Needles <i>withOneOfThese</i>) if (isBidirectionalRange!Range &amp;&amp; Needles.length &gt; 1 &amp;&amp; is(typeof(.<a name="endsWith"></a><span class="ddoc_psymbol">endsWith</span>!pred(<i>doesThisEnd</i>, <i>withOneOfThese</i>[0])) : bool) &amp;&amp; is(typeof(.<a name="endsWith"></a><span class="ddoc_psymbol">endsWith</span>!pred(<i>doesThisEnd</i>, <i>withOneOfThese</i>[1..$])) : uint));
+<br>bool <a name="endsWith"></a><span class="ddoc_psymbol">endsWith</span>(alias pred = "a == b", R1, R2)(R1 <i>doesThisEnd</i>, R2 <i>withThis</i>) if (isBidirectionalRange!R1 &amp;&amp; isBidirectionalRange!R2 &amp;&amp; is(typeof(binaryFun!pred(<i>doesThisEnd</i>.back, <i>withThis</i>.back)) : bool));
+<br>bool <a name="endsWith"></a><span class="ddoc_psymbol">endsWith</span>(alias pred = "a == b", R, E)(R <i>doesThisEnd</i>, E <i>withThis</i>) if (isBidirectionalRange!R &amp;&amp; is(typeof(binaryFun!pred(<i>doesThisEnd</i>.back, <i>withThis</i>)) : bool));
+</dt>
+<dd><div class="summary">Checks if the given range ends with (one of) the given needle(s).
+The reciprocal of <span class="d_inlinecode donthyphenate notranslate">startsWith</span>.
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">pred</td>
+<td class="param_desc">The predicate to use for comparing elements between the range and
+        the needle(s).</td></tr>
+<tr class="param"><td class="param_id">Range <i>doesThisEnd</i></td>
+<td class="param_desc">The
+        <span class="libref"><a href="http://dlang.org/phobos/std_range_primitives.html#isBidirectionalRange">bidirectional range</a></span>
+        to check.</td></tr>
+<tr class="param"><td class="param_id">Needles <i>withOneOfThese</i></td>
+<td class="param_desc">The needles to check against, which may be single
+        elements, or bidirectional ranges of elements.</td></tr>
+<tr class="param"><td class="param_id">R2 <i>withThis</i></td>
+<td class="param_desc">The single element to check.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">0 if the needle(s) do not occur at the end of the given range;
+otherwise the position of the matching needle, that is, 1 if the range ends
+with <span class="d_inlinecode donthyphenate notranslate"><i>withOneOfThese</i>[0]</span>, 2 if it ends with <span class="d_inlinecode donthyphenate notranslate"><i>withOneOfThese</i>[1]</span>, and so
+on.</div></div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_keyword">assert</span>(<span class="d_psymbol">endsWith</span>(<span class="d_string">"abc"</span>, <span class="d_string">""</span>));
+<span class="d_keyword">assert</span>(!<span class="d_psymbol">endsWith</span>(<span class="d_string">"abc"</span>, <span class="d_string">"b"</span>));
+<span class="d_keyword">assert</span>(<span class="d_psymbol">endsWith</span>(<span class="d_string">"abc"</span>, <span class="d_string">"a"</span>, 'c') == 2);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">endsWith</span>(<span class="d_string">"abc"</span>, <span class="d_string">"c"</span>, <span class="d_string">"a"</span>) == 1);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">endsWith</span>(<span class="d_string">"abc"</span>, <span class="d_string">"c"</span>, <span class="d_string">"c"</span>) == 1);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">endsWith</span>(<span class="d_string">"abc"</span>, <span class="d_string">"bc"</span>, <span class="d_string">"c"</span>) == 2);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">endsWith</span>(<span class="d_string">"abc"</span>, <span class="d_string">"x"</span>, <span class="d_string">"c"</span>, <span class="d_string">"b"</span>) == 2);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">endsWith</span>(<span class="d_string">"abc"</span>, <span class="d_string">"x"</span>, <span class="d_string">"aa"</span>, <span class="d_string">"bc"</span>) == 3);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">endsWith</span>(<span class="d_string">"abc"</span>, <span class="d_string">"x"</span>, <span class="d_string">"aaa"</span>, <span class="d_string">"sab"</span>) == 0);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">endsWith</span>(<span class="d_string">"abc"</span>, <span class="d_string">"x"</span>, <span class="d_string">"aaa"</span>, 'c', <span class="d_string">"sab"</span>) == 3);
+</pre>
+</div></div>
+</dd>
+<dt class="d_decl"><a name=".find"></a><div class="quickindex" id="quickindex.find"></div>InputRange <a name="find"></a><span class="ddoc_psymbol">find</span>(alias pred = "a == b", InputRange, Element)(InputRange <i>haystack</i>, Element <i>needle</i>) if (isInputRange!InputRange &amp;&amp; is(typeof(binaryFun!pred(<i>haystack</i>.front, <i>needle</i>)) : bool));
+</dt>
+<dd><div class="summary">Finds an individual element in an input range. Elements of <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span> are compared with <span class="d_inlinecode donthyphenate notranslate"><i>needle</i></span> by using predicate <span class="d_inlinecode donthyphenate notranslate">pred</span>. Performs <span class="bigoh">&Omicron;(<span class="d_inlinecode donthyphenate notranslate">walkLength(<i>haystack</i>)</span>)</span> evaluations of <span class="d_inlinecode donthyphenate notranslate">pred</span>.
+</div>
+<div class="description">To find the last occurrence of <span class="d_inlinecode donthyphenate notranslate"><i>needle</i></span> in <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span>, call <span class="d_inlinecode donthyphenate notranslate"><a name="find"></a><span class="ddoc_psymbol">find</span>(retro(<i>haystack</i>), <i>needle</i>)</span>. See <span class="libref"><a href="http://dlang.org/phobos/std_range.html#retro"><span class="d_inlinecode donthyphenate notranslate">std.range.retro</span></a></span>.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">pred</td>
+<td class="param_desc">The predicate for comparing each element with the <i>needle</i>, defaulting to
+<span class="d_inlinecode donthyphenate notranslate">"a == b"</span>.
+The negated predicate <span class="d_inlinecode donthyphenate notranslate">"a != b"</span> can be used to search instead for the first
+element <i>not</i> matching the <i>needle</i>.</td></tr>
+<tr class="param"><td class="param_id">InputRange <i>haystack</i></td>
+<td class="param_desc">The <span class="libref"><a href="http://dlang.org/phobos/std_range_primitives.html#isInputRange">input range</a></span>
+searched in.</td></tr>
+<tr class="param"><td class="param_id">Element <i>needle</i></td>
+<td class="param_desc">The element searched for.</td></tr>
+</table></div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Constraints:</span>
+<span class="d_inlinecode donthyphenate notranslate">isInputRange!InputRange &amp;&amp; is(typeof(binaryFun!pred(<i>haystack</i>.front, <i>needle</i>)
+: bool))</span>
+
+</p></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns"><span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span> advanced such that the front element is the one searched for;
+that is, until <span class="d_inlinecode donthyphenate notranslate">binaryFun!pred(<i>haystack</i>.front, <i>needle</i>)</span> is <span class="d_inlinecode donthyphenate notranslate"><b>true</b></span>. If no
+such position exists, returns an empty <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span>.
+
+</div></div>
+<div class="keyval SeeAlso"><span class="key keySeeAlso">See Also:</span> <div class="val valSeeAlso"><a href="http://sgi.com/tech/stl/find.html">STL's find</a></div></div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_keyword">import</span> std.algorithm.comparison : equal;
+<span class="d_keyword">import</span> std.container : SList;
+
+<span class="d_keyword">assert</span>(<span class="d_psymbol">find</span>(<span class="d_string">"hello, world"</span>, ',') == <span class="d_string">", world"</span>);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">find</span>([1, 2, 3, 5], 4) == []);
+<span class="d_keyword">assert</span>(equal(<span class="d_psymbol">find</span>(SList!<span class="d_keyword">int</span>(1, 2, 3, 4, 5)[], 4), SList!<span class="d_keyword">int</span>(4, 5)[]));
+<span class="d_keyword">assert</span>(<span class="d_psymbol">find</span>!<span class="d_string">"a &gt; b"</span>([1, 2, 3, 5], 2) == [3, 5]);
+
+<span class="d_keyword">auto</span> a = [ 1, 2, 3 ];
+<span class="d_keyword">assert</span>(<span class="d_psymbol">find</span>(a, 5).empty);       <span class="d_comment">// not found
+</span><span class="d_keyword">assert</span>(!<span class="d_psymbol">find</span>(a, 2).empty);      <span class="d_comment">// found
+</span>
+<span class="d_comment">// Case-insensitive find of a string
+</span>string[] s = [ <span class="d_string">"Hello"</span>, <span class="d_string">"world"</span>, <span class="d_string">"!"</span> ];
+<span class="d_keyword">assert</span>(!<span class="d_psymbol">find</span>!(<span class="d_string">"toLower(a) == b"</span>)(s, <span class="d_string">"hello"</span>).empty);
+</pre>
+</div></div>
+</dd>
+<dt class="d_decl"><a name=".find.2"></a><div class="quickindex" id="quickindex.find.2"></div>InputRange <a name="find"></a><span class="ddoc_psymbol">find</span>(alias pred, InputRange)(InputRange <i>haystack</i>) if (isInputRange!InputRange);
+</dt>
+<dd><div class="summary">Advances the input range <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span> by calling <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i>.popFront</span>
+until either <span class="d_inlinecode donthyphenate notranslate">pred(<i>haystack</i>.front)</span>, or <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i>.empty</span>. Performs <span class="bigoh">&Omicron;(<span class="d_inlinecode donthyphenate notranslate"><i>haystack</i>.length</span>)</span> evaluations of <span class="d_inlinecode donthyphenate notranslate">pred</span>.
+</div>
+<div class="description">To find the last element of a bidirectional <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span> satisfying
+<span class="d_inlinecode donthyphenate notranslate">pred</span>, call <span class="d_inlinecode donthyphenate notranslate"><a name="find"></a><span class="ddoc_psymbol">find</span>!(pred)(retro(<i>haystack</i>))</span>. See <span class="libref"><a href="http://dlang.org/phobos/std_range.html#retro"><span class="d_inlinecode donthyphenate notranslate">std.range.retro</span></a></span>.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">pred</td>
+<td class="param_desc">The predicate for determining if a given element is the one being
+searched for.</td></tr>
+<tr class="param"><td class="param_id">InputRange <i>haystack</i></td>
+<td class="param_desc">The <span class="libref"><a href="http://dlang.org/phobos/std_range_primitives.html#isInputRange">input range</a></span> to
+search in.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns"><span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span> advanced such that the front element is the one searched for;
+that is, until <span class="d_inlinecode donthyphenate notranslate">binaryFun!pred(<i>haystack</i>.front, needle)</span> is <span class="d_inlinecode donthyphenate notranslate"><b>true</b></span>. If no
+such position exists, returns an empty <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span>.
+
+</div></div>
+<div class="keyval SeeAlso"><span class="key keySeeAlso">See Also:</span> <div class="val valSeeAlso"><a href="http://sgi.com/tech/stl/find_if.html">STL's find_if</a></div></div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_keyword">auto</span> arr = [ 1, 2, 3, 4, 1 ];
+<span class="d_keyword">assert</span>(<span class="d_psymbol">find</span>!(<span class="d_string">"a &gt; 2"</span>)(arr) == [ 3, 4, 1 ]);
+
+<span class="d_comment">// with predicate alias
+</span><span class="d_keyword">bool</span> pred(<span class="d_keyword">int</span> x) { <span class="d_keyword">return</span> x + 1 &gt; 1.5; }
+<span class="d_keyword">assert</span>(<span class="d_psymbol">find</span>!(pred)(arr) == arr);
+</pre>
+</div></div>
+</dd>
+<dt class="d_decl"><a name=".find.3"></a><div class="quickindex" id="quickindex.find.3"></div>R1 <a name="find"></a><span class="ddoc_psymbol">find</span>(alias pred = "a == b", R1, R2)(R1 <i>haystack</i>, R2 <i>needle</i>) if (isForwardRange!R1 &amp;&amp; isForwardRange!R2 &amp;&amp; is(typeof(binaryFun!pred(<i>haystack</i>.front, <i>needle</i>.front)) : bool) &amp;&amp; !isRandomAccessRange!R1);
+</dt>
+<dd><div class="summary">Finds the first occurrence of a forward range in another forward range.
+</div>
+<div class="description">Performs <span class="bigoh">&Omicron;(<span class="d_inlinecode donthyphenate notranslate">walkLength(<i>haystack</i>) * walkLength(<i>needle</i>)</span>)</span> comparisons in the
+worst case.  There are specializations that improve performance by taking
+advantage of bidirectional or random access in the given ranges (where
+possible), depending on the statistics of the two ranges' content.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">pred</td>
+<td class="param_desc">The predicate to use for comparing respective elements from the <i>haystack</i>
+and the <i>needle</i>. Defaults to simple equality <span class="d_inlinecode donthyphenate notranslate">"a == b"</span>.</td></tr>
+<tr class="param"><td class="param_id">R1 <i>haystack</i></td>
+<td class="param_desc">The <span class="libref"><a href="http://dlang.org/phobos/std_range_primitives.html#isForwardRange">forward range</a></span>
+searched in.</td></tr>
+<tr class="param"><td class="param_id">R2 <i>needle</i></td>
+<td class="param_desc">The <span class="libref"><a href="http://dlang.org/phobos/std_range_primitives.html#isForwardRange">forward range</a></span>
+searched for.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns"><span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span> advanced such that <span class="d_inlinecode donthyphenate notranslate"><i>needle</i></span> is a prefix of it (if no
+such position exists, returns <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span> advanced to termination).</div></div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_keyword">import</span> std.container : SList;
+
+<span class="d_keyword">assert</span>(<span class="d_psymbol">find</span>(<span class="d_string">"hello, world"</span>, <span class="d_string">"World"</span>).empty);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">find</span>(<span class="d_string">"hello, world"</span>, <span class="d_string">"wo"</span>) == <span class="d_string">"world"</span>);
+<span class="d_keyword">assert</span>([1, 2, 3, 4].<span class="d_psymbol">find</span>(SList!<span class="d_keyword">int</span>(2, 3)[]) == [2, 3, 4]);
+<span class="d_keyword">alias</span> C = Tuple!(<span class="d_keyword">int</span>, <span class="d_string">"x"</span>, <span class="d_keyword">int</span>, <span class="d_string">"y"</span>);
+<span class="d_keyword">auto</span> a = [C(1,0), C(2,0), C(3,1), C(4,0)];
+<span class="d_keyword">assert</span>(a.<span class="d_psymbol">find</span>!<span class="d_string">"a.x == b"</span>([2, 3]) == [C(2,0), C(3,1), C(4,0)]);
+<span class="d_keyword">assert</span>(a[1 .. $].<span class="d_psymbol">find</span>!<span class="d_string">"a.x == b"</span>([2, 3]) == [C(2,0), C(3,1), C(4,0)]);
+</pre>
+</div></div>
+</dd>
+<dt class="d_decl"><a name=".find.4"></a><div class="quickindex" id="quickindex.find.4"></div>Tuple!(Range, size_t) <a name="find"></a><span class="ddoc_psymbol">find</span>(alias pred = "a == b", Range, Ranges...)(Range <i>haystack</i>, Ranges <i>needles</i>) if (Ranges.length &gt; 1 &amp;&amp; is(typeof(startsWith!pred(<i>haystack</i>, <i>needles</i>))));
+</dt>
+<dd><div class="summary">Finds two or more <span class="d_inlinecode donthyphenate notranslate"><i>needles</i></span> into a <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span>. The predicate <span class="d_inlinecode donthyphenate notranslate">pred</span> is used throughout to compare elements. By default, elements are
+compared for equality.
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">pred</td>
+<td class="param_desc">The predicate to use for comparing elements.</td></tr>
+<tr class="param"><td class="param_id">Range <i>haystack</i></td>
+<td class="param_desc">The target of the search. Must be an input range.
+If any of <span class="d_inlinecode donthyphenate notranslate"><i>needles</i></span> is a range with elements comparable to
+elements in <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span>, then <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span> must be a forward range
+such that the search can backtrack.</td></tr>
+<tr class="param"><td class="param_id">Ranges <i>needles</i></td>
+<td class="param_desc">One or more items to search for. Each of <span class="d_inlinecode donthyphenate notranslate"><i>needles</i></span> must
+be either comparable to one element in <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span>, or be itself a
+forward range with elements comparable with elements in
+<span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span>.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">A tuple containing <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span> positioned to match one of the
+<i>needles</i> and also the 1-based index of the matching element in <span class="d_inlinecode donthyphenate notranslate"><i>needles</i></span> (0 if none of <span class="d_inlinecode donthyphenate notranslate"><i>needles</i></span> matched, 1 if <span class="d_inlinecode donthyphenate notranslate"><i>needles</i>[0]</span>
+matched, 2 if <span class="d_inlinecode donthyphenate notranslate"><i>needles</i>[1]</span> matched...). The first needle to be found
+will be the one that matches. If multiple <i>needles</i> are found at the
+same spot in the range, then the shortest one is the one which matches
+(if multiple <i>needles</i> of the same length are found at the same spot (e.g
+<span class="d_inlinecode donthyphenate notranslate">"a"</span> and <span class="d_inlinecode donthyphenate notranslate">'a'</span>), then the left-most of them in the argument list
+matches).
+<p></p>
+
+The relationship between <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span> and <span class="d_inlinecode donthyphenate notranslate"><i>needles</i></span> simply means
+that one can e.g. search for individual <span class="d_inlinecode donthyphenate notranslate">int</span>s or arrays of <span class="d_inlinecode donthyphenate notranslate">int</span>s in an array of <span class="d_inlinecode donthyphenate notranslate">int</span>s. In addition, if elements are
+individually comparable, searches of heterogeneous types are allowed
+as well: a <span class="d_inlinecode donthyphenate notranslate">double[]</span> can be searched for an <span class="d_inlinecode donthyphenate notranslate">int</span> or a <span class="d_inlinecode donthyphenate notranslate">short[]</span>, and conversely a <span class="d_inlinecode donthyphenate notranslate">long</span> can be searched for a <span class="d_inlinecode donthyphenate notranslate">float</span>
+or a <span class="d_inlinecode donthyphenate notranslate">double[]</span>. This makes for efficient searches without the need
+to coerce one side of the comparison into the other's side type.
+<p></p>
+
+The complexity of the search is <span class="bigoh">&Omicron;(<span class="d_inlinecode donthyphenate notranslate"><i>haystack</i>.length *
+max(<i>needles</i>.length)</span>)</span>. (For <i>needles</i> that are individual items, length
+is considered to be 1.) The strategy used in searching several
+subranges at once maximizes cache usage by moving in <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span> as
+few times as possible.</div></div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_keyword">int</span>[] a = [ 1, 4, 2, 3 ];
+<span class="d_keyword">assert</span>(<span class="d_psymbol">find</span>(a, 4) == [ 4, 2, 3 ]);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">find</span>(a, [ 1, 4 ]) == [ 1, 4, 2, 3 ]);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">find</span>(a, [ 1, 3 ], 4) == tuple([ 4, 2, 3 ], 2));
+<span class="d_comment">// Mixed types allowed if comparable
+</span><span class="d_keyword">assert</span>(<span class="d_psymbol">find</span>(a, 5, [ 1.2, 3.5 ], 2.0) == tuple([ 2, 3 ], 3));
+</pre>
+</div></div>
+</dd>
+<dt class="d_decl"><a name=".find.5"></a><div class="quickindex" id="quickindex.find.5"></div>Range1 <a name="find"></a><span class="ddoc_psymbol">find</span>(Range1, alias pred, Range2)(Range1 <i>haystack</i>, BoyerMooreFinder!(pred, Range2) <i>needle</i>);
+</dt>
+<dd><div class="summary">Finds <span class="d_inlinecode donthyphenate notranslate"><i>needle</i></span> in <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span> efficiently using the
+ <a href="http://google.com/search?btnI=I%27m+Feeling+Lucky&amp;ie=UTF-8&amp;oe=UTF-8&amp;q=Boyer-Moore">Boyer-Moore</a> method.
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">Range1 <i>haystack</i></td>
+<td class="param_desc">A random-access range with length and slicing.</td></tr>
+<tr class="param"><td class="param_id">BoyerMooreFinder!(pred, Range2) <i>needle</i></td>
+<td class="param_desc">A <a href="#BoyerMooreFinder"><span class="d_inlinecode donthyphenate notranslate">BoyerMooreFinder</span></a>.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns"><span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span> advanced such that <span class="d_inlinecode donthyphenate notranslate"><i>needle</i></span> is a prefix of it (if no
+ such position exists, returns <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span> advanced to termination).</div></div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_keyword">int</span>[] a = [ -1, 0, 1, 2, 3, 4, 5 ];
+<span class="d_keyword">int</span>[] b = [ 1, 2, 3 ];
+
+<span class="d_keyword">assert</span>(<span class="d_psymbol">find</span>(a, boyerMooreFinder(b)) == [ 1, 2, 3, 4, 5 ]);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">find</span>(b, boyerMooreFinder(a)).empty);
+</pre>
+</div></div>
+</dd>
+<dt class="d_decl"><a name=".canFind"></a><div class="quickindex" id="quickindex.canFind"></div>template <a name="canFind"></a><span class="ddoc_psymbol">canFind</span>(alias pred = "a == b")</dt>
+<dd><div class="summary">Convenience function. Like find, but only returns whether or not the search
+was successful.
+</div>
+<div class="keyval SeeAlso"><span class="key keySeeAlso">See Also:</span> <div class="val valSeeAlso"><a href="#among"><span class="d_inlinecode donthyphenate notranslate">among</span></a> for checking a value against multiple possibilities.</div></div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_keyword">assert</span>(<span class="d_psymbol">canFind</span>([0, 1, 2, 3], 2) == <span class="d_keyword">true</span>);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">canFind</span>([0, 1, 2, 3], [1, 2], [2, 3]));
+<span class="d_keyword">assert</span>(<span class="d_psymbol">canFind</span>([0, 1, 2, 3], [1, 2], [2, 3]) == 1);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">canFind</span>([0, 1, 2, 3], [1, 7], [2, 3]));
+<span class="d_keyword">assert</span>(<span class="d_psymbol">canFind</span>([0, 1, 2, 3], [1, 7], [2, 3]) == 2);
+
+<span class="d_keyword">assert</span>(<span class="d_psymbol">canFind</span>([0, 1, 2, 3], 4) == <span class="d_keyword">false</span>);
+<span class="d_keyword">assert</span>(!<span class="d_psymbol">canFind</span>([0, 1, 2, 3], [1, 3], [2, 4]));
+<span class="d_keyword">assert</span>(<span class="d_psymbol">canFind</span>([0, 1, 2, 3], [1, 3], [2, 4]) == 0);
+</pre>
+</div></div>
+<dl><dt class="d_decl"><a name=".canFind.canFind"></a><div class="quickindex" id="quickindex.canFind.canFind"></div>bool <a name="canFind"></a><span class="ddoc_psymbol">canFind</span>(Range)(Range <i>haystack</i>) if (is(typeof(find!pred(<i>haystack</i>))));
+</dt>
+<dd><div class="summary">Returns <span class="d_inlinecode donthyphenate notranslate"><b>true</b></span> if and only if any value <span class="d_inlinecode donthyphenate notranslate">v</span> found in the
+    input range <span class="d_inlinecode donthyphenate notranslate">range</span> satisfies the predicate <span class="d_inlinecode donthyphenate notranslate">pred</span>.
+    Performs (at most) <span class="bigoh">&Omicron;(<span class="d_inlinecode donthyphenate notranslate"><i>haystack</i>.length</span>)</span> evaluations of <span class="d_inlinecode donthyphenate notranslate">pred</span>.</div>
+
+</dd>
+<dt class="d_decl"><a name=".canFind.canFind.2"></a><div class="quickindex" id="quickindex.canFind.canFind.2"></div>bool <a name="canFind"></a><span class="ddoc_psymbol">canFind</span>(Range, Element)(Range <i>haystack</i>, Element <i>needle</i>) if (is(typeof(find!pred(<i>haystack</i>, <i>needle</i>))));
+</dt>
+<dd><div class="summary">Returns <span class="d_inlinecode donthyphenate notranslate"><b>true</b></span> if and only if <span class="d_inlinecode donthyphenate notranslate"><i>needle</i></span> can be found in <span class="d_inlinecode donthyphenate notranslate">    range</span>. Performs <span class="bigoh">&Omicron;(<span class="d_inlinecode donthyphenate notranslate"><i>haystack</i>.length</span>)</span> evaluations of <span class="d_inlinecode donthyphenate notranslate">pred</span>.</div>
+
+</dd>
+<dt class="d_decl"><a name=".canFind.canFind.3"></a><div class="quickindex" id="quickindex.canFind.canFind.3"></div>size_t <a name="canFind"></a><span class="ddoc_psymbol">canFind</span>(Range, Ranges...)(Range <i>haystack</i>, Ranges <i>needles</i>) if (Ranges.length &gt; 1 &amp;&amp; allSatisfy!(isForwardRange, Ranges) &amp;&amp; is(typeof(find!pred(<i>haystack</i>, <i>needles</i>))));
+</dt>
+<dd><div class="summary">Returns the 1-based index of the first needle found in <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span>. If no
+    needle is found, then <span class="d_inlinecode donthyphenate notranslate">0</span> is returned.
+</div>
+<div class="description">So, if used directly in the condition of an if statement or loop, the result
+    will be <span class="d_inlinecode donthyphenate notranslate"><b>true</b></span> if one of the <i>needles</i> is found and <span class="d_inlinecode donthyphenate notranslate"><b>false</b></span> if none are
+    found, whereas if the result is used elsewhere, it can either be cast to
+    <span class="d_inlinecode donthyphenate notranslate">bool</span> for the same effect or used to get which needle was found first
+    without having to deal with the tuple that <span class="d_inlinecode donthyphenate notranslate">LREF find</span> returns for the
+    same operation.</div>
+
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><a name=".findAdjacent"></a><div class="quickindex" id="quickindex.findAdjacent"></div>Range <a name="findAdjacent"></a><span class="ddoc_psymbol">findAdjacent</span>(alias pred = "a == b", Range)(Range <i>r</i>) if (isForwardRange!Range);
+</dt>
+<dd><div class="summary">Advances <span class="d_inlinecode donthyphenate notranslate"><i>r</i></span> until it finds the first two adjacent elements <span class="d_inlinecode donthyphenate notranslate">a</span>,
+<span class="d_inlinecode donthyphenate notranslate">b</span> that satisfy <span class="d_inlinecode donthyphenate notranslate">pred(a, b)</span>. Performs <span class="bigoh">&Omicron;(<span class="d_inlinecode donthyphenate notranslate"><i>r</i>.length</span>)</span>
+evaluations of <span class="d_inlinecode donthyphenate notranslate">pred</span>.
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">pred</td>
+<td class="param_desc">The predicate to satisfy.</td></tr>
+<tr class="param"><td class="param_id">Range <i>r</i></td>
+<td class="param_desc">A <span class="libref"><a href="http://dlang.org/phobos/std_range_primitives.html#isForwardRange">forward range</a></span> to
+        search in.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns"><span class="d_inlinecode donthyphenate notranslate"><i>r</i></span> advanced to the first occurrence of two adjacent elements that satisfy
+the given predicate. If there are no such two elements, returns <span class="d_inlinecode donthyphenate notranslate"><i>r</i></span> advanced
+until empty.
+
+</div></div>
+<div class="keyval SeeAlso"><span class="key keySeeAlso">See Also:</span> <div class="val valSeeAlso"><a href="http://sgi.com/tech/stl/adjacent_find.html">STL's adjacent_find</a></div></div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_keyword">int</span>[] a = [ 11, 10, 10, 9, 8, 8, 7, 8, 9 ];
+<span class="d_keyword">auto</span> <span class="d_param">r</span> = <span class="d_psymbol">findAdjacent</span>(a);
+<span class="d_keyword">assert</span>(<span class="d_param">r</span> == [ 10, 10, 9, 8, 8, 7, 8, 9 ]);
+<span class="d_keyword">auto</span> p = <span class="d_psymbol">findAdjacent</span>!(<span class="d_string">"a &lt; b"</span>)(a);
+<span class="d_keyword">assert</span>(p == [ 7, 8, 9 ]);
+</pre>
+</div></div>
+</dd>
+<dt class="d_decl"><a name=".findAmong"></a><div class="quickindex" id="quickindex.findAmong"></div>Range1 <a name="findAmong"></a><span class="ddoc_psymbol">findAmong</span>(alias pred = "a == b", Range1, Range2)(Range1 <i>seq</i>, Range2 <i>choices</i>) if (isInputRange!Range1 &amp;&amp; isForwardRange!Range2);
+</dt>
+<dd><div class="summary">Searches the given range for an element that matches one of the given <i>choices</i>.
+</div>
+<div class="description">Advances <span class="d_inlinecode donthyphenate notranslate"><i>seq</i></span> by calling <span class="d_inlinecode donthyphenate notranslate"><i>seq</i>.popFront</span> until either
+<span class="d_inlinecode donthyphenate notranslate">find!(pred)(<i>choices</i>, <i>seq</i>.front)</span> is <span class="d_inlinecode donthyphenate notranslate"><b>true</b></span>, or <span class="d_inlinecode donthyphenate notranslate"><i>seq</i></span> becomes empty.
+Performs <span class="bigoh">&Omicron;(<span class="d_inlinecode donthyphenate notranslate"><i>seq</i>.length * <i>choices</i>.length</span>)</span> evaluations of <span class="d_inlinecode donthyphenate notranslate">pred</span>.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">pred</td>
+<td class="param_desc">The predicate to use for determining a match.</td></tr>
+<tr class="param"><td class="param_id">Range1 <i>seq</i></td>
+<td class="param_desc">The <span class="libref"><a href="http://dlang.org/phobos/std_range_primitives.html#isInputRange">input range</a></span> to
+        search.</td></tr>
+<tr class="param"><td class="param_id">Range2 <i>choices</i></td>
+<td class="param_desc">A <span class="libref"><a href="http://dlang.org/phobos/std_range_primitives.html#isForwardRange">forward range</a></span>
+        of possible <i>choices</i>.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns"><span class="d_inlinecode donthyphenate notranslate"><i>seq</i></span> advanced to the first matching element, or until empty if there are no
+matching elements.
+
+</div></div>
+<div class="keyval SeeAlso"><span class="key keySeeAlso">See Also:</span> <div class="val valSeeAlso"><a href="http://sgi.com/tech/stl/find_first_of.html">STL's find_first_of</a></div></div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_keyword">int</span>[] a = [ -1, 0, 1, 2, 3, 4, 5 ];
+<span class="d_keyword">int</span>[] b = [ 3, 1, 2 ];
+<span class="d_keyword">assert</span>(<span class="d_psymbol">findAmong</span>(a, b) == a[2 .. $]);
+</pre>
+</div></div>
+</dd>
+<dt class="d_decl"><a name=".findSkip"></a><div class="quickindex" id="quickindex.findSkip"></div>bool <a name="findSkip"></a><span class="ddoc_psymbol">findSkip</span>(alias pred = "a == b", R1, R2)(ref R1 <i>haystack</i>, R2 <i>needle</i>) if (isForwardRange!R1 &amp;&amp; isForwardRange!R2 &amp;&amp; is(typeof(binaryFun!pred(<i>haystack</i>.front, <i>needle</i>.front))));
+</dt>
+<dd><div class="summary">Finds <span class="d_inlinecode donthyphenate notranslate"><i>needle</i></span> in <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span> and positions <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span>
+ right after the first occurrence of <span class="d_inlinecode donthyphenate notranslate"><i>needle</i></span>.
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">R1 <i>haystack</i></td>
+<td class="param_desc">The
+   <span class="libref"><a href="http://dlang.org/phobos/std_range_primitives.html#isForwardRange">forward range</a></span> to search
+   in.</td></tr>
+<tr class="param"><td class="param_id">R2 <i>needle</i></td>
+<td class="param_desc">The
+   <span class="libref"><a href="http://dlang.org/phobos/std_range_primitives.html#isForwardRange">forward range</a></span> to search
+   for.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns"><span class="d_inlinecode donthyphenate notranslate"><b>true</b></span> if the <i>needle</i> was found, in which case <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span> is
+ positioned after the end of the first occurrence of <span class="d_inlinecode donthyphenate notranslate"><i>needle</i></span>; otherwise
+ <span class="d_inlinecode donthyphenate notranslate"><b>false</b></span>, leaving <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span> untouched.</div></div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_comment">// Needle is found; s is replaced by the substring following the first
+</span><span class="d_comment">// occurrence of the needle.
+</span>string s = <span class="d_string">"abcdef"</span>;
+<span class="d_keyword">assert</span>(<span class="d_psymbol">findSkip</span>(s, <span class="d_string">"cd"</span>) &amp;&amp; s == <span class="d_string">"ef"</span>);
+
+<span class="d_comment">// Needle is not found; s is left untouched.
+</span>s = <span class="d_string">"abcdef"</span>;
+<span class="d_keyword">assert</span>(!<span class="d_psymbol">findSkip</span>(s, <span class="d_string">"cxd"</span>) &amp;&amp; s == <span class="d_string">"abcdef"</span>);
+
+<span class="d_comment">// If the needle occurs at the end of the range, the range is left empty.
+</span>s = <span class="d_string">"abcdef"</span>;
+<span class="d_keyword">assert</span>(<span class="d_psymbol">findSkip</span>(s, <span class="d_string">"def"</span>) &amp;&amp; s.empty);
+</pre>
+</div></div>
+</dd>
+<dt class="d_decl"><a name=".findSplit"></a><div class="quickindex" id="quickindex.findSplit"></div>auto <a name="findSplit"></a><span class="ddoc_psymbol">findSplit</span>(alias pred = "a == b", R1, R2)(R1 <i>haystack</i>, R2 <i>needle</i>) if (isForwardRange!R1 &amp;&amp; isForwardRange!R2);
+<br><a name=".findSplitBefore"></a><div class="quickindex" id="quickindex.findSplitBefore"></div>auto <a name="findSplitBefore"></a><span class="ddoc_psymbol">findSplitBefore</span>(alias pred = "a == b", R1, R2)(R1 <i>haystack</i>, R2 <i>needle</i>) if (isForwardRange!R1 &amp;&amp; isForwardRange!R2);
+<br><a name=".findSplitAfter"></a><div class="quickindex" id="quickindex.findSplitAfter"></div>auto <a name="findSplitAfter"></a><span class="ddoc_psymbol">findSplitAfter</span>(alias pred = "a == b", R1, R2)(R1 <i>haystack</i>, R2 <i>needle</i>) if (isForwardRange!R1 &amp;&amp; isForwardRange!R2);
+</dt>
+<dd><div class="summary">These functions find the first occurrence of <span class="d_inlinecode donthyphenate notranslate"><i>needle</i></span> in <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span> and then split <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span> as follows.
+</div>
+<div class="description"><span class="d_inlinecode donthyphenate notranslate"><a name="findSplit"></a><span class="ddoc_psymbol">findSplit</span></span> returns a tuple <span class="d_inlinecode donthyphenate notranslate">result</span> containing <i>three</i>
+ranges. <span class="d_inlinecode donthyphenate notranslate">result[0]</span> is the portion of <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span> before <span class="d_inlinecode donthyphenate notranslate"><i>needle</i></span>, <span class="d_inlinecode donthyphenate notranslate">result[1]</span> is the portion of <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span> that matches
+<span class="d_inlinecode donthyphenate notranslate"><i>needle</i></span>, and <span class="d_inlinecode donthyphenate notranslate">result[2]</span> is the portion of <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span> after
+the match. If <span class="d_inlinecode donthyphenate notranslate"><i>needle</i></span> was not found, <span class="d_inlinecode donthyphenate notranslate">result[0]</span>
+comprehends <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span> entirely and <span class="d_inlinecode donthyphenate notranslate">result[1]</span> and <span class="d_inlinecode donthyphenate notranslate">result[2]</span>
+are empty.
+<p></p>
+
+<span class="d_inlinecode donthyphenate notranslate"><a name="findSplitBefore"></a><span class="ddoc_psymbol">findSplitBefore</span></span> returns a tuple <span class="d_inlinecode donthyphenate notranslate">result</span> containing two
+ranges. <span class="d_inlinecode donthyphenate notranslate">result[0]</span> is the portion of <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span> before <span class="d_inlinecode donthyphenate notranslate"><i>needle</i></span>, and <span class="d_inlinecode donthyphenate notranslate">result[1]</span> is the balance of <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span> starting
+with the match. If <span class="d_inlinecode donthyphenate notranslate"><i>needle</i></span> was not found, <span class="d_inlinecode donthyphenate notranslate">result[0]</span>
+comprehends <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span> entirely and <span class="d_inlinecode donthyphenate notranslate">result[1]</span> is empty.
+<p></p>
+
+<span class="d_inlinecode donthyphenate notranslate"><a name="findSplitAfter"></a><span class="ddoc_psymbol">findSplitAfter</span></span> returns a tuple <span class="d_inlinecode donthyphenate notranslate">result</span> containing two ranges.
+<span class="d_inlinecode donthyphenate notranslate">result[0]</span> is the portion of <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span> up to and including the
+match, and <span class="d_inlinecode donthyphenate notranslate">result[1]</span> is the balance of <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span> starting
+after the match. If <span class="d_inlinecode donthyphenate notranslate"><i>needle</i></span> was not found, <span class="d_inlinecode donthyphenate notranslate">result[0]</span> is empty
+and <span class="d_inlinecode donthyphenate notranslate">result[1]</span> is <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span>.
+<p></p>
+
+In all cases, the concatenation of the returned ranges spans the
+entire <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span>.
+<p></p>
+
+If <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span> is a random-access range, all three components of the
+tuple have the same type as <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span>. Otherwise, <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span>
+must be a forward range and the type of <span class="d_inlinecode donthyphenate notranslate">result[0]</span> and <span class="d_inlinecode donthyphenate notranslate">result[1]</span> is the same as <span class="libref"><a href="http://dlang.org/phobos/std_range.html#takeExactly"><span class="d_inlinecode donthyphenate notranslate">std.range.takeExactly</span></a></span>.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">pred</td>
+<td class="param_desc">Predicate to use for comparing <i>needle</i> against <i>haystack</i>.</td></tr>
+<tr class="param"><td class="param_id">R1 <i>haystack</i></td>
+<td class="param_desc">The range to search.</td></tr>
+<tr class="param"><td class="param_id">R2 <i>needle</i></td>
+<td class="param_desc">What to look for.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">A sub-type of Tuple!() of the split portions of <span class="d_inlinecode donthyphenate notranslate"><i>haystack</i></span> (see above for
+details).  This sub-type of Tuple!() has opCast defined for bool.  This opCast
+returns <span class="d_inlinecode donthyphenate notranslate"><b>true</b></span> when the separating <span class="d_inlinecode donthyphenate notranslate"><i>needle</i></span> was found (!result[1].empty)
+and <span class="d_inlinecode donthyphenate notranslate"><b>false</b></span> otherwise.  This enables the convenient idiom shown in the
+following example.
+
+</div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example:</span>
+<pre class="d_code notranslate"><span class="d_keyword">if</span> (<span class="d_keyword">const</span> split = <span class="d_param">haystack</span>.<span class="d_psymbol">findSplit</span>(<span class="d_param">needle</span>))
+{
+     doSomethingWithSplit(split);
+}
+</pre>
+</p></div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_keyword">auto</span> a = <span class="d_string">"Carl Sagan Memorial Station"</span>;
+<span class="d_keyword">auto</span> r = <span class="d_psymbol">findSplit</span>(a, <span class="d_string">"Velikovsky"</span>);
+<span class="d_keyword">import</span> std.typecons : isTuple;
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(isTuple!(<span class="d_keyword">typeof</span>(r.asTuple)));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(isTuple!(<span class="d_keyword">typeof</span>(r)));
+<span class="d_keyword">assert</span>(!r);
+<span class="d_keyword">assert</span>(r[0] == a);
+<span class="d_keyword">assert</span>(r[1].empty);
+<span class="d_keyword">assert</span>(r[2].empty);
+r = <span class="d_psymbol">findSplit</span>(a, <span class="d_string">" "</span>);
+<span class="d_keyword">assert</span>(r[0] == <span class="d_string">"Carl"</span>);
+<span class="d_keyword">assert</span>(r[1] == <span class="d_string">" "</span>);
+<span class="d_keyword">assert</span>(r[2] == <span class="d_string">"Sagan Memorial Station"</span>);
+<span class="d_keyword">auto</span> r1 = <span class="d_psymbol">findSplitBefore</span>(a, <span class="d_string">"Sagan"</span>);
+<span class="d_keyword">assert</span>(r1);
+<span class="d_keyword">assert</span>(r1[0] == <span class="d_string">"Carl "</span>, r1[0]);
+<span class="d_keyword">assert</span>(r1[1] == <span class="d_string">"Sagan Memorial Station"</span>);
+<span class="d_keyword">auto</span> r2 = <span class="d_psymbol">findSplitAfter</span>(a, <span class="d_string">"Sagan"</span>);
+<span class="d_keyword">assert</span>(r2);
+<span class="d_keyword">assert</span>(r2[0] == <span class="d_string">"Carl Sagan"</span>);
+<span class="d_keyword">assert</span>(r2[1] == <span class="d_string">" Memorial Station"</span>);
+</pre>
+</div></div>
+</dd>
+<dt class="d_decl"><a name=".minCount"></a><div class="quickindex" id="quickindex.minCount"></div>Tuple!(ElementType!Range, size_t) <a name="minCount"></a><span class="ddoc_psymbol">minCount</span>(alias pred = "a &lt; b", Range)(Range <i>range</i>) if (isInputRange!Range &amp;&amp; !isInfinite!Range &amp;&amp; is(typeof(binaryFun!pred(<i>range</i>.front, <i>range</i>.front))));
+</dt>
+<dd><div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">pred</td>
+<td class="param_desc">The ordering predicate to use to determine the minimal element.</td></tr>
+<tr class="param"><td class="param_id">Range <i>range</i></td>
+<td class="param_desc">The input <i>range</i> to count.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">The minimum element of a <i>range</i> together with the number of
+occurrences. The function can actually be used for counting the
+maximum or any other ordering predicate (that's why <span class="d_inlinecode donthyphenate notranslate">maxCount</span> is
+not provided).</div></div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_keyword">import</span> std.conv : text;
+
+<span class="d_keyword">debug</span>(std_algorithm) <span class="d_keyword">scope</span>(success)
+    writeln(<span class="d_string">"unittest @"</span>, <span class="d_keyword">__FILE__</span>, <span class="d_string">":"</span>, <span class="d_keyword">__LINE__</span>, <span class="d_string">" done."</span>);
+
+<span class="d_keyword">int</span>[] a = [ 2, 3, 4, 1, 2, 4, 1, 1, 2 ];
+<span class="d_comment">// Minimum is 1 and occurs 3 times
+</span><span class="d_keyword">assert</span>(<span class="d_psymbol">minCount</span>(a) == tuple(1, 3));
+<span class="d_comment">// Maximum is 4 and occurs 2 times
+</span><span class="d_keyword">assert</span>(<span class="d_psymbol">minCount</span>!(<span class="d_string">"a &gt; b"</span>)(a) == tuple(4, 2));
+</pre>
+</div></div>
+</dd>
+<dt class="d_decl"><a name=".minPos"></a><div class="quickindex" id="quickindex.minPos"></div>Range <a name="minPos"></a><span class="ddoc_psymbol">minPos</span>(alias pred = "a &lt; b", Range)(Range <i>range</i>) if (isForwardRange!Range &amp;&amp; !isInfinite!Range &amp;&amp; is(typeof(binaryFun!pred(<i>range</i>.front, <i>range</i>.front))));
+</dt>
+<dd><div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">pred</td>
+<td class="param_desc">The ordering predicate to use to determine the minimal element.</td></tr>
+<tr class="param"><td class="param_id">Range <i>range</i></td>
+<td class="param_desc">The input <i>range</i> to search.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">The position of the minimum element of forward <i>range</i> <span class="d_inlinecode donthyphenate notranslate"><i>range</i></span>, i.e.
+a subrange of <span class="d_inlinecode donthyphenate notranslate"><i>range</i></span> starting at the position of its smallest element and
+with the same ending as <span class="d_inlinecode donthyphenate notranslate"><i>range</i></span>. The function can actually be used for
+finding the maximum or any other ordering predicate (that's why <span class="d_inlinecode donthyphenate notranslate">maxPos</span> is
+not provided).</div></div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_keyword">int</span>[] a = [ 2, 3, 4, 1, 2, 4, 1, 1, 2 ];
+<span class="d_comment">// Minimum is 1 and first occurs in position 3
+</span><span class="d_keyword">assert</span>(<span class="d_psymbol">minPos</span>(a) == [ 1, 2, 4, 1, 1, 2 ]);
+<span class="d_comment">// Maximum is 4 and first occurs in position 2
+</span><span class="d_keyword">assert</span>(<span class="d_psymbol">minPos</span>!(<span class="d_string">"a &gt; b"</span>)(a) == [ 4, 1, 2, 4, 1, 1, 2 ]);
+</pre>
+</div></div>
+</dd>
+<dt class="d_decl"><a name=".skipOver"></a><div class="quickindex" id="quickindex.skipOver"></div>bool <a name="skipOver"></a><span class="ddoc_psymbol">skipOver</span>(R1, R2)(ref R1 <i>r1</i>, R2 <i>r2</i>) if (isForwardRange!R1 &amp;&amp; isInputRange!R2 &amp;&amp; is(typeof(<i>r1</i>.front == <i>r2</i>.front)));
+<br>bool <a name="skipOver"></a><span class="ddoc_psymbol">skipOver</span>(alias pred, R1, R2)(ref R1 <i>r1</i>, R2 <i>r2</i>) if (is(typeof(binaryFun!pred(<i>r1</i>.front, <i>r2</i>.front))) &amp;&amp; isForwardRange!R1 &amp;&amp; isInputRange!R2);
+</dt>
+<dd><div class="summary">Skip over the initial portion of the first given range that matches the second
+range, or do nothing if there is no match.
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">pred</td>
+<td class="param_desc">The predicate that determines whether elements from each respective
+        range match. Defaults to equality <span class="d_inlinecode donthyphenate notranslate">"a == b"</span>.</td></tr>
+<tr class="param"><td class="param_id">R1 <i>r1</i></td>
+<td class="param_desc">The <span class="libref"><a href="http://dlang.org/phobos/std_range_primitives.html#isForwardRange">forward range</a></span> to
+        move forward.</td></tr>
+<tr class="param"><td class="param_id">R2 <i>r2</i></td>
+<td class="param_desc">The <span class="libref"><a href="http://dlang.org/phobos/std_range_primitives.html#isInputRange">input range</a></span>
+        representing the initial segment of <span class="d_inlinecode donthyphenate notranslate"><i>r1</i></span> to skip over.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns"><b>true</b> if the initial segment of <span class="d_inlinecode donthyphenate notranslate"><i>r1</i></span> matches <span class="d_inlinecode donthyphenate notranslate"><i>r2</i></span>, and <span class="d_inlinecode donthyphenate notranslate"><i>r1</i></span> has been
+advanced to the point past this segment; otherwise <b>false</b>, and <span class="d_inlinecode donthyphenate notranslate"><i>r1</i></span> is left
+in its original position.</div></div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_keyword">import</span> std.algorithm.comparison : equal;
+
+<span class="d_keyword">auto</span> s1 = <span class="d_string">"Hello world"</span>;
+<span class="d_keyword">assert</span>(!<span class="d_psymbol">skipOver</span>(s1, <span class="d_string">"Ha"</span>));
+<span class="d_keyword">assert</span>(s1 == <span class="d_string">"Hello world"</span>);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">skipOver</span>(s1, <span class="d_string">"Hell"</span>) &amp;&amp; s1 == <span class="d_string">"o world"</span>);
+
+string[]  <span class="d_param">r1</span> = [<span class="d_string">"abc"</span>, <span class="d_string">"def"</span>, <span class="d_string">"hij"</span>];
+dstring[] <span class="d_param">r2</span> = [<span class="d_string">"abc"d</span>];
+<span class="d_keyword">assert</span>(!<span class="d_psymbol">skipOver</span>!((a, b) =&gt; a.equal(b))(<span class="d_param">r1</span>, [<span class="d_string">"def"d</span>]));
+<span class="d_keyword">assert</span>(<span class="d_param">r1</span> == [<span class="d_string">"abc"</span>, <span class="d_string">"def"</span>, <span class="d_string">"hij"</span>]);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">skipOver</span>!((a, b) =&gt; a.equal(b))(<span class="d_param">r1</span>, <span class="d_param">r2</span>));
+<span class="d_keyword">assert</span>(<span class="d_param">r1</span> == [<span class="d_string">"def"</span>, <span class="d_string">"hij"</span>]);
+</pre>
+</div></div>
+</dd>
+<dt class="d_decl"><a name=".skipOver.2"></a><div class="quickindex" id="quickindex.skipOver.2"></div>bool <a name="skipOver"></a><span class="ddoc_psymbol">skipOver</span>(R, E)(ref R <i>r</i>, E <i>e</i>) if (isInputRange!R &amp;&amp; is(typeof(<i>r</i>.front == <i>e</i>) : bool));
+<br>bool <a name="skipOver"></a><span class="ddoc_psymbol">skipOver</span>(alias pred, R, E)(ref R <i>r</i>, E <i>e</i>) if (is(typeof(binaryFun!pred(<i>r</i>.front, <i>e</i>))) &amp;&amp; isInputRange!R);
+</dt>
+<dd><div class="summary">Skip over the first element of the given range if it matches the given element,
+otherwise do nothing.
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">pred</td>
+<td class="param_desc">The predicate that determines whether an element from the range
+        matches the given element.</td></tr>
+<tr class="param"><td class="param_id">R <i>r</i></td>
+<td class="param_desc">The <span class="libref"><a href="http://dlang.org/phobos/std_range_primitives.html#isInputRange">input range</a></span> to skip
+        over.</td></tr>
+<tr class="param"><td class="param_id">E <i>e</i></td>
+<td class="param_desc">The element to match.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns"><b>true</b> if the first element matches the given element according to the given
+predicate, and the range has been advanced by one element; otherwise <b>false</b>, and
+the range is left untouched.</div></div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_keyword">import</span> std.algorithm.comparison : equal;
+
+<span class="d_keyword">auto</span> s1 = <span class="d_string">"Hello world"</span>;
+<span class="d_keyword">assert</span>(!<span class="d_psymbol">skipOver</span>(s1, 'a'));
+<span class="d_keyword">assert</span>(s1 == <span class="d_string">"Hello world"</span>);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">skipOver</span>(s1, 'H') &amp;&amp; s1 == <span class="d_string">"ello world"</span>);
+
+string[] <span class="d_param">r</span> = [<span class="d_string">"abc"</span>, <span class="d_string">"def"</span>, <span class="d_string">"hij"</span>];
+dstring <span class="d_param">e</span> = <span class="d_string">"abc"d</span>;
+<span class="d_keyword">assert</span>(!<span class="d_psymbol">skipOver</span>!((a, b) =&gt; a.equal(b))(<span class="d_param">r</span>, <span class="d_string">"def"d</span>));
+<span class="d_keyword">assert</span>(<span class="d_param">r</span> == [<span class="d_string">"abc"</span>, <span class="d_string">"def"</span>, <span class="d_string">"hij"</span>]);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">skipOver</span>!((a, b) =&gt; a.equal(b))(<span class="d_param">r</span>, <span class="d_param">e</span>));
+<span class="d_keyword">assert</span>(<span class="d_param">r</span> == [<span class="d_string">"def"</span>, <span class="d_string">"hij"</span>]);
+
+<span class="d_keyword">auto</span> s2 = <span class="d_string">""</span>;
+<span class="d_keyword">assert</span>(!s2.<span class="d_psymbol">skipOver</span>('a'));
+</pre>
+</div></div>
+</dd>
+<dt class="d_decl"><a name=".startsWith"></a><div class="quickindex" id="quickindex.startsWith"></div>uint <a name="startsWith"></a><span class="ddoc_psymbol">startsWith</span>(alias pred = "a == b", Range, Needles...)(Range <i>doesThisStart</i>, Needles <i>withOneOfThese</i>) if (isInputRange!Range &amp;&amp; Needles.length &gt; 1 &amp;&amp; is(typeof(.<a name="startsWith"></a><span class="ddoc_psymbol">startsWith</span>!pred(<i>doesThisStart</i>, <i>withOneOfThese</i>[0])) : bool) &amp;&amp; is(typeof(.<a name="startsWith"></a><span class="ddoc_psymbol">startsWith</span>!pred(<i>doesThisStart</i>, <i>withOneOfThese</i>[1..$])) : uint));
+<br>bool <a name="startsWith"></a><span class="ddoc_psymbol">startsWith</span>(alias pred = "a == b", R1, R2)(R1 <i>doesThisStart</i>, R2 <i>withThis</i>) if (isInputRange!R1 &amp;&amp; isInputRange!R2 &amp;&amp; is(typeof(binaryFun!pred(<i>doesThisStart</i>.front, <i>withThis</i>.front)) : bool));
+<br>bool <a name="startsWith"></a><span class="ddoc_psymbol">startsWith</span>(alias pred = "a == b", R, E)(R <i>doesThisStart</i>, E <i>withThis</i>) if (isInputRange!R &amp;&amp; is(typeof(binaryFun!pred(<i>doesThisStart</i>.front, <i>withThis</i>)) : bool));
+</dt>
+<dd><div class="summary">Checks whether the given
+<span class="libref"><a href="http://dlang.org/phobos/std_range_primitives.html#isInputRange">input range</a></span> starts with (one
+of) the given needle(s).
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">pred</td>
+<td class="param_desc">Predicate to use in comparing the elements of the haystack and the
+        needle(s).</td></tr>
+<tr class="param"><td class="param_id">Range <i>doesThisStart</i></td>
+<td class="param_desc">The input range to check.</td></tr>
+<tr class="param"><td class="param_id">Needles <i>withOneOfThese</i></td>
+<td class="param_desc">The needles against which the range is to be checked,
+        which may be individual elements or input ranges of elements.</td></tr>
+<tr class="param"><td class="param_id">R2 <i>withThis</i></td>
+<td class="param_desc">The single needle to check, which may be either a single element
+        or an input range of elements.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">0 if the needle(s) do not occur at the beginning of the given range;
+otherwise the position of the matching needle, that is, 1 if the range starts
+with <span class="d_inlinecode donthyphenate notranslate"><i>withOneOfThese</i>[0]</span>, 2 if it starts with <span class="d_inlinecode donthyphenate notranslate"><i>withOneOfThese</i>[1]</span>, and so
+on.
+<p></p>
+
+In the case where <span class="d_inlinecode donthyphenate notranslate"><i>doesThisStart</i></span> starts with multiple of the ranges or
+elements in <span class="d_inlinecode donthyphenate notranslate"><i>withOneOfThese</i></span>, then the shortest one matches (if there are
+two which match which are of the same length (e.g. <span class="d_inlinecode donthyphenate notranslate">"a"</span> and <span class="d_inlinecode donthyphenate notranslate">'a'</span>), then
+the left-most of them in the argument
+list matches).</div></div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_keyword">assert</span>(<span class="d_psymbol">startsWith</span>(<span class="d_string">"abc"</span>, <span class="d_string">""</span>));
+<span class="d_keyword">assert</span>(<span class="d_psymbol">startsWith</span>(<span class="d_string">"abc"</span>, <span class="d_string">"a"</span>));
+<span class="d_keyword">assert</span>(!<span class="d_psymbol">startsWith</span>(<span class="d_string">"abc"</span>, <span class="d_string">"b"</span>));
+<span class="d_keyword">assert</span>(<span class="d_psymbol">startsWith</span>(<span class="d_string">"abc"</span>, 'a', <span class="d_string">"b"</span>) == 1);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">startsWith</span>(<span class="d_string">"abc"</span>, <span class="d_string">"b"</span>, <span class="d_string">"a"</span>) == 2);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">startsWith</span>(<span class="d_string">"abc"</span>, <span class="d_string">"a"</span>, <span class="d_string">"a"</span>) == 1);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">startsWith</span>(<span class="d_string">"abc"</span>, <span class="d_string">"ab"</span>, <span class="d_string">"a"</span>) == 2);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">startsWith</span>(<span class="d_string">"abc"</span>, <span class="d_string">"x"</span>, <span class="d_string">"a"</span>, <span class="d_string">"b"</span>) == 2);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">startsWith</span>(<span class="d_string">"abc"</span>, <span class="d_string">"x"</span>, <span class="d_string">"aa"</span>, <span class="d_string">"ab"</span>) == 3);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">startsWith</span>(<span class="d_string">"abc"</span>, <span class="d_string">"x"</span>, <span class="d_string">"aaa"</span>, <span class="d_string">"sab"</span>) == 0);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">startsWith</span>(<span class="d_string">"abc"</span>, <span class="d_string">"x"</span>, <span class="d_string">"aaa"</span>, <span class="d_string">"a"</span>, <span class="d_string">"sab"</span>) == 3);
+<span class="d_keyword">alias</span> C = Tuple!(<span class="d_keyword">int</span>, <span class="d_string">"x"</span>, <span class="d_keyword">int</span>, <span class="d_string">"y"</span>);
+<span class="d_keyword">assert</span>(<span class="d_psymbol">startsWith</span>!<span class="d_string">"a.x == b"</span>([ C(1,1), C(1,2), C(2,2) ], [1, 1]));
+<span class="d_keyword">assert</span>(<span class="d_psymbol">startsWith</span>!<span class="d_string">"a.x == b"</span>([ C(1,1), C(2,1), C(2,2) ], [1, 1], [1, 2], [1, 3]) == 2);
+</pre>
+</div></div>
+</dd>
+<dt class="d_decl"><a name=".OpenRight"></a><div class="quickindex" id="quickindex.OpenRight"></div>enum <a name="OpenRight"></a><span class="ddoc_psymbol">OpenRight</span>: int;
+</dt>
+<dd><div class="summary">Interval option specifier for <span class="d_inlinecode donthyphenate notranslate">until</span> (below) and others.</div>
+
+<dl><dt class="d_decl"><a name=".OpenRight.no"></a><div class="quickindex" id="quickindex.OpenRight.no"></div><a name="no"></a><span class="ddoc_psymbol">no</span></dt>
+<dd><div class="summary">Interval is closed to the right (last element included)</div>
+
+</dd>
+<dt class="d_decl"><a name=".OpenRight.yes"></a><div class="quickindex" id="quickindex.OpenRight.yes"></div><a name="yes"></a><span class="ddoc_psymbol">yes</span></dt>
+<dd><div class="summary">Interval is open to the right (last element is not included)</div>
+
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><a name=".until"></a><div class="quickindex" id="quickindex.until"></div>Until!(pred, Range, Sentinel) <a name="until"></a><span class="ddoc_psymbol">until</span>(alias pred = "a == b", Range, Sentinel)(Range <i>range</i>, Sentinel <i>sentinel</i>, OpenRight <i>openRight</i> = OpenRight.yes) if (!is(Sentinel == OpenRight));
+<br>Until!(pred, Range, void) <a name="until"></a><span class="ddoc_psymbol">until</span>(alias pred, Range)(Range <i>range</i>, OpenRight <i>openRight</i> = OpenRight.yes);
+</dt>
+<dd><div class="summary">Lazily iterates <span class="d_inlinecode donthyphenate notranslate"><i>range</i></span> until the element <span class="d_inlinecode donthyphenate notranslate">e</span> for which
+<span class="d_inlinecode donthyphenate notranslate">pred(e, <i>sentinel</i>)</span> is <b>true</b>.
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">pred</td>
+<td class="param_desc">Predicate to determine when to stop.</td></tr>
+<tr class="param"><td class="param_id">Range <i>range</i></td>
+<td class="param_desc">The <span class="libref"><a href="http://dlang.org/phobos/std_range_primitives.html#isInputRange">input range</a></span>
+    to iterate over.</td></tr>
+<tr class="param"><td class="param_id">Sentinel <i>sentinel</i></td>
+<td class="param_desc">The element to stop at.</td></tr>
+<tr class="param"><td class="param_id">OpenRight <i>openRight</i></td>
+<td class="param_desc">Determines whether the element for which the given predicate is
+        <b>true</b> should be included in the resulting <i>range</i> (<span class="d_inlinecode donthyphenate notranslate">OpenRight.no</span>), or
+        not (<span class="d_inlinecode donthyphenate notranslate">OpenRight.yes</span>).</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">An <span class="libref"><a href="http://dlang.org/phobos/std_range_primitives.html#isInputRange">input range</a></span> that
+    iterates over the original <i>range</i>'s elements, but ends when the specified
+    predicate becomes <b>true</b>. If the original <i>range</i> is a
+    <span class="libref"><a href="http://dlang.org/phobos/std_range_primitives.html#isForwardRange">forward range</a></span> or
+    higher, this <i>range</i> will be a forward <i>range</i>.</div></div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_keyword">import</span> std.algorithm.comparison : equal;
+<span class="d_keyword">int</span>[] a = [ 1, 2, 4, 7, 7, 2, 4, 7, 3, 5];
+<span class="d_keyword">assert</span>(equal(a.<span class="d_psymbol">until</span>(7), [1, 2, 4][]));
+<span class="d_keyword">assert</span>(equal(a.<span class="d_psymbol">until</span>(7, OpenRight.no), [1, 2, 4, 7][]));
+</pre>
+</div></div>
+</dd>
+</dl>
+
+</div>
+<div id="copyright">Andrei Alexandrescu 2008-.
+
+ | Page generated by <a href="http://dlang.org/spec/ddoc.html">Ddoc</a> on (no date time)</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+<script type="text/javascript" src="../js/listanchors.js"></script>
+<script type="text/javascript">jQuery(document).ready(listanchors);</script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+</body>
+</html>

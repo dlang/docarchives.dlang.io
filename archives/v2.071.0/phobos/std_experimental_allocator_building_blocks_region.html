@@ -1,0 +1,455 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2017 by Digital Mars
+    All Rights Reserved Written by Walter Bright
+    http://digitalmars.com
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>std.experimental.allocator.building_blocks.region - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='std.experimental.allocator.building_blocks.region' class='std'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href=".."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='../getstarted.html'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'><li><a href='    ../spec/intro.html'>Language Reference</a></li><li><a href='    ../phobos/index.html'>Library Reference</a></li><li><a href='    ../comparison.html'>Feature Overview</a></li><li><a href='    ../dmd-windows.html'>DMD Manual</a></li><li><a href='    ../articles.html'>Articles
+</a></li></ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'><li><a href='    ../bugstats.php'>Bug Tracker</a></li><li><a href='    https://forum.dlang.org'>Forums</a></li><li><a href='    irc://irc.freenode.net/d'>IRC</a></li><li><a href='    https://github.com/D-Programming-Language'>D on GitHub</a></li><li><a href='    https://wiki.dlang.org'>Wiki</a></li><li><a href='    https://wiki.dlang.org/Review_Queue'>Review Queue</a></li><li><a href='    https://twitter.com/search?q=%23dlang'>Twitter</a></li><li><a href='    http://digitalmars.com/d/dlinks.html'>More Links
+</a></li></ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'><li><a href='    ../library/index.html'>NEW Library Reference Preview</a></li><li><a href='    ../tools.html'>D-Specific Tools</a></li><li><a href='    http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li><li><a href='    https://wiki.dlang.org/Editors'>Editors</a></li><li><a href='    https://wiki.dlang.org/IDEs'>IDEs</a></li><li><a href='    https://wiki.dlang.org/Tutorials'>Tutorials</a></li><li><a href='    https://wiki.dlang.org/Books'>Books</a></li><li><a href='    ../dstyle.html'>The D Style</a></li><li><a href='    ../glossary.html'>Glossary</a></li><li><a href='    ../acknowledgements.html'>Acknowledgments</a></li><li><a href='    ../sitemap.html'>Sitemap
+</a></li></ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option selected value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+<div class="subnav-helper"></div> <div class="subnav">    <div class="head">        <h2>Library Reference</h2>
+        <p><span class="smallprint">pre-release version <span class="separator"><br></span>
+            <a href="../phobos/index.html">switch to version 2.071.0</a></span></p>
+        <p><a href="index.html">overview</a></p>
+    </div>
+    <ul>
+<li><a href='object.html'><span><em class="tt">object</em></span></a></li>
+
+<li class='expand-container'><a class='expand-toggle' href='#'><span><em class="tt">std</em></span></a>
+<ul><li>  <a href="std_algorithm.html" title="std.algorithm"><span class="d_inlinecode donthyphenate notranslate">algorithm</span></a><ul><li>    <a href="std_algorithm_comparison.html" title="std.algorithm.comparison"><span class="d_inlinecode donthyphenate notranslate">comparison</span></a></li><li>    <a href="std_algorithm_iteration.html" title="std.algorithm.iteration"><span class="d_inlinecode donthyphenate notranslate">iteration</span></a></li><li>    <a href="std_algorithm_mutation.html" title="std.algorithm.mutation"><span class="d_inlinecode donthyphenate notranslate">mutation</span></a></li><li>    <a href="std_algorithm_searching.html" title="std.algorithm.searching"><span class="d_inlinecode donthyphenate notranslate">searching</span></a></li><li>    <a href="std_algorithm_setops.html" title="std.algorithm.setops"><span class="d_inlinecode donthyphenate notranslate">setops</span></a></li><li>    <a href="std_algorithm_sorting.html" title="std.algorithm.sorting"><span class="d_inlinecode donthyphenate notranslate">sorting</span></a>
+  </li></ul></li><li>  <a href="std_array.html" title="std.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>  <a href="std_ascii.html" title="std.ascii"><span class="d_inlinecode donthyphenate notranslate">ascii</span></a></li><li>  <a href="std_base64.html" title="std.base64"><span class="d_inlinecode donthyphenate notranslate">base64</span></a></li><li>  <a href="std_bigint.html" title="std.bigint"><span class="d_inlinecode donthyphenate notranslate">bigint</span></a></li><li>  <a href="std_bitmanip.html" title="std.bitmanip"><span class="d_inlinecode donthyphenate notranslate">bitmanip</span></a></li><li>  <a href="std_compiler.html" title="std.compiler"><span class="d_inlinecode donthyphenate notranslate">compiler</span></a></li><li>  <a href="std_complex.html" title="std.complex"><span class="d_inlinecode donthyphenate notranslate">complex</span></a></li><li>  <a href="std_concurrency.html" title="std.concurrency"><span class="d_inlinecode donthyphenate notranslate">concurrency</span></a></li><li>  <a href="std_concurrencybase.html" title="std.concurrencybase"><span class="d_inlinecode donthyphenate notranslate">concurrencybase</span></a></li><li>  <a href="std_container.html" title="std.container"><span class="d_inlinecode donthyphenate notranslate">container</span></a><ul><li>    <a href="std_container_array.html" title="std.container.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>    <a href="std_container_binaryheap.html" title="std.container.binaryheap"><span class="d_inlinecode donthyphenate notranslate">binaryheap</span></a></li><li>    <a href="std_container_dlist.html" title="std.container.dlist"><span class="d_inlinecode donthyphenate notranslate">dlist</span></a></li><li>    <a href="std_container_rbtree.html" title="std.container.rbtree"><span class="d_inlinecode donthyphenate notranslate">rbtree</span></a></li><li>    <a href="std_container_slist.html" title="std.container.slist"><span class="d_inlinecode donthyphenate notranslate">slist</span></a></li><li>    <a href="std_container_util.html" title="std.container.util"><span class="d_inlinecode donthyphenate notranslate">util</span></a>
+  </li></ul></li><li>  <a href="std_conv.html" title="std.conv"><span class="d_inlinecode donthyphenate notranslate">conv</span></a></li><li>  <a href="std_csv.html" title="std.csv"><span class="d_inlinecode donthyphenate notranslate">csv</span></a></li><li>  <a href="std_datetime.html" title="std.datetime"><span class="d_inlinecode donthyphenate notranslate">datetime</span></a></li><li>  <a href="std_demangle.html" title="std.demangle"><span class="d_inlinecode donthyphenate notranslate">demangle</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">digest</span></h7><ul><li>    <a href="std_digest_crc.html" title="std.digest.crc"><span class="d_inlinecode donthyphenate notranslate">crc</span></a></li><li>    <a href="std_digest_digest.html" title="std.digest.digest"><span class="d_inlinecode donthyphenate notranslate">digest</span></a></li><li>    <a href="std_digest_hmac.html" title="std.digest.hmac"><span class="d_inlinecode donthyphenate notranslate">hmac</span></a></li><li>    <a href="std_digest_md.html" title="std.digest.md"><span class="d_inlinecode donthyphenate notranslate">md</span></a></li><li>    <a href="std_digest_ripemd.html" title="std.digest.ripemd"><span class="d_inlinecode donthyphenate notranslate">ripemd</span></a></li><li>    <a href="std_digest_sha.html" title="std.digest.sha"><span class="d_inlinecode donthyphenate notranslate">sha</span></a>
+  </li></ul></li><li>  <a href="std_encoding.html" title="std.encoding"><span class="d_inlinecode donthyphenate notranslate">encoding</span></a></li><li>  <a href="std_exception.html" title="std.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">experimental</span></h7><ul><li>    <a href="std_experimental_allocator.html" title="std.experimental.allocator"><span class="d_inlinecode donthyphenate notranslate">allocator</span></a><ul><li>      <a href="std_experimental_allocator_building_blocks.html" title="std.experimental.allocator.building_blocks"><span class="d_inlinecode donthyphenate notranslate">building_blocks</span></a><ul><li>        <a href="std_experimental_allocator_building_blocks_affix_allocator.html" title="std.experimental.allocator.building_blocks.affix_allocator"><span class="d_inlinecode donthyphenate notranslate">affix_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_allocator_list.html" title="std.experimental.allocator.building_blocks.allocator_list"><span class="d_inlinecode donthyphenate notranslate">allocator_list</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_bitmapped_block.html" title="std.experimental.allocator.building_blocks.bitmapped_block"><span class="d_inlinecode donthyphenate notranslate">bitmapped_block</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_bucketizer.html" title="std.experimental.allocator.building_blocks.bucketizer"><span class="d_inlinecode donthyphenate notranslate">bucketizer</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_fallback_allocator.html" title="std.experimental.allocator.building_blocks.fallback_allocator"><span class="d_inlinecode donthyphenate notranslate">fallback_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_free_list.html" title="std.experimental.allocator.building_blocks.free_list"><span class="d_inlinecode donthyphenate notranslate">free_list</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_free_tree.html" title="std.experimental.allocator.building_blocks.free_tree"><span class="d_inlinecode donthyphenate notranslate">free_tree</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_kernighan_ritchie.html" title="std.experimental.allocator.building_blocks.kernighan_ritchie"><span class="d_inlinecode donthyphenate notranslate">kernighan_ritchie</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_null_allocator.html" title="std.experimental.allocator.building_blocks.null_allocator"><span class="d_inlinecode donthyphenate notranslate">null_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_quantizer.html" title="std.experimental.allocator.building_blocks.quantizer"><span class="d_inlinecode donthyphenate notranslate">quantizer</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_region.html" title="std.experimental.allocator.building_blocks.region"><span class="d_inlinecode donthyphenate notranslate">region</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_scoped_allocator.html" title="std.experimental.allocator.building_blocks.scoped_allocator"><span class="d_inlinecode donthyphenate notranslate">scoped_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_segregator.html" title="std.experimental.allocator.building_blocks.segregator"><span class="d_inlinecode donthyphenate notranslate">segregator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_stats_collector.html" title="std.experimental.allocator.building_blocks.stats_collector"><span class="d_inlinecode donthyphenate notranslate">stats_collector</span></a>
+      </li></ul></li><li>      <a href="std_experimental_allocator_common.html" title="std.experimental.allocator.common"><span class="d_inlinecode donthyphenate notranslate">common</span></a></li><li>      <a href="std_experimental_allocator_gc_allocator.html" title="std.experimental.allocator.gc_allocator"><span class="d_inlinecode donthyphenate notranslate">gc_allocator</span></a></li><li>      <a href="std_experimental_allocator_mallocator.html" title="std.experimental.allocator.mallocator"><span class="d_inlinecode donthyphenate notranslate">mallocator</span></a></li><li>      <a href="std_experimental_allocator_mmap_allocator.html" title="std.experimental.allocator.mmap_allocator"><span class="d_inlinecode donthyphenate notranslate">mmap_allocator</span></a></li><li>      <a href="std_experimental_allocator_showcase.html" title="std.experimental.allocator.showcase"><span class="d_inlinecode donthyphenate notranslate">showcase</span></a></li><li>      <a href="std_experimental_allocator_typed.html" title="std.experimental.allocator.typed"><span class="d_inlinecode donthyphenate notranslate">typed</span></a>
+    </li></ul></li><li>    <a href="std_experimental_logger.html" title="std.experimental.logger"><span class="d_inlinecode donthyphenate notranslate">logger</span></a><ul><li>      <a href="std_experimental_logger_core.html" title="std.experimental.logger.core"><span class="d_inlinecode donthyphenate notranslate">core</span></a></li><li>      <a href="std_experimental_logger_filelogger.html" title="std.experimental.logger.filelogger"><span class="d_inlinecode donthyphenate notranslate">filelogger</span></a></li><li>      <a href="std_experimental_logger_multilogger.html" title="std.experimental.logger.multilogger"><span class="d_inlinecode donthyphenate notranslate">multilogger</span></a></li><li>      <a href="std_experimental_logger_nulllogger.html" title="std.experimental.logger.nulllogger"><span class="d_inlinecode donthyphenate notranslate">nulllogger</span></a>
+    </li></ul></li><li>    <a href="std_experimental_ndslice.html" title="std.experimental.ndslice"><span class="d_inlinecode donthyphenate notranslate">ndslice</span></a><ul><li>      <a href="std_experimental_ndslice_iteration.html" title="std.experimental.ndslice.iteration"><span class="d_inlinecode donthyphenate notranslate">iteration</span></a></li><li>      <a href="std_experimental_ndslice_selection.html" title="std.experimental.ndslice.selection"><span class="d_inlinecode donthyphenate notranslate">selection</span></a></li><li>      <a href="std_experimental_ndslice_slice.html" title="std.experimental.ndslice.slice"><span class="d_inlinecode donthyphenate notranslate">slice</span></a>
+    </li></ul>
+  </li></ul></li><li>  <a href="std_file.html" title="std.file"><span class="d_inlinecode donthyphenate notranslate">file</span></a></li><li>  <a href="std_format.html" title="std.format"><span class="d_inlinecode donthyphenate notranslate">format</span></a></li><li>  <a href="std_functional.html" title="std.functional"><span class="d_inlinecode donthyphenate notranslate">functional</span></a></li><li>  <a href="std_getopt.html" title="std.getopt"><span class="d_inlinecode donthyphenate notranslate">getopt</span></a></li><li>  <a href="std_json.html" title="std.json"><span class="d_inlinecode donthyphenate notranslate">json</span></a></li><li>  <a href="std_math.html" title="std.math"><span class="d_inlinecode donthyphenate notranslate">math</span></a></li><li>  <a href="std_mathspecial.html" title="std.mathspecial"><span class="d_inlinecode donthyphenate notranslate">mathspecial</span></a></li><li>  <a href="std_meta.html" title="std.meta"><span class="d_inlinecode donthyphenate notranslate">meta</span></a></li><li>  <a href="std_mmfile.html" title="std.mmfile"><span class="d_inlinecode donthyphenate notranslate">mmfile</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">net</span></h7><ul><li>    <a href="std_net_curl.html" title="std.net.curl"><span class="d_inlinecode donthyphenate notranslate">curl</span></a></li><li>    <a href="std_net_isemail.html" title="std.net.isemail"><span class="d_inlinecode donthyphenate notranslate">isemail</span></a>
+  </li></ul></li><li>  <a href="std_numeric.html" title="std.numeric"><span class="d_inlinecode donthyphenate notranslate">numeric</span></a></li><li>  <a href="std_outbuffer.html" title="std.outbuffer"><span class="d_inlinecode donthyphenate notranslate">outbuffer</span></a></li><li>  <a href="std_parallelism.html" title="std.parallelism"><span class="d_inlinecode donthyphenate notranslate">parallelism</span></a></li><li>  <a href="std_path.html" title="std.path"><span class="d_inlinecode donthyphenate notranslate">path</span></a></li><li>  <a href="std_process.html" title="std.process"><span class="d_inlinecode donthyphenate notranslate">process</span></a></li><li>  <a href="std_random.html" title="std.random"><span class="d_inlinecode donthyphenate notranslate">random</span></a></li><li>  <a href="std_range.html" title="std.range"><span class="d_inlinecode donthyphenate notranslate">range</span></a><ul><li>    <a href="std_range_interfaces.html" title="std.range.interfaces"><span class="d_inlinecode donthyphenate notranslate">interfaces</span></a></li><li>    <a href="std_range_primitives.html" title="std.range.primitives"><span class="d_inlinecode donthyphenate notranslate">primitives</span></a>
+  </li></ul></li><li>  <a href="std_regex.html" title="std.regex"><span class="d_inlinecode donthyphenate notranslate">regex</span></a></li><li>  <a href="std_signals.html" title="std.signals"><span class="d_inlinecode donthyphenate notranslate">signals</span></a></li><li>  <a href="std_socket.html" title="std.socket"><span class="d_inlinecode donthyphenate notranslate">socket</span></a></li><li>  <a href="std_stdint.html" title="std.stdint"><span class="d_inlinecode donthyphenate notranslate">stdint</span></a></li><li>  <a href="std_stdio.html" title="std.stdio"><span class="d_inlinecode donthyphenate notranslate">stdio</span></a></li><li>  <a href="std_stdiobase.html" title="std.stdiobase"><span class="d_inlinecode donthyphenate notranslate">stdiobase</span></a></li><li>  <a href="std_string.html" title="std.string"><span class="d_inlinecode donthyphenate notranslate">string</span></a></li><li>  <a href="std_system.html" title="std.system"><span class="d_inlinecode donthyphenate notranslate">system</span></a></li><li>  <a href="std_traits.html" title="std.traits"><span class="d_inlinecode donthyphenate notranslate">traits</span></a></li><li>  <a href="std_typecons.html" title="std.typecons"><span class="d_inlinecode donthyphenate notranslate">typecons</span></a></li><li>  <a href="std_typetuple.html" title="std.typetuple"><span class="d_inlinecode donthyphenate notranslate">typetuple</span></a></li><li>  <a href="std_uni.html" title="std.uni"><span class="d_inlinecode donthyphenate notranslate">uni</span></a></li><li>  <a href="std_uri.html" title="std.uri"><span class="d_inlinecode donthyphenate notranslate">uri</span></a></li><li>  <a href="std_utf.html" title="std.utf"><span class="d_inlinecode donthyphenate notranslate">utf</span></a></li><li>  <a href="std_uuid.html" title="std.uuid"><span class="d_inlinecode donthyphenate notranslate">uuid</span></a></li><li>  <a href="std_variant.html" title="std.variant"><span class="d_inlinecode donthyphenate notranslate">variant</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">windows</span></h7><ul><li>    <a href="std_windows_charset.html" title="std.windows.charset"><span class="d_inlinecode donthyphenate notranslate">charset</span></a></li><li>    <a href="std_windows_syserror.html" title="std.windows.syserror"><span class="d_inlinecode donthyphenate notranslate">syserror</span></a>
+  </li></ul></li><li>  <a href="std_xml.html" title="std.xml"><span class="d_inlinecode donthyphenate notranslate">xml</span></a></li><li>  <a href="std_zip.html" title="std.zip"><span class="d_inlinecode donthyphenate notranslate">zip</span></a></li><li>  <a href="std_zlib.html" title="std.zlib"><span class="d_inlinecode donthyphenate notranslate">zlib</span></a>
+</li></ul>
+</li>
+
+<li class='expand-container'><a class='expand-toggle' href='#'><span><em class="tt">etc</em></span></a>
+<ul><li>  <h7><span class="d_inlinecode donthyphenate notranslate">c</span></h7><ul><li>    <a href="etc_c_curl.html" title="etc.c.curl"><span class="d_inlinecode donthyphenate notranslate">curl</span></a></li><li>    <h7><span class="d_inlinecode donthyphenate notranslate">odbc</span></h7><ul><li>      <a href="etc_c_odbc_sql.html" title="etc.c.odbc.sql"><span class="d_inlinecode donthyphenate notranslate">sql</span></a></li><li>      <a href="etc_c_odbc_sqlext.html" title="etc.c.odbc.sqlext"><span class="d_inlinecode donthyphenate notranslate">sqlext</span></a></li><li>      <a href="etc_c_odbc_sqltypes.html" title="etc.c.odbc.sqltypes"><span class="d_inlinecode donthyphenate notranslate">sqltypes</span></a></li><li>      <a href="etc_c_odbc_sqlucode.html" title="etc.c.odbc.sqlucode"><span class="d_inlinecode donthyphenate notranslate">sqlucode</span></a>
+    </li></ul></li><li>    <a href="etc_c_sqlite3.html" title="etc.c.sqlite3"><span class="d_inlinecode donthyphenate notranslate">sqlite3</span></a></li><li>    <a href="etc_c_zlib.html" title="etc.c.zlib"><span class="d_inlinecode donthyphenate notranslate">zlib</span></a>
+  </li></ul>
+</li></ul>
+</li>
+
+<li class='expand-container'><a class='expand-toggle' href='#'><span><em class="tt">core</em></span></a>
+<ul><li>  <a href="core_atomic.html" title="core.atomic"><span class="d_inlinecode donthyphenate notranslate">atomic</span></a></li><li>  <a href="core_attribute.html" title="core.attribute"><span class="d_inlinecode donthyphenate notranslate">attribute</span></a></li><li>  <a href="core_bitop.html" title="core.bitop"><span class="d_inlinecode donthyphenate notranslate">bitop</span></a></li><li>  <a href="core_checkedint.html" title="core.checkedint"><span class="d_inlinecode donthyphenate notranslate">checkedint</span></a></li><li>  <a href="core_cpuid.html" title="core.cpuid"><span class="d_inlinecode donthyphenate notranslate">cpuid</span></a></li><li>  <a href="core_demangle.html" title="core.demangle"><span class="d_inlinecode donthyphenate notranslate">demangle</span></a></li><li>  <a href="core_exception.html" title="core.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>  <a href="core_math.html" title="core.math"><span class="d_inlinecode donthyphenate notranslate">math</span></a></li><li>  <a href="core_memory.html" title="core.memory"><span class="d_inlinecode donthyphenate notranslate">memory</span></a></li><li>  <a href="core_runtime.html" title="core.runtime"><span class="d_inlinecode donthyphenate notranslate">runtime</span></a></li><li>  <a href="core_simd.html" title="core.simd"><span class="d_inlinecode donthyphenate notranslate">simd</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">stdc</span></h7><ul><li>    <a href="core_stdc_complex.html" title="core.stdc.complex"><span class="d_inlinecode donthyphenate notranslate">complex</span></a></li><li>    <a href="core_stdc_ctype.html" title="core.stdc.ctype"><span class="d_inlinecode donthyphenate notranslate">ctype</span></a></li><li>    <a href="core_stdc_errno.html" title="core.stdc.errno"><span class="d_inlinecode donthyphenate notranslate">errno</span></a></li><li>    <a href="core_stdc_fenv.html" title="core.stdc.fenv"><span class="d_inlinecode donthyphenate notranslate">fenv</span></a></li><li>    <a href="core_stdc_float_.html" title="core.stdc.float_"><span class="d_inlinecode donthyphenate notranslate">float_</span></a></li><li>    <a href="core_stdc_inttypes.html" title="core.stdc.inttypes"><span class="d_inlinecode donthyphenate notranslate">inttypes</span></a></li><li>    <a href="core_stdc_limits.html" title="core.stdc.limits"><span class="d_inlinecode donthyphenate notranslate">limits</span></a></li><li>    <a href="core_stdc_locale.html" title="core.stdc.locale"><span class="d_inlinecode donthyphenate notranslate">locale</span></a></li><li>    <a href="core_stdc_math.html" title="core.stdc.math"><span class="d_inlinecode donthyphenate notranslate">math</span></a></li><li>    <a href="core_stdc_signal.html" title="core.stdc.signal"><span class="d_inlinecode donthyphenate notranslate">signal</span></a></li><li>    <a href="core_stdc_stdarg.html" title="core.stdc.stdarg"><span class="d_inlinecode donthyphenate notranslate">stdarg</span></a></li><li>    <a href="core_stdc_stddef.html" title="core.stdc.stddef"><span class="d_inlinecode donthyphenate notranslate">stddef</span></a></li><li>    <a href="core_stdc_stdint.html" title="core.stdc.stdint"><span class="d_inlinecode donthyphenate notranslate">stdint</span></a></li><li>    <a href="core_stdc_stdio.html" title="core.stdc.stdio"><span class="d_inlinecode donthyphenate notranslate">stdio</span></a></li><li>    <a href="core_stdc_stdlib.html" title="core.stdc.stdlib"><span class="d_inlinecode donthyphenate notranslate">stdlib</span></a></li><li>    <a href="core_stdc_string.html" title="core.stdc.string"><span class="d_inlinecode donthyphenate notranslate">string</span></a></li><li>    <a href="core_stdc_tgmath.html" title="core.stdc.tgmath"><span class="d_inlinecode donthyphenate notranslate">tgmath</span></a></li><li>    <a href="core_stdc_time.html" title="core.stdc.time"><span class="d_inlinecode donthyphenate notranslate">time</span></a></li><li>    <a href="core_stdc_wchar_.html" title="core.stdc.wchar_"><span class="d_inlinecode donthyphenate notranslate">wchar_</span></a></li><li>    <a href="core_stdc_wctype.html" title="core.stdc.wctype"><span class="d_inlinecode donthyphenate notranslate">wctype</span></a>
+  </li></ul></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">stdcpp</span></h7><ul><li>    <a href="core_stdcpp_exception.html" title="core.stdcpp.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>    <a href="core_stdcpp_typeinfo.html" title="core.stdcpp.typeinfo"><span class="d_inlinecode donthyphenate notranslate">typeinfo</span></a>
+  </li></ul></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">sync</span></h7><ul><li>    <a href="core_sync_barrier.html" title="core.sync.barrier"><span class="d_inlinecode donthyphenate notranslate">barrier</span></a></li><li>    <a href="core_sync_condition.html" title="core.sync.condition"><span class="d_inlinecode donthyphenate notranslate">condition</span></a></li><li>    <a href="core_sync_config.html" title="core.sync.config"><span class="d_inlinecode donthyphenate notranslate">config</span></a></li><li>    <a href="core_sync_exception.html" title="core.sync.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>    <a href="core_sync_mutex.html" title="core.sync.mutex"><span class="d_inlinecode donthyphenate notranslate">mutex</span></a></li><li>    <a href="core_sync_rwmutex.html" title="core.sync.rwmutex"><span class="d_inlinecode donthyphenate notranslate">rwmutex</span></a></li><li>    <a href="core_sync_semaphore.html" title="core.sync.semaphore"><span class="d_inlinecode donthyphenate notranslate">semaphore</span></a>
+  </li></ul></li><li>  <a href="core_thread.html" title="core.thread"><span class="d_inlinecode donthyphenate notranslate">thread</span></a></li><li>  <a href="core_time.html" title="core.time"><span class="d_inlinecode donthyphenate notranslate">time</span></a></li><li>  <a href="core_vararg.html" title="core.vararg"><span class="d_inlinecode donthyphenate notranslate">vararg</span></a>
+</li></ul>
+</li></ul>
+</div>
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/phobos/&amp;bug_severity=enhancement&amp;component=phobos&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5Bstd.experimental.allocator.building_blocks.region%5D&amp;version=D2">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/D-Programming-Language/phobos/edit/master/std/experimental/allocator/building_blocks/region.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1><span class="d_inlinecode donthyphenate notranslate">std.experimental.allocator.building_blocks.region</span></h1>
+        <div class="quickindex" id="quickindex"></div>
+        <p></p>
+<dl><dt class="d_decl"><div ><a name=".Region"></a><div class="quickindex" id="quickindex.Region"></div>struct <a name="Region"></a><span class="ddoc_psymbol">Region</span>(ParentAllocator = NullAllocator, uint minAlign = platformAlignment, Flag!"growDownwards" growDownwards = No.growDownwards);
+<br></div></dt>
+<dd><div class="summary">A <span class="d_inlinecode donthyphenate notranslate"><a name="Region"></a><span class="ddoc_psymbol">Region</span></span> allocator allocates memory straight from one contiguous chunk.
+There is no deallocation, and once the region is full, allocation requests
+return <span class="d_inlinecode donthyphenate notranslate"><b>null</b></span>. Therefore, <span class="d_inlinecode donthyphenate notranslate"><a name="Region"></a><span class="ddoc_psymbol">Region</span></span>s are often used (a) in conjunction with
+more sophisticated allocators; or (b) for batch-style very fast allocations
+that deallocate everything at once.
+</div>
+<div class="description">The region only stores three pointers, corresponding to the current position in
+the store and the limits. One allocation entails rounding up the allocation
+size for alignment purposes, bumping the current pointer, and comparing it
+against the limit.
+<p></p>
+
+If <span class="d_inlinecode donthyphenate notranslate">ParentAllocator</span> is different from <span class="d_inlinecode donthyphenate notranslate">NullAllocator</span>, <span class="d_inlinecode donthyphenate notranslate"><a name="Region"></a><span class="ddoc_psymbol">Region</span></span>
+deallocates the chunk of memory during destruction.
+<p></p>
+
+The <span class="d_inlinecode donthyphenate notranslate">minAlign</span> parameter establishes alignment. If <span class="d_inlinecode donthyphenate notranslate">minAlign &gt; 1</span>, the
+sizes of all allocation requests are rounded up to a multiple of <span class="d_inlinecode donthyphenate notranslate">minAlign</span>.
+Applications aiming at maximum speed may want to choose <span class="d_inlinecode donthyphenate notranslate">minAlign = 1</span> and
+control alignment externally.</div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_keyword">import</span> std.experimental.allocator.mallocator : Mallocator;
+<span class="d_keyword">import</span> std.experimental.allocator.building_blocks.allocator_list
+    : AllocatorList;
+<span class="d_keyword">import</span> std.algorithm : max;
+<span class="d_comment">// Create a scalable list of regions. Each gets at least 1MB at a time by
+</span><span class="d_comment">// using malloc.
+</span><span class="d_keyword">auto</span> batchAllocator = AllocatorList!(
+    (size_t n) =&gt; <span class="d_psymbol">Region</span>!Mallocator(max(n, 1024 * 1024))
+)();
+<span class="d_keyword">auto</span> b = batchAllocator.allocate(101);
+<span class="d_keyword">assert</span>(b.length == 101);
+<span class="d_comment">// This will cause a second allocation
+</span>b = batchAllocator.allocate(2 * 1024 * 1024);
+<span class="d_keyword">assert</span>(b.length == 2 * 1024 * 1024);
+<span class="d_comment">// Destructor will free the memory
+</span></pre>
+</div></div>
+<dl><dt class="d_decl"><div ><a name=".Region.parent"></a><div class="quickindex" id="quickindex.Region.parent"></div>ParentAllocator <a name="parent"></a><span class="ddoc_psymbol">parent</span>;
+<br></div></dt>
+<dd><div class="summary">The parent allocator. Depending on whether <span class="d_inlinecode donthyphenate notranslate">ParentAllocator</span> holds state
+    or not, this is a member variable or an alias for
+    <span class="d_inlinecode donthyphenate notranslate">ParentAllocator.instance</span>.</div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".Region.this"></a><div class="quickindex" id="quickindex.Region.this"></div>this(void[] <i>store</i>);
+<br><br>this(size_t <i>n</i>);
+<br></div></dt>
+<dd><div class="summary">Constructs a region backed by a user-provided <i>store</i>. Assumes <span class="d_inlinecode donthyphenate notranslate"><i>store</i></span> is
+    aligned at <span class="d_inlinecode donthyphenate notranslate">minAlign</span>. Also assumes the memory was allocated with <span class="d_inlinecode donthyphenate notranslate">    ParentAllocator</span> (if different from <span class="d_inlinecode donthyphenate notranslate">NullAllocator</span>).
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">void[] <i>store</i></td>
+<td class="param_desc">User-provided <i>store</i> backing up the region. <span class="d_inlinecode donthyphenate notranslate"><i>store</i></span> must be
+    aligned at <span class="d_inlinecode donthyphenate notranslate">minAlign</span> (enforced with <span class="d_inlinecode donthyphenate notranslate">assert</span>). If <span class="d_inlinecode donthyphenate notranslate">    ParentAllocator</span> is different from <span class="d_inlinecode donthyphenate notranslate">NullAllocator</span>, memory is assumed to
+    have been allocated with <span class="d_inlinecode donthyphenate notranslate">ParentAllocator</span>.</td></tr>
+<tr class="param"><td class="param_id">size_t <i>n</i></td>
+<td class="param_desc">Bytes to allocate using <span class="d_inlinecode donthyphenate notranslate">ParentAllocator</span>. This constructor is only
+    defined If <span class="d_inlinecode donthyphenate notranslate">ParentAllocator</span> is different from <span class="d_inlinecode donthyphenate notranslate">NullAllocator</span>. If
+    <span class="d_inlinecode donthyphenate notranslate">parent.allocate(<i>n</i>)</span> returns <span class="d_inlinecode donthyphenate notranslate"><b>null</b></span>, the region will be initialized
+    as empty (correctly initialized but unable to allocate).</td></tr>
+</table></div></div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".Region.alignment"></a><div class="quickindex" id="quickindex.Region.alignment"></div>alias <a name="alignment"></a><span class="ddoc_psymbol">alignment</span> = minAlign;
+<br></div></dt>
+<dd><div class="summary">Alignment offered.</div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".Region.allocate"></a><div class="quickindex" id="quickindex.Region.allocate"></div>void[] <a name="allocate"></a><span class="ddoc_psymbol">allocate</span>(size_t <i>n</i>);
+<br></div></dt>
+<dd><div class="summary">Allocates <span class="d_inlinecode donthyphenate notranslate"><i>n</i></span> bytes of memory. The shortest path involves an alignment
+    adjustment (if <span class="d_inlinecode donthyphenate notranslate">alignment &gt; 1</span>), an increment, and a comparison.
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">size_t <i>n</i></td>
+<td class="param_desc">number of bytes to <a name="allocate"></a><span class="ddoc_psymbol">allocate</span></td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">A properly-aligned buffer of size <span class="d_inlinecode donthyphenate notranslate"><i>n</i></span> or <span class="d_inlinecode donthyphenate notranslate"><b>null</b></span> if request could not
+    be satisfied.</div></div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".Region.alignedAllocate"></a><div class="quickindex" id="quickindex.Region.alignedAllocate"></div>void[] <a name="alignedAllocate"></a><span class="ddoc_psymbol">alignedAllocate</span>(size_t <i>n</i>, uint <i>a</i>);
+<br></div></dt>
+<dd><div class="summary">Allocates <span class="d_inlinecode donthyphenate notranslate"><i>n</i></span> bytes of memory aligned at alignment <span class="d_inlinecode donthyphenate notranslate"><i>a</i></span>.
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">size_t <i>n</i></td>
+<td class="param_desc">number of bytes to allocate</td></tr>
+<tr class="param"><td class="param_id">uint <i>a</i></td>
+<td class="param_desc">alignment for the allocated block</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">Either <i>a</i> suitable block of <span class="d_inlinecode donthyphenate notranslate"><i>n</i></span> bytes aligned at <span class="d_inlinecode donthyphenate notranslate"><i>a</i></span>, or <span class="d_inlinecode donthyphenate notranslate"><b>null</b></span>.</div></div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".Region.allocateAll"></a><div class="quickindex" id="quickindex.Region.allocateAll"></div>void[] <a name="allocateAll"></a><span class="ddoc_psymbol">allocateAll</span>();
+<br></div></dt>
+<dd><div class="summary">Allocates and returns all memory available to this region.</div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".Region.expand"></a><div class="quickindex" id="quickindex.Region.expand"></div>bool <a name="expand"></a><span class="ddoc_psymbol">expand</span>(ref void[] <i>b</i>, size_t <i>delta</i>);
+<br></div></dt>
+<dd><div class="summary">Expands an allocated block in place. Expansion will succeed only if the
+    block is the last allocated. Defined only if <span class="d_inlinecode donthyphenate notranslate">growDownwards</span> is
+    <span class="d_inlinecode donthyphenate notranslate">No.growDownwards</span>.</div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".Region.deallocate"></a><div class="quickindex" id="quickindex.Region.deallocate"></div>bool <a name="deallocate"></a><span class="ddoc_psymbol">deallocate</span>(void[] <i>b</i>);
+<br></div></dt>
+<dd><div class="summary">Deallocates <span class="d_inlinecode donthyphenate notranslate"><i>b</i></span>. This works only if <span class="d_inlinecode donthyphenate notranslate"><i>b</i></span> was obtained as the last call
+    to <span class="d_inlinecode donthyphenate notranslate">allocate</span>; otherwise (i.e. another allocation has occurred since) it
+    does nothing. This semantics is tricky and therefore <span class="d_inlinecode donthyphenate notranslate"><a name="deallocate"></a><span class="ddoc_psymbol">deallocate</span></span> is
+    defined only if <span class="d_inlinecode donthyphenate notranslate">Region</span> is instantiated with <span class="d_inlinecode donthyphenate notranslate">Yes.defineDeallocate</span>
+    as the third template argument.
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">void[] <i>b</i></td>
+<td class="param_desc">Block previously obtained by a call to <span class="d_inlinecode donthyphenate notranslate">allocate</span> against this
+    allocator (<span class="d_inlinecode donthyphenate notranslate"><b>null</b></span> is allowed).</td></tr>
+</table></div></div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".Region.deallocateAll"></a><div class="quickindex" id="quickindex.Region.deallocateAll"></div>bool <a name="deallocateAll"></a><span class="ddoc_psymbol">deallocateAll</span>();
+<br></div></dt>
+<dd><div class="summary">Deallocates all memory allocated by this region, which can be subsequently
+    reused for new allocations.</div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".Region.owns"></a><div class="quickindex" id="quickindex.Region.owns"></div>const Ternary <a name="owns"></a><span class="ddoc_psymbol">owns</span>(void[] <i>b</i>);
+<br></div></dt>
+<dd><div class="summary">Queries whether <span class="d_inlinecode donthyphenate notranslate"><i>b</i></span> has been allocated with this region.
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">void[] <i>b</i></td>
+<td class="param_desc">Arbitrary block of memory (<span class="d_inlinecode donthyphenate notranslate"><b>null</b></span> is allowed; <span class="d_inlinecode donthyphenate notranslate"><a name="owns"></a><span class="ddoc_psymbol">owns</span>(<b>null</b>)</span>
+    returns <span class="d_inlinecode donthyphenate notranslate"><b>false</b></span>).</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns"><span class="d_inlinecode donthyphenate notranslate"><b>true</b></span> if <span class="d_inlinecode donthyphenate notranslate"><i>b</i></span> has been allocated with this region, <span class="d_inlinecode donthyphenate notranslate"><b>false</b></span>
+    otherwise.</div></div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".Region.empty"></a><div class="quickindex" id="quickindex.Region.empty"></div>const Ternary <a name="empty"></a><span class="ddoc_psymbol">empty</span>();
+<br></div></dt>
+<dd><div class="summary">Returns <span class="d_inlinecode donthyphenate notranslate">Ternary.yes</span> if no memory has been allocated in this region,
+    <span class="d_inlinecode donthyphenate notranslate">Ternary.no</span> otherwise. (Never returns <span class="d_inlinecode donthyphenate notranslate">Ternary.unknown</span>.)</div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".Region.available"></a><div class="quickindex" id="quickindex.Region.available"></div>const size_t <a name="available"></a><span class="ddoc_psymbol">available</span>();
+<br></div></dt>
+<dd><div class="summary">Nonstandard property that returns bytes <a name="available"></a><span class="ddoc_psymbol">available</span> for allocation.</div>
+
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><div ><a name=".InSituRegion"></a><div class="quickindex" id="quickindex.InSituRegion"></div>struct <a name="InSituRegion"></a><span class="ddoc_psymbol">InSituRegion</span>(size_t size, size_t minAlign = platformAlignment);
+<br></div></dt>
+<dd><div class="summary"><span class="d_inlinecode donthyphenate notranslate"><a name="InSituRegion"></a><span class="ddoc_psymbol">InSituRegion</span></span> is a convenient region that carries its storage within itself
+(in the form of a statically-sized array).
+</div>
+<div class="description">The first template argument is the size of the region and the second is the
+needed alignment. Depending on the alignment requested and platform details,
+the actual available storage may be smaller than the compile-time parameter. To
+make sure that at least <span class="d_inlinecode donthyphenate notranslate">n</span> bytes are available in the region, use
+<span class="d_inlinecode donthyphenate notranslate"><a name="InSituRegion"></a><span class="ddoc_psymbol">InSituRegion</span>!(n + a - 1, a)</span>.
+<p></p>
+
+Given that the most frequent use of <span class="d_inlinecode donthyphenate notranslate"><a name="InSituRegion"></a><span class="ddoc_psymbol">InSituRegion</span></span> is as a stack allocator, it
+allocates starting at the end on systems where stack grows downwards, such that
+hot memory is used first.</div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_comment">// 128KB region, allocated to x86's cache line
+</span><span class="d_psymbol">InSituRegion</span>!(128 * 1024, 16) r1;
+<span class="d_keyword">auto</span> a1 = r1.allocate(101);
+<span class="d_keyword">assert</span>(a1.length == 101);
+
+<span class="d_comment">// 128KB region, with fallback to the garbage collector.
+</span><span class="d_keyword">import</span> std.experimental.allocator.building_blocks.fallback_allocator
+    : FallbackAllocator;
+<span class="d_keyword">import</span> std.experimental.allocator.building_blocks.free_list
+    : FreeList;
+<span class="d_keyword">import</span> std.experimental.allocator.gc_allocator : GCAllocator;
+<span class="d_keyword">import</span> std.experimental.allocator.building_blocks.bitmapped_block
+    : BitmappedBlock;
+FallbackAllocator!(<span class="d_psymbol">InSituRegion</span>!(128 * 1024), GCAllocator) r2;
+<span class="d_keyword">const</span> a2 = r2.allocate(102);
+<span class="d_keyword">assert</span>(a2.length == 102);
+
+<span class="d_comment">// Reap with GC fallback.
+</span><span class="d_psymbol">InSituRegion</span>!(128 * 1024, 8) tmp3;
+FallbackAllocator!(BitmappedBlock!(64, 8), GCAllocator) r3;
+r3.primary = BitmappedBlock!(64, 8)(tmp3.allocateAll());
+<span class="d_keyword">const</span> a3 = r3.allocate(103);
+<span class="d_keyword">assert</span>(a3.length == 103);
+
+<span class="d_comment">// Reap/GC with a freelist for small objects up to 16 bytes.
+</span><span class="d_psymbol">InSituRegion</span>!(128 * 1024, 64) tmp4;
+FreeList!(FallbackAllocator!(BitmappedBlock!(64, 64), GCAllocator), 0, 16) r4;
+r4.parent.primary = BitmappedBlock!(64, 64)(tmp4.allocateAll());
+<span class="d_keyword">const</span> a4 = r4.allocate(104);
+<span class="d_keyword">assert</span>(a4.length == 104);
+</pre>
+</div></div>
+<dl><dt class="d_decl"><div ><a name=".InSituRegion.alignment"></a><div class="quickindex" id="quickindex.InSituRegion.alignment"></div>alias <a name="alignment"></a><span class="ddoc_psymbol">alignment</span> = minAlign;
+<br></div></dt>
+<dd><div class="summary">An alias for <span class="d_inlinecode donthyphenate notranslate">minAlign</span>, which must be a valid <a name="alignment"></a><span class="ddoc_psymbol">alignment</span> (nonzero power
+    of 2). The start of the region and all allocation requests will be rounded
+    up to a multiple of the <a name="alignment"></a><span class="ddoc_psymbol">alignment</span>.
+</div>
+<div class="description"><pre class="d_code notranslate">InSituRegion!(4096) a1;
+<span class="d_keyword">assert</span>(a1.<span class="d_psymbol">alignment</span> == platformAlignment);
+InSituRegion!(4096, 64) a2;
+<span class="d_keyword">assert</span>(a2.<span class="d_psymbol">alignment</span> == 64);
+</pre>
+</div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".InSituRegion.allocate"></a><div class="quickindex" id="quickindex.InSituRegion.allocate"></div>void[] <a name="allocate"></a><span class="ddoc_psymbol">allocate</span>(size_t <i>n</i>);
+<br></div></dt>
+<dd><div class="summary">Allocates <span class="d_inlinecode donthyphenate notranslate">bytes</span> and returns them, or <span class="d_inlinecode donthyphenate notranslate"><b>null</b></span> if the region cannot
+    accommodate the request. For efficiency reasons, if <span class="d_inlinecode donthyphenate notranslate">bytes == 0</span> the
+    function returns an empty non-<b>null</b> slice.</div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".InSituRegion.alignedAllocate"></a><div class="quickindex" id="quickindex.InSituRegion.alignedAllocate"></div>void[] <a name="alignedAllocate"></a><span class="ddoc_psymbol">alignedAllocate</span>(size_t <i>n</i>, uint <i>a</i>);
+<br></div></dt>
+<dd><div class="summary">As above, but the memory allocated is aligned at <span class="d_inlinecode donthyphenate notranslate"><i>a</i></span> bytes.</div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".InSituRegion.deallocate"></a><div class="quickindex" id="quickindex.InSituRegion.deallocate"></div>bool <a name="deallocate"></a><span class="ddoc_psymbol">deallocate</span>(void[] <i>b</i>);
+<br></div></dt>
+<dd><div class="summary">Deallocates <span class="d_inlinecode donthyphenate notranslate"><i>b</i></span>. This works only if <span class="d_inlinecode donthyphenate notranslate"><i>b</i></span> was obtained as the last call
+    to <span class="d_inlinecode donthyphenate notranslate">allocate</span>; otherwise (i.e. another allocation has occurred since) it
+    does nothing. This semantics is tricky and therefore <span class="d_inlinecode donthyphenate notranslate"><a name="deallocate"></a><span class="ddoc_psymbol">deallocate</span></span> is
+    defined only if <span class="d_inlinecode donthyphenate notranslate">Region</span> is instantiated with <span class="d_inlinecode donthyphenate notranslate">Yes.defineDeallocate</span>
+    as the third template argument.
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">void[] <i>b</i></td>
+<td class="param_desc">Block previously obtained by a call to <span class="d_inlinecode donthyphenate notranslate">allocate</span> against this
+    allocator (<span class="d_inlinecode donthyphenate notranslate"><b>null</b></span> is allowed).</td></tr>
+</table></div></div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".InSituRegion.owns"></a><div class="quickindex" id="quickindex.InSituRegion.owns"></div>Ternary <a name="owns"></a><span class="ddoc_psymbol">owns</span>(void[] <i>b</i>);
+<br></div></dt>
+<dd><div class="summary">Returns <span class="d_inlinecode donthyphenate notranslate">Ternary.yes</span> if <span class="d_inlinecode donthyphenate notranslate"><i>b</i></span> is the result of a previous allocation,
+    <span class="d_inlinecode donthyphenate notranslate">Ternary.no</span> otherwise.</div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".InSituRegion.expand"></a><div class="quickindex" id="quickindex.InSituRegion.expand"></div>bool <a name="expand"></a><span class="ddoc_psymbol">expand</span>(ref void[] <i>b</i>, size_t <i>delta</i>);
+<br></div></dt>
+<dd><div class="summary">Expands an allocated block in place. Expansion will succeed only if the
+    block is the last allocated.</div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".InSituRegion.deallocateAll"></a><div class="quickindex" id="quickindex.InSituRegion.deallocateAll"></div>bool <a name="deallocateAll"></a><span class="ddoc_psymbol">deallocateAll</span>();
+<br></div></dt>
+<dd><div class="summary">Deallocates all memory allocated with this allocator.</div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".InSituRegion.allocateAll"></a><div class="quickindex" id="quickindex.InSituRegion.allocateAll"></div>void[] <a name="allocateAll"></a><span class="ddoc_psymbol">allocateAll</span>();
+<br></div></dt>
+<dd><div class="summary">Allocates all memory available with this allocator.</div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".InSituRegion.available"></a><div class="quickindex" id="quickindex.InSituRegion.available"></div>size_t <a name="available"></a><span class="ddoc_psymbol">available</span>();
+<br></div></dt>
+<dd><div class="summary">Nonstandard function that returns the bytes <a name="available"></a><span class="ddoc_psymbol">available</span> for allocation.</div>
+
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><div ><a name=".SbrkRegion"></a><div class="quickindex" id="quickindex.SbrkRegion"></div>struct <a name="SbrkRegion"></a><span class="ddoc_psymbol">SbrkRegion</span>(uint minAlign = platformAlignment);
+<br></div></dt>
+<dd><div class="summary">Allocator backed by <span class="d_inlinecode donthyphenate notranslate"><a href="https://google.com/search?btnI=I%27m+Feeling+Lucky&amp;ie=UTF-8&amp;oe=UTF-8&amp;q=sbrk">sbrk</a></span> for Posix systems. Due to the fact that
+<span class="d_inlinecode donthyphenate notranslate">sbrk</span> is not thread-safe <a href="http://lifecs.likai.org/2010/02/sbrk-is-not-thread-
+safe.html">by design</a>, <span class="d_inlinecode donthyphenate notranslate"><a name="SbrkRegion"></a><span class="ddoc_psymbol">SbrkRegion</span></span> uses a mutex internally. This implies
+that uncontrolled calls to <span class="d_inlinecode donthyphenate notranslate">brk</span> and <span class="d_inlinecode donthyphenate notranslate">sbrk</span> may affect the workings of <span class="d_inlinecode donthyphenate notranslate"><a name="SbrkRegion"></a><span class="ddoc_psymbol">SbrkRegion</span></span> adversely.
+</div>
+
+<dl><dt class="d_decl"><div ><a name=".SbrkRegion.instance"></a><div class="quickindex" id="quickindex.SbrkRegion.instance"></div>static shared SbrkRegion <a name="instance"></a><span class="ddoc_psymbol">instance</span>;
+<br></div></dt>
+<dd><div class="summary">Instance shared by all callers.</div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".SbrkRegion.alignment"></a><div class="quickindex" id="quickindex.SbrkRegion.alignment"></div>enum uint <a name="alignment"></a><span class="ddoc_psymbol">alignment</span>;
+<br><br><a name=".SbrkRegion.allocate"></a><div class="quickindex" id="quickindex.SbrkRegion.allocate"></div>shared void[] <a name="allocate"></a><span class="ddoc_psymbol">allocate</span>(size_t <i>bytes</i>);
+<br><br><a name=".SbrkRegion.alignedAllocate"></a><div class="quickindex" id="quickindex.SbrkRegion.alignedAllocate"></div>shared void[] <a name="alignedAllocate"></a><span class="ddoc_psymbol">alignedAllocate</span>(size_t <i>bytes</i>, uint <i>a</i>);
+<br></div></dt>
+<dd><div class="summary">Standard allocator primitives.</div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".SbrkRegion.expand"></a><div class="quickindex" id="quickindex.SbrkRegion.expand"></div>shared bool <a name="expand"></a><span class="ddoc_psymbol">expand</span>(ref void[] <i>b</i>, size_t <i>delta</i>);
+<br><br><a name=".SbrkRegion.owns"></a><div class="quickindex" id="quickindex.SbrkRegion.owns"></div>shared Ternary <a name="owns"></a><span class="ddoc_psymbol">owns</span>(void[] <i>b</i>);
+<br></div></dt>
+<dd><div class="summary">The <span class="d_inlinecode donthyphenate notranslate"><a name="expand"></a><span class="ddoc_psymbol">expand</span></span> method may only succeed if the argument is the last block
+    allocated. In that case, <span class="d_inlinecode donthyphenate notranslate"><a name="expand"></a><span class="ddoc_psymbol">expand</span></span> attempts to push the break pointer to
+    the right.
+</div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".SbrkRegion.deallocate"></a><div class="quickindex" id="quickindex.SbrkRegion.deallocate"></div>shared bool <a name="deallocate"></a><span class="ddoc_psymbol">deallocate</span>(void[] <i>b</i>);
+<br></div></dt>
+<dd><div class="summary">The <span class="d_inlinecode donthyphenate notranslate"><a name="deallocate"></a><span class="ddoc_psymbol">deallocate</span></span> method only works (and returns <span class="d_inlinecode donthyphenate notranslate"><b>true</b></span>)  on systems
+    that support reducing the  break address (i.e. accept calls to <span class="d_inlinecode donthyphenate notranslate">sbrk</span>
+    with negative offsets). OSX does not accept such. In addition the argument
+    must be the last block allocated.
+</div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".SbrkRegion.deallocateAll"></a><div class="quickindex" id="quickindex.SbrkRegion.deallocateAll"></div>shared bool <a name="deallocateAll"></a><span class="ddoc_psymbol">deallocateAll</span>();
+<br></div></dt>
+<dd><div class="summary">The <span class="d_inlinecode donthyphenate notranslate"><a name="deallocateAll"></a><span class="ddoc_psymbol">deallocateAll</span></span> method only works (and returns <span class="d_inlinecode donthyphenate notranslate"><b>true</b></span>) on systems
+    that support reducing the  break address (i.e. accept calls to <span class="d_inlinecode donthyphenate notranslate">sbrk</span>
+    with negative offsets). OSX does not accept such.</div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".SbrkRegion.empty"></a><div class="quickindex" id="quickindex.SbrkRegion.empty"></div>Ternary <a name="empty"></a><span class="ddoc_psymbol">empty</span>();
+<br></div></dt>
+<dd><div class="summary">Standard allocator API.</div>
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2017 by Digital Mars &reg;, All Rights Reserved | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on (no date time)</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+<script type="text/javascript" src="../js/listanchors.js"></script>
+<script type="text/javascript">jQuery(document).ready(listanchors);</script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+</body>
+</html>

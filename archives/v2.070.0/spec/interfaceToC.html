@@ -1,0 +1,439 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2017 by Digital Mars
+    All Rights Reserved Written by Walter Bright
+    http://digitalmars.com
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Interfacing to C - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="stylesheet" href="../css/cssmenu.css">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Interfacing to C' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top">	<div id="header">		<img src="../images/hamburger.svg" id="mobile-hamburger">
+		<a class="logo" href=".."><img id="logo" width="125" height="95" alt="D Logo" src="../images/dlogo.svg"></a>
+		<span id="d-language-mobilehelper"><a href=".." id="d-language">D Programming Language</a></span>
+	</div>
+</div>
+<div id="navigation">    
+    <div id="search-box">        <form method="get" action="http://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search" tabindex="1000"></span><span id="search-dropdown">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire D Site</option>
+                    <option selected value="dlang.org/spec">Language Reference</option>
+                    <option  value="dlang.org/phobos">Library Reference</option>
+                    <option  value="forum.dlang.org">Discussion Forums</option>
+                    
+                </select>
+            </span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    
+<div id="cssmenu"><ul>    <li><a href='../index.html'><span>D 2.070.0</span></a></li>
+    <li><a href='../download.html'><span><b>Download</b></span></a></li>
+    <li><a href='../getstarted.html'><span>Getting Started</span></a></li>
+    <li><a href='http://ddili.org/ders/d.en/index.html'><span>Official Tutorial</span></a></li>
+    <li><a href='http://wiki.dlang.org'><span>Wiki</span></a></li>
+    <li class='has-sub'><a href='#'><span>D Reference</span></a>
+      <ul><li><a href='        ../spec/intro.html'>Introduction</a></li><li><a href='        ../spec/lex.html'>Lexical</a></li><li><a href='        ../spec/grammar.html'>Grammar</a></li><li><a href='        ../spec/module.html'>Modules</a></li><li><a href='        ../spec/declaration.html'>Declarations</a></li><li><a href='        ../spec/type.html'>Types</a></li><li><a href='        ../spec/property.html'>Properties</a></li><li><a href='        ../spec/attribute.html'>Attributes</a></li><li><a href='        ../spec/pragma.html'>Pragmas</a></li><li><a href='        ../spec/expression.html'>Expressions</a></li><li><a href='        ../spec/statement.html'>Statements</a></li><li><a href='        ../spec/arrays.html'>Arrays</a></li><li><a href='        ../spec/hash-map.html'>Associative Arrays</a></li><li><a href='        ../spec/struct.html'>Structs and Unions</a></li><li><a href='        ../spec/class.html'>Classes</a></li><li><a href='        ../spec/interface.html'>Interfaces</a></li><li><a href='        ../spec/enum.html'>Enums</a></li><li><a href='        ../spec/const3.html'>Const and Immutable</a></li><li><a href='        ../spec/function.html'>Functions</a></li><li><a href='        ../spec/operatoroverloading.html'>Operator Overloading</a></li><li><a href='        ../spec/template.html'>Templates</a></li><li><a href='        ../spec/template-mixin.html'>Template Mixins</a></li><li><a href='        ../spec/contracts.html'>Contract Programming</a></li><li><a href='        ../spec/version.html'>Conditional Compilation</a></li><li><a href='        ../spec/traits.html'>Traits</a></li><li><a href='        ../spec/errors.html'>Error Handling</a></li><li><a href='        ../spec/unittest.html'>Unit Tests</a></li><li><a href='        ../spec/garbage.html'>Garbage Collection</a></li><li><a href='        ../spec/float.html'>Floating Point</a></li><li><a href='        ../spec/iasm.html'>D x86 Inline Assembler</a></li><li><a href='        ../spec/ddoc.html'>Embedded Documentation</a></li><li><a href='        ../spec/interfaceToC.html'>Interfacing to C</a></li><li><a href='        ../spec/cpp_interface.html'>Interfacing to C++</a></li><li><a href='        ../spec/objc_interface.html'>Interfacing to Objective-C</a></li><li><a href='        ../spec/portability.html'>Portability Guide</a></li><li><a href='        ../spec/entity.html'>Named Character Entities</a></li><li><a href='        ../spec/memory-safe-d.html'>Memory Safety</a></li><li><a href='        ../spec/abi.html'>Application Binary Interface</a></li><li><a href='        ../spec/simd.html'>Vector Extensions
+      </a></li></ul></li>
+    <li><a href='../phobos/index.html'><span>Standard library</span></a></li>
+    <li><a href='http://code.dlang.org'><span>DUB &ndash; The D package registry</span></a></li>
+    <li class='has-sub'><a href='#'><span>Community</span></a>
+      <ul><li><a href='        ../bugstats.php'>Bug Tracker</a></li><li><a href='        http://forum.dlang.org'>Forums</a></li><li><a href='        irc://irc.freenode.net/d'>IRC</a></li><li><a href='        http://github.com/D-Programming-Language'>D on GitHub</a></li><li><a href='        http://wiki.dlang.org'>Wiki</a></li><li><a href='        http://wiki.dlang.org/Review_Queue'>Review Queue</a></li><li><a href='        http://twitter.com/search?q=%23dlang'>Twitter</a></li><li><a href='        http://digitalmars.com/d/dlinks.html'>More Links
+      </a></li></ul></li>
+    <li class='has-sub'><a href='#'><span>Compilers &amp; Tools</span></a>
+      <ul><li><a href='        ../dmd-windows.html'>dmd &ndash; reference compiler</a></li><li><a href='        http://gdcproject.org'>gdc &ndash; gcc-based compiler</a></li><li><a href='        http://wiki.dlang.org/LDC'>ldc &ndash; LLVM-based compiler</a></li><li><a href='        http://code.dlang.org/download'>DUB &ndash; D package manager</a></li><li><a href='        https://github.com/Hackerpilot/dfix'>dfix &ndash; D source code upgrade</a></li><li><a href='        https://github.com/Hackerpilot/dfmt'>dfmt &ndash; D source code formatting tool</a></li><li><a href='        ../rdmd.html'>rdmd &ndash; build tool</a></li><li><a href='        ../htod.html'>htod &ndash; .h to .d
+      </a></li></ul></li>
+    <li class='has-sub'><a href='#'><span>Books &amp; Articles</span></a>
+      <ul><li><a href='        http://ddili.org/ders/d.en/index.html'>Online Book (free)</a></li><li><a href='        http://wiki.dlang.org/Books'>More Books</a></li><li><a href='        ../howtos.html'>How-tos</a></li><li><a href='        ../faq.html'>FAQ</a></li><li><a href='        ../const-faq.html'>const(FAQ)</a></li><li><a href='        ../comparison.html'>Feature Overview</a></li><li><a href='        ../d-floating-point.html'>Floating Point</a></li><li><a href='        ../warnings.html'>Warnings</a></li><li><a href='        ../rationale.html'>Rationale</a></li><li><a href='        ../builtin.html'>Builtin Rationale</a></li><li><a href='        ../ctod.html'>C to D</a></li><li><a href='        ../cpptod.html'>C++ to D</a></li><li><a href='        ../pretod.html'>C Preprocessor vs D</a></li><li><a href='        ../code_coverage.html'>Code coverage analysis</a></li><li><a href='        ../exception-safe.html'>Exception Safety</a></li><li><a href='        ../hijack.html'>Hijacking</a></li><li><a href='        ../intro-to-datetime.html'>Introduction to std.datetime</a></li><li><a href='        ../lazy-evaluation.html'>Lazy Evaluation</a></li><li><a href='        ../migrate-to-shared.html'>Migrating to Shared</a></li><li><a href='        ../mixin.html'>Mixins</a></li><li><a href='        ../regular-expression.html'>Regular Expressions</a></li><li><a href='        ../safed.html'>SafeD</a></li><li><a href='        ../templates-revisited.html'>Templates Revisited</a></li><li><a href='        ../tuple.html'>Tuples</a></li><li><a href='        ../ctarguments.html'>Compile-time Argument Lists</a></li><li><a href='        ../variadic-function-templates.html'>Variadic Templates</a></li><li><a href='        ../d-array-article.html'>D Slices
+      </a></li></ul></li>
+    <li class='has-sub'><a href='#'><span>Resources</span></a>
+      <ul><li><a href='        ../library/index.html'>NEW Library Reference Preview</a></li><li><a href='        http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li><li><a href='        http://wiki.dlang.org/Editors'>Editors</a></li><li><a href='        http://wiki.dlang.org/IDEs'>IDEs</a></li><li><a href='        ../dstyle.html'>The D Style</a></li><li><a href='        ../glossary.html'>Glossary</a></li><li><a href='        ../acknowledgements.html'>Acknowledgments</a></li><li><a href='        ../sitemap.html'>Sitemap
+      </a></li></ul></li>
+</ul></div>
+</div>
+
+<div class="hyphenate" id="content">    
+<div id="tools">	<span class="tip">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;bug_severity=enhancement&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BInterfacing to C%5D&amp;version=D2" class="button">Report a bug</a>
+		<span >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</span>
+	</span>
+	<span class="tip">		<a href="https://github.com/D-Programming-Language/dlang.org/edit/master/spec/interfaceToC.dd" class="button">Improve this page</a>
+		<span >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			local clone.
+		</span>
+	</span>
+</div>
+    <h1>Interfacing to C</h1>
+    
+    
+
+
+	<p>D is designed to fit comfortably with a C compiler for the target
+	system. D makes up for not having its own VM by relying on the
+	target environment's C runtime library. It would be senseless to
+	attempt to port to D or write D wrappers for the vast array of C APIs
+	available. How much easier it is to just call them directly.
+	</p>
+
+	<p>This is done by matching the C compiler's data types, layouts,
+	and function call/return sequences.
+	</p>
+
+<h2>Calling C Functions</h2>
+
+	<p>C functions can be called directly from D. There is no need for
+	wrapper functions, argument swizzling, and the C functions do not
+	need to be put into a separate DLL.
+	</p>
+
+	<p>The C function must be declared and given a calling convention,
+	most likely the "C" calling convention, for example:
+	</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">extern</span> (C) <span class="d_keyword">int</span> strcmp(<span class="d_keyword">char</span>* string1, <span class="d_keyword">char</span>* string2);
+</pre>
+
+	<p>and then it can be called within D code in the obvious way:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.string;
+<span class="d_keyword">int</span> myDfunction(<span class="d_keyword">char</span>[] s)
+{
+    <span class="d_keyword">return</span> strcmp(std.string.toStringz(s), <span class="d_string">"foo"</span>);
+}
+</pre>
+
+	<p>There are several things going on here:</p>
+
+	<ul>	<li>D understands how C function names are "mangled" and the
+	correct C function call/return sequence.</li>
+
+	<li>C functions cannot be overloaded with another C function
+	with the same name.</li>
+
+	<li>There are no <span class="d_inlinecode donthyphenate notranslate">__cdecl</span>, <span class="d_inlinecode donthyphenate notranslate">__far</span>, <span class="d_inlinecode donthyphenate notranslate">__stdcall</span>,
+	<a href="	http://www.digitalmars.com/ctg/ctgLanguageImplementation.html#declspec">	<span class="d_inlinecode donthyphenate notranslate">__declspec</span></a>,
+	or other such C
+	<a href="http://www.digitalmars.com/ctg/ctgLanguageImplementation.html#extended">extended type modifiers</a>
+	in D. These are handled by
+	<a href="attribute.html#linkage">linkage attributes</a>,
+	such as <span class="d_inlinecode donthyphenate notranslate">extern (C)</span>.</li>
+
+	<li>There is no volatile type modifier in D. To declare a C function that uses
+	volatile, just drop the keyword from the declaration.</li>
+
+	<li>Strings are not 0 terminated in D. See "Data Type Compatibility"
+	for more information about this. However, string literals in D are
+	0 terminated.</li>
+
+	</ul>
+
+	<p>C code can correspondingly call D functions, if the D functions
+	use an attribute that is compatible with the C compiler, most likely
+	the extern (C):</p>
+
+<pre class="d_code notranslate"><span class="d_comment">// myfunc() can be called from any C function
+</span><span class="d_keyword">extern</span> (C)
+{
+    <span class="d_keyword">void</span> myfunc(<span class="d_keyword">int</span> a, <span class="d_keyword">int</span> b)
+    {
+        ...
+    }
+}
+</pre>
+
+<h2>Storage Allocation</h2>
+
+	<p>C code explicitly manages memory with calls to
+	<a href="http://www.digitalmars.com/rtl/stdlib.html#malloc">malloc()</a> and
+	<a href="http://www.digitalmars.com/rtl/stdlib.html#free">free()</a>.
+	D allocates memory using the D garbage collector,
+	so no explicit free's are necessary.
+	</p>
+
+	<p>D can still explicitly allocate memory using core.stdc.stdlib.malloc()
+	and core.stdc.stdlib.free(), these are useful for connecting to C
+	functions that expect malloc'd buffers, etc.
+	</p>
+
+	<p>If pointers to D garbage collector allocated memory are passed to
+	C functions, it's critical to ensure that that memory will not
+	be collected by the garbage collector before the C function is
+	done with it. This is accomplished by:
+	</p>
+
+	<ul>
+	<li>Making a copy of the data using core.stdc.stdlib.malloc() and passing
+	the copy instead.</li>
+
+	<li>Leaving a pointer to it on the stack (as a parameter or
+	automatic variable), as the garbage collector will scan the stack.</li>
+
+	<li>Leaving a pointer to it in the static data segment, as the
+	garbage collector will scan the static data segment.</li>
+
+	<li>Registering the pointer with the garbage collector with the
+
+	<a href="../phobos/core_memory.html#addRoot">std.gc.addRoot()</a>
+	or
+
+	<a href="../phobos/core_memory.html#addRange">std.gc.addRange()</a>
+	calls.</li>
+
+	</ul>
+
+	<p>An interior pointer to the allocated memory block is sufficient
+	to let the GC
+	know the object is in use; i.e. it is not necessary to maintain
+	a pointer to the beginning of the allocated memory.
+	</p>
+
+	<p>The garbage collector does not scan the stacks of threads not
+	created by the D Thread interface. Nor does it scan the data
+	segments of other DLL's, etc.
+	</p>
+
+<h2>Data Type Compatibility</h2>
+
+	<center><table><caption>D And C Type Equivalence</caption>    <tr><th rowspan="2">D</th><th colspan="2">C</th></tr>
+<tr><th scope="col">32 bit</th><th scope="col">64 bit</th></tr>
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">void</span></td> <td colspan="2"><span class="d_inlinecode donthyphenate notranslate">void</span> </td></tr>
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">byte</span></td> <td colspan="2"><span class="d_inlinecode donthyphenate notranslate">signed char</span> </td></tr>
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">ubyte</span></td> <td colspan="2"><span class="d_inlinecode donthyphenate notranslate">unsigned char</span> </td></tr>
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">char</span></td> <td colspan="2"><span class="d_inlinecode donthyphenate notranslate">char</span> (chars are unsigned in D)</td></tr>
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">wchar</span></td> <td colspan="2"><span class="d_inlinecode donthyphenate notranslate">wchar_t</span> (when <span class="d_inlinecode donthyphenate notranslate">sizeof(wchar_t)</span> is 2)</td></tr>
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">dchar</span></td> <td colspan="2"><span class="d_inlinecode donthyphenate notranslate">wchar_t</span> (when <span class="d_inlinecode donthyphenate notranslate">sizeof(wchar_t)</span> is 4)</td></tr>
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">short</span></td> <td colspan="2"><span class="d_inlinecode donthyphenate notranslate">short</span> </td></tr>
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">ushort</span></td> <td colspan="2"><span class="d_inlinecode donthyphenate notranslate">unsigned short</span> </td></tr>
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">int</span></td> <td colspan="2"><span class="d_inlinecode donthyphenate notranslate">int</span> </td></tr>
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">uint</span></td> <td colspan="2"><span class="d_inlinecode donthyphenate notranslate">unsigned</span> </td></tr>
+
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">ulong</span></td> <td><span class="d_inlinecode donthyphenate notranslate">unsigned long long</span></td> <td><span class="d_inlinecode donthyphenate notranslate">unsigned long</span></td></tr>
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">core.stdc.config.c_long</span></td> <td><span class="d_inlinecode donthyphenate notranslate">long</span></td> <td><span class="d_inlinecode donthyphenate notranslate">long</span></td></tr>
+
+
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">core.stdc.config.c_ulong</span></td> <td><span class="d_inlinecode donthyphenate notranslate">unsigned long</span></td> <td><span class="d_inlinecode donthyphenate notranslate">unsigned long</span></td></tr>
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">long</span></td> <td><span class="d_inlinecode donthyphenate notranslate">long long</span></td> <td><span class="d_inlinecode donthyphenate notranslate">long</span> (or <span class="d_inlinecode donthyphenate notranslate">long long</span>)</td></tr>
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">ulong</span></td> <td><span class="d_inlinecode donthyphenate notranslate">unsigned long long</span></td> <td><span class="d_inlinecode donthyphenate notranslate">unsigned long</span> (or <span class="d_inlinecode donthyphenate notranslate">unsigned long long</span>)</td></tr>
+
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">float</span></td> <td colspan="2"><span class="d_inlinecode donthyphenate notranslate">float</span> </td></tr>
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">double</span></td> <td colspan="2"><span class="d_inlinecode donthyphenate notranslate">double</span> </td></tr>
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">real</span></td> <td colspan="2"><span class="d_inlinecode donthyphenate notranslate">long double</span> </td></tr>
+
+
+
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">cdouble</span></td> <td colspan="2"><span class="d_inlinecode donthyphenate notranslate">double _Complex</span> </td></tr>
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">creal</span></td> <td colspan="2"><span class="d_inlinecode donthyphenate notranslate">long double _Complex</span> </td></tr>
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">struct</span></td> <td colspan="2"><span class="d_inlinecode donthyphenate notranslate">struct</span> </td></tr>
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">union</span></td> <td colspan="2"><span class="d_inlinecode donthyphenate notranslate">union</span> </td></tr>
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">enum</span></td> <td colspan="2"><span class="d_inlinecode donthyphenate notranslate">enum</span> </td></tr>
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">class</span></td> <td colspan="2"><span class="d_inlinecode donthyphenate notranslate"></span> no equivalent</td></tr>
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">type *</span></td> <td colspan="2"><span class="d_inlinecode donthyphenate notranslate">type *</span> </td></tr>
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">type[dim]</span></td> <td colspan="2"><span class="d_inlinecode donthyphenate notranslate">type[dim]</span> </td></tr>
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">type[dim]*</span></td> <td colspan="2"><span class="d_inlinecode donthyphenate notranslate">type(*)[dim]</span> </td></tr>
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">type[]</span></td> <td colspan="2"><span class="d_inlinecode donthyphenate notranslate"></span> no equivalent</td></tr>
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">type1[type2]</span></td> <td colspan="2"><span class="d_inlinecode donthyphenate notranslate"></span> no equivalent</td></tr>
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">type function(params)</span></td> <td colspan="2"><span class="d_inlinecode donthyphenate notranslate">type(*)(params)</span> </td></tr>
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">type delegate(params)</span></td> <td colspan="2"><span class="d_inlinecode donthyphenate notranslate"></span> no equivalent</td></tr>
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">size_t</span></td> <td colspan="2"><span class="d_inlinecode donthyphenate notranslate">size_t</span> </td></tr>
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">ptrdiff_t</span></td> <td colspan="2"><span class="d_inlinecode donthyphenate notranslate">ptrdiff_t</span> </td></tr>
+	</table></center>
+
+	<p>These equivalents hold for most C compilers. The C standard
+	does not pin down the sizes of the types, so some care is needed.
+	</p>
+
+<h2>Passing D Array Arguments to C Functions</h2>
+
+	<p>In C, arrays are passed to functions as pointers even if the function
+	prototype says its an array. In D, static arrays are passed by value,
+	not by reference. Thus, the function prototype must be adjusted to match
+	what C expects.</p>
+
+	<center><table><caption>D And C Function Prototype Equivalence</caption>	<tr><th class="donthyphenate"><b>D type</b></th><th class="donthyphenate"><b>C type</b></th></tr>
+	<tr><td><i>T</i><b>*</b> </td><td><i>T</i><b>[]</b></td></tr>
+	<tr><td><b>ref</b> <i>T</i><b>[</b><i>dim</i><b>]</b> </td><td><i>T</i><b>[</b><i>dim</i><b>]</b></td></tr></table></center>
+
+	<p>For example:</p>
+
+<pre class="ccode notranslate">void foo(int a[3]) { ... } // C code</pre>
+<pre class="d_code notranslate"><span class="d_keyword">extern</span> (C)
+{
+    <span class="d_keyword">void</span> foo(<span class="d_keyword">ref</span> <span class="d_keyword">int</span>[3] a); <span class="d_comment">// D prototype
+</span>}
+</pre>
+
+
+<h2>Calling printf()</h2>
+
+	<p>This mostly means checking that the
+	<a href="http://www.digitalmars.com/rtl/stdio.html#printf">printf format specifier</a>
+	matches the corresponding D data type.
+	Although printf is designed to handle 0 terminated strings,
+	not D dynamic arrays of chars, it turns out that since D
+	dynamic arrays are a length followed by a pointer to the data,
+	the <span class="d_inlinecode donthyphenate notranslate">%.*s</span> format works:
+	</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span> foo(<span class="d_keyword">char</span>[] string)
+{
+    printf(<span class="d_string">"my string is: %.*s\n"</span>, string.length, string.ptr);
+}
+</pre>
+
+	<p>The <span class="d_inlinecode donthyphenate notranslate">printf</span> format string literal
+	in the example doesn't end with <span class="d_inlinecode donthyphenate notranslate">'\0'</span>.
+	This is because string literals,
+	when they are not part of an initializer to a larger data structure,
+	have a <span class="d_inlinecode donthyphenate notranslate">'\0'</span> character helpfully stored after the end of them.
+	</p>
+
+	<p>An improved D function for formatted output is
+	<span class="d_inlinecode donthyphenate notranslate">std.stdio.writef()</span>.
+	</p>
+
+<h2>Structs and Unions</h2>
+
+	<p>D structs and unions are analogous to C's.
+	</p>
+
+	<p>C code often adjusts the alignment and packing of struct members
+	with a command line switch or with various implementation specific
+	#pragma's. D supports explicit alignment attributes that correspond
+	to the C compiler's rules. Check what alignment the C code is using,
+	and explicitly set it for the D struct declaration.
+	</p>
+
+	<p>D does not support bit fields. If needed, they can be emulated
+	with shift and mask operations,
+	or use the <a href="../phobos/std_bitmanip.html#bitfields">std.bitmanip.bitfields</a>
+	library type.
+	<a href="../htod.html">htod</a> will convert bit fields to inline
+	functions that
+	do the right shift and masks.
+	</p>
+
+    <p>D does not support declaring variables of anonymous struct types. In such a case you can define a named struct in D and make it private:</p>
+
+<pre class="ccode notranslate">union Info  // C code
+{
+    struct
+    {
+        char *name;
+    } file;
+};
+</pre>
+<pre class="d_code notranslate"><span class="d_keyword">union</span> Info  <span class="d_comment">// D code
+</span>{
+    <span class="d_keyword">private</span> <span class="d_keyword">struct</span> File
+    {
+        <span class="d_keyword">char</span>* name;
+    }
+    File file;
+}
+</pre>
+
+<h2>Callbacks</h2>
+
+    <p>D can easily call C callbacks (function pointers), and C can call
+    callbacks provided by D code if the callback is an <span class="d_inlinecode donthyphenate notranslate">extern(C)</span> function,
+    or some other linkage that both sides have agreed to (e.g. <span class="d_inlinecode donthyphenate notranslate">extern(Windows)</span>).</p>
+
+    <p>Here's an example of C code providing a callback to D code:</p>
+
+<pre class="ccode notranslate">void someFunc(void *arg) { printf("Called someFunc!\n"); }  // C code
+typedef void (*Callback)(void *);
+extern "C" Callback getCallback(void)
+{
+    return someFunc;
+}
+</pre>
+
+<pre class="d_code notranslate"><span class="d_keyword">extern</span>(C) <span class="d_keyword">alias</span> Callback = <span class="d_keyword">int</span> <span class="d_keyword">function</span>(<span class="d_keyword">int</span>, <span class="d_keyword">int</span>);  <span class="d_comment">// D code
+</span><span class="d_keyword">extern</span>(C) Callback getCallback();
+<span class="d_keyword">void</span> main()
+{
+    Callback cb = getCallback();
+    cb();  <span class="d_comment">// invokes the callback
+</span>}
+</pre>
+
+    <p>And an example of D code providing a callback to C code:</p>
+
+<pre class="ccode notranslate">extern "C" void printer(int (*callback)(int, int))  // C code
+{
+    printf("calling callback with 2 and 4 returns: %d\n", callback(2, 4));
+}
+</pre>
+
+<pre class="d_code notranslate"><span class="d_keyword">extern</span>(C) <span class="d_keyword">alias</span> Callback = <span class="d_keyword">int</span> <span class="d_keyword">function</span>(<span class="d_keyword">int</span>, <span class="d_keyword">int</span>);  <span class="d_comment">// D code
+</span><span class="d_keyword">extern</span>(C) <span class="d_keyword">void</span> printer(Callback callback);
+<span class="d_keyword">extern</span>(C) <span class="d_keyword">int</span> sum(<span class="d_keyword">int</span> x, <span class="d_keyword">int</span> y) { <span class="d_keyword">return</span> x + y; }
+<span class="d_keyword">void</span> main()
+{
+    printer(&amp;sum);
+}
+</pre>
+
+    <p>For more info about callbacks read the <a href="function.html#closures">closures</a> section.</p>
+
+<h2><span id="Using C Libraries"><a class="anchor" title="Permalink to this section" id="using-c-libraries" href="#using-c-libraries">Using Existing C Libraries</a></span></h2>
+
+	<p>Since D can call C code directly, it can also call any C library
+	functions, giving D access to the smorgasbord of existing C libraries.
+	To do so, however, one needs to write a D interface (.di) file, which
+	is a translation of the C .h header file for the C library into D.
+	</p>
+
+	<p>For popular C libraries, the first place to look for the corresponding
+	D interface file is the <a href="https://github.com/D-Programming-Deimos/">Deimos Project</a>.
+	If it isn't there already, and you write one, please contribute it
+	to the Deimos Project.
+	</p>
+
+<h2><span id="C Globals"><a class="anchor" title="Permalink to this section" id="c-globals" href="#c-globals">Accessing C Globals</a></span></h2>
+
+	<p>C globals can be accessed directly from D. C globals have the C naming
+	convention, and so must be in an <span class="d_inlinecode donthyphenate notranslate">extern (C)</span> block.
+	Use the <span class="d_inlinecode donthyphenate notranslate">extern</span> storage class to indicate that the global is allocated
+	in the C code, not the D code.
+	C globals default to being in global, not thread local, storage.
+	To reference global storage
+	from D, use the <span class="d_inlinecode donthyphenate notranslate">__gshared</span> storage class.
+	</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">extern</span> (C) <span class="d_keyword">extern</span> <span class="d_keyword">__gshared</span> <span class="d_keyword">int</span> x;
+</pre>
+
+
+
+
+</div>
+<div id="copyright">Copyright &copy; 1999-2017 by Digital Mars &reg;, All Rights Reserved | Page generated by <a href="http://dlang.org/spec/ddoc.html">Ddoc</a> on (no date time)</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+</body>
+</html>

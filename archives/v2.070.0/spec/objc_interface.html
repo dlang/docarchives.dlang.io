@@ -1,0 +1,411 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2017 by Digital Mars
+    All Rights Reserved Written by Walter Bright
+    http://digitalmars.com
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Interfacing to Objective-C - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="stylesheet" href="../css/cssmenu.css">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Interfacing to Objective-C' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top">	<div id="header">		<img src="../images/hamburger.svg" id="mobile-hamburger">
+		<a class="logo" href=".."><img id="logo" width="125" height="95" alt="D Logo" src="../images/dlogo.svg"></a>
+		<span id="d-language-mobilehelper"><a href=".." id="d-language">D Programming Language</a></span>
+	</div>
+</div>
+<div id="navigation">    
+    <div id="search-box">        <form method="get" action="http://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search" tabindex="1000"></span><span id="search-dropdown">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire D Site</option>
+                    <option selected value="dlang.org/spec">Language Reference</option>
+                    <option  value="dlang.org/phobos">Library Reference</option>
+                    <option  value="forum.dlang.org">Discussion Forums</option>
+                    
+                </select>
+            </span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    
+<div id="cssmenu"><ul>    <li><a href='../index.html'><span>D 2.070.0</span></a></li>
+    <li><a href='../download.html'><span><b>Download</b></span></a></li>
+    <li><a href='../getstarted.html'><span>Getting Started</span></a></li>
+    <li><a href='http://ddili.org/ders/d.en/index.html'><span>Official Tutorial</span></a></li>
+    <li><a href='http://wiki.dlang.org'><span>Wiki</span></a></li>
+    <li class='has-sub'><a href='#'><span>D Reference</span></a>
+      <ul><li><a href='        ../spec/intro.html'>Introduction</a></li><li><a href='        ../spec/lex.html'>Lexical</a></li><li><a href='        ../spec/grammar.html'>Grammar</a></li><li><a href='        ../spec/module.html'>Modules</a></li><li><a href='        ../spec/declaration.html'>Declarations</a></li><li><a href='        ../spec/type.html'>Types</a></li><li><a href='        ../spec/property.html'>Properties</a></li><li><a href='        ../spec/attribute.html'>Attributes</a></li><li><a href='        ../spec/pragma.html'>Pragmas</a></li><li><a href='        ../spec/expression.html'>Expressions</a></li><li><a href='        ../spec/statement.html'>Statements</a></li><li><a href='        ../spec/arrays.html'>Arrays</a></li><li><a href='        ../spec/hash-map.html'>Associative Arrays</a></li><li><a href='        ../spec/struct.html'>Structs and Unions</a></li><li><a href='        ../spec/class.html'>Classes</a></li><li><a href='        ../spec/interface.html'>Interfaces</a></li><li><a href='        ../spec/enum.html'>Enums</a></li><li><a href='        ../spec/const3.html'>Const and Immutable</a></li><li><a href='        ../spec/function.html'>Functions</a></li><li><a href='        ../spec/operatoroverloading.html'>Operator Overloading</a></li><li><a href='        ../spec/template.html'>Templates</a></li><li><a href='        ../spec/template-mixin.html'>Template Mixins</a></li><li><a href='        ../spec/contracts.html'>Contract Programming</a></li><li><a href='        ../spec/version.html'>Conditional Compilation</a></li><li><a href='        ../spec/traits.html'>Traits</a></li><li><a href='        ../spec/errors.html'>Error Handling</a></li><li><a href='        ../spec/unittest.html'>Unit Tests</a></li><li><a href='        ../spec/garbage.html'>Garbage Collection</a></li><li><a href='        ../spec/float.html'>Floating Point</a></li><li><a href='        ../spec/iasm.html'>D x86 Inline Assembler</a></li><li><a href='        ../spec/ddoc.html'>Embedded Documentation</a></li><li><a href='        ../spec/interfaceToC.html'>Interfacing to C</a></li><li><a href='        ../spec/cpp_interface.html'>Interfacing to C++</a></li><li><a href='        ../spec/objc_interface.html'>Interfacing to Objective-C</a></li><li><a href='        ../spec/portability.html'>Portability Guide</a></li><li><a href='        ../spec/entity.html'>Named Character Entities</a></li><li><a href='        ../spec/memory-safe-d.html'>Memory Safety</a></li><li><a href='        ../spec/abi.html'>Application Binary Interface</a></li><li><a href='        ../spec/simd.html'>Vector Extensions
+      </a></li></ul></li>
+    <li><a href='../phobos/index.html'><span>Standard library</span></a></li>
+    <li><a href='http://code.dlang.org'><span>DUB &ndash; The D package registry</span></a></li>
+    <li class='has-sub'><a href='#'><span>Community</span></a>
+      <ul><li><a href='        ../bugstats.php'>Bug Tracker</a></li><li><a href='        http://forum.dlang.org'>Forums</a></li><li><a href='        irc://irc.freenode.net/d'>IRC</a></li><li><a href='        http://github.com/D-Programming-Language'>D on GitHub</a></li><li><a href='        http://wiki.dlang.org'>Wiki</a></li><li><a href='        http://wiki.dlang.org/Review_Queue'>Review Queue</a></li><li><a href='        http://twitter.com/search?q=%23dlang'>Twitter</a></li><li><a href='        http://digitalmars.com/d/dlinks.html'>More Links
+      </a></li></ul></li>
+    <li class='has-sub'><a href='#'><span>Compilers &amp; Tools</span></a>
+      <ul><li><a href='        ../dmd-windows.html'>dmd &ndash; reference compiler</a></li><li><a href='        http://gdcproject.org'>gdc &ndash; gcc-based compiler</a></li><li><a href='        http://wiki.dlang.org/LDC'>ldc &ndash; LLVM-based compiler</a></li><li><a href='        http://code.dlang.org/download'>DUB &ndash; D package manager</a></li><li><a href='        https://github.com/Hackerpilot/dfix'>dfix &ndash; D source code upgrade</a></li><li><a href='        https://github.com/Hackerpilot/dfmt'>dfmt &ndash; D source code formatting tool</a></li><li><a href='        ../rdmd.html'>rdmd &ndash; build tool</a></li><li><a href='        ../htod.html'>htod &ndash; .h to .d
+      </a></li></ul></li>
+    <li class='has-sub'><a href='#'><span>Books &amp; Articles</span></a>
+      <ul><li><a href='        http://ddili.org/ders/d.en/index.html'>Online Book (free)</a></li><li><a href='        http://wiki.dlang.org/Books'>More Books</a></li><li><a href='        ../howtos.html'>How-tos</a></li><li><a href='        ../faq.html'>FAQ</a></li><li><a href='        ../const-faq.html'>const(FAQ)</a></li><li><a href='        ../comparison.html'>Feature Overview</a></li><li><a href='        ../d-floating-point.html'>Floating Point</a></li><li><a href='        ../warnings.html'>Warnings</a></li><li><a href='        ../rationale.html'>Rationale</a></li><li><a href='        ../builtin.html'>Builtin Rationale</a></li><li><a href='        ../ctod.html'>C to D</a></li><li><a href='        ../cpptod.html'>C++ to D</a></li><li><a href='        ../pretod.html'>C Preprocessor vs D</a></li><li><a href='        ../code_coverage.html'>Code coverage analysis</a></li><li><a href='        ../exception-safe.html'>Exception Safety</a></li><li><a href='        ../hijack.html'>Hijacking</a></li><li><a href='        ../intro-to-datetime.html'>Introduction to std.datetime</a></li><li><a href='        ../lazy-evaluation.html'>Lazy Evaluation</a></li><li><a href='        ../migrate-to-shared.html'>Migrating to Shared</a></li><li><a href='        ../mixin.html'>Mixins</a></li><li><a href='        ../regular-expression.html'>Regular Expressions</a></li><li><a href='        ../safed.html'>SafeD</a></li><li><a href='        ../templates-revisited.html'>Templates Revisited</a></li><li><a href='        ../tuple.html'>Tuples</a></li><li><a href='        ../ctarguments.html'>Compile-time Argument Lists</a></li><li><a href='        ../variadic-function-templates.html'>Variadic Templates</a></li><li><a href='        ../d-array-article.html'>D Slices
+      </a></li></ul></li>
+    <li class='has-sub'><a href='#'><span>Resources</span></a>
+      <ul><li><a href='        ../library/index.html'>NEW Library Reference Preview</a></li><li><a href='        http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li><li><a href='        http://wiki.dlang.org/Editors'>Editors</a></li><li><a href='        http://wiki.dlang.org/IDEs'>IDEs</a></li><li><a href='        ../dstyle.html'>The D Style</a></li><li><a href='        ../glossary.html'>Glossary</a></li><li><a href='        ../acknowledgements.html'>Acknowledgments</a></li><li><a href='        ../sitemap.html'>Sitemap
+      </a></li></ul></li>
+</ul></div>
+</div>
+
+<div class="hyphenate" id="content">    
+<div id="tools">	<span class="tip">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;bug_severity=enhancement&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BInterfacing to Objective-C%5D&amp;version=D2" class="button">Report a bug</a>
+		<span >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</span>
+	</span>
+	<span class="tip">		<a href="https://github.com/D-Programming-Language/dlang.org/edit/master/spec/objc_interface.dd" class="button">Improve this page</a>
+		<span >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			local clone.
+		</span>
+	</span>
+</div>
+    <h1>Interfacing to Objective-C</h1>
+    
+    
+
+    <p>        D has limited support for interfacing with Objective-C. It supports
+        external classes and calling instance methods. It is only available on
+        OS X, compiling for 64bit.
+    </p>
+
+    <p>        Fully working example is available at
+        <a href="#usage-example">the bottom</a>.
+    </p>
+
+    <h2><a class="anchor" title="Permalink to this section" id="external-class" href="#external-class">Declaring an External Class</a></h2>
+
+<pre class="d_code notranslate"><span class="d_keyword">extern</span> (Objective-C)
+<span class="d_keyword">interface</span> NSString
+{
+    <span class="d_keyword">const</span>(<span class="d_keyword">char</span>)* UTF8String() @selector(<span class="d_string">"UTF8String"</span>);
+}
+</pre>
+
+    <p>        Currently all Objective-C classes need to be declared as interfaces in
+        D. All Objective-C classes that should be accessible from within D
+        need to be declared with the <a href="#objc-linkage">Objective-C linkage</a>.
+    </p>
+
+    <p>        The <a href="#selector-attribute"><span class="d_inlinecode donthyphenate notranslate">@selector</span></a> attribute indicates which
+        Objective-C selector should be used when calling this method from D.
+        This attribute needs to be attached to all methods.
+    </p>
+
+    <h2><a class="anchor" title="Permalink to this section" id="instance-method" href="#instance-method">Calling an Instance Method</a></h2>
+
+    <p>        Calling an Objective-C instance method uses the same syntax as calling
+        regular D methods:
+    </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">const</span>(<span class="d_keyword">char</span>)* result = object.UTF8String();
+</pre>
+
+    <p>        When the compiler sees a call to a method with Objective-C linkage it
+        will generate a call similar to how an Objective-C compiler would call
+        the method.
+    </p>
+
+    <h2><a class="anchor" title="Permalink to this section" id="selector-attribute" href="#selector-attribute">The <span class="d_inlinecode donthyphenate notranslate">@selector</span> Attribute</a></h2>
+
+    <p>        The <span class="d_inlinecode donthyphenate notranslate">@selector</span> attribute is a compiler recognized
+        <a href="attribute.html#uda">UDA</a>. It is used to tell the compiler which
+        selector to use when calling an Objective-C method.
+    </p>
+
+    <p>        Selectors in Objective-C can contain the colon character, which is not valid in D
+        identifiers. D supports method overloading while Objective-C
+        achieves something similar by using different selectors. For these two
+        reasons it is better to be able to specify the selectors manually in D,
+        instead of trying to infer it. This allows to have a more natural names
+        for the methods in D. Example:
+    </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">extern</span> (Objective-C)
+<span class="d_keyword">interface</span> NSString
+{
+    NSString initWith(<span class="d_keyword">in</span> <span class="d_keyword">char</span>*) @selector(<span class="d_string">"initWithUTF8String:"</span>);
+    NSString initWith(NSString) @selector(<span class="d_string">"initWithString:"</span>);
+}
+</pre>
+
+    <p>        Here the method <span class="d_inlinecode donthyphenate notranslate">initWith</span> is overloaded with two versions, one
+        accepting <span class="d_inlinecode donthyphenate notranslate">in char*</span>, the other one <span class="d_inlinecode donthyphenate notranslate">NSString</span>. These two methods are
+        mapped to two different Objective-C selectors, <span class="d_inlinecode donthyphenate notranslate">initWithUTF8String:</span>
+        and <span class="d_inlinecode donthyphenate notranslate">initWithString:</span>.
+    </p>
+
+    <p>        The attribute is defined in druntime in
+        <a href="../phobos/core_attribute.html"><span class="d_inlinecode donthyphenate notranslate">core.attribute</span></a> and aliased in
+        <a href="../phobos/object.html"><span class="d_inlinecode donthyphenate notranslate">object</span></a>, meaning it will be implicitly
+        imported. The attribute is only defined when the version identifier
+        <a href="#objc-version-identifier"><span class="d_inlinecode donthyphenate notranslate">D_ObjectiveC</span></a> is enabled.
+
+    </p>
+
+    <h3><a class="anchor" title="Permalink to this section" id="compiler-checks" href="#compiler-checks">Compiler Checks</a></h3>
+
+    <p>        The compiler performs the following checks to enforce the correct usage
+        of the <span class="d_inlinecode donthyphenate notranslate">@selector</span> attribute:
+    </p>
+
+    <ul>        <li>            The attribute can only be attached to methods with Objective-C
+            linkage
+        </li>
+
+        <li>The attribute can only be attached once to a method</li>
+        <li>The attribute cannot be attached to a template method</li>
+
+        <li>            The number of colons in the selector needs to match the number of
+            parameters the method is declared with
+        </li>
+    </ul>
+
+    <p>If any of the checks fail, a compile error will occur.</p>
+
+    <h2>        <a class="anchor" title="Permalink to this section" id="objc-version-identifier" href="#objc-version-identifier">The <span class="d_inlinecode donthyphenate notranslate">D_ObjectiveC</span> Version Identifier</a>
+    </h2>
+
+    <p>        The <span class="d_inlinecode donthyphenate notranslate">D_ObjectiveC</span> version identifier is a predefined version
+        identifier. It is enabled if Objective-C support is available for the
+        target.
+    </p>
+
+    <h2><a class="anchor" title="Permalink to this section" id="objc-linkage" href="#objc-linkage">Objective-C Linkage</a></h2>
+
+    <p>        Objective-C linkage is achieved by attaching the <span class="d_inlinecode donthyphenate notranslate">extern (Objective-C)</span>
+        attribute to an interface. Example:
+    </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">extern</span> (Objective-C)
+<span class="d_keyword">interface</span> NSObject
+{
+    NSObject init() @selector(<span class="d_string">"init"</span>);
+}
+</pre>
+
+    <p>        All methods inside an interface declared as <span class="d_inlinecode donthyphenate notranslate">extern (Objective-C)</span> will
+        get implicit Objective-C linkage.
+    </p>
+
+    <p>        The linkage is recognized on all platforms but will issue a compile
+        error if it is used on a platform where Objective-C support is not
+        available. This allows to easily hide Objective-C declarations from
+        platforms where it is not available using the
+        <a href="version.html#version"><span class="d_inlinecode donthyphenate notranslate">version</span></a> statement, without resorting to
+        string mixins or other workarounds.
+    </p>
+
+    <h2><a class="anchor" title="Permalink to this section" id="memory-management" href="#memory-management">Memory Management</a></h2>
+
+    <p>        The preferred way to do memory management in Objective-C is to use
+        Automatic Reference Counting, <a href="https://developer.apple.com/library/mac/releasenotes/ObjectiveC/RN-TransitioningToARC/Introduction/Introduction.html">ARC</a>.
+        This is not supported in D, therefore manual memory management is
+        required to be used instead. This is achieved by calling <a href="https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Protocols/NSObject_Protocol/index.html#//apple_ref/occ/intfm/NSObject/release"><span class="d_inlinecode donthyphenate notranslate">release</span></a>
+        on an Objective-C instance, like in the old days of Objective-C.
+    </p>
+
+    <h2><a class="anchor" title="Permalink to this section" id="frameworks" href="#frameworks">Frameworks</a></h2>
+
+    <p>        Most Objective-C code is bundled in something called a "Framework".
+        This is basically a regular directory, with the <span class="d_inlinecode donthyphenate notranslate">.framework</span> extension
+        and a specific directory layout. A framework contains a dynamic
+        library, all public header files and any resources (images, sounds and
+        so on) required by the framework.
+    </p>
+
+    <p>        These directories are recognized by some tools, like the Objective-C
+        compiler and linker, to be frameworks. To link with a framework from
+        DMD, use the following flags:
+    </p>
+
+<pre class="d_code notranslate">-L-framework -L&lt;Framework&gt;
+</pre>
+
+    <p>        Where <span class="d_inlinecode donthyphenate notranslate">&lt;Framework&gt;</span> is the name of the framework to link with, without
+        the <span class="d_inlinecode donthyphenate notranslate">.framework</span> extension. The two <span class="d_inlinecode donthyphenate notranslate">-L</span> flags are required because the
+        linker expects a space between the <span class="d_inlinecode donthyphenate notranslate">-framework</span> flag and the name of
+        the framework. DMD cannot handle this and will instead interpet the
+        name of the framework as a separate flag.
+    </p>
+
+    <h3><a class="anchor" title="Permalink to this section" id="framework-paths" href="#framework-paths">Framework Paths</a></h3>
+
+    <p>        Using the above flag, the linker will search in the standard framework
+        paths. The standard search paths for frameworks are:
+    </p>
+
+    <ul>        <li><span class="d_inlinecode donthyphenate notranslate">/System/Library/Frameworks</span></li>
+        <li><span class="d_inlinecode donthyphenate notranslate">/Library/Frameworks</span></li>
+    </ul>
+
+    <p>        The following flag from DMD can be used to add a new path in which to
+        search for frameworks:
+    </p>
+
+<pre class="d_code notranslate">-L-F&lt;framework_path&gt;
+</pre>
+
+    <p>        For more information see the <a href="https://developer.apple.com/library/ios/documentation/MacOSX/Conceptual/BPFrameworks/Tasks/IncludingFrameworks.html">reference documentation</a>
+        and the <span class="d_inlinecode donthyphenate notranslate">ld</span> man page.
+
+    </p>
+
+    <h2><a class="anchor" title="Permalink to this section" id="usage-example" href="#usage-example">Full Usage Example</a></h2>
+
+    <p>        Since the only parts of Objective-C that is currently supported is
+        calling instance methods, this example demonstrates how the Objective-C
+        runtime can be used to achieve a running example.
+    </p>
+
+    <p>        This example will create an Objective-C string, <span class="d_inlinecode donthyphenate notranslate">NSString</span>, and log the
+        message using <span class="d_inlinecode donthyphenate notranslate">NSLog</span> to stderr.
+    </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">extern</span> (Objective-C)
+<span class="d_keyword">interface</span> Class
+{
+    NSString alloc() @selector(<span class="d_string">"alloc"</span>);
+}
+</pre>
+
+    <p>        This interface is used to emulate the <a href="https://developer.apple.com/library/mac/documentation/Cocoa/Reference/ObjCRuntimeRef/#//apple_ref/c/tdef/Class"><span class="d_inlinecode donthyphenate notranslate">Class</span></a>
+        type available in the Objective-C runtime. The instance method <span class="d_inlinecode donthyphenate notranslate">alloc</span>
+        will be used to emulate a class method in <span class="d_inlinecode donthyphenate notranslate">NSObject</span>,
+        <a href="https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSObject_Class/#//apple_ref/occ/clm/NSObject/alloc">alloc</a>.
+    </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">extern</span> (Objective-C)
+<span class="d_keyword">interface</span> NSString
+{
+    NSString initWithUTF8String(<span class="d_keyword">in</span> <span class="d_keyword">char</span>* str) @selector(<span class="d_string">"initWithUTF8String:"</span>);
+    <span class="d_keyword">void</span> release() @selector(<span class="d_string">"release"</span>);
+}
+</pre>
+
+    <p>        This is a simplified declaration of the <a href="https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSString_Class/"><span class="d_inlinecode donthyphenate notranslate">NSString</span></a>
+        class. The <a href="https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSString_Class/#//apple_ref/occ/instm/NSString/initWithUTF8String:"><span class="d_inlinecode donthyphenate notranslate">initWithUTF8String:</span></a>
+        method will be used to convert a C string in UTF-8 to an Objective-C
+        string, <span class="d_inlinecode donthyphenate notranslate">NSString</span>. The <a href="https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Protocols/NSObject_Protocol/index.html#//apple_ref/occ/intfm/NSObject/release"><span class="d_inlinecode donthyphenate notranslate">release</span></a>
+        method is used to release an deallocate the string. Since D doesn't
+        support <a href="https://developer.apple.com/library/mac/releasenotes/ObjectiveC/RN-TransitioningToARC/Introduction/Introduction.html">ARC</a>
+        it's needed to manually release Objective-C instances.
+    </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">extern</span> (C) Class objc_lookUpClass(<span class="d_keyword">in</span> <span class="d_keyword">char</span>* name)
+</pre>
+
+    <p>        The <a href="https://developer.apple.com/library/mac/documentation/Cocoa/Reference/ObjCRuntimeRef/#//apple_ref/c/func/objc_lookUpClass"><span class="d_inlinecode donthyphenate notranslate">objc_lookUpClass</span></a>
+        function is used to get the class definition of the class with the
+        given name.
+    </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">extern</span> (C) <span class="d_keyword">void</span> NSLog(NSString, ...);
+</pre>
+
+    <p>        This <a href="https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Miscellaneous/Foundation_Functions/index.html#//apple_ref/c/func/NSLog"><span class="d_inlinecode donthyphenate notranslate">NSLog</span></a>
+        function prints a message to the System Log facility, i.e. to stderr
+        and Console.
+    </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">auto</span> cls = objc_lookUpClass(<span class="d_string">"NSString"</span>);
+</pre>
+
+    <p>Get the class definition of <span class="d_inlinecode donthyphenate notranslate">NSString</span>.</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">auto</span> str = cls.alloc();
+</pre>
+
+    <p>Allocate an instance of the class, <span class="d_inlinecode donthyphenate notranslate">NSString</span>.</p>
+
+<pre class="d_code notranslate">str = str.initWithUTF8String(<span class="d_string">"Hello World!"</span>)
+</pre>
+
+    <p>Initialize the Objective-C string using a C string.</p>
+
+<pre class="d_code notranslate">NSLog(str);
+</pre>
+
+    <p>        Log the string to stderr, this will print something like this in the
+        terminal:
+    </p>
+
+<pre class="d_code notranslate">2015-07-18 13:14:27.978 main[11045:2934950] Hello World!
+</pre>
+
+<pre class="d_code notranslate">str.release();
+</pre>
+
+    <p>Release and deallocate the string.</p>
+
+    <p>All steps combined look like this:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">module</span> main;
+
+<span class="d_keyword">extern</span> (Objective-C)
+<span class="d_keyword">interface</span> Class
+{
+    NSString alloc() @selector(<span class="d_string">"alloc"</span>);
+}
+
+<span class="d_keyword">extern</span> (Objective-C)
+<span class="d_keyword">interface</span> NSString
+{
+    NSString initWithUTF8String(<span class="d_keyword">in</span> <span class="d_keyword">char</span>* str) @selector(<span class="d_string">"initWithUTF8String:"</span>);
+    <span class="d_keyword">void</span> release() @selector(<span class="d_string">"release"</span>);
+}
+
+<span class="d_keyword">extern</span> (C) <span class="d_keyword">void</span> NSLog(NSString, ...);
+<span class="d_keyword">extern</span> (C) Class objc_lookUpClass(<span class="d_keyword">in</span> <span class="d_keyword">char</span>* name);
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">auto</span> cls = objc_lookUpClass(<span class="d_string">"NSString"</span>);
+    <span class="d_keyword">auto</span> str = cls.alloc().initWithUTF8String(<span class="d_string">"Hello World!"</span>);
+    NSLog(str);
+    str.release();
+}
+</pre>
+
+    <p>        When compiling the application remember to link with the required
+        libraries, in this case the Foundation framework. Example:
+    </p>
+
+<pre class="d_code notranslate">dmd -L-framework -LFoundation main.d
+</pre>
+
+
+
+</div>
+<div id="copyright">Copyright &copy; 1999-2017 by Digital Mars &reg;, All Rights Reserved | Page generated by <a href="http://dlang.org/spec/ddoc.html">Ddoc</a> on (no date time)</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+</body>
+</html>

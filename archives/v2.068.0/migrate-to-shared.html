@@ -1,0 +1,306 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2017 by Digital Mars
+    All Rights Reserved Written by Walter Bright
+    http://digitalmars.com
+  -->
+<head>
+<meta charset="utf-8" />
+<meta name="keywords" content="D programming language" />
+<meta name="description" content="D Programming Language" />
+<title>Migrating to Shared - D Programming Language</title>
+
+<link rel="stylesheet" href="css/codemirror.css" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/print.css" media="print" />
+<link rel="stylesheet" href="css/cssmenu.css">
+<link rel="shortcut icon" href="favicon.ico" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0" />
+
+</head>
+<body id='Migrating to Shared' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top">	<div id="header">		<a class="logo" href="."><img id="logo" width="125" height="95" alt="D Logo" src="images/dlogo.svg"></a>
+		<span id="d-language-mobilehelper"><a href="." id="d-language">D Programming Language</a></span>
+	</div>
+</div>
+<div id="navigation">    
+    <div id="search-box">        <form method="get" action="http://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org" />
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search" />
+            <span id="search-query"><input id="q" name="q" placeholder="Search" tabindex="1000" /></span><span id="search-dropdown">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire D Site</option>
+                    <option  value="dlang.org/phobos">Library Reference</option>
+                    <option  value="forum.dlang.org">Discussion Forums</option>
+                </select>
+            </span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    
+<div id="cssmenu"><ul>    <li><a href='index.html'><span>D 2.068.0</span></a></li>
+    <li><a href='download.html'><span><b>Download</b></span></a></li>
+    <li><a href='getstarted.html'><span>Getting Started</span></a></li>
+    <li><a href='changelog.html'><span>Change Log</span></a></li>
+    <li class='has-sub'><a href='#'><span>D Reference</span></a>
+      <ul><li><a href='        intro.html'>Introduction</a></li><li><a href='        lex.html'>Lexical</a></li><li><a href='        grammar.html'>Grammar</a></li><li><a href='        module.html'>Modules</a></li><li><a href='        declaration.html'>Declarations</a></li><li><a href='        type.html'>Types</a></li><li><a href='        property.html'>Properties</a></li><li><a href='        attribute.html'>Attributes</a></li><li><a href='        pragma.html'>Pragmas</a></li><li><a href='        expression.html'>Expressions</a></li><li><a href='        statement.html'>Statements</a></li><li><a href='        arrays.html'>Arrays</a></li><li><a href='        hash-map.html'>Associative Arrays</a></li><li><a href='        struct.html'>Structs and Unions</a></li><li><a href='        class.html'>Classes</a></li><li><a href='        interface.html'>Interfaces</a></li><li><a href='        enum.html'>Enums</a></li><li><a href='        const3.html'>Const and Immutable</a></li><li><a href='        function.html'>Functions</a></li><li><a href='        operatoroverloading.html'>Operator Overloading</a></li><li><a href='        template.html'>Templates</a></li><li><a href='        template-mixin.html'>Template Mixins</a></li><li><a href='        contracts.html'>Contract Programming</a></li><li><a href='        version.html'>Conditional Compilation</a></li><li><a href='        traits.html'>Traits</a></li><li><a href='        errors.html'>Error Handling</a></li><li><a href='        unittest.html'>Unit Tests</a></li><li><a href='        garbage.html'>Garbage Collection</a></li><li><a href='        float.html'>Floating Point</a></li><li><a href='        iasm.html'>D x86 Inline Assembler</a></li><li><a href='        ddoc.html'>Embedded Documentation</a></li><li><a href='        interfaceToC.html'>Interfacing to C</a></li><li><a href='        cpp_interface.html'>Interfacing to C++</a></li><li><a href='        portability.html'>Portability Guide</a></li><li><a href='        entity.html'>Named Character Entities</a></li><li><a href='        memory-safe-d.html'>Memory Safety</a></li><li><a href='        abi.html'>Application Binary Interface</a></li><li><a href='        simd.html'>Vector Extensions
+      </a></li></ul>
+    <li><a href='phobos/index.html'><span>Standard library</span></a></li>
+    <li><a href='http://code.dlang.org'><span>More libraries</span></a></li>
+    <li class='has-sub'><a href='#'><span>Community</span></a>
+      <ul><li><a href='        http://forum.dlang.org'>Forums</a></li><li><a href='        irc://irc.freenode.net/d'>IRC</a></li><li><a href='        http://github.com/D-Programming-Language'>D on GitHub</a></li><li><a href='        http://wiki.dlang.org'>Wiki</a></li><li><a href='        http://wiki.dlang.org/Review_Queue'>Review Queue</a></li><li><a href='        http://twitter.com/search?q=%23dlang'>Twitter</a></li><li><a href='        http://digitalmars.com/d/dlinks.html'>More Links
+      </a></li></ul>
+    <li class='has-sub'><a href='#'><span>Compilers &amp; Tools</span></a>
+      <ul><li><a href='        dmd-windows.html'>dmd &ndash; reference compiler</a></li><li><a href='        http://gdcproject.org'>gdc &ndash; gcc-based compiler</a></li><li><a href='        http://wiki.dlang.org/LDC'>ldc &ndash; LLVM-based compiler</a></li><li><a href='        rdmd.html'>rdmd &ndash; build tool</a></li><li><a href='        htod.html'>htod &ndash; .h to .d
+      </a></li></ul>
+    <li class='has-sub'><a href='#'><span>Books &amp; Articles</span></a>
+      <ul><li><a href='        http://ddili.org/ders/d.en/index.html'>Online Book (free)</a></li><li><a href='        http://wiki.dlang.org/Books'>More Books</a></li><li><a href='        howtos.html'>How-tos</a></li><li><a href='        faq.html'>FAQ</a></li><li><a href='        const-faq.html'>const(FAQ)</a></li><li><a href='        comparison.html'>Feature Overview</a></li><li><a href='        d-floating-point.html'>Floating Point</a></li><li><a href='        wc.html'>Example: wc</a></li><li><a href='        warnings.html'>Warnings</a></li><li><a href='        rationale.html'>Rationale</a></li><li><a href='        builtin.html'>Builtin Rationale</a></li><li><a href='        ctod.html'>C to D</a></li><li><a href='        cpptod.html'>C++ to D</a></li><li><a href='        pretod.html'>C Preprocessor vs D</a></li><li><a href='        code_coverage.html'>Code coverage analysis</a></li><li><a href='        exception-safe.html'>Exception Safety</a></li><li><a href='        hijack.html'>Hijacking</a></li><li><a href='        intro-to-datetime.html'>Introduction to std.datetime</a></li><li><a href='        lazy-evaluation.html'>Lazy Evaluation</a></li><li><a href='        migrate-to-shared.html'>Migrating to Shared</a></li><li><a href='        mixin.html'>Mixins</a></li><li><a href='        regular-expression.html'>Regular Expressions</a></li><li><a href='        safed.html'>SafeD</a></li><li><a href='        templates-revisited.html'>Templates Revisited</a></li><li><a href='        tuple.html'>Tuples</a></li><li><a href='        variadic-function-templates.html'>Variadic Templates</a></li><li><a href='        d-array-article.html'>D Slices
+      </a></li></ul>
+    <li class='has-sub'><a href='#'><span>Resources</span></a>
+      <ul><li><a href='        library/index.html'>NEW Library Reference Preview</a></li><li><a href='        bugstats.php'>Bug Tracker</a></li><li><a href='        http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li><li><a href='        http://wiki.dlang.org/Editors'>Editors</a></li><li><a href='        http://wiki.dlang.org/IDEs'>IDEs</a></li><li><a href='        dstyle.html'>The D Style</a></li><li><a href='        glossary.html'>Glossary</a></li><li><a href='        acknowledgements.html'>Acknowledgments</a></li><li><a href='        sitemap.html'>Sitemap
+      </a></li></ul>
+</ul></div>
+</div>
+
+<div class="hyphenate" id="content">    
+<div id="tools">	<span class="tip">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&bug_severity=enhancement&component=dlang.org&op_sys=All&priority=P3&product=D&rep_platform=All&short_desc=%5BMigrating to Shared%5D&version=D2" class="button">Report a bug</a>
+		<span >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</span>
+	</span>
+	<span class="tip">		<a href="https://github.com/D-Programming-Language/dlang.org/edit/master/migrate-to-shared.dd" class="button">Improve this page</a>
+		<span >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			local clone.
+		</span>
+	</span>
+</div>
+    <h1>Migrating to Shared</h1>
+    
+    <!--Generated by Ddoc from migrate-to-shared.dd-->
+
+
+
+	<p>Starting with <a href="changelog.html#new2_030">dmd version 2.030</a>,
+	the default storage class
+	for statics and globals will be
+	<a href="glossary.html#tls">thread local storage (TLS)</a>, rather
+	than the classic global data segment.
+	While most D code should just compile and run successfully without
+	change, there can be some issues.
+	</p>
+
+<ol>	<li><a href="#performance">Performance of TLS variables</a>.</li>
+	<li><a href="#vtls">Identifying TLS variables</a>.</li>
+	<li><a href="#immutable">Switch to Immutable</a>.</li>
+	<li><a href="#shared">Marking as shared</a>.</li>
+	<li><a href="#gshared">Cowboying with __gshared</a>.</li>
+	<li><a href="#compile-errors">Compile errors</a>.</li>
+	<li><a href="#link-errors">Link errors</a>.</li>
+</ol>
+
+<h3><a class="anchor" title="Permalink to this section" id="performance" href="#performance">Performance of TLS variables</a></h3>
+
+	<p>Yes, reading or writing TLS variables will be slower
+	than for classic global variables. It'll be about 3
+	instructions rather than one.
+	But on Linux, at least, TLS will be slightly faster
+	than accessing classic globals using PIC (position
+	independent code) compiler code generation settings.
+	So it's hard to see that this would be an unacceptable
+	problem. But let's presume it is. What can we do about it?
+	</p>
+
+	<ol>	<li>Minimize use of global variables. Reducing the use
+	of globals can improve the modularization and maintainability
+	of the code anyway, so this is a worthy goal.</li>
+	<li>Make them immutable. Immutable data doesn't have
+	synchronization problems, so the compiler doesn't place it
+	in TLS.</li>
+	<li>Cache a reference to the global. Making a local cache
+	of it, and then accessing the cached value rather than the
+	original, can speed things up especially if the cached value
+	gets enregistered by the compiler.</li>
+	<li>Cowboy it with <span class="d_inlinecode donthyphenate notranslate">__gshared</span>.</li>
+	</ol>
+
+<h3><a class="anchor" title="Permalink to this section" id="vtls" href="#vtls">Identifying TLS variables</a></h3>
+
+	<p>The first step is to find all the global variables,
+	so they can be reviewed for disposition.
+	</p>
+
+	<p>Given the complexity of source code, it isn't always
+	easy to identify the global variables. Since it (used to be)
+	implicit, there's no way to grep for them. It's hard
+	to be sure you've found them all.
+	</p>
+
+	<p>A new dmd compiler switch was added, <b>-vtls</b>.
+	Compiling with it on will print a list of all the global
+	variables that are now defaulting to thread local storage.
+	</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span> x;
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">static</span> <span class="d_keyword">int</span> y;
+}
+</pre>
+
+<pre class="console notranslate">dmd test <b>-vtls</b>
+test.d(2): x is thread local
+test.d(6): y is thread local
+</pre>
+
+<h3><a class="anchor" title="Permalink to this section" id="immutable" href="#immutable">Switch to Immutable</a></h3>
+
+	<p>Immutable data, once initialized, never changes.
+	This means that there are no synchronization issues
+	with multithreading, and so no need to put immutable data
+	into TLS. The compiler will put immutable data into
+	classic global storage, not TLS.
+	</p>
+
+	<p>A good chunk of global data falls into this category.
+	Just mark it as <span class="d_inlinecode donthyphenate notranslate">immutable</span> and it's done.
+	</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span>[3] table = [6, 123, 0x87];
+</pre>
+	<p>becomes:</p>
+<pre class="d_code notranslate"><span class="d_keyword">immutable</span> <span class="d_keyword">int</span>[3] table = [6, 123, 0x87];
+</pre>
+
+	<p>Immutability is also nice because it opens the door
+	for further compiler optimizations.
+	</p>
+
+<h3><a class="anchor" title="Permalink to this section" id="shared" href="#shared">Marking As Shared</a></h3>
+
+	<p>Global data that is meant to be shared among multiple
+	threads should be marked with the <span class="d_inlinecode donthyphenate notranslate">shared</span> keyword:
+	</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">shared</span> <span class="d_keyword">int</span> flag;
+</pre>
+
+	<p>Not only does this cause <span class="d_inlinecode donthyphenate notranslate">flag</span> to be put into
+	classic global storage, it is also typed as being shared:
+	</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span>* p = &amp;flags;           <span class="d_comment">// error, flags is shared
+</span><span class="d_keyword">shared</span>(<span class="d_keyword">int</span>)* q = &amp;flags;   <span class="d_comment">// ok
+</span></pre>
+
+	<p>The <span class="d_inlinecode donthyphenate notranslate">shared</span> type attribute is transitive (like
+	<span class="d_inlinecode donthyphenate notranslate">const</span> and <span class="d_inlinecode donthyphenate notranslate">immutable</span>) are. This enables
+	static checking and sharing correctness.
+	</p>
+
+<h3><a class="anchor" title="Permalink to this section" id="gshared" href="#gshared">Cowboying With __gshared</a></h3>
+
+	<p>Sometimes, none of the above solutions will be
+	acceptable:
+	</p>
+
+	<ol>	<li>interfacing with C code that uses classic globals</li>
+	<li>just get it working, and go back and fix it later</li>
+	<li>the app is single threaded only, so no sharing issues</li>
+	<li>you need every erg of performance</li>
+	<li>you want to handle all the synchronization issues
+	yourself</li>
+	</ol>
+
+	<p>As D is a systems language, of course there's a way to
+	do this. Use the storage class <span class="d_inlinecode donthyphenate notranslate">__gshared</span>:
+	</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">__gshared</span> <span class="d_keyword">int</span> x;
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">__gshared</span> <span class="d_keyword">int</span> y;
+}
+</pre>
+
+	<p><span class="d_inlinecode donthyphenate notranslate">__gshared</span> stores the variable in the classic global
+	data segment.
+	</p>
+
+	<p>Naturally, <span class="d_inlinecode donthyphenate notranslate">__gshared</span> is not allowed in safe mode.
+	</p>
+
+	<p>Using <span class="d_inlinecode donthyphenate notranslate">__gshared</span> makes such code easily searchable
+	when doing QA code reviews or when going back later to
+	fix any workarounds.
+	</p>
+
+<h3><a class="anchor" title="Permalink to this section" id="compile-errors" href="#compile-errors">Compile Errors</a></h3>
+
+	<p>The most common compiler error related to TLS will be:
+	</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span> x;
+<span class="d_keyword">int</span>* p = &amp;x;
+</pre>
+<pre class="console notranslate">test.d(2): Error: non-constant expression &amp; x
+</pre>
+
+	<p>While this works with classic global variables, it
+	won't work with TLS variables. The reason is because
+	TLS variables don't have a location in memory known to
+	either the linker or the loader. It's a runtime computed
+	value.</p>
+
+	<p>The solution is to initialize such things in
+	a static constructor.</p>
+
+<h3><a class="anchor" title="Permalink to this section" id="link-errors" href="#link-errors">Link Errors</a></h3>
+
+	<p>Sometimes you may encounter strange error messages from the linker
+	about the global variables.
+	These are nearly always caused by one module putting the variable
+	in TLS, and another putting that same variable in classic global
+	storage.
+	This can happen when linking code with libraries that were built
+	with earlier versions of dmd. Check that libphobos2.a was properly
+	replaced with the latest.
+	It can also happen when interfacing with C. C globals default
+	to being classic global, although C does support TLS declarations.
+	Make sure the corresponding D declarations match the C ones in
+	terms of TLS or classic global.
+	</p>
+
+<pre class="ccode notranslate">int x;
+extern int y;
+__thread int z;
+</pre>
+
+<pre class="d_code notranslate"><span class="d_keyword">extern</span> (C)
+{
+    <span class="d_keyword">extern</span> <span class="d_keyword">shared</span> <span class="d_keyword">int</span> x;
+    <span class="d_keyword">shared</span> <span class="d_keyword">int</span> y;
+    <span class="d_keyword">extern</span> <span class="d_keyword">int</span> z;
+}
+</pre>
+
+
+
+
+</div>
+<div id="copyright">Copyright &copy; 1999-2017 by Digital Mars &reg;, All Rights Reserved | Page generated by <a href="http://dlang.org/ddoc.html">Ddoc</a> on (no date time)</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('<script src="js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="js/dlang.js"></script>
+    
+    <script type="text/javascript" src="js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="js/run.js"></script>
+
+<script type="text/javascript" src="js/run-main-website.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+</body>
+</html>

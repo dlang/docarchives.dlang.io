@@ -1,0 +1,871 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2017 by Digital Mars
+    All Rights Reserved Written by Walter Bright
+    http://digitalmars.com
+  -->
+<head>
+<meta charset="utf-8" />
+<meta name="keywords" content="D Programming Language, template metaprogramming,
+variadic templates, type deduction, dependent base class" />
+<meta name="description" content="Comparison of templates between the
+D programming language, C++, and C++0x" />
+<title>Template Comparison - D Programming Language</title>
+<link rel="stylesheet" href="css/codemirror.css" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/print.css" media="print" />
+<link rel="stylesheet" href="css/cssmenu.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+<link rel="shortcut icon" href="favicon.ico" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0" />
+</head>
+<body id='Template Comparison' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript';</script>
+<div id="top">	<div id="header">		<a class="logo" href="."><img id="logo" width="125" height="95" alt="D Logo" src="images/dlogo.svg"></a>
+		<span id="d-language-mobilehelper"><a href="." id="d-language">D Programming Language</a></span>
+	</div>
+</div>
+<div id="navigation">    <div id="search-box">        <form method="get" action="http://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org" />
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search" />
+            <span id="search-query"><input id="q" name="q" placeholder="Search" /></span><span id="search-dropdown">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire D Site</option>
+                    <option  value="dlang.org/phobos">Library Reference</option>
+                    <option value="digitalmars.com/d/archives">Newsgroup Archives</option>
+                </select>
+            </span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    
+<div id="cssmenu"><ul>    <li><a href='index.html'><span>D 2.067.0</span></a></li>
+    <li><a href='download.html'><span><b>Download</b></span></a></li>
+    <li><a href='getstarted.html'><span>Getting Started</span></a></li>
+    <li><a href='changelog.html'><span>Change Log</span></a></li>
+    <li class='has-sub'><a href='#'><span>D Reference</span></a>
+      <ul><li><a href='        intro.html'>Introduction</a></li><li><a href='        lex.html'>Lexical</a></li><li><a href='        grammar.html'>Grammar</a></li><li><a href='        module.html'>Modules</a></li><li><a href='        declaration.html'>Declarations</a></li><li><a href='        type.html'>Types</a></li><li><a href='        property.html'>Properties</a></li><li><a href='        attribute.html'>Attributes</a></li><li><a href='        pragma.html'>Pragmas</a></li><li><a href='        expression.html'>Expressions</a></li><li><a href='        statement.html'>Statements</a></li><li><a href='        arrays.html'>Arrays</a></li><li><a href='        hash-map.html'>Associative Arrays</a></li><li><a href='        struct.html'>Structs and Unions</a></li><li><a href='        class.html'>Classes</a></li><li><a href='        interface.html'>Interfaces</a></li><li><a href='        enum.html'>Enums</a></li><li><a href='        const3.html'>Const and Immutable</a></li><li><a href='        function.html'>Functions</a></li><li><a href='        operatoroverloading.html'>Operator Overloading</a></li><li><a href='        template.html'>Templates</a></li><li><a href='        template-mixin.html'>Template Mixins</a></li><li><a href='        contracts.html'>Contract Programming</a></li><li><a href='        version.html'>Conditional Compilation</a></li><li><a href='        traits.html'>Traits</a></li><li><a href='        errors.html'>Error Handling</a></li><li><a href='        unittest.html'>Unit Tests</a></li><li><a href='        garbage.html'>Garbage Collection</a></li><li><a href='        float.html'>Floating Point</a></li><li><a href='        iasm.html'>D x86 Inline Assembler</a></li><li><a href='        ddoc.html'>Embedded Documentation</a></li><li><a href='        interfaceToC.html'>Interfacing to C</a></li><li><a href='        cpp_interface.html'>Interfacing to C++</a></li><li><a href='        portability.html'>Portability Guide</a></li><li><a href='        entity.html'>Named Character Entities</a></li><li><a href='        memory-safe-d.html'>Memory Safety</a></li><li><a href='        abi.html'>Application Binary Interface</a></li><li><a href='        simd.html'>Vector Extensions
+      </a></li></ul>
+    <li><a href='phobos/index.html'><span>Standard library</span></a></li>
+    <li><a href='http://code.dlang.org'><span>More libraries</span></a></li>
+    <li class='has-sub'><a href='#'><span>Community</span></a>
+      <ul><li><a href='        http://forum.dlang.org'>Forums</a></li><li><a href='        irc://irc.freenode.net/d'>IRC</a></li><li><a href='        http://github.com/D-Programming-Language'>D on GitHub</a></li><li><a href='        http://wiki.dlang.org'>Wiki</a></li><li><a href='        http://wiki.dlang.org/Review_Queue'>Review Queue</a></li><li><a href='        http://twitter.com/search?q=%23dlang'>Twitter</a></li><li><a href='        http://digitalmars.com/d/dlinks.html'>More Links
+      </a></li></ul>
+    <li class='has-sub'><a href='#'><span>Compilers &amp; Tools</span></a>
+      <ul><li><a href='        dmd-windows.html'>dmd &ndash; reference compiler</a></li><li><a href='        http://gdcproject.org'>gdc &ndash; gcc-based compiler</a></li><li><a href='        http://wiki.dlang.org/LDC'>ldc &ndash; LLVM-based compiler</a></li><li><a href='        rdmd.html'>rdmd &ndash; build tool</a></li><li><a href='        htod.html'>htod &ndash; .h to .d
+      </a></li></ul>
+    <li class='has-sub'><a href='#'><span>Books &amp; Articles</span></a>
+      <ul><li><a href='        http://ddili.org/ders/d.en/index.html'>Online Book (free)</a></li><li><a href='        http://wiki.dlang.org/Books'>More Books</a></li><li><a href='        howtos.html'>How-tos</a></li><li><a href='        faq.html'>FAQ</a></li><li><a href='        const-faq.html'>const(FAQ)</a></li><li><a href='        comparison.html'>Feature Overview</a></li><li><a href='        d-floating-point.html'>Floating Point</a></li><li><a href='        wc.html'>Example: wc</a></li><li><a href='        warnings.html'>Warnings</a></li><li><a href='        rationale.html'>Rationale</a></li><li><a href='        builtin.html'>Builtin Rationale</a></li><li><a href='        ctod.html'>C to D</a></li><li><a href='        cpptod.html'>C++ to D</a></li><li><a href='        pretod.html'>C Preprocessor vs D</a></li><li><a href='        code_coverage.html'>Code coverage analysis</a></li><li><a href='        exception-safe.html'>Exception Safety</a></li><li><a href='        hijack.html'>Hijacking</a></li><li><a href='        intro-to-datetime.html'>Introduction to std.datetime</a></li><li><a href='        lazy-evaluation.html'>Lazy Evaluation</a></li><li><a href='        migrate-to-shared.html'>Migrating to Shared</a></li><li><a href='        mixin.html'>Mixins</a></li><li><a href='        regular-expression.html'>Regular Expressions</a></li><li><a href='        safed.html'>SafeD</a></li><li><a href='        templates-revisited.html'>Templates Revisited</a></li><li><a href='        tuple.html'>Tuples</a></li><li><a href='        variadic-function-templates.html'>Variadic Templates</a></li><li><a href='        d-array-article.html'>D Slices
+      </a></li></ul>
+    <li class='has-sub'><a href='#'><span>Resources</span></a>
+      <ul><li><a href='        library/index.html'>NEW Library Reference Preview</a></li><li><a href='        bugstats.php'>Bug Tracker</a></li><li><a href='        http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li><li><a href='        http://wiki.dlang.org/Editors'>Editors</a></li><li><a href='        http://wiki.dlang.org/IDEs'>IDEs</a></li><li><a href='        dstyle.html'>The D Style</a></li><li><a href='        glossary.html'>Glossary</a></li><li><a href='        acknowledgements.html'>Acknowledgments</a></li><li><a href='        sitemap.html'>Sitemap
+      </a></li></ul>
+</ul></div>
+</div>
+
+<div class="hyphenate" id="content">    
+<div id="tools">	<span class="tip">		<a href="https://github.com/D-Programming-Language/dlang.org/edit/master/template-comparison.dd" class="button">Improve this page</a>
+		<span >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			local clone.
+		</span>
+	</span>
+	<span class="tip">		<a href="http://wiki.dlang.org/DocComments/TemplateComparison" class="button">Page wiki</a>
+		<span >			View or edit the community-maintained wiki page associated with this page.
+		</span>
+	</span>
+</div>
+    <h1>Template Comparison</h1>
+    
+    <!--Generated by Ddoc from template-comparison.dd-->
+
+
+
+<p>C++ pioneered templates and template metaprogramming, and continues
+to improve on it with C++0x.
+The D programming language is the first to comprehensively reengineer
+templates based on the C++ experience.
+Since C++0x is not a ratified standard yet, proposed changes to C++
+are subject to change.</p>
+
+	<table border=2 cellpadding=4 cellspacing=0 class="comp">
+	<caption>Template Comparison Table</caption>
+
+	<thead>
+	<tr>	<th scope="col">Feature</th>
+	<th scope="col">D</th>
+	<th scope="col">C++98</th>
+	<th scope="col">C++0x</th>
+	</tr>
+	</thead>
+
+	<tbody>
+
+	<tr>	<td>Argument list delineation</td>
+	<td>Uses !( ), as in Foo!(int). <br>Can omit parens when the argument is a single lexical token: Foo!int</td>
+	<td>Uses &lt; &gt; as in Foo&lt;int&gt;</td>
+	<td>No change</td>
+	</tr>
+
+	<tr>	<td>Class Templates</td>
+	<td>Yes:
+<pre class="d_code2"><span class="d_keyword">class</span> Foo(T)
+{
+    T x;
+}
+</pre>
+</td>
+	<td>Yes:
+<pre class="cppcode2">template&lt;class T&gt;
+class Foo
+{
+    T x;
+};
+</pre>
+</td>
+	<td>No change</td>
+	</tr>
+
+	<tr>	<td>Function Templates</td>
+	<td>Yes:
+<pre class="d_code2">T foo(T)(T i)
+{
+    ...
+}
+</pre>
+</td>
+	<td>Yes:
+<pre class="cppcode2">template&lt;class T&gt;
+T foo(T i)
+{
+    ...
+}
+</pre>
+</td>
+	<td>No change</td>
+	</tr>
+
+	<tr>	<td>Member Templates</td>
+	<td>Yes</td>
+	<td>Yes</td>
+	<td>No change</td>
+	</tr>
+
+	<tr>	<td>Constructor Templates</td>
+	<td>No</td>
+	<td>Yes</td>
+	<td>No change</td>
+	</tr>
+
+	<tr>	<td>Parameterize any Declaration</td>
+	<td>Yes, classes, functions, typedefs,
+	variables, enums, etc. can be parameterized,
+	such as this variable:
+<pre class="d_code2"><span class="d_keyword">template</span> Foo(T)
+{
+    <span class="d_keyword">static</span> T* p;
+}
+</pre>
+</td>
+	<td>No, only classes and functions</td>
+	<td>No change</td>
+	</tr>
+
+	<tr>	<td>Template Typedefs: Create an alias that binds to some but not all
+	of the template	parameters</td>
+	<td>Yes:
+<pre class="d_code2"><span class="d_keyword">class</span> Foo(T, U) { }
+<span class="d_keyword">template</span> MyFoo(T)
+{
+    <span class="d_keyword">alias</span> MyFoo = Foo!(T, <span class="d_keyword">int</span>);
+}
+MyFoo!(<span class="d_keyword">uint</span>) f;
+</pre>
+</td>
+	<td>No</td>
+	<td>Yes:
+<pre class="cppcode2">template&lt;class T, class U&gt; class Foo { };
+template&lt;class T&gt; using MyFoo = Foo&lt;T, int&gt;;
+MyFoo&lt;unsigned&gt; f;
+</pre>
+</td>
+	</tr>
+
+
+	<tr>	<td>Sequence Constructors</td>
+	<td>No</td>
+	<td>No</td>
+	<td>Yes:
+<pre class="cppcode2">Foo&lt;double&gt; f = { 1.2, 3, 6.8 };
+</pre>
+</td>
+	</tr>
+
+	<tr>	<td>Concepts</td>
+
+	<td>Yes: <a href="cpp0x.html#concepts">Constraints</a></td>
+
+	<td>No</td>
+	<td>Yes: <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2005/n1849.pdf">Concepts for C++0x N1849</a></td>
+	</tr>
+
+
+	<tr>	<td>Recursive Templates</td>
+	<td>Yes:
+<pre class="d_code2"><span class="d_keyword">template</span> factorial(<span class="d_keyword">int</span> n)
+{
+    <span class="d_keyword">const</span> factorial = n * factorial!(n-1);
+}
+<span class="d_keyword">template</span> factorial(<span class="d_keyword">int</span> n : 1)
+{
+    <span class="d_keyword">const</span> factorial = 1;
+}
+</pre>
+</td>
+	<td>Yes:
+<pre class="cppcode2">template&lt;int n&gt; class factorial
+{
+  public:
+    enum { result = n * factorial&lt;n-1&gt;::result };
+};
+template&lt;&gt; class factorial&lt;1&gt;
+{
+  public:
+    enum { result = 1 };
+};
+</pre>
+</td>
+	<td>No change</td>
+	</tr>
+
+	<tr>	<td>Conditional Compilation based on
+	Template Arguments</td>
+	<td>Yes:
+<pre class="d_code2"><span class="d_keyword">template</span> factorial(<span class="d_keyword">int</span> n)
+{
+  <span class="d_keyword">static</span> <span class="d_keyword">if</span> (n == 1)
+    <span class="d_keyword">const</span> factorial = 1;
+  <span class="d_keyword">else</span>
+    <span class="d_keyword">const</span> factorial = n * factorial!(n-1);
+}
+</pre>
+</td>
+	<td>No:
+<pre class="cppcode2">template&lt;int n&gt; class factorial
+{
+  public:
+    enum
+    {
+#if (n == 1) // <span class="red"><b>error</b></span>
+      result = 1;
+#else
+      result = n * factorial&lt;n-1&gt;::result
+#endif
+    };
+};
+</pre>
+</td>
+	<td>No change</td>
+	</tr>
+
+	<tr>	<td>Template Declarations (with no definition)</td>
+	<td>No</td>
+	<td>Yes:
+<pre class="cppcode2">template&lt;class T&gt;
+class Foo;
+</pre>
+</td>
+	<td>No change</td>
+	</tr>
+
+	<tr>	<td>Grouping templates with the same parameters together</td>
+	<td>Yes:
+<pre class="d_code2"><span class="d_keyword">template</span> Foo(T, U)
+{
+    <span class="d_keyword">class</span> Bar { ... }
+    T foo(T t, U u) { ... }
+}
+Foo!(<span class="d_keyword">int</span>,<span class="d_keyword">long</span>).Bar b;
+<span class="d_keyword">return</span> Foo!(<span class="d_keyword">char</span>,<span class="d_keyword">int</span>).foo('c',3);
+</pre>
+</td>
+	<td>No, each must be separate:
+<pre class="cppcode2">template&lt;class T, class U&gt;
+class Foo_Bar { ... };
+
+template&lt;class T, class U&gt;
+T Foo_foo(T t, U u) { ... };
+
+Foo_Bar&lt;int,long&gt; b;
+return Foo_foo&lt;char,int&gt('c',3);
+</pre>
+</td>
+	<td>No change</td>
+	</tr>
+
+	<tr>	<td>Compile time execution of functions</td>
+	<td><a href="function.html#interpretation">Yes</a>:
+<pre class="d_code2"><span class="d_keyword">int</span> factorial(<span class="d_keyword">int</span> i)
+{
+    <span class="d_keyword">if</span> (i == 0)
+        <span class="d_keyword">return</span> 1;
+    <span class="d_keyword">else</span>
+        <span class="d_keyword">return</span> i * factorial(i - 1);
+}
+<span class="d_keyword">static</span> f = factorial(6);
+</pre>
+	</td>
+	<td>No</td>
+	<td>Named constant expressions with parameters:
+	   <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2006/n1972.pdf">Generalized Constant Expressions N1972</a></td>
+	</tr>
+
+	<tr>	<th scope="col">Parameters</th>
+	<th scope="col">D</th>
+	<th scope="col">C++98</th>
+	<th scope="col">C++0x</th>
+	</tr>
+
+	<tr>	<td>Type Parameters</td>
+	<td>Yes:
+<pre class="d_code2"><span class="d_keyword">class</span> Foo(T)
+{
+    T x;
+}
+Foo!(<span class="d_keyword">int</span>) f;
+</pre>
+</td>
+	<td>Yes:
+<pre class="cppcode2">template&lt;class T&gt;
+class Foo
+{
+    T x;
+};
+Foo&lt;int&gt; f;
+</pre>
+</td>
+	<td>No change</td>
+	</tr>
+
+	<tr>	<td>Integral Parameters</td>
+	<td>Yes:
+<pre class="d_code2"><span class="d_keyword">void</span> foo(<span class="d_keyword">int</span> i)()
+{
+    <span class="d_keyword">int</span> v = i;
+}
+</pre>
+</td>
+	<td>Yes:
+<pre class="cppcode2">template&lt;int i&gt;
+void foo()
+{
+    int v = i;
+}
+</pre>
+</td>
+	<td>No change</td>
+	</tr>
+
+	<tr>	<td>Pointer Parameters</td>
+	<td>Yes, a pointer to object or function</td>
+	<td>Yes, a pointer to object or function</td>
+	<td>No change</td>
+	</tr>
+
+	<tr>	<td>Reference Parameters</td>
+	<td>No, D does not have a general reference type</td>
+	<td>Yes:
+<pre class="cppcode2">template&lt;double&amp; D&gt;
+void foo()
+{
+    double y = D;
+}
+</pre>
+</td>
+	<td>No change</td>
+	</tr>
+
+	<tr>	<td>Pointer to Member Parameters</td>
+	<td>No, D does not have pointers to members, it has
+	  <a href="type.html#delegates">delegates</a>,
+	  which can be used as parameters</td>
+	<td>Yes</td>
+	<td>No change</td>
+	</tr>
+
+	<tr>	<td>Template Template Parameters</td>
+	<td>Yes:
+<pre class="d_code2"><span class="d_keyword">class</span> Foo(T, <span class="d_keyword">alias</span> C)
+{
+    C!(T) x;
+}
+</pre>
+</td>
+	<td>Yes:
+<pre class="cppcode2">template&lt;class T,
+         template&lt;class U&gt; class C&gt;
+class Foo
+{
+    C&lt;T&gt; x;
+};
+</pre>
+</td>
+	<td>No change</td>
+	</tr>
+
+	<tr>	<td>Alias Parameters</td>
+	<td>Yes, any symbol can be passed to a template as an alias:
+<pre class="d_code2"><span class="d_keyword">void</span> bar(<span class="d_keyword">int</span>);
+<span class="d_keyword">void</span> bar(<span class="d_keyword">double</span>);
+<span class="d_keyword">void</span> foo(T, <span class="d_keyword">alias</span> S)(T t)
+{
+    S(t);
+}
+<span class="d_comment">// calls bar(double)
+</span>foo!(<span class="d_keyword">double</span>, bar)(1);
+</pre>
+</td>
+	<td>No</td>
+	<td>No change</td>
+	</tr>
+
+	<tr>	<td>Floating Point Parameters</td>
+	<td>Yes:
+<pre class="d_code2"><span class="d_keyword">class</span> Foo(<span class="d_keyword">double</span> D)
+{
+    <span class="d_keyword">double</span> x = D;
+}
+...
+Foo!(1.6) F;
+</pre>
+</td>
+	<td>No</td>
+	<td>No change</td>
+	</tr>
+
+	<tr>	<td>String Parameters</td>
+	<td>Yes:
+<pre class="d_code2"><span class="d_keyword">void</span> foo(<span class="d_keyword">char</span>[] format)(<span class="d_keyword">int</span> i)
+{
+    writefln(format, i);
+}
+...
+foo!(<span class="d_string">"i = %s"</span>)(3);
+</pre>
+</td>
+	<td>No</td>
+	<td>No change</td>
+	</tr>
+
+	<tr>	<td>Local Class Parameters</td>
+	<td>Yes</td>
+	<td>No</td>
+	<td>Issue N1945</td>
+	</tr>
+
+	<tr>	<td>Local Variable Parameters</td>
+	<td>Yes</td>
+	<td>No</td>
+	<td>No change</td>
+	</tr>
+
+	<tr>	<td>Parameter Default Values</td>
+	<td>Yes:
+<pre class="d_code2"><span class="d_keyword">class</span> Foo(T = <span class="d_keyword">int</span>)
+{
+    T x;
+}
+</pre>
+</td>
+	<td>Yes:
+<pre class="cppcode2">template&lt;class T = int&gt;
+class Foo
+{
+    T x;
+};
+</pre>
+</td>
+	<td>No change</td>
+	</tr>
+
+	<tr>	<td>Variadic Parameters</td>
+	<td>Yes, <a href="variadic-function-templates.html">Variadic Templates</a>:
+<pre class="d_code2"><span class="d_keyword">void</span> print(A...)(A a)
+{
+    <span class="d_keyword">foreach</span>(t; a)
+        writeln(t);
+}
+</pre>
+</td>
+	<td>No</td>
+	<td><a href="http://www.osl.iu.edu/~dgregor/cpp/variadic-templates.pdf">Variadic Templates N2080</a></td>
+	</tr>
+
+	<tr>	<th scope="col">Specializations</th>
+	<th scope="col">D</th>
+	<th scope="col">C++98</th>
+	<th scope="col">C++0x</th>
+	</tr>
+
+	<tr>	<td>Explicit Specialization</td>
+	<td>Yes:
+<pre class="d_code2"><span class="d_keyword">class</span> Foo(T : <span class="d_keyword">int</span>)
+{
+    T x;
+}
+</pre>
+</td>
+	<td>Yes:
+<pre class="cppcode2">template&lt;&gt;
+class Foo&lt;int&gt;
+{
+    int x;
+};
+</pre>
+</td>
+	<td>No change</td>
+	</tr>
+
+	<tr>	<td>Partial Specialization</td>
+	<td>Yes:
+<pre class="d_code2"><span class="d_keyword">class</span> Foo(T : T*, U)
+{
+    T x;
+}
+</pre>
+</td>
+	<td>Yes:
+<pre class="cppcode2">template&lt;class T, class U&gt;
+class Foo&lt;T*, U&gt;
+{
+    T x;
+};
+</pre>
+</td>
+	<td>No change</td>
+	</tr>
+
+	<tr>	<td>Partial specialization derived from multiple parameters</td>
+	<td>Yes:
+<pre class="d_code2"><span class="d_keyword">class</span> Foo(T : Bar!(T, U), U)
+{
+    ...
+}
+</pre>
+</td>
+	<td>Yes:
+<pre class="cppcode2">template&lt;class T, class U&gt;
+class Foo&lt; Bar&lt;T,U&gt; &gt;
+{
+    ...
+};
+</pre>
+</td>
+	<td>No change</td>
+	</tr>
+
+	<tr>	<td>Can specializations exist without a primary template?</td>
+	<td>Yes</td>
+	<td>No</td>
+	<td>No change</td>
+	</tr>
+
+	<tr>	<th scope="col">Other</th>
+	<th scope="col">D</th>
+	<th scope="col">C++98</th>
+	<th scope="col">C++0x</th>
+	</tr>
+
+	<tr>	<td>Exported Templates</td>
+	<td>Yes, it falls out as a natural consequence of modules</td>
+	<td>Yes, though only in compilers based on EDG's front end</td>
+	<td>No change</td>
+	</tr>
+
+	<tr>	<td><a href="http://dlang.org/glossary.html#sfinae, <acronym title="Substitution Failure Is Not An Error">SFINAE</acronym> (Substitution Failure Is Not An Error)">sfinae, <acronym title="Substitution Failure Is Not An Error">SFINAE</acronym> (Substitution Failure Is Not An Error)</a></td>
+	<td>Yes</td>
+	<td>Yes</td>
+	<td>No change</td>
+	</tr>
+
+	<tr>	<td>Parse Template Definition Bodies before Instantiation</td>
+	<td>Yes</td>
+	<td>Not required by Standard, but some implementations do</td>
+	<td>No change</td>
+	</tr>
+
+	<tr>	<td>Overloading Function Templates with Functions</td>
+	<td>No, but the equivalent can be done with explicitly specialized
+	templates:
+<pre class="d_code2"><span class="d_keyword">void</span> foo(T)(T t) { }
+<span class="d_keyword">void</span> foo(T:<span class="d_keyword">int</span>)(<span class="d_keyword">int</span> t) { }
+</pre>
+</td>
+	<td>Yes:
+<pre class="cppcode2">template&lt;class T&gt;
+void foo(T i) { }
+
+void foo(int t) { }
+</pre>
+</td>
+	<td>No change</td>
+	</tr>
+
+	<tr>	<td>Implicit Function Template Instantiation</td>
+	<td>Yes</td>
+	<td>Yes</td>
+	<td>No change</td>
+	</tr>
+
+	<tr>	<td>Templates can be evaluated in scope
+	  of instantiation rather than definition</td>
+	<td>Yes, <a href="mixin.html">Mixins</a></td>
+	<td>No, but can be faked using macros</td>
+	<td>No change</td>
+	</tr>
+
+	<tr>	<td>Can extract arguments of
+	template instance</td>
+	<td>Yes:
+<pre class="d_code2"><span class="d_keyword">class</span> Foo(T)
+{
+    <span class="d_keyword">static</span> <span class="d_keyword">if</span> (<span class="d_keyword">is</span>(T x : T!A, A...))
+    {
+        <span class="d_keyword">pragma</span>(msg, A);  <span class="d_comment">// (int, float)
+</span>    }
+}
+
+<span class="d_keyword">struct</span> Bar(T1, T2) { }
+<span class="d_keyword">alias</span> BarInst = Bar!(<span class="d_keyword">int</span>, <span class="d_keyword">float</span>);
+Foo!(BarInst) f;
+</pre>
+    See <a href="expression.html#IsExpression">is expressions</a>.
+    </td>
+	<td>No</td>
+	<td>No change</td>
+	</tr>
+
+	<tr>	<th scope="col">Parsing Idiosyncracies</th>
+	<th scope="col">D</th>
+	<th scope="col">C++98</th>
+	<th scope="col">C++0x</th>
+	</tr>
+
+
+
+	<tr>	<td>Context-Free Grammar</td>
+	<td>Yes:
+<pre class="d_code2"><span class="d_keyword">class</span> Foo(<span class="d_keyword">int</span> i)
+{
+    ...
+}
+Foo!(3 <b>&gt;</b> 4) f;
+</pre>
+</td>
+	<td>No:
+<pre class="cppcode2">template&lt;int i&gt; class Foo
+{
+    ...
+};
+Foo&lt;3 <b>&gt;</b> 4&gt; f; // <span class="red"><b>error</b></span>
+</pre>
+</td>
+	<td>No change</td>
+	</tr>
+
+
+	<tr>	<td>Distinguish template arguments from other operators</td>
+	<td>Yes:
+<pre class="d_code2"><span class="d_keyword">class</span> Foo(T)
+{
+    ...
+}
+<span class="d_keyword">class</span> Bar(<span class="d_keyword">int</span> i)
+{
+    ...
+}
+Foo!(Bar!(1)) x1;
+</pre>
+</td>
+	<td>No:
+<pre class="cppcode2">template&lt;class T&gt; class Foo
+{
+    ...
+};
+template&lt;int i&gt; class Bar
+{
+    ...
+};
+Foo&lt;Bar&lt;1&gt;&gt; x1; // <span class="red"><b>error</b></span>
+Foo&lt;Bar&lt;1&gt; &gt; x2;
+</pre>
+</td>
+	<td>Partially fixed by
+	<a href="http://www.open-std.org/JTC1/SC22/WG21/docs/papers/2005/n1757.html">Right Angle Brackets N1757</a>
+	</td>
+
+	</tr>
+
+
+	<tr>	<td>Redeclaration of Template Parameter</td>
+	<td>Yes:
+<pre class="d_code2"><span class="d_keyword">class</span> Foo(T)
+{
+    <span class="d_keyword">int</span> T;
+    <span class="d_keyword">void</span> foo()
+    {
+        <span class="d_keyword">int</span> T;
+    }
+}
+</pre>
+</td>
+	<td>No:
+<pre class="cppcode2">template&lt;class T&gt;
+class Foo
+{
+    int T; // <span class="red"><b>error</b></span>
+    void foo()
+    {
+        int T; // <span class="red"><b>error</b></span>
+    }
+};
+</pre>
+</td>
+	<td>No change</td>
+	</tr>
+
+	<tr>	<td>Dependent Base Class Lookup</td>
+	<td>Yes:
+<pre class="d_code2"><span class="d_keyword">class</span> Foo(T)
+{
+    <span class="d_keyword">alias</span> <b>A</b> = <span class="d_keyword">int</span>;
+}
+<span class="d_keyword">class</span> Bar(T) : Foo(T)
+{
+    <b>A</b> x;
+}
+</pre>
+</td>
+	<td>No:
+<pre class="cppcode2">template&lt;class T&gt;
+class Foo
+{
+  public:
+    typedef int <b>A</b>;
+};
+template&lt;class T&gt;
+class Bar : Foo&lt;T&gt;
+{
+  public:
+    <b>A</b> x; // <span class="red"><b>error</b></span>
+};
+</pre>
+</td>
+	<td>No change</td>
+	</tr>
+
+
+
+
+	<tr>	<td>Forward Referencing</td>
+	<td>Yes:
+<pre class="d_code2"><span class="d_keyword">int</span> <b>g</b>(<span class="d_keyword">void</span> *);
+
+<span class="d_keyword">class</span> Foo(T)
+{
+    <span class="d_keyword">int</span> foo()
+    {
+        <span class="d_keyword">return</span> <b>g</b>(1);
+    }
+}
+
+<span class="d_keyword">int</span> <b>g</b>(<span class="d_keyword">int</span> i);
+</pre>
+</td>
+	<td>No:
+<pre class="cppcode2">int <b>g</b>(void *);
+
+template&lt;class T&gt;
+class Foo
+{
+    int foo()
+    {
+        return <b>g</b>(1); // <span class="red"><b>error</b></span>
+    }
+};
+
+int <b>g</b>(int i);
+</pre>
+</td>
+	<td>No change</td>
+	</tr>
+
+
+	<tr>	<td>Member templates parseable without hints</td>
+	<td>Yes:
+<pre class="d_code2"><span class="d_keyword">class</span> Foo
+{
+    Foo bar!(<span class="d_keyword">int</span> I)();
+}
+<span class="d_keyword">void</span> abd(T)(T f)
+{
+    T f1 = f.bar!(3)();
+}
+</pre>
+</td>
+	<td>No:
+<pre class="cppcode2">class Foo
+{
+  public:
+    template&lt;int&gt; Foo *bar();
+};
+template&lt;class T&gt; void abc(T *f)
+{
+    T *f1 = f-&gt;bar&lt;3&gt;(); // <span class="red"><b>error</b></span>
+    T *f2 = f-&gt;<b>template</b> bar&lt;3&gt;();
+}
+</pre>
+</td>
+	<td>No change</td>
+	</tr>
+
+
+	<tr>	<td>Dependent type members parseable without hints</td>
+	<td>Yes:
+<pre class="d_code2"><span class="d_keyword">class</span> Foo(T)
+{
+    T.A* a1;
+}
+</pre>
+</td>
+	<td>No:
+<pre class="cppcode2">template<class T> class Foo
+{
+  public:
+    T::A *a1; // <span class="red"><b>error</b></span>
+    <b>typename</b> T::A *a2;
+};
+</pre>
+</td>
+	<td>No change</td>
+	</tr>
+
+	</tbody>
+	</table>
+
+
+
+
+</div>
+<div id="copyright">Copyright &copy; 1999-2017 by Digital Mars &reg;, All Rights Reserved | Page generated by <a href="http://dlang.org/ddoc.html">Ddoc</a> on (no date time)</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('<script src="js/jquery-1.7.2.min.js">\x3C/script>')</script>
+    <script type="text/javascript" src="js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="js/run.js"></script>
+    <script type="text/javascript" src="js/cssmenu.js"></script>
+
+<script type="text/javascript" src="js/run-main-website.js"></script>
+</body>
+</html>

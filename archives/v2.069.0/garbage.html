@@ -1,0 +1,472 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2017 by Digital Mars
+    All Rights Reserved Written by Walter Bright
+    http://digitalmars.com
+  -->
+<head>
+<meta charset="utf-8" />
+<meta name="keywords" content="D programming language" />
+<meta name="description" content="D Programming Language" />
+<title>Garbage Collection - D Programming Language</title>
+
+<link rel="stylesheet" href="css/codemirror.css" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/print.css" media="print" />
+<link rel="stylesheet" href="css/cssmenu.css">
+<link rel="shortcut icon" href="favicon.ico" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0" />
+
+</head>
+<body id='Garbage Collection' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top">	<div id="header">		<img src="images/hamburger.svg" id="mobile-hamburger">
+		<a class="logo" href="."><img id="logo" width="125" height="95" alt="D Logo" src="images/dlogo.svg"></a>
+		<span id="d-language-mobilehelper"><a href="." id="d-language">D Programming Language</a></span>
+	</div>
+</div>
+<div id="navigation">    
+    <div id="search-box">        <form method="get" action="http://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org" />
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search" />
+            <span id="search-query"><input id="q" name="q" placeholder="Search" tabindex="1000" /></span><span id="search-dropdown">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire D Site</option>
+                    <option  value="dlang.org/phobos">Library Reference</option>
+                    <option  value="forum.dlang.org">Discussion Forums</option>
+                    
+                </select>
+            </span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    
+<div id="cssmenu"><ul>    <li><a href='index.html'><span>D 2.069.0</span></a></li>
+    <li><a href='download.html'><span><b>Download</b></span></a></li>
+    <li><a href='getstarted.html'><span>Getting Started</span></a></li>
+    <li><a href='changelog/2.069.0.html'><span>Change Log</span></a></li>
+    <li class='has-sub'><a href='#'><span>D Reference</span></a>
+      <ul><li><a href='        intro.html'>Introduction</a></li><li><a href='        lex.html'>Lexical</a></li><li><a href='        grammar.html'>Grammar</a></li><li><a href='        module.html'>Modules</a></li><li><a href='        declaration.html'>Declarations</a></li><li><a href='        type.html'>Types</a></li><li><a href='        property.html'>Properties</a></li><li><a href='        attribute.html'>Attributes</a></li><li><a href='        pragma.html'>Pragmas</a></li><li><a href='        expression.html'>Expressions</a></li><li><a href='        statement.html'>Statements</a></li><li><a href='        arrays.html'>Arrays</a></li><li><a href='        hash-map.html'>Associative Arrays</a></li><li><a href='        struct.html'>Structs and Unions</a></li><li><a href='        class.html'>Classes</a></li><li><a href='        interface.html'>Interfaces</a></li><li><a href='        enum.html'>Enums</a></li><li><a href='        const3.html'>Const and Immutable</a></li><li><a href='        function.html'>Functions</a></li><li><a href='        operatoroverloading.html'>Operator Overloading</a></li><li><a href='        template.html'>Templates</a></li><li><a href='        template-mixin.html'>Template Mixins</a></li><li><a href='        contracts.html'>Contract Programming</a></li><li><a href='        version.html'>Conditional Compilation</a></li><li><a href='        traits.html'>Traits</a></li><li><a href='        errors.html'>Error Handling</a></li><li><a href='        unittest.html'>Unit Tests</a></li><li><a href='        garbage.html'>Garbage Collection</a></li><li><a href='        float.html'>Floating Point</a></li><li><a href='        iasm.html'>D x86 Inline Assembler</a></li><li><a href='        ddoc.html'>Embedded Documentation</a></li><li><a href='        interfaceToC.html'>Interfacing to C</a></li><li><a href='        cpp_interface.html'>Interfacing to C++</a></li><li><a href='        objc_interface.html'>Interfacing to Objective-C</a></li><li><a href='        portability.html'>Portability Guide</a></li><li><a href='        entity.html'>Named Character Entities</a></li><li><a href='        memory-safe-d.html'>Memory Safety</a></li><li><a href='        abi.html'>Application Binary Interface</a></li><li><a href='        simd.html'>Vector Extensions
+      </a></li></ul>
+    <li><a href='phobos/index.html'><span>Standard library</span></a></li>
+    <li><a href='http://code.dlang.org'><span>DUB &ndash; The D package registry</span></a></li>
+    <li class='has-sub'><a href='#'><span>Community</span></a>
+      <ul><li><a href='        bugstats.php'>Bug Tracker</a></li><li><a href='        http://forum.dlang.org'>Forums</a></li><li><a href='        irc://irc.freenode.net/d'>IRC</a></li><li><a href='        http://github.com/D-Programming-Language'>D on GitHub</a></li><li><a href='        http://wiki.dlang.org'>Wiki</a></li><li><a href='        http://wiki.dlang.org/Review_Queue'>Review Queue</a></li><li><a href='        http://twitter.com/search?q=%23dlang'>Twitter</a></li><li><a href='        http://digitalmars.com/d/dlinks.html'>More Links
+      </a></li></ul>
+    <li class='has-sub'><a href='#'><span>Compilers &amp; Tools</span></a>
+      <ul><li><a href='        dmd-windows.html'>dmd &ndash; reference compiler</a></li><li><a href='        http://gdcproject.org'>gdc &ndash; gcc-based compiler</a></li><li><a href='        http://wiki.dlang.org/LDC'>ldc &ndash; LLVM-based compiler</a></li><li><a href='        http://code.dlang.org/download'>DUB &ndash; D package manager</a></li><li><a href='        https://github.com/Hackerpilot/dfix'>dfix &ndash; D source code upgrade</a></li><li><a href='        https://github.com/Hackerpilot/dfmt'>dfmt &ndash; D source code formatting tool</a></li><li><a href='        rdmd.html'>rdmd &ndash; build tool</a></li><li><a href='        htod.html'>htod &ndash; .h to .d
+      </a></li></ul>
+    <li class='has-sub'><a href='#'><span>Books &amp; Articles</span></a>
+      <ul><li><a href='        http://ddili.org/ders/d.en/index.html'>Online Book (free)</a></li><li><a href='        http://wiki.dlang.org/Books'>More Books</a></li><li><a href='        howtos.html'>How-tos</a></li><li><a href='        faq.html'>FAQ</a></li><li><a href='        const-faq.html'>const(FAQ)</a></li><li><a href='        comparison.html'>Feature Overview</a></li><li><a href='        d-floating-point.html'>Floating Point</a></li><li><a href='        wc.html'>Example: wc</a></li><li><a href='        warnings.html'>Warnings</a></li><li><a href='        rationale.html'>Rationale</a></li><li><a href='        builtin.html'>Builtin Rationale</a></li><li><a href='        ctod.html'>C to D</a></li><li><a href='        cpptod.html'>C++ to D</a></li><li><a href='        pretod.html'>C Preprocessor vs D</a></li><li><a href='        code_coverage.html'>Code coverage analysis</a></li><li><a href='        exception-safe.html'>Exception Safety</a></li><li><a href='        hijack.html'>Hijacking</a></li><li><a href='        intro-to-datetime.html'>Introduction to std.datetime</a></li><li><a href='        lazy-evaluation.html'>Lazy Evaluation</a></li><li><a href='        migrate-to-shared.html'>Migrating to Shared</a></li><li><a href='        mixin.html'>Mixins</a></li><li><a href='        regular-expression.html'>Regular Expressions</a></li><li><a href='        safed.html'>SafeD</a></li><li><a href='        templates-revisited.html'>Templates Revisited</a></li><li><a href='        tuple.html'>Tuples</a></li><li><a href='        ctarguments.html'>Compile-time Argument Lists</a></li><li><a href='        variadic-function-templates.html'>Variadic Templates</a></li><li><a href='        d-array-article.html'>D Slices
+      </a></li></ul>
+    <li class='has-sub'><a href='#'><span>Resources</span></a>
+      <ul><li><a href='        library/index.html'>NEW Library Reference Preview</a></li><li><a href='        http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li><li><a href='        http://wiki.dlang.org/Editors'>Editors</a></li><li><a href='        http://wiki.dlang.org/IDEs'>IDEs</a></li><li><a href='        dstyle.html'>The D Style</a></li><li><a href='        glossary.html'>Glossary</a></li><li><a href='        acknowledgements.html'>Acknowledgments</a></li><li><a href='        sitemap.html'>Sitemap
+      </a></li></ul>
+</ul></div>
+</div>
+
+<div class="hyphenate" id="content">    
+<div id="tools">	<span class="tip">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&bug_severity=enhancement&component=dlang.org&op_sys=All&priority=P3&product=D&rep_platform=All&short_desc=%5BGarbage Collection%5D&version=D2" class="button">Report a bug</a>
+		<span >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</span>
+	</span>
+	<span class="tip">		<a href="https://github.com/D-Programming-Language/dlang.org/edit/master/garbage.dd" class="button">Improve this page</a>
+		<span >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			local clone.
+		</span>
+	</span>
+</div>
+    <h1>Garbage Collection</h1>
+    
+    <!--Generated by Ddoc from garbage.dd-->
+
+
+
+	<p>D is a systems programming language with support for garbage collection.
+	Usually it is not necessary
+	to free memory explicitly. Just allocate as needed, and the garbage collector will
+	periodically return all unused memory to the pool of available memory.
+	</p>
+	
+	<p>D also provides the mechanisms to write code where the garbage collector
+	is <b>not involved</b>. More information is provided below.
+	</p>
+
+	<p>C and C++ programmers accustomed to explicitly managing memory
+	allocation and
+	deallocation will likely be skeptical of the benefits and efficacy of
+	garbage collection. Experience both with new projects written with
+	garbage collection in mind, and converting existing projects to garbage
+	collection shows that:
+	</p>
+
+	<ul>
+	<li>Garbage collected programs are often faster. This is
+	counterintuitive, but the reasons are:
+
+	<ul>	    <li>Reference counting is a common solution to solve explicit
+	    memory allocation problems. The code to implement the increment and
+	    decrement operations whenever assignments are made is one source
+	    of slowdown. Hiding it behind smart pointer classes doesn't help
+	    the speed. (Reference counting methods are not a general solution
+	    anyway, as circular references never get deleted.)
+	    </li>
+
+	    <li>Destructors are used to deallocate resources acquired by an object.
+	    For most classes, this resource is allocated memory.
+	    With garbage collection, most destructors then become empty and
+	    can be discarded entirely.
+	    </li>
+
+	    <li>All those destructors freeing memory can become significant when
+	    objects are allocated on the stack. For each one, some mechanism must
+	    be established so that if an exception happens, the destructors all
+	    get called in each frame to release any memory they hold. If the
+	    destructors become irrelevant, then there's no need to set up special
+	    stack frames to handle exceptions, and the code runs faster.
+	    </li>
+
+	    <li>Garbage collection kicks in only when memory gets tight. When
+	    memory is not tight, the program runs at full speed and does not
+	    spend any time tracing and freeing memory.
+	    </li>
+
+	    <li>Garbage collected programs do not suffer from gradual deterioration
+	    due to an accumulation of memory leaks.
+	    </li>
+	</ul>
+	</li>
+
+	<li>Garbage collectors reclaim unused memory, therefore they do not suffer
+	from "memory leaks" which can cause long running applications to gradually
+	consume more and more memory until they bring down the system. GC programs
+	have longer term stability.
+	</li>
+
+	<li>Garbage collected programs have fewer hard-to-find pointer bugs. This
+	is because there are no dangling references to freed memory. There is no
+	code to explicitly manage memory, hence no bugs in such code.
+	</li>
+
+	<li>Garbage collected programs are faster to develop and debug, because
+	there's no need for developing, debugging, testing, or maintaining the
+	explicit deallocation code.
+	</li>
+
+	</ul>
+
+	<p>Garbage collection is not a panacea. There are some downsides:
+	</p>
+
+	<ul>
+	<li>It is not always obvious when the GC allocates memory, which in
+	turn can trigger a collection, so the program can pause unexpectedly.
+	</li>
+
+	<li>The time it takes for a collection to complete is not bounded.
+	While in practice it is very quick, this cannot normally be guaranteed.
+	</li>
+
+	<li>Normally, all threads other than the collector thread must be
+	halted while the collection is in progress.
+	</li>
+
+	<li>Garbage collectors can keep around some memory that an explicit
+	deallocator would not.
+	</li>
+
+	<li>Garbage collection should be implemented as a basic operating
+	system
+	kernel service. But since it is not, garbage collecting programs must
+	carry around with them the garbage collection implementation. While this
+	can be a shared library, it is still there.
+	</li>
+	</ul>
+
+	<p>These constraints are addressed by techniques outlined
+	in <a href="memory.html">Memory Management</a>, including the mechanisms provided by
+	D to control allocations outside the GC heap.
+	</p>
+    
+	<p>There is currently work in progress to make the runtime library free of GC heap allocations,
+	to allow its use in scenarios where the use of GC infrastructure is not possible.
+	</p>
+
+<h2>How Garbage Collection Works</h2>
+
+	<p>The GC works by:</p>
+
+	<ol>	<li>Stopping all other threads than the thread currently trying to
+	allocate GC memory.</li>
+
+	<li>&lsquo;Hijacking&rsquo; the current thread for GC work.</li>
+
+	<li>Scanning all &lsquo;root&rsquo; memory ranges for pointers into
+	GC allocated memory.</li>
+
+	<li>Recursively scanning all allocated memory pointed to by
+	roots looking for more pointers into GC allocated memory.</li>
+
+	<li>Freeing all GC allocated memory that has no active pointers
+	to it and do not need destructors to run.</li>
+
+	<li>Queueing all unreachable memory that needs destructors to run.</li>
+
+	<li>Resuming all other threads.</li>
+
+	<li>Running destructors for all queued memory.</li>
+
+	<li>Freeing any remaining unreachable memory.</li>
+
+	<li>Returning the current thread to whatever work it was doing.</li>
+	</ol>
+
+<h2>Interfacing Garbage Collected Objects With Foreign Code</h2>
+
+	<p>The garbage collector looks for roots in:</p>
+	<ol>	<li>the static data segment</li>
+	<li>the stacks and register contents of each thread</li>
+	<li>the TLS (thread-local storage) areas of each thread</li>
+	<li>any roots added by core.memory.GC.addRoot() or core.memory.GC.addRange()</li>
+	</ol>
+
+	<p>If the only pointer to an object
+	is held outside of these areas, then the collector will miss it and free the
+	memory.
+	</p>
+
+	<p>To avoid this from happening, either</p>
+
+	<ul>	<li>maintain a pointer to the object in an area the collector does scan
+	for pointers;</li>
+
+	<li>add a root where a pointer to the object is stored using core.memory.GC.addRoot()
+	or core.memory.GC.addRange().</li>
+
+	<li>reallocate and copy the object using the foreign code's storage
+	allocator
+	or using the C runtime library's malloc/free.
+	</li>
+	</ul>
+
+<h2>Pointers and the Garbage Collector</h2>
+
+	<p>Pointers in D can be broadly divided into two categories: Those that
+	point to garbage collected memory, and those that do not. Examples
+	of the latter are pointers created by calls to C's malloc(), pointers
+	received from C library routines, pointers to static data,
+	pointers to objects on the stack, etc. For those pointers, anything
+	that is legal in C can be done with them.
+	</p>
+
+	<p>For garbage collected pointers and references, however, there are
+	some
+	restrictions. These restrictions are minor, but they are intended
+	to enable the maximum flexibility in garbage collector design.
+	</p>
+
+	<p>Undefined behavior:</p>
+
+	<ul>
+	<li>Do not xor pointers with other values, like the
+	xor pointer linked list trick used in C.
+	</li>
+
+	<li>Do not use the xor trick to swap two pointer values.
+	</li>
+
+	<li>Do not store pointers into non-pointer variables using casts and
+	other tricks.
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span>* p;
+...
+<span class="d_keyword">int</span> x = <span class="d_keyword">cast</span>(<span class="d_keyword">int</span>)p;   <span class="d_comment">// error: undefined behavior
+</span></pre>
+
+	The garbage collector does not scan non-pointer fields for GC pointers.
+	</li>
+
+	<li>Do not take advantage of alignment of pointers to store bit flags
+	in the low order bits:
+
+<pre class="d_code notranslate">p = <span class="d_keyword">cast</span>(<span class="d_keyword">void</span>*)(<span class="d_keyword">cast</span>(<span class="d_keyword">int</span>)p | 1);  <span class="d_comment">// error: undefined behavior
+</span></pre>
+	</li>
+
+	<li>Do not store into pointers values that may point into the
+	garbage collected heap:
+
+<pre class="d_code notranslate">p = <span class="d_keyword">cast</span>(<span class="d_keyword">void</span>*)12345678;   <span class="d_comment">// error: undefined behavior
+</span></pre>
+
+	A copying garbage collector may change this value.
+	</li>
+
+	<li>Do not store magic values into pointers, other than <span class="d_inlinecode donthyphenate notranslate">null</span>.
+	</li>
+
+	<li>Do not write pointer values out to disk and read them back in
+	again.
+	</li>
+
+	<li>Do not use pointer values to compute a hash function. A copying
+	garbage collector can arbitrarily move objects around in memory,
+	thus invalidating
+	the computed hash value.
+	</li>
+
+	<li>Do not depend on the ordering of pointers:
+
+<pre class="d_code notranslate"><span class="d_keyword">if</span> (p1 &lt; p2)  <span class="d_comment">// error: undefined behavior
+</span>    ...
+</pre>
+	since, again, the garbage collector can move objects around in
+	memory.
+	</li>
+
+	<li>Do not add or subtract an offset to a pointer such that the result
+	points outside of the bounds of the garbage collected object originally
+	allocated.
+
+<pre class="d_code notranslate"><span class="d_keyword">char</span>* p = <span class="d_keyword">new</span> <span class="d_keyword">char</span>[10];
+<span class="d_keyword">char</span>* q = p + 6; <span class="d_comment">// ok
+</span>q = p + 11;      <span class="d_comment">// error: undefined behavior
+</span>q = p - 1;       <span class="d_comment">// error: undefined behavior
+</span></pre>
+	</li>
+
+	<li>Do not misalign pointers if those pointers may
+	point into the GC heap, such as:
+
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> Foo
+{
+  <span class="d_keyword">align</span> (1):
+    <span class="d_keyword">byte</span> b;
+    <span class="d_keyword">char</span>* p;  <span class="d_comment">// misaligned pointer
+</span>}
+</pre>
+
+	Misaligned pointers may be used if the underlying hardware
+	supports them <b>and</b> the pointer is never used to point
+	into the GC heap.
+	</li>
+
+	<li>Do not use byte-by-byte memory copies to copy pointer values.
+	This may result in intermediate conditions where there is
+	not a valid pointer, and if the gc pauses the thread in such a
+	condition, it can corrupt memory.
+	Most implementations of <span class="d_inlinecode donthyphenate notranslate">memcpy()</span> will work since the
+	internal implementation of it does the copy in aligned chunks
+	greater than or equal to the pointer size, but since this kind of
+	implementation is not guaranteed by the C standard, use
+	<span class="d_inlinecode donthyphenate notranslate">memcpy()</span> only with extreme caution.
+	</li>
+
+	<li>Do not have pointers in a struct instance that point back
+	to the same instance. The trouble with this is if the instance
+	gets moved in memory, the pointer will point back to where it
+	came from, with likely disastrous results.
+	</li>
+
+	</ul>
+
+	<p>Things that are reliable and can be done:</p>
+
+	<ul>
+	<li>Use a union to share storage with a pointer:
+
+<pre class="d_code notranslate"><span class="d_keyword">union</span> U { <span class="d_keyword">void</span>* ptr; <span class="d_keyword">int</span> value }
+</pre>
+	</li>
+
+	<li>A pointer to the start of a garbage collected object need not
+	be maintained if a pointer to the interior of the object exists.
+
+<pre class="d_code notranslate"><span class="d_keyword">char</span>[] p = <span class="d_keyword">new</span> <span class="d_keyword">char</span>[10];
+<span class="d_keyword">char</span>[] q = p[3..6];
+<span class="d_comment">// q is enough to hold on to the object, don't need to keep
+</span><span class="d_comment">// p as well.
+</span></pre>
+	</li>
+	</ul>
+
+	<p>One can avoid using pointers anyway for most tasks. D provides
+	features
+	rendering most explicit pointer uses obsolete, such as reference
+	objects,
+	dynamic arrays, and garbage collection. Pointers
+	are provided in order to interface successfully with C APIs and for
+	some low level work.
+	</p>
+
+<h2>Working with the Garbage Collector</h2>
+
+	<p>Garbage collection doesn't solve every memory deallocation problem.
+	For
+	example, if a pointer to a large data structure is kept, the garbage
+	collector cannot reclaim it, even if it is never referred to again. To
+	eliminate this problem, it is good practice to set a reference or
+	pointer to an object to null when no longer needed.
+	</p>
+
+	<p>This advice applies only to static references or references embedded
+	inside other objects. There is not much point for such stored on the
+	stack to be nulled because new stack frames are initialized anyway.
+	</p>
+
+<h2>Object Pinning and a Moving Garbage Collector</h2>
+
+	<p>Although D does not currently use a moving garbage collector, by following
+	the rules listed above one can be implemented. No special action is required
+	to pin objects. A moving collector will only move objects for which there
+	are no ambiguous references, and for which it can update those references.
+	All other objects will be automatically pinned.
+	</p>
+
+<h2>D Operations That Involve the Garbage Collector</h2>
+
+	<p>Some sections of code may need to avoid using the garbage collector.
+	The following constructs may allocate memory using the garbage collector:
+	</p>
+
+	<ul>	<li><a href="expression.html#NewExpression"><i>NewExpression</i></a></li>
+	<li>Array appending</li>
+	<li>Array concatenation</li>
+	<li>Array literals (except when used to initialize static data)</li>
+	<li>Associative array literals</li>
+	<li>Any insertion, removal, or lookups in an associative array</li>
+	<li>Extracting keys or values from an associative array</li>
+		<li>Taking the address of (i.e. making a delegate to) a nested function that
+	 accesses variables in an outer scope</li>
+	<li>A function literal that accesses variables in an outer scope</li>
+	
+	<li>An <a href="expression.html#AssertExpression"><i>AssertExpression</i></a> that fails its condition</li>
+	</ul>
+
+<h2>References</h2>
+
+	<ul>	<li><a href="http://en.wikipedia.org/wiki/Garbage_collection_%28computer_science%29">Wikipedia</a></li>
+	<li><a href="http://www.iecc.com/gclist/GC-faq.html">GC FAQ</a></li>
+	<li><a href="ftp://ftp.cs.utexas.edu/pub/garbage/gcsurvey.ps">Uniprocessor Garbage Collector Techniques</a></li>
+	<li><a href="http://amazon.com/exec/obidos/ASIN/0471941484/classicempire">Garbage Collection: Algorithms for Automatic Dynamic Memory Management</a></li>
+	</ul>
+
+
+
+
+</div>
+<div id="copyright">Copyright &copy; 1999-2017 by Digital Mars &reg;, All Rights Reserved | Page generated by <a href="http://dlang.org/ddoc.html">Ddoc</a> on (no date time)</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('<script src="js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="js/dlang.js"></script>
+    
+    <script type="text/javascript" src="js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="js/run.js"></script>
+
+<script type="text/javascript" src="js/run-main-website.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+</body>
+</html>

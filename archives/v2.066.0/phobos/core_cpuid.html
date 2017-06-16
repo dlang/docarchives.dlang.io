@@ -1,0 +1,708 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+<html lang='en-US'>
+
+<!--
+	Copyright (c) 1999-2010 by Digital Mars
+	All Rights Reserved Written by Walter Bright
+	http://www.digitalmars.com
+  -->
+
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" >
+<title>core.cpuid - D Programming Language - Digital Mars</title>
+<link rel="stylesheet" type="text/css" href="../css/codemirror.css" />
+<link rel="stylesheet" type="text/css" href="../css/style.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+<script src="/js/codemirror-compressed.js"></script>
+<script src="/js/run.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+function listanchors()
+{
+    if (typeof inhibitQuickIndex !== 'undefined') return;
+    var a = document.getElementById("quickindex");
+    if (!a) return;
+    var newText = "";
+    var hash = new Array;
+    var n = 0;
+    var values = new Array;
+    // List all anchors.
+    for (var i = 0; i < document.anchors.length; i++)
+    {
+        var a = document.anchors[i];
+        var text = a.name;
+        // ignore anchors from DDOC_PSYMBOL
+        if (text[0] != '.') continue;
+        if (hash[text] > 0) continue;
+        hash[text] = 1;
+        values[n++] = a.name
+    }
+
+    // we won't display the qualifying names to save space, so sort by last name
+    var lastName = function(a){
+        var li = a.lastIndexOf('.');
+        return a.slice(li + 1);
+    }
+    values.sort(function(a,b){
+        return function(aa, bb){
+            return aa == bb ? 0 : (aa < bb ? -1 : 1);
+        }(lastName(a).toLowerCase(), lastName(b).toLowerCase());
+    });
+
+    for(var i = 0; i < values.length; i++) {
+        var a = values[i];
+        var text = lastName(a);
+        newText += ' \x3Ca href="\x23' + a +
+            '"\x3E\x3Cspan class="d_psymbol"\x3E' + text + '\x3C/span\x3E\x3C/a\x3E';
+    }
+    if (newText != "") newText = "\x3Cp\x3E\x3Cb\x3EJump to:\x3C/b\x3E" + newText + "\x3C/p\x3E";
+    var a = document.getElementById("quickindex");
+    a.innerHTML = newText;
+}
+jQuery(document).ready(listanchors);
+</script>
+
+</head>
+
+<body class='hyphenate'>
+
+<div id="top">
+	<div id="search-box">
+		<form method="get" action="http://google.com/search">
+			<img src="/images/search-left.gif" width="11" height="22" alt=""><input id="q" name="q"><input type="image" id="search-submit" name="submit" src="/images/search-button.gif">
+			<input type="hidden" id="domains" name="domains" value="dlang.org">
+			<input type="hidden" id="sourceid" name="sourceid" value="google-search">
+			<div id="search-dropdown">
+				<select id="sitesearch" name="sitesearch" size="1">
+					<option value="dlang.org">Entire D  Site</option>
+					<option value="dlang.org/phobos">Library Reference</option>
+					<option value="www.digitalmars.com/d/archives">Newsgroup Archives</option>
+				</select>
+			</div>
+		</form>
+	</div>
+	<div id="header">
+		<a href="/"><img id="logo" width="125" height="95" border="0" alt="D Logo" src="/images/dlogo.png"></a>
+		<a id="d-language" href="/">D Programming Language </a>
+	</div>
+</div>
+
+<div id="navigation">
+    
+<div class="navblock">
+<form method="get" action="http://www.google.com/search">
+<div id="searchbox">
+<input name="q" size="10" value="RTL Search" onFocus='if(this.value == "RTL Search"){this.value="";}'>
+<input type="hidden" name="domains" value="www.digitalmars.com">
+<input type="hidden" name="sitesearch" value="dlang.org/phobos">
+<input type="hidden" name="sourceid" value="google-search">
+<input type="submit" name="submit" value="Go">
+</div>
+</form>
+<div id="toctop">
+    <ul>	<li><a href="../index.html" title="D Programming Language">D</a></li>
+	<li><a href="../spec.html" title="D Language Specification">Language</a></li>
+	<li><a href="../phobos/index.html" title="D Runtime Library">Phobos </a></li>
+	<li><a href="../phobos-prerelease/index.html" title="D Runtime Library (prerelease)">Phobos (prerelease)</a></li>
+	<li><a href="../comparison.html" title="Language Comparisons">Comparisons</a></li>
+	<li><a href="http://code.dlang.org" title="Third Party Packages">Third Party Packages</a></li>
+    </ul>
+</div>
+</div>
+    
+<div class="navblock">
+    <ul>	<li><a href="object.html" title="root of object hierarchy">object</a></li>
+    </ul>
+    <h2><a href="index.html#std" title="D standard modules">std</a></h2>
+    <ul>	<li><a href="std_algorithm.html" title="General-purpose algorithms">std.algorithm</a></li>
+	<li><a href="std_array.html" title="Array functions">std.array</a></li>
+	<li><a href="std_ascii.html" title="Functions which operate on ASCII characters">std.ascii</a></li>
+	<li><a href="std_base64.html" title="Encode/decode base64 format">std.base64</a></li>
+	<li><a href="std_bigint.html" title="Arbitrary-precision ('bignum') arithmetic">std.bigint</a></li>
+	<li><a href="std_bitmanip.html" title="Bit-level manipulation">std.bitmanip</a></li>
+	<li><a href="std_compiler.html" title="Information about the D compiler implementation">std.compiler</a></li>
+	<li><a href="std_complex.html" title="Complex numbers">std.complex</a></li>
+	<li><a href="std_concurrency.html" title="Message Passing">std.concurrency</a></li>
+	<li><a href="std_container.html" title="Containers">std.container</a></li>
+	<li><a href="std_conv.html" title="Conversion of strings to integers">std.conv</a></li>
+	<li><a href="std_csv.html" title="CSV file parser">std.csv</a></li>
+	<li><a href="std_datetime.html" title="Date and time-related types and functions">std.datetime</a></li>
+	<li><a href="std_encoding.html" title="Character and string encoding">std.encoding</a></li>
+	<li><a href="std_exception.html" title="Exceptions and error handling">std.exception</a></li>
+	<li><a href="std_file.html" title="Basic file operations">std.file</a></li>
+	<li><a href="std_format.html" title="Formatted conversions of values to strings">std.format</a></li>
+	<li><a href="std_functional.html" title="functional">std.functional</a></li>
+	<li><a href="std_getopt.html" title="Command line options">std.getopt</a></li>
+	<li><a href="std_json.html" title="JSON reader">std.json</a></li>
+	<li><a href="std_math.html" title="the usual math functions">std.math</a></li>
+	<li><a href="std_mathspecial.html" title="mathematical special functions">std.mathspecial</a></li>
+	<li><a href="std_mmfile.html" title="Memory mapped files">std.mmfile</a></li>
+	<li><a href="std_numeric.html" title="Numeric algorithms">std.numeric</a></li>
+	<li><a href="std_outbuffer.html" title="Assemble data into an array of bytes">std.outbuffer</a></li>
+	<li><a href="std_parallelism.html" title="High-level primitives for SMP parallelism">std.parallelism</a></li>
+	<li><a href="std_path.html" title="Manipulate file names, path names, etc.">std.path</a></li>
+	<li><a href="std_process.html" title="Create/destroy processes">std.process</a></li>
+	<li><a href="std_random.html" title="Random number generation">std.random</a></li>
+	<li><a href="std_range.html" title="Ranges">std.range</a></li>
+	<li><a href="std_regex.html" title="regular expressions">std.regex</a></li>
+	<li><a href="std_signals.html" title="Signals">std.signals</a></li>
+	<li><a href="std_socket.html" title="Sockets">std.socket</a></li>
+	<li><a href="std_socketstream.html" title="Stream for a blocking, connected Socket">std.socketstream</a></li>
+	<li><a href="std_stdio.html" title="Standard I/O">std.stdio</a></li>
+	<li><a href="std_cstream.html" title="Stream I/O">std.cstream</a></li>
+	<li><a href="std_stream.html" title="Stream I/O">std.stream</a></li>
+	<li><a href="std_string.html" title="Basic string operations">std.string</a></li>
+	<li><a href="std_system.html" title="Inquire about the CPU, operating system">std.system</a></li>
+	<li><a href="std_traits.html" title="Type traits">std.traits</a></li>
+	<li><a href="std_typecons.html" title="Type constructors">std.typecons</a></li>
+	<li><a href="std_typetuple.html" title="Type tuples">std.typetuple</a></li>
+	<li><a href="std_uni.html" title="Unicode classification">std.uni</a></li>
+	<li><a href="std_uri.html" title="Encode and decode Uniform Resource Identifiers (URIs)">std.uri</a></li>
+	<li><a href="std_utf.html" title="Encode and decode utf character encodings">std.utf</a></li>
+	<li><a href="std_uuid.html" title="Generate and use UUIDs">std.uuid</a></li>
+	<li><a href="std_variant.html" title="Stores all types in a uniform, dynamically-checked representation">std.variant</a></li>
+	<li><a href="std_xml.html" title="XML file processing">std.xml</a></li>
+	<li><a href="std_zip.html" title="Read/write zip archives">std.zip</a></li>
+	<li><a href="std_zlib.html" title="Compression / Decompression of data">std.zlib</a></li>
+	<li><a href="std_net_curl.html" title="High level curl wrapper">std.net.curl</a></li>
+	<li><a href="std_net_isemail.html" title="Validate e-mail addresses">std.net.isemail</a></li>
+	<li><a href="std_digest_crc.html" title="CRC digest functions">std.digest.crc</a></li>
+	<li><a href="std_digest_digest.html" title="API for digest functions">std.digest.digest</a></li>
+	<li><a href="std_digest_md.html" title="MD digest functions">std.digest.md</a></li>
+	<li><a href="std_digest_ripemd.html" title="RIPEMD digest functions">std.digest.ripemd</a></li>
+	<li><a href="std_digest_sha.html" title="SHA digest functions">std.digest.sha</a></li>
+	<li><a href="std_windows_charset.html" title="Conversion to/from Windows character sets">std.windows.charset</a></li>
+    </ul>
+    <h2><a href="index.html#etc" title="D etc modules">etc</a></h2>
+    <ul>	<li><a href="etc_c_curl.html" title="Interface to libcurl library">etc.c.curl</a></li>
+	<li><a href="etc_c_sqlite3.html" title="Interface to sqlite3 library">etc.c.sqlite3</a></li>
+	<li><a href="etc_c_zlib.html" title="Interface to zlib library">etc.c.zlib</a></li>
+    </ul>
+    <h2><a href="index.html#core" title="D core modules">core</a></h2>
+    <ul>	<li><a href="core_atomic.html" title="Atomic operations">core.atomic</a></li>
+	<li><a href="core_bitop.html" title="Bitwise operations">core.bitop</a></li>
+	<li><a href="core_cpuid.html" title="CPU identification">core.cpuid</a></li>
+	<li><a href="core_demangle.html" title="D symbol mangling">core.demangle</a></li>
+	<li><a href="core_exception.html" title="Root of exception hierarchy">core.exception</a></li>
+	<li><a href="core_memory.html" title="Interface to memory management">core.memory</a></li>
+	<li><a href="core_runtime.html" title="Interface to D runtime library internals">core.runtime</a></li>
+	<li><a href="core_simd.html" title="Builtin SIMD intrinsics">core.simd</a></li>
+	<li><a href="core_thread.html" title="Thread management">core.thread</a></li>
+	<li><a href="core_time.html" title="Core time functionality">core.time</a></li>
+	<li><a href="core_vararg.html" title="Variable function arguments">core.vararg</a></li>
+	<li><a href="core_sync_barrier.html" title="Synchronizing progress of a group of threads">core.sync.barrier</a></li>
+	<li><a href="core_sync_condition.html" title="Synchronized condition checking">core.sync.condition</a></li>
+	<li><a href="core_sync_config.html" title="Stuff for core.sync">core.sync.config</a></li>
+	<li><a href="core_sync_exception.html" title="SyncException">core.sync.exception</a></li>
+	<li><a href="core_sync_mutex.html" title="Mutexes">core.sync.mutex</a></li>
+	<li><a href="core_sync_rwmutex.html" title="R/W mutually exclusive access">core.sync.rwmutex</a></li>
+	<li><a href="core_sync_semaphore.html" title="Semaphores">core.sync.semaphore</a></li>
+    </ul>
+</div>
+</div><!--/navigation-->
+<div id="content">
+    
+<div id="tools">
+	<!--span id="lastupdate">Last update </span-->
+	<span class="tip">
+		<a href="https://github.com/D-Programming-Language/druntime/edit/master/src/core/cpuid.d" class="button">Improve this page</a>
+		<span>
+			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			local clone.
+		</span>
+	</span>
+	<span class="tip">
+		<a href="http://wiki.dlang.org/DocComments/" class="button">Page wiki</a>
+		<span>
+			View or edit the community-maintained wiki page associated with this page.
+		</span>
+	</span>
+</div>
+    <h1>core.cpuid</h1>
+    <div id=quickindex class=quickindex></div>
+    <!-- Generated by Ddoc from src/core/cpuid.d -->
+Identify the characteristics of the host CPU, providing information
+ about cache sizes and assembly optimisation hints. This module is
+ provided primarily for assembly language programmers.
+<p></p>
+<b>References:</b><br>
+Some of this information was extremely difficult to track down. Some of the
+ documents below were found only in cached versions stored by search engines!
+ This code relies on information found in:
+<p></p>
+
+ <ul> <li>"Intel(R) 64 and IA-32 Architectures Software Developers Manual,
+    Volume 2A: Instruction Set Reference, A-M" (2007).
+ </li>
+ <li>"AMD CPUID Specification", Advanced Micro Devices, Rev 2.28 (2008).
+ </li>
+ <li>"AMD Processor Recognition Application Note For Processors Prior to AMD
+    Family 0Fh Processors", Advanced Micro Devices, Rev 3.13 (2005).
+ </li>
+ <li>"AMD Geode(TM) GX Processors Data Book",
+    Advanced Micro Devices, Publication ID 31505E, (2005).
+ </li>
+ <li>"AMD K6 Processor Code Optimisation", Advanced Micro Devices, Rev D (2000).
+ </li>
+ <li>"Application note 106: Software Customization for the 6x86 Family",
+    Cyrix Corporation, Rev 1.5 (1998)
+ </li>
+ <li><a href="http://www.datasheetcatalog.org/datasheet/nationalsemiconductor/GX1.pdf">http://www.datasheetcatalog.org/datasheet/nationalsemiconductor/GX1.pdf</a></li>
+ <li>"Geode(TM) GX1 Processor Series Low Power Integrated X86 Solution",
+   National Semiconductor, (2002)
+ </li>
+ <li>"The VIA Isaiah Architecture", G. Glenn Henry, Centaur Technology, Inc (2008).
+ </li>
+ <li><a href="http://www.sandpile.org/ia32/cpuid.htm">http://www.sandpile.org/ia32/cpuid.htm</a></li>
+ <li><a href="http://www.akkadia.org/drepper/cpumemory.pdf">http://www.akkadia.org/drepper/cpumemory.pdf</a></li>
+ <li>"What every programmer should know about memory",
+    Ulrich Depper, Red Hat, Inc., (2007).
+ </li>
+ <li>"CPU Identification by the Windows Kernel", G. Chappell (2009).
+   <a href="http://www.geoffchappell.com/viewer.htm?doc=studies/windows/km/cpu/cx8.htm">http://www.geoffchappell.com/viewer.htm?doc=studies/windows/km/cpu/cx8.htm</a>
+ </li>
+ <li>"Intel(R) Processor Identification and the CPUID Instruction, Application
+    Note 485" (2009).
+ </li>
+ </ul>
+
+<p></p>
+<span style="color:red">BUGS:</span><br>Currently only works on x86 and Itanium CPUs.
+      Many processors have bugs in their microcode for the CPUID instruction,
+      so sometimes the cache information may be incorrect.
+
+<p></p>
+<b>License:</b><br><a href="http://www.boost.org/LICENSE_1_0.txt">Boost License 1.0</a>
+<p></p>
+<b>Authors:</b><br>Don Clugston, Tomas Lindquist Olsen &lt;tomas@famolsen.dk&gt;
+<p></p>
+<b>Source:</b><br>
+<a href="https://github.com/D-Programming-Language/druntime/blob/master/src/core/cpuid.d">core/cpuid.d</a><p></p>
+
+<dl><dt class="d_decl"><a name=".CacheInfo"></a>struct <a name="CacheInfo"></a><span class="ddoc_psymbol">CacheInfo</span>;
+</dt>
+<dd>Cache size and behaviour<p></p>
+
+<dl><dt class="d_decl"><a name=".CacheInfo.size"></a>size_t <a name="size"></a><span class="ddoc_psymbol">size</span>;
+</dt>
+<dd>Size of the cache, in kilobytes, per CPU.
+<p></p>
+For L1 unified (data + code) caches, this <a name="size"></a><span class="ddoc_psymbol">size</span> is half the physical <a name="size"></a><span class="ddoc_psymbol">size</span>.
+<p></p>
+
+(we don't halve it for larger sizes, since normally
+<p></p>
+
+data <a name="size"></a><span class="ddoc_psymbol">size</span> is much greater than code <a name="size"></a><span class="ddoc_psymbol">size</span> for critical loops).<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".CacheInfo.associativity"></a>ubyte <a name="associativity"></a><span class="ddoc_psymbol">associativity</span>;
+</dt>
+<dd>Number of ways of <a name="associativity"></a><span class="ddoc_psymbol">associativity</span>, eg:
+<p></p>
+1 = direct mapped
+<p></p>
+
+2 = 2-way set associative
+<p></p>
+
+3 = 3-way set associative
+<p></p>
+
+ubyte.max = fully associative<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".CacheInfo.lineSize"></a>uint <a name="lineSize"></a><span class="ddoc_psymbol">lineSize</span>;
+</dt>
+<dd>Number of bytes read into the cache when a cache miss occurs.<p></p>
+
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><a name=".datacache"></a>CacheInfo[5] <a name="datacache"></a><span class="ddoc_psymbol">datacache</span>;
+</dt>
+<dd><span style="color:red">Scheduled for deprecation. Please use <span class="d_inlinecode">dataCaches</span> instead.</span><p></p>
+
+</dd>
+<dt class="d_decl"><a name=".dataCaches"></a>nothrow @nogc @property @trusted const(CacheInfo)[5] <a name="dataCaches"></a><span class="ddoc_psymbol">dataCaches</span>();
+</dt>
+<dd>The data caches. If there are fewer than 5 physical caches levels,
+<p></p>
+the remaining levels are set to size_t.max (== entire memory space)<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".vendor"></a>nothrow @nogc @property @trusted string <a name="vendor"></a><span class="ddoc_psymbol">vendor</span>();
+</dt>
+<dd>Returns <a name="vendor"></a><span class="ddoc_psymbol">vendor</span> string, for display purposes only.
+<p></p>
+Do NOT use this to determine features!
+<p></p>
+
+Note that some CPUs have programmable vendorIDs.<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".processor"></a>nothrow @nogc @property @trusted string <a name="processor"></a><span class="ddoc_psymbol">processor</span>();
+</dt>
+<dd>Returns <a name="processor"></a><span class="ddoc_psymbol">processor</span> string, for display purposes only<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".x87onChip"></a>nothrow @nogc @property @trusted bool <a name="x87onChip"></a><span class="ddoc_psymbol">x87onChip</span>();
+</dt>
+<dd>Does it have an x87 FPU on-chip?<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".mmx"></a>nothrow @nogc @property @trusted bool <a name="mmx"></a><span class="ddoc_psymbol">mmx</span>();
+</dt>
+<dd>Is MMX supported?<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".sse"></a>nothrow @nogc @property @trusted bool <a name="sse"></a><span class="ddoc_psymbol">sse</span>();
+</dt>
+<dd>Is SSE supported?<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".sse2"></a>nothrow @nogc @property @trusted bool <a name="sse2"></a><span class="ddoc_psymbol">sse2</span>();
+</dt>
+<dd>Is SSE2 supported?<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".sse3"></a>nothrow @nogc @property @trusted bool <a name="sse3"></a><span class="ddoc_psymbol">sse3</span>();
+</dt>
+<dd>Is SSE3 supported?<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".ssse3"></a>nothrow @nogc @property @trusted bool <a name="ssse3"></a><span class="ddoc_psymbol">ssse3</span>();
+</dt>
+<dd>Is SSSE3 supported?<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".sse41"></a>nothrow @nogc @property @trusted bool <a name="sse41"></a><span class="ddoc_psymbol">sse41</span>();
+</dt>
+<dd>Is SSE4.1 supported?<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".sse42"></a>nothrow @nogc @property @trusted bool <a name="sse42"></a><span class="ddoc_psymbol">sse42</span>();
+</dt>
+<dd>Is SSE4.2 supported?<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".sse4a"></a>nothrow @nogc @property @trusted bool <a name="sse4a"></a><span class="ddoc_psymbol">sse4a</span>();
+</dt>
+<dd>Is SSE4a supported?<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".aes"></a>nothrow @nogc @property @trusted bool <a name="aes"></a><span class="ddoc_psymbol">aes</span>();
+</dt>
+<dd>Is AES supported<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".hasPclmulqdq"></a>nothrow @nogc @property @trusted bool <a name="hasPclmulqdq"></a><span class="ddoc_psymbol">hasPclmulqdq</span>();
+</dt>
+<dd>Is pclmulqdq supported<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".hasRdrand"></a>nothrow @nogc @property @trusted bool <a name="hasRdrand"></a><span class="ddoc_psymbol">hasRdrand</span>();
+</dt>
+<dd>Is rdrand supported<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".avx"></a>nothrow @nogc @property @trusted bool <a name="avx"></a><span class="ddoc_psymbol">avx</span>();
+</dt>
+<dd>Is AVX supported<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".vaes"></a>nothrow @nogc @property @trusted bool <a name="vaes"></a><span class="ddoc_psymbol">vaes</span>();
+</dt>
+<dd>Is VEX-Encoded AES supported<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".hasVpclmulqdq"></a>nothrow @nogc @property @trusted bool <a name="hasVpclmulqdq"></a><span class="ddoc_psymbol">hasVpclmulqdq</span>();
+</dt>
+<dd>Is vpclmulqdq supported<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".fma"></a>nothrow @nogc @property @trusted bool <a name="fma"></a><span class="ddoc_psymbol">fma</span>();
+</dt>
+<dd>Is FMA supported<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".fp16c"></a>nothrow @nogc @property @trusted bool <a name="fp16c"></a><span class="ddoc_psymbol">fp16c</span>();
+</dt>
+<dd>Is FP16C supported<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".avx2"></a>nothrow @nogc @property @trusted bool <a name="avx2"></a><span class="ddoc_psymbol">avx2</span>();
+</dt>
+<dd>Is AVX2 supported<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".hle"></a>nothrow @nogc @property @trusted bool <a name="hle"></a><span class="ddoc_psymbol">hle</span>();
+</dt>
+<dd>Is HLE (hardware lock elision) supported<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".rtm"></a>nothrow @nogc @property @trusted bool <a name="rtm"></a><span class="ddoc_psymbol">rtm</span>();
+</dt>
+<dd>Is RTM (restricted transactional memory) supported<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".hasRdseed"></a>nothrow @nogc @property @trusted bool <a name="hasRdseed"></a><span class="ddoc_psymbol">hasRdseed</span>();
+</dt>
+<dd>Is rdseed supported<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".hasSha"></a>nothrow @nogc @property @trusted bool <a name="hasSha"></a><span class="ddoc_psymbol">hasSha</span>();
+</dt>
+<dd>Is SHA supported<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".amd3dnow"></a>nothrow @nogc @property @trusted bool <a name="amd3dnow"></a><span class="ddoc_psymbol">amd3dnow</span>();
+</dt>
+<dd>Is AMD 3DNOW supported?<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".amd3dnowExt"></a>nothrow @nogc @property @trusted bool <a name="amd3dnowExt"></a><span class="ddoc_psymbol">amd3dnowExt</span>();
+</dt>
+<dd>Is AMD 3DNOW Ext supported?<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".amdMmx"></a>nothrow @nogc @property @trusted bool <a name="amdMmx"></a><span class="ddoc_psymbol">amdMmx</span>();
+</dt>
+<dd>Are AMD extensions to MMX supported?<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".hasFxsr"></a>nothrow @nogc @property @trusted bool <a name="hasFxsr"></a><span class="ddoc_psymbol">hasFxsr</span>();
+</dt>
+<dd>Is fxsave/fxrstor supported?<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".hasCmov"></a>nothrow @nogc @property @trusted bool <a name="hasCmov"></a><span class="ddoc_psymbol">hasCmov</span>();
+</dt>
+<dd>Is cmov supported?<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".hasRdtsc"></a>nothrow @nogc @property @trusted bool <a name="hasRdtsc"></a><span class="ddoc_psymbol">hasRdtsc</span>();
+</dt>
+<dd>Is rdtsc supported?<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".hasCmpxchg8b"></a>nothrow @nogc @property @trusted bool <a name="hasCmpxchg8b"></a><span class="ddoc_psymbol">hasCmpxchg8b</span>();
+</dt>
+<dd>Is cmpxchg8b supported?<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".hasCmpxchg16b"></a>nothrow @nogc @property @trusted bool <a name="hasCmpxchg16b"></a><span class="ddoc_psymbol">hasCmpxchg16b</span>();
+</dt>
+<dd>Is cmpxchg8b supported?<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".hasSysEnterSysExit"></a>nothrow @nogc @property @trusted bool <a name="hasSysEnterSysExit"></a><span class="ddoc_psymbol">hasSysEnterSysExit</span>();
+</dt>
+<dd>Is SYSENTER/SYSEXIT supported?<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".has3dnowPrefetch"></a>nothrow @nogc @property @trusted bool <a name="has3dnowPrefetch"></a><span class="ddoc_psymbol">has3dnowPrefetch</span>();
+</dt>
+<dd>Is 3DNow prefetch supported?<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".hasLahfSahf"></a>nothrow @nogc @property @trusted bool <a name="hasLahfSahf"></a><span class="ddoc_psymbol">hasLahfSahf</span>();
+</dt>
+<dd>Are LAHF and SAHF supported in 64-bit mode?<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".hasPopcnt"></a>nothrow @nogc @property @trusted bool <a name="hasPopcnt"></a><span class="ddoc_psymbol">hasPopcnt</span>();
+</dt>
+<dd>Is POPCNT supported?<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".hasLzcnt"></a>nothrow @nogc @property @trusted bool <a name="hasLzcnt"></a><span class="ddoc_psymbol">hasLzcnt</span>();
+</dt>
+<dd>Is LZCNT supported?<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".isX86_64"></a>nothrow @nogc @property @trusted bool <a name="isX86_64"></a><span class="ddoc_psymbol">isX86_64</span>();
+</dt>
+<dd>Is this an Intel64 or AMD 64?<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".isItanium"></a>nothrow @nogc @property @trusted bool <a name="isItanium"></a><span class="ddoc_psymbol">isItanium</span>();
+</dt>
+<dd>Is this an IA64 (Itanium) processor?<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".hyperThreading"></a>nothrow @nogc @property @trusted bool <a name="hyperThreading"></a><span class="ddoc_psymbol">hyperThreading</span>();
+</dt>
+<dd>Is hyperthreading supported?<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".threadsPerCPU"></a>nothrow @nogc @property @trusted uint <a name="threadsPerCPU"></a><span class="ddoc_psymbol">threadsPerCPU</span>();
+</dt>
+<dd>Returns number of threads per CPU<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".coresPerCPU"></a>nothrow @nogc @property @trusted uint <a name="coresPerCPU"></a><span class="ddoc_psymbol">coresPerCPU</span>();
+</dt>
+<dd>Returns number of cores in CPU<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".preferAthlon"></a>nothrow @nogc @property @trusted bool <a name="preferAthlon"></a><span class="ddoc_psymbol">preferAthlon</span>();
+</dt>
+<dd>Optimisation hints for assembly code.
+<p></p>
+For forward compatibility, the CPU is compared against different
+<p></p>
+
+microarchitectures. For 32-bit x86, comparisons are made against
+<p></p>
+
+the Intel PPro/PII/PIII/PM family.
+<p></p>
+
+<p></p>
+
+<p></p>
+
+The major 32-bit x86 microarchitecture 'dynasties' have been:
+<p></p>
+
+<p></p>
+
+<p></p>
+
+* Intel P6 (PentiumPro, PII, PIII, PM, Core, Core2).
+<p></p>
+
+* AMD Athlon (K7, K8, K10).
+<p></p>
+
+* Intel NetBurst (Pentium 4, Pentium D).
+<p></p>
+
+* In-order Pentium (Pentium1, PMMX, Atom)
+<p></p>
+
+<p></p>
+
+<p></p>
+
+Other early CPUs (Nx586, AMD K5, K6, Centaur C3, Transmeta,
+<p></p>
+
+Cyrix, Rise) were mostly in-order.
+<p></p>
+
+<p></p>
+
+<p></p>
+
+Some new processors do not fit into the existing categories:
+<p></p>
+
+<p></p>
+
+<p></p>
+
+* Intel Atom 230/330 (family 6, model 0x1C) is an in-order core.
+<p></p>
+
+* Centaur Isiah = VIA Nano (family 6, model F) is an out-of-order core.
+<p></p>
+
+<p></p>
+
+<p></p>
+
+Within each dynasty, the optimisation techniques are largely
+<p></p>
+
+identical (eg, use instruction pairing for group 4). Major
+<p></p>
+
+instruction set improvements occur within each dynasty.
+<p></p>
+
+Does this CPU perform better on AMD K7 code than PentiumPro..Core2 code?<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".preferPentium4"></a>nothrow @nogc @property @trusted bool <a name="preferPentium4"></a><span class="ddoc_psymbol">preferPentium4</span>();
+</dt>
+<dd>Does this CPU perform better on Pentium4 code than PentiumPro..Core2 code?<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".preferPentium1"></a>nothrow @nogc @property @trusted bool <a name="preferPentium1"></a><span class="ddoc_psymbol">preferPentium1</span>();
+</dt>
+<dd>Does this CPU perform better on Pentium I code than Pentium Pro code?<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".stepping"></a>uint <a name="stepping"></a><span class="ddoc_psymbol">stepping</span>;
+</dt>
+<dd><span style="color:red">Warning: This field will be turned into a property in a future release.</span>
+<p></p>
+Processor type (vendor-dependent).
+<p></p>
+
+This should be visible ONLY for display purposes.<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".model"></a>uint <a name="model"></a><span class="ddoc_psymbol">model</span>;
+</dt>
+<dd><span style="color:red">Warning: This field will be turned into a property in a future release.</span>
+<p></p>
+Processor type (vendor-dependent).
+<p></p>
+
+This should be visible ONLY for display purposes.<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".family"></a>uint <a name="family"></a><span class="ddoc_psymbol">family</span>;
+</dt>
+<dd><span style="color:red">Warning: This field will be turned into a property in a future release.</span>
+<p></p>
+Processor type (vendor-dependent).
+<p></p>
+
+This should be visible ONLY for display purposes.<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".numCacheLevels"></a>uint <a name="numCacheLevels"></a><span class="ddoc_psymbol">numCacheLevels</span>;
+</dt>
+<dd><span style="color:red">This field has been deprecated. Please use <span class="d_inlinecode">cacheLevels</span> instead.</span><p></p>
+
+</dd>
+<dt class="d_decl"><a name=".cacheLevels"></a>nothrow @nogc @property @trusted uint <a name="cacheLevels"></a><span class="ddoc_psymbol">cacheLevels</span>();
+</dt>
+<dd>The number of cache levels in the CPU.<p></p>
+
+</dd>
+</dl>
+
+    
+<br><br>
+<br><br>
+<!-- Google ad -->
+<script type="text/javascript"><!--
+/**/google_ad_client = "pub-5628673096434613";
+/**/google_ad_width = 728;
+/**/google_ad_height = 90;
+/**/google_ad_format = "728x90_as";
+/**/google_ad_channel ="6203743411";
+/**/google_page_url = document.location;
+//--></script>
+<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</div><!--/content-->
+
+
+<div id="copyright">
+Copyright Don Clugston 2007 - 2009.
+ |
+Page generated by <a href="http://www.digitalmars.com/d/2.0/ddoc.html">Ddoc</a>.
+</div>
+
+</body>
+</html>

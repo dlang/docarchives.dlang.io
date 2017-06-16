@@ -1,0 +1,330 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2017 by Digital Mars
+    All Rights Reserved Written by Walter Bright
+    http://digitalmars.com
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>std.experimental.allocator.building_blocks.bitmapped_block - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='std.experimental.allocator.building_blocks.bitmapped_block' class='std'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href=".."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='../getstarted.html'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'><li><a href='    ../spec/intro.html'>Language Reference</a></li><li><a href='    ../phobos/index.html'>Library Reference</a></li><li><a href='    ../comparison.html'>Feature Overview</a></li><li><a href='    ../dmd-windows.html'>DMD Manual</a></li><li><a href='    ../articles.html'>Articles
+</a></li></ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'><li><a href='    ../bugstats.php'>Bug Tracker</a></li><li><a href='    https://forum.dlang.org'>Forums</a></li><li><a href='    irc://irc.freenode.net/d'>IRC</a></li><li><a href='    https://github.com/D-Programming-Language'>D on GitHub</a></li><li><a href='    https://wiki.dlang.org'>Wiki</a></li><li><a href='    https://wiki.dlang.org/Review_Queue'>Review Queue</a></li><li><a href='    https://twitter.com/search?q=%23dlang'>Twitter</a></li><li><a href='    http://digitalmars.com/d/dlinks.html'>More Links
+</a></li></ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'><li><a href='    ../library/index.html'>NEW Library Reference Preview</a></li><li><a href='    ../tools.html'>D-Specific Tools</a></li><li><a href='    http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li><li><a href='    https://wiki.dlang.org/Editors'>Editors</a></li><li><a href='    https://wiki.dlang.org/IDEs'>IDEs</a></li><li><a href='    https://wiki.dlang.org/Tutorials'>Tutorials</a></li><li><a href='    https://wiki.dlang.org/Books'>Books</a></li><li><a href='    ../dstyle.html'>The D Style</a></li><li><a href='    ../glossary.html'>Glossary</a></li><li><a href='    ../acknowledgements.html'>Acknowledgments</a></li><li><a href='    ../sitemap.html'>Sitemap
+</a></li></ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option selected value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+<div class="subnav-helper"></div> <div class="subnav">    <div class="head">        <h2>Library Reference</h2>
+        <p><span class="smallprint">pre-release version <span class="separator"><br></span>
+            <a href="../phobos/index.html">switch to version 2.071.0</a></span></p>
+        <p><a href="index.html">overview</a></p>
+    </div>
+    <ul>
+<li><a href='object.html'><span><em class="tt">object</em></span></a></li>
+
+<li class='expand-container'><a class='expand-toggle' href='#'><span><em class="tt">std</em></span></a>
+<ul><li>  <a href="std_algorithm.html" title="std.algorithm"><span class="d_inlinecode donthyphenate notranslate">algorithm</span></a><ul><li>    <a href="std_algorithm_comparison.html" title="std.algorithm.comparison"><span class="d_inlinecode donthyphenate notranslate">comparison</span></a></li><li>    <a href="std_algorithm_iteration.html" title="std.algorithm.iteration"><span class="d_inlinecode donthyphenate notranslate">iteration</span></a></li><li>    <a href="std_algorithm_mutation.html" title="std.algorithm.mutation"><span class="d_inlinecode donthyphenate notranslate">mutation</span></a></li><li>    <a href="std_algorithm_searching.html" title="std.algorithm.searching"><span class="d_inlinecode donthyphenate notranslate">searching</span></a></li><li>    <a href="std_algorithm_setops.html" title="std.algorithm.setops"><span class="d_inlinecode donthyphenate notranslate">setops</span></a></li><li>    <a href="std_algorithm_sorting.html" title="std.algorithm.sorting"><span class="d_inlinecode donthyphenate notranslate">sorting</span></a>
+  </li></ul></li><li>  <a href="std_array.html" title="std.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>  <a href="std_ascii.html" title="std.ascii"><span class="d_inlinecode donthyphenate notranslate">ascii</span></a></li><li>  <a href="std_base64.html" title="std.base64"><span class="d_inlinecode donthyphenate notranslate">base64</span></a></li><li>  <a href="std_bigint.html" title="std.bigint"><span class="d_inlinecode donthyphenate notranslate">bigint</span></a></li><li>  <a href="std_bitmanip.html" title="std.bitmanip"><span class="d_inlinecode donthyphenate notranslate">bitmanip</span></a></li><li>  <a href="std_compiler.html" title="std.compiler"><span class="d_inlinecode donthyphenate notranslate">compiler</span></a></li><li>  <a href="std_complex.html" title="std.complex"><span class="d_inlinecode donthyphenate notranslate">complex</span></a></li><li>  <a href="std_concurrency.html" title="std.concurrency"><span class="d_inlinecode donthyphenate notranslate">concurrency</span></a></li><li>  <a href="std_concurrencybase.html" title="std.concurrencybase"><span class="d_inlinecode donthyphenate notranslate">concurrencybase</span></a></li><li>  <a href="std_container.html" title="std.container"><span class="d_inlinecode donthyphenate notranslate">container</span></a><ul><li>    <a href="std_container_array.html" title="std.container.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>    <a href="std_container_binaryheap.html" title="std.container.binaryheap"><span class="d_inlinecode donthyphenate notranslate">binaryheap</span></a></li><li>    <a href="std_container_dlist.html" title="std.container.dlist"><span class="d_inlinecode donthyphenate notranslate">dlist</span></a></li><li>    <a href="std_container_rbtree.html" title="std.container.rbtree"><span class="d_inlinecode donthyphenate notranslate">rbtree</span></a></li><li>    <a href="std_container_slist.html" title="std.container.slist"><span class="d_inlinecode donthyphenate notranslate">slist</span></a></li><li>    <a href="std_container_util.html" title="std.container.util"><span class="d_inlinecode donthyphenate notranslate">util</span></a>
+  </li></ul></li><li>  <a href="std_conv.html" title="std.conv"><span class="d_inlinecode donthyphenate notranslate">conv</span></a></li><li>  <a href="std_csv.html" title="std.csv"><span class="d_inlinecode donthyphenate notranslate">csv</span></a></li><li>  <a href="std_datetime.html" title="std.datetime"><span class="d_inlinecode donthyphenate notranslate">datetime</span></a></li><li>  <a href="std_demangle.html" title="std.demangle"><span class="d_inlinecode donthyphenate notranslate">demangle</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">digest</span></h7><ul><li>    <a href="std_digest_crc.html" title="std.digest.crc"><span class="d_inlinecode donthyphenate notranslate">crc</span></a></li><li>    <a href="std_digest_digest.html" title="std.digest.digest"><span class="d_inlinecode donthyphenate notranslate">digest</span></a></li><li>    <a href="std_digest_hmac.html" title="std.digest.hmac"><span class="d_inlinecode donthyphenate notranslate">hmac</span></a></li><li>    <a href="std_digest_md.html" title="std.digest.md"><span class="d_inlinecode donthyphenate notranslate">md</span></a></li><li>    <a href="std_digest_ripemd.html" title="std.digest.ripemd"><span class="d_inlinecode donthyphenate notranslate">ripemd</span></a></li><li>    <a href="std_digest_sha.html" title="std.digest.sha"><span class="d_inlinecode donthyphenate notranslate">sha</span></a>
+  </li></ul></li><li>  <a href="std_encoding.html" title="std.encoding"><span class="d_inlinecode donthyphenate notranslate">encoding</span></a></li><li>  <a href="std_exception.html" title="std.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">experimental</span></h7><ul><li>    <a href="std_experimental_allocator.html" title="std.experimental.allocator"><span class="d_inlinecode donthyphenate notranslate">allocator</span></a><ul><li>      <a href="std_experimental_allocator_building_blocks.html" title="std.experimental.allocator.building_blocks"><span class="d_inlinecode donthyphenate notranslate">building_blocks</span></a><ul><li>        <a href="std_experimental_allocator_building_blocks_affix_allocator.html" title="std.experimental.allocator.building_blocks.affix_allocator"><span class="d_inlinecode donthyphenate notranslate">affix_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_allocator_list.html" title="std.experimental.allocator.building_blocks.allocator_list"><span class="d_inlinecode donthyphenate notranslate">allocator_list</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_bitmapped_block.html" title="std.experimental.allocator.building_blocks.bitmapped_block"><span class="d_inlinecode donthyphenate notranslate">bitmapped_block</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_bucketizer.html" title="std.experimental.allocator.building_blocks.bucketizer"><span class="d_inlinecode donthyphenate notranslate">bucketizer</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_fallback_allocator.html" title="std.experimental.allocator.building_blocks.fallback_allocator"><span class="d_inlinecode donthyphenate notranslate">fallback_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_free_list.html" title="std.experimental.allocator.building_blocks.free_list"><span class="d_inlinecode donthyphenate notranslate">free_list</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_free_tree.html" title="std.experimental.allocator.building_blocks.free_tree"><span class="d_inlinecode donthyphenate notranslate">free_tree</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_kernighan_ritchie.html" title="std.experimental.allocator.building_blocks.kernighan_ritchie"><span class="d_inlinecode donthyphenate notranslate">kernighan_ritchie</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_null_allocator.html" title="std.experimental.allocator.building_blocks.null_allocator"><span class="d_inlinecode donthyphenate notranslate">null_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_quantizer.html" title="std.experimental.allocator.building_blocks.quantizer"><span class="d_inlinecode donthyphenate notranslate">quantizer</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_region.html" title="std.experimental.allocator.building_blocks.region"><span class="d_inlinecode donthyphenate notranslate">region</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_scoped_allocator.html" title="std.experimental.allocator.building_blocks.scoped_allocator"><span class="d_inlinecode donthyphenate notranslate">scoped_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_segregator.html" title="std.experimental.allocator.building_blocks.segregator"><span class="d_inlinecode donthyphenate notranslate">segregator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_stats_collector.html" title="std.experimental.allocator.building_blocks.stats_collector"><span class="d_inlinecode donthyphenate notranslate">stats_collector</span></a>
+      </li></ul></li><li>      <a href="std_experimental_allocator_common.html" title="std.experimental.allocator.common"><span class="d_inlinecode donthyphenate notranslate">common</span></a></li><li>      <a href="std_experimental_allocator_gc_allocator.html" title="std.experimental.allocator.gc_allocator"><span class="d_inlinecode donthyphenate notranslate">gc_allocator</span></a></li><li>      <a href="std_experimental_allocator_mallocator.html" title="std.experimental.allocator.mallocator"><span class="d_inlinecode donthyphenate notranslate">mallocator</span></a></li><li>      <a href="std_experimental_allocator_mmap_allocator.html" title="std.experimental.allocator.mmap_allocator"><span class="d_inlinecode donthyphenate notranslate">mmap_allocator</span></a></li><li>      <a href="std_experimental_allocator_showcase.html" title="std.experimental.allocator.showcase"><span class="d_inlinecode donthyphenate notranslate">showcase</span></a></li><li>      <a href="std_experimental_allocator_typed.html" title="std.experimental.allocator.typed"><span class="d_inlinecode donthyphenate notranslate">typed</span></a>
+    </li></ul></li><li>    <a href="std_experimental_logger.html" title="std.experimental.logger"><span class="d_inlinecode donthyphenate notranslate">logger</span></a><ul><li>      <a href="std_experimental_logger_core.html" title="std.experimental.logger.core"><span class="d_inlinecode donthyphenate notranslate">core</span></a></li><li>      <a href="std_experimental_logger_filelogger.html" title="std.experimental.logger.filelogger"><span class="d_inlinecode donthyphenate notranslate">filelogger</span></a></li><li>      <a href="std_experimental_logger_multilogger.html" title="std.experimental.logger.multilogger"><span class="d_inlinecode donthyphenate notranslate">multilogger</span></a></li><li>      <a href="std_experimental_logger_nulllogger.html" title="std.experimental.logger.nulllogger"><span class="d_inlinecode donthyphenate notranslate">nulllogger</span></a>
+    </li></ul></li><li>    <a href="std_experimental_ndslice.html" title="std.experimental.ndslice"><span class="d_inlinecode donthyphenate notranslate">ndslice</span></a><ul><li>      <a href="std_experimental_ndslice_iteration.html" title="std.experimental.ndslice.iteration"><span class="d_inlinecode donthyphenate notranslate">iteration</span></a></li><li>      <a href="std_experimental_ndslice_selection.html" title="std.experimental.ndslice.selection"><span class="d_inlinecode donthyphenate notranslate">selection</span></a></li><li>      <a href="std_experimental_ndslice_slice.html" title="std.experimental.ndslice.slice"><span class="d_inlinecode donthyphenate notranslate">slice</span></a>
+    </li></ul>
+  </li></ul></li><li>  <a href="std_file.html" title="std.file"><span class="d_inlinecode donthyphenate notranslate">file</span></a></li><li>  <a href="std_format.html" title="std.format"><span class="d_inlinecode donthyphenate notranslate">format</span></a></li><li>  <a href="std_functional.html" title="std.functional"><span class="d_inlinecode donthyphenate notranslate">functional</span></a></li><li>  <a href="std_getopt.html" title="std.getopt"><span class="d_inlinecode donthyphenate notranslate">getopt</span></a></li><li>  <a href="std_json.html" title="std.json"><span class="d_inlinecode donthyphenate notranslate">json</span></a></li><li>  <a href="std_math.html" title="std.math"><span class="d_inlinecode donthyphenate notranslate">math</span></a></li><li>  <a href="std_mathspecial.html" title="std.mathspecial"><span class="d_inlinecode donthyphenate notranslate">mathspecial</span></a></li><li>  <a href="std_meta.html" title="std.meta"><span class="d_inlinecode donthyphenate notranslate">meta</span></a></li><li>  <a href="std_mmfile.html" title="std.mmfile"><span class="d_inlinecode donthyphenate notranslate">mmfile</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">net</span></h7><ul><li>    <a href="std_net_curl.html" title="std.net.curl"><span class="d_inlinecode donthyphenate notranslate">curl</span></a></li><li>    <a href="std_net_isemail.html" title="std.net.isemail"><span class="d_inlinecode donthyphenate notranslate">isemail</span></a>
+  </li></ul></li><li>  <a href="std_numeric.html" title="std.numeric"><span class="d_inlinecode donthyphenate notranslate">numeric</span></a></li><li>  <a href="std_outbuffer.html" title="std.outbuffer"><span class="d_inlinecode donthyphenate notranslate">outbuffer</span></a></li><li>  <a href="std_parallelism.html" title="std.parallelism"><span class="d_inlinecode donthyphenate notranslate">parallelism</span></a></li><li>  <a href="std_path.html" title="std.path"><span class="d_inlinecode donthyphenate notranslate">path</span></a></li><li>  <a href="std_process.html" title="std.process"><span class="d_inlinecode donthyphenate notranslate">process</span></a></li><li>  <a href="std_random.html" title="std.random"><span class="d_inlinecode donthyphenate notranslate">random</span></a></li><li>  <a href="std_range.html" title="std.range"><span class="d_inlinecode donthyphenate notranslate">range</span></a><ul><li>    <a href="std_range_interfaces.html" title="std.range.interfaces"><span class="d_inlinecode donthyphenate notranslate">interfaces</span></a></li><li>    <a href="std_range_primitives.html" title="std.range.primitives"><span class="d_inlinecode donthyphenate notranslate">primitives</span></a>
+  </li></ul></li><li>  <a href="std_regex.html" title="std.regex"><span class="d_inlinecode donthyphenate notranslate">regex</span></a></li><li>  <a href="std_signals.html" title="std.signals"><span class="d_inlinecode donthyphenate notranslate">signals</span></a></li><li>  <a href="std_socket.html" title="std.socket"><span class="d_inlinecode donthyphenate notranslate">socket</span></a></li><li>  <a href="std_stdint.html" title="std.stdint"><span class="d_inlinecode donthyphenate notranslate">stdint</span></a></li><li>  <a href="std_stdio.html" title="std.stdio"><span class="d_inlinecode donthyphenate notranslate">stdio</span></a></li><li>  <a href="std_stdiobase.html" title="std.stdiobase"><span class="d_inlinecode donthyphenate notranslate">stdiobase</span></a></li><li>  <a href="std_string.html" title="std.string"><span class="d_inlinecode donthyphenate notranslate">string</span></a></li><li>  <a href="std_system.html" title="std.system"><span class="d_inlinecode donthyphenate notranslate">system</span></a></li><li>  <a href="std_traits.html" title="std.traits"><span class="d_inlinecode donthyphenate notranslate">traits</span></a></li><li>  <a href="std_typecons.html" title="std.typecons"><span class="d_inlinecode donthyphenate notranslate">typecons</span></a></li><li>  <a href="std_typetuple.html" title="std.typetuple"><span class="d_inlinecode donthyphenate notranslate">typetuple</span></a></li><li>  <a href="std_uni.html" title="std.uni"><span class="d_inlinecode donthyphenate notranslate">uni</span></a></li><li>  <a href="std_uri.html" title="std.uri"><span class="d_inlinecode donthyphenate notranslate">uri</span></a></li><li>  <a href="std_utf.html" title="std.utf"><span class="d_inlinecode donthyphenate notranslate">utf</span></a></li><li>  <a href="std_uuid.html" title="std.uuid"><span class="d_inlinecode donthyphenate notranslate">uuid</span></a></li><li>  <a href="std_variant.html" title="std.variant"><span class="d_inlinecode donthyphenate notranslate">variant</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">windows</span></h7><ul><li>    <a href="std_windows_charset.html" title="std.windows.charset"><span class="d_inlinecode donthyphenate notranslate">charset</span></a></li><li>    <a href="std_windows_syserror.html" title="std.windows.syserror"><span class="d_inlinecode donthyphenate notranslate">syserror</span></a>
+  </li></ul></li><li>  <a href="std_xml.html" title="std.xml"><span class="d_inlinecode donthyphenate notranslate">xml</span></a></li><li>  <a href="std_zip.html" title="std.zip"><span class="d_inlinecode donthyphenate notranslate">zip</span></a></li><li>  <a href="std_zlib.html" title="std.zlib"><span class="d_inlinecode donthyphenate notranslate">zlib</span></a>
+</li></ul>
+</li>
+
+<li class='expand-container'><a class='expand-toggle' href='#'><span><em class="tt">etc</em></span></a>
+<ul><li>  <h7><span class="d_inlinecode donthyphenate notranslate">c</span></h7><ul><li>    <a href="etc_c_curl.html" title="etc.c.curl"><span class="d_inlinecode donthyphenate notranslate">curl</span></a></li><li>    <h7><span class="d_inlinecode donthyphenate notranslate">odbc</span></h7><ul><li>      <a href="etc_c_odbc_sql.html" title="etc.c.odbc.sql"><span class="d_inlinecode donthyphenate notranslate">sql</span></a></li><li>      <a href="etc_c_odbc_sqlext.html" title="etc.c.odbc.sqlext"><span class="d_inlinecode donthyphenate notranslate">sqlext</span></a></li><li>      <a href="etc_c_odbc_sqltypes.html" title="etc.c.odbc.sqltypes"><span class="d_inlinecode donthyphenate notranslate">sqltypes</span></a></li><li>      <a href="etc_c_odbc_sqlucode.html" title="etc.c.odbc.sqlucode"><span class="d_inlinecode donthyphenate notranslate">sqlucode</span></a>
+    </li></ul></li><li>    <a href="etc_c_sqlite3.html" title="etc.c.sqlite3"><span class="d_inlinecode donthyphenate notranslate">sqlite3</span></a></li><li>    <a href="etc_c_zlib.html" title="etc.c.zlib"><span class="d_inlinecode donthyphenate notranslate">zlib</span></a>
+  </li></ul>
+</li></ul>
+</li>
+
+<li class='expand-container'><a class='expand-toggle' href='#'><span><em class="tt">core</em></span></a>
+<ul><li>  <a href="core_atomic.html" title="core.atomic"><span class="d_inlinecode donthyphenate notranslate">atomic</span></a></li><li>  <a href="core_attribute.html" title="core.attribute"><span class="d_inlinecode donthyphenate notranslate">attribute</span></a></li><li>  <a href="core_bitop.html" title="core.bitop"><span class="d_inlinecode donthyphenate notranslate">bitop</span></a></li><li>  <a href="core_checkedint.html" title="core.checkedint"><span class="d_inlinecode donthyphenate notranslate">checkedint</span></a></li><li>  <a href="core_cpuid.html" title="core.cpuid"><span class="d_inlinecode donthyphenate notranslate">cpuid</span></a></li><li>  <a href="core_demangle.html" title="core.demangle"><span class="d_inlinecode donthyphenate notranslate">demangle</span></a></li><li>  <a href="core_exception.html" title="core.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>  <a href="core_math.html" title="core.math"><span class="d_inlinecode donthyphenate notranslate">math</span></a></li><li>  <a href="core_memory.html" title="core.memory"><span class="d_inlinecode donthyphenate notranslate">memory</span></a></li><li>  <a href="core_runtime.html" title="core.runtime"><span class="d_inlinecode donthyphenate notranslate">runtime</span></a></li><li>  <a href="core_simd.html" title="core.simd"><span class="d_inlinecode donthyphenate notranslate">simd</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">stdc</span></h7><ul><li>    <a href="core_stdc_complex.html" title="core.stdc.complex"><span class="d_inlinecode donthyphenate notranslate">complex</span></a></li><li>    <a href="core_stdc_ctype.html" title="core.stdc.ctype"><span class="d_inlinecode donthyphenate notranslate">ctype</span></a></li><li>    <a href="core_stdc_errno.html" title="core.stdc.errno"><span class="d_inlinecode donthyphenate notranslate">errno</span></a></li><li>    <a href="core_stdc_fenv.html" title="core.stdc.fenv"><span class="d_inlinecode donthyphenate notranslate">fenv</span></a></li><li>    <a href="core_stdc_float_.html" title="core.stdc.float_"><span class="d_inlinecode donthyphenate notranslate">float_</span></a></li><li>    <a href="core_stdc_inttypes.html" title="core.stdc.inttypes"><span class="d_inlinecode donthyphenate notranslate">inttypes</span></a></li><li>    <a href="core_stdc_limits.html" title="core.stdc.limits"><span class="d_inlinecode donthyphenate notranslate">limits</span></a></li><li>    <a href="core_stdc_locale.html" title="core.stdc.locale"><span class="d_inlinecode donthyphenate notranslate">locale</span></a></li><li>    <a href="core_stdc_math.html" title="core.stdc.math"><span class="d_inlinecode donthyphenate notranslate">math</span></a></li><li>    <a href="core_stdc_signal.html" title="core.stdc.signal"><span class="d_inlinecode donthyphenate notranslate">signal</span></a></li><li>    <a href="core_stdc_stdarg.html" title="core.stdc.stdarg"><span class="d_inlinecode donthyphenate notranslate">stdarg</span></a></li><li>    <a href="core_stdc_stddef.html" title="core.stdc.stddef"><span class="d_inlinecode donthyphenate notranslate">stddef</span></a></li><li>    <a href="core_stdc_stdint.html" title="core.stdc.stdint"><span class="d_inlinecode donthyphenate notranslate">stdint</span></a></li><li>    <a href="core_stdc_stdio.html" title="core.stdc.stdio"><span class="d_inlinecode donthyphenate notranslate">stdio</span></a></li><li>    <a href="core_stdc_stdlib.html" title="core.stdc.stdlib"><span class="d_inlinecode donthyphenate notranslate">stdlib</span></a></li><li>    <a href="core_stdc_string.html" title="core.stdc.string"><span class="d_inlinecode donthyphenate notranslate">string</span></a></li><li>    <a href="core_stdc_tgmath.html" title="core.stdc.tgmath"><span class="d_inlinecode donthyphenate notranslate">tgmath</span></a></li><li>    <a href="core_stdc_time.html" title="core.stdc.time"><span class="d_inlinecode donthyphenate notranslate">time</span></a></li><li>    <a href="core_stdc_wchar_.html" title="core.stdc.wchar_"><span class="d_inlinecode donthyphenate notranslate">wchar_</span></a></li><li>    <a href="core_stdc_wctype.html" title="core.stdc.wctype"><span class="d_inlinecode donthyphenate notranslate">wctype</span></a>
+  </li></ul></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">stdcpp</span></h7><ul><li>    <a href="core_stdcpp_exception.html" title="core.stdcpp.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>    <a href="core_stdcpp_typeinfo.html" title="core.stdcpp.typeinfo"><span class="d_inlinecode donthyphenate notranslate">typeinfo</span></a>
+  </li></ul></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">sync</span></h7><ul><li>    <a href="core_sync_barrier.html" title="core.sync.barrier"><span class="d_inlinecode donthyphenate notranslate">barrier</span></a></li><li>    <a href="core_sync_condition.html" title="core.sync.condition"><span class="d_inlinecode donthyphenate notranslate">condition</span></a></li><li>    <a href="core_sync_config.html" title="core.sync.config"><span class="d_inlinecode donthyphenate notranslate">config</span></a></li><li>    <a href="core_sync_exception.html" title="core.sync.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>    <a href="core_sync_mutex.html" title="core.sync.mutex"><span class="d_inlinecode donthyphenate notranslate">mutex</span></a></li><li>    <a href="core_sync_rwmutex.html" title="core.sync.rwmutex"><span class="d_inlinecode donthyphenate notranslate">rwmutex</span></a></li><li>    <a href="core_sync_semaphore.html" title="core.sync.semaphore"><span class="d_inlinecode donthyphenate notranslate">semaphore</span></a>
+  </li></ul></li><li>  <a href="core_thread.html" title="core.thread"><span class="d_inlinecode donthyphenate notranslate">thread</span></a></li><li>  <a href="core_time.html" title="core.time"><span class="d_inlinecode donthyphenate notranslate">time</span></a></li><li>  <a href="core_vararg.html" title="core.vararg"><span class="d_inlinecode donthyphenate notranslate">vararg</span></a>
+</li></ul>
+</li></ul>
+</div>
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/phobos/&amp;bug_severity=enhancement&amp;component=phobos&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5Bstd.experimental.allocator.building_blocks.bitmapped_block%5D&amp;version=D2">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/D-Programming-Language/phobos/edit/master/std/experimental/allocator/building_blocks/bitmapped_block.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1><span class="d_inlinecode donthyphenate notranslate">std.experimental.allocator.building_blocks.bitmapped_block</span></h1>
+        <div class="quickindex" id="quickindex"></div>
+        <p></p>
+<dl><dt class="d_decl"><div ><a name=".BitmappedBlock"></a><div class="quickindex" id="quickindex.BitmappedBlock"></div>struct <a name="BitmappedBlock"></a><span class="ddoc_psymbol">BitmappedBlock</span>(size_t theBlockSize, uint theAlignment = platformAlignment, ParentAllocator = NullAllocator);
+<br></div></dt>
+<dd><div class="summary"><span class="d_inlinecode donthyphenate notranslate"><a name="BitmappedBlock"></a><span class="ddoc_psymbol">BitmappedBlock</span></span> implements a simple heap consisting of one contiguous area
+of memory organized in blocks, each of size <span class="d_inlinecode donthyphenate notranslate">theBlockSize</span>. A block is a unit
+of allocation. A bitmap serves as bookkeeping data, more precisely one bit per
+block indicating whether that block is currently allocated or not.
+</div>
+<div class="description">Passing <span class="d_inlinecode donthyphenate notranslate">NullAllocator</span> as <span class="d_inlinecode donthyphenate notranslate">ParentAllocator</span> (the default) means user code
+manages allocation of the memory block from the outside; in that case
+<span class="d_inlinecode donthyphenate notranslate"><a name="BitmappedBlock"></a><span class="ddoc_psymbol">BitmappedBlock</span></span> must be constructed with a <span class="d_inlinecode donthyphenate notranslate">void[]</span> preallocated block and
+has no responsibility regarding the lifetime of its support underlying storage.
+If another allocator type is passed, <span class="d_inlinecode donthyphenate notranslate"><a name="BitmappedBlock"></a><span class="ddoc_psymbol">BitmappedBlock</span></span> defines a destructor that
+uses the parent allocator to release the memory block. That makes the combination of <span class="d_inlinecode donthyphenate notranslate">AllocatorList</span>, <span class="d_inlinecode donthyphenate notranslate"><a name="BitmappedBlock"></a><span class="ddoc_psymbol">BitmappedBlock</span></span>, and a back-end allocator such as <span class="d_inlinecode donthyphenate notranslate">MmapAllocator</span> a simple and scalable solution for memory allocation.
+<p></p>
+
+There are advantages to storing bookkeeping data separated from the payload
+(as opposed to e.g. using <span class="d_inlinecode donthyphenate notranslate">AffixAllocator</span> to store metadata together with
+each allocation). The layout is more compact (overhead is one bit per block),
+searching for a free block during allocation enjoys better cache locality, and
+deallocation does not touch memory around the payload being deallocated (which
+is often cold).
+<p></p>
+
+Allocation requests are handled on a first-fit basis. Although linear in
+complexity, allocation is in practice fast because of the compact bookkeeping
+representation, use of simple and fast bitwise routines, and caching of the
+first available block position. A known issue with this general approach is
+fragmentation, partially mitigated by coalescing. Since <span class="d_inlinecode donthyphenate notranslate"><a name="BitmappedBlock"></a><span class="ddoc_psymbol">BitmappedBlock</span></span> does
+not need to maintain the allocated size, freeing memory implicitly coalesces
+free blocks together. Also, tuning <span class="d_inlinecode donthyphenate notranslate">blockSize</span> has a considerable impact on
+both internal and external fragmentation.
+<p></p>
+
+The size of each block can be selected either during compilation or at run
+time. Statically-known block sizes are frequent in practice and yield slightly
+better performance. To choose a block size statically, pass it as the <span class="d_inlinecode donthyphenate notranslate">blockSize</span> parameter as in <span class="d_inlinecode donthyphenate notranslate"><a name="BitmappedBlock"></a><span class="ddoc_psymbol">BitmappedBlock</span>!(Allocator, 4096)</span>. To choose a block
+size parameter, use <span class="d_inlinecode donthyphenate notranslate"><a name="BitmappedBlock"></a><span class="ddoc_psymbol">BitmappedBlock</span>!(Allocator, chooseAtRuntime)</span> and pass the
+block size to the constructor.</div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_comment">// Create a block allocator on top of a 10KB stack region.
+</span><span class="d_keyword">import</span> std.experimental.allocator.building_blocks.region : InSituRegion;
+<span class="d_keyword">import</span> std.traits : hasMember;
+InSituRegion!(10_240, 64) r;
+<span class="d_keyword">auto</span> a = <span class="d_psymbol">BitmappedBlock</span>!(64, 64)(r.allocateAll());
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(hasMember!(InSituRegion!(10_240, 64), <span class="d_string">"allocateAll"</span>));
+<span class="d_keyword">const</span> b = a.allocate(100);
+<span class="d_keyword">assert</span>(b.length == 100);
+</pre>
+</div></div>
+<dl><dt class="d_decl"><div ><a name=".BitmappedBlock.blockSize"></a><div class="quickindex" id="quickindex.BitmappedBlock.blockSize"></div>alias <a name="blockSize"></a><span class="ddoc_psymbol">blockSize</span> = theBlockSize;
+<br></div></dt>
+<dd><div class="summary">If <span class="d_inlinecode donthyphenate notranslate"><a name="blockSize"></a><span class="ddoc_psymbol">blockSize</span> == chooseAtRuntime</span>, <span class="d_inlinecode donthyphenate notranslate">BitmappedBlock</span> offers a read/write
+    property <span class="d_inlinecode donthyphenate notranslate"><a name="blockSize"></a><span class="ddoc_psymbol">blockSize</span></span>. It must be set before any use of the allocator.
+    Otherwise (i.e. <span class="d_inlinecode donthyphenate notranslate">theBlockSize</span> is a legit constant), <span class="d_inlinecode donthyphenate notranslate"><a name="blockSize"></a><span class="ddoc_psymbol">blockSize</span></span> is
+    an alias for <span class="d_inlinecode donthyphenate notranslate">theBlockSize</span>. Whether constant or variable, must also be
+    a multiple of <span class="d_inlinecode donthyphenate notranslate">alignment</span>. This constraint is <span class="d_inlinecode donthyphenate notranslate">assert</span>ed statically
+    and dynamically.</div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".BitmappedBlock.alignment"></a><div class="quickindex" id="quickindex.BitmappedBlock.alignment"></div>alias <a name="alignment"></a><span class="ddoc_psymbol">alignment</span> = theAlignment;
+<br></div></dt>
+<dd><div class="summary">The alignment offered is user-configurable statically through parameter
+    <span class="d_inlinecode donthyphenate notranslate">theAlignment</span>, defaulted to <span class="d_inlinecode donthyphenate notranslate">platformAlignment</span>.</div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".BitmappedBlock.parent"></a><div class="quickindex" id="quickindex.BitmappedBlock.parent"></div>ParentAllocator <a name="parent"></a><span class="ddoc_psymbol">parent</span>;
+<br></div></dt>
+<dd><div class="summary">The parent allocator. Depending on whether <span class="d_inlinecode donthyphenate notranslate">ParentAllocator</span> holds state
+    or not, this is a member variable or an alias for
+    <span class="d_inlinecode donthyphenate notranslate">ParentAllocator.instance</span>.</div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".BitmappedBlock.this"></a><div class="quickindex" id="quickindex.BitmappedBlock.this"></div>this(void[] <i>data</i>);
+<br><br>this(size_t <i>capacity</i>);
+<br></div></dt>
+<dd><div class="summary">Constructs a block allocator given a hunk of memory, or a desired <i>capacity</i>
+    in bytes.
+</div>
+<div class="description"><ul>    <li>If <span class="d_inlinecode donthyphenate notranslate">ParentAllocator</span> is <span class="d_inlinecode donthyphenate notranslate">NullAllocator</span>, only the constructor
+    taking <span class="d_inlinecode donthyphenate notranslate"><i>data</i></span> is defined and the user is responsible for freeing <span class="d_inlinecode donthyphenate notranslate">    <i>data</i></span> if desired.</li>
+    <li>Otherwise, both constructors are defined. The <span class="d_inlinecode donthyphenate notranslate"><i>data</i></span>-based
+    constructor assumes memory has been allocated with the parent allocator.
+    The <span class="d_inlinecode donthyphenate notranslate"><i>capacity</i></span>-based constructor uses <span class="d_inlinecode donthyphenate notranslate">ParentAllocator</span> to allocate
+    an appropriate contiguous hunk of memory. Regardless of the constructor
+    used, the destructor releases the memory by using <span class="d_inlinecode donthyphenate notranslate">    ParentAllocator.deallocate</span>.</li>
+    </ul></div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".BitmappedBlock.goodAllocSize"></a><div class="quickindex" id="quickindex.BitmappedBlock.goodAllocSize"></div>size_t <a name="goodAllocSize"></a><span class="ddoc_psymbol">goodAllocSize</span>(size_t <i>n</i>);
+<br></div></dt>
+<dd><div class="summary">Returns the actual bytes allocated when <span class="d_inlinecode donthyphenate notranslate"><i>n</i></span> bytes are requested, i.e.
+    <span class="d_inlinecode donthyphenate notranslate"><i>n</i>.roundUpToMultipleOf(blockSize)</span>.</div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".BitmappedBlock.allocate"></a><div class="quickindex" id="quickindex.BitmappedBlock.allocate"></div>@trusted void[] <a name="allocate"></a><span class="ddoc_psymbol">allocate</span>(const size_t <i>s</i>);
+<br></div></dt>
+<dd><div class="summary">Allocates <span class="d_inlinecode donthyphenate notranslate"><i>s</i></span> bytes of memory and returns it, or <span class="d_inlinecode donthyphenate notranslate"><b>null</b></span> if memory
+    could not be allocated.
+</div>
+<div class="description">The following information might be of help with choosing the appropriate
+    block size. Actual allocation occurs in sizes multiple of the block size.
+    Allocating one block is the fastest because only one 0 bit needs to be
+    found in the metadata. Allocating 2 through 64 blocks is the next cheapest
+    because it affects a maximum of two <span class="d_inlinecode donthyphenate notranslate">ulong</span><i>s</i> in the metadata.
+    Allocations greater than 64 blocks require a multiword search through the
+    metadata.</div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".BitmappedBlock.alignedAllocate"></a><div class="quickindex" id="quickindex.BitmappedBlock.alignedAllocate"></div>void[] <a name="alignedAllocate"></a><span class="ddoc_psymbol">alignedAllocate</span>(size_t <i>n</i>, uint <i>a</i>);
+<br></div></dt>
+<dd><div class="summary">Allocates <i>a</i> block with specified alignment <span class="d_inlinecode donthyphenate notranslate"><i>a</i></span>. The alignment must be <i>a</i>
+    power of 2. If <span class="d_inlinecode donthyphenate notranslate"><i>a</i> &lt;= alignment</span>, function forwards to <span class="d_inlinecode donthyphenate notranslate">allocate</span>.
+    Otherwise, it attempts to overallocate and then adjust the result for
+    proper alignment. In the worst case the slack memory is around two blocks.</div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".BitmappedBlock.allocateAll"></a><div class="quickindex" id="quickindex.BitmappedBlock.allocateAll"></div>void[] <a name="allocateAll"></a><span class="ddoc_psymbol">allocateAll</span>();
+<br></div></dt>
+<dd><div class="summary">If the <span class="d_inlinecode donthyphenate notranslate">BitmappedBlock</span> object is empty (has no active allocation), allocates
+    all memory within and returns a slice to it. Otherwise, returns <span class="d_inlinecode donthyphenate notranslate"><b>null</b></span>
+    (i.e. no attempt is made to allocate the largest available block).</div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".BitmappedBlock.owns"></a><div class="quickindex" id="quickindex.BitmappedBlock.owns"></div>const Ternary <a name="owns"></a><span class="ddoc_psymbol">owns</span>(void[] <i>b</i>);
+<br></div></dt>
+<dd><div class="summary">Returns <span class="d_inlinecode donthyphenate notranslate">Ternary.yes</span> if <span class="d_inlinecode donthyphenate notranslate"><i>b</i></span> belongs to the <span class="d_inlinecode donthyphenate notranslate">BitmappedBlock</span> object,
+    <span class="d_inlinecode donthyphenate notranslate">Ternary.no</span> otherwise. Never returns <span class="d_inlinecode donthyphenate notranslate">Ternary.unkown</span>. (This
+    method is somewhat tolerant in that accepts an interior slice.)</div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".BitmappedBlock.expand"></a><div class="quickindex" id="quickindex.BitmappedBlock.expand"></div>@trusted bool <a name="expand"></a><span class="ddoc_psymbol">expand</span>(ref void[] <i>b</i>, immutable size_t <i>delta</i>);
+<br></div></dt>
+<dd><div class="summary">Expands an allocated block in place.</div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".BitmappedBlock.reallocate"></a><div class="quickindex" id="quickindex.BitmappedBlock.reallocate"></div>@system bool <a name="reallocate"></a><span class="ddoc_psymbol">reallocate</span>(ref void[] <i>b</i>, size_t <i>newSize</i>);
+<br></div></dt>
+<dd><div class="summary">Reallocates a previously-allocated block. Contractions occur in place.</div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".BitmappedBlock.alignedReallocate"></a><div class="quickindex" id="quickindex.BitmappedBlock.alignedReallocate"></div>@system bool <a name="alignedReallocate"></a><span class="ddoc_psymbol">alignedReallocate</span>(ref void[] <i>b</i>, size_t <i>newSize</i>, uint <i>a</i>);
+<br></div></dt>
+<dd><div class="summary">Reallocates <i>a</i> block previously allocated with <span class="d_inlinecode donthyphenate notranslate">alignedAllocate</span>. Contractions do not occur in place.</div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".BitmappedBlock.deallocate"></a><div class="quickindex" id="quickindex.BitmappedBlock.deallocate"></div>bool <a name="deallocate"></a><span class="ddoc_psymbol">deallocate</span>(void[] <i>b</i>);
+<br></div></dt>
+<dd><div class="summary">Deallocates a block previously allocated with this allocator.</div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".BitmappedBlock.deallocateAll"></a><div class="quickindex" id="quickindex.BitmappedBlock.deallocateAll"></div>bool <a name="deallocateAll"></a><span class="ddoc_psymbol">deallocateAll</span>();
+<br></div></dt>
+<dd><div class="summary">Forcibly deallocates all memory allocated by this allocator, making it
+    available for further allocations. Does not return memory to <span class="d_inlinecode donthyphenate notranslate">    ParentAllocator</span>.</div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".BitmappedBlock.empty"></a><div class="quickindex" id="quickindex.BitmappedBlock.empty"></div>Ternary <a name="empty"></a><span class="ddoc_psymbol">empty</span>();
+<br></div></dt>
+<dd><div class="summary">Returns <span class="d_inlinecode donthyphenate notranslate">Ternary.yes</span> if no memory is currently allocated with this
+    allocator, otherwise <span class="d_inlinecode donthyphenate notranslate">Ternary.no</span>. This method never returns
+    <span class="d_inlinecode donthyphenate notranslate">Ternary.unknown</span>.</div>
+
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><div ><a name=".BitmappedBlockWithInternalPointers"></a><div class="quickindex" id="quickindex.BitmappedBlockWithInternalPointers"></div>struct <a name="BitmappedBlockWithInternalPointers"></a><span class="ddoc_psymbol">BitmappedBlockWithInternalPointers</span>(size_t theBlockSize, uint theAlignment = platformAlignment, ParentAllocator = NullAllocator);
+<br></div></dt>
+<dd><div class="summary">A <span class="d_inlinecode donthyphenate notranslate">BitmappedBlock</span> with additional structure for supporting <span class="d_inlinecode donthyphenate notranslate">resolveInternalPointer</span>. To that end, <span class="d_inlinecode donthyphenate notranslate"><a name="BitmappedBlockWithInternalPointers"></a><span class="ddoc_psymbol">BitmappedBlockWithInternalPointers</span></span> adds a
+bitmap (one bit per block) that marks object starts. The bitmap itself has
+variable size and is allocated together with regular allocations.
+</div>
+<div class="description">The time complexity of <span class="d_inlinecode donthyphenate notranslate">resolveInternalPointer</span> is <span class="bigoh">&Omicron;(<span class="d_inlinecode donthyphenate notranslate">k</span>)</span>, where <span class="d_inlinecode donthyphenate notranslate">k</span>
+is the size of the object within which the internal pointer is looked up.</div>
+
+<dl><dt class="d_decl"><div ><a name=".BitmappedBlockWithInternalPointers.this"></a><div class="quickindex" id="quickindex.BitmappedBlockWithInternalPointers.this"></div>this(void[] <i>data</i>);
+<br><br>this(size_t <i>capacity</i>);
+<br></div></dt>
+<dd><div class="summary">Constructors accepting desired <i>capacity</i> or a preallocated buffer, similar
+    in semantics to those of <span class="d_inlinecode donthyphenate notranslate">BitmappedBlock</span>.</div>
+
+</dd>
+<dt class="d_decl"><div ><a name=".BitmappedBlockWithInternalPointers.alignment"></a><div class="quickindex" id="quickindex.BitmappedBlockWithInternalPointers.alignment"></div>alias <a name="alignment"></a><span class="ddoc_psymbol">alignment</span> = theAlignment;
+<br><br><a name=".BitmappedBlockWithInternalPointers.goodAllocSize"></a><div class="quickindex" id="quickindex.BitmappedBlockWithInternalPointers.goodAllocSize"></div>size_t <a name="goodAllocSize"></a><span class="ddoc_psymbol">goodAllocSize</span>(size_t <i>n</i>);
+<br><br><a name=".BitmappedBlockWithInternalPointers.allocate"></a><div class="quickindex" id="quickindex.BitmappedBlockWithInternalPointers.allocate"></div>void[] <a name="allocate"></a><span class="ddoc_psymbol">allocate</span>(size_t <i>bytes</i>);
+<br><br><a name=".BitmappedBlockWithInternalPointers.allocateAll"></a><div class="quickindex" id="quickindex.BitmappedBlockWithInternalPointers.allocateAll"></div>void[] <a name="allocateAll"></a><span class="ddoc_psymbol">allocateAll</span>();
+<br><br><a name=".BitmappedBlockWithInternalPointers.expand"></a><div class="quickindex" id="quickindex.BitmappedBlockWithInternalPointers.expand"></div>bool <a name="expand"></a><span class="ddoc_psymbol">expand</span>(ref void[] <i>b</i>, size_t <i>bytes</i>);
+<br><br><a name=".BitmappedBlockWithInternalPointers.deallocate"></a><div class="quickindex" id="quickindex.BitmappedBlockWithInternalPointers.deallocate"></div>bool <a name="deallocate"></a><span class="ddoc_psymbol">deallocate</span>(void[] <i>b</i>);
+<br><br><a name=".BitmappedBlockWithInternalPointers.resolveInternalPointer"></a><div class="quickindex" id="quickindex.BitmappedBlockWithInternalPointers.resolveInternalPointer"></div>void[] <a name="resolveInternalPointer"></a><span class="ddoc_psymbol">resolveInternalPointer</span>(void* <i>p</i>);
+<br><br><a name=".BitmappedBlockWithInternalPointers.empty"></a><div class="quickindex" id="quickindex.BitmappedBlockWithInternalPointers.empty"></div>Ternary <a name="empty"></a><span class="ddoc_psymbol">empty</span>();
+<br></div></dt>
+<dd><div class="summary">Allocator primitives.</div>
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2017 by Digital Mars &reg;, All Rights Reserved | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on (no date time)</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+<script type="text/javascript" src="../js/listanchors.js"></script>
+<script type="text/javascript">jQuery(document).ready(listanchors);</script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+</body>
+</html>

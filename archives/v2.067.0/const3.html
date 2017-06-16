@@ -1,0 +1,438 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2017 by Digital Mars
+    All Rights Reserved Written by Walter Bright
+    http://digitalmars.com
+  -->
+<head>
+<meta charset="utf-8" />
+<meta name="keywords" content="D Programming Language, const, immutable" />
+<meta name="description" content="Comparison of const between the D programming language, C++, and C++0x" />
+<title>Type Qualifiers - D Programming Language</title>
+<link rel="stylesheet" href="css/codemirror.css" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/print.css" media="print" />
+<link rel="stylesheet" href="css/cssmenu.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+<link rel="shortcut icon" href="favicon.ico" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0" />
+</head>
+<body id='Type Qualifiers' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript';</script>
+<div id="top">	<div id="header">		<a class="logo" href="."><img id="logo" width="125" height="95" alt="D Logo" src="images/dlogo.svg"></a>
+		<span id="d-language-mobilehelper"><a href="." id="d-language">D Programming Language</a></span>
+	</div>
+</div>
+<div id="navigation">    <div id="search-box">        <form method="get" action="http://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org" />
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search" />
+            <span id="search-query"><input id="q" name="q" placeholder="Search" /></span><span id="search-dropdown">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire D Site</option>
+                    <option  value="dlang.org/phobos">Library Reference</option>
+                    <option value="digitalmars.com/d/archives">Newsgroup Archives</option>
+                </select>
+            </span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    
+<div id="cssmenu"><ul>    <li><a href='index.html'><span>D 2.067.0</span></a></li>
+    <li><a href='download.html'><span><b>Download</b></span></a></li>
+    <li><a href='getstarted.html'><span>Getting Started</span></a></li>
+    <li><a href='changelog.html'><span>Change Log</span></a></li>
+    <li class='has-sub'><a href='#'><span>D Reference</span></a>
+      <ul><li><a href='        intro.html'>Introduction</a></li><li><a href='        lex.html'>Lexical</a></li><li><a href='        grammar.html'>Grammar</a></li><li><a href='        module.html'>Modules</a></li><li><a href='        declaration.html'>Declarations</a></li><li><a href='        type.html'>Types</a></li><li><a href='        property.html'>Properties</a></li><li><a href='        attribute.html'>Attributes</a></li><li><a href='        pragma.html'>Pragmas</a></li><li><a href='        expression.html'>Expressions</a></li><li><a href='        statement.html'>Statements</a></li><li><a href='        arrays.html'>Arrays</a></li><li><a href='        hash-map.html'>Associative Arrays</a></li><li><a href='        struct.html'>Structs and Unions</a></li><li><a href='        class.html'>Classes</a></li><li><a href='        interface.html'>Interfaces</a></li><li><a href='        enum.html'>Enums</a></li><li><a href='        const3.html'>Const and Immutable</a></li><li><a href='        function.html'>Functions</a></li><li><a href='        operatoroverloading.html'>Operator Overloading</a></li><li><a href='        template.html'>Templates</a></li><li><a href='        template-mixin.html'>Template Mixins</a></li><li><a href='        contracts.html'>Contract Programming</a></li><li><a href='        version.html'>Conditional Compilation</a></li><li><a href='        traits.html'>Traits</a></li><li><a href='        errors.html'>Error Handling</a></li><li><a href='        unittest.html'>Unit Tests</a></li><li><a href='        garbage.html'>Garbage Collection</a></li><li><a href='        float.html'>Floating Point</a></li><li><a href='        iasm.html'>D x86 Inline Assembler</a></li><li><a href='        ddoc.html'>Embedded Documentation</a></li><li><a href='        interfaceToC.html'>Interfacing to C</a></li><li><a href='        cpp_interface.html'>Interfacing to C++</a></li><li><a href='        portability.html'>Portability Guide</a></li><li><a href='        entity.html'>Named Character Entities</a></li><li><a href='        memory-safe-d.html'>Memory Safety</a></li><li><a href='        abi.html'>Application Binary Interface</a></li><li><a href='        simd.html'>Vector Extensions
+      </a></li></ul>
+    <li><a href='phobos/index.html'><span>Standard library</span></a></li>
+    <li><a href='http://code.dlang.org'><span>More libraries</span></a></li>
+    <li class='has-sub'><a href='#'><span>Community</span></a>
+      <ul><li><a href='        http://forum.dlang.org'>Forums</a></li><li><a href='        irc://irc.freenode.net/d'>IRC</a></li><li><a href='        http://github.com/D-Programming-Language'>D on GitHub</a></li><li><a href='        http://wiki.dlang.org'>Wiki</a></li><li><a href='        http://wiki.dlang.org/Review_Queue'>Review Queue</a></li><li><a href='        http://twitter.com/search?q=%23dlang'>Twitter</a></li><li><a href='        http://digitalmars.com/d/dlinks.html'>More Links
+      </a></li></ul>
+    <li class='has-sub'><a href='#'><span>Compilers &amp; Tools</span></a>
+      <ul><li><a href='        dmd-windows.html'>dmd &ndash; reference compiler</a></li><li><a href='        http://gdcproject.org'>gdc &ndash; gcc-based compiler</a></li><li><a href='        http://wiki.dlang.org/LDC'>ldc &ndash; LLVM-based compiler</a></li><li><a href='        rdmd.html'>rdmd &ndash; build tool</a></li><li><a href='        htod.html'>htod &ndash; .h to .d
+      </a></li></ul>
+    <li class='has-sub'><a href='#'><span>Books &amp; Articles</span></a>
+      <ul><li><a href='        http://ddili.org/ders/d.en/index.html'>Online Book (free)</a></li><li><a href='        http://wiki.dlang.org/Books'>More Books</a></li><li><a href='        howtos.html'>How-tos</a></li><li><a href='        faq.html'>FAQ</a></li><li><a href='        const-faq.html'>const(FAQ)</a></li><li><a href='        comparison.html'>Feature Overview</a></li><li><a href='        d-floating-point.html'>Floating Point</a></li><li><a href='        wc.html'>Example: wc</a></li><li><a href='        warnings.html'>Warnings</a></li><li><a href='        rationale.html'>Rationale</a></li><li><a href='        builtin.html'>Builtin Rationale</a></li><li><a href='        ctod.html'>C to D</a></li><li><a href='        cpptod.html'>C++ to D</a></li><li><a href='        pretod.html'>C Preprocessor vs D</a></li><li><a href='        code_coverage.html'>Code coverage analysis</a></li><li><a href='        exception-safe.html'>Exception Safety</a></li><li><a href='        hijack.html'>Hijacking</a></li><li><a href='        intro-to-datetime.html'>Introduction to std.datetime</a></li><li><a href='        lazy-evaluation.html'>Lazy Evaluation</a></li><li><a href='        migrate-to-shared.html'>Migrating to Shared</a></li><li><a href='        mixin.html'>Mixins</a></li><li><a href='        regular-expression.html'>Regular Expressions</a></li><li><a href='        safed.html'>SafeD</a></li><li><a href='        templates-revisited.html'>Templates Revisited</a></li><li><a href='        tuple.html'>Tuples</a></li><li><a href='        variadic-function-templates.html'>Variadic Templates</a></li><li><a href='        d-array-article.html'>D Slices
+      </a></li></ul>
+    <li class='has-sub'><a href='#'><span>Resources</span></a>
+      <ul><li><a href='        library/index.html'>NEW Library Reference Preview</a></li><li><a href='        bugstats.php'>Bug Tracker</a></li><li><a href='        http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li><li><a href='        http://wiki.dlang.org/Editors'>Editors</a></li><li><a href='        http://wiki.dlang.org/IDEs'>IDEs</a></li><li><a href='        dstyle.html'>The D Style</a></li><li><a href='        glossary.html'>Glossary</a></li><li><a href='        acknowledgements.html'>Acknowledgments</a></li><li><a href='        sitemap.html'>Sitemap
+      </a></li></ul>
+</ul></div>
+</div>
+
+<div class="hyphenate" id="content">    
+<div id="tools">	<span class="tip">		<a href="https://github.com/D-Programming-Language/dlang.org/edit/master/const3.dd" class="button">Improve this page</a>
+		<span >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			local clone.
+		</span>
+	</span>
+	<span class="tip">		<a href="http://wiki.dlang.org/DocComments/ConstInvariant" class="button">Page wiki</a>
+		<span >			View or edit the community-maintained wiki page associated with this page.
+		</span>
+	</span>
+</div>
+    <h1>Type Qualifiers</h1>
+    
+    <!--Generated by Ddoc from const3.dd-->
+
+
+
+	<p>Type qualifiers modify a type by applying a <a href="declaration.html#TypeCtor"><i>TypeCtor</i></a>.
+	<i>TypeCtor</i>s are: <span class="d_inlinecode donthyphenate notranslate">const</span>, <span class="d_inlinecode donthyphenate notranslate">immutable</span>,	<span class="d_inlinecode donthyphenate notranslate">shared</span>, and <span class="d_inlinecode donthyphenate notranslate">inout</span>.
+	Each applies transitively to all subtypes.
+	</p>
+
+<h2>Const and Immutable</h2>
+	<p>When examining a data structure or interface, it is very
+	helpful to be able to easily tell which data can be expected to not
+	change, which data might change, and who may change that data.
+	This is done with the aid of the language typing system.
+	Data can be marked as const or immutable, with the default being
+	changeable (or <i>mutable</i>).
+	</p>
+
+	<p><span class="d_inlinecode donthyphenate notranslate">immutable</span> applies to data that cannot change.
+	Immutable data values, once constructed, remain the same for
+	the duration of the program's
+	execution.
+	Immutable data can be placed in ROM (Read Only Memory) or in
+	memory pages marked by the hardware as read only.
+	Since immutable data does not change, it enables many opportunities
+	for program optimization, and has applications in functional
+	style programming.
+	</p>
+
+	<p><span class="d_inlinecode donthyphenate notranslate">const</span> applies to data that cannot be changed by
+	the const reference to that data. It may, however, be changed
+	by another reference to that same data.
+	Const finds applications in passing data through interfaces
+	that promise not to modify them.
+	</p>
+
+	<p>Both immutable and const are <i>transitive</i>, which means
+	that any data reachable through an immutable reference is also
+	immutable, and likewise for const.
+	</p>
+
+
+<h2>Immutable Storage Class</h2>
+	<p>	The simplest immutable declarations use it as a storage class.
+	It can be used to declare manifest constants.
+	</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">immutable</span> <span class="d_keyword">int</span> x = 3;  <span class="d_comment">// x is set to 3
+</span>x = 4;        <span class="d_comment">// error, x is immutable
+</span><span class="d_keyword">char</span>[x] s;    <span class="d_comment">// s is an array of 3 char's
+</span></pre>
+
+	<p>The type can be inferred from the initializer:
+	</p>
+<pre class="d_code notranslate"><span class="d_keyword">immutable</span> y = 4; <span class="d_comment">// y is of type int
+</span>y = 5;           <span class="d_comment">// error, y is immutable
+</span></pre>
+
+	<p>If the initializer is not present, the immutable can
+	be initialized from the corresponding constructor:
+	</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">immutable</span> <span class="d_keyword">int</span> z;
+<span class="d_keyword">void</span> test()
+{
+    z = 3; <span class="d_comment">// error, z is immutable
+</span>}
+<span class="d_keyword">static</span> <span class="d_keyword">this</span>()
+{
+    z = 3; <span class="d_comment">// ok, can set immutable that doesn't
+</span>           <span class="d_comment">// have static initializer
+</span>}
+</pre>
+	<p>	The initializer for a non-local immutable declaration must be
+	evaluatable
+	at compile time:
+	</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span> foo(<span class="d_keyword">int</span> f) { <span class="d_keyword">return</span> f * 3; }
+<span class="d_keyword">int</span> i = 5;
+<span class="d_keyword">immutable</span> x = 3 * 4;      <span class="d_comment">// ok, 12
+</span><span class="d_keyword">immutable</span> y = i + 1;      <span class="d_comment">// error, cannot evaluate at compile time
+</span><span class="d_keyword">immutable</span> z = foo(2) + 1; <span class="d_comment">// ok, foo(2) can be evaluated at compile time, 7
+</span></pre>
+
+	<p>The initializer for a non-static local immutable declaration
+	is evaluated at run time:
+	</p>
+<pre class="d_code notranslate"><span class="d_keyword">int</span> foo(<span class="d_keyword">int</span> f)
+{
+    <span class="d_keyword">immutable</span> x = f + 1;  <span class="d_comment">// evaluated at run time
+</span>    x = 3;                <span class="d_comment">// error, x is immutable
+</span>}
+</pre>
+
+	<p>	Because immutable is transitive, data referred to by an immutable is
+	also immutable:
+	</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">immutable</span> <span class="d_keyword">char</span>[] s = <span class="d_string">"foo"</span>;
+s[0] = 'a';  <span class="d_comment">// error, s refers to immutable data
+</span>s = <span class="d_string">"bar"</span>;   <span class="d_comment">// error, s is immutable
+</span></pre>
+
+	<p>Immutable declarations can appear as lvalues, i.e. they can
+	have their address taken, and occupy storage.
+	</p>
+
+
+<h2>Const Storage Class</h2>
+	<p>	A const declaration is exactly like an immutable declaration,
+	with the following differences:
+	</p>
+
+	<ul>	<li>Any data referenced by the const declaration cannot be
+	changed from the const declaration, but it might be changed
+	by other references to the same data.</li>
+
+	<li>The type of a const declaration is itself const.</li>
+	</ul>
+
+
+
+
+<h2>Immutable Type</h2>
+	<p>	Data that will never change its value can be typed as immutable.
+	The immutable keyword can be used as a <i>type qualifier</i>:
+	</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">immutable</span>(<span class="d_keyword">char</span>)[] s = <span class="d_string">"hello"</span>;
+</pre>
+
+	<p>	The immutable applies to the type within the following parentheses.
+	So, while <span class="d_inlinecode donthyphenate notranslate">s</span> can be assigned new values,
+	the contents of <span class="d_inlinecode donthyphenate notranslate">s[]</span> cannot be:
+	</p>
+
+<pre class="d_code notranslate">s[0] = 'b';  <span class="d_comment">// error, s[] is immutable
+</span>s = <span class="d_keyword">null</span>;    <span class="d_comment">// ok, s itself is not immutable
+</span></pre>
+
+	<p>	Immutableness is transitive, meaning it applies to anything that
+	can be referenced from the immutable type:
+	</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">immutable</span>(<span class="d_keyword">char</span>*)** p = ...;
+p = ...;        <span class="d_comment">// ok, p is not immutable
+</span>*p = ...;       <span class="d_comment">// ok, *p is not immutable
+</span>**p = ...;      <span class="d_comment">// error, **p is immutable
+</span>***p = ...;     <span class="d_comment">// error, ***p is immutable
+</span></pre>
+
+	<p>Immutable used as a storage class is equivalent to using
+	immutable as a type qualifier for the entire type of a
+	declaration:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">immutable</span> <span class="d_keyword">int</span> x = 3;   <span class="d_comment">// x is typed as immutable(int)
+</span><span class="d_keyword">immutable</span>(<span class="d_keyword">int</span>) y = 3;  <span class="d_comment">// y is immutable
+</span></pre>
+
+
+
+<h2>Creating Immutable Data</h2>
+	<p>	The first way is to use a literal that is already immutable,
+	such as string literals. String literals are always immutable.
+	</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">auto</span> s = <span class="d_string">"hello"</span>;   <span class="d_comment">// s is immutable(char)[5]
+</span><span class="d_keyword">char</span>[] p = <span class="d_string">"world"</span>; <span class="d_comment">// error, cannot implicitly convert immutable
+</span>                    <span class="d_comment">// to mutable
+</span></pre>
+
+	<p>	The second way is to cast data to immutable.
+	When doing so, it is up to the programmer to ensure that no
+	other mutable references to the same data exist.
+	</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">char</span>[] s = ...;
+<span class="d_keyword">immutable</span>(<span class="d_keyword">char</span>)[] p = <span class="d_keyword">cast</span>(<span class="d_keyword">immutable</span>)s;     <span class="d_comment">// undefined behavior
+</span><span class="d_keyword">immutable</span>(<span class="d_keyword">char</span>)[] p = <span class="d_keyword">cast</span>(<span class="d_keyword">immutable</span>)s.dup; <span class="d_comment">// ok, unique reference
+</span></pre>
+
+	<p>	The <span class="d_inlinecode donthyphenate notranslate">.idup</span> property is a convenient way to create an immutable
+	copy of an array:
+	</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">auto</span> p = s.idup;
+p[0] = ...;	  <span class="d_comment">// error, p[] is immutable
+</span></pre>
+
+<h2>Removing Immutable With A Cast</h2>
+
+	<p>	The immutable type can be removed with a cast:
+	</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">immutable</span> <span class="d_keyword">int</span>* p = ...;
+<span class="d_keyword">int</span>* q = <span class="d_keyword">cast</span>(<span class="d_keyword">int</span>*)p;
+</pre>
+
+	<p>	This does not mean, however, that one can change the data:
+	</p>
+
+<pre class="d_code notranslate">*q = 3; <span class="d_comment">// allowed by compiler, but result is undefined behavior
+</span></pre>
+
+	<p>	The ability to cast away immutable-correctness is necessary in
+	some cases where the static typing is incorrect and not fixable, such
+	as when referencing code in a library one cannot change.
+	Casting is, as always, a blunt and effective instrument, and
+	when using it to cast away immutable-correctness, one must assume
+	the responsibility to ensure the immutableness of the data, as
+	the compiler will no longer be able to statically do so.
+	</p>
+
+
+
+<h2>Immutable Member Functions</h2>
+	<p>	Immutable member functions are guaranteed that the object
+	and anything referred to by the <span class="d_inlinecode donthyphenate notranslate">this</span> reference is immutable.
+	They are declared as:
+	</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span> x;
+
+    <span class="d_keyword">void</span> foo() <span class="d_keyword">immutable</span>
+    {
+        x = 4;      <span class="d_comment">// error, x is immutable
+</span>        <span class="d_keyword">this</span>.x = 4; <span class="d_comment">// error, x is immutable
+</span>    }
+}
+</pre>
+    <p>Note that using <span class="d_keyword">immutable</span> on the left hand side of a method does not apply to the return type:
+    </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">immutable</span> <span class="d_keyword">int</span>[] bar()  <span class="d_comment">// bar is still immutable, return type is not!
+</span>    {
+    }
+}
+</pre>
+    <p>To make the return type <span class="d_keyword">immutable</span>, you need to surround the return type with parentheses:
+    </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">immutable</span>(<span class="d_keyword">int</span>[]) bar()  <span class="d_comment">// bar is now mutable, return type is immutable.
+</span>    {
+    }
+}
+</pre>
+    <p>To make both the return type and the method <span class="d_keyword">immutable</span>, you can write:
+    </p>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">immutable</span>(<span class="d_keyword">int</span>[]) bar() <span class="d_keyword">immutable</span>
+    {
+    }
+}
+</pre>
+
+
+
+<h2>Const Type</h2>
+	<p>	Const types are like immutable types, except that const
+	forms a read-only <i>view</i> of data. Other aliases to that
+	same data may change it at any time.
+	</p>
+
+
+
+<h2>Const Member Functions</h2>
+	<p>	Const member functions are functions that are not allowed to
+	change any part of the object through the member function's
+	this reference.
+	</p>
+
+
+
+<h2>Implicit Conversions</h2>
+	<p>Values can be implicitly converted between <i>mutable</i>, <span class="d_inlinecode donthyphenate notranslate">const</span>, <span class="d_inlinecode donthyphenate notranslate">immutable</span>,
+	<span class="d_inlinecode donthyphenate notranslate">shared const</span>, <span class="d_inlinecode donthyphenate notranslate">inout</span> and <span class="d_inlinecode donthyphenate notranslate">inout shared</span>.
+	</p>
+
+	<p>References can be converted according to the following rules:
+	</p>
+
+    <center><table><caption>Implicit Conversion of Reference Types</caption>   <tr><td>from/to</td><td><i>mutable</i></td><td><span class="d_inlinecode donthyphenate notranslate">const</span></td><td><span class="d_inlinecode donthyphenate notranslate">shared</span></td><td><span class="d_inlinecode donthyphenate notranslate">shared const</span></td><td><span class="d_inlinecode donthyphenate notranslate">inout</span></td><td><span class="d_inlinecode donthyphenate notranslate">inout const</span></td><td><span class="d_inlinecode donthyphenate notranslate">inout shared</span></td><td><span class="d_inlinecode donthyphenate notranslate">inout shared const</span></td><td><span class="d_inlinecode donthyphenate notranslate">immutable</span></td></tr>,
+    <tr><td><i>mutable</i></td><td>           &#10004;</td><td>&#10004;</td><td></td><td> </td><td> </td><td> </td><td> </td><td> </td><td>  </td></tr>
+    <tr><td><span class="d_inlinecode donthyphenate notranslate">const</span></td><td>             </td><td> &#10004;</td><td></td><td> </td><td> </td><td> </td><td> </td><td> </td><td>  </td></tr>
+    <tr><td><span class="d_inlinecode donthyphenate notranslate">shared</span></td><td>            </td><td> </td><td> &#10004;</td><td>&#10004;</td><td></td><td> </td><td> </td><td> </td><td>  </td></tr>
+    <tr><td><span class="d_inlinecode donthyphenate notranslate">shared const</span></td><td>      </td><td> </td><td> </td><td> &#10004;</td><td></td><td> </td><td> </td><td> </td><td>  </td></tr>
+    <tr><td><span class="d_inlinecode donthyphenate notranslate">inout</span></td><td>             </td><td> &#10004;</td><td></td><td> </td><td> &#10004;</td><td>&#10004;</td><td></td><td> </td><td>  </td></tr>
+    <tr><td><span class="d_inlinecode donthyphenate notranslate">inout const</span></td><td>       </td><td> &#10004;</td><td></td><td> </td><td> </td><td> &#10004;</td><td></td><td> </td><td>  </td></tr>
+    <tr><td><span class="d_inlinecode donthyphenate notranslate">inout shared</span></td><td>      </td><td> </td><td> </td><td> &#10004;</td><td></td><td> </td><td> &#10004;</td><td>&#10004;</td><td> </td></tr>
+    <tr><td><span class="d_inlinecode donthyphenate notranslate">inout shared const</span></td><td></td><td> </td><td> </td><td> &#10004;</td><td></td><td> </td><td> </td><td> &#10004;</td><td> </td></tr>
+    <tr><td><span class="d_inlinecode donthyphenate notranslate">immutable</span></td><td>         </td><td> &#10004;</td><td></td><td> &#10004;</td><td></td><td> &#10004;</td><td></td><td> &#10004;</td><td>&#10004;</td></tr>
+    </table></center>
+
+	<p>If an implicit conversion is disallowed by the table, an <a href="expression.html#Expression"><i>Expression</i></a>
+	may be converted if:
+	</p>
+
+	<p>An expression may be converted from mutable or shared to immutable if the expression
+	is unique and all expressions it transitively refers to are either unique or immutable.
+	</p>
+
+	<p>An expression may be converted from mutable to shared if the expression
+	is unique and all expressions it transitively refers to are either unique, immutable,
+	or shared.
+	</p>
+
+	<p>An expression may be converted from immutable to mutable if the expression
+	is unique.
+	</p>
+
+	<p>An expression may be converted from shared to mutable if the expression
+	is unique.
+	</p>
+
+	<p>A <i>Unique Expression</i> is one for which there are no other references to the
+	value of the expression and all expressions it transitively refers to are either
+	also unique or are immutable. For example:
+<pre class="d_code notranslate"><span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">immutable</span> <span class="d_keyword">int</span>** p = <span class="d_keyword">new</span> <span class="d_keyword">int</span>*(<span class="d_keyword">null</span>); <span class="d_comment">// ok, unique
+</span>
+    <span class="d_keyword">int</span> x;
+    <span class="d_keyword">immutable</span> <span class="d_keyword">int</span>** q = <span class="d_keyword">new</span> <span class="d_keyword">int</span>*(&amp;x); <span class="d_comment">// error, there may be other references to x
+</span>
+    <span class="d_keyword">immutable</span> <span class="d_keyword">int</span> y;
+    <span class="d_keyword">immutable</span> <span class="d_keyword">int</span>** r = <span class="d_keyword">new</span> <span class="d_keyword">immutable</span>(<span class="d_keyword">int</span>)*(&amp;y); <span class="d_comment">// ok, y is immutable
+</span>}
+</pre>
+	</p>
+
+	<p>Otherwise, a <a href="expression.html#CastExpression"><i>CastExpression</i></a> can be used to force a conversion
+	when an implicit version is disallowed, but this cannot be done in <span class="d_inlinecode donthyphenate notranslate">@safe</span> code,
+	and the correctness of it must be verified by the user.
+	</p>
+
+
+
+
+
+
+</div>
+<div id="copyright">Copyright &copy; 1999-2017 by Digital Mars &reg;, All Rights Reserved | Page generated by <a href="http://dlang.org/ddoc.html">Ddoc</a> on (no date time)</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('<script src="js/jquery-1.7.2.min.js">\x3C/script>')</script>
+    <script type="text/javascript" src="js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="js/run.js"></script>
+    <script type="text/javascript" src="js/cssmenu.js"></script>
+
+<script type="text/javascript" src="js/run-main-website.js"></script>
+</body>
+</html>

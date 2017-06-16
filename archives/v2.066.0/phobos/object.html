@@ -1,0 +1,756 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+<html lang='en-US'>
+
+<!--
+	Copyright (c) 1999-2010 by Digital Mars
+	All Rights Reserved Written by Walter Bright
+	http://www.digitalmars.com
+  -->
+
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" >
+<title>object - D Programming Language - Digital Mars</title>
+<link rel="stylesheet" type="text/css" href="../css/codemirror.css" />
+<link rel="stylesheet" type="text/css" href="../css/style.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+<script src="/js/codemirror-compressed.js"></script>
+<script src="/js/run.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+function listanchors()
+{
+    if (typeof inhibitQuickIndex !== 'undefined') return;
+    var a = document.getElementById("quickindex");
+    if (!a) return;
+    var newText = "";
+    var hash = new Array;
+    var n = 0;
+    var values = new Array;
+    // List all anchors.
+    for (var i = 0; i < document.anchors.length; i++)
+    {
+        var a = document.anchors[i];
+        var text = a.name;
+        // ignore anchors from DDOC_PSYMBOL
+        if (text[0] != '.') continue;
+        if (hash[text] > 0) continue;
+        hash[text] = 1;
+        values[n++] = a.name
+    }
+
+    // we won't display the qualifying names to save space, so sort by last name
+    var lastName = function(a){
+        var li = a.lastIndexOf('.');
+        return a.slice(li + 1);
+    }
+    values.sort(function(a,b){
+        return function(aa, bb){
+            return aa == bb ? 0 : (aa < bb ? -1 : 1);
+        }(lastName(a).toLowerCase(), lastName(b).toLowerCase());
+    });
+
+    for(var i = 0; i < values.length; i++) {
+        var a = values[i];
+        var text = lastName(a);
+        newText += ' \x3Ca href="\x23' + a +
+            '"\x3E\x3Cspan class="d_psymbol"\x3E' + text + '\x3C/span\x3E\x3C/a\x3E';
+    }
+    if (newText != "") newText = "\x3Cp\x3E\x3Cb\x3EJump to:\x3C/b\x3E" + newText + "\x3C/p\x3E";
+    var a = document.getElementById("quickindex");
+    a.innerHTML = newText;
+}
+jQuery(document).ready(listanchors);
+</script>
+
+</head>
+
+<body class='hyphenate'>
+
+<div id="top">
+	<div id="search-box">
+		<form method="get" action="http://google.com/search">
+			<img src="/images/search-left.gif" width="11" height="22" alt=""><input id="q" name="q"><input type="image" id="search-submit" name="submit" src="/images/search-button.gif">
+			<input type="hidden" id="domains" name="domains" value="dlang.org">
+			<input type="hidden" id="sourceid" name="sourceid" value="google-search">
+			<div id="search-dropdown">
+				<select id="sitesearch" name="sitesearch" size="1">
+					<option value="dlang.org">Entire D  Site</option>
+					<option value="dlang.org/phobos">Library Reference</option>
+					<option value="www.digitalmars.com/d/archives">Newsgroup Archives</option>
+				</select>
+			</div>
+		</form>
+	</div>
+	<div id="header">
+		<a href="/"><img id="logo" width="125" height="95" border="0" alt="D Logo" src="/images/dlogo.png"></a>
+		<a id="d-language" href="/">D Programming Language </a>
+	</div>
+</div>
+
+<div id="navigation">
+    
+<div class="navblock">
+<form method="get" action="http://www.google.com/search">
+<div id="searchbox">
+<input name="q" size="10" value="RTL Search" onFocus='if(this.value == "RTL Search"){this.value="";}'>
+<input type="hidden" name="domains" value="www.digitalmars.com">
+<input type="hidden" name="sitesearch" value="dlang.org/phobos">
+<input type="hidden" name="sourceid" value="google-search">
+<input type="submit" name="submit" value="Go">
+</div>
+</form>
+<div id="toctop">
+    <ul>	<li><a href="../index.html" title="D Programming Language">D</a></li>
+	<li><a href="../spec.html" title="D Language Specification">Language</a></li>
+	<li><a href="../phobos/index.html" title="D Runtime Library">Phobos </a></li>
+	<li><a href="../phobos-prerelease/index.html" title="D Runtime Library (prerelease)">Phobos (prerelease)</a></li>
+	<li><a href="../comparison.html" title="Language Comparisons">Comparisons</a></li>
+	<li><a href="http://code.dlang.org" title="Third Party Packages">Third Party Packages</a></li>
+    </ul>
+</div>
+</div>
+    
+<div class="navblock">
+    <ul>	<li><a href="object.html" title="root of object hierarchy">object</a></li>
+    </ul>
+    <h2><a href="index.html#std" title="D standard modules">std</a></h2>
+    <ul>	<li><a href="std_algorithm.html" title="General-purpose algorithms">std.algorithm</a></li>
+	<li><a href="std_array.html" title="Array functions">std.array</a></li>
+	<li><a href="std_ascii.html" title="Functions which operate on ASCII characters">std.ascii</a></li>
+	<li><a href="std_base64.html" title="Encode/decode base64 format">std.base64</a></li>
+	<li><a href="std_bigint.html" title="Arbitrary-precision ('bignum') arithmetic">std.bigint</a></li>
+	<li><a href="std_bitmanip.html" title="Bit-level manipulation">std.bitmanip</a></li>
+	<li><a href="std_compiler.html" title="Information about the D compiler implementation">std.compiler</a></li>
+	<li><a href="std_complex.html" title="Complex numbers">std.complex</a></li>
+	<li><a href="std_concurrency.html" title="Message Passing">std.concurrency</a></li>
+	<li><a href="std_container.html" title="Containers">std.container</a></li>
+	<li><a href="std_conv.html" title="Conversion of strings to integers">std.conv</a></li>
+	<li><a href="std_csv.html" title="CSV file parser">std.csv</a></li>
+	<li><a href="std_datetime.html" title="Date and time-related types and functions">std.datetime</a></li>
+	<li><a href="std_encoding.html" title="Character and string encoding">std.encoding</a></li>
+	<li><a href="std_exception.html" title="Exceptions and error handling">std.exception</a></li>
+	<li><a href="std_file.html" title="Basic file operations">std.file</a></li>
+	<li><a href="std_format.html" title="Formatted conversions of values to strings">std.format</a></li>
+	<li><a href="std_functional.html" title="functional">std.functional</a></li>
+	<li><a href="std_getopt.html" title="Command line options">std.getopt</a></li>
+	<li><a href="std_json.html" title="JSON reader">std.json</a></li>
+	<li><a href="std_math.html" title="the usual math functions">std.math</a></li>
+	<li><a href="std_mathspecial.html" title="mathematical special functions">std.mathspecial</a></li>
+	<li><a href="std_mmfile.html" title="Memory mapped files">std.mmfile</a></li>
+	<li><a href="std_numeric.html" title="Numeric algorithms">std.numeric</a></li>
+	<li><a href="std_outbuffer.html" title="Assemble data into an array of bytes">std.outbuffer</a></li>
+	<li><a href="std_parallelism.html" title="High-level primitives for SMP parallelism">std.parallelism</a></li>
+	<li><a href="std_path.html" title="Manipulate file names, path names, etc.">std.path</a></li>
+	<li><a href="std_process.html" title="Create/destroy processes">std.process</a></li>
+	<li><a href="std_random.html" title="Random number generation">std.random</a></li>
+	<li><a href="std_range.html" title="Ranges">std.range</a></li>
+	<li><a href="std_regex.html" title="regular expressions">std.regex</a></li>
+	<li><a href="std_signals.html" title="Signals">std.signals</a></li>
+	<li><a href="std_socket.html" title="Sockets">std.socket</a></li>
+	<li><a href="std_socketstream.html" title="Stream for a blocking, connected Socket">std.socketstream</a></li>
+	<li><a href="std_stdio.html" title="Standard I/O">std.stdio</a></li>
+	<li><a href="std_cstream.html" title="Stream I/O">std.cstream</a></li>
+	<li><a href="std_stream.html" title="Stream I/O">std.stream</a></li>
+	<li><a href="std_string.html" title="Basic string operations">std.string</a></li>
+	<li><a href="std_system.html" title="Inquire about the CPU, operating system">std.system</a></li>
+	<li><a href="std_traits.html" title="Type traits">std.traits</a></li>
+	<li><a href="std_typecons.html" title="Type constructors">std.typecons</a></li>
+	<li><a href="std_typetuple.html" title="Type tuples">std.typetuple</a></li>
+	<li><a href="std_uni.html" title="Unicode classification">std.uni</a></li>
+	<li><a href="std_uri.html" title="Encode and decode Uniform Resource Identifiers (URIs)">std.uri</a></li>
+	<li><a href="std_utf.html" title="Encode and decode utf character encodings">std.utf</a></li>
+	<li><a href="std_uuid.html" title="Generate and use UUIDs">std.uuid</a></li>
+	<li><a href="std_variant.html" title="Stores all types in a uniform, dynamically-checked representation">std.variant</a></li>
+	<li><a href="std_xml.html" title="XML file processing">std.xml</a></li>
+	<li><a href="std_zip.html" title="Read/write zip archives">std.zip</a></li>
+	<li><a href="std_zlib.html" title="Compression / Decompression of data">std.zlib</a></li>
+	<li><a href="std_net_curl.html" title="High level curl wrapper">std.net.curl</a></li>
+	<li><a href="std_net_isemail.html" title="Validate e-mail addresses">std.net.isemail</a></li>
+	<li><a href="std_digest_crc.html" title="CRC digest functions">std.digest.crc</a></li>
+	<li><a href="std_digest_digest.html" title="API for digest functions">std.digest.digest</a></li>
+	<li><a href="std_digest_md.html" title="MD digest functions">std.digest.md</a></li>
+	<li><a href="std_digest_ripemd.html" title="RIPEMD digest functions">std.digest.ripemd</a></li>
+	<li><a href="std_digest_sha.html" title="SHA digest functions">std.digest.sha</a></li>
+	<li><a href="std_windows_charset.html" title="Conversion to/from Windows character sets">std.windows.charset</a></li>
+    </ul>
+    <h2><a href="index.html#etc" title="D etc modules">etc</a></h2>
+    <ul>	<li><a href="etc_c_curl.html" title="Interface to libcurl library">etc.c.curl</a></li>
+	<li><a href="etc_c_sqlite3.html" title="Interface to sqlite3 library">etc.c.sqlite3</a></li>
+	<li><a href="etc_c_zlib.html" title="Interface to zlib library">etc.c.zlib</a></li>
+    </ul>
+    <h2><a href="index.html#core" title="D core modules">core</a></h2>
+    <ul>	<li><a href="core_atomic.html" title="Atomic operations">core.atomic</a></li>
+	<li><a href="core_bitop.html" title="Bitwise operations">core.bitop</a></li>
+	<li><a href="core_cpuid.html" title="CPU identification">core.cpuid</a></li>
+	<li><a href="core_demangle.html" title="D symbol mangling">core.demangle</a></li>
+	<li><a href="core_exception.html" title="Root of exception hierarchy">core.exception</a></li>
+	<li><a href="core_memory.html" title="Interface to memory management">core.memory</a></li>
+	<li><a href="core_runtime.html" title="Interface to D runtime library internals">core.runtime</a></li>
+	<li><a href="core_simd.html" title="Builtin SIMD intrinsics">core.simd</a></li>
+	<li><a href="core_thread.html" title="Thread management">core.thread</a></li>
+	<li><a href="core_time.html" title="Core time functionality">core.time</a></li>
+	<li><a href="core_vararg.html" title="Variable function arguments">core.vararg</a></li>
+	<li><a href="core_sync_barrier.html" title="Synchronizing progress of a group of threads">core.sync.barrier</a></li>
+	<li><a href="core_sync_condition.html" title="Synchronized condition checking">core.sync.condition</a></li>
+	<li><a href="core_sync_config.html" title="Stuff for core.sync">core.sync.config</a></li>
+	<li><a href="core_sync_exception.html" title="SyncException">core.sync.exception</a></li>
+	<li><a href="core_sync_mutex.html" title="Mutexes">core.sync.mutex</a></li>
+	<li><a href="core_sync_rwmutex.html" title="R/W mutually exclusive access">core.sync.rwmutex</a></li>
+	<li><a href="core_sync_semaphore.html" title="Semaphores">core.sync.semaphore</a></li>
+    </ul>
+</div>
+</div><!--/navigation-->
+<div id="content">
+    
+<div id="tools">
+	<!--span id="lastupdate">Last update </span-->
+	<span class="tip">
+		<a href="https://github.com/D-Programming-Language/druntime/edit/master/src/object_.d" class="button">Improve this page</a>
+		<span>
+			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			local clone.
+		</span>
+	</span>
+	<span class="tip">
+		<a href="http://wiki.dlang.org/DocComments/Object" class="button">Page wiki</a>
+		<span>
+			View or edit the community-maintained wiki page associated with this page.
+		</span>
+	</span>
+</div>
+    <h1>object</h1>
+    <div id=quickindex class=quickindex></div>
+    <!-- Generated by Ddoc from src/object_.d -->
+Forms the symbols available to all D programs. Includes Object, which is
+ the root of the class <a name="object"></a><span class="ddoc_psymbol">object</span> hierarchy.  This module is implicitly
+ imported.
+<p></p>
+<b>License:</b><br><a href="http://www.boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
+<p></p>
+<b>Authors:</b><br>Walter Bright, Sean Kelly<p></p>
+
+<dl><dt class="d_decl"><a name=".Object"></a>class <a name="Object"></a><span class="ddoc_psymbol">Object</span>;
+</dt>
+<dd>All D class objects inherit from <a name="Object"></a><span class="ddoc_psymbol">Object</span>.<p></p>
+
+<dl><dt class="d_decl"><a name=".Object.toString"></a>string <a name="toString"></a><span class="ddoc_psymbol">toString</span>();
+</dt>
+<dd>Convert Object to a human readable string.<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".Object.toHash"></a>nothrow @trusted size_t <a name="toHash"></a><span class="ddoc_psymbol">toHash</span>();
+</dt>
+<dd>Compute hash function for Object.<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".Object.opCmp"></a>int <a name="opCmp"></a><span class="ddoc_psymbol">opCmp</span>(Object <i>o</i>);
+</dt>
+<dd>Compare with another Object obj.
+<p></p>
+<b>Returns:</b><br><table cellspacing=0 cellpadding=5><caption>  <tr><td valign=top>this &lt; obj</td> <td valign=top>&lt; 0</td></tr>
+  <tr><td valign=top>this == obj</td> <td valign=top>0</td></tr>
+  <tr><td valign=top>this &gt; obj</td> <td valign=top>&gt; 0</td></tr>
+  </caption> <tr><td valign=top>this &lt; obj</td> <td valign=top>&lt; 0</td></tr>
+  <tr><td valign=top>this == obj</td> <td valign=top>0</td></tr>
+  <tr><td valign=top>this &gt; obj</td> <td valign=top>&gt; 0</td></tr>
+  </table><p></p>
+
+</dd>
+<dt class="d_decl"><a name=".Object.opEquals"></a>bool <a name="opEquals"></a><span class="ddoc_psymbol">opEquals</span>(Object <i>o</i>);
+</dt>
+<dd>Returns !=0 if this object does have the same contents as obj.<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".Object.factory"></a>static Object <a name="factory"></a><span class="ddoc_psymbol">factory</span>(string <i>classname</i>);
+</dt>
+<dd>Create instance of class specified by the fully qualified name
+ <i>classname</i>.
+ The class must either have no constructors or have
+ a default constructor.
+<p></p>
+<b>Returns:</b><br><b>null</b> if failed
+<p></p>
+<b>Example:</b><br>
+<pre class="d_code"><span class="d_keyword">module</span> foo.bar;
+
+<span class="d_keyword">class</span> C
+{
+    <span class="d_keyword">this</span>() { x = 10; }
+    <span class="d_keyword">int</span> x;
+}
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">auto</span> c = <span class="d_keyword">cast</span>(C)Object.<span class="d_psymbol">factory</span>(<span class="d_string">"foo.bar.C"</span>);
+    <span class="d_keyword">assert</span>(c !<span class="d_keyword">is</span> <span class="d_keyword">null</span> &amp;&amp; c.x == 10);
+}
+</pre>
+<p></p>
+
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><a name=".opEquals"></a>bool <a name="opEquals"></a><span class="ddoc_psymbol">opEquals</span>(const Object <i>lhs</i>, const Object <i>rhs</i>);
+</dt>
+<dd>Returns <b>true</b> if <i>lhs</i> and <i>rhs</i> are equal.<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".Interface"></a>struct <a name="Interface"></a><span class="ddoc_psymbol">Interface</span>;
+</dt>
+<dd>Information about an interface.
+ When an object is accessed via an interface, an <a name="Interface"></a><span class="ddoc_psymbol">Interface</span>* appears as the
+ first entry in its vtbl.<p></p>
+
+<dl><dt class="d_decl"><a name=".Interface.classinfo"></a>TypeInfo_Class <a name="classinfo"></a><span class="ddoc_psymbol">classinfo</span>;
+</dt>
+<dd>.<a name="classinfo"></a><span class="ddoc_psymbol">classinfo</span> for this interface (not for containing class)<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".Interface.offset"></a>size_t <a name="offset"></a><span class="ddoc_psymbol">offset</span>;
+</dt>
+<dd><a name="offset"></a><span class="ddoc_psymbol">offset</span> to Interface 'this' from Object 'this'<p></p>
+
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><a name=".Classinfo"></a>alias <a name="Classinfo"></a><span class="ddoc_psymbol">Classinfo</span> = TypeInfo_Class;
+</dt>
+<dd>Runtime type information about a class. Can be retrieved for any class type
+ or instance by using the .classinfo property.
+ A pointer to this appears as the first entry in the class's vtbl[].<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".OffsetTypeInfo"></a>struct <a name="OffsetTypeInfo"></a><span class="ddoc_psymbol">OffsetTypeInfo</span>;
+</dt>
+<dd>Array of pairs giving the offset and type information for each
+ member in an aggregate.<p></p>
+
+<dl><dt class="d_decl"><a name=".OffsetTypeInfo.offset"></a>size_t <a name="offset"></a><span class="ddoc_psymbol">offset</span>;
+</dt>
+<dd>Offset of member from start of object<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".OffsetTypeInfo.ti"></a>TypeInfo <a name="ti"></a><span class="ddoc_psymbol">ti</span>;
+</dt>
+<dd>TypeInfo for this member<p></p>
+
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><a name=".TypeInfo"></a>class <a name="TypeInfo"></a><span class="ddoc_psymbol">TypeInfo</span>;
+</dt>
+<dd>Runtime type information about a type.
+ Can be retrieved for any type using a
+ <a href="../expression.html#typeidexpression">TypeidExpression</a>.<p></p>
+
+<dl><dt class="d_decl"><a name=".TypeInfo.getHash"></a>const nothrow @trusted size_t <a name="getHash"></a><span class="ddoc_psymbol">getHash</span>(in void* <i>p</i>);
+</dt>
+<dd>Returns a hash of the instance of a type.<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".TypeInfo.equals"></a>const bool <a name="equals"></a><span class="ddoc_psymbol">equals</span>(in void* <i>p1</i>, in void* <i>p2</i>);
+</dt>
+<dd>Compares two instances for equality.<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".TypeInfo.compare"></a>const int <a name="compare"></a><span class="ddoc_psymbol">compare</span>(in void* <i>p1</i>, in void* <i>p2</i>);
+</dt>
+<dd>Compares two instances for &lt;, ==, or &gt;.<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".TypeInfo.tsize"></a>const pure nothrow @nogc @property @safe size_t <a name="tsize"></a><span class="ddoc_psymbol">tsize</span>();
+</dt>
+<dd>Returns size of the type.<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".TypeInfo.swap"></a>const void <a name="swap"></a><span class="ddoc_psymbol">swap</span>(void* <i>p1</i>, void* <i>p2</i>);
+</dt>
+<dd>Swaps two instances of the type.<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".TypeInfo.next"></a>inout pure nothrow @nogc @property inout(TypeInfo) <a name="next"></a><span class="ddoc_psymbol">next</span>();
+</dt>
+<dd>Get TypeInfo for '<a name="next"></a><span class="ddoc_psymbol">next</span>' type, as defined by what kind of type this is,
+<p></p>
+<b>null</b> if none.<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".TypeInfo.init"></a>const pure nothrow @nogc @safe const(void)[] <a name="init"></a><span class="ddoc_psymbol">init</span>();
+</dt>
+<dd>Return default initializer.  If the type should be initialized to all zeros,
+<p></p>
+an array with a <b>null</b> ptr and a length equal to the type size will be returned.<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".TypeInfo.flags"></a>const pure nothrow @nogc @property @safe uint <a name="flags"></a><span class="ddoc_psymbol">flags</span>();
+</dt>
+<dd>Get <a name="flags"></a><span class="ddoc_psymbol">flags</span> for type: 1 means GC should scan for pointers,
+<p></p>
+2 means arg of this type is passed in XMM register<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".TypeInfo.offTi"></a>const const(OffsetTypeInfo)[] <a name="offTi"></a><span class="ddoc_psymbol">offTi</span>();
+</dt>
+<dd>Get type information on the contents of the type; <b>null</b> if not available<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".TypeInfo.destroy"></a>const void <a name="destroy"></a><span class="ddoc_psymbol">destroy</span>(void* <i>p</i>);
+</dt>
+<dd>Run the destructor on the object and all its sub-objects<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".TypeInfo.postblit"></a>const void <a name="postblit"></a><span class="ddoc_psymbol">postblit</span>(void* <i>p</i>);
+</dt>
+<dd>Run the <a name="postblit"></a><span class="ddoc_psymbol">postblit</span> on the object and all its sub-objects<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".TypeInfo.talign"></a>const pure nothrow @nogc @property @safe size_t <a name="talign"></a><span class="ddoc_psymbol">talign</span>();
+</dt>
+<dd>Return alignment of type<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".TypeInfo.argTypes"></a>nothrow @safe int <a name="argTypes"></a><span class="ddoc_psymbol">argTypes</span>(out TypeInfo <i>arg1</i>, out TypeInfo <i>arg2</i>);
+</dt>
+<dd>Return internal info on arguments fitting into 8byte.
+ See X86-64 ABI 3.2.3<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".TypeInfo.rtInfo"></a>const pure nothrow @nogc @property @safe immutable(void)* <a name="rtInfo"></a><span class="ddoc_psymbol">rtInfo</span>();
+</dt>
+<dd>Return info used by the garbage collector to do precise collection.<p></p>
+
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><a name=".TypeInfo_Class"></a>class <a name="TypeInfo_Class"></a><span class="ddoc_psymbol">TypeInfo_Class</span>: <u>object.TypeInfo</u>;
+</dt>
+<dd>Runtime type information about a class.
+ Can be retrieved from an object instance by using the
+ <a href="../property.html#classinfo">.classinfo</a> property.<p></p>
+
+<dl><dt class="d_decl"><a name=".TypeInfo_Class.init"></a>byte[] <a name="init"></a><span class="ddoc_psymbol">init</span>;
+</dt>
+<dd>class static initializer
+ (<a name="init"></a><span class="ddoc_psymbol">init</span>.length gives size in bytes of class)<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".TypeInfo_Class.name"></a>string <a name="name"></a><span class="ddoc_psymbol">name</span>;
+</dt>
+<dd>class <a name="name"></a><span class="ddoc_psymbol">name</span><p></p>
+
+</dd>
+<dt class="d_decl"><a name=".TypeInfo_Class.vtbl"></a>void*[] <a name="vtbl"></a><span class="ddoc_psymbol">vtbl</span>;
+</dt>
+<dd>virtual function pointer table<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".TypeInfo_Class.interfaces"></a>Interface[] <a name="interfaces"></a><span class="ddoc_psymbol">interfaces</span>;
+</dt>
+<dd><a name="interfaces"></a><span class="ddoc_psymbol">interfaces</span> this class implements<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".TypeInfo_Class.base"></a>TypeInfo_Class <a name="base"></a><span class="ddoc_psymbol">base</span>;
+</dt>
+<dd><a name="base"></a><span class="ddoc_psymbol">base</span> class<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".TypeInfo_Class.find"></a>static const(TypeInfo_Class) <a name="find"></a><span class="ddoc_psymbol">find</span>(in char[] <i>classname</i>);
+</dt>
+<dd>Search all modules for TypeInfo_Class corresponding to <i>classname</i>.
+<p></p>
+<b>Returns:</b><br><b>null</b> if not found<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".TypeInfo_Class.create"></a>const Object <a name="create"></a><span class="ddoc_psymbol">create</span>();
+</dt>
+<dd>Create instance of Object represented by 'this'.<p></p>
+
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><a name=".Throwable"></a>class <a name="Throwable"></a><span class="ddoc_psymbol">Throwable</span>;
+</dt>
+<dd>The base class of all thrown objects.
+<p></p>
+All thrown objects must inherit from <a name="Throwable"></a><span class="ddoc_psymbol">Throwable</span>. Class <span class="d_inlinecode">Exception</span>, which
+ derives from this class, represents the category of thrown objects that are
+ safe to catch and handle. In principle, one should not catch <a name="Throwable"></a><span class="ddoc_psymbol">Throwable</span>
+ objects that are not derived from <span class="d_inlinecode">Exception</span>, as they represent
+ unrecoverable runtime errors. Certain runtime guarantees may fail to hold
+ when these errors are thrown, making it unsafe to continue execution after
+ catching them.<p></p>
+
+<dl><dt class="d_decl"><a name=".Throwable.msg"></a>string <a name="msg"></a><span class="ddoc_psymbol">msg</span>;
+</dt>
+<dd>A message describing the error.<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".Throwable.file"></a>string <a name="file"></a><span class="ddoc_psymbol">file</span>;
+<br><a name=".Throwable.line"></a>size_t <a name="line"></a><span class="ddoc_psymbol">line</span>;
+</dt>
+<dd>The file name and line number of the D source code corresponding with
+ where the error was thrown from.<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".Throwable.info"></a>TraceInfo <a name="info"></a><span class="ddoc_psymbol">info</span>;
+</dt>
+<dd>The stack trace of where the error happened. This is an opaque object
+ that can either be converted to <span class="d_inlinecode">string</span>, or iterated over with <span class="d_inlinecode"> foreach</span> to extract the items in the stack trace (as strings).<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".Throwable.next"></a>Throwable <a name="next"></a><span class="ddoc_psymbol">next</span>;
+</dt>
+<dd>A reference to the next error in the list. This is used when a new
+ <span class="d_inlinecode">Throwable</span> is thrown from inside a <span class="d_inlinecode">catch</span> block. The originally
+ caught <span class="d_inlinecode">Exception</span> will be chained to the new <span class="d_inlinecode">Throwable</span> via this
+ field.<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".Throwable.toString"></a>string <a name="toString"></a><span class="ddoc_psymbol">toString</span>();
+</dt>
+<dd>Overrides <span class="d_inlinecode">Object.<a name="toString"></a><span class="ddoc_psymbol">toString</span></span> and returns the error message.
+ Internally this forwards to the <span class="d_inlinecode"><a name="toString"></a><span class="ddoc_psymbol">toString</span></span> overload that
+ takes a  delegate.<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".Throwable.toString"></a>const void <a name="toString"></a><span class="ddoc_psymbol">toString</span>(scope void delegate(in char[]) <i>sink</i>);
+</dt>
+<dd>The Throwable hierarchy uses a <a name="toString"></a><span class="ddoc_psymbol">toString</span> overload that takes a
+  delegate to avoid GC allocations, which cannot be
+ performed in certain error situations.  Override this <span class="d_inlinecode"> <a name="toString"></a><span class="ddoc_psymbol">toString</span></span> method to customize the error message.<p></p>
+
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><a name=".rt_setTraceHandler"></a>void <a name="rt_setTraceHandler"></a><span class="ddoc_psymbol">rt_setTraceHandler</span>(TraceHandler <i>h</i>);
+</dt>
+<dd>Overrides the default trace hander with a user-supplied version.
+<p></p>
+<b>Parameters:</b><table class=parms><tr><td valign=top>TraceHandler <i>h</i></td>
+<td valign=top>The new trace handler.  Set to <b>null</b> to use the default handler.</td></tr>
+</table><p></p>
+
+</dd>
+<dt class="d_decl"><a name=".rt_getTraceHandler"></a>TraceHandler <a name="rt_getTraceHandler"></a><span class="ddoc_psymbol">rt_getTraceHandler</span>();
+</dt>
+<dd>Return the current trace handler<p></p>
+
+</dd>
+<dt class="d_decl"><a name="._d_traceContext"></a>Throwable.TraceInfo <a name="_d_traceContext"></a><span class="ddoc_psymbol">_d_traceContext</span>(void* <i>ptr</i> = null);
+</dt>
+<dd>This function will be called when an exception is constructed.  The
+ user-supplied trace handler will be called if one has been supplied,
+ otherwise no trace will be generated.
+<p></p>
+<b>Parameters:</b><table class=parms><tr><td valign=top>void* <i>ptr</i></td>
+<td valign=top>A pointer to the location from which to generate the trace, or <b>null</b>
+        if the trace should be generated from within the trace handler
+        itself.</td></tr>
+</table><p></p>
+<b>Returns:</b><br>An object describing the current calling context or <b>null</b> if no handler is
+  supplied.<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".Exception"></a>class <a name="Exception"></a><span class="ddoc_psymbol">Exception</span>: <u>object.Throwable</u>;
+</dt>
+<dd>The base class of all errors that are safe to catch and handle.
+<p></p>
+In principle, only thrown objects derived from this class are safe to catch
+ inside a <span class="d_inlinecode">catch</span> block. Thrown objects not derived from <a name="Exception"></a><span class="ddoc_psymbol">Exception</span>
+ represent runtime errors that should not be caught, as certain runtime
+ guarantees may not hold, making it unsafe to continue program execution.<p></p>
+
+<dl><dt class="d_decl"><a name=".Exception.this"></a>pure nothrow @safe this(string <i>msg</i>, string <i>file</i> = __FILE__, size_t <i>line</i> = __LINE__, Throwable <i>next</i> = null);
+</dt>
+<dd>Creates a new instance of Exception. The <i>next</i> parameter is used
+ internally and should always be <span class="d_inlinecode"><b>null</b></span> when passed by user code.
+ This constructor does not automatically throw the newly-created
+ Exception; the <span class="d_inlinecode">throw</span> statement should be used for that purpose.<p></p>
+
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><a name=".Error"></a>class <a name="Error"></a><span class="ddoc_psymbol">Error</span>: <u>object.Throwable</u>;
+</dt>
+<dd>The base class of all unrecoverable runtime errors.
+<p></p>
+This represents the category of <span class="d_inlinecode">Throwable</span> objects that are <b>not</b>
+ safe to catch and handle. In principle, one should not catch <a name="Error"></a><span class="ddoc_psymbol">Error</span>
+ objects, as they represent unrecoverable runtime errors.
+ Certain runtime guarantees may fail to hold when these errors are
+ thrown, making it unsafe to continue execution after catching them.<p></p>
+
+<dl><dt class="d_decl"><a name=".Error.this"></a>pure nothrow @safe this(string <i>msg</i>, Throwable <i>next</i> = null);
+</dt>
+<dd>Creates a new instance of Error. The <i>next</i> parameter is used
+ internally and should always be <span class="d_inlinecode"><b>null</b></span> when passed by user code.
+ This constructor does not automatically throw the newly-created
+ Error; the <span class="d_inlinecode">throw</span> statement should be used for that purpose.<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".Error.bypassedException"></a>Throwable <a name="bypassedException"></a><span class="ddoc_psymbol">bypassedException</span>;
+</dt>
+<dd>The first <span class="d_inlinecode">Exception</span> which was bypassed when this Error was thrown,
+<p></p>
+or <span class="d_inlinecode"><b>null</b></span> if no <span class="d_inlinecode">Exception</span>s were pending.<p></p>
+
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><a name=".IMonitor"></a>alias <a name="IMonitor"></a><span class="ddoc_psymbol">IMonitor</span> = Object.Monitor;
+</dt>
+<dd><p></p>
+</dd>
+<dt class="d_decl"><a name=".destroy"></a>void <a name="destroy"></a><span class="ddoc_psymbol">destroy</span>(T)(T <i>obj</i>) if (is(T == class));
+</dt>
+<dd>Destroys the given object and puts it in an invalid state. It's used to
+    <a name="destroy"></a><span class="ddoc_psymbol">destroy</span> an object so that any cleanup which its destructor or finalizer
+    does is done and so that it no longer references any other objects. It does
+    <i>not</i> initiate a GC cycle or free any GC memory.<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".capacity"></a>pure nothrow @property size_t <a name="capacity"></a><span class="ddoc_psymbol">capacity</span>(T)(T[] <i>arr</i>);
+</dt>
+<dd>(Property) Get the current <a name="capacity"></a><span class="ddoc_psymbol">capacity</span> of a slice. The <a name="capacity"></a><span class="ddoc_psymbol">capacity</span> is the size
+ that the slice can grow to before the underlying array must be
+ reallocated or extended.
+<p></p>
+If an append must reallocate a slice with no possibility of extension, then
+ 0 is returned. This happens when the slice references a static array, or
+ if another slice references elements past the end of the current slice.
+
+<p></p>
+<b>Note:</b><br>
+The <a name="capacity"></a><span class="ddoc_psymbol">capacity</span> of a slice may be impacted by operations on other slices.<p></p>
+<b>Examples:</b><br><pre class="d_code">
+<span class="d_comment">//Static array slice: no capacity
+</span><span class="d_keyword">int</span>[4] sarray = [1, 2, 3, 4];
+<span class="d_keyword">int</span>[]  slice  = sarray[];
+<span class="d_keyword">assert</span>(sarray.<span class="d_psymbol">capacity</span> == 0);
+<span class="d_comment">//Appending to slice will reallocate to a new array
+</span>slice ~= 5;
+<span class="d_keyword">assert</span>(slice.<span class="d_psymbol">capacity</span> &gt;= 5);
+
+<span class="d_comment">//Dynamic array slices
+</span><span class="d_keyword">int</span>[] a = [1, 2, 3, 4];
+<span class="d_keyword">int</span>[] b = a[1 .. $];
+<span class="d_keyword">int</span>[] c = a[1 .. $ - 1];
+<span class="d_keyword">assert</span>(a.<span class="d_psymbol">capacity</span> != 0);
+<span class="d_keyword">assert</span>(a.<span class="d_psymbol">capacity</span> == b.<span class="d_psymbol">capacity</span> + 1); <span class="d_comment">//both a and b share the same tail
+</span><span class="d_keyword">assert</span>(c.<span class="d_psymbol">capacity</span> == 0);              <span class="d_comment">//an append to c must relocate c.
+</span></pre>
+<p></p>
+</dd>
+<dt class="d_decl"><a name=".reserve"></a>pure nothrow @trusted size_t <a name="reserve"></a><span class="ddoc_psymbol">reserve</span>(T)(ref T[] <i>arr</i>, size_t <i>newcapacity</i>);
+</dt>
+<dd>Reserves capacity for a slice. The capacity is the size
+ that the slice can grow to before the underlying array must be
+ reallocated or extended.
+<p></p>
+The return value is the new capacity of the array (which may be larger than
+ the requested capacity).<p></p>
+<b>Examples:</b><br><pre class="d_code">
+<span class="d_comment">//Static array slice: no capacity. Reserve relocates.
+</span><span class="d_keyword">int</span>[4] sarray = [1, 2, 3, 4];
+<span class="d_keyword">int</span>[]  slice  = sarray[];
+<span class="d_keyword">auto</span> u = slice.<span class="d_psymbol">reserve</span>(8);
+<span class="d_keyword">assert</span>(u &gt;= 8);
+<span class="d_keyword">assert</span>(sarray.ptr !<span class="d_keyword">is</span> slice.ptr);
+<span class="d_keyword">assert</span>(slice.capacity == u);
+
+<span class="d_comment">//Dynamic array slices
+</span><span class="d_keyword">int</span>[] a = [1, 2, 3, 4];
+a.<span class="d_psymbol">reserve</span>(8); <span class="d_comment">//prepare a for appending 4 more items
+</span><span class="d_keyword">auto</span> p = a.ptr;
+u = a.capacity;
+a ~= [5, 6, 7, 8];
+<span class="d_keyword">assert</span>(p == a.ptr);      <span class="d_comment">//a should not have been reallocated
+</span><span class="d_keyword">assert</span>(u == a.capacity); <span class="d_comment">//a should not have been extended
+</span></pre>
+<p></p>
+</dd>
+<dt class="d_decl"><a name=".assumeSafeAppend"></a>nothrow ref inout(T[]) <a name="assumeSafeAppend"></a><span class="ddoc_psymbol">assumeSafeAppend</span>(T)(auto ref inout(T[]) <i>arr</i>);
+</dt>
+<dd>Assume that it is safe to append to this array. Appends made to this array
+ after calling this function may append in place, even if the array was a
+ slice of a larger array to begin with.
+<p></p>
+Use this only when it is certain there are no elements in use beyond the
+ array in the memory block.  If there are, those elements will be
+ overwritten by appending to this array.
+<p></p>
+
+ Calling this function, and then using references to data located after the
+ given array results in undefined behavior.
+
+<p></p>
+<b>Returns:</b><br>The input is returned.<p></p>
+<b>Examples:</b><br><pre class="d_code">
+<span class="d_keyword">int</span>[] a = [1, 2, 3, 4];
+
+<span class="d_comment">// Without assumeSafeAppend. Appending relocates.
+</span><span class="d_keyword">int</span>[] b = a [0 .. 3];
+b ~= 5;
+<span class="d_keyword">assert</span>(a.ptr != b.ptr);
+
+<span class="d_comment">// With assumeSafeAppend. Appending overwrites.
+</span><span class="d_keyword">int</span>[] c = a [0 .. 3];
+c.<span class="d_psymbol">assumeSafeAppend</span>() ~= 5;
+<span class="d_keyword">assert</span>(a.ptr == c.ptr);
+</pre>
+<p></p>
+</dd>
+<dt class="d_decl"><a name="._ArrayEq"></a>bool <a name="_ArrayEq"></a><span class="ddoc_psymbol">_ArrayEq</span>(T1, T2)(T1[] <i>a1</i>, T2[] <i>a2</i>);
+</dt>
+<dd>Helper function used to see if two containers of different
+ types have the same contents in the same sequence.<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".RTInfo"></a>template <a name="RTInfo"></a><span class="ddoc_psymbol">RTInfo</span>(T)</dt>
+<dd>Create <a name="RTInfo"></a><span class="ddoc_psymbol">RTInfo</span> for type T<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".dup"></a>@property auto <a name="dup"></a><span class="ddoc_psymbol">dup</span>(T)(T[] <i>a</i>) if (!is(const(T) : T));
+<br><a name=".dup"></a>@property T[] <a name="dup"></a><span class="ddoc_psymbol">dup</span>(T)(const(T)[] <i>a</i>) if (is(const(T) : T));
+<br><a name=".dup"></a>@property @trusted T[] <a name="dup"></a><span class="ddoc_psymbol">dup</span>(T : void)(const(T)[] <i>a</i>);
+</dt>
+<dd>Provide the .<a name="dup"></a><span class="ddoc_psymbol">dup</span> array property.<p></p>
+
+</dd>
+<dt class="d_decl"><a name=".idup"></a>@property immutable(T)[] <a name="idup"></a><span class="ddoc_psymbol">idup</span>(T)(T[] <i>a</i>);
+<br><a name=".idup"></a>@property immutable(T)[] <a name="idup"></a><span class="ddoc_psymbol">idup</span>(T : void)(const(T)[] <i>a</i>);
+</dt>
+<dd>Provide the .<a name="idup"></a><span class="ddoc_psymbol">idup</span> array property.<p></p>
+
+</dd>
+</dl>
+
+    
+<br><br>
+<br><br>
+<!-- Google ad -->
+<script type="text/javascript"><!--
+/**/google_ad_client = "pub-5628673096434613";
+/**/google_ad_width = 728;
+/**/google_ad_height = 90;
+/**/google_ad_format = "728x90_as";
+/**/google_ad_channel ="6203743411";
+/**/google_page_url = document.location;
+//--></script>
+<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</div><!--/content-->
+
+
+<div id="copyright">
+Copyright Digital Mars 2000 - 2011.
+ |
+Page generated by <a href="http://www.digitalmars.com/d/2.0/ddoc.html">Ddoc</a>.
+</div>
+
+</body>
+</html>

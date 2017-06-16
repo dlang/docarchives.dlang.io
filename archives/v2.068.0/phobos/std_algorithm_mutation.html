@@ -1,0 +1,837 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2017 by Digital Mars
+    All Rights Reserved Written by Walter Bright
+    http://digitalmars.com
+  -->
+<head>
+<meta charset="utf-8" />
+<meta name="keywords" content="D programming language" />
+<meta name="description" content="D Programming Language" />
+<title>std.algorithm.mutation - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css" />
+<link rel="stylesheet" href="../css/style.css" />
+<link rel="stylesheet" href="../css/print.css" media="print" />
+<link rel="stylesheet" href="../css/cssmenu.css">
+<link rel="shortcut icon" href="../favicon.ico" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0" />
+
+</head>
+<body id='std.algorithm.mutation' class='std'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top">	<div id="header">		<a class="logo" href=".."><img id="logo" width="125" height="95" alt="D Logo" src="../images/dlogo.svg"></a>
+		<span id="d-language-mobilehelper"><a href=".." id="d-language">D Programming Language</a></span>
+	</div>
+</div>
+<div id="navigation">    
+    <div id="search-box">        <form method="get" action="http://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org" />
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search" />
+            <span id="search-query"><input id="q" name="q" placeholder="Search" tabindex="1000" /></span><span id="search-dropdown">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire D Site</option>
+                    <option selected value="dlang.org/phobos">Library Reference</option>
+                    <option  value="forum.dlang.org">Discussion Forums</option>
+                </select>
+            </span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    
+<div id="cssmenu"><ul>    <li><a href='../index.html'><span>D Lib Prerelease</span></a></li>
+    <li><a href='../phobos/index.html'><span>Current Release (2.068.0)</span></a></li>
+    
+<li><a href='object.html'><span><em class="tt">object</em></span></a></li>
+<li class='has-sub'><a href='#'><span><em class="tt">std</em></span></a>
+<ul><li>  <a href="std_algorithm.html" title="std.algorithm"><span class="d_inlinecode donthyphenate notranslate">algorithm</span></a><ul><li>    <a href="std_algorithm_comparison.html" title="std.algorithm.comparison"><span class="d_inlinecode donthyphenate notranslate">comparison</span></a></li><li>    <a href="std_algorithm_iteration.html" title="std.algorithm.iteration"><span class="d_inlinecode donthyphenate notranslate">iteration</span></a></li><li>    <a href="std_algorithm_mutation.html" title="std.algorithm.mutation"><span class="d_inlinecode donthyphenate notranslate">mutation</span></a></li><li>    <a href="std_algorithm_searching.html" title="std.algorithm.searching"><span class="d_inlinecode donthyphenate notranslate">searching</span></a></li><li>    <a href="std_algorithm_setops.html" title="std.algorithm.setops"><span class="d_inlinecode donthyphenate notranslate">setops</span></a></li><li>    <a href="std_algorithm_sorting.html" title="std.algorithm.sorting"><span class="d_inlinecode donthyphenate notranslate">sorting</span></a>
+  </li></ul></li><li>  <a href="std_array.html" title="std.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>  <a href="std_ascii.html" title="std.ascii"><span class="d_inlinecode donthyphenate notranslate">ascii</span></a></li><li>  <a href="std_base64.html" title="std.base64"><span class="d_inlinecode donthyphenate notranslate">base64</span></a></li><li>  <a href="std_bigint.html" title="std.bigint"><span class="d_inlinecode donthyphenate notranslate">bigint</span></a></li><li>  <a href="std_bitmanip.html" title="std.bitmanip"><span class="d_inlinecode donthyphenate notranslate">bitmanip</span></a></li><li>  <a href="std_compiler.html" title="std.compiler"><span class="d_inlinecode donthyphenate notranslate">compiler</span></a></li><li>  <a href="std_complex.html" title="std.complex"><span class="d_inlinecode donthyphenate notranslate">complex</span></a></li><li>  <a href="std_concurrency.html" title="std.concurrency"><span class="d_inlinecode donthyphenate notranslate">concurrency</span></a></li><li>  <a href="std_container.html" title="std.container"><span class="d_inlinecode donthyphenate notranslate">container</span></a><ul><li>    <a href="std_container_array.html" title="std.container.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>    <a href="std_container_binaryheap.html" title="std.container.binaryheap"><span class="d_inlinecode donthyphenate notranslate">binaryheap</span></a></li><li>    <a href="std_container_dlist.html" title="std.container.dlist"><span class="d_inlinecode donthyphenate notranslate">dlist</span></a></li><li>    <a href="std_container_rbtree.html" title="std.container.rbtree"><span class="d_inlinecode donthyphenate notranslate">rbtree</span></a></li><li>    <a href="std_container_slist.html" title="std.container.slist"><span class="d_inlinecode donthyphenate notranslate">slist</span></a></li><li>    <a href="std_container_util.html" title="std.container.util"><span class="d_inlinecode donthyphenate notranslate">util</span></a>
+  </li></ul></li><li>  <a href="std_conv.html" title="std.conv"><span class="d_inlinecode donthyphenate notranslate">conv</span></a></li><li>  <a href="std_csv.html" title="std.csv"><span class="d_inlinecode donthyphenate notranslate">csv</span></a></li><li>  <a href="std_datetime.html" title="std.datetime"><span class="d_inlinecode donthyphenate notranslate">datetime</span></a></li><li>  <a href="std_demangle.html" title="std.demangle"><span class="d_inlinecode donthyphenate notranslate">demangle</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">digest</span></h7><ul><li>    <a href="std_digest_crc.html" title="std.digest.crc"><span class="d_inlinecode donthyphenate notranslate">crc</span></a></li><li>    <a href="std_digest_digest.html" title="std.digest.digest"><span class="d_inlinecode donthyphenate notranslate">digest</span></a></li><li>    <a href="std_digest_md.html" title="std.digest.md"><span class="d_inlinecode donthyphenate notranslate">md</span></a></li><li>    <a href="std_digest_ripemd.html" title="std.digest.ripemd"><span class="d_inlinecode donthyphenate notranslate">ripemd</span></a></li><li>    <a href="std_digest_sha.html" title="std.digest.sha"><span class="d_inlinecode donthyphenate notranslate">sha</span></a>
+  </li></ul></li><li>  <a href="std_encoding.html" title="std.encoding"><span class="d_inlinecode donthyphenate notranslate">encoding</span></a></li><li>  <a href="std_exception.html" title="std.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">experimental</span></h7><ul><li>    <a href="std_experimental_logger.html" title="std.experimental.logger"><span class="d_inlinecode donthyphenate notranslate">logger</span></a><ul><li>      <a href="std_experimental_logger_core.html" title="std.experimental.logger.core"><span class="d_inlinecode donthyphenate notranslate">core</span></a></li><li>      <a href="std_experimental_logger_filelogger.html" title="std.experimental.logger.filelogger"><span class="d_inlinecode donthyphenate notranslate">filelogger</span></a></li><li>      <a href="std_experimental_logger_multilogger.html" title="std.experimental.logger.multilogger"><span class="d_inlinecode donthyphenate notranslate">multilogger</span></a></li><li>      <a href="std_experimental_logger_nulllogger.html" title="std.experimental.logger.nulllogger"><span class="d_inlinecode donthyphenate notranslate">nulllogger</span></a>
+    </li></ul>
+  </li></ul></li><li>  <a href="std_file.html" title="std.file"><span class="d_inlinecode donthyphenate notranslate">file</span></a></li><li>  <a href="std_format.html" title="std.format"><span class="d_inlinecode donthyphenate notranslate">format</span></a></li><li>  <a href="std_functional.html" title="std.functional"><span class="d_inlinecode donthyphenate notranslate">functional</span></a></li><li>  <a href="std_getopt.html" title="std.getopt"><span class="d_inlinecode donthyphenate notranslate">getopt</span></a></li><li>  <a href="std_json.html" title="std.json"><span class="d_inlinecode donthyphenate notranslate">json</span></a></li><li>  <a href="std_math.html" title="std.math"><span class="d_inlinecode donthyphenate notranslate">math</span></a></li><li>  <a href="std_mathspecial.html" title="std.mathspecial"><span class="d_inlinecode donthyphenate notranslate">mathspecial</span></a></li><li>  <a href="std_meta.html" title="std.meta"><span class="d_inlinecode donthyphenate notranslate">meta</span></a></li><li>  <a href="std_metastrings.html" title="std.metastrings"><span class="d_inlinecode donthyphenate notranslate">metastrings</span></a></li><li>  <a href="std_mmfile.html" title="std.mmfile"><span class="d_inlinecode donthyphenate notranslate">mmfile</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">net</span></h7><ul><li>    <a href="std_net_curl.html" title="std.net.curl"><span class="d_inlinecode donthyphenate notranslate">curl</span></a></li><li>    <a href="std_net_isemail.html" title="std.net.isemail"><span class="d_inlinecode donthyphenate notranslate">isemail</span></a>
+  </li></ul></li><li>  <a href="std_numeric.html" title="std.numeric"><span class="d_inlinecode donthyphenate notranslate">numeric</span></a></li><li>  <a href="std_outbuffer.html" title="std.outbuffer"><span class="d_inlinecode donthyphenate notranslate">outbuffer</span></a></li><li>  <a href="std_parallelism.html" title="std.parallelism"><span class="d_inlinecode donthyphenate notranslate">parallelism</span></a></li><li>  <a href="std_path.html" title="std.path"><span class="d_inlinecode donthyphenate notranslate">path</span></a></li><li>  <a href="std_process.html" title="std.process"><span class="d_inlinecode donthyphenate notranslate">process</span></a></li><li>  <a href="std_random.html" title="std.random"><span class="d_inlinecode donthyphenate notranslate">random</span></a></li><li>  <a href="std_range.html" title="std.range"><span class="d_inlinecode donthyphenate notranslate">range</span></a><ul><li>    <a href="std_range_interfaces.html" title="std.range.interfaces"><span class="d_inlinecode donthyphenate notranslate">interfaces</span></a></li><li>    <a href="std_range_primitives.html" title="std.range.primitives"><span class="d_inlinecode donthyphenate notranslate">primitives</span></a>
+  </li></ul></li><li>  <a href="std_regex.html" title="std.regex"><span class="d_inlinecode donthyphenate notranslate">regex</span></a></li><li>  <a href="std_signals.html" title="std.signals"><span class="d_inlinecode donthyphenate notranslate">signals</span></a></li><li>  <a href="std_socket.html" title="std.socket"><span class="d_inlinecode donthyphenate notranslate">socket</span></a></li><li>  <a href="std_stdint.html" title="std.stdint"><span class="d_inlinecode donthyphenate notranslate">stdint</span></a></li><li>  <a href="std_stdio.html" title="std.stdio"><span class="d_inlinecode donthyphenate notranslate">stdio</span></a></li><li>  <a href="std_stdiobase.html" title="std.stdiobase"><span class="d_inlinecode donthyphenate notranslate">stdiobase</span></a></li><li>  <a href="std_string.html" title="std.string"><span class="d_inlinecode donthyphenate notranslate">string</span></a></li><li>  <a href="std_syserror.html" title="std.syserror"><span class="d_inlinecode donthyphenate notranslate">syserror</span></a></li><li>  <a href="std_system.html" title="std.system"><span class="d_inlinecode donthyphenate notranslate">system</span></a></li><li>  <a href="std_traits.html" title="std.traits"><span class="d_inlinecode donthyphenate notranslate">traits</span></a></li><li>  <a href="std_typecons.html" title="std.typecons"><span class="d_inlinecode donthyphenate notranslate">typecons</span></a></li><li>  <a href="std_typetuple.html" title="std.typetuple"><span class="d_inlinecode donthyphenate notranslate">typetuple</span></a></li><li>  <a href="std_uni.html" title="std.uni"><span class="d_inlinecode donthyphenate notranslate">uni</span></a></li><li>  <a href="std_uri.html" title="std.uri"><span class="d_inlinecode donthyphenate notranslate">uri</span></a></li><li>  <a href="std_utf.html" title="std.utf"><span class="d_inlinecode donthyphenate notranslate">utf</span></a></li><li>  <a href="std_uuid.html" title="std.uuid"><span class="d_inlinecode donthyphenate notranslate">uuid</span></a></li><li>  <a href="std_variant.html" title="std.variant"><span class="d_inlinecode donthyphenate notranslate">variant</span></a></li><li>  <a href="std_xml.html" title="std.xml"><span class="d_inlinecode donthyphenate notranslate">xml</span></a></li><li>  <a href="std_zip.html" title="std.zip"><span class="d_inlinecode donthyphenate notranslate">zip</span></a></li><li>  <a href="std_zlib.html" title="std.zlib"><span class="d_inlinecode donthyphenate notranslate">zlib</span></a>
+</li></ul>
+<li class='has-sub'><a href='#'><span><em class="tt">etc</em></span></a>
+<ul><li>  <h7><span class="d_inlinecode donthyphenate notranslate">c</span></h7><ul><li>    <a href="etc_c_curl.html" title="etc.c.curl"><span class="d_inlinecode donthyphenate notranslate">curl</span></a></li><li>    <h7><span class="d_inlinecode donthyphenate notranslate">odbc</span></h7><ul><li>      <a href="etc_c_odbc_sql.html" title="etc.c.odbc.sql"><span class="d_inlinecode donthyphenate notranslate">sql</span></a></li><li>      <a href="etc_c_odbc_sqlext.html" title="etc.c.odbc.sqlext"><span class="d_inlinecode donthyphenate notranslate">sqlext</span></a></li><li>      <a href="etc_c_odbc_sqltypes.html" title="etc.c.odbc.sqltypes"><span class="d_inlinecode donthyphenate notranslate">sqltypes</span></a></li><li>      <a href="etc_c_odbc_sqlucode.html" title="etc.c.odbc.sqlucode"><span class="d_inlinecode donthyphenate notranslate">sqlucode</span></a>
+    </li></ul></li><li>    <a href="etc_c_sqlite3.html" title="etc.c.sqlite3"><span class="d_inlinecode donthyphenate notranslate">sqlite3</span></a></li><li>    <a href="etc_c_zlib.html" title="etc.c.zlib"><span class="d_inlinecode donthyphenate notranslate">zlib</span></a>
+  </li></ul>
+</li></ul>
+<li class='has-sub'><a href='#'><span><em class="tt">core</em></span></a>
+<ul><li>  <a href="core_atomic.html" title="core.atomic"><span class="d_inlinecode donthyphenate notranslate">atomic</span></a></li><li>  <a href="core_bitop.html" title="core.bitop"><span class="d_inlinecode donthyphenate notranslate">bitop</span></a></li><li>  <a href="core_checkedint.html" title="core.checkedint"><span class="d_inlinecode donthyphenate notranslate">checkedint</span></a></li><li>  <a href="core_cpuid.html" title="core.cpuid"><span class="d_inlinecode donthyphenate notranslate">cpuid</span></a></li><li>  <a href="core_demangle.html" title="core.demangle"><span class="d_inlinecode donthyphenate notranslate">demangle</span></a></li><li>  <a href="core_exception.html" title="core.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>  <a href="core_math.html" title="core.math"><span class="d_inlinecode donthyphenate notranslate">math</span></a></li><li>  <a href="core_memory.html" title="core.memory"><span class="d_inlinecode donthyphenate notranslate">memory</span></a></li><li>  <a href="core_runtime.html" title="core.runtime"><span class="d_inlinecode donthyphenate notranslate">runtime</span></a></li><li>  <a href="core_simd.html" title="core.simd"><span class="d_inlinecode donthyphenate notranslate">simd</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">stdc</span></h7><ul><li>    <a href="core_stdc_complex.html" title="core.stdc.complex"><span class="d_inlinecode donthyphenate notranslate">complex</span></a></li><li>    <a href="core_stdc_ctype.html" title="core.stdc.ctype"><span class="d_inlinecode donthyphenate notranslate">ctype</span></a></li><li>    <a href="core_stdc_errno.html" title="core.stdc.errno"><span class="d_inlinecode donthyphenate notranslate">errno</span></a></li><li>    <a href="core_stdc_fenv.html" title="core.stdc.fenv"><span class="d_inlinecode donthyphenate notranslate">fenv</span></a></li><li>    <a href="core_stdc_float_.html" title="core.stdc.float_"><span class="d_inlinecode donthyphenate notranslate">float_</span></a></li><li>    <a href="core_stdc_inttypes.html" title="core.stdc.inttypes"><span class="d_inlinecode donthyphenate notranslate">inttypes</span></a></li><li>    <a href="core_stdc_limits.html" title="core.stdc.limits"><span class="d_inlinecode donthyphenate notranslate">limits</span></a></li><li>    <a href="core_stdc_locale.html" title="core.stdc.locale"><span class="d_inlinecode donthyphenate notranslate">locale</span></a></li><li>    <a href="core_stdc_math.html" title="core.stdc.math"><span class="d_inlinecode donthyphenate notranslate">math</span></a></li><li>    <a href="core_stdc_signal.html" title="core.stdc.signal"><span class="d_inlinecode donthyphenate notranslate">signal</span></a></li><li>    <a href="core_stdc_stdarg.html" title="core.stdc.stdarg"><span class="d_inlinecode donthyphenate notranslate">stdarg</span></a></li><li>    <a href="core_stdc_stddef.html" title="core.stdc.stddef"><span class="d_inlinecode donthyphenate notranslate">stddef</span></a></li><li>    <a href="core_stdc_stdint.html" title="core.stdc.stdint"><span class="d_inlinecode donthyphenate notranslate">stdint</span></a></li><li>    <a href="core_stdc_stdio.html" title="core.stdc.stdio"><span class="d_inlinecode donthyphenate notranslate">stdio</span></a></li><li>    <a href="core_stdc_stdlib.html" title="core.stdc.stdlib"><span class="d_inlinecode donthyphenate notranslate">stdlib</span></a></li><li>    <a href="core_stdc_string.html" title="core.stdc.string"><span class="d_inlinecode donthyphenate notranslate">string</span></a></li><li>    <a href="core_stdc_tgmath.html" title="core.stdc.tgmath"><span class="d_inlinecode donthyphenate notranslate">tgmath</span></a></li><li>    <a href="core_stdc_time.html" title="core.stdc.time"><span class="d_inlinecode donthyphenate notranslate">time</span></a></li><li>    <a href="core_stdc_wchar_.html" title="core.stdc.wchar_"><span class="d_inlinecode donthyphenate notranslate">wchar_</span></a></li><li>    <a href="core_stdc_wctype.html" title="core.stdc.wctype"><span class="d_inlinecode donthyphenate notranslate">wctype</span></a>
+  </li></ul></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">sync</span></h7><ul><li>    <a href="core_sync_barrier.html" title="core.sync.barrier"><span class="d_inlinecode donthyphenate notranslate">barrier</span></a></li><li>    <a href="core_sync_condition.html" title="core.sync.condition"><span class="d_inlinecode donthyphenate notranslate">condition</span></a></li><li>    <a href="core_sync_config.html" title="core.sync.config"><span class="d_inlinecode donthyphenate notranslate">config</span></a></li><li>    <a href="core_sync_exception.html" title="core.sync.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>    <a href="core_sync_mutex.html" title="core.sync.mutex"><span class="d_inlinecode donthyphenate notranslate">mutex</span></a></li><li>    <a href="core_sync_rwmutex.html" title="core.sync.rwmutex"><span class="d_inlinecode donthyphenate notranslate">rwmutex</span></a></li><li>    <a href="core_sync_semaphore.html" title="core.sync.semaphore"><span class="d_inlinecode donthyphenate notranslate">semaphore</span></a>
+  </li></ul></li><li>  <a href="core_thread.html" title="core.thread"><span class="d_inlinecode donthyphenate notranslate">thread</span></a></li><li>  <a href="core_time.html" title="core.time"><span class="d_inlinecode donthyphenate notranslate">time</span></a></li><li>  <a href="core_vararg.html" title="core.vararg"><span class="d_inlinecode donthyphenate notranslate">vararg</span></a>
+</li></ul>
+    <li><a href='http://code.dlang.org'><span>3rd Party Packages</span></a></li>
+</ul></div>
+</div>
+
+<div class="hyphenate" id="content">    
+<div id="tools">	<span class="tip">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/phobos/&bug_severity=enhancement&component=phobos&op_sys=All&priority=P3&product=D&rep_platform=All&short_desc=%5Bstd.algorithm.mutation%5D&version=D2" class="button">Report a bug</a>
+		<span >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</span>
+	</span>
+	<span class="tip">		<a href="https://github.com/D-Programming-Language/phobos/edit/master/std/algorithm/mutation.d" class="button">Improve this page</a>
+		<span >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			local clone.
+		</span>
+	</span>
+</div>
+    <h1><span class="d_inlinecode donthyphenate notranslate">std.algorithm.mutation</span></h1>
+    <div class="quickindex" id="quickindex"></div>
+    <!--Generated by Ddoc from std/algorithm/mutation.d-->
+<div class="summary">This is a submodule of <a href="std_algorithm.html">std.algorithm</a>.
+It contains generic mutation algorithms.
+</div>
+<div class="description"><table class="book"><caption>Cheat Sheet</caption><p></p>
+
+<tr><th scope="col">Function Name</th> <th scope="col">Description</th></tr>
+<p></p>
+
+<tr><td class="donthyphenate" nowrap><a href="#bringToFront"><span class="d_inlinecode donthyphenate notranslate">bringToFront</span></a></td> <td>        If <span class="d_inlinecode donthyphenate notranslate">a = [1, 2, 3]</span> and <span class="d_inlinecode donthyphenate notranslate">b = [4, 5, 6, 7]</span>,
+        <span class="d_inlinecode donthyphenate notranslate">bringToFront(a, b)</span> leaves <span class="d_inlinecode donthyphenate notranslate">a = [4, 5, 6]</span> and
+        <span class="d_inlinecode donthyphenate notranslate">b = [7, 1, 2, 3]</span>.</td></tr>
+<tr><td class="donthyphenate" nowrap><a href="#copy"><span class="d_inlinecode donthyphenate notranslate">copy</span></a></td> <td>        Copies a range to another. If
+        <span class="d_inlinecode donthyphenate notranslate">a = [1, 2, 3]</span> and <span class="d_inlinecode donthyphenate notranslate">b = new int[5]</span>, then <span class="d_inlinecode donthyphenate notranslate">copy(a, b)</span>
+        leaves <span class="d_inlinecode donthyphenate notranslate">b = [1, 2, 3, 0, 0]</span> and returns <span class="d_inlinecode donthyphenate notranslate">b[3 .. $]</span>.</td></tr>
+<tr><td class="donthyphenate" nowrap><a href="#fill"><span class="d_inlinecode donthyphenate notranslate">fill</span></a></td> <td>        Fills a range with a pattern,
+        e.g., if <span class="d_inlinecode donthyphenate notranslate">a = new int[3]</span>, then <span class="d_inlinecode donthyphenate notranslate">fill(a, 4)</span>
+        leaves <span class="d_inlinecode donthyphenate notranslate">a = [4, 4, 4]</span> and <span class="d_inlinecode donthyphenate notranslate">fill(a, [3, 4])</span> leaves
+        <span class="d_inlinecode donthyphenate notranslate">a = [3, 4, 3]</span>.</td></tr>
+<tr><td class="donthyphenate" nowrap><a href="#initializeAll"><span class="d_inlinecode donthyphenate notranslate">initializeAll</span></a></td> <td>        If <span class="d_inlinecode donthyphenate notranslate">a = [1.2, 3.4]</span>, then <span class="d_inlinecode donthyphenate notranslate">initializeAll(a)</span> leaves
+        <span class="d_inlinecode donthyphenate notranslate">a = [double.init, double.init]</span>.</td></tr>
+<tr><td class="donthyphenate" nowrap><a href="#move"><span class="d_inlinecode donthyphenate notranslate">move</span></a></td> <td>        <span class="d_inlinecode donthyphenate notranslate">move(a, b)</span> moves <span class="d_inlinecode donthyphenate notranslate">a</span> into <span class="d_inlinecode donthyphenate notranslate">b</span>. <span class="d_inlinecode donthyphenate notranslate">move(a)</span> reads <span class="d_inlinecode donthyphenate notranslate">a</span>
+        destructively.</td></tr>
+<tr><td class="donthyphenate" nowrap><a href="#moveAll"><span class="d_inlinecode donthyphenate notranslate">moveAll</span></a></td> <td>        Moves all elements from one range to another.</td></tr>
+<tr><td class="donthyphenate" nowrap><a href="#moveSome"><span class="d_inlinecode donthyphenate notranslate">moveSome</span></a></td> <td>        Moves as many elements as possible from one range to another.</td></tr>
+<tr><td class="donthyphenate" nowrap><a href="#remove"><span class="d_inlinecode donthyphenate notranslate">remove</span></a></td> <td>        Removes elements from a range in-place, and returns the shortened
+        range.</td></tr>
+<tr><td class="donthyphenate" nowrap><a href="#reverse"><span class="d_inlinecode donthyphenate notranslate">reverse</span></a></td> <td>        If <span class="d_inlinecode donthyphenate notranslate">a = [1, 2, 3]</span>, <span class="d_inlinecode donthyphenate notranslate">reverse(a)</span> changes it to <span class="d_inlinecode donthyphenate notranslate">[3, 2, 1]</span>.</td></tr>
+<tr><td class="donthyphenate" nowrap><a href="#strip"><span class="d_inlinecode donthyphenate notranslate">strip</span></a></td> <td>        Strips all leading and trailing elements equal to a value, or that
+        satisfy a predicate.
+        If <span class="d_inlinecode donthyphenate notranslate">a = [1, 1, 0, 1, 1]</span>, then <span class="d_inlinecode donthyphenate notranslate">strip(a, 1)</span> and
+        <span class="d_inlinecode donthyphenate notranslate">strip!(e =&gt; e == 1)(a)</span> returns <span class="d_inlinecode donthyphenate notranslate">[0]</span>.</td></tr>
+<tr><td class="donthyphenate" nowrap><a href="#stripLeft"><span class="d_inlinecode donthyphenate notranslate">stripLeft</span></a></td> <td>        Strips all leading elements equal to a value, or that satisfy a
+        predicate.  If <span class="d_inlinecode donthyphenate notranslate">a = [1, 1, 0, 1, 1]</span>, then <span class="d_inlinecode donthyphenate notranslate">stripLeft(a, 1)</span> and
+        <span class="d_inlinecode donthyphenate notranslate">stripLeft!(e =&gt; e == 1)(a)</span> returns <span class="d_inlinecode donthyphenate notranslate">[0, 1, 1]</span>.</td></tr>
+<tr><td class="donthyphenate" nowrap><a href="#stripRight"><span class="d_inlinecode donthyphenate notranslate">stripRight</span></a></td> <td>        Strips all trailing elements equal to a value, or that satisfy a
+        predicate.
+        If <span class="d_inlinecode donthyphenate notranslate">a = [1, 1, 0, 1, 1]</span>, then <span class="d_inlinecode donthyphenate notranslate">stripRight(a, 1)</span> and
+        <span class="d_inlinecode donthyphenate notranslate">stripRight!(e =&gt; e == 1)(a)</span> returns <span class="d_inlinecode donthyphenate notranslate">[1, 1, 0]</span>.</td></tr>
+<tr><td class="donthyphenate" nowrap><a href="#swap"><span class="d_inlinecode donthyphenate notranslate">swap</span></a></td> <td>        Swaps two values.</td></tr>
+<tr><td class="donthyphenate" nowrap><a href="#swapRanges"><span class="d_inlinecode donthyphenate notranslate">swapRanges</span></a></td> <td>        Swaps all elements of two ranges.</td></tr>
+<tr><td class="donthyphenate" nowrap><a href="#uninitializedFill"><span class="d_inlinecode donthyphenate notranslate">uninitializedFill</span></a></td> <td>        Fills a range (assumed uninitialized) with a value.</td></tr>
+</table>
+
+</div>
+<div class="keyval License"><span class="key keyLicense">License:</span> <div class="val valLicense"><a href="http://boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
+
+</div></div>
+<div class="keyval Authors"><span class="key keyAuthors">Authors:</span> <div class="val valAuthors"><a href="http://erdani.com">Andrei Alexandrescu</a>
+
+</div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Source:</span>
+<span class="phobos_src"><a class="https" href="https://github.com/D-Programming-Language/phobos/blob/master/std/algorithm/mutation.d">std/algorithm/mutation.d</a></span>
+
+</div>
+
+<dl><dt class="d_decl"><a name=".bringToFront"></a><div class="quickindex" id="quickindex.bringToFront"></div>size_t <a name="bringToFront"></a><span class="ddoc_psymbol">bringToFront</span>(Range1, Range2)(Range1 <i>front</i>, Range2 <i>back</i>) if (isInputRange!Range1 &amp;&amp; isForwardRange!Range2);
+</dt>
+<dd><div class="summary">The <span class="d_inlinecode donthyphenate notranslate"><a name="bringToFront"></a><span class="ddoc_psymbol">bringToFront</span></span> function has considerable flexibility and
+usefulness. It can rotate elements in one buffer left or right, swap
+buffers of equal length, and even move elements across disjoint
+buffers of different types and different lengths.
+</div>
+<div class="description"><span class="d_inlinecode donthyphenate notranslate"><a name="bringToFront"></a><span class="ddoc_psymbol">bringToFront</span></span> takes two ranges <span class="d_inlinecode donthyphenate notranslate"><i>front</i></span> and <span class="d_inlinecode donthyphenate notranslate"><i>back</i></span>, which may
+be of different types. Considering the concatenation of <span class="d_inlinecode donthyphenate notranslate"><i>front</i></span> and
+<span class="d_inlinecode donthyphenate notranslate"><i>back</i></span> one unified range, <span class="d_inlinecode donthyphenate notranslate"><a name="bringToFront"></a><span class="ddoc_psymbol">bringToFront</span></span> rotates that unified
+range such that all elements in <span class="d_inlinecode donthyphenate notranslate"><i>back</i></span> are brought to the beginning
+of the unified range. The relative ordering of elements in <span class="d_inlinecode donthyphenate notranslate"><i>front</i></span>
+and <span class="d_inlinecode donthyphenate notranslate"><i>back</i></span>, respectively, remains unchanged.
+<p></p>
+
+Performs <span class="bigoh">&Omicron;(<span class="d_inlinecode donthyphenate notranslate">max(<i>front</i>.length, <i>back</i>.length)</span>)</span> evaluations of <span class="d_inlinecode donthyphenate notranslate">swap</span>.
+
+</div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Preconditions:</span>
+Either <span class="d_inlinecode donthyphenate notranslate"><i>front</i></span> and <span class="d_inlinecode donthyphenate notranslate"><i>back</i></span> are disjoint, or <span class="d_inlinecode donthyphenate notranslate"><i>back</i></span> is
+reachable from <span class="d_inlinecode donthyphenate notranslate"><i>front</i></span> and <span class="d_inlinecode donthyphenate notranslate"><i>front</i></span> is not reachable from <span class="d_inlinecode donthyphenate notranslate"><i>back</i></span>.
+
+</div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">The number of elements brought to the <i>front</i>, i.e., the length of <span class="d_inlinecode donthyphenate notranslate"><i>back</i></span>.
+
+</div></div>
+<div class="keyval SeeAlso"><span class="key keySeeAlso">See Also:</span> <div class="val valSeeAlso"><a href="http://sgi.com/tech/stl/rotate.html">STL's rotate</a></div></div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples">The simplest use of <span class="d_inlinecode donthyphenate notranslate"><a name="bringToFront"></a><span class="ddoc_psymbol">bringToFront</span></span> is for rotating elements in a
+buffer. For example:
+<pre class="d_code notranslate">
+<span class="d_keyword">auto</span> arr = [4, 5, 6, 7, 1, 2, 3];
+<span class="d_keyword">auto</span> p = <span class="d_psymbol">bringToFront</span>(arr[0 .. 4], arr[4 .. $]);
+<span class="d_keyword">assert</span>(p == arr.length - 4);
+<span class="d_keyword">assert</span>(arr == [ 1, 2, 3, 4, 5, 6, 7 ]);
+</pre>
+</div></div><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples">The <span class="d_inlinecode donthyphenate notranslate"><i>front</i></span> range may actually "step over" the <span class="d_inlinecode donthyphenate notranslate"><i>back</i></span>
+range. This is very useful with forward ranges that cannot compute
+comfortably right-bounded subranges like <span class="d_inlinecode donthyphenate notranslate">arr[0 .. 4]</span> above. In
+the example below, <span class="d_inlinecode donthyphenate notranslate">r2</span> is a right subrange of <span class="d_inlinecode donthyphenate notranslate">r1</span>.
+<pre class="d_code notranslate">
+<span class="d_keyword">import</span> std.algorithm.comparison : equal;
+<span class="d_keyword">import</span> std.container : SList;
+
+<span class="d_keyword">auto</span> list = SList!(<span class="d_keyword">int</span>)(4, 5, 6, 7, 1, 2, 3);
+<span class="d_keyword">auto</span> r1 = list[];
+<span class="d_keyword">auto</span> r2 = list[]; popFrontN(r2, 4);
+<span class="d_keyword">assert</span>(equal(r2, [ 1, 2, 3 ]));
+<span class="d_psymbol">bringToFront</span>(r1, r2);
+<span class="d_keyword">assert</span>(equal(list[], [ 1, 2, 3, 4, 5, 6, 7 ]));
+</pre>
+</div></div><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples">Elements can be swapped across ranges of different types:
+<pre class="d_code notranslate">
+<span class="d_keyword">import</span> std.algorithm.comparison : equal;
+<span class="d_keyword">import</span> std.container : SList;
+
+<span class="d_keyword">auto</span> list = SList!(<span class="d_keyword">int</span>)(4, 5, 6, 7);
+<span class="d_keyword">auto</span> vec = [ 1, 2, 3 ];
+<span class="d_psymbol">bringToFront</span>(list[], vec);
+<span class="d_keyword">assert</span>(equal(list[], [ 1, 2, 3, 4 ]));
+<span class="d_keyword">assert</span>(equal(vec, [ 5, 6, 7 ]));
+</pre>
+</div></div>
+</dd>
+<dt class="d_decl"><a name=".copy"></a><div class="quickindex" id="quickindex.copy"></div>TargetRange <a name="copy"></a><span class="ddoc_psymbol">copy</span>(SourceRange, TargetRange)(SourceRange <i>source</i>, TargetRange <i>target</i>) if (isInputRange!SourceRange &amp;&amp; isOutputRange!(TargetRange, ElementType!SourceRange));
+</dt>
+<dd><div class="summary">Copies the content of <span class="d_inlinecode donthyphenate notranslate"><i>source</i></span> into <span class="d_inlinecode donthyphenate notranslate"><i>target</i></span> and returns the
+remaining (unfilled) part of <span class="d_inlinecode donthyphenate notranslate"><i>target</i></span>.
+</div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Preconditions:</span>
+<span class="d_inlinecode donthyphenate notranslate"><i>target</i></span> shall have enough room to accomodate
+the entirety of <span class="d_inlinecode donthyphenate notranslate"><i>source</i></span>.
+
+</div>
+<div class="keyval SeeAlso"><span class="key keySeeAlso">See Also:</span> <div class="val valSeeAlso"><a href="http://sgi.com/tech/stl/copy.html">STL's copy</a></div></div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_keyword">int</span>[] a = [ 1, 5 ];
+<span class="d_keyword">int</span>[] b = [ 9, 8 ];
+<span class="d_keyword">int</span>[] buf = <span class="d_keyword">new</span> <span class="d_keyword">int</span>[](a.length + b.length + 10);
+<span class="d_keyword">auto</span> rem = a.<span class="d_psymbol">copy</span>(buf);    <span class="d_comment">// copy a into buf
+</span>rem = b.<span class="d_psymbol">copy</span>(rem);         <span class="d_comment">// copy b into remainder of buf
+</span><span class="d_keyword">assert</span>(buf[0 .. a.length + b.length] == [1, 5, 9, 8]);
+<span class="d_keyword">assert</span>(rem.length == 10);   <span class="d_comment">// unused slots in buf
+</span></pre>
+</div></div><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples">As long as the <i>target</i> range elements support assignment from <i>source</i>
+range elements, different types of ranges are accepted:
+<pre class="d_code notranslate">
+<span class="d_keyword">float</span>[] src = [ 1.0f, 5 ];
+<span class="d_keyword">double</span>[] dest = <span class="d_keyword">new</span> <span class="d_keyword">double</span>[src.length];
+src.<span class="d_psymbol">copy</span>(dest);
+</pre>
+</div></div><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples">To copy at most <span class="d_inlinecode donthyphenate notranslate">n</span> elements from a range, you may want to use
+<span class="libref"><a href="http://dlang.org/phobos/std_range.html#take"><span class="d_inlinecode donthyphenate notranslate">std.range.take</span></a></span>:
+<pre class="d_code notranslate">
+<span class="d_keyword">import</span> std.range;
+<span class="d_keyword">int</span>[] src = [ 1, 5, 8, 9, 10 ];
+<span class="d_keyword">auto</span> dest = <span class="d_keyword">new</span> <span class="d_keyword">int</span>[](3);
+src.take(dest.length).<span class="d_psymbol">copy</span>(dest);
+<span class="d_keyword">assert</span>(dest == [ 1, 5, 8 ]);
+</pre>
+</div></div><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples">To copy just those elements from a range that satisfy a predicate,
+use <a href="#filter"><span class="d_inlinecode donthyphenate notranslate">filter</span></a>:
+<pre class="d_code notranslate">
+<span class="d_keyword">import</span> std.algorithm.iteration : filter;
+<span class="d_keyword">int</span>[] src = [ 1, 5, 8, 9, 10, 1, 2, 0 ];
+<span class="d_keyword">auto</span> dest = <span class="d_keyword">new</span> <span class="d_keyword">int</span>[src.length];
+<span class="d_keyword">auto</span> rem = src
+    .filter!(a =&gt; (a &amp; 1) == 1)
+    .<span class="d_psymbol">copy</span>(dest);
+<span class="d_keyword">assert</span>(dest[0 .. $ - rem.length] == [ 1, 5, 9, 1 ]);
+</pre>
+</div></div><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><span class="libref"><a href="http://dlang.org/phobos/std_range.html#retro"><span class="d_inlinecode donthyphenate notranslate">std.range.retro</span></a></span> can be used to achieve behavior similar to
+<a href="http://sgi.com/tech/stl/copy_backward.html">STL's copy_backward'</a>:
+<pre class="d_code notranslate">
+<span class="d_keyword">import</span> std.algorithm, std.range;
+<span class="d_keyword">int</span>[] src = [1, 2, 4];
+<span class="d_keyword">int</span>[] dest = [0, 0, 0, 0, 0];
+src.retro.<span class="d_psymbol">copy</span>(dest.retro);
+<span class="d_keyword">assert</span>(dest == [0, 0, 1, 2, 4]);
+</pre>
+</div></div>
+</dd>
+<dt class="d_decl"><a name=".fill"></a><div class="quickindex" id="quickindex.fill"></div>void <a name="fill"></a><span class="ddoc_psymbol">fill</span>(Range, Value)(Range <i>range</i>, Value <i>value</i>) if (isInputRange!Range &amp;&amp; is(typeof(<i>range</i>.front = <i>value</i>)));
+</dt>
+<dd><div class="summary">Assigns <span class="d_inlinecode donthyphenate notranslate"><i>value</i></span> to each element of input range <span class="d_inlinecode donthyphenate notranslate"><i>range</i></span>.
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class=params><tr class="param"><td class="param_id">Range <i>range</i></td>
+<td class="param_desc">An
+                <span class="libref"><a href="http://dlang.org/phobos/std_range_primitives.html#isInputRange">input range</a></span>
+                that exposes references to its elements and has assignable
+                elements</td></tr>
+<tr class="param"><td class="param_id">Value <i>value</i></td>
+<td class="param_desc">Assigned to each element of <i>range</i></td></tr>
+</table></div></div>
+<div class="keyval SeeAlso"><span class="key keySeeAlso">See Also:</span> <div class="val valSeeAlso"><a href="#uninitializedFill"><span class="d_inlinecode donthyphenate notranslate">uninitializedFill</span></a>
+        <a href="#initializeAll"><span class="d_inlinecode donthyphenate notranslate">initializeAll</span></a></div></div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_keyword">int</span>[] a = [ 1, 2, 3, 4 ];
+<span class="d_psymbol">fill</span>(a, 5);
+<span class="d_keyword">assert</span>(a == [ 5, 5, 5, 5 ]);
+</pre>
+</div></div>
+</dd>
+<dt class="d_decl"><a name=".fill.2"></a><div class="quickindex" id="quickindex.fill.2"></div>void <a name="fill"></a><span class="ddoc_psymbol">fill</span>(Range1, Range2)(Range1 <i>range</i>, Range2 <i>filler</i>) if (isInputRange!Range1 &amp;&amp; (isForwardRange!Range2 || isInputRange!Range2 &amp;&amp; isInfinite!Range2) &amp;&amp; is(typeof(Range1.init.front = Range2.init.front)));
+</dt>
+<dd><div class="summary">Fills <span class="d_inlinecode donthyphenate notranslate"><i>range</i></span> with a pattern copied from <span class="d_inlinecode donthyphenate notranslate"><i>filler</i></span>. The length of
+<span class="d_inlinecode donthyphenate notranslate"><i>range</i></span> does not have to be a multiple of the length of <span class="d_inlinecode donthyphenate notranslate"><i>filler</i></span>. If <span class="d_inlinecode donthyphenate notranslate"><i>filler</i></span> is empty, an exception is thrown.
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class=params><tr class="param"><td class="param_id">Range1 <i>range</i></td>
+<td class="param_desc">An <span class="libref"><a href="http://dlang.org/phobos/std_range_primitives.html#isInputRange">input range</a></span>
+            that exposes references to its elements and has assignable elements.</td></tr>
+<tr class="param"><td class="param_id">Range2 <i>filler</i></td>
+<td class="param_desc">The
+             <span class="libref"><a href="http://dlang.org/phobos/std_range_primitives.html#isForwardRange">forward range</a></span>
+             representing the fill pattern.</td></tr>
+</table></div></div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_keyword">int</span>[] a = [ 1, 2, 3, 4, 5 ];
+<span class="d_keyword">int</span>[] b = [ 8, 9 ];
+<span class="d_psymbol">fill</span>(a, b);
+<span class="d_keyword">assert</span>(a == [ 8, 9, 8, 9, 8 ]);
+</pre>
+</div></div>
+</dd>
+<dt class="d_decl"><a name=".initializeAll"></a><div class="quickindex" id="quickindex.initializeAll"></div>void <a name="initializeAll"></a><span class="ddoc_psymbol">initializeAll</span>(Range)(Range <i>range</i>) if (isInputRange!Range &amp;&amp; hasLvalueElements!Range &amp;&amp; hasAssignableElements!Range);
+</dt>
+<dd><div class="summary">Initializes all elements of <span class="d_inlinecode donthyphenate notranslate"><i>range</i></span> with their <span class="d_inlinecode donthyphenate notranslate">.init</span> value.
+Assumes that the elements of the <i>range</i> are uninitialized.
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class=params><tr class="param"><td class="param_id">Range <i>range</i></td>
+<td class="param_desc">An
+                <span class="libref"><a href="http://dlang.org/phobos/std_range_primitives.html#isInputRange">input range</a></span>
+                that exposes references to its elements and has assignable
+                elements</td></tr>
+</table></div></div>
+<div class="keyval SeeAlso"><span class="key keySeeAlso">See Also:</span> <div class="val valSeeAlso"><a href="#fill"><span class="d_inlinecode donthyphenate notranslate">fill</span></a>
+        <a href="#uninitializeFill"><span class="d_inlinecode donthyphenate notranslate">uninitializeFill</span></a>
+
+</div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example:</span>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S { ... }
+S[] s = (<span class="d_keyword">cast</span>(S*) malloc(5 * S.sizeof))[0 .. 5];
+<span class="d_psymbol">initializeAll</span>(s);
+<span class="d_keyword">assert</span>(s == [ 0, 0, 0, 0, 0 ]);
+</pre>
+</div>
+
+</dd>
+<dt class="d_decl"><a name=".move"></a><div class="quickindex" id="quickindex.move"></div>void <a name="move"></a><span class="ddoc_psymbol">move</span>(T)(ref T <i>source</i>, ref T <i>target</i>);
+<br>T <a name="move"></a><span class="ddoc_psymbol">move</span>(T)(ref T <i>source</i>);
+</dt>
+<dd><div class="summary">Moves <span class="d_inlinecode donthyphenate notranslate"><i>source</i></span> into <span class="d_inlinecode donthyphenate notranslate"><i>target</i></span> via a destructive copy.
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class=params><tr class="param"><td class="param_id">T <i>source</i></td>
+<td class="param_desc">Data to copy. If a destructor or postblit is defined, it is reset
+        to its <span class="d_inlinecode donthyphenate notranslate">.init</span> value after it is moved into <i>target</i>.  Note that data
+        with internal pointers that point to itself cannot be moved, and will
+        trigger an assertion failure.</td></tr>
+<tr class="param"><td class="param_id">T <i>target</i></td>
+<td class="param_desc">Where to copy into. The destructor, if any, is invoked before the
+        copy is performed.</td></tr>
+</table></div></div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+Object obj1 = <span class="d_keyword">new</span> Object;
+Object obj2 = obj1;
+Object obj3;
+
+<span class="d_psymbol">move</span>(obj2, obj3);
+<span class="d_keyword">assert</span>(obj3 <span class="d_keyword">is</span> obj1);
+</pre>
+</div></div><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_comment">// Structs without destructors are simply copied
+</span><span class="d_keyword">struct</span> S1
+{
+    <span class="d_keyword">int</span> a = 1;
+    <span class="d_keyword">int</span> b = 2;
+}
+S1 s11 = { 10, 11 };
+S1 s12;
+
+<span class="d_psymbol">move</span>(s11, s12);
+
+<span class="d_keyword">assert</span>(s11.a == 10 &amp;&amp; s11.b == 11 &amp;&amp;
+       s12.a == 10 &amp;&amp; s12.b == 11);
+
+<span class="d_comment">// But structs with destructors or postblits are reset to their .init value
+</span><span class="d_comment">// after copying to the target.
+</span><span class="d_keyword">struct</span> S2
+{
+    <span class="d_keyword">int</span> a = 1;
+    <span class="d_keyword">int</span> b = 2;
+
+    ~<span class="d_keyword">this</span>() { }
+}
+S2 s21 = { 3, 4 };
+S2 s22;
+
+<span class="d_psymbol">move</span>(s21, s22);
+
+<span class="d_keyword">assert</span>(s21.a == 1 &amp;&amp; s21.b == 2 &amp;&amp;
+       s22.a == 3 &amp;&amp; s22.b == 4);
+</pre>
+</div></div>
+</dd>
+<dt class="d_decl"><a name=".moveAll"></a><div class="quickindex" id="quickindex.moveAll"></div>Range2 <a name="moveAll"></a><span class="ddoc_psymbol">moveAll</span>(Range1, Range2)(Range1 <i>src</i>, Range2 <i>tgt</i>) if (isInputRange!Range1 &amp;&amp; isInputRange!Range2 &amp;&amp; is(typeof(move(<i>src</i>.front, <i>tgt</i>.front))));
+</dt>
+<dd><div class="summary">For each element <span class="d_inlinecode donthyphenate notranslate">a</span> in <span class="d_inlinecode donthyphenate notranslate"><i>src</i></span> and each element <span class="d_inlinecode donthyphenate notranslate">b</span> in <span class="d_inlinecode donthyphenate notranslate"><i>tgt</i></span> in lockstep in increasing order, calls <span class="d_inlinecode donthyphenate notranslate">move(a, b)</span>.
+</div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Preconditions:</span>
+<span class="d_inlinecode donthyphenate notranslate">walkLength(<i>src</i>) &lt;= walkLength(<i>tgt</i>)</span>.
+An exception will be thrown if this condition does not hold, i.e., there is not
+enough room in <span class="d_inlinecode donthyphenate notranslate"><i>tgt</i></span> to accommodate all of <span class="d_inlinecode donthyphenate notranslate"><i>src</i></span>.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class=params><tr class="param"><td class="param_id">Range1 <i>src</i></td>
+<td class="param_desc">An <span class="libref"><a href="http://dlang.org/phobos/std_range_primitives.html#isInputRange">input range</a></span> with
+        movable elements.</td></tr>
+<tr class="param"><td class="param_id">Range2 <i>tgt</i></td>
+<td class="param_desc">An <span class="libref"><a href="http://dlang.org/phobos/std_range_primitives.html#isInputRange">input range</a></span> with
+        elements that elements from <span class="d_inlinecode donthyphenate notranslate"><i>src</i></span> can be moved into.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">The leftover portion of <span class="d_inlinecode donthyphenate notranslate"><i>tgt</i></span> after all elements from <span class="d_inlinecode donthyphenate notranslate"><i>src</i></span> have
+been moved.</div></div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_keyword">int</span>[] a = [ 1, 2, 3 ];
+<span class="d_keyword">int</span>[] b = <span class="d_keyword">new</span> <span class="d_keyword">int</span>[5];
+<span class="d_keyword">assert</span>(<span class="d_psymbol">moveAll</span>(a, b) <span class="d_keyword">is</span> b[3 .. $]);
+<span class="d_keyword">assert</span>(a == b[0 .. 3]);
+<span class="d_keyword">assert</span>(a == [ 1, 2, 3 ]);
+</pre>
+</div></div>
+</dd>
+<dt class="d_decl"><a name=".moveSome"></a><div class="quickindex" id="quickindex.moveSome"></div>Tuple!(Range1, Range2) <a name="moveSome"></a><span class="ddoc_psymbol">moveSome</span>(Range1, Range2)(Range1 <i>src</i>, Range2 <i>tgt</i>) if (isInputRange!Range1 &amp;&amp; isInputRange!Range2 &amp;&amp; is(typeof(move(<i>src</i>.front, <i>tgt</i>.front))));
+</dt>
+<dd><div class="summary">For each element <span class="d_inlinecode donthyphenate notranslate">a</span> in <span class="d_inlinecode donthyphenate notranslate"><i>src</i></span> and each element <span class="d_inlinecode donthyphenate notranslate">b</span> in <span class="d_inlinecode donthyphenate notranslate"><i>tgt</i></span> in lockstep in increasing order, calls <span class="d_inlinecode donthyphenate notranslate">move(a, b)</span>. Stops
+when either <span class="d_inlinecode donthyphenate notranslate"><i>src</i></span> or <span class="d_inlinecode donthyphenate notranslate"><i>tgt</i></span> have been exhausted.
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class=params><tr class="param"><td class="param_id">Range1 <i>src</i></td>
+<td class="param_desc">An <span class="libref"><a href="http://dlang.org/phobos/std_range_primitives.html#isInputRange">input range</a></span> with
+        movable elements.</td></tr>
+<tr class="param"><td class="param_id">Range2 <i>tgt</i></td>
+<td class="param_desc">An <span class="libref"><a href="http://dlang.org/phobos/std_range_primitives.html#isInputRange">input range</a></span> with
+        elements that elements from <span class="d_inlinecode donthyphenate notranslate"><i>src</i></span> can be moved into.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">The leftover portions of the two ranges after one or the other of the
+ranges have been exhausted.</div></div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_keyword">int</span>[] a = [ 1, 2, 3, 4, 5 ];
+<span class="d_keyword">int</span>[] b = <span class="d_keyword">new</span> <span class="d_keyword">int</span>[3];
+<span class="d_keyword">assert</span>(<span class="d_psymbol">moveSome</span>(a, b)[0] <span class="d_keyword">is</span> a[3 .. $]);
+<span class="d_keyword">assert</span>(a[0 .. 3] == b);
+<span class="d_keyword">assert</span>(a == [ 1, 2, 3, 4, 5 ]);
+</pre>
+</div></div>
+</dd>
+<dt class="d_decl"><a name=".SwapStrategy"></a><div class="quickindex" id="quickindex.SwapStrategy"></div>enum <a name="SwapStrategy"></a><span class="ddoc_psymbol">SwapStrategy</span>: int;
+</dt>
+<dd><div class="summary">Defines the swapping strategy for algorithms that need to swap
+elements in a range (such as partition and sort). The strategy
+concerns the swapping of elements that are not the core concern of the
+algorithm. For example, consider an algorithm that sorts <span class="d_inlinecode donthyphenate notranslate">[ "abc",
+"b", "aBc" ]</span> according to <span class="d_inlinecode donthyphenate notranslate">toUpper(a) &lt; toUpper(b)</span>. That
+algorithm might choose to swap the two equivalent strings <span class="d_inlinecode donthyphenate notranslate">"abc"</span>
+and <span class="d_inlinecode donthyphenate notranslate">"aBc"</span>. That does not affect the sorting since both <span class="d_inlinecode donthyphenate notranslate">[
+"abc", "aBc", "b" ]</span> and <span class="d_inlinecode donthyphenate notranslate">[ "aBc", "abc", "b" ]</span> are valid
+outcomes.
+</div>
+<div class="description">Some situations require that the algorithm must NOT ever change the
+relative ordering of equivalent elements (in the example above, only
+<span class="d_inlinecode donthyphenate notranslate">[ "abc", "aBc", "b" ]</span> would be the correct result). Such
+algorithms are called <b>stable</b>. If the ordering algorithm may swap
+equivalent elements discretionarily, the ordering is called <b>unstable</b>.
+<p></p>
+
+Yet another class of algorithms may choose an intermediate tradeoff by
+being stable only on a well-defined subrange of the range. There is no
+established terminology for such behavior; this library calls it <b>semistable</b>.
+<p></p>
+
+Generally, the <span class="d_inlinecode donthyphenate notranslate">stable</span> ordering strategy may be more costly in
+time and/or space than the other two because it imposes additional
+constraints. Similarly, <span class="d_inlinecode donthyphenate notranslate">semistable</span> may be costlier than <span class="d_inlinecode donthyphenate notranslate">unstable</span>. As (semi-)stability is not needed very often, the ordering
+algorithms in this module parameterized by <span class="d_inlinecode donthyphenate notranslate"><a name="SwapStrategy"></a><span class="ddoc_psymbol">SwapStrategy</span></span> all
+choose <span class="d_inlinecode donthyphenate notranslate"><a name="SwapStrategy"></a><span class="ddoc_psymbol">SwapStrategy</span>.unstable</span> as the default.</div>
+
+<dl><dt class="d_decl"><a name=".SwapStrategy.unstable"></a><div class="quickindex" id="quickindex.SwapStrategy.unstable"></div><a name="unstable"></a><span class="ddoc_psymbol">unstable</span></dt>
+<dd><div class="summary">Allows freely swapping of elements as long as the output
+       satisfies the algorithm's requirements.</div>
+
+</dd>
+<dt class="d_decl"><a name=".SwapStrategy.semistable"></a><div class="quickindex" id="quickindex.SwapStrategy.semistable"></div><a name="semistable"></a><span class="ddoc_psymbol">semistable</span></dt>
+<dd><div class="summary">In algorithms partitioning ranges in two, preserve relative
+       ordering of elements only to the left of the partition point.</div>
+
+</dd>
+<dt class="d_decl"><a name=".SwapStrategy.stable"></a><div class="quickindex" id="quickindex.SwapStrategy.stable"></div><a name="stable"></a><span class="ddoc_psymbol">stable</span></dt>
+<dd><div class="summary">Preserve the relative ordering of elements to the largest
+       extent allowed by the algorithm's requirements.</div>
+
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><a name=".remove"></a><div class="quickindex" id="quickindex.remove"></div>Range <a name="remove"></a><span class="ddoc_psymbol">remove</span>(SwapStrategy s = SwapStrategy.stable, Range, Offset...)(Range <i>range</i>, Offset <i>offset</i>) if (s != SwapStrategy.stable &amp;&amp; isBidirectionalRange!Range &amp;&amp; hasLvalueElements!Range &amp;&amp; hasLength!Range &amp;&amp; Offset.length &gt;= 1);
+</dt>
+<dd><div class="summary">Eliminates elements at given offsets from <span class="d_inlinecode donthyphenate notranslate"><i>range</i></span> and returns the
+shortened <i>range</i>. In the simplest call, one element is removed.
+</div>
+<div class="description"><pre class="d_code notranslate"><span class="d_keyword">int</span>[] a = [ 3, 5, 7, 8 ];
+<span class="d_keyword">assert</span>(<span class="d_psymbol">remove</span>(a, 1) == [ 3, 7, 8 ]);
+<span class="d_keyword">assert</span>(a == [ 3, 7, 8, 8 ]);
+</pre>
+<p></p>
+
+In the case above the element at <i>offset</i> <span class="d_inlinecode donthyphenate notranslate">1</span> is removed and <span class="d_inlinecode donthyphenate notranslate"><a name="remove"></a><span class="ddoc_psymbol">remove</span></span> returns the <i>range</i> smaller by one element. The original array
+has remained of the same length because all functions in <span class="d_inlinecode donthyphenate notranslate">std.algorithm</span> only change <i>content</i>, not <i>topology</i>. The value
+<span class="d_inlinecode donthyphenate notranslate">8</span> is repeated because <a href="#move"><span class="d_inlinecode donthyphenate notranslate">move</span></a> was invoked to
+move elements around and on integers <span class="d_inlinecode donthyphenate notranslate">move</span> simply copies the source to
+the destination. To replace <span class="d_inlinecode donthyphenate notranslate">a</span> with the effect of the removal,
+simply assign <span class="d_inlinecode donthyphenate notranslate">a = <a name="remove"></a><span class="ddoc_psymbol">remove</span>(a, 1)</span>. The slice will be rebound to the
+shorter array and the operation completes with maximal efficiency.
+<p></p>
+
+Multiple indices can be passed into <span class="d_inlinecode donthyphenate notranslate"><a name="remove"></a><span class="ddoc_psymbol">remove</span></span>. In that case,
+elements at the respective indices are all removed. The indices must
+be passed in increasing order, otherwise an exception occurs.
+<p></p>
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span>[] a = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ];
+<span class="d_keyword">assert</span>(<span class="d_psymbol">remove</span>(a, 1, 3, 5) ==
+    [ 0, 2, 4, 6, 7, 8, 9, 10 ]);
+</pre>
+<p></p>
+
+(Note how all indices refer to slots in the <i>original</i> array, not
+in the array as it is being progressively shortened.) Finally, any
+combination of integral offsets and tuples composed of two integral
+offsets can be passed in.
+<p></p>
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span>[] a = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ];
+<span class="d_keyword">assert</span>(<span class="d_psymbol">remove</span>(a, 1, tuple(3, 5), 9) == [ 0, 2, 6, 7, 8, 10 ]);
+</pre>
+<p></p>
+
+In this case, the slots at positions 1, 3, 4, and 9 are removed from
+the array. The tuple passes in a <i>range</i> closed to the left and open to
+the right (consistent with built-in slices), e.g. <span class="d_inlinecode donthyphenate notranslate">tuple(3, 5)</span>
+means indices <span class="d_inlinecode donthyphenate notranslate">3</span> and <span class="d_inlinecode donthyphenate notranslate">4</span> but not <span class="d_inlinecode donthyphenate notranslate">5</span>.
+<p></p>
+
+If the need is to <a name="remove"></a><span class="ddoc_psymbol">remove</span> some elements in the <i>range</i> but the order of
+the remaining elements does not have to be preserved, you may want to
+pass <span class="d_inlinecode donthyphenate notranslate">SwapStrategy.unstable</span> to <span class="d_inlinecode donthyphenate notranslate"><a name="remove"></a><span class="ddoc_psymbol">remove</span></span>.
+<p></p>
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span>[] a = [ 0, 1, 2, 3 ];
+<span class="d_keyword">assert</span>(<span class="d_psymbol">remove</span>!(SwapStrategy.unstable)(a, 1) == [ 0, 3, 2 ]);
+</pre>
+<p></p>
+
+In the case above, the element at slot <span class="d_inlinecode donthyphenate notranslate">1</span> is removed, but replaced
+with the last element of the <i>range</i>. Taking advantage of the relaxation
+of the stability requirement, <span class="d_inlinecode donthyphenate notranslate"><a name="remove"></a><span class="ddoc_psymbol">remove</span></span> moved elements from the end
+of the array over the slots to be removed. This way there is less data
+movement to be done which improves the execution time of the function.
+<p></p>
+
+The function <span class="d_inlinecode donthyphenate notranslate"><a name="remove"></a><span class="ddoc_psymbol">remove</span></span> works on any forward <i>range</i>. The moving
+strategy is (listed from fastest to slowest): <ul><li>If <span class="d_inlinecode donthyphenate notranslate">s ==
+SwapStrategy.unstable &amp;&amp; isRandomAccessRange!Range &amp;&amp; hasLength!Range
+&amp;&amp; hasLvalueElements!Range</span>, then elements are moved from the end
+of the <i>range</i> into the slots to be filled. In this case, the absolute
+minimum of moves is performed.</li>  <li>Otherwise, if <span class="d_inlinecode donthyphenate notranslate">s ==
+SwapStrategy.unstable &amp;&amp; isBidirectionalRange!Range &amp;&amp; hasLength!Range
+&amp;&amp; hasLvalueElements!Range</span>, then elements are still moved from the
+end of the <i>range</i>, but time is spent on advancing between slots by repeated
+calls to <span class="d_inlinecode donthyphenate notranslate"><i>range</i>.popFront</span>.</li>  <li>Otherwise, elements are moved
+incrementally towards the front of <span class="d_inlinecode donthyphenate notranslate"><i>range</i></span>; a given element is never
+moved several times, but more elements are moved than in the previous
+cases.</li></ul></div>
+
+</dd>
+<dt class="d_decl"><a name=".remove.2"></a><div class="quickindex" id="quickindex.remove.2"></div>Range <a name="remove"></a><span class="ddoc_psymbol">remove</span>(alias pred, SwapStrategy s = SwapStrategy.stable, Range)(Range <i>range</i>) if (isBidirectionalRange!Range &amp;&amp; hasLvalueElements!Range);
+</dt>
+<dd><div class="summary">Reduces the length of the bidirectional <i>range</i> <span class="d_inlinecode donthyphenate notranslate"><i>range</i></span> by removing
+elements that satisfy <span class="d_inlinecode donthyphenate notranslate">pred</span>. If <span class="d_inlinecode donthyphenate notranslate">s = SwapStrategy.unstable</span>,
+elements are moved from the right end of the <i>range</i> over the elements
+to eliminate. If <span class="d_inlinecode donthyphenate notranslate">s = SwapStrategy.stable</span> (the default),
+elements are moved progressively to front such that their relative
+order is preserved. Returns the filtered <i>range</i>.</div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_keyword">static</span> <span class="d_keyword">immutable</span> base = [1, 2, 3, 2, 4, 2, 5, 2];
+
+<span class="d_keyword">int</span>[] arr = base[].dup;
+
+<span class="d_comment">// using a string-based predicate
+</span><span class="d_keyword">assert</span>(<span class="d_psymbol">remove</span>!(<span class="d_string">"a == 2"</span>)(arr) == [ 1, 3, 4, 5 ]);
+
+<span class="d_comment">// The original array contents have been modified,
+</span><span class="d_comment">// so we need to reset it to its original state.
+</span><span class="d_comment">// The length is unmodified however.
+</span>arr[] = base[];
+
+<span class="d_comment">// using a lambda predicate
+</span><span class="d_keyword">assert</span>(<span class="d_psymbol">remove</span>!(a =&gt; a == 2)(arr) == [ 1, 3, 4, 5 ]);
+</pre>
+</div></div>
+</dd>
+<dt class="d_decl"><a name=".reverse"></a><div class="quickindex" id="quickindex.reverse"></div>void <a name="reverse"></a><span class="ddoc_psymbol">reverse</span>(Range)(Range <i>r</i>) if (isBidirectionalRange!Range &amp;&amp; !isRandomAccessRange!Range &amp;&amp; hasSwappableElements!Range);
+<br>void <a name="reverse"></a><span class="ddoc_psymbol">reverse</span>(Range)(Range <i>r</i>) if (isRandomAccessRange!Range &amp;&amp; hasLength!Range);
+</dt>
+<dd><div class="summary">Reverses <span class="d_inlinecode donthyphenate notranslate"><i>r</i></span> in-place.  Performs <span class="d_inlinecode donthyphenate notranslate"><i>r</i>.length / 2</span> evaluations of <span class="d_inlinecode donthyphenate notranslate">swap</span>.
+</div>
+<div class="keyval SeeAlso"><span class="key keySeeAlso">See Also:</span> <div class="val valSeeAlso"><a href="http://sgi.com/tech/stl/reverse.html">STL's reverse</a></div></div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_keyword">int</span>[] arr = [ 1, 2, 3 ];
+<span class="d_psymbol">reverse</span>(arr);
+<span class="d_keyword">assert</span>(arr == [ 3, 2, 1 ]);
+</pre>
+</div></div>
+</dd>
+<dt class="d_decl"><a name=".reverse.2"></a><div class="quickindex" id="quickindex.reverse.2"></div>void <a name="reverse"></a><span class="ddoc_psymbol">reverse</span>(Char)(Char[] <i>s</i>) if (isNarrowString!(Char[]) &amp;&amp; !is(Char == const) &amp;&amp; !is(Char == immutable));
+</dt>
+<dd><div class="summary">Reverses <span class="d_inlinecode donthyphenate notranslate">r</span> in-place, where <span class="d_inlinecode donthyphenate notranslate">r</span> is a narrow string (having
+elements of type <span class="d_inlinecode donthyphenate notranslate">char</span> or <span class="d_inlinecode donthyphenate notranslate">wchar</span>). UTF sequences consisting of
+multiple code units are preserved properly.</div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_keyword">char</span>[] arr = <span class="d_string">"hello\U00010143\u0100\U00010143"</span>.dup;
+<span class="d_psymbol">reverse</span>(arr);
+<span class="d_keyword">assert</span>(arr == <span class="d_string">"\U00010143\u0100\U00010143olleh"</span>);
+</pre>
+</div></div>
+</dd>
+<dt class="d_decl"><a name=".strip"></a><div class="quickindex" id="quickindex.strip"></div>Range <a name="strip"></a><span class="ddoc_psymbol">strip</span>(Range, E)(Range <i>range</i>, E <i>element</i>) if (isBidirectionalRange!Range &amp;&amp; is(typeof(<i>range</i>.front == <i>element</i>) : bool));
+<br>Range <a name="strip"></a><span class="ddoc_psymbol">strip</span>(alias pred, Range)(Range <i>range</i>) if (isBidirectionalRange!Range &amp;&amp; is(typeof(pred(<i>range</i>.back)) : bool));
+<br><a name=".stripLeft"></a><div class="quickindex" id="quickindex.stripLeft"></div>Range <a name="stripLeft"></a><span class="ddoc_psymbol">stripLeft</span>(Range, E)(Range <i>range</i>, E <i>element</i>) if (isInputRange!Range &amp;&amp; is(typeof(<i>range</i>.front == <i>element</i>) : bool));
+<br>Range <a name="stripLeft"></a><span class="ddoc_psymbol">stripLeft</span>(alias pred, Range)(Range <i>range</i>) if (isInputRange!Range &amp;&amp; is(typeof(pred(<i>range</i>.front)) : bool));
+<br><a name=".stripRight"></a><div class="quickindex" id="quickindex.stripRight"></div>Range <a name="stripRight"></a><span class="ddoc_psymbol">stripRight</span>(Range, E)(Range <i>range</i>, E <i>element</i>) if (isBidirectionalRange!Range &amp;&amp; is(typeof(<i>range</i>.back == <i>element</i>) : bool));
+<br>Range <a name="stripRight"></a><span class="ddoc_psymbol">stripRight</span>(alias pred, Range)(Range <i>range</i>) if (isBidirectionalRange!Range &amp;&amp; is(typeof(pred(<i>range</i>.back)) : bool));
+</dt>
+<dd><div class="summary">The <a name="strip"></a><span class="ddoc_psymbol">strip</span> group of functions allow stripping of either leading, trailing,
+    or both leading and trailing elements.
+</div>
+<div class="description">The <span class="d_inlinecode donthyphenate notranslate"><a name="stripLeft"></a><span class="ddoc_psymbol">stripLeft</span></span> function will <a name="strip"></a><span class="ddoc_psymbol">strip</span> the <span class="d_inlinecode donthyphenate notranslate">front</span> of the <i>range</i>,
+    the <span class="d_inlinecode donthyphenate notranslate"><a name="stripRight"></a><span class="ddoc_psymbol">stripRight</span></span> function will <a name="strip"></a><span class="ddoc_psymbol">strip</span> the <span class="d_inlinecode donthyphenate notranslate">back</span> of the <i>range</i>,
+    while the <span class="d_inlinecode donthyphenate notranslate"><a name="strip"></a><span class="ddoc_psymbol">strip</span></span> function will <a name="strip"></a><span class="ddoc_psymbol">strip</span> both the <span class="d_inlinecode donthyphenate notranslate">front</span> and <span class="d_inlinecode donthyphenate notranslate">back</span>
+    of the <i>range</i>.
+<p></p>
+
+    Note that the <span class="d_inlinecode donthyphenate notranslate"><a name="strip"></a><span class="ddoc_psymbol">strip</span></span> and <span class="d_inlinecode donthyphenate notranslate"><a name="stripRight"></a><span class="ddoc_psymbol">stripRight</span></span> functions require the <i>range</i> to
+    be a <a href="#BidirectionalRange"><span class="d_inlinecode donthyphenate notranslate">BidirectionalRange</span></a> <i>range</i>.
+<p></p>
+
+    All of these functions come in two varieties: one takes a target <i>element</i>,
+    where the <i>range</i> will be stripped as long as this <i>element</i> can be found.
+    The other takes a lambda predicate, where the <i>range</i> will be stripped as
+    long as the predicate returns <b>true</b>.</div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples">Strip leading and trailing elements equal to the target <i>element</i>.
+<pre class="d_code notranslate">
+<span class="d_keyword">assert</span>(<span class="d_string">"  foobar  "</span>.<span class="d_psymbol">strip</span>(' ') == <span class="d_string">"foobar"</span>);
+<span class="d_keyword">assert</span>(<span class="d_string">"00223.444500"</span>.<span class="d_psymbol">strip</span>('0') == <span class="d_string">"223.4445"</span>);
+<span class="d_keyword">assert</span>(<span class="d_string">"ëëêéüŗōpéêëë"</span>.<span class="d_psymbol">strip</span>('ë') == <span class="d_string">"êéüŗōpéê"</span>);
+<span class="d_keyword">assert</span>([1, 1, 0, 1, 1].<span class="d_psymbol">strip</span>(1) == [0]);
+<span class="d_keyword">assert</span>([0.0, 0.01, 0.01, 0.0].<span class="d_psymbol">strip</span>(0).length == 2);
+</pre>
+</div></div><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples">Strip leading and trailing elements while the predicate returns <b>true</b>.
+<pre class="d_code notranslate">
+<span class="d_keyword">assert</span>(<span class="d_string">"  foobar  "</span>.<span class="d_psymbol">strip</span>!(a =&gt; a == ' ')() == <span class="d_string">"foobar"</span>);
+<span class="d_keyword">assert</span>(<span class="d_string">"00223.444500"</span>.<span class="d_psymbol">strip</span>!(a =&gt; a == '0')() == <span class="d_string">"223.4445"</span>);
+<span class="d_keyword">assert</span>(<span class="d_string">"ëëêéüŗōpéêëë"</span>.<span class="d_psymbol">strip</span>!(a =&gt; a == 'ë')() == <span class="d_string">"êéüŗōpéê"</span>);
+<span class="d_keyword">assert</span>([1, 1, 0, 1, 1].<span class="d_psymbol">strip</span>!(a =&gt; a == 1)() == [0]);
+<span class="d_keyword">assert</span>([0.0, 0.01, 0.5, 0.6, 0.01, 0.0].<span class="d_psymbol">strip</span>!(a =&gt; a &lt; 0.4)().length == 2);
+</pre>
+</div></div><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples">Strip leading elements equal to the target <i>element</i>.
+<pre class="d_code notranslate">
+<span class="d_keyword">assert</span>(<span class="d_string">"  foobar  "</span>.<span class="d_psymbol">stripLeft</span>(' ') == <span class="d_string">"foobar  "</span>);
+<span class="d_keyword">assert</span>(<span class="d_string">"00223.444500"</span>.<span class="d_psymbol">stripLeft</span>('0') == <span class="d_string">"223.444500"</span>);
+<span class="d_keyword">assert</span>(<span class="d_string">"ůůűniçodêéé"</span>.<span class="d_psymbol">stripLeft</span>('ů') == <span class="d_string">"űniçodêéé"</span>);
+<span class="d_keyword">assert</span>([1, 1, 0, 1, 1].<span class="d_psymbol">stripLeft</span>(1) == [0, 1, 1]);
+<span class="d_keyword">assert</span>([0.0, 0.01, 0.01, 0.0].<span class="d_psymbol">stripLeft</span>(0).length == 3);
+</pre>
+</div></div><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples">Strip leading elements while the predicate returns <b>true</b>.
+<pre class="d_code notranslate">
+<span class="d_keyword">assert</span>(<span class="d_string">"  foobar  "</span>.<span class="d_psymbol">stripLeft</span>!(a =&gt; a == ' ')() == <span class="d_string">"foobar  "</span>);
+<span class="d_keyword">assert</span>(<span class="d_string">"00223.444500"</span>.<span class="d_psymbol">stripLeft</span>!(a =&gt; a == '0')() == <span class="d_string">"223.444500"</span>);
+<span class="d_keyword">assert</span>(<span class="d_string">"ůůűniçodêéé"</span>.<span class="d_psymbol">stripLeft</span>!(a =&gt; a == 'ů')() == <span class="d_string">"űniçodêéé"</span>);
+<span class="d_keyword">assert</span>([1, 1, 0, 1, 1].<span class="d_psymbol">stripLeft</span>!(a =&gt; a == 1)() == [0, 1, 1]);
+<span class="d_keyword">assert</span>([0.0, 0.01, 0.10, 0.5, 0.6].<span class="d_psymbol">stripLeft</span>!(a =&gt; a &lt; 0.4)().length == 2);
+</pre>
+</div></div><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples">Strip trailing elements equal to the target <i>element</i>.
+<pre class="d_code notranslate">
+<span class="d_keyword">assert</span>(<span class="d_string">"  foobar  "</span>.<span class="d_psymbol">stripRight</span>(' ') == <span class="d_string">"  foobar"</span>);
+<span class="d_keyword">assert</span>(<span class="d_string">"00223.444500"</span>.<span class="d_psymbol">stripRight</span>('0') == <span class="d_string">"00223.4445"</span>);
+<span class="d_keyword">assert</span>(<span class="d_string">"ùniçodêéé"</span>.<span class="d_psymbol">stripRight</span>('é') == <span class="d_string">"ùniçodê"</span>);
+<span class="d_keyword">assert</span>([1, 1, 0, 1, 1].<span class="d_psymbol">stripRight</span>(1) == [1, 1, 0]);
+<span class="d_keyword">assert</span>([0.0, 0.01, 0.01, 0.0].<span class="d_psymbol">stripRight</span>(0).length == 3);
+</pre>
+</div></div><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples">Strip trailing elements while the predicate returns <b>true</b>.
+<pre class="d_code notranslate">
+<span class="d_keyword">assert</span>(<span class="d_string">"  foobar  "</span>.<span class="d_psymbol">stripRight</span>!(a =&gt; a == ' ')() == <span class="d_string">"  foobar"</span>);
+<span class="d_keyword">assert</span>(<span class="d_string">"00223.444500"</span>.<span class="d_psymbol">stripRight</span>!(a =&gt; a == '0')() == <span class="d_string">"00223.4445"</span>);
+<span class="d_keyword">assert</span>(<span class="d_string">"ùniçodêéé"</span>.<span class="d_psymbol">stripRight</span>!(a =&gt; a == 'é')() == <span class="d_string">"ùniçodê"</span>);
+<span class="d_keyword">assert</span>([1, 1, 0, 1, 1].<span class="d_psymbol">stripRight</span>!(a =&gt; a == 1)() == [1, 1, 0]);
+<span class="d_keyword">assert</span>([0.0, 0.01, 0.10, 0.5, 0.6].<span class="d_psymbol">stripRight</span>!(a =&gt; a &gt; 0.4)().length == 3);
+</pre>
+</div></div>
+</dd>
+<dt class="d_decl"><a name=".swap"></a><div class="quickindex" id="quickindex.swap"></div>pure nothrow @nogc @trusted void <a name="swap"></a><span class="ddoc_psymbol">swap</span>(T)(ref T <i>lhs</i>, ref T <i>rhs</i>) if (isBlitAssignable!T &amp;&amp; !is(typeof(<i>lhs</i>.proxySwap(<i>rhs</i>))));
+</dt>
+<dd><div class="summary">Swaps <span class="d_inlinecode donthyphenate notranslate"><i>lhs</i></span> and <span class="d_inlinecode donthyphenate notranslate"><i>rhs</i></span>. The instances <span class="d_inlinecode donthyphenate notranslate"><i>lhs</i></span> and <span class="d_inlinecode donthyphenate notranslate"><i>rhs</i></span> are moved in
+memory, without ever calling <span class="d_inlinecode donthyphenate notranslate">opAssign</span>, nor any other function. <span class="d_inlinecode donthyphenate notranslate">T</span>
+need not be assignable at all to be swapped.
+</div>
+<div class="description">If <span class="d_inlinecode donthyphenate notranslate"><i>lhs</i></span> and <span class="d_inlinecode donthyphenate notranslate"><i>rhs</i></span> reference the same instance, then nothing is done.
+<p></p>
+
+<span class="d_inlinecode donthyphenate notranslate"><i>lhs</i></span> and <span class="d_inlinecode donthyphenate notranslate"><i>rhs</i></span> must be mutable. If <span class="d_inlinecode donthyphenate notranslate">T</span> is a struct or union, then
+its fields must also all be (recursively) mutable.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class=params><tr class="param"><td class="param_id">T <i>lhs</i></td>
+<td class="param_desc">Data to be swapped with <span class="d_inlinecode donthyphenate notranslate"><i>rhs</i></span>.</td></tr>
+<tr class="param"><td class="param_id">T <i>rhs</i></td>
+<td class="param_desc">Data to be swapped with <span class="d_inlinecode donthyphenate notranslate"><i>lhs</i></span>.</td></tr>
+</table></div></div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_comment">// Swapping POD (plain old data) types:
+</span><span class="d_keyword">int</span> a = 42, b = 34;
+<span class="d_psymbol">swap</span>(a, b);
+<span class="d_keyword">assert</span>(a == 34 &amp;&amp; b == 42);
+
+<span class="d_comment">// Swapping structs with indirection:
+</span><span class="d_keyword">static</span> <span class="d_keyword">struct</span> S { <span class="d_keyword">int</span> x; <span class="d_keyword">char</span> c; <span class="d_keyword">int</span>[] y; }
+S s1 = { 0, 'z', [ 1, 2 ] };
+S s2 = { 42, 'a', [ 4, 6 ] };
+<span class="d_psymbol">swap</span>(s1, s2);
+<span class="d_keyword">assert</span>(s1.x == 42);
+<span class="d_keyword">assert</span>(s1.c == 'a');
+<span class="d_keyword">assert</span>(s1.y == [ 4, 6 ]);
+
+<span class="d_keyword">assert</span>(s2.x == 0);
+<span class="d_keyword">assert</span>(s2.c == 'z');
+<span class="d_keyword">assert</span>(s2.y == [ 1, 2 ]);
+
+<span class="d_comment">// Immutables cannot be swapped:
+</span><span class="d_keyword">immutable</span> <span class="d_keyword">int</span> imm1, imm2;
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(compiles, <span class="d_psymbol">swap</span>(imm1, imm2)));
+</pre>
+</div></div><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_comment">// Non-copyable types can still be swapped.
+</span><span class="d_keyword">static</span> <span class="d_keyword">struct</span> NoCopy
+{
+    <span class="d_keyword">this</span>(<span class="d_keyword">this</span>) { <span class="d_keyword">assert</span>(0); }
+    <span class="d_keyword">int</span> n;
+    string s;
+}
+NoCopy nc1, nc2;
+nc1.n = 127; nc1.s = <span class="d_string">"abc"</span>;
+nc2.n = 513; nc2.s = <span class="d_string">"uvwxyz"</span>;
+
+<span class="d_psymbol">swap</span>(nc1, nc2);
+<span class="d_keyword">assert</span>(nc1.n == 513 &amp;&amp; nc1.s == <span class="d_string">"uvwxyz"</span>);
+<span class="d_keyword">assert</span>(nc2.n == 127 &amp;&amp; nc2.s == <span class="d_string">"abc"</span>);
+
+<span class="d_psymbol">swap</span>(nc1, nc1);
+<span class="d_psymbol">swap</span>(nc2, nc2);
+<span class="d_keyword">assert</span>(nc1.n == 513 &amp;&amp; nc1.s == <span class="d_string">"uvwxyz"</span>);
+<span class="d_keyword">assert</span>(nc2.n == 127 &amp;&amp; nc2.s == <span class="d_string">"abc"</span>);
+
+<span class="d_comment">// Types containing non-copyable fields can also be swapped.
+</span><span class="d_keyword">static</span> <span class="d_keyword">struct</span> NoCopyHolder
+{
+    NoCopy noCopy;
+}
+NoCopyHolder h1, h2;
+h1.noCopy.n = 31; h1.noCopy.s = <span class="d_string">"abc"</span>;
+h2.noCopy.n = 65; h2.noCopy.s = <span class="d_keyword">null</span>;
+
+<span class="d_psymbol">swap</span>(h1, h2);
+<span class="d_keyword">assert</span>(h1.noCopy.n == 65 &amp;&amp; h1.noCopy.s == <span class="d_keyword">null</span>);
+<span class="d_keyword">assert</span>(h2.noCopy.n == 31 &amp;&amp; h2.noCopy.s == <span class="d_string">"abc"</span>);
+
+<span class="d_psymbol">swap</span>(h1, h1);
+<span class="d_psymbol">swap</span>(h2, h2);
+<span class="d_keyword">assert</span>(h1.noCopy.n == 65 &amp;&amp; h1.noCopy.s == <span class="d_keyword">null</span>);
+<span class="d_keyword">assert</span>(h2.noCopy.n == 31 &amp;&amp; h2.noCopy.s == <span class="d_string">"abc"</span>);
+
+<span class="d_comment">// Const types cannot be swapped.
+</span><span class="d_keyword">const</span> NoCopy const1, const2;
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(compiles, <span class="d_psymbol">swap</span>(const1, const2)));
+</pre>
+</div></div>
+</dd>
+<dt class="d_decl"><a name=".swapRanges"></a><div class="quickindex" id="quickindex.swapRanges"></div>Tuple!(Range1, Range2) <a name="swapRanges"></a><span class="ddoc_psymbol">swapRanges</span>(Range1, Range2)(Range1 <i>r1</i>, Range2 <i>r2</i>) if (isInputRange!Range1 &amp;&amp; isInputRange!Range2 &amp;&amp; hasSwappableElements!Range1 &amp;&amp; hasSwappableElements!Range2 &amp;&amp; is(ElementType!Range1 == ElementType!Range2));
+</dt>
+<dd><div class="summary">Swaps all elements of <span class="d_inlinecode donthyphenate notranslate"><i>r1</i></span> with successive elements in <span class="d_inlinecode donthyphenate notranslate"><i>r2</i></span>.
+Returns a tuple containing the remainder portions of <span class="d_inlinecode donthyphenate notranslate"><i>r1</i></span> and <span class="d_inlinecode donthyphenate notranslate"><i>r2</i></span> that were not swapped (one of them will be empty). The ranges may
+be of different types but must have the same element type and support
+swapping.</div>
+<div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">
+<span class="d_keyword">int</span>[] a = [ 100, 101, 102, 103 ];
+<span class="d_keyword">int</span>[] b = [ 0, 1, 2, 3 ];
+<span class="d_keyword">auto</span> c = <span class="d_psymbol">swapRanges</span>(a[1 .. 3], b[2 .. 4]);
+<span class="d_keyword">assert</span>(c[0].empty &amp;&amp; c[1].empty);
+<span class="d_keyword">assert</span>(a == [ 100, 2, 3, 103 ]);
+<span class="d_keyword">assert</span>(b == [ 0, 1, 101, 102 ]);
+</pre>
+</div></div>
+</dd>
+<dt class="d_decl"><a name=".uninitializedFill"></a><div class="quickindex" id="quickindex.uninitializedFill"></div>void <a name="uninitializedFill"></a><span class="ddoc_psymbol">uninitializedFill</span>(Range, Value)(Range <i>range</i>, Value <i>value</i>) if (isInputRange!Range &amp;&amp; hasLvalueElements!Range &amp;&amp; is(typeof(<i>range</i>.front = <i>value</i>)));
+</dt>
+<dd><div class="summary">Initializes each element of <span class="d_inlinecode donthyphenate notranslate"><i>range</i></span> with <span class="d_inlinecode donthyphenate notranslate"><i>value</i></span>.
+Assumes that the elements of the <i>range</i> are uninitialized.
+This is of interest for structs that
+define copy constructors (for all other types, <a href="#fill"><span class="d_inlinecode donthyphenate notranslate">fill</span></a> and
+<a name="uninitializedFill"></a><span class="ddoc_psymbol">uninitializedFill</span> are equivalent).
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class=params><tr class="param"><td class="param_id">Range <i>range</i></td>
+<td class="param_desc">An
+                <span class="libref"><a href="http://dlang.org/phobos/std_range_primitives.html#isInputRange">input range</a></span>
+                that exposes references to its elements and has assignable
+                elements</td></tr>
+<tr class="param"><td class="param_id">Value <i>value</i></td>
+<td class="param_desc">Assigned to each element of <i>range</i></td></tr>
+</table></div></div>
+<div class="keyval SeeAlso"><span class="key keySeeAlso">See Also:</span> <div class="val valSeeAlso"><a href="#fill"><span class="d_inlinecode donthyphenate notranslate">fill</span></a>
+        <a href="#initializeAll"><span class="d_inlinecode donthyphenate notranslate">initializeAll</span></a>
+
+</div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example:</span>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S { ... }
+S[] s = (<span class="d_keyword">cast</span>(S*) malloc(5 * S.sizeof))[0 .. 5];
+<span class="d_psymbol">uninitializedFill</span>(s, 42);
+<span class="d_keyword">assert</span>(s == [ 42, 42, 42, 42, 42 ]);
+</pre>
+</div>
+
+</dd>
+</dl>
+
+</div>
+<div id="copyright">Andrei Alexandrescu 2008-.
+
+ | Page generated by <a href="http://dlang.org/ddoc.html">Ddoc</a> on Tue Jul  4 02:27:05 2017
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('<script src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+<script type="text/javascript" src="../js/listanchors.js"></script>
+<script type="text/javascript">jQuery(document).ready(listanchors);</script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+</body>
+</html>

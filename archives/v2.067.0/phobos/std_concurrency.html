@@ -1,0 +1,451 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2017 by Digital Mars
+    All Rights Reserved Written by Walter Bright
+    http://digitalmars.com
+  -->
+<head>
+<meta charset="utf-8" />
+<meta name="keywords" content="D programming language" />
+<meta name="description" content="D Programming Language" />
+<title>std.concurrency - D Programming Language</title>
+<link rel="stylesheet" href="../css/codemirror.css" />
+<link rel="stylesheet" href="../css/style.css" />
+<link rel="stylesheet" href="../css/print.css" media="print" />
+<link rel="stylesheet" href="../css/cssmenu.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+<link rel="shortcut icon" href="../favicon.ico" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0" />
+</head>
+<body id='std.concurrency' class='std'>
+<script type="text/javascript">document.body.className += ' have-javascript';</script>
+<div id="top">	<div id="header">		<a class="logo" href=".."><img id="logo" width="125" height="95" alt="D Logo" src="../images/dlogo.svg"></a>
+		<span id="d-language-mobilehelper"><a href=".." id="d-language">D Programming Language</a></span>
+	</div>
+</div>
+<div id="navigation">    <div id="search-box">        <form method="get" action="http://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org" />
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search" />
+            <span id="search-query"><input id="q" name="q" placeholder="Search" /></span><span id="search-dropdown">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire D Site</option>
+                    <option selected value="dlang.org/phobos">Library Reference</option>
+                    <option value="digitalmars.com/d/archives">Newsgroup Archives</option>
+                </select>
+            </span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    
+<div id="cssmenu"><ul>    <li><a href='../index.html'><span>D Lib Prerelease</span></a></li>
+    <li><a href='../phobos/index.html'><span>Current Release (2.067.0)</span></a></li>
+    
+<li><a href='object.html'><span><em class="tt">object</em></span></a></li>
+<li class='has-sub'><a href='#'><span><em class="tt">std</em></span></a>
+<ul><li>  <a href="std_algorithm.html" title="std.algorithm"><span class="d_inlinecode donthyphenate notranslate">algorithm</span></a></li><li>  <a href="std_array.html" title="std.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>  <a href="std_ascii.html" title="std.ascii"><span class="d_inlinecode donthyphenate notranslate">ascii</span></a></li><li>  <a href="std_base64.html" title="std.base64"><span class="d_inlinecode donthyphenate notranslate">base64</span></a></li><li>  <a href="std_bigint.html" title="std.bigint"><span class="d_inlinecode donthyphenate notranslate">bigint</span></a></li><li>  <a href="std_bitmanip.html" title="std.bitmanip"><span class="d_inlinecode donthyphenate notranslate">bitmanip</span></a></li><li>  <a href="std_compiler.html" title="std.compiler"><span class="d_inlinecode donthyphenate notranslate">compiler</span></a></li><li>  <a href="std_complex.html" title="std.complex"><span class="d_inlinecode donthyphenate notranslate">complex</span></a></li><li>  <a href="std_concurrency.html" title="std.concurrency"><span class="d_inlinecode donthyphenate notranslate">concurrency</span></a></li><li>  <a href="std_container.html" title="std.container"><span class="d_inlinecode donthyphenate notranslate">container</span></a><ul><li>    <a href="std_container_array.html" title="std.container.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>    <a href="std_container_binaryheap.html" title="std.container.binaryheap"><span class="d_inlinecode donthyphenate notranslate">binaryheap</span></a></li><li>    <a href="std_container_dlist.html" title="std.container.dlist"><span class="d_inlinecode donthyphenate notranslate">dlist</span></a></li><li>    <a href="std_container_rbtree.html" title="std.container.rbtree"><span class="d_inlinecode donthyphenate notranslate">rbtree</span></a></li><li>    <a href="std_container_slist.html" title="std.container.slist"><span class="d_inlinecode donthyphenate notranslate">slist</span></a></li><li>    <a href="std_container_util.html" title="std.container.util"><span class="d_inlinecode donthyphenate notranslate">util</span></a>
+  </li></ul></li><li>  <a href="std_conv.html" title="std.conv"><span class="d_inlinecode donthyphenate notranslate">conv</span></a></li><li>  <a href="std_csv.html" title="std.csv"><span class="d_inlinecode donthyphenate notranslate">csv</span></a></li><li>  <a href="std_datetime.html" title="std.datetime"><span class="d_inlinecode donthyphenate notranslate">datetime</span></a></li><li>  <a href="std_demangle.html" title="std.demangle"><span class="d_inlinecode donthyphenate notranslate">demangle</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">digest</span></h7><ul><li>    <a href="std_digest_crc.html" title="std.digest.crc"><span class="d_inlinecode donthyphenate notranslate">crc</span></a></li><li>    <a href="std_digest_digest.html" title="std.digest.digest"><span class="d_inlinecode donthyphenate notranslate">digest</span></a></li><li>    <a href="std_digest_md.html" title="std.digest.md"><span class="d_inlinecode donthyphenate notranslate">md</span></a></li><li>    <a href="std_digest_ripemd.html" title="std.digest.ripemd"><span class="d_inlinecode donthyphenate notranslate">ripemd</span></a></li><li>    <a href="std_digest_sha.html" title="std.digest.sha"><span class="d_inlinecode donthyphenate notranslate">sha</span></a>
+  </li></ul></li><li>  <a href="std_encoding.html" title="std.encoding"><span class="d_inlinecode donthyphenate notranslate">encoding</span></a></li><li>  <a href="std_exception.html" title="std.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>  <a href="std_file.html" title="std.file"><span class="d_inlinecode donthyphenate notranslate">file</span></a></li><li>  <a href="std_format.html" title="std.format"><span class="d_inlinecode donthyphenate notranslate">format</span></a></li><li>  <a href="std_functional.html" title="std.functional"><span class="d_inlinecode donthyphenate notranslate">functional</span></a></li><li>  <a href="std_getopt.html" title="std.getopt"><span class="d_inlinecode donthyphenate notranslate">getopt</span></a></li><li>  <a href="std_json.html" title="std.json"><span class="d_inlinecode donthyphenate notranslate">json</span></a></li><li>  <a href="std_math.html" title="std.math"><span class="d_inlinecode donthyphenate notranslate">math</span></a></li><li>  <a href="std_mathspecial.html" title="std.mathspecial"><span class="d_inlinecode donthyphenate notranslate">mathspecial</span></a></li><li>  <a href="std_mmfile.html" title="std.mmfile"><span class="d_inlinecode donthyphenate notranslate">mmfile</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">net</span></h7><ul><li>    <a href="std_net_curl.html" title="std.net.curl"><span class="d_inlinecode donthyphenate notranslate">curl</span></a></li><li>    <a href="std_net_isemail.html" title="std.net.isemail"><span class="d_inlinecode donthyphenate notranslate">isemail</span></a>
+  </li></ul></li><li>  <a href="std_numeric.html" title="std.numeric"><span class="d_inlinecode donthyphenate notranslate">numeric</span></a></li><li>  <a href="std_outbuffer.html" title="std.outbuffer"><span class="d_inlinecode donthyphenate notranslate">outbuffer</span></a></li><li>  <a href="std_parallelism.html" title="std.parallelism"><span class="d_inlinecode donthyphenate notranslate">parallelism</span></a></li><li>  <a href="std_path.html" title="std.path"><span class="d_inlinecode donthyphenate notranslate">path</span></a></li><li>  <a href="std_process.html" title="std.process"><span class="d_inlinecode donthyphenate notranslate">process</span></a></li><li>  <a href="std_random.html" title="std.random"><span class="d_inlinecode donthyphenate notranslate">random</span></a></li><li>  <a href="std_range.html" title="std.range"><span class="d_inlinecode donthyphenate notranslate">range</span></a></li><li>  <a href="std_regex.html" title="std.regex"><span class="d_inlinecode donthyphenate notranslate">regex</span></a></li><li>  <a href="std_signals.html" title="std.signals"><span class="d_inlinecode donthyphenate notranslate">signals</span></a></li><li>  <a href="std_socket.html" title="std.socket"><span class="d_inlinecode donthyphenate notranslate">socket</span></a></li><li>  <a href="std_stdint.html" title="std.stdint"><span class="d_inlinecode donthyphenate notranslate">stdint</span></a></li><li>  <a href="std_stdio.html" title="std.stdio"><span class="d_inlinecode donthyphenate notranslate">stdio</span></a></li><li>  <a href="std_stdiobase.html" title="std.stdiobase"><span class="d_inlinecode donthyphenate notranslate">stdiobase</span></a></li><li>  <a href="std_string.html" title="std.string"><span class="d_inlinecode donthyphenate notranslate">string</span></a></li><li>  <a href="std_syserror.html" title="std.syserror"><span class="d_inlinecode donthyphenate notranslate">syserror</span></a></li><li>  <a href="std_system.html" title="std.system"><span class="d_inlinecode donthyphenate notranslate">system</span></a></li><li>  <a href="std_traits.html" title="std.traits"><span class="d_inlinecode donthyphenate notranslate">traits</span></a></li><li>  <a href="std_typecons.html" title="std.typecons"><span class="d_inlinecode donthyphenate notranslate">typecons</span></a></li><li>  <a href="std_typetuple.html" title="std.typetuple"><span class="d_inlinecode donthyphenate notranslate">typetuple</span></a></li><li>  <a href="std_uni.html" title="std.uni"><span class="d_inlinecode donthyphenate notranslate">uni</span></a></li><li>  <a href="std_uri.html" title="std.uri"><span class="d_inlinecode donthyphenate notranslate">uri</span></a></li><li>  <a href="std_utf.html" title="std.utf"><span class="d_inlinecode donthyphenate notranslate">utf</span></a></li><li>  <a href="std_uuid.html" title="std.uuid"><span class="d_inlinecode donthyphenate notranslate">uuid</span></a></li><li>  <a href="std_variant.html" title="std.variant"><span class="d_inlinecode donthyphenate notranslate">variant</span></a></li><li>  <a href="std_xml.html" title="std.xml"><span class="d_inlinecode donthyphenate notranslate">xml</span></a></li><li>  <a href="std_zip.html" title="std.zip"><span class="d_inlinecode donthyphenate notranslate">zip</span></a></li><li>  <a href="std_zlib.html" title="std.zlib"><span class="d_inlinecode donthyphenate notranslate">zlib</span></a>
+</li></ul>
+<li class='has-sub'><a href='#'><span><em class="tt">etc</em></span></a>
+<ul><li>  <h7><span class="d_inlinecode donthyphenate notranslate">c</span></h7><ul><li>    <a href="etc_c_curl.html" title="etc.c.curl"><span class="d_inlinecode donthyphenate notranslate">curl</span></a></li><li>    <a href="etc_c_sqlite3.html" title="etc.c.sqlite3"><span class="d_inlinecode donthyphenate notranslate">sqlite3</span></a></li><li>    <a href="etc_c_zlib.html" title="etc.c.zlib"><span class="d_inlinecode donthyphenate notranslate">zlib</span></a>
+  </li></ul>
+</li></ul>
+<li class='has-sub'><a href='#'><span><em class="tt">core</em></span></a>
+<ul><li>  <a href="core_atomic.html" title="core.atomic"><span class="d_inlinecode donthyphenate notranslate">atomic</span></a></li><li>  <a href="core_bitop.html" title="core.bitop"><span class="d_inlinecode donthyphenate notranslate">bitop</span></a></li><li>  <a href="core_checkedint.html" title="core.checkedint"><span class="d_inlinecode donthyphenate notranslate">checkedint</span></a></li><li>  <a href="core_cpuid.html" title="core.cpuid"><span class="d_inlinecode donthyphenate notranslate">cpuid</span></a></li><li>  <a href="core_demangle.html" title="core.demangle"><span class="d_inlinecode donthyphenate notranslate">demangle</span></a></li><li>  <a href="core_exception.html" title="core.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>  <a href="core_math.html" title="core.math"><span class="d_inlinecode donthyphenate notranslate">math</span></a></li><li>  <a href="core_memory.html" title="core.memory"><span class="d_inlinecode donthyphenate notranslate">memory</span></a></li><li>  <a href="core_runtime.html" title="core.runtime"><span class="d_inlinecode donthyphenate notranslate">runtime</span></a></li><li>  <a href="core_simd.html" title="core.simd"><span class="d_inlinecode donthyphenate notranslate">simd</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">stdc</span></h7><ul><li>    <a href="core_stdc_complex.html" title="core.stdc.complex"><span class="d_inlinecode donthyphenate notranslate">complex</span></a></li><li>    <a href="core_stdc_ctype.html" title="core.stdc.ctype"><span class="d_inlinecode donthyphenate notranslate">ctype</span></a></li><li>    <a href="core_stdc_errno.html" title="core.stdc.errno"><span class="d_inlinecode donthyphenate notranslate">errno</span></a></li><li>    <a href="core_stdc_fenv.html" title="core.stdc.fenv"><span class="d_inlinecode donthyphenate notranslate">fenv</span></a></li><li>    <a href="core_stdc_float_.html" title="core.stdc.float_"><span class="d_inlinecode donthyphenate notranslate">float_</span></a></li><li>    <a href="core_stdc_inttypes.html" title="core.stdc.inttypes"><span class="d_inlinecode donthyphenate notranslate">inttypes</span></a></li><li>    <a href="core_stdc_limits.html" title="core.stdc.limits"><span class="d_inlinecode donthyphenate notranslate">limits</span></a></li><li>    <a href="core_stdc_locale.html" title="core.stdc.locale"><span class="d_inlinecode donthyphenate notranslate">locale</span></a></li><li>    <a href="core_stdc_math.html" title="core.stdc.math"><span class="d_inlinecode donthyphenate notranslate">math</span></a></li><li>    <a href="core_stdc_signal.html" title="core.stdc.signal"><span class="d_inlinecode donthyphenate notranslate">signal</span></a></li><li>    <a href="core_stdc_stdarg.html" title="core.stdc.stdarg"><span class="d_inlinecode donthyphenate notranslate">stdarg</span></a></li><li>    <a href="core_stdc_stddef.html" title="core.stdc.stddef"><span class="d_inlinecode donthyphenate notranslate">stddef</span></a></li><li>    <a href="core_stdc_stdint.html" title="core.stdc.stdint"><span class="d_inlinecode donthyphenate notranslate">stdint</span></a></li><li>    <a href="core_stdc_stdio.html" title="core.stdc.stdio"><span class="d_inlinecode donthyphenate notranslate">stdio</span></a></li><li>    <a href="core_stdc_stdlib.html" title="core.stdc.stdlib"><span class="d_inlinecode donthyphenate notranslate">stdlib</span></a></li><li>    <a href="core_stdc_string.html" title="core.stdc.string"><span class="d_inlinecode donthyphenate notranslate">string</span></a></li><li>    <a href="core_stdc_tgmath.html" title="core.stdc.tgmath"><span class="d_inlinecode donthyphenate notranslate">tgmath</span></a></li><li>    <a href="core_stdc_time.html" title="core.stdc.time"><span class="d_inlinecode donthyphenate notranslate">time</span></a></li><li>    <a href="core_stdc_wchar_.html" title="core.stdc.wchar_"><span class="d_inlinecode donthyphenate notranslate">wchar_</span></a></li><li>    <a href="core_stdc_wctype.html" title="core.stdc.wctype"><span class="d_inlinecode donthyphenate notranslate">wctype</span></a>
+  </li></ul></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">sync</span></h7><ul><li>    <a href="core_sync_barrier.html" title="core.sync.barrier"><span class="d_inlinecode donthyphenate notranslate">barrier</span></a></li><li>    <a href="core_sync_condition.html" title="core.sync.condition"><span class="d_inlinecode donthyphenate notranslate">condition</span></a></li><li>    <a href="core_sync_config.html" title="core.sync.config"><span class="d_inlinecode donthyphenate notranslate">config</span></a></li><li>    <a href="core_sync_exception.html" title="core.sync.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>    <a href="core_sync_mutex.html" title="core.sync.mutex"><span class="d_inlinecode donthyphenate notranslate">mutex</span></a></li><li>    <a href="core_sync_rwmutex.html" title="core.sync.rwmutex"><span class="d_inlinecode donthyphenate notranslate">rwmutex</span></a></li><li>    <a href="core_sync_semaphore.html" title="core.sync.semaphore"><span class="d_inlinecode donthyphenate notranslate">semaphore</span></a>
+  </li></ul></li><li>  <a href="core_thread.html" title="core.thread"><span class="d_inlinecode donthyphenate notranslate">thread</span></a></li><li>  <a href="core_time.html" title="core.time"><span class="d_inlinecode donthyphenate notranslate">time</span></a></li><li>  <a href="core_vararg.html" title="core.vararg"><span class="d_inlinecode donthyphenate notranslate">vararg</span></a>
+</li></ul>
+    <li><a href='http://code.dlang.org'><span>3rd Party Packages</span></a></li>
+</ul></div>
+</div>
+
+<div class="hyphenate" id="content">    
+<div id="tools">	<span class="tip">		<a href="https://github.com/D-Programming-Language/phobos/edit/master/std/concurrency.d" class="button">Improve this page</a>
+		<span >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			local clone.
+		</span>
+	</span>
+	<span class="tip">		<a href="http://wiki.dlang.org/DocComments/std.concurrency" class="button">Page wiki</a>
+		<span >			View or edit the community-maintained wiki page associated with this page.
+		</span>
+	</span>
+</div>
+    <h1>std.concurrency</h1>
+    <div class="quickindex" id="quickindex"></div>
+    <!--Generated by Ddoc from std/concurrency.d-->
+<div class="summary">This is a low-level messaging API upon which more structured or restrictive
+ APIs may be built.  The general idea is that every messageable entity is
+ represented by a common handle type (called a Cid in this implementation),
+ which allows messages to be sent to in-process threads, on-host processes,
+ and foreign-host processes using the same interface.  This is an important
+ aspect of scalability because it allows the components of a program to be
+ spread across available resources with few to no changes to the actual
+ implementation.
+</div>
+<div class="description">Right now, only in-process threads are supported and referenced by a more
+ specialized handle called a Tid.  It is effectively a subclass of Cid, with
+ additional features specific to in-process messaging.
+
+</div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Synposis:</span>
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.<span class="d_psymbol">concurrency</span>;
+
+<span class="d_keyword">void</span> spawnedFunc(Tid tid)
+{
+    <span class="d_comment">// Receive a message from the owner thread.
+</span>    receive(
+        (<span class="d_keyword">int</span> i) { writeln(<span class="d_string">"Received the number "</span>, i);}
+    );
+
+    <span class="d_comment">// Send a message back to the owner thread
+</span>    <span class="d_comment">// indicating success.
+</span>    send(tid, <span class="d_keyword">true</span>);
+}
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_comment">// Start spawnedFunc in a new thread.
+</span>    <span class="d_keyword">auto</span> tid = spawn(&amp;spawnedFunc, thisTid);
+
+    <span class="d_comment">// Send the number 42 to this new thread.
+</span>    send(tid, 42);
+
+    <span class="d_comment">// Receive the result code.
+</span>    <span class="d_keyword">auto</span> wasSuccessful = receiveOnly!(<span class="d_keyword">bool</span>);
+    <span class="d_keyword">assert</span>(wasSuccessful);
+    writeln(<span class="d_string">"Successfully printed number."</span>);
+}
+</pre>
+
+</div>
+<div class="keyval License"><span class="key keyLicense">License:</span> <div class="val valLicense"><a href="http://www.boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
+</div></div>
+<div class="keyval Authors"><span class="key keyAuthors">Authors:</span> <div class="val valAuthors">Sean Kelly, Alex Rønne Petersen
+</div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Source:</span>
+<span class="phobos_src"><a class="https" href="https://github.com/D-Programming-Language/phobos/blob/master/std/concurrency.d">std/concurrency.d</a></span></div>
+
+<dl><dt class="d_decl"><a name=".MessageMismatch"></a><div class="quickindex" id="quickindex.MessageMismatch"></div>class <a name="MessageMismatch"></a><span class="ddoc_psymbol">MessageMismatch</span>: <em class="u">object.Exception</em>;
+</dt>
+<dd><div class="summary">Thrown on calls to <span class="d_inlinecode donthyphenate notranslate">receiveOnly</span> if a message other than the type
+ the receiving thread expected is sent.</div>
+
+</dd>
+<dt class="d_decl"><a name=".OwnerTerminated"></a><div class="quickindex" id="quickindex.OwnerTerminated"></div>class <a name="OwnerTerminated"></a><span class="ddoc_psymbol">OwnerTerminated</span>: <em class="u">object.Exception</em>;
+</dt>
+<dd><div class="summary">Thrown on calls to <span class="d_inlinecode donthyphenate notranslate">receive</span> if the thread that spawned the receiving
+ thread has terminated and no more messages exist.</div>
+
+</dd>
+<dt class="d_decl"><a name=".LinkTerminated"></a><div class="quickindex" id="quickindex.LinkTerminated"></div>class <a name="LinkTerminated"></a><span class="ddoc_psymbol">LinkTerminated</span>: <em class="u">object.Exception</em>;
+</dt>
+<dd><div class="summary">Thrown if a linked thread has terminated.</div>
+
+</dd>
+<dt class="d_decl"><a name=".PriorityMessageException"></a><div class="quickindex" id="quickindex.PriorityMessageException"></div>class <a name="PriorityMessageException"></a><span class="ddoc_psymbol">PriorityMessageException</span>: <em class="u">object.Exception</em>;
+</dt>
+<dd><div class="summary">Thrown if a message was sent to a thread via
+ <span class="libref"><a href="http://dlang.org/phobos/std_concurrency.html#prioritySend"><span class="d_inlinecode donthyphenate notranslate">std.concurrency.prioritySend</span></a></span> and the receiver does not have a handler
+ for a message of this type.</div>
+
+<dl><dt class="d_decl"><a name=".PriorityMessageException.message"></a><div class="quickindex" id="quickindex.PriorityMessageException.message"></div>Variant <a name="message"></a><span class="ddoc_psymbol">message</span>;
+</dt>
+<dd><div class="summary">The <a name="message"></a><span class="ddoc_psymbol">message</span> that was sent.</div>
+
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><a name=".MailboxFull"></a><div class="quickindex" id="quickindex.MailboxFull"></div>class <a name="MailboxFull"></a><span class="ddoc_psymbol">MailboxFull</span>: <em class="u">object.Exception</em>;
+</dt>
+<dd><div class="summary">Thrown on mailbox crowding if the mailbox is configured with
+ <span class="d_inlinecode donthyphenate notranslate">OnCrowding.throwException</span>.</div>
+
+</dd>
+<dt class="d_decl"><a name=".TidMissingException"></a><div class="quickindex" id="quickindex.TidMissingException"></div>class <a name="TidMissingException"></a><span class="ddoc_psymbol">TidMissingException</span>: <em class="u">object.Exception</em>;
+</dt>
+<dd><div class="summary">Thrown when a Tid is missing, e.g. when <span class="d_inlinecode donthyphenate notranslate">ownerTid</span> doesn't
+ find an owner thread.</div>
+
+</dd>
+<dt class="d_decl"><a name=".Tid"></a><div class="quickindex" id="quickindex.Tid"></div>struct <a name="Tid"></a><span class="ddoc_psymbol">Tid</span>;
+</dt>
+<dd><div class="summary">An opaque type used to represent a logical local process.</div>
+
+</dd>
+<dt class="d_decl"><a name=".thisTid"></a><div class="quickindex" id="quickindex.thisTid"></div>@property Tid <a name="thisTid"></a><span class="ddoc_psymbol">thisTid</span>();
+</dt>
+<dd><div class="summary">Returns the caller's Tid.</div>
+
+</dd>
+<dt class="d_decl"><a name=".ownerTid"></a><div class="quickindex" id="quickindex.ownerTid"></div>@property Tid <a name="ownerTid"></a><span class="ddoc_psymbol">ownerTid</span>();
+</dt>
+<dd><div class="summary">Return the Tid of the thread which
+ spawned the caller's thread.
+</div>
+<div class="keyval Throws"><span class="key keyThrows">Throws:</span> <div class="val valThrows">A <span class="d_inlinecode donthyphenate notranslate">TidMissingException</span> exception if
+ there is no owner thread.</div></div>
+
+</dd>
+<dt class="d_decl"><a name=".spawn"></a><div class="quickindex" id="quickindex.spawn"></div>Tid <a name="spawn"></a><span class="ddoc_psymbol">spawn</span>(F, T...)(F <i>fn</i>, T <i>args</i>) if (isSpawnable!(F, T));
+</dt>
+<dd><div class="summary">Executes the supplied function in a new context represented by <span class="d_inlinecode donthyphenate notranslate">Tid</span>.  The
+ calling context is designated as the owner of the new context.  When the
+ owner context terminated an <span class="d_inlinecode donthyphenate notranslate">OwnerTerminated</span> message will be sent to the
+ new context, causing an <span class="d_inlinecode donthyphenate notranslate">OwnerTerminated</span> exception to be thrown on
+ <span class="d_inlinecode donthyphenate notranslate">receive()</span>.
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class=params><tr class="param"><td class="param_id">F fn</td>
+<td class="param_desc">The function to execute.</td></tr>
+<tr class="param"><td class="param_id">T args</td>
+<td class="param_desc">Arguments to the function.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">A Tid representing the new context.
+
+</div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Notes:</span>
+<span class="d_inlinecode donthyphenate notranslate">args</span> must not have unshared aliasing.  In other words, all arguments
+  to <span class="d_inlinecode donthyphenate notranslate">fn</span> must either be <span class="d_inlinecode donthyphenate notranslate">shared</span> or <span class="d_inlinecode donthyphenate notranslate">immutable</span> or have no
+  pointer indirection.  This is necessary for enforcing isolation among
+  threads.
+
+</div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example:</span>
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.stdio, std.concurrency;
+
+<span class="d_keyword">void</span> f1(string str)
+{
+    writeln(str);
+}
+
+<span class="d_keyword">void</span> f2(<span class="d_keyword">char</span>[] str)
+{
+    writeln(str);
+}
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">auto</span> str = <span class="d_string">"Hello, world"</span>;
+
+    <span class="d_comment">// Works:  string is immutable.
+</span>    <span class="d_keyword">auto</span> tid1 = <span class="d_psymbol">spawn</span>(&amp;f1, str);
+
+    <span class="d_comment">// Fails:  char[] has mutable aliasing.
+</span>    <span class="d_keyword">auto</span> tid2 = <span class="d_psymbol">spawn</span>(&amp;f2, str.dup);
+}
+</pre>
+</div>
+
+</dd>
+<dt class="d_decl"><a name=".spawnLinked"></a><div class="quickindex" id="quickindex.spawnLinked"></div>Tid <a name="spawnLinked"></a><span class="ddoc_psymbol">spawnLinked</span>(F, T...)(F <i>fn</i>, T <i>args</i>) if (isSpawnable!(F, T));
+</dt>
+<dd><div class="summary">Executes the supplied function in a new context represented by Tid.  This
+ new context is linked to the calling context so that if either it or the
+ calling context terminates a LinkTerminated message will be sent to the
+ other, causing a LinkTerminated exception to be thrown on receive().  The
+ owner relationship from spawn() is preserved as well, so if the link
+ between threads is broken, owner termination will still result in an
+ OwnerTerminated exception to be thrown on receive().
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class=params><tr class="param"><td class="param_id">F fn</td>
+<td class="param_desc">The function to execute.</td></tr>
+<tr class="param"><td class="param_id">T args</td>
+<td class="param_desc">Arguments to the function.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">A Tid representing the new context.</div></div>
+
+</dd>
+<dt class="d_decl"><a name=".send"></a><div class="quickindex" id="quickindex.send"></div>void <a name="send"></a><span class="ddoc_psymbol">send</span>(T...)(Tid <i>tid</i>, T <i>vals</i>);
+</dt>
+<dd><div class="summary">Sends the supplied value to the context represented by tid.  As with
+ <span class="libref"><a href="http://dlang.org/phobos/std_concurrency.html#spawn"><span class="d_inlinecode donthyphenate notranslate">std.concurrency.spawn</span></a></span>, <span class="d_inlinecode donthyphenate notranslate">T</span> must not have unshared aliasing.</div>
+
+</dd>
+<dt class="d_decl"><a name=".prioritySend"></a><div class="quickindex" id="quickindex.prioritySend"></div>void <a name="prioritySend"></a><span class="ddoc_psymbol">prioritySend</span>(T...)(Tid <i>tid</i>, T <i>vals</i>);
+</dt>
+<dd><div class="summary">Send a message to <span class="d_inlinecode donthyphenate notranslate">tid</span> but place it at the front of <span class="d_inlinecode donthyphenate notranslate">tid</span>'s message
+ queue instead of at the back.  This function is typically used for
+ out-of-band communication, to signal exceptional conditions, etc.</div>
+
+</dd>
+<dt class="d_decl"><a name=".receive"></a><div class="quickindex" id="quickindex.receive"></div>void <a name="receive"></a><span class="ddoc_psymbol">receive</span>(T...)(T <i>ops</i>);
+</dt>
+<dd><div class="summary">Receive a message from another thread, or block if no messages of the
+ specified types are available.  This function works by pattern matching
+ a message against a set of delegates and executing the first match found.
+</div>
+<div class="description">If a delegate that accepts a <span class="libref"><a href="http://dlang.org/phobos/std_variant.html#Variant"><span class="d_inlinecode donthyphenate notranslate">std.variant.Variant</span></a></span> is included as
+ the last argument to <span class="d_inlinecode donthyphenate notranslate"><a name="receive"></a><span class="ddoc_psymbol">receive</span></span>, it will match any message that was not
+ matched by an earlier delegate.  If more than one argument is sent,
+ the <span class="d_inlinecode donthyphenate notranslate">Variant</span> will contain a <span class="libref"><a href="http://dlang.org/phobos/std_typecons.html#Tuple"><span class="d_inlinecode donthyphenate notranslate">std.typecons.Tuple</span></a></span> of all values
+ sent.
+
+</div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example:</span>
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.variant;
+<span class="d_keyword">import</span> std.concurrency;
+
+<span class="d_keyword">void</span> spawnedFunction()
+{
+    <span class="d_psymbol">receive</span>(
+        (<span class="d_keyword">int</span> i) { writeln(<span class="d_string">"Received an int."</span>); },
+        (<span class="d_keyword">float</span> f) { writeln(<span class="d_string">"Received a float."</span>); },
+        (Variant v) { writeln(<span class="d_string">"Received some other type."</span>); }
+    );
+}
+
+<span class="d_keyword">void</span> main()
+{
+     <span class="d_keyword">auto</span> tid = spawn(&amp;spawnedFunction);
+     send(tid, 42);
+}
+</pre>
+</div>
+
+</dd>
+<dt class="d_decl"><a name=".receiveOnly"></a><div class="quickindex" id="quickindex.receiveOnly"></div>receiveOnlyRet!T <a name="receiveOnly"></a><span class="ddoc_psymbol">receiveOnly</span>(T...)();
+</dt>
+<dd><div class="summary">Receives only messages with arguments of types <span class="d_inlinecode donthyphenate notranslate">T</span>.
+</div>
+<div class="keyval Throws"><span class="key keyThrows">Throws:</span> <div class="val valThrows"><span class="d_inlinecode donthyphenate notranslate">MessageMismatch</span> if a message of types other than <span class="d_inlinecode donthyphenate notranslate">T</span>
+          is received.
+
+</div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">The received message.  If <span class="d_inlinecode donthyphenate notranslate">T.length</span> is greater than one,
+          the message will be packed into a <span class="libref"><a href="http://dlang.org/phobos/std_typecons.html#Tuple"><span class="d_inlinecode donthyphenate notranslate">std.typecons.Tuple</span></a></span>.
+
+</div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example:</span>
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.concurrency;
+
+<span class="d_keyword">void</span> spawnedFunc()
+{
+    <span class="d_keyword">auto</span> msg = <span class="d_psymbol">receiveOnly</span>!(<span class="d_keyword">int</span>, string)();
+    <span class="d_keyword">assert</span>(msg[0] == 42);
+    <span class="d_keyword">assert</span>(msg[1] == <span class="d_string">"42"</span>);
+}
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">auto</span> tid = spawn(&amp;spawnedFunc);
+    send(tid, 42, <span class="d_string">"42"</span>);
+}
+</pre>
+</div>
+
+</dd>
+<dt class="d_decl"><a name=".receiveTimeout"></a><div class="quickindex" id="quickindex.receiveTimeout"></div>bool <a name="receiveTimeout"></a><span class="ddoc_psymbol">receiveTimeout</span>(T...)(Duration <i>duration</i>, T <i>ops</i>);
+</dt>
+<dd><div class="summary">Same as <span class="d_inlinecode donthyphenate notranslate">receive</span> except that rather than wait forever for a message,
+    it waits until either it receives a message or the given
+    <a href="core_time.html#Duration"><span class="d_inlinecode donthyphenate notranslate">core.time.Duration</span></a> has passed. It returns <span class="d_inlinecode donthyphenate notranslate"><b>true</b></span> if it received a
+    message and <span class="d_inlinecode donthyphenate notranslate"><b>false</b></span> if it timed out waiting for one.</div>
+
+</dd>
+<dt class="d_decl"><a name=".OnCrowding"></a><div class="quickindex" id="quickindex.OnCrowding"></div>enum <a name="OnCrowding"></a><span class="ddoc_psymbol">OnCrowding</span>: int;
+</dt>
+<dd><div class="summary">These behaviors may be specified when a mailbox is full.</div>
+
+<dl><dt class="d_decl"><a name=".OnCrowding.block"></a><div class="quickindex" id="quickindex.OnCrowding.block"></div><a name="block"></a><span class="ddoc_psymbol">block</span></dt>
+<dd><div class="summary">Wait until room is available.</div>
+
+</dd>
+<dt class="d_decl"><a name=".OnCrowding.throwException"></a><div class="quickindex" id="quickindex.OnCrowding.throwException"></div><a name="throwException"></a><span class="ddoc_psymbol">throwException</span></dt>
+<dd><div class="summary">Throw a MailboxFull exception.</div>
+
+</dd>
+<dt class="d_decl"><a name=".OnCrowding.ignore"></a><div class="quickindex" id="quickindex.OnCrowding.ignore"></div><a name="ignore"></a><span class="ddoc_psymbol">ignore</span></dt>
+<dd><div class="summary">Abort the send and return.</div>
+
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><a name=".setMaxMailboxSize"></a><div class="quickindex" id="quickindex.setMaxMailboxSize"></div>void <a name="setMaxMailboxSize"></a><span class="ddoc_psymbol">setMaxMailboxSize</span>(Tid <i>tid</i>, size_t <i>messages</i>, OnCrowding <i>doThis</i>);
+</dt>
+<dd><div class="summary">Sets a limit on the maximum number of user <i>messages</i> allowed in the mailbox.
+ If this limit is reached, the caller attempting to add a new message will
+ execute the behavior specified by <i>doThis</i>.  If <i>messages</i> is zero, the mailbox
+ is unbounded.
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class=params><tr class="param"><td class="param_id">Tid <i>tid</i></td>
+<td class="param_desc">The Tid of the thread for which this limit should be set.</td></tr>
+<tr class="param"><td class="param_id">size_t <i>messages</i></td>
+<td class="param_desc">The maximum number of <i>messages</i> or zero if no limit.</td></tr>
+<tr class="param"><td class="param_id">OnCrowding <i>doThis</i></td>
+<td class="param_desc">The behavior executed when a message is sent to a full
+             mailbox.</td></tr>
+</table></div></div>
+
+</dd>
+<dt class="d_decl"><a name=".setMaxMailboxSize"></a><div class="quickindex" id="quickindex.setMaxMailboxSize"></div>void <a name="setMaxMailboxSize"></a><span class="ddoc_psymbol">setMaxMailboxSize</span>(Tid <i>tid</i>, size_t <i>messages</i>, bool function(Tid) <i>onCrowdingDoThis</i>);
+</dt>
+<dd><div class="summary">Sets a limit on the maximum number of user <i>messages</i> allowed in the mailbox.
+ If this limit is reached, the caller attempting to add a new message will
+ execute <i>onCrowdingDoThis</i>.  If <i>messages</i> is zero, the mailbox is unbounded.
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class=params><tr class="param"><td class="param_id">Tid <i>tid</i></td>
+<td class="param_desc">The Tid of the thread for which this limit should be set.</td></tr>
+<tr class="param"><td class="param_id">size_t <i>messages</i></td>
+<td class="param_desc">The maximum number of <i>messages</i> or zero if no limit.</td></tr>
+<tr class="param"><td class="param_id">bool function(Tid) <i>onCrowdingDoThis</i></td>
+<td class="param_desc">The routine called when a message is sent to a full
+                     mailbox.</td></tr>
+</table></div></div>
+
+</dd>
+<dt class="d_decl"><a name=".register"></a><div class="quickindex" id="quickindex.register"></div>bool <a name="register"></a><span class="ddoc_psymbol">register</span>(string <i>name</i>, Tid <i>tid</i>);
+</dt>
+<dd><div class="summary">Associates <i>name</i> with <i>tid</i> in a process-local map.  When the thread
+ represented by <i>tid</i> terminates, any names associated with it will be
+ automatically unregistered.
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class=params><tr class="param"><td class="param_id">string <i>name</i></td>
+<td class="param_desc">The <i>name</i> to associate with <i>tid</i>.</td></tr>
+<tr class="param"><td class="param_id">Tid <i>tid</i></td>
+<td class="param_desc">The <i>tid</i> <a name="register"></a><span class="ddoc_psymbol">register</span> by <i>name</i>.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns"><b>true</b> if the <i>name</i> is available and <i>tid</i> is not known to represent a
+  defunct thread.</div></div>
+
+</dd>
+<dt class="d_decl"><a name=".unregister"></a><div class="quickindex" id="quickindex.unregister"></div>bool <a name="unregister"></a><span class="ddoc_psymbol">unregister</span>(string <i>name</i>);
+</dt>
+<dd><div class="summary">Removes the registered <i>name</i> associated with a tid.
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class=params><tr class="param"><td class="param_id">string <i>name</i></td>
+<td class="param_desc">The <i>name</i> to <a name="unregister"></a><span class="ddoc_psymbol">unregister</span>.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns"><b>true</b> if the <i>name</i> is registered, <b>false</b> if not.</div></div>
+
+</dd>
+<dt class="d_decl"><a name=".locate"></a><div class="quickindex" id="quickindex.locate"></div>Tid <a name="locate"></a><span class="ddoc_psymbol">locate</span>(string <i>name</i>);
+</dt>
+<dd><div class="summary">Gets the Tid associated with <i>name</i>.
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class=params><tr class="param"><td class="param_id">string <i>name</i></td>
+<td class="param_desc">The <i>name</i> to <a name="locate"></a><span class="ddoc_psymbol">locate</span> within the registry.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">The associated Tid or Tid.init if <i>name</i> is not registered.</div></div>
+
+</dd>
+</dl>
+
+</div>
+<div id="copyright">Copyright Sean Kelly 2009 - 2010.
+ | Page generated by <a href="http://dlang.org/ddoc.html">Ddoc</a> on Tue Jul  4 02:55:17 2017
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('<script src="../js/jquery-1.7.2.min.js">\x3C/script>')</script>
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+    <script type="text/javascript" src="../js/cssmenu.js"></script>
+
+<script type="text/javascript" src="../js/listanchors.js"></script>
+<script type="text/javascript">jQuery(document).ready(listanchors);</script>
+</body>
+</html>

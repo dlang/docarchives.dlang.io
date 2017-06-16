@@ -1,0 +1,772 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2017 by Digital Mars
+    All Rights Reserved Written by Walter Bright
+    http://digitalmars.com
+  -->
+<head>
+<meta charset="utf-8" />
+<meta name="keywords" content="D programming language" />
+<meta name="description" content="D Programming Language" />
+<title>Declarations - D Programming Language</title>
+<link rel="stylesheet" href="css/codemirror.css" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/print.css" media="print" />
+<link rel="stylesheet" href="css/cssmenu.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+<link rel="shortcut icon" href="favicon.ico" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0" />
+</head>
+<body id='Declarations' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript';</script>
+<div id="top">	<div id="header">		<a class="logo" href="."><img id="logo" width="125" height="95" alt="D Logo" src="images/dlogo.svg"></a>
+		<span id="d-language-mobilehelper"><a href="." id="d-language">D Programming Language</a></span>
+	</div>
+</div>
+<div id="navigation">    <div id="search-box">        <form method="get" action="http://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org" />
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search" />
+            <span id="search-query"><input id="q" name="q" placeholder="Search" /></span><span id="search-dropdown">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire D Site</option>
+                    <option  value="dlang.org/phobos">Library Reference</option>
+                    <option value="digitalmars.com/d/archives">Newsgroup Archives</option>
+                </select>
+            </span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    
+<div id="cssmenu"><ul>    <li><a href='index.html'><span>D 2.067.0</span></a></li>
+    <li><a href='download.html'><span><b>Download</b></span></a></li>
+    <li><a href='getstarted.html'><span>Getting Started</span></a></li>
+    <li><a href='changelog.html'><span>Change Log</span></a></li>
+    <li class='has-sub'><a href='#'><span>D Reference</span></a>
+      <ul><li><a href='        intro.html'>Introduction</a></li><li><a href='        lex.html'>Lexical</a></li><li><a href='        grammar.html'>Grammar</a></li><li><a href='        module.html'>Modules</a></li><li><a href='        declaration.html'>Declarations</a></li><li><a href='        type.html'>Types</a></li><li><a href='        property.html'>Properties</a></li><li><a href='        attribute.html'>Attributes</a></li><li><a href='        pragma.html'>Pragmas</a></li><li><a href='        expression.html'>Expressions</a></li><li><a href='        statement.html'>Statements</a></li><li><a href='        arrays.html'>Arrays</a></li><li><a href='        hash-map.html'>Associative Arrays</a></li><li><a href='        struct.html'>Structs and Unions</a></li><li><a href='        class.html'>Classes</a></li><li><a href='        interface.html'>Interfaces</a></li><li><a href='        enum.html'>Enums</a></li><li><a href='        const3.html'>Const and Immutable</a></li><li><a href='        function.html'>Functions</a></li><li><a href='        operatoroverloading.html'>Operator Overloading</a></li><li><a href='        template.html'>Templates</a></li><li><a href='        template-mixin.html'>Template Mixins</a></li><li><a href='        contracts.html'>Contract Programming</a></li><li><a href='        version.html'>Conditional Compilation</a></li><li><a href='        traits.html'>Traits</a></li><li><a href='        errors.html'>Error Handling</a></li><li><a href='        unittest.html'>Unit Tests</a></li><li><a href='        garbage.html'>Garbage Collection</a></li><li><a href='        float.html'>Floating Point</a></li><li><a href='        iasm.html'>D x86 Inline Assembler</a></li><li><a href='        ddoc.html'>Embedded Documentation</a></li><li><a href='        interfaceToC.html'>Interfacing to C</a></li><li><a href='        cpp_interface.html'>Interfacing to C++</a></li><li><a href='        portability.html'>Portability Guide</a></li><li><a href='        entity.html'>Named Character Entities</a></li><li><a href='        memory-safe-d.html'>Memory Safety</a></li><li><a href='        abi.html'>Application Binary Interface</a></li><li><a href='        simd.html'>Vector Extensions
+      </a></li></ul>
+    <li><a href='phobos/index.html'><span>Standard library</span></a></li>
+    <li><a href='http://code.dlang.org'><span>More libraries</span></a></li>
+    <li class='has-sub'><a href='#'><span>Community</span></a>
+      <ul><li><a href='        http://forum.dlang.org'>Forums</a></li><li><a href='        irc://irc.freenode.net/d'>IRC</a></li><li><a href='        http://github.com/D-Programming-Language'>D on GitHub</a></li><li><a href='        http://wiki.dlang.org'>Wiki</a></li><li><a href='        http://wiki.dlang.org/Review_Queue'>Review Queue</a></li><li><a href='        http://twitter.com/search?q=%23dlang'>Twitter</a></li><li><a href='        http://digitalmars.com/d/dlinks.html'>More Links
+      </a></li></ul>
+    <li class='has-sub'><a href='#'><span>Compilers &amp; Tools</span></a>
+      <ul><li><a href='        dmd-windows.html'>dmd &ndash; reference compiler</a></li><li><a href='        http://gdcproject.org'>gdc &ndash; gcc-based compiler</a></li><li><a href='        http://wiki.dlang.org/LDC'>ldc &ndash; LLVM-based compiler</a></li><li><a href='        rdmd.html'>rdmd &ndash; build tool</a></li><li><a href='        htod.html'>htod &ndash; .h to .d
+      </a></li></ul>
+    <li class='has-sub'><a href='#'><span>Books &amp; Articles</span></a>
+      <ul><li><a href='        http://ddili.org/ders/d.en/index.html'>Online Book (free)</a></li><li><a href='        http://wiki.dlang.org/Books'>More Books</a></li><li><a href='        howtos.html'>How-tos</a></li><li><a href='        faq.html'>FAQ</a></li><li><a href='        const-faq.html'>const(FAQ)</a></li><li><a href='        comparison.html'>Feature Overview</a></li><li><a href='        d-floating-point.html'>Floating Point</a></li><li><a href='        wc.html'>Example: wc</a></li><li><a href='        warnings.html'>Warnings</a></li><li><a href='        rationale.html'>Rationale</a></li><li><a href='        builtin.html'>Builtin Rationale</a></li><li><a href='        ctod.html'>C to D</a></li><li><a href='        cpptod.html'>C++ to D</a></li><li><a href='        pretod.html'>C Preprocessor vs D</a></li><li><a href='        code_coverage.html'>Code coverage analysis</a></li><li><a href='        exception-safe.html'>Exception Safety</a></li><li><a href='        hijack.html'>Hijacking</a></li><li><a href='        intro-to-datetime.html'>Introduction to std.datetime</a></li><li><a href='        lazy-evaluation.html'>Lazy Evaluation</a></li><li><a href='        migrate-to-shared.html'>Migrating to Shared</a></li><li><a href='        mixin.html'>Mixins</a></li><li><a href='        regular-expression.html'>Regular Expressions</a></li><li><a href='        safed.html'>SafeD</a></li><li><a href='        templates-revisited.html'>Templates Revisited</a></li><li><a href='        tuple.html'>Tuples</a></li><li><a href='        variadic-function-templates.html'>Variadic Templates</a></li><li><a href='        d-array-article.html'>D Slices
+      </a></li></ul>
+    <li class='has-sub'><a href='#'><span>Resources</span></a>
+      <ul><li><a href='        library/index.html'>NEW Library Reference Preview</a></li><li><a href='        bugstats.php'>Bug Tracker</a></li><li><a href='        http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li><li><a href='        http://wiki.dlang.org/Editors'>Editors</a></li><li><a href='        http://wiki.dlang.org/IDEs'>IDEs</a></li><li><a href='        dstyle.html'>The D Style</a></li><li><a href='        glossary.html'>Glossary</a></li><li><a href='        acknowledgements.html'>Acknowledgments</a></li><li><a href='        sitemap.html'>Sitemap
+      </a></li></ul>
+</ul></div>
+</div>
+
+<div class="hyphenate" id="content">    
+<div id="tools">	<span class="tip">		<a href="https://github.com/D-Programming-Language/dlang.org/edit/master/declaration.dd" class="button">Improve this page</a>
+		<span >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			local clone.
+		</span>
+	</span>
+	<span class="tip">		<a href="http://wiki.dlang.org/DocComments/Declaration" class="button">Page wiki</a>
+		<span >			View or edit the community-maintained wiki page associated with this page.
+		</span>
+	</span>
+</div>
+    <h1>Declarations</h1>
+    
+    <!--Generated by Ddoc from declaration.dd-->
+
+
+
+<pre class="bnf notranslate"><a id="Declaration"><span class="gname">Declaration</span></a>:
+    <a href="function.html#FuncDeclaration"><i>FuncDeclaration</i></a>
+    <a href="#VarDeclarations"><i>VarDeclarations</i></a>
+    <a href="#AliasDeclaration"><i>AliasDeclaration</i></a>
+    <a href="struct.html#AggregateDeclaration"><i>AggregateDeclaration</i></a>
+    <a href="enum.html#EnumDeclaration"><i>EnumDeclaration</i></a>
+    <a href="module.html#ImportDeclaration"><i>ImportDeclaration</i></a>
+</pre>
+
+<pre class="bnf notranslate"><a id="VarDeclarations"><span class="gname">VarDeclarations</span></a>:
+    <a href="#StorageClasses"><i>StorageClasses</i></a><sub>opt</sub> <a href="#BasicType"><i>BasicType</i></a> <a href="#Declarators"><i>Declarators</i></a> <span class="d_inlinecode donthyphenate notranslate">;</span>
+    <a href="#AutoDeclaration"><i>AutoDeclaration</i></a>
+
+<a id="Declarators"><span class="gname">Declarators</span></a>:
+    <i>DeclaratorInitializer</i>
+    <i>DeclaratorInitializer</i> <span class="d_inlinecode donthyphenate notranslate">,</span> <a href="#DeclaratorIdentifierList"><i>DeclaratorIdentifierList</i></a>
+
+<a id="DeclaratorInitializer"><span class="gname">DeclaratorInitializer</span></a>:
+    <a href="#VarDeclarator"><i>VarDeclarator</i></a>
+    <a href="#VarDeclarator"><i>VarDeclarator</i></a> <a href="template.html#TemplateParameters"><i>TemplateParameters</i></a><sub>opt</sub> <span class="d_inlinecode donthyphenate notranslate">=</span> <a href="#Initializer"><i>Initializer</i></a>
+    <a href="#AltDeclarator"><i>AltDeclarator</i></a>
+    <a href="#AltDeclarator"><i>AltDeclarator</i></a> <span class="d_inlinecode donthyphenate notranslate">=</span> <a href="#Initializer"><i>Initializer</i></a>
+
+<a id="DeclaratorIdentifierList"><span class="gname">DeclaratorIdentifierList</span></a>:
+    <a href="#DeclaratorIdentifier"><i>DeclaratorIdentifier</i></a>
+    <a href="#DeclaratorIdentifier"><i>DeclaratorIdentifier</i></a> <span class="d_inlinecode donthyphenate notranslate">,</span> <i>DeclaratorIdentifierList</i>
+
+<a id="DeclaratorIdentifier"><span class="gname">DeclaratorIdentifier</span></a>:
+    <a href="#VarDeclaratorIdentifier"><i>VarDeclaratorIdentifier</i></a>
+    <a href="#AltDeclaratorIdentifier"><i>AltDeclaratorIdentifier</i></a>
+
+<a id="VarDeclaratorIdentifier"><span class="gname">VarDeclaratorIdentifier</span></a>:
+    <i>Identifier</i>
+    <i>Identifier</i> <a href="template.html#TemplateParameters"><i>TemplateParameters</i></a><sub>opt</sub> <span class="d_inlinecode donthyphenate notranslate">=</span> <a href="#Initializer"><i>Initializer</i></a>
+
+<a id="AltDeclaratorIdentifier"><span class="gname">AltDeclaratorIdentifier</span></a>:
+    <a href="#BasicType2"><i>BasicType2</i></a> <i>Identifier</i> <a href="#AltDeclaratorSuffixes"><i>AltDeclaratorSuffixes</i></a><sub>opt</sub>
+    <a href="#BasicType2"><i>BasicType2</i></a> <i>Identifier</i> <a href="#AltDeclaratorSuffixes"><i>AltDeclaratorSuffixes</i></a><sub>opt</sub> <span class="d_inlinecode donthyphenate notranslate">=</span> <a href="#Initializer"><i>Initializer</i></a>
+    <a href="#BasicType2"><i>BasicType2</i></a><sub>opt</sub> <i>Identifier</i> <a href="#AltDeclaratorSuffixes"><i>AltDeclaratorSuffixes</i></a>
+    <a href="#BasicType2"><i>BasicType2</i></a><sub>opt</sub> <i>Identifier</i> <a href="#AltDeclaratorSuffixes"><i>AltDeclaratorSuffixes</i></a> <span class="d_inlinecode donthyphenate notranslate">=</span> <a href="#Initializer"><i>Initializer</i></a>
+
+<a id="Declarator"><span class="gname">Declarator</span></a>:
+    <a href="#VarDeclarator"><i>VarDeclarator</i></a>
+    <a href="#AltDeclarator"><i>AltDeclarator</i></a>
+
+<a id="VarDeclarator"><span class="gname">VarDeclarator</span></a>:
+    <a href="#BasicType2"><i>BasicType2</i></a><sub>opt</sub> <i>Identifier</i>
+
+<a id="AltDeclarator"><span class="gname">AltDeclarator</span></a>:
+    <a href="#BasicType2"><i>BasicType2</i></a><sub>opt</sub> <i>Identifier</i> <a href="#AltDeclaratorSuffixes"><i>AltDeclaratorSuffixes</i></a>
+    <a href="#BasicType2"><i>BasicType2</i></a><sub>opt</sub> <span class="d_inlinecode donthyphenate notranslate">(</span> <i>AltDeclaratorX</i> <span class="d_inlinecode donthyphenate notranslate">)</span>
+    <a href="#BasicType2"><i>BasicType2</i></a><sub>opt</sub> <span class="d_inlinecode donthyphenate notranslate">(</span> <i>AltDeclaratorX</i> <span class="d_inlinecode donthyphenate notranslate">)</span> <a href="#AltFuncDeclaratorSuffix"><i>AltFuncDeclaratorSuffix</i></a>
+    <a href="#BasicType2"><i>BasicType2</i></a><sub>opt</sub> <span class="d_inlinecode donthyphenate notranslate">(</span> <i>AltDeclaratorX</i> <span class="d_inlinecode donthyphenate notranslate">)</span> <a href="#AltDeclaratorSuffixes"><i>AltDeclaratorSuffixes</i></a>
+
+<a id="AltDeclaratorX"><span class="gname">AltDeclaratorX</span></a>:
+    <a href="#BasicType2"><i>BasicType2</i></a><sub>opt</sub> <i>Identifier</i>
+    <a href="#BasicType2"><i>BasicType2</i></a><sub>opt</sub> <i>Identifier</i> <a href="#AltFuncDeclaratorSuffix"><i>AltFuncDeclaratorSuffix</i></a>
+    <a href="#AltDeclarator"><i>AltDeclarator</i></a>
+
+<a id="AltDeclaratorSuffixes"><span class="gname">AltDeclaratorSuffixes</span></a>:
+    <a href="#AltDeclaratorSuffix"><i>AltDeclaratorSuffix</i></a>
+    <a href="#AltDeclaratorSuffix"><i>AltDeclaratorSuffix</i></a> <i>AltDeclaratorSuffixes</i>
+
+<a id="AltDeclaratorSuffix"><span class="gname">AltDeclaratorSuffix</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">[ ]</span>
+    <span class="d_inlinecode donthyphenate notranslate">[</span> <a href="expression.html#AssignExpression"><i>AssignExpression</i></a> <span class="d_inlinecode donthyphenate notranslate">]</span>
+    <span class="d_inlinecode donthyphenate notranslate">[</span> <a href="#Type"><i>Type</i></a> <span class="d_inlinecode donthyphenate notranslate">]</span>
+
+<a id="AltFuncDeclaratorSuffix"><span class="gname">AltFuncDeclaratorSuffix</span></a>:
+    <a href="function.html#Parameters"><i>Parameters</i></a> <a href="function.html#MemberFunctionAttributes"><i>MemberFunctionAttributes</i></a><sub>opt</sub>
+</pre>
+
+<pre class="bnf notranslate"><a id="Type"><span class="gname">Type</span></a>:
+    <a href="#TypeCtors"><i>TypeCtors</i></a><sub>opt</sub> <a href="#BasicType"><i>BasicType</i></a> <a href="#BasicType2"><i>BasicType2</i></a><sub>opt</sub>
+
+<a id="TypeCtors"><span class="gname">TypeCtors</span></a>:
+    <a href="#TypeCtor"><i>TypeCtor</i></a>
+    <a href="#TypeCtor"><i>TypeCtor</i></a> <i>TypeCtors</i>
+
+<a id="TypeCtor"><span class="gname">TypeCtor</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">const</span>
+    <span class="d_inlinecode donthyphenate notranslate">immutable</span>
+    <span class="d_inlinecode donthyphenate notranslate">inout</span>
+    <span class="d_inlinecode donthyphenate notranslate">shared</span>
+
+<a id="BasicType"><span class="gname">BasicType</span></a>:
+    <a href="#BasicTypeX"><i>BasicTypeX</i></a>
+    <span class="d_inlinecode donthyphenate notranslate">.</span> <a href="#IdentifierList"><i>IdentifierList</i></a>
+    <a href="#IdentifierList"><i>IdentifierList</i></a>
+    <a href="#Typeof"><i>Typeof</i></a>
+    <a href="#Typeof"><i>Typeof</i></a> <span class="d_inlinecode donthyphenate notranslate">.</span> <a href="#IdentifierList"><i>IdentifierList</i></a>
+    <a href="#TypeCtor"><i>TypeCtor</i></a> <span class="d_inlinecode donthyphenate notranslate">(</span> <a href="#Type"><i>Type</i></a> <span class="d_inlinecode donthyphenate notranslate">)</span>
+    <a href="grammar.html#TypeVector"><i>TypeVector</i></a>
+
+<a id="BasicTypeX"><span class="gname">BasicTypeX</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">bool</span>
+    <span class="d_inlinecode donthyphenate notranslate">byte</span>
+    <span class="d_inlinecode donthyphenate notranslate">ubyte</span>
+    <span class="d_inlinecode donthyphenate notranslate">short</span>
+    <span class="d_inlinecode donthyphenate notranslate">ushort</span>
+    <span class="d_inlinecode donthyphenate notranslate">int</span>
+    <span class="d_inlinecode donthyphenate notranslate">uint</span>
+    <span class="d_inlinecode donthyphenate notranslate">long</span>
+    <span class="d_inlinecode donthyphenate notranslate">ulong</span>
+    <span class="d_inlinecode donthyphenate notranslate">char</span>
+    <span class="d_inlinecode donthyphenate notranslate">wchar</span>
+    <span class="d_inlinecode donthyphenate notranslate">dchar</span>
+    <span class="d_inlinecode donthyphenate notranslate">float</span>
+    <span class="d_inlinecode donthyphenate notranslate">double</span>
+    <span class="d_inlinecode donthyphenate notranslate">real</span>
+    <span class="d_inlinecode donthyphenate notranslate">ifloat</span>
+    <span class="d_inlinecode donthyphenate notranslate">idouble</span>
+    <span class="d_inlinecode donthyphenate notranslate">ireal</span>
+    <span class="d_inlinecode donthyphenate notranslate">cfloat</span>
+    <span class="d_inlinecode donthyphenate notranslate">cdouble</span>
+    <span class="d_inlinecode donthyphenate notranslate">creal</span>
+    <span class="d_inlinecode donthyphenate notranslate">void</span>
+
+<a id="BasicType2"><span class="gname">BasicType2</span></a>:
+    <a href="#BasicType2X"><i>BasicType2X</i></a> <a href="#BasicType2"><i>BasicType2</i></a><sub>opt</sub>
+
+<a id="BasicType2X"><span class="gname">BasicType2X</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">*</span>
+    <span class="d_inlinecode donthyphenate notranslate">[ ]</span>
+    <span class="d_inlinecode donthyphenate notranslate">[</span> <a href="expression.html#AssignExpression"><i>AssignExpression</i></a> <span class="d_inlinecode donthyphenate notranslate">]</span>
+    <span class="d_inlinecode donthyphenate notranslate">[</span> <a href="expression.html#AssignExpression"><i>AssignExpression</i></a> .. <a href="expression.html#AssignExpression"><i>AssignExpression</i></a> <span class="d_inlinecode donthyphenate notranslate">]</span>
+    <span class="d_inlinecode donthyphenate notranslate">[</span> <a href="#Type"><i>Type</i></a> <span class="d_inlinecode donthyphenate notranslate">]</span>
+    <span class="d_inlinecode donthyphenate notranslate">delegate</span> <a href="function.html#Parameters"><i>Parameters</i></a> <a href="function.html#MemberFunctionAttributes"><i>MemberFunctionAttributes</i></a><sub>opt</sub>
+    <span class="d_inlinecode donthyphenate notranslate">function</span> <a href="function.html#Parameters"><i>Parameters</i></a> <a href="function.html#FunctionAttributes"><i>FunctionAttributes</i></a><sub>opt</sub>
+
+<a id="IdentifierList"><span class="gname">IdentifierList</span></a>:
+    <i>Identifier</i>
+    <i>Identifier</i> <span class="d_inlinecode donthyphenate notranslate">.</span> <i>IdentifierList</i>
+    <a href="template.html#TemplateInstance"><i>TemplateInstance</i></a>
+    <a href="template.html#TemplateInstance"><i>TemplateInstance</i></a> <span class="d_inlinecode donthyphenate notranslate">.</span> <i>IdentifierList</i>
+</pre>
+
+<pre class="bnf notranslate"><a id="StorageClasses"><span class="gname">StorageClasses</span></a>:
+    <a href="#StorageClass"><i>StorageClass</i></a>
+    <a href="#StorageClass"><i>StorageClass</i></a> <i>StorageClasses</i>
+
+<a id="StorageClass"><span class="gname">StorageClass</span></a>:
+    <a href="attribute.html#LinkageAttribute"><i>LinkageAttribute</i></a>
+    <a href="attribute.html#AlignAttribute"><i>AlignAttribute</i></a>
+    <span class="d_inlinecode donthyphenate notranslate">deprecated</span>
+    <span class="d_inlinecode donthyphenate notranslate">enum</span>
+    <span class="d_inlinecode donthyphenate notranslate">static</span>
+    <a href="#extern"><span class="d_inlinecode donthyphenate notranslate">extern</span></a>
+    <span class="d_inlinecode donthyphenate notranslate">abstract</span>
+    <span class="d_inlinecode donthyphenate notranslate">final</span>
+    <span class="d_inlinecode donthyphenate notranslate">override</span>
+    <span class="d_inlinecode donthyphenate notranslate">synchronized</span>
+    <span class="d_inlinecode donthyphenate notranslate">auto</span>
+    <span class="d_inlinecode donthyphenate notranslate">scope</span>
+    <span class="d_inlinecode donthyphenate notranslate">const</span>
+    <span class="d_inlinecode donthyphenate notranslate">immutable</span>
+    <span class="d_inlinecode donthyphenate notranslate">inout</span>
+    <span class="d_inlinecode donthyphenate notranslate">shared</span>
+    <span class="d_inlinecode donthyphenate notranslate">__gshared</span>
+    <a href="attribute.html#Property"><i>Property</i></a>
+    <span class="d_inlinecode donthyphenate notranslate">nothrow</span>
+    <span class="d_inlinecode donthyphenate notranslate">pure</span>
+    <span class="d_inlinecode donthyphenate notranslate">ref</span>
+</pre>
+
+<pre class="bnf notranslate"><a id="Initializer"><span class="gname">Initializer</span></a>:
+    <a href="#VoidInitializer"><i>VoidInitializer</i></a>
+    <a href="#NonVoidInitializer"><i>NonVoidInitializer</i></a>
+
+<a id="NonVoidInitializer"><span class="gname">NonVoidInitializer</span></a>:
+    <a href="#ExpInitializer"><i>ExpInitializer</i></a>:
+    <a href="#ArrayInitializer"><i>ArrayInitializer</i></a>
+    <a href="#StructInitializer"><i>StructInitializer</i></a>
+
+<a id="ExpInitializer"><span class="gname">ExpInitializer</span></a>:
+    <a href="expression.html#AssignExpression"><i>AssignExpression</i></a>
+
+<a id="ArrayInitializer"><span class="gname">ArrayInitializer</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">[</span> <a href="#ArrayMemberInitializations"><i>ArrayMemberInitializations</i></a><sub>opt</sub> <span class="d_inlinecode donthyphenate notranslate">]</span>
+
+<a id="ArrayMemberInitializations"><span class="gname">ArrayMemberInitializations</span></a>:
+    <a href="#ArrayMemberInitialization"><i>ArrayMemberInitialization</i></a>
+    <a href="#ArrayMemberInitialization"><i>ArrayMemberInitialization</i></a> <span class="d_inlinecode donthyphenate notranslate">,</span>
+    <a href="#ArrayMemberInitialization"><i>ArrayMemberInitialization</i></a> <span class="d_inlinecode donthyphenate notranslate">,</span> <i>ArrayMemberInitializations</i>
+
+<a id="ArrayMemberInitialization"><span class="gname">ArrayMemberInitialization</span></a>:
+    <a href="#NonVoidInitializer"><i>NonVoidInitializer</i></a>
+    <a href="expression.html#AssignExpression"><i>AssignExpression</i></a> <span class="d_inlinecode donthyphenate notranslate">:</span> <a href="#NonVoidInitializer"><i>NonVoidInitializer</i></a>
+
+<a id="StructInitializer"><span class="gname">StructInitializer</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">{</span> <a href="#StructMemberInitializers"><i>StructMemberInitializers</i></a><sub>opt</sub> <span class="d_inlinecode donthyphenate notranslate">}</span>
+
+<a id="StructMemberInitializers"><span class="gname">StructMemberInitializers</span></a>:
+    <a href="#StructMemberInitializer"><i>StructMemberInitializer</i></a>
+    <a href="#StructMemberInitializer"><i>StructMemberInitializer</i></a> <span class="d_inlinecode donthyphenate notranslate">,</span>
+    <a href="#StructMemberInitializer"><i>StructMemberInitializer</i></a> <span class="d_inlinecode donthyphenate notranslate">,</span> <i>StructMemberInitializers</i>
+
+<a id="StructMemberInitializer"><span class="gname">StructMemberInitializer</span></a>:
+    <a href="#NonVoidInitializer"><i>NonVoidInitializer</i></a>
+    <i>Identifier</i> <span class="d_inlinecode donthyphenate notranslate">:</span> <a href="#NonVoidInitializer"><i>NonVoidInitializer</i></a>
+</pre>
+
+<h3>Declaration Syntax</h3>
+
+<p>Declaration syntax generally reads right to left:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span> x;    <span class="d_comment">// x is an int
+</span><span class="d_keyword">int</span>* x;   <span class="d_comment">// x is a pointer to int
+</span><span class="d_keyword">int</span>** x;  <span class="d_comment">// x is a pointer to a pointer to int
+</span><span class="d_keyword">int</span>[] x;  <span class="d_comment">// x is an array of ints
+</span><span class="d_keyword">int</span>*[] x; <span class="d_comment">// x is an array of pointers to ints
+</span><span class="d_keyword">int</span>[]* x; <span class="d_comment">// x is a pointer to an array of ints
+</span></pre>
+
+<p>Arrays read right to left as well:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span>[3] x;     <span class="d_comment">// x is an array of 3 ints
+</span><span class="d_keyword">int</span>[3][5] x;  <span class="d_comment">// x is an array of 5 arrays of 3 ints
+</span><span class="d_keyword">int</span>[3]*[5] x; <span class="d_comment">// x is an array of 5 pointers to arrays of 3 ints
+</span></pre>
+
+<p>Pointers to functions are declared using the <span class="d_inlinecode donthyphenate notranslate">function</span> keyword:
+</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span> <span class="d_keyword">function</span>(<span class="d_keyword">char</span>) x; <span class="d_comment">// x is a pointer to
+</span>                     <span class="d_comment">// a function taking a char argument
+</span>                     <span class="d_comment">// and returning an int
+</span><span class="d_keyword">int</span> <span class="d_keyword">function</span>(<span class="d_keyword">char</span>)[] x; <span class="d_comment">// x is an array of
+</span>                     <span class="d_comment">// pointers to functions
+</span>                     <span class="d_comment">// taking a char argument
+</span>                     <span class="d_comment">// and returning an int
+</span></pre>
+
+<p>C-style array, function pointer and pointer to array declarations are deprecated:
+</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span> x[3];          <span class="d_comment">// x is an array of 3 ints
+</span><span class="d_keyword">int</span> x[3][5];       <span class="d_comment">// x is an array of 3 arrays of 5 ints
+</span><span class="d_keyword">int</span> (*x[5])[3];    <span class="d_comment">// x is an array of 5 pointers to arrays of 3 ints
+</span><span class="d_keyword">int</span> (*x)(<span class="d_keyword">char</span>);    <span class="d_comment">// x is a pointer to a function taking a char argument
+</span>                   <span class="d_comment">// and returning an int
+</span><span class="d_keyword">int</span> (*[] x)(<span class="d_keyword">char</span>); <span class="d_comment">// x is an array of pointers to functions
+</span>                   <span class="d_comment">// taking a char argument and returning an int
+</span></pre>
+
+<p>In a declaration declaring multiple symbols, all the declarations
+must be of the same type:
+</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span> x,y;   <span class="d_comment">// x and y are ints
+</span><span class="d_keyword">int</span>* x,y;  <span class="d_comment">// x and y are pointers to ints
+</span><span class="d_keyword">int</span> x,*y;  <span class="d_comment">// error, multiple types
+</span><span class="d_keyword">int</span>[] x,y; <span class="d_comment">// x and y are arrays of ints
+</span><span class="d_keyword">int</span> x[],y; <span class="d_comment">// error, multiple types
+</span></pre>
+
+<h3><span id="AutoDeclaration"><a class="anchor" title="Permalink to this section" id="auto-declaration" href="#auto-declaration">Implicit Type Inference</a></span></h3>
+
+<pre class="bnf notranslate"><a id="AutoDeclaration"><span class="gname">AutoDeclaration</span></a>:
+    <a href="#StorageClasses"><i>StorageClasses</i></a> <i>AutoDeclarationX</i> <span class="d_inlinecode donthyphenate notranslate">;</span>
+
+<a id="AutoDeclarationX"><span class="gname">AutoDeclarationX</span></a>:
+    <i>Identifier</i> <a href="template.html#TemplateParameters"><i>TemplateParameters</i></a><sub>opt</sub> <span class="d_inlinecode donthyphenate notranslate">=</span> <a href="#Initializer"><i>Initializer</i></a>
+    <i>AutoDeclarationX</i> <span class="d_inlinecode donthyphenate notranslate">,</span> <i>Identifier</i> <a href="template.html#TemplateParameters"><i>TemplateParameters</i></a><sub>opt</sub> <span class="d_inlinecode donthyphenate notranslate">=</span> <a href="#Initializer"><i>Initializer</i></a>
+</pre>
+
+        <p>If a declaration starts with a <i>StorageClass</i> and has
+        a <i>NonVoidInitializer</i> from which the type can be inferred,
+        the type on the declaration can be omitted.
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">static</span> x = 3;      <span class="d_comment">// x is type int
+</span><span class="d_keyword">auto</span> y = 4u;       <span class="d_comment">// y is type uint
+</span>
+<span class="d_keyword">auto</span> s = <span class="d_string">"string"</span>; <span class="d_comment">// s is type immutable(char)[]
+</span>
+<span class="d_keyword">class</span> C { ... }
+
+<span class="d_keyword">auto</span> c = <span class="d_keyword">new</span> C();  <span class="d_comment">// c is a handle to an instance of class C
+</span></pre>
+
+        <p>The <i>NonVoidInitializer</i> cannot contain forward references
+        (this restriction may be removed in the future).
+        The implicitly inferred type is statically bound
+        to the declaration at compile time, not run time.
+        </p>
+
+        <p>An <a href="expression.html#ArrayLiteral"><i>ArrayLiteral</i></a>
+        is inferred to be a dynamic array
+        type rather than a static array:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">auto</span> v = [<span class="d_string">"hello"</span>, <span class="d_string">"world"</span>]; <span class="d_comment">// type is string[], not string[2]
+</span></pre>
+
+
+
+
+<h3><a class="anchor" title="Permalink to this section" id="alias" href="#alias">Alias Declarations</a></h3>
+
+<pre class="bnf notranslate"><a id="AliasDeclaration"><span class="gname">AliasDeclaration</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">alias</span> <a href="#StorageClasses"><i>StorageClasses</i></a><sub>opt</sub> <a href="#BasicType"><i>BasicType</i></a> <a href="#Declarators"><i>Declarators</i></a> <span class="d_inlinecode donthyphenate notranslate">;</span>
+    <span class="d_inlinecode donthyphenate notranslate">alias</span> <a href="#StorageClasses"><i>StorageClasses</i></a><sub>opt</sub> <a href="#BasicType"><i>BasicType</i></a> <a href="#FuncDeclarator"><i>FuncDeclarator</i></a> <span class="d_inlinecode donthyphenate notranslate">;</span>
+    <span class="d_inlinecode donthyphenate notranslate">alias</span> <i>AliasDeclarationX</i> <span class="d_inlinecode donthyphenate notranslate">;</span>
+
+<a id="AliasDeclarationX"><span class="gname">AliasDeclarationX</span></a>:
+    <i>Identifier</i> <a href="template.html#TemplateParameters"><i>TemplateParameters</i></a><sub>opt</sub> <span class="d_inlinecode donthyphenate notranslate">=</span> <a href="#StorageClasses"><i>StorageClasses</i></a><sub>opt</sub> <a href="#Type"><i>Type</i></a>
+    <i>AliasDeclarationX</i> <span class="d_inlinecode donthyphenate notranslate">,</span> <i>Identifier</i> <a href="template.html#TemplateParameters"><i>TemplateParameters</i></a><sub>opt</sub> <span class="d_inlinecode donthyphenate notranslate">=</span> <a href="#StorageClasses"><i>StorageClasses</i></a><sub>opt</sub> <a href="#Type"><i>Type</i></a>
+</pre>
+
+    <p><i>AliasDeclaration</i>s create a symbol that is an alias for another type,
+        and can be used anywhere that other type may appear.
+    </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">alias</span> myint = abc.Foo.bar;
+</pre>
+
+        <p>        Aliased types are semantically identical to the types they are aliased to. The
+        debugger cannot distinguish between them, and there is no difference as far as function
+        overloading is concerned. For example:
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">alias</span> myint = <span class="d_keyword">int</span>;
+
+<span class="d_keyword">void</span> foo(<span class="d_keyword">int</span> x) { ... }
+<span class="d_keyword">void</span> foo(myint m) { ... } <span class="d_comment">// error, multiply defined function foo
+</span></pre>
+
+    <p>A symbol can be declared as an <i>alias</i> of another symbol.
+        For example:
+    </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">import</span> string;
+
+<span class="d_keyword">alias</span> mylen = string.strlen;
+...
+<span class="d_keyword">int</span> len = mylen(<span class="d_string">"hello"</span>); <span class="d_comment">// actually calls string.strlen()
+</span></pre>
+
+        <p>        The following alias declarations are valid:
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">template</span> Foo2(T) { <span class="d_keyword">alias</span> t = T; }
+<span class="d_keyword">alias</span> t1 = Foo2!(<span class="d_keyword">int</span>);
+<span class="d_keyword">alias</span> t2 = Foo2!(<span class="d_keyword">int</span>).t;
+<span class="d_keyword">alias</span> t3 = t1.t;
+<span class="d_keyword">alias</span> t4 = t2;
+
+t1.t v1;  <span class="d_comment">// v1 is type int
+</span>t2 v2;    <span class="d_comment">// v2 is type int
+</span>t3 v3;    <span class="d_comment">// v3 is type int
+</span>t4 v4;    <span class="d_comment">// v4 is type int
+</span></pre>
+
+        <p>        Aliased symbols are useful as a shorthand for a long qualified
+        symbol name, or as a way to redirect references from one symbol
+        to another:
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">version</span> (Win32)
+{
+    <span class="d_keyword">alias</span> myfoo = win32.foo;
+}
+<span class="d_keyword">version</span> (linux)
+{
+    <span class="d_keyword">alias</span> myfoo = linux.bar;
+}
+</pre>
+
+        <p>        Aliasing can be used to &lsquo;import&rsquo; a symbol from an import into the
+        current scope:
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">alias</span> strlen = string.strlen;
+</pre>
+
+        <p>        Aliases can also &lsquo;import&rsquo; a set of overloaded functions, that can
+        be overloaded with functions in the current scope:
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">class</span> A
+{
+    <span class="d_keyword">int</span> foo(<span class="d_keyword">int</span> a) { <span class="d_keyword">return</span> 1; }
+}
+
+<span class="d_keyword">class</span> B : A
+{
+    <span class="d_keyword">int</span> foo( <span class="d_keyword">int</span> a, <span class="d_keyword">uint</span> b ) { <span class="d_keyword">return</span> 2; }
+}
+
+<span class="d_keyword">class</span> C : B
+{
+    <span class="d_keyword">int</span> foo( <span class="d_keyword">int</span> a ) { <span class="d_keyword">return</span> 3; }
+    <span class="d_keyword">alias</span> foo = B.foo;
+}
+
+<span class="d_keyword">class</span> D : C
+{
+}
+
+<span class="d_keyword">void</span> test()
+{
+    D b = <span class="d_keyword">new</span> D();
+    <span class="d_keyword">int</span> i;
+
+    i = b.foo(1, 2u);   <span class="d_comment">// calls B.foo
+</span>    i = b.foo(1);       <span class="d_comment">// calls C.foo
+</span>}
+</pre>
+
+        <p>        <b>Note:</b> Type aliases can sometimes look indistinguishable from
+        alias declarations:
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">alias</span> abc = foo.bar; <span class="d_comment">// is it a type or a symbol?
+</span></pre>
+
+        <p>        The distinction is made in the semantic analysis pass.
+        </p>
+
+        <p>Aliases cannot be used for expressions:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S { <span class="d_keyword">static</span> <span class="d_keyword">int</span> i; }
+S s;
+
+<span class="d_keyword">alias</span> a = s.i; <span class="d_comment">// illegal, s.i is an expression
+</span><span class="d_keyword">alias</span> b = S.i; <span class="d_comment">// ok
+</span>b = 4;         <span class="d_comment">// sets S.i to 4
+</span></pre>
+
+<h3><a class="anchor" title="Permalink to this section" id="extern" href="#extern">Extern Declarations</a></h3>
+
+        Variable declarations with the storage class <span class="d_inlinecode donthyphenate notranslate">extern</span> are
+        not allocated storage within the module.
+        They must be defined in some other object file with a matching
+        name which is then linked in.
+        The primary usefulness of this is to connect with global
+        variable declarations in C files.
+
+        <p>An <span class="d_inlinecode donthyphenate notranslate">extern</span> declaration can optionally be followed by an
+        <span class="d_inlinecode donthyphenate notranslate">extern</span> <a href="attribute.html#linkage">linkage attribute</a>.
+        If there is no linkage attribute it defaults to <span class="d_inlinecode donthyphenate notranslate">extern(D)</span>:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">extern</span>(C) <span class="d_keyword">int</span> foo;        <span class="d_comment">// variable allocated and initialized in this module with C linkage
+</span><span class="d_keyword">extern</span> <span class="d_keyword">extern</span>(C) <span class="d_keyword">int</span> bar; <span class="d_comment">// variable allocated outside this module with C linkage
+</span>                          <span class="d_comment">// (e.g. in a statically linked C library or another module)
+</span></pre>
+
+
+<h3><a class="anchor" title="Permalink to this section" id="typeof" href="#typeof"><span class="d_inlinecode donthyphenate notranslate">typeof</span></a></h3>
+
+<pre class="bnf notranslate"><a id="Typeof"><span class="gname">Typeof</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">typeof (</span> <a href="expression.html#Expression"><i>Expression</i></a> <span class="d_inlinecode donthyphenate notranslate">)</span>
+    <span class="d_inlinecode donthyphenate notranslate">typeof (</span> <span class="d_inlinecode donthyphenate notranslate">return</span> <span class="d_inlinecode donthyphenate notranslate">)</span>
+</pre>
+
+        <p>        <i>Typeof</i> is a way to specify a type based on the type
+        of an expression. For example:
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span> func(<span class="d_keyword">int</span> i)
+{
+    <span class="d_keyword">typeof</span>(i) j;       <span class="d_comment">// j is of type int
+</span>    <span class="d_keyword">typeof</span>(3 + 6.0) x; <span class="d_comment">// x is of type double
+</span>    <span class="d_keyword">typeof</span>(1)* p;      <span class="d_comment">// p is of type pointer to int
+</span>    <span class="d_keyword">int</span>[<span class="d_keyword">typeof</span>(p)] a;  <span class="d_comment">// a is of type int[int*]
+</span>
+    writefln(<span class="d_string">"%d"</span>, <span class="d_keyword">typeof</span>('c').sizeof); <span class="d_comment">// prints 1
+</span>    <span class="d_keyword">double</span> c = <span class="d_keyword">cast</span>(<span class="d_keyword">typeof</span>(1.0))j; <span class="d_comment">// cast j to double
+</span>}
+</pre>
+
+        <p>        <i>Expression</i> is not evaluated, just the type of it is
+        generated:
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span> func()
+{
+    <span class="d_keyword">int</span> i = 1;
+    <span class="d_keyword">typeof</span>(++i) j; <span class="d_comment">// j is declared to be an int, i is not incremented
+</span>    writefln(<span class="d_string">"%d"</span>, i);  <span class="d_comment">// prints 1
+</span>}
+</pre>
+
+        <p>There are  three special cases: </p>
+    <ol>        <li><span class="d_inlinecode donthyphenate notranslate">typeof(this)</span> will generate the type of what <span class="d_inlinecode donthyphenate notranslate">this</span>
+        would be in a non-static member function, even if not in a member
+        function.
+        </li>
+        <li>Analogously, <span class="d_inlinecode donthyphenate notranslate">typeof(super)</span> will generate the type of what
+        <span class="d_inlinecode donthyphenate notranslate">super</span> would be in a non-static member function.
+        </li>
+        <li><span class="d_inlinecode donthyphenate notranslate">typeof(return)</span> will, when inside a function scope,
+        give the return type of that function.
+        </li>
+    </ol>
+
+<pre class="d_code notranslate"><span class="d_keyword">class</span> A { }
+
+<span class="d_keyword">class</span> B : A
+{
+    <span class="d_keyword">typeof</span>(<span class="d_keyword">this</span>) x;  <span class="d_comment">// x is declared to be a B
+</span>    <span class="d_keyword">typeof</span>(<span class="d_keyword">super</span>) y; <span class="d_comment">// y is declared to be an A
+</span>}
+
+<span class="d_keyword">struct</span> C
+{
+    <span class="d_keyword">static</span> <span class="d_keyword">typeof</span>(<span class="d_keyword">this</span>) z;  <span class="d_comment">// z is declared to be a C
+</span>
+    <span class="d_keyword">typeof</span>(<span class="d_keyword">super</span>) q; <span class="d_comment">// error, no super struct for C
+</span>}
+
+<span class="d_keyword">typeof</span>(<span class="d_keyword">this</span>) r;   <span class="d_comment">// error, no enclosing struct or class
+</span></pre>
+
+        <p>If the expression is a <a href="function.html#property-functions">        Property Function</a>, <span class="d_inlinecode donthyphenate notranslate">typeof</span> gives its return type.
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    @property <span class="d_keyword">int</span> foo() { <span class="d_keyword">return</span> 1; }
+}
+<span class="d_keyword">typeof</span>(S.foo) n;  <span class="d_comment">// n is declared to be an int
+</span></pre>
+
+        <p>        Where <i>Typeof</i> is most useful is in writing generic
+        template code.
+        </p>
+
+<h3>Void Initializations</h3>
+
+<pre class="bnf notranslate"><a id="VoidInitializer"><span class="gname">VoidInitializer</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">void</span>
+</pre>
+
+        <p>Normally, variables are initialized either with an explicit
+        <i>Initializer</i> or are set to the default value for the
+        type of the variable. If the <i>Initializer</i> is <span class="d_inlinecode donthyphenate notranslate">void</span>,
+        however, the variable is not initialized. If its value is
+        used before it is set, undefined program behavior will result.
+	</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span> foo()
+{
+    <span class="d_keyword">int</span> x = <span class="d_keyword">void</span>;
+    writeln(x);  <span class="d_comment">// will print garbage
+</span>}
+</pre>
+
+        <p>Therefore, one should only use <span class="d_inlinecode donthyphenate notranslate">void</span> initializers as a
+        last resort when optimizing critical code.
+	</p>
+
+<h3>Global and Static Initializers</h3>
+
+	<p>The <a href="#Initializer"><i>Initializer</i></a> for a global or static variable must be
+	evaluatable at compile time.
+	Whether some pointers can be initialized with the addresses of other
+	functions or data is implementation defined.
+	Runtime initialization can be done with static constructors.
+	</p>
+
+<h3>Type Qualifiers vs. Storage Classes</h3>
+
+	<p>D draws a distinction between a type qualifer and a storage class.</p>
+	
+	<p>A <i>type qualifier</i> creates a derived type from an existing base
+	type, and the resulting type may be used to create multiple instances
+	of that type.</p>
+
+	<p>For example, the <span class="d_inlinecode donthyphenate notranslate">immutable</span> type qualifier can be used to
+	create variables of immutable type, such as:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">immutable</span>(<span class="d_keyword">int</span>)   x; <span class="d_comment">// typeof(x) == immutable(int)
+</span><span class="d_keyword">immutable</span>(<span class="d_keyword">int</span>)[] y; <span class="d_comment">// typeof(y) == immutable(int)[]
+</span>                    <span class="d_comment">// typeof(y[0]) == immutable(int)
+</span>
+<span class="d_comment">// Type constructors create new types that can be aliased:
+</span><span class="d_keyword">alias</span> ImmutableInt = <span class="d_keyword">immutable</span>(<span class="d_keyword">int</span>);
+ImmutableInt z;     <span class="d_comment">// typeof(z) == immutable(int)
+</span></pre>
+
+	<p>A <i>storage class</i>, on the other hand, does not create a new
+	type, but describes only the type of storage used by the variable or
+	function being declared. For example, a member function can be declared
+	with the <span class="d_inlinecode donthyphenate notranslate">const</span> storage class to indicate that it does not modify
+	its implicit <span class="d_inlinecode donthyphenate notranslate">this</span> argument:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span> x;
+    <span class="d_keyword">int</span> method() <span class="d_keyword">const</span>
+    {
+	<span class="d_comment">//x++;    // Error: this method is const and cannot modify this.x
+</span>        <span class="d_keyword">return</span> x; <span class="d_comment">// OK: we can still read this.x
+</span>    }
+}
+</pre>
+
+	<p>Although some keywords can be used both as a type qualifier and a
+	storage class, there are some storage classes that cannot be used to
+	construct new types. One example is <span class="d_inlinecode donthyphenate notranslate">ref</span>:</p>
+
+<pre class="d_code notranslate"><span class="d_comment">// ref declares the parameter x to be passed by reference
+</span><span class="d_keyword">void</span> func(<span class="d_keyword">ref</span> <span class="d_keyword">int</span> x)
+{
+    x++; <span class="d_comment">// so modifications to x will be visible in the caller
+</span>}
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">auto</span> x = 1;
+    func(x);
+    <span class="d_keyword">assert</span>(x == 2);
+
+    <span class="d_comment">// However, ref is not a type qualifier, so the following is illegal:
+</span>    <span class="d_keyword">ref</span>(<span class="d_keyword">int</span>) y; <span class="d_comment">// Error: ref is not a type qualifier.
+</span>}
+</pre>
+
+<pre class="d_code notranslate"><span class="d_comment">// Functions can also be declared as 'ref', meaning their return value is
+</span><span class="d_comment">// passed by reference:
+</span><span class="d_keyword">ref</span> <span class="d_keyword">int</span> func2()
+{
+    <span class="d_keyword">static</span> <span class="d_keyword">int</span> y = 0;
+    <span class="d_keyword">return</span> y;
+}
+
+<span class="d_keyword">void</span> main()
+{
+    func2() = 2; <span class="d_comment">// The return value of func2() can be modified.
+</span>    <span class="d_keyword">assert</span>(func2() == 2);
+
+    <span class="d_comment">// However, the reference returned by func2() does not propagate to
+</span>    <span class="d_comment">// variables, because the 'ref' only applies to the return value itself,
+</span>    <span class="d_comment">// not to any subsequent variable created from it:
+</span>    <span class="d_keyword">auto</span> x = func2();
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">typeof</span>(x) == <span class="d_keyword">int</span>); <span class="d_comment">// N.B.: *not* ref(int);
+</span>                                     <span class="d_comment">// there is no such type as ref(int).
+</span>    x++;
+    <span class="d_keyword">assert</span>(x == 3);
+    <span class="d_keyword">assert</span>(func2() == 2); <span class="d_comment">// x is not a reference to what func2() returned; it
+</span>                          <span class="d_comment">// does not inherit the ref storage class from func2().
+</span>}
+</pre>
+
+	<p>Due to the fact that some keywords, such as <span class="d_inlinecode donthyphenate notranslate">const</span>, can be used
+	both as a type qualifier and a storage class, it may sometimes result
+	in ambiguous-looking code:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_comment">// Is const here a type qualifier or a storage class?
+</span>    <span class="d_comment">// Is the return value const(int), or is this a const function that returns
+</span>    <span class="d_comment">// (mutable) int?
+</span>    <span class="d_keyword">const</span> <span class="d_keyword">int</span> func() { <span class="d_keyword">return</span> 1; }
+}
+</pre>
+
+	<p>To avoid such confusion, it is recommended that type qualifier
+	syntax with parentheses always be used for return types, and that
+	function storage classes be written on the right-hand side of the
+	declaration instead of the left-hand side where it may be visually
+	confused with the return type:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_comment">// Now it is clear that the 'const' here applies to the return type:
+</span>    <span class="d_keyword">const</span>(<span class="d_keyword">int</span>) func1() { <span class="d_keyword">return</span> 1; }
+
+    <span class="d_comment">// And it is clear that the 'const' here applies to the function:
+</span>    <span class="d_keyword">int</span> func2() <span class="d_keyword">const</span> { <span class="d_keyword">return</span> 1; }
+}
+</pre>
+
+
+
+
+
+</div>
+<div id="copyright">Copyright &copy; 1999-2017 by Digital Mars &reg;, All Rights Reserved | Page generated by <a href="http://dlang.org/ddoc.html">Ddoc</a> on (no date time)</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('<script src="js/jquery-1.7.2.min.js">\x3C/script>')</script>
+    <script type="text/javascript" src="js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="js/run.js"></script>
+    <script type="text/javascript" src="js/cssmenu.js"></script>
+
+<script type="text/javascript" src="js/run-main-website.js"></script>
+</body>
+</html>

@@ -1,0 +1,2287 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2017 by Digital Mars
+    All Rights Reserved Written by Walter Bright
+    http://digitalmars.com
+  -->
+<head>
+<meta charset="utf-8" />
+<meta name="keywords" content="D programming language" />
+<meta name="description" content="D Programming Language" />
+<title>Functions - D Programming Language</title>
+<link rel="stylesheet" href="css/codemirror.css" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/print.css" media="print" />
+<link rel="stylesheet" href="css/cssmenu.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+<link rel="shortcut icon" href="favicon.ico" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0" />
+</head>
+<body id='Functions' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript';</script>
+<div id="top">	<div id="header">		<a class="logo" href="."><img id="logo" width="125" height="95" alt="D Logo" src="images/dlogo.svg"></a>
+		<span id="d-language-mobilehelper"><a href="." id="d-language">D Programming Language</a></span>
+	</div>
+</div>
+<div id="navigation">    <div id="search-box">        <form method="get" action="http://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org" />
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search" />
+            <span id="search-query"><input id="q" name="q" placeholder="Search" /></span><span id="search-dropdown">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire D Site</option>
+                    <option  value="dlang.org/phobos">Library Reference</option>
+                    <option value="digitalmars.com/d/archives">Newsgroup Archives</option>
+                </select>
+            </span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    
+<div id="cssmenu"><ul>    <li><a href='index.html'><span>D 2.067.0</span></a></li>
+    <li><a href='download.html'><span><b>Download</b></span></a></li>
+    <li><a href='getstarted.html'><span>Getting Started</span></a></li>
+    <li><a href='changelog.html'><span>Change Log</span></a></li>
+    <li class='has-sub'><a href='#'><span>D Reference</span></a>
+      <ul><li><a href='        intro.html'>Introduction</a></li><li><a href='        lex.html'>Lexical</a></li><li><a href='        grammar.html'>Grammar</a></li><li><a href='        module.html'>Modules</a></li><li><a href='        declaration.html'>Declarations</a></li><li><a href='        type.html'>Types</a></li><li><a href='        property.html'>Properties</a></li><li><a href='        attribute.html'>Attributes</a></li><li><a href='        pragma.html'>Pragmas</a></li><li><a href='        expression.html'>Expressions</a></li><li><a href='        statement.html'>Statements</a></li><li><a href='        arrays.html'>Arrays</a></li><li><a href='        hash-map.html'>Associative Arrays</a></li><li><a href='        struct.html'>Structs and Unions</a></li><li><a href='        class.html'>Classes</a></li><li><a href='        interface.html'>Interfaces</a></li><li><a href='        enum.html'>Enums</a></li><li><a href='        const3.html'>Const and Immutable</a></li><li><a href='        function.html'>Functions</a></li><li><a href='        operatoroverloading.html'>Operator Overloading</a></li><li><a href='        template.html'>Templates</a></li><li><a href='        template-mixin.html'>Template Mixins</a></li><li><a href='        contracts.html'>Contract Programming</a></li><li><a href='        version.html'>Conditional Compilation</a></li><li><a href='        traits.html'>Traits</a></li><li><a href='        errors.html'>Error Handling</a></li><li><a href='        unittest.html'>Unit Tests</a></li><li><a href='        garbage.html'>Garbage Collection</a></li><li><a href='        float.html'>Floating Point</a></li><li><a href='        iasm.html'>D x86 Inline Assembler</a></li><li><a href='        ddoc.html'>Embedded Documentation</a></li><li><a href='        interfaceToC.html'>Interfacing to C</a></li><li><a href='        cpp_interface.html'>Interfacing to C++</a></li><li><a href='        portability.html'>Portability Guide</a></li><li><a href='        entity.html'>Named Character Entities</a></li><li><a href='        memory-safe-d.html'>Memory Safety</a></li><li><a href='        abi.html'>Application Binary Interface</a></li><li><a href='        simd.html'>Vector Extensions
+      </a></li></ul>
+    <li><a href='phobos/index.html'><span>Standard library</span></a></li>
+    <li><a href='http://code.dlang.org'><span>More libraries</span></a></li>
+    <li class='has-sub'><a href='#'><span>Community</span></a>
+      <ul><li><a href='        http://forum.dlang.org'>Forums</a></li><li><a href='        irc://irc.freenode.net/d'>IRC</a></li><li><a href='        http://github.com/D-Programming-Language'>D on GitHub</a></li><li><a href='        http://wiki.dlang.org'>Wiki</a></li><li><a href='        http://wiki.dlang.org/Review_Queue'>Review Queue</a></li><li><a href='        http://twitter.com/search?q=%23dlang'>Twitter</a></li><li><a href='        http://digitalmars.com/d/dlinks.html'>More Links
+      </a></li></ul>
+    <li class='has-sub'><a href='#'><span>Compilers &amp; Tools</span></a>
+      <ul><li><a href='        dmd-windows.html'>dmd &ndash; reference compiler</a></li><li><a href='        http://gdcproject.org'>gdc &ndash; gcc-based compiler</a></li><li><a href='        http://wiki.dlang.org/LDC'>ldc &ndash; LLVM-based compiler</a></li><li><a href='        rdmd.html'>rdmd &ndash; build tool</a></li><li><a href='        htod.html'>htod &ndash; .h to .d
+      </a></li></ul>
+    <li class='has-sub'><a href='#'><span>Books &amp; Articles</span></a>
+      <ul><li><a href='        http://ddili.org/ders/d.en/index.html'>Online Book (free)</a></li><li><a href='        http://wiki.dlang.org/Books'>More Books</a></li><li><a href='        howtos.html'>How-tos</a></li><li><a href='        faq.html'>FAQ</a></li><li><a href='        const-faq.html'>const(FAQ)</a></li><li><a href='        comparison.html'>Feature Overview</a></li><li><a href='        d-floating-point.html'>Floating Point</a></li><li><a href='        wc.html'>Example: wc</a></li><li><a href='        warnings.html'>Warnings</a></li><li><a href='        rationale.html'>Rationale</a></li><li><a href='        builtin.html'>Builtin Rationale</a></li><li><a href='        ctod.html'>C to D</a></li><li><a href='        cpptod.html'>C++ to D</a></li><li><a href='        pretod.html'>C Preprocessor vs D</a></li><li><a href='        code_coverage.html'>Code coverage analysis</a></li><li><a href='        exception-safe.html'>Exception Safety</a></li><li><a href='        hijack.html'>Hijacking</a></li><li><a href='        intro-to-datetime.html'>Introduction to std.datetime</a></li><li><a href='        lazy-evaluation.html'>Lazy Evaluation</a></li><li><a href='        migrate-to-shared.html'>Migrating to Shared</a></li><li><a href='        mixin.html'>Mixins</a></li><li><a href='        regular-expression.html'>Regular Expressions</a></li><li><a href='        safed.html'>SafeD</a></li><li><a href='        templates-revisited.html'>Templates Revisited</a></li><li><a href='        tuple.html'>Tuples</a></li><li><a href='        variadic-function-templates.html'>Variadic Templates</a></li><li><a href='        d-array-article.html'>D Slices
+      </a></li></ul>
+    <li class='has-sub'><a href='#'><span>Resources</span></a>
+      <ul><li><a href='        library/index.html'>NEW Library Reference Preview</a></li><li><a href='        bugstats.php'>Bug Tracker</a></li><li><a href='        http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li><li><a href='        http://wiki.dlang.org/Editors'>Editors</a></li><li><a href='        http://wiki.dlang.org/IDEs'>IDEs</a></li><li><a href='        dstyle.html'>The D Style</a></li><li><a href='        glossary.html'>Glossary</a></li><li><a href='        acknowledgements.html'>Acknowledgments</a></li><li><a href='        sitemap.html'>Sitemap
+      </a></li></ul>
+</ul></div>
+</div>
+
+<div class="hyphenate" id="content">    
+<div id="tools">	<span class="tip">		<a href="https://github.com/D-Programming-Language/dlang.org/edit/master/function.dd" class="button">Improve this page</a>
+		<span >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			local clone.
+		</span>
+	</span>
+	<span class="tip">		<a href="http://wiki.dlang.org/DocComments/Function" class="button">Page wiki</a>
+		<span >			View or edit the community-maintained wiki page associated with this page.
+		</span>
+	</span>
+</div>
+    <h1>Functions</h1>
+    
+    <!--Generated by Ddoc from function.dd-->
+
+
+
+<pre class="bnf notranslate"><a id="FuncDeclaration"><span class="gname">FuncDeclaration</span></a>:
+    <a href="declaration.html#StorageClasses"><i>StorageClasses</i></a><sub>opt</sub> <a href="declaration.html#BasicType"><i>BasicType</i></a> <a href="#FuncDeclarator"><i>FuncDeclarator</i></a> <a href="#FunctionBody"><i>FunctionBody</i></a>
+    <a href="#AutoFuncDeclaration"><i>AutoFuncDeclaration</i></a>
+
+<a id="AutoFuncDeclaration"><span class="gname">AutoFuncDeclaration</span></a>:
+    <a href="declaration.html#StorageClasses"><i>StorageClasses</i></a> <i>Identifier</i> <a href="#FuncDeclaratorSuffix"><i>FuncDeclaratorSuffix</i></a> <a href="#FunctionBody"><i>FunctionBody</i></a>
+
+<a id="FuncDeclarator"><span class="gname">FuncDeclarator</span></a>:
+    <a href="declaration.html#BasicType2"><i>BasicType2</i></a><sub>opt</sub> <i>Identifier</i> <a href="#FuncDeclaratorSuffix"><i>FuncDeclaratorSuffix</i></a>
+
+<a id="FuncDeclaratorSuffix"><span class="gname">FuncDeclaratorSuffix</span></a>:
+    <a href="#Parameters"><i>Parameters</i></a> <a href="#MemberFunctionAttributes"><i>MemberFunctionAttributes</i></a><sub>opt</sub>
+    <a href="template.html#TemplateParameters"><i>TemplateParameters</i></a> <a href="#Parameters"><i>Parameters</i></a> <a href="#MemberFunctionAttributes"><i>MemberFunctionAttributes</i></a><sub>opt</sub> <a href="template.html#Constraint"><i>Constraint</i></a><sub>opt</sub>
+</pre>
+
+<pre class="bnf notranslate"><a id="Parameters"><span class="gname">Parameters</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">(</span> <a href="#ParameterList"><i>ParameterList</i></a><sub>opt</sub> <span class="d_inlinecode donthyphenate notranslate">)</span>
+
+<a id="ParameterList"><span class="gname">ParameterList</span></a>:
+    <a href="#Parameter"><i>Parameter</i></a>
+    <a href="#Parameter"><i>Parameter</i></a> <span class="d_inlinecode donthyphenate notranslate">,</span> <i>ParameterList</i>
+    <span class="d_inlinecode donthyphenate notranslate">...</span>
+
+<a id="Parameter"><span class="gname">Parameter</span></a>:
+    <i>InOut</i><sub>opt</sub> <a href="declaration.html#BasicType"><i>BasicType</i></a> <a href="declaration.html#Declarator"><i>Declarator</i></a>
+    <i>InOut</i><sub>opt</sub> <a href="declaration.html#BasicType"><i>BasicType</i></a> <a href="declaration.html#Declarator"><i>Declarator</i></a> <span class="d_inlinecode donthyphenate notranslate">...</span>
+    <i>InOut</i><sub>opt</sub> <a href="declaration.html#BasicType"><i>BasicType</i></a> <a href="declaration.html#Declarator"><i>Declarator</i></a> = <a href="expression.html#AssignExpression"><i>AssignExpression</i></a>
+    <i>InOut</i><sub>opt</sub> <a href="declaration.html#Type"><i>Type</i></a>
+    <i>InOut</i><sub>opt</sub> <a href="declaration.html#Type"><i>Type</i></a> <span class="d_inlinecode donthyphenate notranslate">...</span>
+
+<a id="InOut"><span class="gname">InOut</span></a>:
+    <i>InOutX</i>
+    <i>InOut InOutX</i>
+
+<a id="InOutX"><span class="gname">InOutX</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">auto</span>
+    <a href="declaration.html#TypeCtor"><i>TypeCtor</i></a>
+    <span class="d_inlinecode donthyphenate notranslate">final</span>
+    <span class="d_inlinecode donthyphenate notranslate">in</span>
+    <span class="d_inlinecode donthyphenate notranslate">lazy</span>
+    <span class="d_inlinecode donthyphenate notranslate">out</span>
+    <span class="d_inlinecode donthyphenate notranslate">ref</span>
+    <span class="d_inlinecode donthyphenate notranslate">scope</span>
+
+<a id="FunctionAttributes"><span class="gname">FunctionAttributes</span></a>:
+    <a href="#FunctionAttribute"><i>FunctionAttribute</i></a>
+    <a href="#FunctionAttribute"><i>FunctionAttribute</i></a> <i>FunctionAttributes</i>
+
+<a id="FunctionAttribute"><span class="gname">FunctionAttribute</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">nothrow</span>
+    <span class="d_inlinecode donthyphenate notranslate">pure</span>
+    <a href="attribute.html#Property"><i>Property</i></a>
+
+<a id="MemberFunctionAttributes"><span class="gname">MemberFunctionAttributes</span></a>:
+    <a href="#MemberFunctionAttribute"><i>MemberFunctionAttribute</i></a>
+    <a href="#MemberFunctionAttribute"><i>MemberFunctionAttribute</i></a> <i>MemberFunctionAttributes</i>
+
+<a id="MemberFunctionAttribute"><span class="gname">MemberFunctionAttribute</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">const</span>
+    <span class="d_inlinecode donthyphenate notranslate">immutable</span>
+    <span class="d_inlinecode donthyphenate notranslate">inout</span>
+    <span class="d_inlinecode donthyphenate notranslate">shared</span>
+    <a href="#FunctionAttribute"><i>FunctionAttribute</i></a>
+</pre>
+
+<pre class="bnf notranslate"><a id="FunctionBody"><span class="gname">FunctionBody</span></a>:
+    <a href="statement.html#BlockStatement"><i>BlockStatement</i></a>
+    <a href="#FunctionContracts"><i>FunctionContracts</i></a><sub>opt</sub> <a href="#BodyStatement"><i>BodyStatement</i></a>
+    <a href="#FunctionContracts"><i>FunctionContracts</i></a>
+
+<a id="FunctionContracts"><span class="gname">FunctionContracts</span></a>:
+    <a href="#InStatement"><i>InStatement</i></a> <a href="#OutStatement"><i>OutStatement</i></a><sub>opt</sub>
+    <a href="#OutStatement"><i>OutStatement</i></a> <a href="#InStatement"><i>InStatement</i></a><sub>opt</sub>
+
+<a id="InStatement"><span class="gname">InStatement</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">in</span> <a href="statement.html#BlockStatement"><i>BlockStatement</i></a>
+
+<a id="OutStatement"><span class="gname">OutStatement</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">out</span> <a href="statement.html#BlockStatement"><i>BlockStatement</i></a>
+    <span class="d_inlinecode donthyphenate notranslate">out</span> <span class="d_inlinecode donthyphenate notranslate">(</span> <i>Identifier</i> <span class="d_inlinecode donthyphenate notranslate">)</span> <a href="statement.html#BlockStatement"><i>BlockStatement</i></a>
+
+<a id="BodyStatement"><span class="gname">BodyStatement</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">body</span> <a href="statement.html#BlockStatement"><i>BlockStatement</i></a>
+</pre>
+
+<h4>Contracts</h4>
+
+	<p>The <span class="d_inlinecode donthyphenate notranslate">in</span> and <span class="d_inlinecode donthyphenate notranslate">out</span> blocks of a function declaration specify
+	the pre- and post-conditions of the function. They are used in <a href="	contracts.html">Contract Programming</a>. The code inside these blocks should
+	not have any side-effects, including modifying function parameters
+	and/or return values.
+	</p>
+
+<h4>Function Return Values</h4>
+
+        <p>Function return values are considered to be rvalues.
+        This means they cannot be passed by reference to other functions.
+        </p>
+
+<h4>Functions Without Bodies</h4>
+
+	<p>Functions without bodies:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span> foo();
+</pre>
+
+	<p>that are not declared as <span class="d_inlinecode donthyphenate notranslate">abstract</span> are expected to have their implementations
+	elsewhere, and that implementation will be provided at the link step.
+	This enables an implementation of a function to be completely hidden from the user
+	of it, and the implementation may be in another language such as C, assembler, etc.
+	</p>
+
+<h4><a class="anchor" title="Permalink to this section" id="pure-functions" href="#pure-functions">Pure Functions</a></h4>
+
+        <p>Pure functions are functions which cannot access global or static, mutable
+        state save through their arguments. This can enable optimizations based on the fact
+        that a pure function is guaranteed to mutate nothing which isn't passed to it,
+        and in cases where the compiler can guarantee that a pure function cannot
+        alter its arguments, it can enable full, functional purity (i.e. the guarantee
+        that the function will always return the same result for the same arguments).
+        To that end, a pure function:
+        </p>
+
+        <ul>        <li>does not read or write any global or static mutable state</li>
+        <li>cannot call functions that are not pure</li>
+        <li>can override an impure function, but an impure function
+        cannot override a pure one</li>
+        <li>is covariant with an impure function</li>
+        <li>cannot perform I/O</li>
+        </ul>
+
+        <p>As a concession to practicality, a pure function can:</p>
+
+        <ul>        <li>allocate memory via a <a href="expression.html#NewExpression"><i>NewExpression</i></a></li>
+        <li>terminate the program</li>
+        <li>read and write the floating point exception flags</li>
+        <li>read and write the floating point mode flags, as long as those flags
+        are restored to their initial state upon function entry</li>
+        <li>perform impure operations in statements that are in a
+        <a href="version.html#ConditionalStatement"><i>ConditionalStatement</i></a>
+        controlled by a <a href="version.html#DebugCondition"><i>DebugCondition</i></a>.</li>
+        </ul>
+
+        <p>A pure function can throw exceptions.</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">int</span> x;
+<span class="d_keyword">immutable</span> <span class="d_keyword">int</span> y;
+<span class="d_keyword">const</span> <span class="d_keyword">int</span>* pz;
+
+<span class="d_keyword">pure</span> <span class="d_keyword">int</span> foo(<span class="d_keyword">int</span> i,
+             <span class="d_keyword">char</span>* p,
+             <span class="d_keyword">const</span> <span class="d_keyword">char</span>* q,
+             <span class="d_keyword">immutable</span> <span class="d_keyword">int</span>* s)
+{
+    <span class="d_keyword">debug</span> writeln(<span class="d_string">"in foo()"</span>); <span class="d_comment">// ok, impure code allowed in debug statement
+</span>    x = i;   <span class="d_comment">// error, modifying global state
+</span>    i = x;   <span class="d_comment">// error, reading mutable global state
+</span>    i = y;   <span class="d_comment">// ok, reading immutable global state
+</span>    i = *pz; <span class="d_comment">// error, reading const global state
+</span>    <span class="d_keyword">return</span> i;
+}
+</pre>
+
+
+<h4><a class="anchor" title="Permalink to this section" id="nothrow-functions" href="#nothrow-functions">Nothrow Functions</a></h4>
+
+        <p>Nothrow functions do not throw any exceptions derived
+        from class <i>Exception</i>.
+        </p>
+
+        <p>Nothrow functions are covariant with throwing ones.</p>
+
+<h4><a class="anchor" title="Permalink to this section" id="ref-functions" href="#ref-functions">Ref Functions</a></h4>
+
+        <p>Ref functions allow functions to return by reference.
+        This is analogous to ref function parameters.
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">ref</span> <span class="d_keyword">int</span> foo()
+{
+    <span class="d_keyword">auto</span> p = <span class="d_keyword">new</span> <span class="d_keyword">int</span>;
+    <span class="d_keyword">return</span> *p;
+}
+...
+foo() = 3;  <span class="d_comment">// reference returns can be lvalues
+</span></pre>
+
+<h4><a class="anchor" title="Permalink to this section" id="auto-functions" href="#auto-functions">Auto Functions</a></h4>
+
+    <p>Auto functions have their return type inferred from any
+        <a href="statement.html#ReturnStatement"><i>ReturnStatement</i></a>s in the function body.
+    </p>
+
+    <p>An auto function is declared without a return type.
+        If it does not already have a storage class, use the
+        <span class="d_keyword">auto</span> storage class.
+    </p>
+
+    <p>If there are multiple <i>ReturnStatement</i>s, the types
+        of them must be implicitly convertible to a common type.
+        If there are no <i>ReturnStatement</i>s, the return type is inferred
+        to be <span class="d_keyword">void</span>.
+
+<pre class="d_code notranslate"><span class="d_keyword">auto</span> foo(<span class="d_keyword">int</span> x) { <span class="d_keyword">return</span> x + 3; }          <span class="d_comment">// inferred to be int
+</span><span class="d_keyword">auto</span> foo(<span class="d_keyword">int</span> x) { <span class="d_keyword">return</span> x; <span class="d_keyword">return</span> 2.5; }  <span class="d_comment">// inferred to be double
+</span></pre>
+    </p>
+
+<h4><a class="anchor" title="Permalink to this section" id="auto-ref-functions" href="#auto-ref-functions">Auto Ref Functions</a></h4>
+
+    <p>Auto ref functions infer their return type just as
+        <a href="#auto-functions">auto functions</a> do.
+        In addition, they become <a href="#ref-functions">ref functions</a>
+        if all return expressions are lvalues,
+        and it would not be a reference to a local or a parameter.
+
+<pre class="d_code notranslate"><span class="d_keyword">auto</span> <span class="d_keyword">ref</span> foo(<span class="d_keyword">int</span> x)     { <span class="d_keyword">return</span> x; }  <span class="d_comment">// value return
+</span><span class="d_keyword">auto</span> <span class="d_keyword">ref</span> foo()          { <span class="d_keyword">return</span> 3; }  <span class="d_comment">// value return
+</span><span class="d_keyword">auto</span> <span class="d_keyword">ref</span> foo(<span class="d_keyword">ref</span> <span class="d_keyword">int</span> x) { <span class="d_keyword">return</span> x; }  <span class="d_comment">// ref return
+</span><span class="d_keyword">auto</span> <span class="d_keyword">ref</span> foo(<span class="d_keyword">out</span> <span class="d_keyword">int</span> x) { <span class="d_keyword">return</span> x; }  <span class="d_comment">// ref return
+</span><span class="d_keyword">auto</span> <span class="d_keyword">ref</span> foo() { <span class="d_keyword">static</span> <span class="d_keyword">int</span> x; <span class="d_keyword">return</span> x; }  <span class="d_comment">// ref return
+</span></pre>
+    </p>
+
+    <p>The ref-ness of a function is determined from all
+        <a href="statement.html#ReturnStatement"><i>ReturnStatement</i></a>s in the function body:
+
+<pre class="d_code notranslate"><span class="d_keyword">auto</span> <span class="d_keyword">ref</span> foo(<span class="d_keyword">ref</span> <span class="d_keyword">int</span> x) { <span class="d_keyword">return</span> 3; <span class="d_keyword">return</span> x; }  <span class="d_comment">// ok, value return
+</span><span class="d_keyword">auto</span> <span class="d_keyword">ref</span> foo(<span class="d_keyword">ref</span> <span class="d_keyword">int</span> x) { <span class="d_keyword">return</span> x; <span class="d_keyword">return</span> 3; }  <span class="d_comment">// ok, value return
+</span><span class="d_keyword">auto</span> <span class="d_keyword">ref</span> foo(<span class="d_keyword">ref</span> <span class="d_keyword">int</span> x, <span class="d_keyword">ref</span> <span class="d_keyword">double</span> y)
+{
+    <span class="d_keyword">return</span> x; <span class="d_keyword">return</span> y;
+    <span class="d_comment">// The return type is deduced to double, but cast(double)x is not an lvalue,
+</span>    <span class="d_comment">// then become a value return.
+</span>}
+</pre>
+    </p>
+
+    <p>Auto ref function can have explicit return type.
+
+<pre class="d_code notranslate"><span class="d_keyword">auto</span> <span class="d_keyword">ref</span> <span class="d_keyword">int</span> foo(<span class="d_keyword">ref</span> <span class="d_keyword">int</span> x) { <span class="d_keyword">return</span> x; }  <span class="d_comment">// ok, ref return
+</span><span class="d_keyword">auto</span> <span class="d_keyword">ref</span> <span class="d_keyword">int</span> foo(<span class="d_keyword">double</span> x) { <span class="d_keyword">return</span> x; }   <span class="d_comment">// error, cannot convert double to int
+</span></pre>
+    </p>
+
+
+<h4><a class="anchor" title="Permalink to this section" id="inout-functions" href="#inout-functions">Inout Functions</a></h4>
+
+    <p>Functions that deal with mutable, const, or immutable types with
+        equanimity often need to transmit their type to the return value:
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span>[] foo(<span class="d_keyword">int</span>[] a, <span class="d_keyword">int</span> x, <span class="d_keyword">int</span> y) { <span class="d_keyword">return</span> a[x .. y]; }
+
+<span class="d_keyword">const</span>(<span class="d_keyword">int</span>)[] foo(<span class="d_keyword">const</span>(<span class="d_keyword">int</span>)[] a, <span class="d_keyword">int</span> x, <span class="d_keyword">int</span> y) { <span class="d_keyword">return</span> a[x .. y]; }
+
+<span class="d_keyword">immutable</span>(<span class="d_keyword">int</span>)[] foo(<span class="d_keyword">immutable</span>(<span class="d_keyword">int</span>)[] a, <span class="d_keyword">int</span> x, <span class="d_keyword">int</span> y) { <span class="d_keyword">return</span> a[x .. y]; }
+</pre>
+    </p>
+
+    <p>The code generated by these three functions is identical.
+        To indicate that these can be one function, the <span class="d_keyword">inout</span>
+        type constructor is employed:
+
+<pre class="d_code notranslate"><span class="d_keyword">inout</span>(<span class="d_keyword">int</span>)[] foo(<span class="d_keyword">inout</span>(<span class="d_keyword">int</span>)[] a, <span class="d_keyword">int</span> x, <span class="d_keyword">int</span> y) { <span class="d_keyword">return</span> a[x .. y]; }
+</pre>
+    </p>
+
+    <p>The <span class="d_keyword">inout</span> forms a wildcard that stands in for
+        any of mutable, const, immutable, inout, or inout const. When the
+        function is called, the inout of the return type is changed to whatever
+        the mutable, const, immutable, inout, or inout const status of the
+        argument type to the parameter inout was.
+    </p>
+
+    <p>Inout types can be implicitly converted to const or inout const,
+        but to nothing else. Other types cannot be implicitly converted to inout.
+        Casting to or from inout is not allowed in @safe functions.
+    </p>
+
+    <p>A set of arguments to a function with inout parameters is considered
+        a match if any inout argument types match exactly, or:</p>
+
+    <ol>        <li>No argument types are composed of inout types.</li>
+        <li>A mutable, const or immutable argument type can be matched against each
+        corresponding parameter inout type.</li>
+    </ol>
+
+    <p>If such a match occurs, the inout is considered the common qualifier of
+        the matched qualifiers. If more than two parameters exist, the common
+        qualifier calculation is recursively applied.
+    </p>
+
+    <center><table><caption>Common qualifier of the two type qualifiers</caption>        <tr><td></td><td><i>mutable</i></td><td><span class="d_inlinecode donthyphenate notranslate">const</span></td><td><span class="d_inlinecode donthyphenate notranslate">immutable</span></td><td><span class="d_inlinecode donthyphenate notranslate">inout</span></td><td><span class="d_inlinecode donthyphenate notranslate">inout const</span></td></tr>
+        <tr><td><i>mutable</i> (= m)</td><td>m</td><td>c</td><td>c</td><td>c</td><td>c</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">const</span> (= c)</td><td>c</td><td>c</td><td>c</td><td>c</td><td>c</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">immutable</span> (= i)</td><td>c</td><td>c</td><td>i</td><td>wc</td><td>wc</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">inout</span> (= w)</td><td>c</td><td>c</td><td>wc</td><td>w</td><td>wc</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">inout const</span> (= wc)</td><td>c</td><td>c</td><td>wc</td><td>wc</td><td>wc</td></tr>
+    </table></center>
+
+    <p>The inout in the return type is then rewritten to be the inout matched
+        qualifiers:
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span>[] ma;
+<span class="d_keyword">const</span>(<span class="d_keyword">int</span>)[] ca;
+<span class="d_keyword">immutable</span>(<span class="d_keyword">int</span>)[] ia;
+
+<span class="d_keyword">inout</span>(<span class="d_keyword">int</span>)[] foo(<span class="d_keyword">inout</span>(<span class="d_keyword">int</span>)[] a) { <span class="d_keyword">return</span> a; }
+<span class="d_keyword">void</span> test1()
+{
+    <span class="d_comment">// inout matches to mutable, so inout(int)[] is
+</span>    <span class="d_comment">// rewritten to int[]
+</span>    <span class="d_keyword">int</span>[] x = foo(ma);
+
+    <span class="d_comment">// inout matches to const, so inout(int)[] is
+</span>    <span class="d_comment">// rewritten to const(int)[]
+</span>    <span class="d_keyword">const</span>(<span class="d_keyword">int</span>)[] y = foo(ca);
+
+    <span class="d_comment">// inout matches to immutable, so inout(int)[] is
+</span>    <span class="d_comment">// rewritten to immutable(int)[]
+</span>    <span class="d_keyword">immutable</span>(<span class="d_keyword">int</span>)[] z = foo(ia);
+}
+
+<span class="d_keyword">inout</span>(<span class="d_keyword">const</span>(<span class="d_keyword">int</span>))[] bar(<span class="d_keyword">inout</span>(<span class="d_keyword">int</span>)[] a) { <span class="d_keyword">return</span> a; }
+<span class="d_keyword">void</span> test2()
+{
+    <span class="d_comment">// inout matches to mutable, so inout(const(int))[] is
+</span>    <span class="d_comment">// rewritten to const(int)[]
+</span>    <span class="d_keyword">const</span>(<span class="d_keyword">int</span>)[] x = foo(ma);
+
+    <span class="d_comment">// inout matches to const, so inout(const(int))[] is
+</span>    <span class="d_comment">// rewritten to const(int)[]
+</span>    <span class="d_keyword">const</span>(<span class="d_keyword">int</span>)[] y = foo(ca);
+
+    <span class="d_comment">// inout matches to immutable, so inout(int)[] is
+</span>    <span class="d_comment">// rewritten to immutable(int)[]
+</span>    <span class="d_keyword">immutable</span>(<span class="d_keyword">int</span>)[] z = foo(ia);
+}
+</pre>
+    </p>
+
+    <p><b>Note:</b> Shared types are not overlooked. Shared types cannot
+        be matched with inout.
+    </p>
+
+
+<h4><a class="anchor" title="Permalink to this section" id="property-functions" href="#property-functions">Property Functions</a></h4>
+
+        <p>Property functions are tagged with the <span class="d_inlinecode donthyphenate notranslate">@property</span>
+        attribute. They cannot be called with parentheses (hence
+        they act like fields except in some cases).
+        </p>
+
+        <p>If a property function has no parameters, it works as a getter.
+        If has exactly one parameter, it works as a setter.
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span> m_x;
+    @property
+    {
+        <span class="d_keyword">int</span> x() { <span class="d_keyword">return</span> m_x; }
+        <span class="d_keyword">int</span> x(<span class="d_keyword">int</span> newx) { <span class="d_keyword">return</span> m_x = newx; }
+
+        <span class="d_keyword">int</span> <span class="d_keyword">function</span>(<span class="d_keyword">int</span>, <span class="d_keyword">int</span>) adder()
+        {
+            <span class="d_keyword">return</span> <span class="d_keyword">function</span> <span class="d_keyword">int</span>(<span class="d_keyword">int</span> a, <span class="d_keyword">int</span> b) { <span class="d_keyword">return</span> a + b; }
+        }
+    }
+}
+<span class="d_keyword">void</span> main()
+{
+    S s;
+    s.x;        <span class="d_comment">// lowered to s.x()
+</span>    s.x = 3;    <span class="d_comment">// lowered to s.x(3)
+</span>
+    <span class="d_comment">//s.x();    // NG: lowered to s.x()(), but the int value
+</span>                <span class="d_comment">//     returned by s.x() is not callable
+</span>    <span class="d_comment">//s.x(3);   // NG: lowered to s.x()(3), but the int value
+</span>                <span class="d_comment">//     returned by s.x() is not callable
+</span>    <span class="d_keyword">assert</span>(s.adder(1, 2) == 3);
+                <span class="d_comment">// OK lowered to s.adder()(1, 2)
+</span>}
+</pre>
+
+        <p>If a getter property function returns a reference to other storage,
+        it also works as a setter.
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span> m_x;
+    @property <span class="d_keyword">ref</span> <span class="d_keyword">int</span> x() { <span class="d_keyword">return</span> m_x; }
+}
+<span class="d_keyword">void</span> main()
+{
+    S s;
+    <span class="d_keyword">int</span> n = s.x;  <span class="d_comment">// s.x()
+</span>    <span class="d_keyword">assert</span>(s.m_x == n);
+    s.x = 2;      <span class="d_comment">// s.x() = 2;
+</span>    <span class="d_keyword">assert</span>(s.m_x == 2);
+}
+</pre>
+
+        <p>In most places, getter property functions are called immediately.
+        One exceptional case is the address operator.
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span> m_x;
+    @property     <span class="d_keyword">int</span> x1() { <span class="d_keyword">return</span> m_x; }
+    @property <span class="d_keyword">ref</span> <span class="d_keyword">int</span> x2() { <span class="d_keyword">return</span> m_x; }
+}
+<span class="d_keyword">void</span> main()
+{
+    S s;
+    <span class="d_keyword">auto</span> x1 = &amp;s.x1;
+    <span class="d_keyword">auto</span> x2 = &amp;s.x2;
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">is</span>(<span class="d_keyword">typeof</span>(x1) == <span class="d_keyword">delegate</span>));
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">is</span>(<span class="d_keyword">typeof</span>(x2) == <span class="d_keyword">delegate</span>));
+    <span class="d_comment">// Both x1 and x2 are delegate, not int pointer.
+</span>
+    <span class="d_keyword">int</span> n = x1();
+    <span class="d_keyword">assert</span>(s.m_x == n);
+    x2() = 1;
+    <span class="d_keyword">assert</span>(s.m_x == 1);
+}
+</pre>
+
+        <p>Even if the given operand is a property function, the address operator
+        returns the address of the property function rather than the address of
+        its return value.
+        </p>
+
+
+<h4><a class="anchor" title="Permalink to this section" id="optional-parenthesis" href="#optional-parenthesis">Optional parenthesis</a></h4>
+
+        <p>If a function call does not take any arguments syntactically,
+        it is callable without parenthesis, like a getter <a href="#property-functions">property functions</a>.
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span> foo() {}   <span class="d_comment">// no arguments
+</span><span class="d_keyword">void</span> bar(<span class="d_keyword">int</span>[] arr) {}  <span class="d_comment">// for UFCS
+</span>
+<span class="d_keyword">void</span> main()
+{
+    foo();      <span class="d_comment">// OK
+</span>    foo;        <span class="d_comment">// also OK
+</span>
+    <span class="d_keyword">int</span>[] arr;
+    arr.bar();  <span class="d_comment">// OK
+</span>    arr.bar;    <span class="d_comment">// also OK
+</span>}
+</pre>
+
+        <p>However, assignment syntax is disallowed unlike with property functions.
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">void</span> foo(<span class="d_keyword">int</span>) {}  <span class="d_comment">// one argument
+</span>}
+<span class="d_keyword">void</span> main()
+{
+    S s;
+    s.foo(1);     <span class="d_comment">// OK
+</span>    <span class="d_comment">//s.foo = 1;  // disallowed
+</span>}
+</pre>
+
+<h4><a class="anchor" title="Permalink to this section" id="virtual-functions" href="#virtual-functions">Virtual Functions</a></h4>
+
+        <p>Virtual functions are functions that are called indirectly through a
+        function pointer table, called a vtbl[], rather than directly. All
+        <span class="d_inlinecode donthyphenate notranslate">public</span> and <span class="d_inlinecode donthyphenate notranslate">protected</span> member functions which are non-static and
+        aren't templatized are virtual unless the compiler can determine that
+        they will never be overridden (e.g. they're marked with <span class="d_inlinecode donthyphenate notranslate">final</span> and
+        don't override any functions in a base class), in which case, it will
+        make them non-virtual. This results in fewer bugs caused by not
+        declaring a function virtual and then overriding it anyway.
+        </p>
+
+        <p>Member functions which are <span class="d_inlinecode donthyphenate notranslate">private</span> or <span class="d_inlinecode donthyphenate notranslate">package</span> are never
+        virtual, and hence cannot be overridden.
+        </p>
+
+        <p>Functions with non-D linkage cannot be virtual and hence cannot be
+        overridden.
+        </p>
+
+        <p>Member template functions cannot be virtual and hence cannot be
+        overridden.
+        </p>
+
+        <p>Functions marked as <span class="d_inlinecode donthyphenate notranslate">final</span> may not be overridden in a
+        derived class, unless they are also <span class="d_inlinecode donthyphenate notranslate">private</span>.
+        For example:
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">class</span> A
+{
+    <span class="d_keyword">int</span> def() { ... }
+    <span class="d_keyword">final</span> <span class="d_keyword">int</span> foo() { ... }
+    <span class="d_keyword">final</span> <span class="d_keyword">private</span> <span class="d_keyword">int</span> bar() { ... }
+    <span class="d_keyword">private</span> <span class="d_keyword">int</span> abc() { ... }
+}
+
+<span class="d_keyword">class</span> B : A
+{
+    <span class="d_keyword">override</span> <span class="d_keyword">int</span> def() { ... }  <span class="d_comment">// ok, overrides A.def
+</span>    <span class="d_keyword">override</span> <span class="d_keyword">int</span> foo() { ... }  <span class="d_comment">// error, A.foo is final
+</span>    <span class="d_keyword">int</span> bar() { ... }  <span class="d_comment">// ok, A.bar is final private, but not virtual
+</span>    <span class="d_keyword">int</span> abc() { ... }  <span class="d_comment">// ok, A.abc is not virtual, B.abc is virtual
+</span>}
+
+<span class="d_keyword">void</span> test(A a)
+{
+    a.def();    <span class="d_comment">// calls B.def
+</span>    a.foo();    <span class="d_comment">// calls A.foo
+</span>    a.bar();    <span class="d_comment">// calls A.bar
+</span>    a.abc();    <span class="d_comment">// calls A.abc
+</span>}
+
+<span class="d_keyword">void</span> func()
+{
+    B b = <span class="d_keyword">new</span> B();
+    test(b);
+}
+</pre>
+
+        <p>Covariant return types
+        are supported, which means that the
+        overriding function in a derived class can return a type
+        that is derived from the type returned by the overridden function:
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">class</span> A { }
+<span class="d_keyword">class</span> B : A { }
+
+<span class="d_keyword">class</span> Foo
+{
+    A test() { <span class="d_keyword">return</span> <span class="d_keyword">null</span>; }
+}
+
+<span class="d_keyword">class</span> Bar : Foo
+{
+    <span class="d_keyword">override</span> B test() { <span class="d_keyword">return</span> <span class="d_keyword">null</span>; } <span class="d_comment">// overrides and is covariant with Foo.test()
+</span>}
+</pre>
+
+        <p>Virtual functions all have a hidden parameter called the
+        <i>this</i> reference, which refers to the class object for which
+        the function is called.
+        </p>
+
+        <p>To avoid dynamic binding on member function call, insert
+        base class name before the member function name. For example:
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">class</span> B
+{
+    <span class="d_keyword">int</span> foo() { <span class="d_keyword">return</span> 1; }
+}
+<span class="d_keyword">class</span> C : B
+{
+    <span class="d_keyword">override</span> <span class="d_keyword">int</span> foo() { <span class="d_keyword">return</span> 2; }
+
+    <span class="d_keyword">void</span> test()
+    {
+        <span class="d_keyword">assert</span>(B.foo() == 1);  <span class="d_comment">// translated to this.B.foo(), and
+</span>                               <span class="d_comment">// calls B.foo statically.
+</span>        <span class="d_keyword">assert</span>(C.foo() == 2);  <span class="d_comment">// calls C.foo statically, even if
+</span>                               <span class="d_comment">// the actual instance of 'this' is D.
+</span>    }
+}
+<span class="d_keyword">class</span> D : C
+{
+    <span class="d_keyword">override</span> <span class="d_keyword">int</span> foo() { <span class="d_keyword">return</span> 3; }
+}
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">auto</span> d = <span class="d_keyword">new</span> D();
+    <span class="d_keyword">assert</span>(d.foo() == 3);    <span class="d_comment">// calls D.foo
+</span>    <span class="d_keyword">assert</span>(d.B.foo() == 1);  <span class="d_comment">// calls B.foo
+</span>    <span class="d_keyword">assert</span>(d.C.foo() == 2);  <span class="d_comment">// calls C.foo
+</span>    d.test();
+}
+</pre>
+
+<h4><a class="anchor" title="Permalink to this section" id="function-inheritance" href="#function-inheritance">Function Inheritance and Overriding</a></h4>
+
+        A function in a derived class with the same name and parameter
+        types as a function in a base class overrides that function:
+
+<pre class="d_code notranslate"><span class="d_keyword">class</span> A
+{
+    <span class="d_keyword">int</span> foo(<span class="d_keyword">int</span> x) { ... }
+}
+
+<span class="d_keyword">class</span> B : A
+{
+    <span class="d_keyword">override</span> <span class="d_keyword">int</span> foo(<span class="d_keyword">int</span> x) { ... }
+}
+
+<span class="d_keyword">void</span> test()
+{
+    B b = <span class="d_keyword">new</span> B();
+    bar(b);
+}
+
+<span class="d_keyword">void</span> bar(A a)
+{
+    a.foo(1);   <span class="d_comment">// calls B.foo(int)
+</span>}
+</pre>
+
+        <p>However, when doing overload resolution, the functions in the base
+        class are not considered:
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">class</span> A
+{
+    <span class="d_keyword">int</span> foo(<span class="d_keyword">int</span> x) { ... }
+    <span class="d_keyword">int</span> foo(<span class="d_keyword">long</span> y) { ... }
+}
+
+<span class="d_keyword">class</span> B : A
+{
+    <span class="d_keyword">override</span> <span class="d_keyword">int</span> foo(<span class="d_keyword">long</span> x) { ... }
+}
+
+<span class="d_keyword">void</span> test()
+{
+    B b = <span class="d_keyword">new</span> B();
+    b.foo(1);  <span class="d_comment">// calls B.foo(long), since A.foo(int) not considered
+</span>    A a = b;
+
+    a.foo(1);  <span class="d_comment">// issues runtime error (instead of calling A.foo(int))
+</span>}
+</pre>
+
+        <p>To consider the base class's functions in the overload resolution
+        process, use an <i>AliasDeclaration</i>:
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">class</span> A
+{
+    <span class="d_keyword">int</span> foo(<span class="d_keyword">int</span> x) { ... }
+    <span class="d_keyword">int</span> foo(<span class="d_keyword">long</span> y) { ... }
+}
+
+<span class="d_keyword">class</span> B : A
+{
+    <b><i><span class="d_keyword">alias</span> foo = A.foo;</i></b>
+    <span class="d_keyword">override</span> <span class="d_keyword">int</span> foo(<span class="d_keyword">long</span> x) { ... }
+}
+
+<span class="d_keyword">void</span> test()
+{
+    B b = <span class="d_keyword">new</span> B();
+    bar(b);
+}
+
+<span class="d_keyword">void</span> bar(A a)
+{
+    a.foo(1);      <span class="d_comment">// calls A.foo(int)
+</span>    B b = <span class="d_keyword">new</span> B();
+    b.foo(1);      <span class="d_comment">// calls A.foo(int)
+</span>}
+</pre>
+
+        <p>If such an <i>AliasDeclaration</i> is not used, the derived
+        class's functions completely override all the functions of the
+        same name in the base class, even if the types of the parameters
+        in the base class functions are different. If, through
+        implicit conversions to the base class, those other functions do
+        get called, a <span class="d_inlinecode donthyphenate notranslate">core.exception.HiddenFuncError</span> exception is raised:
+        </p>
+<pre class="d_code notranslate"><span class="d_keyword">import</span> core.exception;
+
+<span class="d_keyword">class</span> A
+{
+    <span class="d_keyword">void</span> <b><i>set</i></b>(<span class="d_keyword">long</span> i) { }
+    <span class="d_keyword">void</span> set(<span class="d_keyword">int</span> i)  { }
+}
+<span class="d_keyword">class</span> B : A
+{
+    <span class="d_keyword">void</span> set(<span class="d_keyword">long</span> i) { }
+}
+
+<span class="d_keyword">void</span> foo(A a)
+{
+    <span class="d_keyword">int</span> i;
+    <span class="d_keyword">try</span>
+    {
+        a.set(3);   <span class="d_comment">// error, throws runtime exception since
+</span>                    <span class="d_comment">// A.set(int) should not be available from B
+</span>    }
+    <span class="d_keyword">catch</span> (<b><i>HiddenFuncError</i></b> o)
+    {
+        i = 1;
+    }
+    <span class="d_keyword">assert</span>(i == 1);
+}
+
+<span class="d_keyword">void</span> main()
+{
+    foo(<span class="d_keyword">new</span> B);
+}
+</pre>
+        <p>Note that the this current runtime behavior is deprecated.
+        The compiler will currently emit a compile-time error for the
+        above test-case unless the (<b>-d</b>) deprecation switch is enabled.
+        In the future this deprecated runtime-only checking feature will be removed.</p>
+
+        <p>If an <span class="d_inlinecode donthyphenate notranslate">HiddenFuncError</span> exception is thrown in your program,
+        the use of overloads and overrides needs to be reexamined in the
+        relevant classes.</p>
+
+        <p>The <span class="d_inlinecode donthyphenate notranslate">HiddenFuncError</span> exception is not thrown if the
+        hidden function is disjoint, as far as overloading is concerned,
+        from all the other virtual functions is the inheritance hierarchy.</p>
+
+
+        <p>A function parameter's default value is not inherited:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">class</span> A
+{
+    <span class="d_keyword">void</span> <b><i>foo</i></b>(<span class="d_keyword">int</span> x = 5) { ... }
+}
+
+<span class="d_keyword">class</span> B : A
+{
+    <span class="d_keyword">void</span> foo(<span class="d_keyword">int</span> <b><i>x = 7</i></b>) { ... }
+}
+
+<span class="d_keyword">class</span> C : B
+{
+    <span class="d_keyword">void</span> foo(<span class="d_keyword">int</span> <b><i>x</i></b>) { ... }
+}
+
+<span class="d_keyword">void</span> test()
+{
+    A a = <span class="d_keyword">new</span> A();
+    a.foo();       <span class="d_comment">// calls A.foo(5)
+</span>
+    B b = <span class="d_keyword">new</span> B();
+    b.foo();       <span class="d_comment">// calls B.foo(7)
+</span>
+    C c = <span class="d_keyword">new</span> C();
+    c.foo();       <span class="d_comment">// error, need an argument for C.foo
+</span>}
+</pre>
+
+        <p>If a derived class overrides a base class member function with diferrent
+        <a href="#FunctionAttributes"><i>FunctionAttributes</i></a>, the missing attributes will be
+        automatically compensated by the compiler.</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">class</span> B
+{
+    <span class="d_keyword">void</span> foo() <span class="d_keyword">pure</span> <span class="d_keyword">nothrow</span> @safe {}
+}
+<span class="d_keyword">class</span> D : B
+{
+    <span class="d_keyword">override</span> <span class="d_keyword">void</span> foo() {}
+}
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">auto</span> d = <span class="d_keyword">new</span> D();
+    <span class="d_keyword">pragma</span>(msg, <span class="d_keyword">typeof</span>(&amp;d.foo));
+    <span class="d_comment">// prints "void delegate() pure nothrow @safe" in compile time
+</span>}
+</pre>
+
+
+<h4>Inline Functions</h4>
+
+        <p>There is no inline keyword. The compiler makes the decision whether to
+        inline a function or not, analogously to the register keyword no
+        longer being relevant to a
+        compiler's decisions on enregistering variables.
+        (There is no register keyword either.)</p>
+
+        <p>If a <a href="expression.html#FunctionLiteral"><i>FunctionLiteral</i></a> is immediately called,
+        its inlining would be enforced normally.</p>
+
+
+<h3><a class="anchor" title="Permalink to this section" id="function-overloading" href="#function-overloading">Function Overloading</a></h3>
+
+        <p>Functions are overloaded based on how well the arguments
+        to a function can match up with the parameters.
+        The function with the <i>best</i> match is selected.
+        The levels of matching are:
+        </p>
+
+        <ol>        <li>no match</li>
+        <li>match with implicit conversions</li>
+        <li>match with conversion to const</li>
+        <li>exact match</li>
+        </ol>
+
+        <p>Each argument (including any <span class="d_inlinecode donthyphenate notranslate">this</span> pointer) is
+        compared against the function's corresponding parameter, to
+        determine the match level for that argument. The match level
+        for a function is the <i>worst</i> match level of each of its
+        arguments.</p>
+
+        <p>Literals do not match <span class="d_inlinecode donthyphenate notranslate">ref</span> or <span class="d_inlinecode donthyphenate notranslate">out</span> parameters.</p>
+
+
+        <p>If two or more functions have the same match level,
+        then <a class="anchor" title="Permalink to this section" id="partial-ordering" href="#partial-ordering"><i>partial ordering</i></a>
+        is used to try to find the best match.
+        Partial ordering finds the most specialized function.
+        If neither function is more specialized than the other,
+        then it is an ambiguity error.
+        Partial ordering is determined for functions <span class="d_inlinecode donthyphenate notranslate">f()</span>
+        and <span class="d_inlinecode donthyphenate notranslate">g()</span> by taking the parameter types of <span class="d_inlinecode donthyphenate notranslate">f()</span>,
+        constructing a list of arguments by taking the default values
+        of those types, and attempting to match them against <span class="d_inlinecode donthyphenate notranslate">g()</span>.
+        If it succeeds, then <span class="d_inlinecode donthyphenate notranslate">g()</span> is at least as specialized
+        as <span class="d_inlinecode donthyphenate notranslate">f()</span>.
+        For example:
+        </p>
+<pre class="d_code notranslate"><span class="d_keyword">class</span> A { }
+<span class="d_keyword">class</span> B : A { }
+<span class="d_keyword">class</span> C : B { }
+<span class="d_keyword">void</span> foo(A);
+<span class="d_keyword">void</span> foo(B);
+
+<span class="d_keyword">void</span> test()
+{
+    C c;
+    <span class="d_comment">/* Both foo(A) and foo(B) match with implicit conversion rules.
+     * Applying partial ordering rules,
+     * foo(B) cannot be called with an A, and foo(A) can be called
+     * with a B. Therefore, foo(B) is more specialized, and is selected.
+     */</span>
+    foo(c); <span class="d_comment">// calls foo(B)
+</span>}
+</pre>
+        <p>A function with a variadic argument is considered less
+        specialized than a function without.
+        </p>
+
+
+        <p>Functions defined with non-D linkage cannot be overloaded.
+        This is because the name mangling might not take the parameter types
+        into account.
+        </p>
+
+<h3><a class="anchor" title="Permalink to this section" id="overload-sets" href="#overload-sets">Overload Sets</a></h3>
+
+        <p>Functions declared at the same scope overload against each
+        other, and are called an <i>Overload Set</i>.
+        A typical example of an overload set are functions defined
+        at module level:
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">module</span> A;
+<span class="d_keyword">void</span> foo() { }
+<span class="d_keyword">void</span> foo(<span class="d_keyword">long</span> i) { }
+</pre>
+
+        <p><span class="d_inlinecode donthyphenate notranslate">A.foo()</span> and <span class="d_inlinecode donthyphenate notranslate">A.foo(long)</span> form an overload set.
+        A different module can also define functions with the same name:
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">module</span> B;
+<span class="d_keyword">class</span> C { }
+<span class="d_keyword">void</span> foo(C) { }
+<span class="d_keyword">void</span> foo(<span class="d_keyword">int</span> i) { }
+</pre>
+
+        <p>and A and B can be imported by a third module, C.
+        Both overload sets, the <span class="d_inlinecode donthyphenate notranslate">A.foo</span> overload set and the <span class="d_inlinecode donthyphenate notranslate">B.foo</span>
+        overload set, are found. An instance of <span class="d_inlinecode donthyphenate notranslate">foo</span> is selected
+        based on it matching in exactly one overload set:
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">import</span> A;
+<span class="d_keyword">import</span> B;
+
+<span class="d_keyword">void</span> bar(C c)
+{
+    foo();    <span class="d_comment">// calls A.foo()
+</span>    foo(1L);  <span class="d_comment">// calls A.foo(long)
+</span>    foo(c);   <span class="d_comment">// calls B.foo(C)
+</span>    foo(1,2); <span class="d_comment">// error, does not match any foo
+</span>    foo(1);   <span class="d_comment">// error, matches A.foo(long) and B.foo(int)
+</span>    A.foo(1); <span class="d_comment">// calls A.foo(long)
+</span>}
+</pre>
+
+        <p>Even though <span class="d_inlinecode donthyphenate notranslate">B.foo(int)</span> is a better match than <span class="d_inlinecode donthyphenate notranslate">        A.foo(long)</span> for <span class="d_inlinecode donthyphenate notranslate">foo(1)</span>,
+        it is an error because the two matches are in
+        different overload sets.
+        </p>
+
+        <p>Overload sets can be merged with an alias declaration:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">import</span> A;
+<span class="d_keyword">import</span> B;
+
+<span class="d_keyword">alias</span> foo = A.foo;
+<span class="d_keyword">alias</span> foo = B.foo;
+
+<span class="d_keyword">void</span> bar(C c)
+{
+    foo();    <span class="d_comment">// calls A.foo()
+</span>    foo(1L);  <span class="d_comment">// calls A.foo(long)
+</span>    foo(c);   <span class="d_comment">// calls B.foo(C)
+</span>    foo(1,2); <span class="d_comment">// error, does not match any foo
+</span>    foo(1);   <span class="d_comment">// calls B.foo(int)
+</span>    A.foo(1); <span class="d_comment">// calls A.foo(long)
+</span>}
+</pre>
+
+<h4><a class="anchor" title="Permalink to this section" id="parameters" href="#parameters">Function Parameters</a></h4>
+
+        <p>Parameter storage classes are <span class="d_inlinecode donthyphenate notranslate">in</span>, <span class="d_inlinecode donthyphenate notranslate">out</span>,
+        <span class="d_inlinecode donthyphenate notranslate">ref</span>, <span class="d_inlinecode donthyphenate notranslate">lazy</span>, <span class="d_inlinecode donthyphenate notranslate">const</span>, <span class="d_inlinecode donthyphenate notranslate">immutable</span>, <span class="d_inlinecode donthyphenate notranslate">shared</span>,
+        <span class="d_inlinecode donthyphenate notranslate">inout</span> or
+        <span class="d_inlinecode donthyphenate notranslate">scope</span>.
+        For example:
+        </p>
+<pre class="d_code notranslate"><span class="d_keyword">int</span> foo(<span class="d_keyword">in</span> <span class="d_keyword">int</span> x, <span class="d_keyword">out</span> <span class="d_keyword">int</span> y, <span class="d_keyword">ref</span> <span class="d_keyword">int</span> z, <span class="d_keyword">int</span> q);
+</pre>
+
+        <p>x is <span class="d_inlinecode donthyphenate notranslate">in</span>, y is <span class="d_inlinecode donthyphenate notranslate">out</span>, z is <span class="d_inlinecode donthyphenate notranslate">ref</span>, and q is none.
+        </p>
+
+        <ul>        <li>The function declaration makes it clear what the inputs and
+        outputs to the function are.</li>
+        <li>It eliminates the need for IDL (interface description language) as a separate language.</li>
+        <li>It provides more information to the compiler, enabling more
+        error checking and
+        possibly better code generation.</li>
+        </ul>
+
+	<center><table><caption>Parameter Storage Classes</caption>	<tr><th class="donthyphenate"><b>Storage Class</b></th><th class="donthyphenate"><b>Description</b></th></tr>
+	<tr><td><i>none</i></td><td>parameter becomes a mutable copy of its argument</td></tr>
+
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">in</span></td><td>equivalent to <span class="d_inlinecode donthyphenate notranslate">const scope</span></td></tr>
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">out</span></td><td>parameter is initialized upon function entry with the default value
+	for its type</td></tr>
+
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">ref</span></td><td>  parameter is passed by reference</td></tr>
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">scope</span></td><td>references in the parameter
+	cannot be escaped (e.g. assigned to a global variable)</td></tr>
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">lazy</span></td><td>argument is evaluated by the called function and not by the caller</td></tr>
+		<tr><td><span class="d_inlinecode donthyphenate notranslate">const</span></td><td>argument is implicitly converted to a const type</td></tr>
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">immutable</span></td><td>argument is implicitly converted to an immutable type</td></tr>
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">shared</span></td><td>argument is implicitly converted to a shared type</td></tr>
+	<tr><td><span class="d_inlinecode donthyphenate notranslate">inout</span></td><td>argument is implicitly converted to an inout type</td></tr>
+	</table></center>
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span> foo(<span class="d_keyword">out</span> <span class="d_keyword">int</span> x)
+{
+    <span class="d_comment">// x is set to int.init,
+</span>    <span class="d_comment">// which is 0, at start of foo()
+</span>}
+
+<span class="d_keyword">int</span> a = 3;
+foo(a);
+<span class="d_comment">// a is now 0
+</span>
+<span class="d_keyword">void</span> abc(<span class="d_keyword">out</span> <span class="d_keyword">int</span> x)
+{
+    x = 2;
+}
+
+<span class="d_keyword">int</span> y = 3;
+abc(y);
+<span class="d_comment">// y is now 2
+</span>
+<span class="d_keyword">void</span> def(<span class="d_keyword">ref</span> <span class="d_keyword">int</span> x)
+{
+    x += 1;
+}
+
+<span class="d_keyword">int</span> z = 3;
+def(z);
+<span class="d_comment">// z is now 4
+</span></pre>
+
+        <p>For dynamic array and object parameters, which are passed
+        by reference, in/out/ref
+        apply only to the reference and not the contents.
+        </p>
+
+        <p><span class="d_inlinecode donthyphenate notranslate">lazy</span> arguments are evaluated not when the function is called,
+        but when the parameter is evaluated within the function. Hence,
+        a <span class="d_inlinecode donthyphenate notranslate">lazy</span> argument can be executed 0 or more times. A <span class="d_inlinecode donthyphenate notranslate">lazy</span> parameter
+        cannot be an lvalue.</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span> dotimes(<span class="d_keyword">int</span> n, <span class="d_keyword">lazy</span> <span class="d_keyword">void</span> exp)
+{
+    <span class="d_keyword">while</span> (n--)
+        exp();
+}
+
+<span class="d_keyword">void</span> test()
+{
+    <span class="d_keyword">int</span> x;
+    dotimes(3, writeln(x++));
+}
+</pre>
+
+        <p>prints to the console:</p>
+
+<pre class="console notranslate">0
+1
+2
+</pre>
+
+        <p>A <span class="d_inlinecode donthyphenate notranslate">lazy</span> parameter of type <span class="d_inlinecode donthyphenate notranslate">void</span> can accept an argument
+        of any type.</p>
+
+<h4>Function Default Arguments</h4>
+
+        <p>Function parameter declarations can have default values:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span> foo(<span class="d_keyword">int</span> x, <span class="d_keyword">int</span> y = 3)
+{
+    ...
+}
+...
+foo(4);   <span class="d_comment">// same as foo(4, 3);
+</span></pre>
+
+        <p>Default parameters are evaluated in the context of the
+        function declaration.
+        If the default value for a parameter is given, all following
+        parameters must also have default values.
+        </p>
+
+<h3><a class="anchor" title="Permalink to this section" id="variadic" href="#variadic">Variadic Functions</a></h3>
+
+        Functions taking a variable number of arguments are called
+        variadic functions. A variadic function can take one of
+        three forms:
+
+        <ol>        <li>C-style variadic functions</li>
+        <li>Variadic functions with type info</li>
+        <li>Typesafe variadic functions</li>
+        </ol>
+
+
+<h4>C-style Variadic Functions</h4>
+
+        A C-style variadic function is declared as taking
+        a parameter of ... after the required function parameters.
+        It has non-D linkage, such as <span class="d_inlinecode donthyphenate notranslate">extern (C)</span>:
+
+<pre class="d_code notranslate"><span class="d_keyword">extern</span> (C) <span class="d_keyword">int</span> foo(<span class="d_keyword">int</span> x, <span class="d_keyword">int</span> y, ...);
+
+foo(3, 4);      <span class="d_comment">// ok
+</span>foo(3, 4, 6.8); <span class="d_comment">// ok, one variadic argument
+</span>foo(2);         <span class="d_comment">// error, y is a required argument
+</span></pre>
+
+        There must be at least one non-variadic parameter declared.
+
+<pre class="d_code notranslate"><span class="d_keyword">extern</span> (C) <span class="d_keyword">int</span> def(...); <span class="d_comment">// error, must have at least one parameter
+</span></pre>
+
+        <p>        C-style variadic functions match the C calling convention for
+        variadic functions, and is most useful for calling C library
+        functions like <span class="d_inlinecode donthyphenate notranslate">printf</span>.
+	</p>
+
+	<p>Access to variadic arguments is done using the standard library
+	module <span class="d_inlinecode donthyphenate notranslate">core.stdc.stdarg</span>.
+	</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">import</span> core.stdc.stdarg;
+
+<span class="d_keyword">void</span> test()
+{
+    foo(3, 4, 5);   <span class="d_comment">// first variadic argument is 5
+</span>}
+
+<span class="d_keyword">int</span> foo(<span class="d_keyword">int</span> x, <span class="d_keyword">int</span> y, ...)
+{
+    va_list ap;
+
+    <span class="d_keyword">version</span> (X86)
+        va_start(args, y);  <span class="d_comment">// y is the last named parameter
+</span>    <span class="d_keyword">else</span>
+    <span class="d_keyword">version</span> (Win64)
+        va_start(args, y);  <span class="d_comment">// ditto
+</span>    <span class="d_keyword">else</span>
+    <span class="d_keyword">version</span> (X86_64)
+        va_start(args, __va_argsave);
+    <span class="d_keyword">else</span>
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(0, <span class="d_string">"Platform not supported."</span>);
+
+    <span class="d_keyword">int</span> z;
+    va_arg(ap, z);  <span class="d_comment">// z is set to 5
+</span>}
+</pre>
+
+
+<h4>D-style Variadic Functions</h4>
+
+        Variadic functions with argument and type info are declared as taking
+        a parameter of ... after the required function parameters.
+        It has D linkage, and need not have any non-variadic parameters
+        declared:
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span> abc(<span class="d_keyword">char</span> c, ...);   <span class="d_comment">// one required parameter: c
+</span><span class="d_keyword">int</span> def(...);           <span class="d_comment">// ok
+</span></pre>
+
+	To access them, the following import is required:
+
+<pre class="d_code notranslate"><span class="d_keyword">import</span> core.vararg;
+</pre>
+
+        These variadic functions have a special local variable declared for
+        them,
+        <span class="d_inlinecode donthyphenate notranslate">_argptr</span>, which is a <span class="d_inlinecode donthyphenate notranslate">core.vararg</span>
+	reference to the first of the variadic
+        arguments. To access the arguments, <span class="d_inlinecode donthyphenate notranslate">_argptr</span> must be used
+	in conjuction with <span class="d_inlinecode donthyphenate notranslate">va_arg</span>:
+
+<pre class="d_code notranslate"><span class="d_keyword">import</span> core.vararg;
+
+<span class="d_keyword">void</span> test()
+{
+    foo(3, 4, 5);   <span class="d_comment">// first variadic argument is 5
+</span>}
+
+<span class="d_keyword">int</span> foo(<span class="d_keyword">int</span> x, <span class="d_keyword">int</span> y, ...)
+{
+    <span class="d_keyword">int</span> z;
+
+    z = va_arg!<span class="d_keyword">int</span>(_argptr); <span class="d_comment">// z is set to 5
+</span>}
+</pre>
+
+        An additional hidden argument
+        with the name <span class="d_inlinecode donthyphenate notranslate">_arguments</span> and type <span class="d_inlinecode donthyphenate notranslate">TypeInfo[]</span>
+        is passed to the function.
+        <span class="d_inlinecode donthyphenate notranslate">_arguments</span> gives the number of arguments and the type
+        of each, enabling type safety to be checked at run time.
+
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> core.vararg;
+
+<span class="d_keyword">class</span> Foo { <span class="d_keyword">int</span> x = 3; }
+<span class="d_keyword">class</span> Bar { <span class="d_keyword">long</span> y = 4; }
+
+<span class="d_keyword">void</span> printargs(<span class="d_keyword">int</span> x, ...)
+{
+    writefln(<span class="d_string">"%d arguments"</span>, _arguments.length);
+    <span class="d_keyword">for</span> (<span class="d_keyword">int</span> i = 0; i &lt; _arguments.length; i++)
+    {
+        writeln(_arguments[i]);
+
+        <span class="d_keyword">if</span> (_arguments[i] == <span class="d_keyword">typeid</span>(<span class="d_keyword">int</span>))
+        {
+            <span class="d_keyword">int</span> j = va_arg!(<span class="d_keyword">int</span>)(_argptr);
+            writefln(<span class="d_string">"\t%d"</span>, j);
+        }
+        <span class="d_keyword">else</span> <span class="d_keyword">if</span> (_arguments[i] == <span class="d_keyword">typeid</span>(<span class="d_keyword">long</span>))
+        {
+            <span class="d_keyword">long</span> j = va_arg!(<span class="d_keyword">long</span>)(_argptr);
+            writefln(<span class="d_string">"\t%d"</span>, j);
+        }
+        <span class="d_keyword">else</span> <span class="d_keyword">if</span> (_arguments[i] == <span class="d_keyword">typeid</span>(<span class="d_keyword">double</span>))
+        {
+            <span class="d_keyword">double</span> d = va_arg!(<span class="d_keyword">double</span>)(_argptr);
+            writefln(<span class="d_string">"\t%g"</span>, d);
+        }
+        <span class="d_keyword">else</span> <span class="d_keyword">if</span> (_arguments[i] == <span class="d_keyword">typeid</span>(Foo))
+        {
+            Foo f = va_arg!(Foo)(_argptr);
+            writefln(<span class="d_string">"\t%s"</span>, f);
+        }
+        <span class="d_keyword">else</span> <span class="d_keyword">if</span> (_arguments[i] == <span class="d_keyword">typeid</span>(Bar))
+        {
+            Bar b = va_arg!(Bar)(_argptr);
+            writefln(<span class="d_string">"\t%s"</span>, b);
+        }
+        <span class="d_keyword">else</span>
+            <span class="d_keyword">assert</span>(0);
+    }
+}
+
+<span class="d_keyword">void</span> main()
+{
+    Foo f = <span class="d_keyword">new</span> Foo();
+    Bar b = <span class="d_keyword">new</span> Bar();
+
+    writefln(<span class="d_string">"%s"</span>, f);
+    printargs(1, 2, 3L, 4.5, f, b);
+}
+</pre>
+
+        which prints:
+
+<pre class="d_code notranslate">0x00870FE0
+5 arguments
+<span class="d_keyword">int</span>
+        2
+<span class="d_keyword">long</span>
+        3
+<span class="d_keyword">double</span>
+        4.5
+Foo
+        0x00870FE0
+Bar
+        0x00870FD0
+</pre>
+
+
+<h4>Typesafe Variadic Functions</h4>
+
+        <p>Typesafe variadic functions are used when the variable argument
+        portion of the arguments are used to construct an array or
+        class object.</p>
+
+        <p>For arrays:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span> test()
+{
+    <span class="d_keyword">return</span> sum(1, 2, 3) + sum(); <span class="d_comment">// returns 6+0
+</span>}
+
+<span class="d_keyword">int</span> func()
+{
+    <span class="d_keyword">int</span>[3] ii = [4, 5, 6];
+    <span class="d_keyword">return</span> sum(ii);             <span class="d_comment">// returns 15
+</span>}
+
+<span class="d_keyword">int</span> sum(<span class="d_keyword">int</span>[] ar ...)
+{
+    <span class="d_keyword">int</span> s;
+    <span class="d_keyword">foreach</span> (<span class="d_keyword">int</span> x; ar)
+        s += x;
+    <span class="d_keyword">return</span> s;
+}
+</pre>
+
+        For static arrays:
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span> test()
+{
+    <span class="d_keyword">return</span> sum(2, 3);   <span class="d_comment">// error, need 3 values for array
+</span>    <span class="d_keyword">return</span> sum(1, 2, 3); <span class="d_comment">// returns 6
+</span>}
+
+<span class="d_keyword">int</span> func()
+{
+    <span class="d_keyword">int</span>[3] ii = [4, 5, 6];
+    <span class="d_keyword">int</span>[] jj = ii;
+    <span class="d_keyword">return</span> sum(ii); <span class="d_comment">// returns 15
+</span>    <span class="d_keyword">return</span> sum(jj); <span class="d_comment">// error, type mismatch
+</span>}
+
+<span class="d_keyword">int</span> sum(<span class="d_keyword">int</span>[3] ar ...)
+{
+    <span class="d_keyword">int</span> s;
+    <span class="d_keyword">foreach</span> (<span class="d_keyword">int</span> x; ar)
+        s += x;
+    <span class="d_keyword">return</span> s;
+}
+</pre>
+
+        For class objects:
+
+<pre class="d_code notranslate"><span class="d_keyword">class</span> Foo
+{
+    <span class="d_keyword">int</span> x;
+    string s;
+
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> x, string s)
+    {
+        <span class="d_keyword">this</span>.x = x;
+        <span class="d_keyword">this</span>.s = s;
+    }
+}
+
+<span class="d_keyword">void</span> test(<span class="d_keyword">int</span> x, Foo f ...);
+
+...
+
+Foo g = <span class="d_keyword">new</span> Foo(3, <span class="d_string">"abc"</span>);
+test(1, g);         <span class="d_comment">// ok, since g is an instance of Foo
+</span>test(1, 4, <span class="d_string">"def"</span>);  <span class="d_comment">// ok
+</span>test(1, 5);         <span class="d_comment">// error, no matching constructor for Foo
+</span></pre>
+
+        An implementation may construct the object or array instance
+        on the stack. Therefore, it is an error to refer to that
+        instance after the variadic function has returned:
+
+<pre class="d_code notranslate">Foo test(Foo f ...)
+{
+    <span class="d_keyword">return</span> f;   <span class="d_comment">// error, f instance contents invalid after return
+</span>}
+
+<span class="d_keyword">int</span>[] test(<span class="d_keyword">int</span>[] a ...)
+{
+    <span class="d_keyword">return</span> a;       <span class="d_comment">// error, array contents invalid after return
+</span>    <span class="d_keyword">return</span> a[0..1]; <span class="d_comment">// error, array contents invalid after return
+</span>    <span class="d_keyword">return</span> a.dup;   <span class="d_comment">// ok, since copy is made
+</span>}
+</pre>
+
+        For other types, the argument is built with itself, as in:
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span> test(<span class="d_keyword">int</span> i ...)
+{
+    <span class="d_keyword">return</span> i;
+}
+
+...
+test(3);    <span class="d_comment">// returns 3
+</span>test(3, 4); <span class="d_comment">// error, too many arguments
+</span><span class="d_keyword">int</span>[] x;
+test(x);    <span class="d_comment">// error, type mismatch
+</span></pre>
+
+<h4>Lazy Variadic Functions</h4>
+
+        <p>If the variadic parameter is an array of delegates
+        with no parameters:
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span> foo(<span class="d_keyword">int</span> <span class="d_keyword">delegate</span>()[] dgs ...);
+</pre>
+
+        <p>Then each of the arguments whose type does not match that
+        of the delegate is converted to a delegate.
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span> <span class="d_keyword">delegate</span>() dg;
+foo(1, 3+x, dg, <span class="d_keyword">cast</span>(<span class="d_keyword">int</span> <span class="d_keyword">delegate</span>())<span class="d_keyword">null</span>);
+</pre>
+
+        <p>is the same as:</p>
+
+<pre class="d_code notranslate">foo( { <span class="d_keyword">return</span> 1; }, { <span class="d_keyword">return</span> 3+x; }, dg, <span class="d_keyword">null</span> );
+</pre>
+
+<h3><span id="Local Variables"><a class="anchor" title="Permalink to this section" id="local-variables" href="#local-variables">Local Variables</a></span></h3>
+
+        <p>It is an error to use a local variable without first assigning it a
+        value. The implementation may not always be able to detect these
+        cases. Other language compilers sometimes issue a warning for this,
+        but since it is always a bug, it should be an error.
+        </p>
+
+        <p>It is an error to declare a local variable that is never referred to.
+        Dead variables, like anachronistic dead code, are just a source of
+        confusion for maintenance programmers.
+        </p>
+
+        <p>It is an error to declare a local variable that hides another local
+        variable in the same function:
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span> func(<span class="d_keyword">int</span> x)
+{
+    <span class="d_keyword">int</span> x;       <span class="d_comment">// error, hides previous definition of x
+</span>    <span class="d_keyword">double</span> y;
+    ...
+    {
+        <span class="d_keyword">char</span> y;  <span class="d_comment">// error, hides previous definition of y
+</span>        <span class="d_keyword">int</span> z;
+    }
+    {
+        <span class="d_keyword">wchar</span> z; <span class="d_comment">// legal, previous z is out of scope
+</span>    }
+}
+</pre>
+
+        <p>While this might look unreasonable, in practice whenever
+        this is done it either is a
+        bug or at least looks like a bug.
+        </p>
+
+        <p>It is an error to return the address of or a reference to a
+        local variable.
+        </p>
+
+        <p>It is an error to have a local variable and a label with the same
+        name.
+        </p>
+
+<h3><span id="Local Static Variables"><a class="anchor" title="Permalink to this section" id="local-static-variables" href="#local-static-variables">Local Static Variables</a></span></h3>
+
+	<p>Local variables in functions can be declared as static
+	or <span class="d_inlinecode donthyphenate notranslate">__gshared</span> in which case they are statically allocated
+	rather than being allocated on the stack.
+	As such, their value persists beyond the exit of the function.
+	</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span> foo()
+{
+    <span class="d_keyword">static</span> <span class="d_keyword">int</span> n;
+    <span class="d_keyword">if</span> (++n == 100)
+        writeln(<span class="d_string">"called 100 times"</span>);
+}
+</pre>
+
+	<p>The initializer for a static variable must be evaluatable at
+	compile time, and they are initialized upon the start of the thread
+	(or the start of the program for <span class="d_inlinecode donthyphenate notranslate">__gshared</span>).
+	There are no static constructors or static destructors
+	for static local variables.
+	</p>
+
+	<p>Although static variable name visibility follows the usual scoping
+	rules, the names of them must be unique within a particular function.
+	</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span> main()
+{
+    { <span class="d_keyword">static</span> <span class="d_keyword">int</span> x; }
+    { <span class="d_keyword">static</span> <span class="d_keyword">int</span> x; } <span class="d_comment">// error
+</span>    { <span class="d_keyword">int</span> i; }
+    { <span class="d_keyword">int</span> i; } <span class="d_comment">// ok
+</span>}
+</pre>
+
+<h3><a class="anchor" title="Permalink to this section" id="variadicnested" href="#variadicnested">Nested Functions</a></h3>
+
+        <p>Functions may be nested within other functions:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span> bar(<span class="d_keyword">int</span> a)
+{
+    <span class="d_keyword">int</span> foo(<span class="d_keyword">int</span> b)
+    {
+        <span class="d_keyword">int</span> abc() { <span class="d_keyword">return</span> 1; }
+
+        <span class="d_keyword">return</span> b + abc();
+    }
+    <span class="d_keyword">return</span> foo(a);
+}
+
+<span class="d_keyword">void</span> test()
+{
+    <span class="d_keyword">int</span> i = bar(3); <span class="d_comment">// i is assigned 4
+</span>}
+</pre>
+
+        <p>Nested functions can be accessed only if the name is in scope.</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span> foo()
+{
+    <span class="d_keyword">void</span> A()
+    {
+        B(); <span class="d_comment">// error, B() is forward referenced
+</span>        C(); <span class="d_comment">// error, C undefined
+</span>    }
+    <span class="d_keyword">void</span> B()
+    {
+        A(); <span class="d_comment">// ok, in scope
+</span>        <span class="d_keyword">void</span> C()
+        {
+            <span class="d_keyword">void</span> D()
+            {
+                A();      <span class="d_comment">// ok
+</span>                B();      <span class="d_comment">// ok
+</span>                C();      <span class="d_comment">// ok
+</span>                D();      <span class="d_comment">// ok
+</span>            }
+        }
+    }
+    A(); <span class="d_comment">// ok
+</span>    B(); <span class="d_comment">// ok
+</span>    C(); <span class="d_comment">// error, C undefined
+</span>}
+</pre>
+
+        <p>and:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span> bar(<span class="d_keyword">int</span> a)
+{
+    <span class="d_keyword">int</span> foo(<span class="d_keyword">int</span> b) { <span class="d_keyword">return</span> b + 1; }
+    <span class="d_keyword">int</span> abc(<span class="d_keyword">int</span> b) { <span class="d_keyword">return</span> foo(b); }   <span class="d_comment">// ok
+</span>    <span class="d_keyword">return</span> foo(a);
+}
+
+<span class="d_keyword">void</span> test()
+{
+    <span class="d_keyword">int</span> i = bar(3);     <span class="d_comment">// ok
+</span>    <span class="d_keyword">int</span> j = bar.foo(3); <span class="d_comment">// error, bar.foo not visible
+</span>}
+</pre>
+
+        <p>Nested functions have access to the variables and other symbols
+        defined by the lexically enclosing function.
+        This access includes both the ability to read and write them.
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span> bar(<span class="d_keyword">int</span> a)
+{
+    <span class="d_keyword">int</span> c = 3;
+
+    <span class="d_keyword">int</span> foo(<span class="d_keyword">int</span> b)
+    {
+        b += c;       <span class="d_comment">// 4 is added to b
+</span>        c++;          <span class="d_comment">// bar.c is now 5
+</span>        <span class="d_keyword">return</span> b + c; <span class="d_comment">// 12 is returned
+</span>    }
+    c = 4;
+    <span class="d_keyword">int</span> i = foo(a); <span class="d_comment">// i is set to 12
+</span>    <span class="d_keyword">return</span> i + c;   <span class="d_comment">// returns 17
+</span>}
+
+<span class="d_keyword">void</span> test()
+{
+    <span class="d_keyword">int</span> i = bar(3); <span class="d_comment">// i is assigned 17
+</span>}
+</pre>
+
+        <p>This access can span multiple nesting levels:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span> bar(<span class="d_keyword">int</span> a)
+{
+    <span class="d_keyword">int</span> c = 3;
+
+    <span class="d_keyword">int</span> foo(<span class="d_keyword">int</span> b)
+    {
+        <span class="d_keyword">int</span> abc()
+        {
+            <span class="d_keyword">return</span> c;   <span class="d_comment">// access bar.c
+</span>        }
+        <span class="d_keyword">return</span> b + c + abc();
+    }
+    <span class="d_keyword">return</span> foo(3);
+}
+</pre>
+
+        <p>Static nested functions cannot access any stack variables of
+        any lexically enclosing function, but can access static variables.
+        This is analogous to how static member functions behave.
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span> bar(<span class="d_keyword">int</span> a)
+{
+    <span class="d_keyword">int</span> c;
+    <span class="d_keyword">static</span> <span class="d_keyword">int</span> d;
+
+    <span class="d_keyword">static</span> <span class="d_keyword">int</span> foo(<span class="d_keyword">int</span> b)
+    {
+        b = d;          <span class="d_comment">// ok
+</span>        b = c;          <span class="d_comment">// error, foo() cannot access frame of bar()
+</span>        <span class="d_keyword">return</span> b + 1;
+    }
+    <span class="d_keyword">return</span> foo(a);
+}
+</pre>
+
+        <p>Functions can be nested within member functions:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> Foo
+{
+    <span class="d_keyword">int</span> a;
+
+    <span class="d_keyword">int</span> bar()
+    {
+        <span class="d_keyword">int</span> c;
+
+        <span class="d_keyword">int</span> foo()
+        {
+            <span class="d_keyword">return</span> c + a;
+        }
+        <span class="d_keyword">return</span> 0;
+    }
+}
+</pre>
+
+        <p>Nested functions always have the D function linkage type.
+        </p>
+
+        <p>Unlike module level declarations, declarations within function
+        scope are processed in order. This means that two nested functions
+        cannot mutually call each other:
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span> test()
+{
+    <span class="d_keyword">void</span> foo() { bar(); } <span class="d_comment">// error, bar not defined
+</span>    <span class="d_keyword">void</span> bar() { foo(); } <span class="d_comment">// ok
+</span>}
+</pre>
+
+        <p>There are several workarounds for this limitation:</p>
+
+<ul>
+        <li>Declare the functions to be static members of a nested struct:</li>
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span> test()
+{
+    <span class="d_keyword">static</span> <span class="d_keyword">struct</span> S
+    {
+        <span class="d_keyword">static</span> <span class="d_keyword">void</span> foo() { bar(); } <span class="d_comment">// ok
+</span>        <span class="d_keyword">static</span> <span class="d_keyword">void</span> bar() { foo(); } <span class="d_comment">// ok
+</span>    }
+
+    S.foo();  <span class="d_comment">// compiles (but note the infinite runtime loop)
+</span>}
+</pre>
+
+        <li>Declare one or more of the functions to be function templates
+        even if they take no specific template arguments:</li>
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span> test()
+{
+    <span class="d_keyword">void</span> foo()() { bar(); } <span class="d_comment">// ok (foo is a function template)
+</span>    <span class="d_keyword">void</span> bar()   { foo(); } <span class="d_comment">// ok
+</span>}
+</pre>
+
+        <li>Declare the functions inside of a mixin template:</li>
+
+<pre class="d_code notranslate"><span class="d_keyword">mixin</span> <span class="d_keyword">template</span> T()
+{
+    <span class="d_keyword">void</span> foo() { bar(); } <span class="d_comment">// ok
+</span>    <span class="d_keyword">void</span> bar() { foo(); } <span class="d_comment">// ok
+</span>}
+
+<span class="d_keyword">void</span> test()
+{
+    <span class="d_keyword">mixin</span> T!();
+}
+</pre>
+
+        <li>Use a delegate:</li>
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span> test()
+{
+    <span class="d_keyword">void</span> <span class="d_keyword">delegate</span>() fp;
+    <span class="d_keyword">void</span> foo() { fp(); }
+    <span class="d_keyword">void</span> bar() { foo(); }
+    fp = &amp;bar;
+}
+</pre>
+
+    </ul>
+
+	<p>Nested functions cannot be overloaded.</p>
+
+<h4><a class="anchor" title="Permalink to this section" id="closures" href="#closures">Delegates, Function Pointers, and  Closures</a></h4>
+
+        <p>A function pointer can point to a static nested function:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span> <span class="d_keyword">function</span>() fp;
+
+<span class="d_keyword">void</span> test()
+{
+    <span class="d_keyword">static</span> <span class="d_keyword">int</span> a = 7;
+    <span class="d_keyword">static</span> <span class="d_keyword">int</span> foo() { <span class="d_keyword">return</span> a + 3; }
+
+    fp = &amp;foo;
+}
+
+<span class="d_keyword">void</span> bar()
+{
+    test();
+    <span class="d_keyword">int</span> i = fp();       <span class="d_comment">// i is set to 10
+</span>}
+</pre>
+
+        <p><b>Note:</b> Two functions with identical bodies, or two functions
+        that compile to identical assembly code, are not guaranteed to have
+        distinct function pointer values. The compiler is free to merge
+        functions bodies into one if they compile to identical code.</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span> abc(<span class="d_keyword">int</span> x) { <span class="d_keyword">return</span> x + 1; }
+<span class="d_keyword">int</span> def(<span class="d_keyword">int</span> y) { <span class="d_keyword">return</span> y + 1; }
+
+<span class="d_keyword">int</span> <span class="d_keyword">function</span>() fp1 = &amp;abc;
+<span class="d_keyword">int</span> <span class="d_keyword">function</span>() fp2 = &amp;def;
+<span class="d_comment">// Do not rely on fp1 and fp2 being different values; the compiler may merge
+</span><span class="d_comment">// them.
+</span></pre>
+
+        <p>A delegate can be set to a non-static nested function:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span> <span class="d_keyword">delegate</span>() dg;
+
+<span class="d_keyword">void</span> test()
+{
+    <span class="d_keyword">int</span> a = 7;
+    <span class="d_keyword">int</span> foo() { <span class="d_keyword">return</span> a + 3; }
+
+    dg = &amp;foo;
+    <span class="d_keyword">int</span> i = dg(); <span class="d_comment">// i is set to 10
+</span>}
+</pre>
+
+
+        <p>The stack variables referenced by a nested function are
+        still valid even after the function exits (this is different
+        from D 1.0). This is called a <i>closure</i>.
+        Returning addresses of stack variables, however, is not
+        a closure and is an error.
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span>* bar()
+{
+    <span class="d_keyword">int</span> b;
+    test();
+    <span class="d_keyword">int</span> i = dg(); <span class="d_comment">// ok, test.a is in a closure and still exists
+</span>    <span class="d_keyword">return</span> &amp;b;    <span class="d_comment">// error, bar.b not valid after bar() exits
+</span>}
+</pre>
+
+
+        <p>Delegates to non-static nested functions contain two pieces of
+        data: the pointer to the stack frame of the lexically enclosing
+        function (called the <i>frame pointer</i>) and the address of the
+        function. This is analogous to struct/class non-static member
+        function delegates consisting of a <i>this</i> pointer and
+        the address of the member function.
+        Both forms of delegates are interchangeable, and are actually
+        the same type:
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> Foo
+{
+    <span class="d_keyword">int</span> a = 7;
+    <span class="d_keyword">int</span> bar() { <span class="d_keyword">return</span> a; }
+}
+
+<span class="d_keyword">int</span> foo(<span class="d_keyword">int</span> <span class="d_keyword">delegate</span>() dg)
+{
+    <span class="d_keyword">return</span> dg() + 1;
+}
+
+<span class="d_keyword">void</span> test()
+{
+    <span class="d_keyword">int</span> x = 27;
+    <span class="d_keyword">int</span> abc() { <span class="d_keyword">return</span> x; }
+    Foo f;
+    <span class="d_keyword">int</span> i;
+
+    i = foo(&amp;abc);   <span class="d_comment">// i is set to 28
+</span>    i = foo(&amp;f.bar); <span class="d_comment">// i is set to 8
+</span>}
+</pre>
+
+        <p>This combining of the environment and the function is called
+        a <i>dynamic closure</i>.
+        </p>
+
+        <p>The <span class="d_inlinecode donthyphenate notranslate">.ptr</span> property of a delegate will return the
+        <i>frame pointer</i> value as a <span class="d_inlinecode donthyphenate notranslate">void*</span>.
+        </p>
+
+        <p>The <span class="d_inlinecode donthyphenate notranslate">.funcptr</span> property of a delegate will return the
+        <i>function pointer</i> value as a function type.
+        </p>
+
+        <p><b>Future directions:</b> Function pointers and delegates may merge
+        into a common syntax and be interchangeable with each other.
+        </p>
+
+<h4>Anonymous Functions and Anonymous Delegates</h4>
+
+        <p>See <a href="expression.html#FunctionLiteral"><i>FunctionLiteral</i></a>s.
+        </p>
+
+<h3><span class="d_inlinecode donthyphenate notranslate">main()</span> Function</h3>
+
+        <p>For console programs, <span class="d_inlinecode donthyphenate notranslate">main()</span> serves as the entry point.
+        It gets called after all the module initializers are run, and
+        after any unittests are run.
+        After it returns, all the module destructors are run.
+        <span class="d_inlinecode donthyphenate notranslate">main()</span> must be declared using one of the following forms:
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span> main() { ... }
+<span class="d_keyword">void</span> main(string[] args) { ... }
+<span class="d_keyword">int</span> main() { ... }
+<span class="d_keyword">int</span> main(string[] args) { ... }
+</pre>
+
+<h3><a class="anchor" title="Permalink to this section" id="function-templates" href="#function-templates">Function Templates</a></h3>
+
+    <p>Template functions are useful for avoiding code duplication -
+    instead of writing several copies of a function, each with a 
+    different parameter type, a single function template can be sufficient. 
+    For example:
+    </p>
+<pre class="d_code notranslate"><span class="d_comment">// Only one copy of func needs to be written
+</span><span class="d_keyword">void</span> func(T)(T x)
+{
+    writeln(x);
+}
+
+<span class="d_keyword">void</span> main()
+{
+    func!(<span class="d_keyword">int</span>)(1); <span class="d_comment">// pass an int
+</span>    func(1);    <span class="d_comment">// pass an int, inferring T = int
+</span>    func(<span class="d_string">"x"</span>);  <span class="d_comment">// pass a string
+</span>    func(1.0);  <span class="d_comment">// pass a float
+</span>
+    <span class="d_keyword">struct</span> S {}
+    S s;
+    func(s);    <span class="d_comment">// pass a struct
+</span>}
+</pre>
+    <p><span class="d_inlinecode donthyphenate notranslate">func</span> takes a template parameter <span class="d_inlinecode donthyphenate notranslate">T</span> and a runtime
+    parameter, <span class="d_inlinecode donthyphenate notranslate">x</span>. <span class="d_inlinecode donthyphenate notranslate">T</span> is a placeholder identifier that can accept
+    any type. In this case <span class="d_inlinecode donthyphenate notranslate">T</span> can be inferred from the runtime argument
+    type.</p>
+    
+    <p><b>Note:</b> Using the name <span class="d_inlinecode donthyphenate notranslate">T</span> is just a convention. The name
+    <span class="d_inlinecode donthyphenate notranslate">TypeOfX</span> could have been used instead.</p>
+    
+    <p>For more information, see
+    <a href="template.html#function-templates">function templates</a>.</p>
+
+<h3><a class="anchor" title="Permalink to this section" id="interpretation" href="#interpretation">Compile Time Function Execution (CTFE)</a></h3>
+
+    <p>Functions which are both portable and free of side-effects can be
+    executed at compile time. This is useful when constant folding
+    algorithms need to include recursion and looping. Compile time function
+    execution is subject to the following restrictions:
+    </p>
+
+    <ol>    <li>The function source code must be available to the compiler. Functions
+        which exist in the source code only as <span class="d_keyword">extern</span> declarations
+        cannot be executed at compile time.</li>
+
+    <li>Executed expressions may not reference any global or local
+        static variables.</li>
+
+    <li><span class="d_keyword">asm</span> statements are not permitted</li>
+
+    <li>Non-portable casts (eg, from <span class="d_inlinecode donthyphenate notranslate">int[]</span> to <span class="d_inlinecode donthyphenate notranslate">float[]</span>), including
+        casts which depend on endianness, are not permitted.
+        Casts between signed and unsigned types are permitted</li>
+    </ol>
+
+    <p>Pointers are permitted in CTFE, provided they are used safely:</p>
+
+    <ul>        <li>        C-style semantics on pointer arithmetic are strictly enforced.
+        Pointer arithmetic is permitted only on pointers which point to static
+        or dynamic array elements. Such pointers must point to an element of
+        the array, or to the first element past the array.
+        Pointer arithmetic is completely forbidden on pointers which are null,
+        or which point to a non-array.
+        </li>
+
+        <li>        The memory location of different memory blocks is not defined.
+        Ordered comparison (<span class="d_inlinecode donthyphenate notranslate">&lt;</span>, <span class="d_inlinecode donthyphenate notranslate">&lt;</span><span class="d_inlinecode donthyphenate notranslate">=</span>, <span class="d_inlinecode donthyphenate notranslate">&gt;</span>, <span class="d_inlinecode donthyphenate notranslate">&gt;=</span>) between two pointers is permitted
+        when both pointers point to the same array, or when at least one
+        pointer is <span class="d_inlinecode donthyphenate notranslate">null</span>.
+        </li>
+
+        <li>        Pointer comparisons between independent memory blocks will generate
+        a compile-time error, unless two such comparisons are combined
+        using <span class="d_inlinecode donthyphenate notranslate">&amp;&amp;</span> or <span class="d_inlinecode donthyphenate notranslate">|</span><span class="d_inlinecode donthyphenate notranslate">|</span> to yield a result which is independent of the
+        ordering of memory blocks. Each comparison must consist of two pointer
+        expressions compared with <span class="d_inlinecode donthyphenate notranslate">&lt;</span>, <span class="d_inlinecode donthyphenate notranslate">&lt;</span><span class="d_inlinecode donthyphenate notranslate">=</span>, <span class="d_inlinecode donthyphenate notranslate">&gt;</span>,
+        or <span class="d_inlinecode donthyphenate notranslate">&gt;</span><span class="d_inlinecode donthyphenate notranslate">=</span>, and may optionally be
+        negated with <span class="d_inlinecode donthyphenate notranslate">!</span>.
+
+        <p>        For example, the expression <span class="d_inlinecode donthyphenate notranslate">(p1 &gt; q1 &amp;&amp; p2 &lt;= q2)</span>
+        is permitted when <span class="d_inlinecode donthyphenate notranslate">p1</span>, <span class="d_inlinecode donthyphenate notranslate">p2</span> are expressions yielding pointers
+        to memory block <i>P</i>, and <span class="d_inlinecode donthyphenate notranslate">q1</span>, <span class="d_inlinecode donthyphenate notranslate">q2</span> are expressions yielding
+        pointers to memory block <i>Q</i>, even when <i>P</i> and <i>Q</i> are
+        unrelated memory blocks.
+        It returns true if <span class="d_inlinecode donthyphenate notranslate">[p1..p2]</span> lies inside <span class="d_inlinecode donthyphenate notranslate">[q1..q2]</span>, and false otherwise.
+        Similarly, the expression <span class="d_inlinecode donthyphenate notranslate">(p1 &lt; q1 || p2 &gt; q2)</span> is true if
+        <span class="d_inlinecode donthyphenate notranslate">[p1..p2]</span> lies outside <span class="d_inlinecode donthyphenate notranslate">[q1..q2]</span>, and false otherwise.
+        </p>
+        </li>
+
+        <li>        Equality comparisons (==, !=, <span class="d_keyword">is</span>, <span class="d_keyword">!is</span>) are
+        permitted between all pointers, without restriction.
+        </li>
+
+        <li>        Any pointer may be cast to <span class="d_inlinecode donthyphenate notranslate">void *</span> and from <span class="d_inlinecode donthyphenate notranslate">void *</span> back to
+        its original type. Casting between pointer and non-pointer types is
+        prohibited.
+        </li>
+    </ul>
+
+    <p>Note that the above restrictions apply only to expressions which are
+        actually executed. For example:
+    </p>
+<pre class="d_code notranslate"><span class="d_keyword">static</span> <span class="d_keyword">int</span> y = 0;
+
+<span class="d_keyword">int</span> countTen(<span class="d_keyword">int</span> x)
+{
+    <span class="d_keyword">if</span> (x &gt; 10)
+        ++y;
+    <span class="d_keyword">return</span> x;
+}
+
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(countTen(6) == 6); <span class="d_comment">// OK
+</span><span class="d_keyword">static</span> <span class="d_keyword">assert</span>(countTen(12) == 12);  <span class="d_comment">// invalid, modifies y.
+</span></pre>
+    <p>The <span class="d_inlinecode donthyphenate notranslate">__ctfe</span> boolean pseudo-variable, which evaluates to <span class="d_keyword">true</span>
+        at compile time, but <span class="d_keyword">false</span> at run time, can be used to provide
+        an alternative execution path to avoid operations which are forbidden
+        at compile time. Every usage of <span class="d_inlinecode donthyphenate notranslate">__ctfe</span> is evaluated before
+        code generation and therefore has no run-time cost, even if no optimizer
+        is used.
+    </p>
+
+
+	<p>In order to be executed at compile time, the function
+	must appear in a context where it must be so executed, for
+	example:</p>
+
+	<ul>	<li>initialization of a static variable</li>
+	<li>dimension of a static array</li>
+	<li>argument for a template value parameter</li>
+	</ul>
+
+<pre class="d_code notranslate"><span class="d_keyword">template</span> eval( A... )
+{
+    <span class="d_keyword">const</span> <span class="d_keyword">typeof</span>(A[0]) eval = A[0];
+}
+
+<span class="d_keyword">int</span> square(<span class="d_keyword">int</span> i)
+{
+    <span class="d_keyword">return</span> i * i;
+}
+
+<span class="d_keyword">void</span> foo()
+{
+    <span class="d_keyword">static</span> j = square(3);     <span class="d_comment">// compile time
+</span>    writeln(j);
+    writeln(square(4));      <span class="d_comment">// run time
+</span>    writeln(eval!(square(5))); <span class="d_comment">// compile time
+</span>}
+</pre>
+
+    <p>Executing functions at compile time can take considerably
+    longer than executing it at run time.
+    If the function goes into an infinite loop, it will hang at
+    compile time (rather than hanging at run time).
+    </p>
+
+    <p>Non-recoverable errors (such as <span class="d_keyword">assert</span> failures) do not
+    throw exceptions; instead, they end interpretation immediately.
+    </p>
+
+    <p>Functions executed at compile time can give different results
+    from run time in the following scenarios:
+    </p>
+
+    <ul>
+    <li>floating point computations may be done at a higher
+    precision than run time</li>
+    <li>dependency on implementation defined order of evaluation</li>
+    <li>use of uninitialized variables</li>
+
+    </ul>
+
+    <p>These are the same kinds of scenarios where different
+    optimization settings affect the results.</p>
+
+<h4>String Mixins and Compile Time Function Execution</h4>
+
+        <p>Any functions that execute at compile time must also
+        be executable at run time. The compile time evaluation of
+        a function does the equivalent of running the function at
+        run time. This means that the semantics of a function cannot
+        depend on compile time values of the function. For example:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span> foo(<span class="d_keyword">char</span>[] s)
+{
+    <span class="d_keyword">return</span> <span class="d_keyword">mixin</span>(s);
+}
+
+<span class="d_keyword">const</span> <span class="d_keyword">int</span> x = foo(<span class="d_string">"1"</span>);
+</pre>
+
+        <p>is illegal, because the runtime code for foo() cannot be
+        generated. A function template would be the appropriate
+        method to implement this sort of thing.</p>
+
+<h3><a class="anchor" title="Permalink to this section" id="function-safety" href="#function-safety">Function Safety</a></h3>
+
+        <p><i>Safe functions</i> are functions that are statically checked
+        to exhibit no possibility of
+        <a href="glossary.html#undefined_behavior"><i>undefined behavior</i></a>.
+        Undefined behavior is often used as a vector for malicious
+        attacks.
+        </p>
+
+<h4><a class="anchor" title="Permalink to this section" id="safe-functions" href="#safe-functions">Safe Functions</a></h4>
+
+        <p>Safe functions are marked with the <span class="d_inlinecode donthyphenate notranslate">@safe</span> attribute.</p>
+
+        <p>The following operations are not allowed in safe
+        functions:</p>
+
+        <ul>        <li>No casting from a pointer type to any type other than <span class="d_inlinecode donthyphenate notranslate">void*</span>.</li>
+        <li>No casting from any non-pointer type to a pointer type.</li>
+        <li>No modification of pointer values.</li>
+        <li>Cannot access unions that have pointers or references overlapping
+        with other types.</li>
+        <li>Calling any system functions.</li>
+        <li>No catching of exceptions that are not derived from <span class="d_inlinecode donthyphenate notranslate">class Exception</span>.</li>
+        <li>No inline assembler.</li>
+        <li>No explicit casting of mutable objects to immutable.</li>
+        <li>No explicit casting of immutable objects to mutable.</li>
+        <li>No explicit casting of thread local objects to shared.</li>
+        <li>No explicit casting of shared objects to thread local.</li>
+        <li>No taking the address of a local variable or function parameter.</li>
+        <li>Cannot access <span class="d_inlinecode donthyphenate notranslate">__gshared</span> variables.</li>
+        </ul>
+
+        <p>Functions nested inside safe functions default to being
+        safe functions.
+        </p>
+
+        <p>Safe functions are covariant with trusted or system functions.</p>
+
+        <p><b>Note:</b> The verifiable safety of functions may be compromised by
+        bugs in the compiler and specification. Please report all such errors
+        so they can be corrected.
+        </p>
+
+<h4><a class="anchor" title="Permalink to this section" id="trusted-functions" href="#trusted-functions">Trusted Functions</a></h4>
+
+        <p>Trusted functions are marked with the <span class="d_inlinecode donthyphenate notranslate">@trusted</span> attribute.</p>
+
+        <p>Trusted functions are guaranteed by the programmer to not exhibit
+        any undefined behavior if called by a safe function.
+        Generally, trusted functions should be kept small so that they are
+        easier to manually verify.
+        </p>
+
+        <p>Trusted functions may call safe, trusted, or system functions.
+        </p>
+
+        <p>Trusted functions are covariant with safe or system functions.</p>
+
+<h4><a class="anchor" title="Permalink to this section" id="system-functions" href="#system-functions">System Functions</a></h4>
+
+        <p>System functions are functions not marked with <span class="d_inlinecode donthyphenate notranslate">@safe</span> or
+        <span class="d_inlinecode donthyphenate notranslate">@trusted</span>
+        and are not nested inside <span class="d_inlinecode donthyphenate notranslate">@safe</span> functions.
+        System functions may be marked with the <span class="d_inlinecode donthyphenate notranslate">@system</span> attribute.
+        A function being system does not mean it actually is unsafe, it just
+        means that the compiler is unable to verify that it cannot exhibit
+        undefined behavior.
+        </p>
+
+        <p>System functions are <b>not</b> covariant with trusted or safe functions.
+        </p>
+
+
+<h3><a class="anchor" title="Permalink to this section" id="function-attribute-inference" href="#function-attribute-inference">Function Attribute Inference</a></h3>
+
+        <p><a href="expression.html#FunctionLiteral"><i>FunctionLiteral</i></a>s and
+        <a href="template.html#function-templates">function template</a>s, since their function bodies
+        are always present, infer the
+        <a href="#pure-functions"><span class="d_inlinecode donthyphenate notranslate">pure</span></a>,
+        <a href="#nothrow-functions"><span class="d_inlinecode donthyphenate notranslate">nothrow</span></a>, and
+        <a href="#safe-functions"><span class="d_inlinecode donthyphenate notranslate">@safe</span></a> attributes unless
+        specifically overridden.
+        </p>
+
+        <p>Attribute inference is not done for other functions, even if the function
+        body is present.
+        </p>
+
+        <p>The inference is done by determining if the function body follows the
+        rules of the particular attribute.
+        </p>
+
+        <p>Cyclic functions (i.e. functions that wind up directly or indirectly
+        calling themselves) are inferred as being impure, throwing, and @system.
+        </p>
+
+        <p>If a function attempts to test itself for those attributes, then
+        the function is inferred as not having those attributes.
+        </p>
+
+<h3><a class="anchor" title="Permalink to this section" id="pseudo-member" href="#pseudo-member">Uniform Function Call Syntax (UFCS)</a></h3>
+
+        <p>A free function can be called with a syntax that looks as if the function
+        were a member function of its first parameter type.
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span> func(X thisObj);
+
+X obj;
+obj.func();
+<span class="d_comment">// If 'obj' does not have regular member 'func',
+</span><span class="d_comment">// it's automatically rewritten to 'func(obj)'
+</span></pre>
+
+	<p>This provides a way to add functions to a class externally as if they were
+	public final member functions, which enables
+	<a href="http://www.drdobbs.com/architecture-and-design/component-programming-in-d/240008321">	function chaining and component programming</a>.
+	</p>
+
+<pre class="d_code notranslate">stdin.byLine(KeepTerminator.yes)
+    .map!(a =&gt; a.idup)
+    .array
+    .sort
+    .copy(stdout.lockingTextWriter());
+</pre>
+
+        <p>It also works with <span class="d_inlinecode donthyphenate notranslate">@property</span> functions:</p>
+
+<pre class="d_code notranslate">@property prop(X thisObj);
+@property prop(X thisObj, <span class="d_keyword">int</span> value);
+
+X obj;
+obj.prop;      <span class="d_comment">// Rewrites to: prop(obj);
+</span>obj.prop = 1;  <span class="d_comment">// Rewrites to: prop(obj, 1);
+</span></pre>
+
+        <p>Syntactically parenthesis-less check for <span class="d_inlinecode donthyphenate notranslate">@property</span>
+        functions is done at the same time as UFCS rewrite.</p>
+
+        <p>When UFCS rewrite is necessary, compiler searches the name
+        on accessible module level scope, in order from the innermost scope.</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">module</span> a;
+<span class="d_keyword">void</span> foo(X);
+<span class="d_keyword">alias</span> boo = foo;
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">void</span> bar(X);
+    <span class="d_keyword">import</span> b : baz;  <span class="d_comment">// void baz(X);
+</span>
+    X obj;
+    obj.foo();    <span class="d_comment">// OK, calls a.foo;
+</span>    <span class="d_comment">//obj.bar();  // NG, UFCS does not see nested functions
+</span>    obj.baz();    <span class="d_comment">// OK, calls b.baz, because it is declared at the
+</span>                  <span class="d_comment">// top level scope of module b
+</span>
+    <span class="d_keyword">import</span> b : boo = baz;
+    obj.boo();    <span class="d_comment">// OK, calls aliased b.baz instead of a.boo (== a.foo),
+</span>                  <span class="d_comment">// because the declared alias name 'boo' in local scope
+</span>                  <span class="d_comment">// overrides module scope name
+</span>}
+<span class="d_keyword">class</span> C
+{
+    <span class="d_keyword">void</span> mfoo(X);
+    <span class="d_keyword">static</span> <span class="d_keyword">void</span> sbar(X);
+    <span class="d_keyword">import</span> b : ibaz = baz;  <span class="d_comment">// void baz(X);
+</span>    <span class="d_keyword">void</span> test()
+    {
+        X obj;
+        <span class="d_comment">//obj.mfoo();  // NG, UFCS does not see member functions
+</span>        <span class="d_comment">//obj.sbar();  // NG, UFCS does not see static member functions
+</span>        obj.ibaz();    <span class="d_comment">// OK, ibaz is an alias of baz which declared at
+</span>                       <span class="d_comment">//     the top level scope of module b
+</span>    }
+}
+</pre>
+
+        <p>The reason why local symbols are not considered by UFCS, is
+        to avoid unexpected name conflicts. See below problematic examples.</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span> front(<span class="d_keyword">int</span>[] arr) { <span class="d_keyword">return</span> arr[0]; }
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">int</span>[] a = [1,2,3];
+    <span class="d_keyword">auto</span> x = a.front();   <span class="d_comment">// call .front by UFCS
+</span>
+    <span class="d_keyword">auto</span> front = x;       <span class="d_comment">// front is now a variable
+</span>    <span class="d_keyword">auto</span> y = a.front();   <span class="d_comment">// Error, front is not a function
+</span>}
+
+<span class="d_keyword">class</span> C
+{
+    <span class="d_keyword">int</span>[] arr;
+    <span class="d_keyword">int</span> front()
+    {
+        <span class="d_keyword">return</span> arr.front(); <span class="d_comment">// Error, C.front is not callable
+</span>                            <span class="d_comment">// using argument types (int[])
+</span>    }
+}
+</pre>
+
+
+
+
+</div>
+<div id="copyright">Copyright &copy; 1999-2017 by Digital Mars &reg;, All Rights Reserved | Page generated by <a href="http://dlang.org/ddoc.html">Ddoc</a> on (no date time)</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('<script src="js/jquery-1.7.2.min.js">\x3C/script>')</script>
+    <script type="text/javascript" src="js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="js/run.js"></script>
+    <script type="text/javascript" src="js/cssmenu.js"></script>
+
+<script type="text/javascript" src="js/run-main-website.js"></script>
+</body>
+</html>
