@@ -1,0 +1,544 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2017 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Exception Safety - D Programming Language</title>
+
+<link rel="stylesheet" href="css/codemirror.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/print.css" media="print">
+<link rel="shortcut icon" href="favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Exception Safety' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="images/dlogo.svg"></a></div>
+    <a href="menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='spec/spec.html'>Language Reference</a></li>
+    <li><a href='phobos/index.html'>Library Reference</a></li>
+    <li><a href='dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='comparison.html'>Feature Overview</a></li>
+    <li><a href='articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.freenode.net/d'>IRC</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='foundation.html'>Foundation</a></li>
+    <li><a href='donate.html'>Donate</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='dstyle.html'>D Style</a></li>
+    <li><a href='glossary.html'>Glossary</a></li>
+    <li><a href='sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+<div class="subnav-helper"></div> <div class="subnav">    
+    <div class="head">        <h2>Articles</h2>
+        <p class="Articles, articles.html, overview">            <a href="articles.html">overview</a></p>
+    </div>
+    <ul><li><a href='        faq.html'>FAQ</a></li><li><a href='        const-faq.html'>const(FAQ)</a></li><li><a href='        d-floating-point.html'>Floating Point</a></li><li><a href='        warnings.html'>Warnings</a></li><li><a href='        rationale.html'>Rationale</a></li><li><a href='        builtin.html'>Builtin Rationale</a></li><li><a href='        ctod.html'>C to D</a></li><li><a href='        cpptod.html'>C++ to D</a></li><li><a href='        pretod.html'>C Preprocessor vs D</a></li><li><a href='        code_coverage.html'>Code coverage analysis</a></li><li><a href='        exception-safe.html'>Exception Safety</a></li><li><a href='        hijack.html'>Hijacking</a></li><li><a href='        intro-to-datetime.html'>Introduction to std.datetime</a></li><li><a href='        lazy-evaluation.html'>Lazy Evaluation</a></li><li><a href='        migrate-to-shared.html'>Migrating to Shared</a></li><li><a href='        mixin.html'>Mixins</a></li><li><a href='        regular-expression.html'>Regular Expressions</a></li><li><a href='        safed.html'>SafeD</a></li><li><a href='        templates-revisited.html'>Templates Revisited</a></li><li><a href='        ctarguments.html'>Compile-time Argument Lists</a></li><li><a href='        variadic-function-templates.html'>Variadic Templates</a></li><li><a href='        d-array-article.html'>D Slices
+    </a></li></ul>
+</div>
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;bug_severity=enhancement&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BException Safety%5D&amp;version=D2">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/exception-safe.dd">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Exception Safety</h1>
+        
+        
+
+
+Exception safe programming is programming so that if any piece of
+code that might throw an exception does throw an exception, then
+the state of the program is not corrupted and resources are not leaked.
+Getting this right using traditional methods often results in complex,
+unappealing and brittle code. As a result, exception safety often
+is either buggy or simply ignored for
+the sake of expediency.
+
+
+<h3>Example</h3>
+
+Here there's a mutex <span class="d_inlinecode donthyphenate notranslate">m</span> that must be acquired and held
+for a few statements, then released:
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span> locked_foo()
+{
+    Mutex m = <span class="d_keyword">new</span> Mutex;
+    lock(m);    <span class="d_comment">// lock the mutex
+</span>    foo();      <span class="d_comment">// do processing
+</span>    unlock(m);  <span class="d_comment">// unlock the mutex
+</span>}
+</pre>
+
+<p>If <span class="d_inlinecode donthyphenate notranslate">foo()</span> throws an exception, then <span class="d_inlinecode donthyphenate notranslate">locked_foo()</span> exits via exception unwinding,
+<span class="d_inlinecode donthyphenate notranslate">unlock(m)</span> is never called and the mutex is not released. This is a fatal
+problem with this code.
+</p>
+
+<p>The RAII (Resource Acquisition Is Initialization) idiom
+and the try-finally statement form the backbone of
+the traditional approaches to writing exception safe programming.
+</p>
+
+<p>RAII is scoped destruction, and the example can be fixed by providing
+a <span class="d_inlinecode donthyphenate notranslate">Lock</span> struct with a destructor that gets called upon the exit of the scope:
+</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> Lock
+{
+    Mutex m;
+
+    <span class="d_keyword">this</span>(Mutex m)
+    {
+        <span class="d_keyword">this</span>.m = m;
+        lock(m);
+    }
+
+    ~<span class="d_keyword">this</span>()
+    {
+        unlock(m);
+    }
+}
+
+<span class="d_keyword">void</span> locked_foo()
+{
+    Mutex m = <span class="d_keyword">new</span> Mutex;
+    <span class="d_keyword">auto</span> l = Lock(m);
+    foo();  <span class="d_comment">// do processing
+</span>}
+</pre>
+
+If <span class="d_inlinecode donthyphenate notranslate">locked_foo()</span> is exited normally or via an exception thrown from <span class="d_inlinecode donthyphenate notranslate">foo()</span>, <span class="d_inlinecode donthyphenate notranslate">l</span> gets
+its destructor called and the mutex is unlocked.
+The try-finally solution to the same problem looks like:
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span> locked_foo()
+{
+    Mutex m = <span class="d_keyword">new</span> Mutex;
+    lock(m);        <span class="d_comment">// lock the mutex
+</span>    <span class="d_keyword">try</span>
+    {
+        foo();      <span class="d_comment">// do processing
+</span>    }
+    <span class="d_keyword">finally</span>
+    {
+        unlock(m);  <span class="d_comment">// unlock the mutex
+</span>    }
+}
+</pre>
+
+<p>Both solutions work, but both have drawbacks.
+The RAII solution often requires
+the creation of an extra dummy struct, which is both a lot of lines of code to
+write and a lot of clutter obscuring the control flow logic.
+This is worthwhile to manage resources that must be cleaned up and that appear
+more than once in a program, but it is clutter when it only needs to be
+done once.
+The try-finally
+solution separates the unwinding code from the setup, and it can often be
+a visually large separation. Closely related code should be grouped together.
+</p>
+
+<p>The <a href="spec/statement.html#ScopeGuardStatement">scope guard statement</a> is a
+better approach:
+</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span> locked_foo()
+{
+    Mutex m = <span class="d_keyword">new</span> Mutex;
+
+    lock(m);                <span class="d_comment">// lock the mutex
+</span>    <span class="d_keyword">scope</span>(exit) unlock(m);  <span class="d_comment">// unlock on leaving the scope
+</span>
+    foo();                  <span class="d_comment">// do processing
+</span>}
+</pre>
+
+The <span class="d_inlinecode donthyphenate notranslate"><span class="d_keyword">scope</span>(exit)</span> statement is executed at the closing curly
+brace upon
+normal execution, or when the scope is left due to an exception having
+been thrown.
+It places the unwinding code where it aesthetically belongs, next to the
+creation of the state that needs unwinding. It's far less code to write
+than either the RAII or try-finally solutions, and doesn't require the
+creation of dummy structs.
+
+<h3>Example</h3>
+
+The next example is in a class of problems known as transaction processing:
+
+<pre class="d_code notranslate">Transaction transaction()
+{
+    Foo f = dofoo();
+    Bar b = dobar();
+
+    <span class="d_keyword">return</span> Transaction(f, b);
+}
+</pre>
+
+<p>Both <span class="d_inlinecode donthyphenate notranslate">dofoo()</span> and <span class="d_inlinecode donthyphenate notranslate">dobar()</span> must succeed, or the transaction has failed.
+If the transaction failed, the data must be restored to the state
+where neither <span class="d_inlinecode donthyphenate notranslate">dofoo()</span> nor <span class="d_inlinecode donthyphenate notranslate">dobar()</span> have happened. To support that,
+<span class="d_inlinecode donthyphenate notranslate">dofoo()</span> has an unwind operation, <span class="d_inlinecode donthyphenate notranslate">dofoo_undo(Foo f)</span> which will roll back
+the creation of a <span class="d_inlinecode donthyphenate notranslate">Foo</span>.
+</p>
+
+<p>With the RAII approach:
+</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> FooX
+{
+    Foo f;
+    <span class="d_keyword">bool</span> commit;
+
+    @disable <span class="d_keyword">this</span>();
+
+    <span class="d_keyword">static</span> FooX create()
+    {
+        <span class="d_keyword">auto</span> fx = FooX.init;
+        fx.f = dofoo();
+        <span class="d_keyword">return</span> fx;
+    }
+
+    ~<span class="d_keyword">this</span>()
+    {
+        <span class="d_keyword">if</span> (!commit)
+            dofoo_undo(f);
+    }
+}
+
+Transaction transaction()
+{
+    <span class="d_keyword">auto</span> fx = FooX.create();
+    Bar b = dobar();
+    fx.commit = <span class="d_keyword">true</span>;
+    <span class="d_keyword">return</span> Transaction(fx.f, b);
+}
+</pre>
+
+With the try-finally approach:
+
+<pre class="d_code notranslate">Transaction transaction()
+{
+    Foo f = dofoo();
+    <span class="d_keyword">try</span>
+    {
+        Bar b = dobar();
+        <span class="d_keyword">return</span> Transaction(f, b);
+    }
+    <span class="d_keyword">catch</span> (Object o)
+    {
+        dofoo_undo(f);
+        <span class="d_keyword">throw</span> o;
+    }
+}
+</pre>
+
+<p>These work too, but have the same problems.
+The RAII approach involves the creation of dummy structs, and the obtuseness
+of moving some of the logic out of the <span class="d_inlinecode donthyphenate notranslate">transaction()</span> function.
+The try-finally approach is wordy even with this simple example; try
+writing it if there are more than two components of the transaction that
+must succeed. It scales poorly.
+</p>
+
+<p>The <span class="d_inlinecode donthyphenate notranslate"><span class="d_keyword">scope</span>(failure)</span> solution looks like:
+</p>
+
+<pre class="d_code notranslate">Transaction transaction()
+{
+    Foo f = dofoo();
+    <span class="d_keyword">scope</span>(failure) dofoo_undo(f);
+
+    Bar b = dobar();
+    <span class="d_keyword">return</span> Transaction(f, b);
+}
+</pre>
+
+<span class="d_inlinecode donthyphenate notranslate">dofoo_undo(f)</span> is only executed if the scope is exited via an
+exception. The unwinding code is minimal and kept aesthetically where
+it belongs. It scales up in a natural way to more complex transactions:
+
+
+<pre class="d_code notranslate">Transaction transaction()
+{
+    Foo f = dofoo();
+    <span class="d_keyword">scope</span>(failure) dofoo_undo(f);
+
+    Bar b = dobar();
+    <span class="d_keyword">scope</span>(failure) dobar_unwind(b);
+
+    Def d = dodef();
+    <span class="d_keyword">return</span> Transaction(f, b, d);
+}
+</pre>
+
+<h3>Example</h3>
+
+The next example involves temporarily changing the state of some object.
+Suppose there's a class data member <span class="d_inlinecode donthyphenate notranslate">verbose</span>, which controls the
+emission of messages logging the activity of the class.
+Inside one of the methods, <span class="d_inlinecode donthyphenate notranslate">verbose</span> needs to be turned off because
+there's a loop that would otherwise cause a blizzard of messages to be output:
+
+<pre class="d_code notranslate"><span class="d_keyword">class</span> Foo
+{
+    <span class="d_keyword">bool</span> verbose;   <span class="d_comment">// true means print messages, false means silence
+</span>    ...
+    bar()
+    {
+        <span class="d_keyword">auto</span> verbose_save = verbose;
+        verbose = <span class="d_keyword">false</span>;
+        ... lots of code ...
+        verbose = verbose_save;
+    }
+}
+</pre>
+
+There's a problem if <span class="d_inlinecode donthyphenate notranslate">Foo.bar()</span> exits via an exception - the verbose
+flag state is not restored.
+That's easily fixed with <span class="d_inlinecode donthyphenate notranslate"><span class="d_keyword">scope</span>(exit)</span>:
+
+<pre class="d_code notranslate"><span class="d_keyword">class</span> Foo
+{
+    <span class="d_keyword">bool</span> verbose;   <span class="d_comment">// true means print messages, false means silence
+</span>    ...
+    bar()
+    {
+        <span class="d_keyword">auto</span> verbose_save = verbose;
+        verbose = <span class="d_keyword">false</span>;
+        <span class="d_keyword">scope</span>(exit) verbose = verbose_save;
+
+        ...lots of code...
+    }
+}
+</pre>
+
+<p>It also neatly solves the problem if <span class="d_inlinecode donthyphenate notranslate">...lots of code...</span> goes on at
+some length, and in the future a maintenance programmer inserts a
+return statement in it, not realizing that verbose must be reset upon
+exit. The reset code is where it belongs conceptually, rather than where
+it gets executed
+(an analogous case is the continuation expression in a <i>ForStatement</i>).
+It works whether the scope is exited by a return, break, goto, continue,
+or exception.
+</p>
+
+<p>The RAII solution would be to try and capture the false state of verbose
+as a resource, an abstraction that doesn't make much sense.
+The try-finally solution requires arbitrarily large separation between
+the conceptually linked set and reset code, besides requiring
+the addition of an irrelevant scope.
+</p>
+
+<h3>Example</h3>
+
+Here's another example of a multi-step transaction,
+this time for an email program.
+Sending an email consists of two operations:
+
+<ol><li>Perform the SMTP send operation.</li>
+<li>Copy the email to the &ldquo;Sent&rdquo; folder, which in POP is on the local
+disk, and in IMAP is also remote.</li>
+</ol>
+
+<p>Messages should not appear in &ldquo;Sent&rdquo; that haven't been actually sent,
+and sent messages must actually appear in &ldquo;Sent&rdquo;.
+</p>
+
+<p>Operation (1) is not undoable because it's a well-known distributed
+computing issue. Operation (2) is undoable with some degree of
+reliability. So we break the job down into three steps:
+</p>
+
+<ol><li>Copy the message to &ldquo;Sent&rdquo; with a changed title &ldquo;[Sending]
+&lt;Subject&gt;&rdquo;. This operation ensures there's space in the client's IMAP
+account (or on the local disk), the rights are proper, the connection
+exists and works, etc.</li>
+
+<li>Send the message via SMTP.</li>
+
+<li>If sending fails, delete the message from &ldquo;Sent&rdquo;. If the message
+succeeds,
+change its title from &ldquo;[Sending] &lt;Subject&gt;&rdquo; to &ldquo;&lt;Subject&gt;&rdquo;.
+Both of these operation have a high probability to succeed. If the
+folder is local, the probability of success is very high. If the folder
+is remote, probability is still vastly higher than that of step (1)
+because it doesn't involve an arbitrarily large data transfer.</li>
+
+</ol>
+
+<pre class="d_code notranslate"><span class="d_keyword">class</span> Mailer
+{
+    <span class="d_keyword">void</span> Send(Message msg)
+    {
+        {
+            <span class="d_keyword">char</span>[] origTitle = msg.Title();
+            <span class="d_keyword">scope</span>(exit) msg.SetTitle(origTitle);
+            msg.SetTitle(<span class="d_string">"[Sending] "</span> ~ origTitle);
+            Copy(msg, <span class="d_string">"Sent"</span>);
+        }
+        <span class="d_keyword">scope</span>(success) SetTitle(msg.ID(), <span class="d_string">"Sent"</span>, msg.Title);
+        <span class="d_keyword">scope</span>(failure) Remove(msg.ID(), <span class="d_string">"Sent"</span>);
+        SmtpSend(msg);  <span class="d_comment">// do the least reliable part last
+</span>    }
+}
+</pre>
+
+This is a compelling solution to a complex problem.
+Rewriting it with RAII would require two extra silly classes,
+MessageTitleSaver and MessageRemover.
+Rewriting the example with try-finally would require nested try-finally
+statements or use of an extra variable to track state evolution.
+
+<h3>Example</h3>
+
+Consider giving feedback to the user about a lengthy
+operation (mouse changes to an hourglass, window title is
+red/italicized, ...).
+With <span class="d_inlinecode donthyphenate notranslate"><span class="d_keyword">scope</span>(exit)</span> that can be easily done without
+needing to make an artificial resource out of whatever UI state element
+used for the cues:
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span> LongFunction()
+{
+    State save = UIElement.GetState();
+    <span class="d_keyword">scope</span>(exit) UIElement.SetState(save);
+    ...lots of code...
+}
+</pre>
+
+Even more so, <span class="d_inlinecode donthyphenate notranslate"><span class="d_keyword">scope</span>(success)</span> and <span class="d_inlinecode donthyphenate notranslate"><span class="d_keyword">scope</span>(failure)</span>
+can be used to give an indication if the operation succeeded or if
+an error occurred:
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span> LongFunction()
+{
+    State save = UIElement.GetState();
+    <span class="d_keyword">scope</span>(success) UIElement.SetState(save);
+    <span class="d_keyword">scope</span>(failure) UIElement.SetState(Failed(save));
+    ...lots of code...
+}
+</pre>
+
+<h2>When to use RAII, try-catch-finally, and Scope</h2>
+
+RAII is for managing resources, which is different from managing state
+or transactions. try-catch is still needed, as scope doesn't catch
+exceptions. It's try-finally that becomes redundant.
+
+<h2>Acknowledgements</h2>
+
+<p>Andrei Alexandrescu argued about the usefulness of these constructs on the
+Usenet and also defined
+their semantics in terms of try/catch/finally in a series of posts
+to comp.lang.c++.moderated under the title
+<a href="https://groups.google.com/group/comp.lang.c++.moderated/browse_frm/thread/60117e9c1cd1c510/b8cbe52786b0f506">A safer/better C++?</a>
+starting Dec 6, 2005.
+D implements the idea
+with a slightly modified syntax following its creator's experiments with the
+feature and useful
+<a href="http://www.digitalmars.com/d/archives/digitalmars/D/34277.html">suggestions</a>
+from the D programmer community,
+especially Dawid Ciezarkiewicz and Chris Miller.
+</p>
+
+<p>I am indebted to Scott Meyers for teaching
+me about exception safe programming.
+</p>
+
+<h2>References:</h2>
+
+<ol>
+<li><a href="http://drdobbs.com/184403758">Generic&lt;Programming&gt;: Change the Way You Write Exception-Safe Code Forever</a>
+by Andrei Alexandrescu and Petru Marginean
+
+</li>
+
+<li>"Item 29: Strive for exception-safe code" in
+<a href="https://www.amazon.com/exec/obidos/ASIN/0321334876/classicempire"> Effective C++ Third Edition</a>, pg. 127 by Scott Meyers
+
+</li>
+
+</ol>
+
+
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2017 by the <a href="foundation.html">D Language Foundation</a> | Page generated by
+<a href="spec/ddoc.html">Ddoc</a> on Wed Jul 19 22:20:31 2017
+</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="js/dlang.js"></script>
+    
+    <script type="text/javascript" src="js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>
