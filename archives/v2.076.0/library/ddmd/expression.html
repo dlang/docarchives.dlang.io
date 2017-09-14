@@ -1,0 +1,3186 @@
+<!DOCTYPE html>
+<html lang="en-US"><!-- 
+    | Copyright (c) 1999-$#{year} by the D Language Foundation
+    | All Rights Reserved.
+    | https://dlang.org/foundation.html
+	 -->
+	<head>
+		<meta charset="utf-8"/>
+		<meta name="keywords" content="D programming language"/>
+		<meta name="description" content="D Programming Language"/>
+		<title>Module ddmd.expression - D Programming Language - Digital Mars</title>
+		<link rel="stylesheet" href="../../css/codemirror.css"/>
+		<link rel="stylesheet" href="../../css/style.css"/>
+		<link rel="stylesheet" href="../../css/print.css" media="print"/>
+		<link rel="stylesheet" href="../../css/ddox.css"/>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"/>
+		<link rel="shortcut icon" href="../../favicon.ico"/>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+		<script type="text/javascript" src="../../js/ddox.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0"/>
+	</head>
+	<body id="ddmd.expression" class="std">
+		<script type="text/javascript">
+document.body.className += ' have-javascript';
+		</script>
+		<div id="top">
+			<div class="helper">
+				<div class="helper expand-container">
+					<a href="../../" class="logo">
+						<img id="logo" width="125" height="95" alt="D Logo" src="../../images/dlogo.svg"/>
+					</a>
+					<a href="../../menu.html" title="Menu" class="hamburger expand-toggle">
+						<span>Menu</span>
+					</a>
+					<div id="cssmenu">
+						<ul>
+							<li>
+								<a href="https://tour.dlang.org">
+									<span>Learn</span>
+								</a>
+							</li>
+							<li class="expand-container">
+								<a href="../../documentation.html" class="expand-toggle">
+									<span>Documentation</span>
+								</a>
+								<ul>
+									<li>
+										<a href="../../spec/spec.html">Language Reference</a>
+									</li>
+									<li>
+										<a href="../../phobos/index.html">Library Reference</a>
+									</li>
+									<li>
+										<a href="../../dmd.html">Command-line Reference</a>
+									</li>
+									<li class="menu-divider">
+										<a href="../../comparison.html">Feature Overview</a>
+									</li>
+									<li>
+										<a href="../../articles.html">Articles</a>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<a href="../../download.html">
+									<span>Downloads</span>
+								</a>
+							</li>
+							<li>
+								<a href="https://code.dlang.org">
+									<span>Packages</span>
+								</a>
+							</li>
+							<li class="expand-container">
+								<a href="../../community.html" class="expand-toggle">
+									<span>Community</span>
+								</a>
+								<ul>
+									<li>
+										<a href="https://dlang.org/blog">Blog</a>
+									</li>
+									<li>
+										<a href="../../orgs-using-d.html">Orgs using D</a>
+									</li>
+									<li>
+										<a href="https://twitter.com/search?q=%23dlang">Twitter</a>
+									</li>
+									<li class="menu-divider">
+										<a href="https://forum.dlang.org">Forums</a>
+									</li>
+									<li>
+										<a href="irc://irc.freenode.net/d">IRC</a>
+									</li>
+									<li>
+										<a href="https://wiki.dlang.org">Wiki</a>
+									</li>
+									<li class="menu-divider">
+										<a href="https://github.com/dlang">GitHub</a>
+									</li>
+									<li>
+										<a href="../../bugstats.html">Issues</a>
+									</li>
+								</ul>
+							</li>
+							<li class="expand-container">
+								<a href="../../resources.html" class="expand-toggle">
+									<span>Resources</span>
+								</a>
+								<ul>
+									<li>
+										<a href="https://wiki.dlang.org/Books">Books</a>
+									</li>
+									<li>
+										<a href="https://wiki.dlang.org/Tutorials">Tutorials</a>
+									</li>
+									<li class="menu-divider">
+										<a href="https://wiki.dlang.org/Development_tools">Tools</a>
+									</li>
+									<li>
+										<a href="https://wiki.dlang.org/Editors">Editors</a>
+									</li>
+									<li>
+										<a href="https://wiki.dlang.org/IDEs">IDEs</a>
+									</li>
+									<li>
+										<a href="http://rainers.github.io/visuald/visuald/StartPage.html">Visual D</a>
+									</li>
+									<li class="menu-divider">
+										<a href="../../acknowledgements.html">Acknowledgments</a>
+									</li>
+									<li>
+										<a href="../../dstyle.html">D Style</a>
+									</li>
+									<li>
+										<a href="../../glossary.html">Glossary</a>
+									</li>
+									<li>
+										<a href="../../sitemap.html">Sitemap</a>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+					<div class="search-container expand-container">
+						<a href="../../search.html" title="Search" class="expand-toggle">
+							<span>Search</span>
+						</a>
+						<div id="search-box">
+							<form method="get" action="https://google.com/search">
+								<input id="domains" type="hidden" name="domains" value="dlang.org"/>
+             
+								<input id="sourceid" type="hidden" name="sourceid" value="google-search"/>
+             
+								<span id="search-query">
+									<input id="q" name="q" placeholder="Search"/>
+									<input id="symbolSearch" style="display: none" type="text" name="symbolSearch" placeholder="API Search" onchange="performSymbolSearch(80);" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" autofocus/>
+								</span>
+								<span id="search-dropdown">
+									<div class="helper">
+										<select id="sitesearch" name="sitesearch" size="1">
+											<option value="dlang.org">Entire D Site</option>
+                     
+											<option selected="" value="dlang.org/spec">Language</option>
+                     
+											<option selected="" value="dlang.org/library">Library</option>
+                     
+											<option value="forum.dlang.org">Forums</option>
+										</select>
+									</div>
+								</span>
+								<span id="search-submit">
+									<button type="submit">
+										<i class="fa fa-search"></i>
+										<span>go</span>
+									</button>
+								</span>
+							</form>
+							<ul id="symbolSearchResults" style="display: none"></ul>
+							<script type="application/javascript" src="../symbols.js"></script>
+							<script type="application/javascript">
+var symbolSearchRootDir = "../";
+$('#symbolSearchPane').show();
+							</script>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+			<div class="subnav-helper"></div>
+			<div class="subnav">
+				<h2>API Documentation</h2>
+				<p>
+					<span class="smallprint">
+ version 2.076.0
+						<br/>
+						<a href="../../library-prerelease/index.html">switch to pre-release version</a>
+					</span>
+				</p>
+				<p>
+					<a href="../../library/index.html">overview</a>
+				</p>
+				<ul>
+						<li class="expand-container">
+							<a href="#" class="expand-toggle package">
+								<span>std</span>
+							</a>
+							<ul class="tree-view">
+						<li class="expand-container">
+							<a href="#" class="expand-toggle package">
+								<span>algorithm</span>
+							</a>
+							<ul class="tree-view">
+						<li>
+							<a href="../std/algorithm.html" class=" module">
+								<span>Package members</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/algorithm/comparison.html" class=" module">
+								<span>comparison</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/algorithm/iteration.html" class=" module">
+								<span>iteration</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/algorithm/mutation.html" class=" module">
+								<span>mutation</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/algorithm/searching.html" class=" module">
+								<span>searching</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/algorithm/setops.html" class=" module">
+								<span>setops</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/algorithm/sorting.html" class=" module">
+								<span>sorting</span>
+							</a>
+						</li>
+							</ul>
+						</li>
+						<li class="expand-container">
+							<a href="#" class="expand-toggle package">
+								<span>container</span>
+							</a>
+							<ul class="tree-view">
+						<li>
+							<a href="../std/container.html" class=" module">
+								<span>Package members</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/container/array.html" class=" module">
+								<span>array</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/container/binaryheap.html" class=" module">
+								<span>binaryheap</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/container/dlist.html" class=" module">
+								<span>dlist</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/container/rbtree.html" class=" module">
+								<span>rbtree</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/container/slist.html" class=" module">
+								<span>slist</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/container/util.html" class=" module">
+								<span>util</span>
+							</a>
+						</li>
+							</ul>
+						</li>
+						<li class="expand-container">
+							<a href="#" class="expand-toggle package">
+								<span>datetime</span>
+							</a>
+							<ul class="tree-view">
+						<li>
+							<a href="../std/datetime.html" class=" module">
+								<span>Package members</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/datetime/date.html" class=" module">
+								<span>date</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/datetime/interval.html" class=" module">
+								<span>interval</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/datetime/stopwatch.html" class=" module">
+								<span>stopwatch</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/datetime/systime.html" class=" module">
+								<span>systime</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/datetime/timezone.html" class=" module">
+								<span>timezone</span>
+							</a>
+						</li>
+							</ul>
+						</li>
+						<li class="expand-container">
+							<a href="#" class="expand-toggle package">
+								<span>digest</span>
+							</a>
+							<ul class="tree-view">
+						<li>
+							<a href="../std/digest.html" class=" module">
+								<span>Package members</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/digest/crc.html" class=" module">
+								<span>crc</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/digest/hmac.html" class=" module">
+								<span>hmac</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/digest/md.html" class=" module">
+								<span>md</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/digest/murmurhash.html" class=" module">
+								<span>murmurhash</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/digest/ripemd.html" class=" module">
+								<span>ripemd</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/digest/sha.html" class=" module">
+								<span>sha</span>
+							</a>
+						</li>
+							</ul>
+						</li>
+						<li class="expand-container">
+							<a href="#" class="expand-toggle package">
+								<span>experimental</span>
+							</a>
+							<ul class="tree-view">
+						<li class="expand-container">
+							<a href="#" class="expand-toggle package">
+								<span>allocator</span>
+							</a>
+							<ul class="tree-view">
+						<li class="expand-container">
+							<a href="#" class="expand-toggle package">
+								<span>building_blocks</span>
+							</a>
+							<ul class="tree-view">
+						<li>
+							<a href="../std/experimental/allocator/building_blocks.html" class=" module">
+								<span>Package members</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/experimental/allocator/building_blocks/affix_allocator.html" class=" module">
+								<span>affix_allocator</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/experimental/allocator/building_blocks/allocator_list.html" class=" module">
+								<span>allocator_list</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/experimental/allocator/building_blocks/bitmapped_block.html" class=" module">
+								<span>bitmapped_block</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/experimental/allocator/building_blocks/bucketizer.html" class=" module">
+								<span>bucketizer</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/experimental/allocator/building_blocks/fallback_allocator.html" class=" module">
+								<span>fallback_allocator</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/experimental/allocator/building_blocks/free_list.html" class=" module">
+								<span>free_list</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/experimental/allocator/building_blocks/free_tree.html" class=" module">
+								<span>free_tree</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/experimental/allocator/building_blocks/kernighan_ritchie.html" class=" module">
+								<span>kernighan_ritchie</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/experimental/allocator/building_blocks/null_allocator.html" class=" module">
+								<span>null_allocator</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/experimental/allocator/building_blocks/quantizer.html" class=" module">
+								<span>quantizer</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/experimental/allocator/building_blocks/region.html" class=" module">
+								<span>region</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/experimental/allocator/building_blocks/scoped_allocator.html" class=" module">
+								<span>scoped_allocator</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/experimental/allocator/building_blocks/segregator.html" class=" module">
+								<span>segregator</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/experimental/allocator/building_blocks/stats_collector.html" class=" module">
+								<span>stats_collector</span>
+							</a>
+						</li>
+							</ul>
+						</li>
+						<li>
+							<a href="../std/experimental/allocator.html" class=" module">
+								<span>Package members</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/experimental/allocator/common.html" class=" module">
+								<span>common</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/experimental/allocator/gc_allocator.html" class=" module">
+								<span>gc_allocator</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/experimental/allocator/mallocator.html" class=" module">
+								<span>mallocator</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/experimental/allocator/mmap_allocator.html" class=" module">
+								<span>mmap_allocator</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/experimental/allocator/showcase.html" class=" module">
+								<span>showcase</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/experimental/allocator/typed.html" class=" module">
+								<span>typed</span>
+							</a>
+						</li>
+							</ul>
+						</li>
+						<li class="expand-container">
+							<a href="#" class="expand-toggle package">
+								<span>logger</span>
+							</a>
+							<ul class="tree-view">
+						<li>
+							<a href="../std/experimental/logger.html" class=" module">
+								<span>Package members</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/experimental/logger/filelogger.html" class=" module">
+								<span>filelogger</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/experimental/logger/multilogger.html" class=" module">
+								<span>multilogger</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/experimental/logger/nulllogger.html" class=" module">
+								<span>nulllogger</span>
+							</a>
+						</li>
+							</ul>
+						</li>
+						<li>
+							<a href="../std/experimental/checkedint.html" class=" module">
+								<span>checkedint</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/experimental/typecons.html" class=" module">
+								<span>typecons</span>
+							</a>
+						</li>
+							</ul>
+						</li>
+						<li class="expand-container">
+							<a href="#" class="expand-toggle package">
+								<span>net</span>
+							</a>
+							<ul class="tree-view">
+						<li>
+							<a href="../std/net/curl.html" class=" module">
+								<span>curl</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/net/isemail.html" class=" module">
+								<span>isemail</span>
+							</a>
+						</li>
+							</ul>
+						</li>
+						<li class="expand-container">
+							<a href="#" class="expand-toggle package">
+								<span>range</span>
+							</a>
+							<ul class="tree-view">
+						<li>
+							<a href="../std/range.html" class=" module">
+								<span>Package members</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/range/interfaces.html" class=" module">
+								<span>interfaces</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/range/primitives.html" class=" module">
+								<span>primitives</span>
+							</a>
+						</li>
+							</ul>
+						</li>
+						<li>
+							<a href="../std/array.html" class=" module">
+								<span>array</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/ascii.html" class=" module">
+								<span>ascii</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/base64.html" class=" module">
+								<span>base64</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/bigint.html" class=" module">
+								<span>bigint</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/bitmanip.html" class=" module">
+								<span>bitmanip</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/compiler.html" class=" module">
+								<span>compiler</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/complex.html" class=" module">
+								<span>complex</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/concurrency.html" class=" module">
+								<span>concurrency</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/conv.html" class=" module">
+								<span>conv</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/csv.html" class=" module">
+								<span>csv</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/demangle.html" class=" module">
+								<span>demangle</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/encoding.html" class=" module">
+								<span>encoding</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/exception.html" class=" module">
+								<span>exception</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/file.html" class=" module">
+								<span>file</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/format.html" class=" module">
+								<span>format</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/functional.html" class=" module">
+								<span>functional</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/getopt.html" class=" module">
+								<span>getopt</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/json.html" class=" module">
+								<span>json</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/math.html" class=" module">
+								<span>math</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/mathspecial.html" class=" module">
+								<span>mathspecial</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/meta.html" class=" module">
+								<span>meta</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/mmfile.html" class=" module">
+								<span>mmfile</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/numeric.html" class=" module">
+								<span>numeric</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/outbuffer.html" class=" module">
+								<span>outbuffer</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/parallelism.html" class=" module">
+								<span>parallelism</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/path.html" class=" module">
+								<span>path</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/process.html" class=" module">
+								<span>process</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/random.html" class=" module">
+								<span>random</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/regex.html" class=" module">
+								<span>regex</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/signals.html" class=" module">
+								<span>signals</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/socket.html" class=" module">
+								<span>socket</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/stdint.html" class=" module">
+								<span>stdint</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/stdio.html" class=" module">
+								<span>stdio</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/string.html" class=" module">
+								<span>string</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/system.html" class=" module">
+								<span>system</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/traits.html" class=" module">
+								<span>traits</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/typecons.html" class=" module">
+								<span>typecons</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/uni.html" class=" module">
+								<span>uni</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/uri.html" class=" module">
+								<span>uri</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/utf.html" class=" module">
+								<span>utf</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/uuid.html" class=" module">
+								<span>uuid</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/variant.html" class=" module">
+								<span>variant</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/xml.html" class=" module">
+								<span>xml</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/zip.html" class=" module">
+								<span>zip</span>
+							</a>
+						</li>
+						<li>
+							<a href="../std/zlib.html" class=" module">
+								<span>zlib</span>
+							</a>
+						</li>
+							</ul>
+						</li>
+						<li class="expand-container">
+							<a href="#" class="expand-toggle package">
+								<span>core</span>
+							</a>
+							<ul class="tree-view">
+						<li class="expand-container">
+							<a href="#" class="expand-toggle package">
+								<span>stdc</span>
+							</a>
+							<ul class="tree-view">
+						<li>
+							<a href="../core/stdc/assert_.html" class=" module">
+								<span>assert_</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/stdc/complex.html" class=" module">
+								<span>complex</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/stdc/ctype.html" class=" module">
+								<span>ctype</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/stdc/errno.html" class=" module">
+								<span>errno</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/stdc/fenv.html" class=" module">
+								<span>fenv</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/stdc/float_.html" class=" module">
+								<span>float_</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/stdc/inttypes.html" class=" module">
+								<span>inttypes</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/stdc/limits.html" class=" module">
+								<span>limits</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/stdc/locale.html" class=" module">
+								<span>locale</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/stdc/math.html" class=" module">
+								<span>math</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/stdc/signal.html" class=" module">
+								<span>signal</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/stdc/stdarg.html" class=" module">
+								<span>stdarg</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/stdc/stddef.html" class=" module">
+								<span>stddef</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/stdc/stdint.html" class=" module">
+								<span>stdint</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/stdc/stdio.html" class=" module">
+								<span>stdio</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/stdc/stdlib.html" class=" module">
+								<span>stdlib</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/stdc/string.html" class=" module">
+								<span>string</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/stdc/tgmath.html" class=" module">
+								<span>tgmath</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/stdc/time.html" class=" module">
+								<span>time</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/stdc/wchar_.html" class=" module">
+								<span>wchar_</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/stdc/wctype.html" class=" module">
+								<span>wctype</span>
+							</a>
+						</li>
+							</ul>
+						</li>
+						<li class="expand-container">
+							<a href="#" class="expand-toggle package">
+								<span>stdcpp</span>
+							</a>
+							<ul class="tree-view">
+						<li>
+							<a href="../core/stdcpp/exception.html" class=" module">
+								<span>exception</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/stdcpp/typeinfo.html" class=" module">
+								<span>typeinfo</span>
+							</a>
+						</li>
+							</ul>
+						</li>
+						<li class="expand-container">
+							<a href="#" class="expand-toggle package">
+								<span>sync</span>
+							</a>
+							<ul class="tree-view">
+						<li>
+							<a href="../core/sync/barrier.html" class=" module">
+								<span>barrier</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/sync/condition.html" class=" module">
+								<span>condition</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/sync/config.html" class=" module">
+								<span>config</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/sync/exception.html" class=" module">
+								<span>exception</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/sync/mutex.html" class=" module">
+								<span>mutex</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/sync/rwmutex.html" class=" module">
+								<span>rwmutex</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/sync/semaphore.html" class=" module">
+								<span>semaphore</span>
+							</a>
+						</li>
+							</ul>
+						</li>
+						<li>
+							<a href="../core/atomic.html" class=" module">
+								<span>atomic</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/attribute.html" class=" module">
+								<span>attribute</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/bitop.html" class=" module">
+								<span>bitop</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/checkedint.html" class=" module">
+								<span>checkedint</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/cpuid.html" class=" module">
+								<span>cpuid</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/demangle.html" class=" module">
+								<span>demangle</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/exception.html" class=" module">
+								<span>exception</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/math.html" class=" module">
+								<span>math</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/memory.html" class=" module">
+								<span>memory</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/runtime.html" class=" module">
+								<span>runtime</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/simd.html" class=" module">
+								<span>simd</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/thread.html" class=" module">
+								<span>thread</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/time.html" class=" module">
+								<span>time</span>
+							</a>
+						</li>
+						<li>
+							<a href="../core/vararg.html" class=" module">
+								<span>vararg</span>
+							</a>
+						</li>
+							</ul>
+						</li>
+						<li class="expand-container open">
+							<a href="#" class="expand-toggle package">
+								<span>ddmd</span>
+							</a>
+							<ul class="tree-view">
+						<li class="expand-container">
+							<a href="#" class="expand-toggle package">
+								<span>backend</span>
+							</a>
+							<ul class="tree-view">
+						<li>
+							<a href="../ddmd/backend/bcomplex.html" class=" module">
+								<span>bcomplex</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/backend/cc.html" class=" module">
+								<span>cc</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/backend/cdef.html" class=" module">
+								<span>cdef</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/backend/cgcv.html" class=" module">
+								<span>cgcv</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/backend/code.html" class=" module">
+								<span>code</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/backend/code_x86.html" class=" module">
+								<span>code_x86</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/backend/cv4.html" class=" module">
+								<span>cv4</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/backend/dt.html" class=" module">
+								<span>dt</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/backend/dwarf.html" class=" module">
+								<span>dwarf</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/backend/el.html" class=" module">
+								<span>el</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/backend/exh.html" class=" module">
+								<span>exh</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/backend/global.html" class=" module">
+								<span>global</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/backend/iasm.html" class=" module">
+								<span>iasm</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/backend/md5.html" class=" module">
+								<span>md5</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/backend/obj.html" class=" module">
+								<span>obj</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/backend/oper.html" class=" module">
+								<span>oper</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/backend/outbuf.html" class=" module">
+								<span>outbuf</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/backend/rtlsym.html" class=" module">
+								<span>rtlsym</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/backend/ty.html" class=" module">
+								<span>ty</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/backend/type.html" class=" module">
+								<span>type</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/backend/xmm.html" class=" module">
+								<span>xmm</span>
+							</a>
+						</li>
+							</ul>
+						</li>
+						<li class="expand-container">
+							<a href="#" class="expand-toggle package">
+								<span>root</span>
+							</a>
+							<ul class="tree-view">
+						<li>
+							<a href="../ddmd/root/aav.html" class=" module">
+								<span>aav</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/root/array.html" class=" module">
+								<span>array</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/root/ctfloat.html" class=" module">
+								<span>ctfloat</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/root/file.html" class=" module">
+								<span>file</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/root/filename.html" class=" module">
+								<span>filename</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/root/hash.html" class=" module">
+								<span>hash</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/root/man.html" class=" module">
+								<span>man</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/root/outbuffer.html" class=" module">
+								<span>outbuffer</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/root/port.html" class=" module">
+								<span>port</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/root/response.html" class=" module">
+								<span>response</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/root/rmem.html" class=" module">
+								<span>rmem</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/root/rootobject.html" class=" module">
+								<span>rootobject</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/root/speller.html" class=" module">
+								<span>speller</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/root/stringtable.html" class=" module">
+								<span>stringtable</span>
+							</a>
+						</li>
+							</ul>
+						</li>
+						<li class="expand-container">
+							<a href="#" class="expand-toggle package">
+								<span>tk</span>
+							</a>
+							<ul class="tree-view">
+						<li>
+							<a href="../ddmd/tk/dlist.html" class=" module">
+								<span>dlist</span>
+							</a>
+						</li>
+							</ul>
+						</li>
+						<li>
+							<a href="../ddmd/access.html" class=" module">
+								<span>access</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/aggregate.html" class=" module">
+								<span>aggregate</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/aliasthis.html" class=" module">
+								<span>aliasthis</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/apply.html" class=" module">
+								<span>apply</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/argtypes.html" class=" module">
+								<span>argtypes</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/arrayop.html" class=" module">
+								<span>arrayop</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/arraytypes.html" class=" module">
+								<span>arraytypes</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/asttypename.html" class=" module">
+								<span>asttypename</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/attrib.html" class=" module">
+								<span>attrib</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/blockexit.html" class=" module">
+								<span>blockexit</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/builtin.html" class=" module">
+								<span>builtin</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/canthrow.html" class=" module">
+								<span>canthrow</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/clone.html" class=" module">
+								<span>clone</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/complex.html" class=" module">
+								<span>complex</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/cond.html" class=" module">
+								<span>cond</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/console.html" class=" module">
+								<span>console</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/constfold.html" class=" module">
+								<span>constfold</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/cppmangle.html" class=" module">
+								<span>cppmangle</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/ctfeexpr.html" class=" module">
+								<span>ctfeexpr</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/dcast.html" class=" module">
+								<span>dcast</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/dclass.html" class=" module">
+								<span>dclass</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/declaration.html" class=" module">
+								<span>declaration</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/delegatize.html" class=" module">
+								<span>delegatize</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/denum.html" class=" module">
+								<span>denum</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/dimport.html" class=" module">
+								<span>dimport</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/dinifile.html" class=" module">
+								<span>dinifile</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/dinterpret.html" class=" module">
+								<span>dinterpret</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/dmacro.html" class=" module">
+								<span>dmacro</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/dmangle.html" class=" module">
+								<span>dmangle</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/dmodule.html" class=" module">
+								<span>dmodule</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/dmsc.html" class=" module">
+								<span>dmsc</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/doc.html" class=" module">
+								<span>doc</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/dscope.html" class=" module">
+								<span>dscope</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/dstruct.html" class=" module">
+								<span>dstruct</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/dsymbol.html" class=" module">
+								<span>dsymbol</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/dtemplate.html" class=" module">
+								<span>dtemplate</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/dversion.html" class=" module">
+								<span>dversion</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/e2ir.html" class=" module">
+								<span>e2ir</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/eh.html" class=" module">
+								<span>eh</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/entity.html" class=" module">
+								<span>entity</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/errors.html" class=" module">
+								<span>errors</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/escape.html" class=" module">
+								<span>escape</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/expression.html" class="selected module">
+								<span>expression</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/expressionsem.html" class=" module">
+								<span>expressionsem</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/func.html" class=" module">
+								<span>func</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/globals.html" class=" module">
+								<span>globals</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/glue.html" class=" module">
+								<span>glue</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/gluelayer.html" class=" module">
+								<span>gluelayer</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/hdrgen.html" class=" module">
+								<span>hdrgen</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/iasm.html" class=" module">
+								<span>iasm</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/id.html" class=" module">
+								<span>id</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/identifier.html" class=" module">
+								<span>identifier</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/impcnvtab.html" class=" module">
+								<span>impcnvtab</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/imphint.html" class=" module">
+								<span>imphint</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/init.html" class=" module">
+								<span>init</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/initsem.html" class=" module">
+								<span>initsem</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/inline.html" class=" module">
+								<span>inline</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/inlinecost.html" class=" module">
+								<span>inlinecost</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/intrange.html" class=" module">
+								<span>intrange</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/irstate.html" class=" module">
+								<span>irstate</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/json.html" class=" module">
+								<span>json</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/lexer.html" class=" module">
+								<span>lexer</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/lib.html" class=" module">
+								<span>lib</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/libelf.html" class=" module">
+								<span>libelf</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/libomf.html" class=" module">
+								<span>libomf</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/link.html" class=" module">
+								<span>link</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/mars.html" class=" module">
+								<span>mars</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/mtype.html" class=" module">
+								<span>mtype</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/nogc.html" class=" module">
+								<span>nogc</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/nspace.html" class=" module">
+								<span>nspace</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/objc.html" class=" module">
+								<span>objc</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/opover.html" class=" module">
+								<span>opover</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/optimize.html" class=" module">
+								<span>optimize</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/parse.html" class=" module">
+								<span>parse</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/printast.html" class=" module">
+								<span>printast</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/s2ir.html" class=" module">
+								<span>s2ir</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/safe.html" class=" module">
+								<span>safe</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/sapply.html" class=" module">
+								<span>sapply</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/scanelf.html" class=" module">
+								<span>scanelf</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/scanomf.html" class=" module">
+								<span>scanomf</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/sideeffect.html" class=" module">
+								<span>sideeffect</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/statement.html" class=" module">
+								<span>statement</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/statementsem.html" class=" module">
+								<span>statementsem</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/statement_rewrite_walker.html" class=" module">
+								<span>statement_rewrite_walker</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/staticassert.html" class=" module">
+								<span>staticassert</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/staticcond.html" class=" module">
+								<span>staticcond</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/target.html" class=" module">
+								<span>target</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/tocsym.html" class=" module">
+								<span>tocsym</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/toctype.html" class=" module">
+								<span>toctype</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/tocvdebug.html" class=" module">
+								<span>tocvdebug</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/todt.html" class=" module">
+								<span>todt</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/toir.html" class=" module">
+								<span>toir</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/tokens.html" class=" module">
+								<span>tokens</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/toobj.html" class=" module">
+								<span>toobj</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/traits.html" class=" module">
+								<span>traits</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/typesem.html" class=" module">
+								<span>typesem</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/typinf.html" class=" module">
+								<span>typinf</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/utf.html" class=" module">
+								<span>utf</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/utils.html" class=" module">
+								<span>utils</span>
+							</a>
+						</li>
+						<li>
+							<a href="../ddmd/visitor.html" class=" module">
+								<span>visitor</span>
+							</a>
+						</li>
+							</ul>
+						</li>
+						<li class="expand-container">
+							<a href="#" class="expand-toggle package">
+								<span>etc</span>
+							</a>
+							<ul class="tree-view">
+						<li class="expand-container">
+							<a href="#" class="expand-toggle package">
+								<span>c</span>
+							</a>
+							<ul class="tree-view">
+						<li class="expand-container">
+							<a href="#" class="expand-toggle package">
+								<span>odbc</span>
+							</a>
+							<ul class="tree-view">
+						<li>
+							<a href="../etc/c/odbc/sql.html" class=" module">
+								<span>sql</span>
+							</a>
+						</li>
+						<li>
+							<a href="../etc/c/odbc/sqlext.html" class=" module">
+								<span>sqlext</span>
+							</a>
+						</li>
+						<li>
+							<a href="../etc/c/odbc/sqltypes.html" class=" module">
+								<span>sqltypes</span>
+							</a>
+						</li>
+						<li>
+							<a href="../etc/c/odbc/sqlucode.html" class=" module">
+								<span>sqlucode</span>
+							</a>
+						</li>
+							</ul>
+						</li>
+						<li>
+							<a href="../etc/c/curl.html" class=" module">
+								<span>curl</span>
+							</a>
+						</li>
+							</ul>
+						</li>
+							</ul>
+						</li>
+						<li>
+							<a href="../object.html" class=" module">
+								<span>object</span>
+							</a>
+						</li>
+				</ul>
+			</div>
+			<div id="content" class="hyphenate">
+				<div id="tools">
+					<div>
+						<div class="tip smallprint">
+							<a href="https://github.com/dlang/dmd/blob/v2.076.0/src/ddmd/expression.d">
+ View source code
+							</a>
+							<div>
+ Display the source code in ddmd/expression.d from which this
+ page was generated on github.
+							</div>
+						</div>
+						<div class="tip smallprint">
+							<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/library/src/ddmd/expression.html&amp;bug_severity=enhancement&amp;component=dmd&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BModule ddmd.expression%5D&amp;version=D2">Report a bug</a>
+							<div>
+ If you spot a problem with this page, click here to create a
+ Bugzilla issue.
+							</div>
+						</div>
+						<div class="tip smallprint">
+							<a href="https://github.com/dlang/dmd/edit/master/src/ddmd/expression.d">
+ Improve this page
+							</a>
+							<div>
+ Quickly fork, edit online, and submit a pull request for this page.
+ Requires a signed-in GitHub account. This works well for small changes.
+ If you'd like to make larger changes you may want to consider using
+ local clone.
+							</div>
+						</div>
+					</div>
+				</div>
+				<h1>Module <code>ddmd.expression</code></h1>
+				<p>Compiler implementation of the
+ <a href="http://www.dlang.org">D programming language</a>.
+</p>
+<section></section>
+
+				<section></section>
+				<section>
+					<h2>Functions</h2>
+					<table>
+						<col class="caption"/>
+						<tr>
+							<th>Name</th>
+							<th>Description</th>
+						</tr>
+						<tr>
+							<td>
+								<a id="arrayExpressionSemantic" class="public" href="../ddmd/expression/array_expression_semantic.html">
+									<code>arrayExpressionSemantic</code>
+								</a>
+							</td>
+							<td>Perform semantic() on an array of Expressions.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="arrayExpressionToCommonType" class="public" href="../ddmd/expression/array_expression_to_common_type.html">
+									<code>arrayExpressionToCommonType</code>
+								</a>
+							</td>
+							<td>The common type is determined by applying ?: to each pair.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="callCpCtor" class="public" href="../ddmd/expression/call_cp_ctor.html">
+									<code>callCpCtor</code>
+								</a>
+							</td>
+							<td>If e is an instance of a struct, and that struct has a copy constructor,
+ rewrite e as:
+    (tmp = e),tmp
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="checkDefCtor" class="public" href="../ddmd/expression/check_def_ctor.html">
+									<code>checkDefCtor</code>
+								</a>
+							</td>
+							<td>Issue an error if default construction is disabled for type t.
+ Default construction is required for arrays and 'out' parameters.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="checkPropertyCall" class="public" href="../ddmd/expression/check_property_call.html">
+									<code>checkPropertyCall</code>
+								</a>
+							</td>
+							<td>Check the tail CallExp is really property function call.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="doCopyOrMove" class="public" href="../ddmd/expression/do_copy_or_move.html">
+									<code>doCopyOrMove</code>
+								</a>
+							</td>
+							<td>Handle the postblit call on lvalue, or the move of rvalue.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="expandTuples" class="public" href="../ddmd/expression/expand_tuples.html">
+									<code>expandTuples</code>
+								</a>
+							</td>
+							<td>Expand tuples.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="extractOpDollarSideEffect" class="public" href="../ddmd/expression/extract_op_dollar_side_effect.html">
+									<code>extractOpDollarSideEffect</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="functionParameters" class="public" href="../ddmd/expression/function_parameters.html">
+									<code>functionParameters</code>
+								</a>
+							</td>
+							<td>Now that we know the exact type of the function we're calling,
+ the arguments[] need to be adjusted:
+      1. implicitly convert argument to the corresponding parameter type
+      2. add default arguments for any missing arguments
+      3. do default promotions on arguments corresponding to ...
+      4. add hidden arguments[] argument
+      5. call copy constructor for struct value arguments
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="getFuncTemplateDecl" class="public" href="../ddmd/expression/get_func_template_decl.html">
+									<code>getFuncTemplateDecl</code>
+								</a>
+							</td>
+							<td>Get TemplateDeclaration enclosing FuncDeclaration.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="getRightThis" class="public" href="../ddmd/expression/get_right_this.html">
+									<code>getRightThis</code>
+								</a>
+							</td>
+							<td>Given var, get the
+ right <code class="lang-d"><span class="kwd">this</span></code> pointer if var is in an outer class, but our
+ existing <code class="lang-d"><span class="kwd">this</span></code> pointer is in an inner class.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="hasThis" class="public" href="../ddmd/expression/has_this.html">
+									<code>hasThis</code>
+								</a>
+							</td>
+							<td>Determine if <code class="lang-d"><span class="kwd">this</span></code> is available by walking up the enclosing
+ scopes until a function is found.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isAliasThisTuple" class="public" href="../ddmd/expression/is_alias_this_tuple.html">
+									<code>isAliasThisTuple</code>
+								</a>
+							</td>
+							<td>Expand alias this tuples.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isDotOpDispatch" class="public" href="../ddmd/expression/is_dot_op_dispatch.html">
+									<code>isDotOpDispatch</code>
+								</a>
+							</td>
+							<td>check e is exp.opDispatch!(tiargs) or not
+ It's used to switch to UFCS the semantic analysis path
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isNeedThisScope" class="public" href="../ddmd/expression/is_need_this_scope.html">
+									<code>isNeedThisScope</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="modifyFieldVar" class="public" href="../ddmd/expression/modify_field_var.html">
+									<code>modifyFieldVar</code>
+								</a>
+							</td>
+							<td>Mark variable v as modified if it is inside a constructor that var
+ is a field in.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="preFunctionParameters" class="public" href="../ddmd/expression/pre_function_parameters.html">
+									<code>preFunctionParameters</code>
+								</a>
+							</td>
+							<td>Preprocess arguments to function.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="RealEquals" class="public" href="../ddmd/expression/real_equals.html">
+									<code>RealEquals</code>
+								</a>
+							</td>
+							<td>Test to see if two reals are the same.
+ Regard NaN's as equivalent.
+ Regard +0 and -0 as different.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="resolve" class="public" href="../ddmd/expression/resolve.html">
+									<code>resolve</code>
+								</a>
+							</td>
+							<td>Resolve a symbol <code class="lang-d"><a href="../ddmd/expression/resolve.html#s"><span class="pln">s</span></a></code> and wraps it in an expression object.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="resolveOpDollar" class="public" href="../ddmd/expression/resolve_op_dollar.html">
+									<code>resolveOpDollar</code>
+								</a>
+							</td>
+							<td>Runs semantic on se.lwr and se.upr. Declares a temporary variable
+ if '$' was used.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="resolveOpDollar" class="public" href="../ddmd/expression/resolve_op_dollar.html">
+									<code>resolveOpDollar</code>
+								</a>
+							</td>
+							<td>Runs semantic on ae.arguments. Declares temporary variables
+ if '$' was used.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="resolvePropertiesOnly" class="public" href="../ddmd/expression/resolve_properties_only.html">
+									<code>resolvePropertiesOnly</code>
+								</a>
+							</td>
+							<td>If e1 is a property function (template), resolve it.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="resolvePropertiesX" class="public" href="../ddmd/expression/resolve_properties_x.html">
+									<code>resolvePropertiesX</code>
+								</a>
+							</td>
+							<td>Pull out any properties.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="resolveUFCS" class="public" href="../ddmd/expression/resolve_ufcs.html">
+									<code>resolveUFCS</code>
+								</a>
+							</td>
+							<td>Pull out callable entity with UFCS.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="resolveUFCSProperties" class="public" href="../ddmd/expression/resolve_ufcs_properties.html">
+									<code>resolveUFCSProperties</code>
+								</a>
+							</td>
+							<td>Pull out property with UFCS.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="searchUFCS" class="public" href="../ddmd/expression/search_ufcs.html">
+									<code>searchUFCS</code>
+								</a>
+							</td>
+							<td>Find symbol in accordance with the UFCS name look up rule
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="semanticString" class="public" href="../ddmd/expression/semantic_string.html">
+									<code>semanticString</code>
+								</a>
+							</td>
+							<td>Resolve <code class="lang-d"><a href="../ddmd/expression/semantic_string.html#exp"><span class="pln">exp</span></a></code> as a compile-time known string.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="typeDotIdExp" class="public" href="../ddmd/expression/type_dot_id_exp.html">
+									<code>typeDotIdExp</code>
+								</a>
+							</td>
+							<td>TypeDotIdExp
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="valueNoDtor" class="public" href="../ddmd/expression/value_no_dtor.html">
+									<code>valueNoDtor</code>
+								</a>
+							</td>
+							<td>If we want the value of this expression, but do not want to call
+ the destructor on it.
+</td>
+						</tr>
+					</table>
+				</section>
+				<section>
+					<h2>Classes</h2>
+					<table>
+						<col class="caption"/>
+						<tr>
+							<th>Name</th>
+							<th>Description</th>
+						</tr>
+						<tr>
+							<td>
+								<a id="AddAssignExp" class="public" href="../ddmd/expression/add_assign_exp.html">
+									<code>AddAssignExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="AddExp" class="public" href="../ddmd/expression/add_exp.html">
+									<code>AddExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="AddrExp" class="public" href="../ddmd/expression/addr_exp.html">
+									<code>AddrExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="AndAndExp" class="public" href="../ddmd/expression/and_and_exp.html">
+									<code>AndAndExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="AndAssignExp" class="public" href="../ddmd/expression/and_assign_exp.html">
+									<code>AndAssignExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="AndExp" class="public" href="../ddmd/expression/and_exp.html">
+									<code>AndExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="ArrayExp" class="public" href="../ddmd/expression/array_exp.html">
+									<code>ArrayExp</code>
+								</a>
+							</td>
+							<td>e1 [ a0, a1, a2, a3 ,... ]
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="ArrayLengthExp" class="public" href="../ddmd/expression/array_length_exp.html">
+									<code>ArrayLengthExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="ArrayLiteralExp" class="public" href="../ddmd/expression/array_literal_exp.html">
+									<code>ArrayLiteralExp</code>
+								</a>
+							</td>
+							<td>[ e1, e2, e3, ... ]
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="AssertExp" class="public" href="../ddmd/expression/assert_exp.html">
+									<code>AssertExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="AssignExp" class="public" href="../ddmd/expression/assign_exp.html">
+									<code>AssignExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="AssocArrayLiteralExp" class="public" href="../ddmd/expression/assoc_array_literal_exp.html">
+									<code>AssocArrayLiteralExp</code>
+								</a>
+							</td>
+							<td>[ key0 : value0, key1 : value1, ... ]
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="BinAssignExp" class="public" href="../ddmd/expression/bin_assign_exp.html">
+									<code>BinAssignExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="BinExp" class="public" href="../ddmd/expression/bin_exp.html">
+									<code>BinExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="BlitExp" class="public" href="../ddmd/expression/blit_exp.html">
+									<code>BlitExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="CallExp" class="public" href="../ddmd/expression/call_exp.html">
+									<code>CallExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="CastExp" class="public" href="../ddmd/expression/cast_exp.html">
+									<code>CastExp</code>
+								</a>
+							</td>
+							<td>Possible to cast to one type while painting to another type
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="CatAssignExp" class="public" href="../ddmd/expression/cat_assign_exp.html">
+									<code>CatAssignExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="CatExp" class="public" href="../ddmd/expression/cat_exp.html">
+									<code>CatExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="CmpExp" class="public" href="../ddmd/expression/cmp_exp.html">
+									<code>CmpExp</code>
+								</a>
+							</td>
+							<td><code class="lang-d"><span class="pln">op</span></code> is one of:
+      TOKlt, TOKle, TOKgt, TOKge,
+      TOKunord, TOKlg, TOKleg, TOKule, TOKul, TOKuge, TOKug, TOKue
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="ComExp" class="public" href="../ddmd/expression/com_exp.html">
+									<code>ComExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="CommaExp" class="public" href="../ddmd/expression/comma_exp.html">
+									<code>CommaExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="CompileExp" class="public" href="../ddmd/expression/compile_exp.html">
+									<code>CompileExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="ComplexExp" class="public" href="../ddmd/expression/complex_exp.html">
+									<code>ComplexExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="CondExp" class="public" href="../ddmd/expression/cond_exp.html">
+									<code>CondExp</code>
+								</a>
+							</td>
+							<td><code class="lang-d"><span class="pln">econd </span><span class="pun">? </span><span class="pln">e1 </span><span class="pun">: </span><span class="pln">e2</span></code>
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="ConstructExp" class="public" href="../ddmd/expression/construct_exp.html">
+									<code>ConstructExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="DeclarationExp" class="public" href="../ddmd/expression/declaration_exp.html">
+									<code>DeclarationExp</code>
+								</a>
+							</td>
+							<td>Declaration of a symbol
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="DefaultInitExp" class="public" href="../ddmd/expression/default_init_exp.html">
+									<code>DefaultInitExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="DelegateExp" class="public" href="../ddmd/expression/delegate_exp.html">
+									<code>DelegateExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="DelegateFuncptrExp" class="public" href="../ddmd/expression/delegate_funcptr_exp.html">
+									<code>DelegateFuncptrExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="DeleteExp" class="public" href="../ddmd/expression/delete_exp.html">
+									<code>DeleteExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="DivAssignExp" class="public" href="../ddmd/expression/div_assign_exp.html">
+									<code>DivAssignExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="DivExp" class="public" href="../ddmd/expression/div_exp.html">
+									<code>DivExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="DollarExp" class="public" href="../ddmd/expression/dollar_exp.html">
+									<code>DollarExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="DotExp" class="public" href="../ddmd/expression/dot_exp.html">
+									<code>DotExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="DotIdExp" class="public" href="../ddmd/expression/dot_id_exp.html">
+									<code>DotIdExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="DotTemplateExp" class="public" href="../ddmd/expression/dot_template_exp.html">
+									<code>DotTemplateExp</code>
+								</a>
+							</td>
+							<td>Mainly just a placeholder
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="DotTemplateInstanceExp" class="public" href="../ddmd/expression/dot_template_instance_exp.html">
+									<code>DotTemplateInstanceExp</code>
+								</a>
+							</td>
+							<td>foo.bar!(args)
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="DotTypeExp" class="public" href="../ddmd/expression/dot_type_exp.html">
+									<code>DotTypeExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="DotVarExp" class="public" href="../ddmd/expression/dot_var_exp.html">
+									<code>DotVarExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="DsymbolExp" class="public" href="../ddmd/expression/dsymbol_exp.html">
+									<code>DsymbolExp</code>
+								</a>
+							</td>
+							<td>Won't be generated by parser.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="EqualExp" class="public" href="../ddmd/expression/equal_exp.html">
+									<code>EqualExp</code>
+								</a>
+							</td>
+							<td><code class="lang-d"><span class="pun">==</span></code> and <code class="lang-d"><span class="pun">!=</span></code>
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="ErrorExp" class="public" href="../ddmd/expression/error_exp.html">
+									<code>ErrorExp</code>
+								</a>
+							</td>
+							<td>Use this expression for error recovery.
+ It should behave as a 'sink' to prevent further cascaded error messages.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="Expression" class="public" href="../ddmd/expression/expression.html">
+									<code>Expression</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="FileInitExp" class="public" href="../ddmd/expression/file_init_exp.html">
+									<code>FileInitExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="FuncExp" class="public" href="../ddmd/expression/func_exp.html">
+									<code>FuncExp</code>
+								</a>
+							</td>
+							<td>Function/Delegate literal
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="FuncInitExp" class="public" href="../ddmd/expression/func_init_exp.html">
+									<code>FuncInitExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="HaltExp" class="public" href="../ddmd/expression/halt_exp.html">
+									<code>HaltExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="IdentifierExp" class="public" href="../ddmd/expression/identifier_exp.html">
+									<code>IdentifierExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="IdentityExp" class="public" href="../ddmd/expression/identity_exp.html">
+									<code>IdentityExp</code>
+								</a>
+							</td>
+							<td><code class="lang-d"><span class="kwd">is</span></code> and <code class="lang-d"><span class="pun">!</span><span class="kwd">is</span></code>
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="ImportExp" class="public" href="../ddmd/expression/import_exp.html">
+									<code>ImportExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="IndexExp" class="public" href="../ddmd/expression/index_exp.html">
+									<code>IndexExp</code>
+								</a>
+							</td>
+							<td>e1 [ e2 ]
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="InExp" class="public" href="../ddmd/expression/in_exp.html">
+									<code>InExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="IntegerExp" class="public" href="../ddmd/expression/integer_exp.html">
+									<code>IntegerExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="IntervalExp" class="public" href="../ddmd/expression/interval_exp.html">
+									<code>IntervalExp</code>
+								</a>
+							</td>
+							<td>Mainly just a placeholder
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="IsExp" class="public" href="../ddmd/expression/is_exp.html">
+									<code>IsExp</code>
+								</a>
+							</td>
+							<td>is(targ id tok tspec)
+ is(targ id == tok2)
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="LineInitExp" class="public" href="../ddmd/expression/line_init_exp.html">
+									<code>LineInitExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="MinAssignExp" class="public" href="../ddmd/expression/min_assign_exp.html">
+									<code>MinAssignExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="MinExp" class="public" href="../ddmd/expression/min_exp.html">
+									<code>MinExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="ModAssignExp" class="public" href="../ddmd/expression/mod_assign_exp.html">
+									<code>ModAssignExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="ModExp" class="public" href="../ddmd/expression/mod_exp.html">
+									<code>ModExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="ModuleInitExp" class="public" href="../ddmd/expression/module_init_exp.html">
+									<code>ModuleInitExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="MulAssignExp" class="public" href="../ddmd/expression/mul_assign_exp.html">
+									<code>MulAssignExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="MulExp" class="public" href="../ddmd/expression/mul_exp.html">
+									<code>MulExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="NegExp" class="public" href="../ddmd/expression/neg_exp.html">
+									<code>NegExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="NewAnonClassExp" class="public" href="../ddmd/expression/new_anon_class_exp.html">
+									<code>NewAnonClassExp</code>
+								</a>
+							</td>
+							<td>thisexp.new(newargs) class baseclasses { } (arguments)
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="NewExp" class="public" href="../ddmd/expression/new_exp.html">
+									<code>NewExp</code>
+								</a>
+							</td>
+							<td>thisexp.new(newargs) newtype(arguments)
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="NotExp" class="public" href="../ddmd/expression/not_exp.html">
+									<code>NotExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="NullExp" class="public" href="../ddmd/expression/null_exp.html">
+									<code>NullExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="OrAssignExp" class="public" href="../ddmd/expression/or_assign_exp.html">
+									<code>OrAssignExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="OrExp" class="public" href="../ddmd/expression/or_exp.html">
+									<code>OrExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="OrOrExp" class="public" href="../ddmd/expression/or_or_exp.html">
+									<code>OrOrExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="OverExp" class="public" href="../ddmd/expression/over_exp.html">
+									<code>OverExp</code>
+								</a>
+							</td>
+							<td>Overload Set
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="PostExp" class="public" href="../ddmd/expression/post_exp.html">
+									<code>PostExp</code>
+								</a>
+							</td>
+							<td>For both i++ and i--
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="PowAssignExp" class="public" href="../ddmd/expression/pow_assign_exp.html">
+									<code>PowAssignExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="PowExp" class="public" href="../ddmd/expression/pow_exp.html">
+									<code>PowExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="PreExp" class="public" href="../ddmd/expression/pre_exp.html">
+									<code>PreExp</code>
+								</a>
+							</td>
+							<td>For both ++i and --i
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="PrettyFuncInitExp" class="public" href="../ddmd/expression/pretty_func_init_exp.html">
+									<code>PrettyFuncInitExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="PtrExp" class="public" href="../ddmd/expression/ptr_exp.html">
+									<code>PtrExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="RealExp" class="public" href="../ddmd/expression/real_exp.html">
+									<code>RealExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="RemoveExp" class="public" href="../ddmd/expression/remove_exp.html">
+									<code>RemoveExp</code>
+								</a>
+							</td>
+							<td>This deletes the key e1 from the associative array e2
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="ScopeExp" class="public" href="../ddmd/expression/scope_exp.html">
+									<code>ScopeExp</code>
+								</a>
+							</td>
+							<td>Mainly just a placeholder of
+  Package, Module, Nspace, and TemplateInstance (including TemplateMixin)
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="ShlAssignExp" class="public" href="../ddmd/expression/shl_assign_exp.html">
+									<code>ShlAssignExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="ShlExp" class="public" href="../ddmd/expression/shl_exp.html">
+									<code>ShlExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="ShrAssignExp" class="public" href="../ddmd/expression/shr_assign_exp.html">
+									<code>ShrAssignExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="ShrExp" class="public" href="../ddmd/expression/shr_exp.html">
+									<code>ShrExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="SliceExp" class="public" href="../ddmd/expression/slice_exp.html">
+									<code>SliceExp</code>
+								</a>
+							</td>
+							<td>e1 [lwr .. upr]
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="StringExp" class="public" href="../ddmd/expression/string_exp.html">
+									<code>StringExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="StructLiteralExp" class="public" href="../ddmd/expression/struct_literal_exp.html">
+									<code>StructLiteralExp</code>
+								</a>
+							</td>
+							<td>sd( e1, e2, e3, ... )
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="SuperExp" class="public" href="../ddmd/expression/super_exp.html">
+									<code>SuperExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="SymbolExp" class="public" href="../ddmd/expression/symbol_exp.html">
+									<code>SymbolExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="SymOffExp" class="public" href="../ddmd/expression/sym_off_exp.html">
+									<code>SymOffExp</code>
+								</a>
+							</td>
+							<td>Offset from symbol
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="TemplateExp" class="public" href="../ddmd/expression/template_exp.html">
+									<code>TemplateExp</code>
+								</a>
+							</td>
+							<td>Mainly just a placeholder
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="ThisExp" class="public" href="../ddmd/expression/this_exp.html">
+									<code>ThisExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="TraitsExp" class="public" href="../ddmd/expression/traits_exp.html">
+									<code>TraitsExp</code>
+								</a>
+							</td>
+							<td>_traits(identifier, args...)
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="TupleExp" class="public" href="../ddmd/expression/tuple_exp.html">
+									<code>TupleExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="TypeExp" class="public" href="../ddmd/expression/type_exp.html">
+									<code>TypeExp</code>
+								</a>
+							</td>
+							<td>Mainly just a placeholder
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="TypeidExp" class="public" href="../ddmd/expression/typeid_exp.html">
+									<code>TypeidExp</code>
+								</a>
+							</td>
+							<td>typeid(int)
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="UAddExp" class="public" href="../ddmd/expression/u_add_exp.html">
+									<code>UAddExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="UnaExp" class="public" href="../ddmd/expression/una_exp.html">
+									<code>UnaExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="UshrAssignExp" class="public" href="../ddmd/expression/ushr_assign_exp.html">
+									<code>UshrAssignExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="UshrExp" class="public" href="../ddmd/expression/ushr_exp.html">
+									<code>UshrExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="VarExp" class="public" href="../ddmd/expression/var_exp.html">
+									<code>VarExp</code>
+								</a>
+							</td>
+							<td>Variable
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="VectorExp" class="public" href="../ddmd/expression/vector_exp.html">
+									<code>VectorExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="XorAssignExp" class="public" href="../ddmd/expression/xor_assign_exp.html">
+									<code>XorAssignExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="XorExp" class="public" href="../ddmd/expression/xor_exp.html">
+									<code>XorExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+					</table>
+				</section>
+				<section>
+					<h2>Structs</h2>
+					<table>
+						<col class="caption"/>
+						<tr>
+							<th>Name</th>
+							<th>Description</th>
+						</tr>
+						<tr>
+							<td>
+								<a id="UnionExp" class="public" href="../ddmd/expression/union_exp.html">
+									<code>UnionExp</code>
+								</a>
+							</td>
+							<td></td>
+						</tr>
+					</table>
+				</section>
+				<section>
+					<h2>Enum values</h2>
+					<table>
+						<col class="caption"/>
+						<tr>
+							<th>Name</th>
+							<th>Type</th>
+							<th>Description</th>
+						</tr>
+						<tr>
+							<td>
+								<a id="stageApply" class="public" href="../ddmd/expression/stage_apply.html">
+									<code>stageApply</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>apply is running
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="stageInlineScan" class="public" href="../ddmd/expression/stage_inline_scan.html">
+									<code>stageInlineScan</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>inlineScan is running
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="stageOptimize" class="public" href="../ddmd/expression/stage_optimize.html">
+									<code>stageOptimize</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>optimize is running
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="stageScrub" class="public" href="../ddmd/expression/stage_scrub.html">
+									<code>stageScrub</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>scrubReturnValue is running
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="stageSearchPointers" class="public" href="../ddmd/expression/stage_search_pointers.html">
+									<code>stageSearchPointers</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>hasNonConstPointers is running
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="stageToCBuffer" class="public" href="../ddmd/expression/stage_toc_buffer.html">
+									<code>stageToCBuffer</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>toCBuffer is running
+</td>
+						</tr>
+					</table>
+				</section>
+				<section>
+					<h2>Authors</h2>
+<p><a href="http://www.digitalmars.com">Walter Bright</a>
+</p>
+
+				</section>
+				<section>
+					<h2>License</h2>
+<p><a href="http://www.boost.org/LICENSE_1_0.txt">Boost License 1.0</a>
+</p>
+
+				</section>
+				<section>
+					<h2>Comments</h2>
+							<div id="disqus_thread"></div>
+							<script language="javascript">
+var disqus_shortname = 'vibe-d'; // required: replace example with your forum shortname
+var disqus_developer = 1;
+var disqus_identifier = "phobos-ddmd.expression";
+
+
+/* * * DON'T EDIT BELOW THIS LINE * * */
+(function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+							</script>
+							<noscript>Please enable JavaScript to view the comments.</noscript>
+				</section>
+     
+				<div id="quickindex" class="quickindex"></div>
+				<div id="copyright" class="smallprint">
+ Copyright &copy; 1999-2017 by the <a href="../../foundation.html">D Language Foundation</a> | Page generated by <a href="https://github.com/rejectedsoftware/ddox">ddox</a>.
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+     
+		<script type="text/javascript">
+window.jQuery || document.write('\x3Cscript src="../../js/jquery-1.7.2.min.js">\x3C/script>')
+		</script>
+     
+		<script type="text/javascript" src="../../js/codemirror-compressed.js"></script>
+     
+		<script type="text/javascript" src="../../js/run.js"></script>
+		<script type="text/javascript" src="../../js/run_examples.js"></script>
+		<script type="text/javascript" src="../../js/dlang.js"></script>
+		<script type="text/javascript" src="../../js/listanchors.js"></script>
+		<script type="text/javascript">
+jQuery(document).ready(listanchors);
+setupDdox();
+		</script>
+	</body>
+</html>
