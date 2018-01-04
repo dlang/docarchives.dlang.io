@@ -1,0 +1,2249 @@
+<!DOCTYPE html>
+<html lang="en-US">
+	<!--
+| Copyright (c) 1999-$#{year} by the D Language Foundation
+| All Rights Reserved.
+| https://dlang.org/foundation.html-->
+	<head>
+		<meta charset="utf-8"/>
+		<meta name="keywords" content="D programming language"/>
+		<meta name="description" content="D Programming Language"/>
+		<title>Function getopt - D Programming Language</title>
+		<link rel="stylesheet" href="../../../css/codemirror.css"/>
+		<link rel="stylesheet" href="../../../css/style.css"/>
+		<link rel="stylesheet" href="../../../css/print.css" media="print"/>
+		<link rel="stylesheet" href="../../../css/ddox.css"/>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"/>
+		<link rel="shortcut icon" href="../../../favicon.ico"/>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script><script type="text/javascript" src="../../../js/ddox.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0"/>
+	</head>
+	<body class="std" id="std.getopt">
+		<script type="text/javascript">document.body.className += ' have-javascript';</script>
+		<div id="top">
+			<div class="helper">
+				<div class="helper expand-container">
+					<a class="logo" href="../../../">
+						<img id="logo" width="125" height="95" alt="D Logo" src="../../../images/dlogo.svg"/>
+					</a>
+					<a class="hamburger expand-toggle" href="../../../menu.html" title="Menu">
+						<span>Menu</span>
+					</a>
+					<div id="cssmenu">
+						<ul>
+							<li>
+								<a href="https://tour.dlang.org">
+									<span>Learn</span>
+								</a>
+							</li>
+							<li class="expand-container">
+								<a class="expand-toggle" href="../../../documentation.html">
+									<span>Documentation</span>
+								</a>
+								<ul>
+									<li>
+										<a href="../../../spec/spec.html">Language Reference</a>
+									</li>
+									<li>
+										<a href="../../../phobos/index.html">Library Reference</a>
+									</li>
+									<li>
+										<a href="../../../dmd.html">Command-line Reference</a>
+									</li>
+									<li class="menu-divider">
+										<a href="../../../comparison.html">Feature Overview</a>
+									</li>
+									<li>
+										<a href="../../../articles.html">Articles</a>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<a href="../../../download.html">
+									<span>Downloads</span>
+								</a>
+							</li>
+							<li>
+								<a href="https://code.dlang.org">
+									<span>Packages</span>
+								</a>
+							</li>
+							<li class="expand-container">
+								<a class="expand-toggle" href="../../../community.html">
+									<span>Community</span>
+								</a>
+								<ul>
+									<li>
+										<a href="https://dlang.org/blog">Blog</a>
+									</li>
+									<li>
+										<a href="../../../orgs-using-d.html">Orgs using D</a>
+									</li>
+									<li>
+										<a href="https://twitter.com/search?q=%23dlang">Twitter</a>
+									</li>
+									<li class="menu-divider">
+										<a href="https://forum.dlang.org">Forums</a>
+									</li>
+									<li>
+										<a href="irc://irc.freenode.net/d">IRC</a>
+									</li>
+									<li>
+										<a href="https://wiki.dlang.org">Wiki</a>
+									</li>
+									<li class="menu-divider">
+										<a href="https://github.com/dlang">GitHub</a>
+									</li>
+									<li>
+										<a href="../../../bugstats.html">Issues</a>
+									</li>
+								</ul>
+							</li>
+							<li class="expand-container">
+								<a class="expand-toggle" href="../../../resources.html">
+									<span>Resources</span>
+								</a>
+								<ul>
+									<li>
+										<a href="https://wiki.dlang.org/Books">Books</a>
+									</li>
+									<li>
+										<a href="https://wiki.dlang.org/Tutorials">Tutorials</a>
+									</li>
+									<li class="menu-divider">
+										<a href="https://wiki.dlang.org/Development_tools">Tools</a>
+									</li>
+									<li>
+										<a href="https://wiki.dlang.org/Editors">Editors</a>
+									</li>
+									<li>
+										<a href="https://wiki.dlang.org/IDEs">IDEs</a>
+									</li>
+									<li>
+										<a href="http://rainers.github.io/visuald/visuald/StartPage.html">Visual D</a>
+									</li>
+									<li class="menu-divider">
+										<a href="../../../acknowledgements.html">Acknowledgments</a>
+									</li>
+									<li>
+										<a href="../../../dstyle.html">D Style</a>
+									</li>
+									<li>
+										<a href="../../../glossary.html">Glossary</a>
+									</li>
+									<li>
+										<a href="../../../sitemap.html">Sitemap</a>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+					<div class="search-container expand-container">
+						<a class="expand-toggle" href="../../../search.html" title="Search">
+							<span>Search</span>
+						</a>
+						<div id="search-box">
+							<form method="get" action="https://google.com/search">
+								<input id="domains" type="hidden" name="domains" value="dlang.org"/>
+								            
+								<input id="sourceid" type="hidden" name="sourceid" value="google-search"/>
+								            
+								<span id="search-query">
+									<input id="q" name="q" placeholder="Search"/>
+									<input id="symbolSearch" style="display: none" type="text" name="symbolSearch" placeholder="API Search" onchange="performSymbolSearch(80);" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" autofocus/>
+								</span>
+								<span id="search-dropdown">
+									<div class="helper">
+										<select id="sitesearch" name="sitesearch" size="1">
+											<option value="dlang.org">Entire D Site</option>                    
+											<option selected="" value="dlang.org/spec">Language</option>                    
+											<option selected="" value="dlang.org/library">Library</option>                    
+											<option value="forum.dlang.org">Forums</option>
+										</select>
+									</div>
+								</span>
+								<span id="search-submit">
+									<button type="submit">
+										<i class="fa fa-search"></i><span>go</span>
+									</button>
+								</span>
+							</form>
+							<ul id="symbolSearchResults" class="symbolList" style="display: none"></ul><script type="application/javascript" src="../../symbols.js"></script><script type="application/javascript">var symbolSearchRootDir = "../../";
+$('#symbolSearchPane').show();</script>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+			<div class="subnav-helper"></div>
+			<div class="subnav">
+				<h2>API Documentation</h2>
+				<p>
+					<span class="smallprint">
+						version 2.078.0
+						<br/>
+						<a href="../../../library-prerelease/index.html">switch to pre-release version</a>
+					</span>
+				</p>
+				<p>
+					<a href="../../../library/index.html">overview</a>
+				</p>
+				<ul>
+					<li class="expand-container open">
+						<a class="package expand-toggle" href="#">
+							<span>std</span>
+						</a>
+						<ul class="tree-view">
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>algorithm</span>
+						</a>
+						<ul class="tree-view">
+					<li>
+						<a class="module " href="../../std/algorithm.html">
+							<span>Package members</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/algorithm/comparison.html">
+							<span>comparison</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/algorithm/iteration.html">
+							<span>iteration</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/algorithm/mutation.html">
+							<span>mutation</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/algorithm/searching.html">
+							<span>searching</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/algorithm/setops.html">
+							<span>setops</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/algorithm/sorting.html">
+							<span>sorting</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>container</span>
+						</a>
+						<ul class="tree-view">
+					<li>
+						<a class="module " href="../../std/container.html">
+							<span>Package members</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/container/array.html">
+							<span>array</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/container/binaryheap.html">
+							<span>binaryheap</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/container/dlist.html">
+							<span>dlist</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/container/rbtree.html">
+							<span>rbtree</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/container/slist.html">
+							<span>slist</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/container/util.html">
+							<span>util</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>datetime</span>
+						</a>
+						<ul class="tree-view">
+					<li>
+						<a class="module " href="../../std/datetime.html">
+							<span>Package members</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/datetime/date.html">
+							<span>date</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/datetime/interval.html">
+							<span>interval</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/datetime/stopwatch.html">
+							<span>stopwatch</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/datetime/systime.html">
+							<span>systime</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/datetime/timezone.html">
+							<span>timezone</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>digest</span>
+						</a>
+						<ul class="tree-view">
+					<li>
+						<a class="module " href="../../std/digest.html">
+							<span>Package members</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/digest/crc.html">
+							<span>crc</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/digest/hmac.html">
+							<span>hmac</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/digest/md.html">
+							<span>md</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/digest/murmurhash.html">
+							<span>murmurhash</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/digest/ripemd.html">
+							<span>ripemd</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/digest/sha.html">
+							<span>sha</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>experimental</span>
+						</a>
+						<ul class="tree-view">
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>allocator</span>
+						</a>
+						<ul class="tree-view">
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>building_blocks</span>
+						</a>
+						<ul class="tree-view">
+					<li>
+						<a class="module " href="../../std/experimental/allocator/building_blocks.html">
+							<span>Package members</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/experimental/allocator/building_blocks/affix_allocator.html">
+							<span>affix_allocator</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/experimental/allocator/building_blocks/allocator_list.html">
+							<span>allocator_list</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/experimental/allocator/building_blocks/bitmapped_block.html">
+							<span>bitmapped_block</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/experimental/allocator/building_blocks/bucketizer.html">
+							<span>bucketizer</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/experimental/allocator/building_blocks/fallback_allocator.html">
+							<span>fallback_allocator</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/experimental/allocator/building_blocks/free_list.html">
+							<span>free_list</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/experimental/allocator/building_blocks/free_tree.html">
+							<span>free_tree</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/experimental/allocator/building_blocks/kernighan_ritchie.html">
+							<span>kernighan_ritchie</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/experimental/allocator/building_blocks/null_allocator.html">
+							<span>null_allocator</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/experimental/allocator/building_blocks/quantizer.html">
+							<span>quantizer</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/experimental/allocator/building_blocks/region.html">
+							<span>region</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/experimental/allocator/building_blocks/scoped_allocator.html">
+							<span>scoped_allocator</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/experimental/allocator/building_blocks/segregator.html">
+							<span>segregator</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/experimental/allocator/building_blocks/stats_collector.html">
+							<span>stats_collector</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li>
+						<a class="module " href="../../std/experimental/allocator.html">
+							<span>Package members</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/experimental/allocator/common.html">
+							<span>common</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/experimental/allocator/gc_allocator.html">
+							<span>gc_allocator</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/experimental/allocator/mallocator.html">
+							<span>mallocator</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/experimental/allocator/mmap_allocator.html">
+							<span>mmap_allocator</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/experimental/allocator/showcase.html">
+							<span>showcase</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/experimental/allocator/typed.html">
+							<span>typed</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>logger</span>
+						</a>
+						<ul class="tree-view">
+					<li>
+						<a class="module " href="../../std/experimental/logger.html">
+							<span>Package members</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/experimental/logger/filelogger.html">
+							<span>filelogger</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/experimental/logger/multilogger.html">
+							<span>multilogger</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/experimental/logger/nulllogger.html">
+							<span>nulllogger</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li>
+						<a class="module " href="../../std/experimental/checkedint.html">
+							<span>checkedint</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/experimental/typecons.html">
+							<span>typecons</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>net</span>
+						</a>
+						<ul class="tree-view">
+					<li>
+						<a class="module " href="../../std/net/curl.html">
+							<span>curl</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/net/isemail.html">
+							<span>isemail</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>range</span>
+						</a>
+						<ul class="tree-view">
+					<li>
+						<a class="module " href="../../std/range.html">
+							<span>Package members</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/range/interfaces.html">
+							<span>interfaces</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/range/primitives.html">
+							<span>primitives</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li>
+						<a class="module " href="../../std/array.html">
+							<span>array</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/ascii.html">
+							<span>ascii</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/base64.html">
+							<span>base64</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/bigint.html">
+							<span>bigint</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/bitmanip.html">
+							<span>bitmanip</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/compiler.html">
+							<span>compiler</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/complex.html">
+							<span>complex</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/concurrency.html">
+							<span>concurrency</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/conv.html">
+							<span>conv</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/csv.html">
+							<span>csv</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/demangle.html">
+							<span>demangle</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/encoding.html">
+							<span>encoding</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/exception.html">
+							<span>exception</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/file.html">
+							<span>file</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/format.html">
+							<span>format</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/functional.html">
+							<span>functional</span>
+						</a>
+					</li>
+					<li>
+						<a class="module selected" href="../../std/getopt.html">
+							<span>getopt</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/json.html">
+							<span>json</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/math.html">
+							<span>math</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/mathspecial.html">
+							<span>mathspecial</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/meta.html">
+							<span>meta</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/mmfile.html">
+							<span>mmfile</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/numeric.html">
+							<span>numeric</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/outbuffer.html">
+							<span>outbuffer</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/parallelism.html">
+							<span>parallelism</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/path.html">
+							<span>path</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/process.html">
+							<span>process</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/random.html">
+							<span>random</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/regex.html">
+							<span>regex</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/signals.html">
+							<span>signals</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/socket.html">
+							<span>socket</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/stdint.html">
+							<span>stdint</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/stdio.html">
+							<span>stdio</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/string.html">
+							<span>string</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/system.html">
+							<span>system</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/traits.html">
+							<span>traits</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/typecons.html">
+							<span>typecons</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/uni.html">
+							<span>uni</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/uri.html">
+							<span>uri</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/utf.html">
+							<span>utf</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/uuid.html">
+							<span>uuid</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/variant.html">
+							<span>variant</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/xml.html">
+							<span>xml</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/zip.html">
+							<span>zip</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../std/zlib.html">
+							<span>zlib</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>core</span>
+						</a>
+						<ul class="tree-view">
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>stdc</span>
+						</a>
+						<ul class="tree-view">
+					<li>
+						<a class="module " href="../../core/stdc/assert_.html">
+							<span>assert_</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/stdc/complex.html">
+							<span>complex</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/stdc/ctype.html">
+							<span>ctype</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/stdc/errno.html">
+							<span>errno</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/stdc/fenv.html">
+							<span>fenv</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/stdc/float_.html">
+							<span>float_</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/stdc/inttypes.html">
+							<span>inttypes</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/stdc/limits.html">
+							<span>limits</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/stdc/locale.html">
+							<span>locale</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/stdc/math.html">
+							<span>math</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/stdc/signal.html">
+							<span>signal</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/stdc/stdarg.html">
+							<span>stdarg</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/stdc/stddef.html">
+							<span>stddef</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/stdc/stdint.html">
+							<span>stdint</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/stdc/stdio.html">
+							<span>stdio</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/stdc/stdlib.html">
+							<span>stdlib</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/stdc/string.html">
+							<span>string</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/stdc/tgmath.html">
+							<span>tgmath</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/stdc/time.html">
+							<span>time</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/stdc/wchar_.html">
+							<span>wchar_</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/stdc/wctype.html">
+							<span>wctype</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>stdcpp</span>
+						</a>
+						<ul class="tree-view">
+					<li>
+						<a class="module " href="../../core/stdcpp/exception.html">
+							<span>exception</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/stdcpp/typeinfo.html">
+							<span>typeinfo</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>sync</span>
+						</a>
+						<ul class="tree-view">
+					<li>
+						<a class="module " href="../../core/sync/barrier.html">
+							<span>barrier</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/sync/condition.html">
+							<span>condition</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/sync/config.html">
+							<span>config</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/sync/exception.html">
+							<span>exception</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/sync/mutex.html">
+							<span>mutex</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/sync/rwmutex.html">
+							<span>rwmutex</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/sync/semaphore.html">
+							<span>semaphore</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li>
+						<a class="module " href="../../core/atomic.html">
+							<span>atomic</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/attribute.html">
+							<span>attribute</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/bitop.html">
+							<span>bitop</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/checkedint.html">
+							<span>checkedint</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/cpuid.html">
+							<span>cpuid</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/demangle.html">
+							<span>demangle</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/exception.html">
+							<span>exception</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/math.html">
+							<span>math</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/memory.html">
+							<span>memory</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/runtime.html">
+							<span>runtime</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/simd.html">
+							<span>simd</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/thread.html">
+							<span>thread</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/time.html">
+							<span>time</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../core/vararg.html">
+							<span>vararg</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>dmd</span>
+						</a>
+						<ul class="tree-view">
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>backend</span>
+						</a>
+						<ul class="tree-view">
+					<li>
+						<a class="module " href="../../dmd/backend/bcomplex.html">
+							<span>bcomplex</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/backend/cc.html">
+							<span>cc</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/backend/cdef.html">
+							<span>cdef</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/backend/cgcv.html">
+							<span>cgcv</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/backend/code.html">
+							<span>code</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/backend/code_x86.html">
+							<span>code_x86</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/backend/cv4.html">
+							<span>cv4</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/backend/dt.html">
+							<span>dt</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/backend/dwarf.html">
+							<span>dwarf</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/backend/el.html">
+							<span>el</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/backend/exh.html">
+							<span>exh</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/backend/global.html">
+							<span>global</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/backend/iasm.html">
+							<span>iasm</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/backend/md5.html">
+							<span>md5</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/backend/obj.html">
+							<span>obj</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/backend/oper.html">
+							<span>oper</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/backend/outbuf.html">
+							<span>outbuf</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/backend/rtlsym.html">
+							<span>rtlsym</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/backend/ty.html">
+							<span>ty</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/backend/type.html">
+							<span>type</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/backend/xmm.html">
+							<span>xmm</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>root</span>
+						</a>
+						<ul class="tree-view">
+					<li>
+						<a class="module " href="../../dmd/root/aav.html">
+							<span>aav</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/root/array.html">
+							<span>array</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/root/ctfloat.html">
+							<span>ctfloat</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/root/file.html">
+							<span>file</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/root/filename.html">
+							<span>filename</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/root/hash.html">
+							<span>hash</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/root/man.html">
+							<span>man</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/root/outbuffer.html">
+							<span>outbuffer</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/root/port.html">
+							<span>port</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/root/response.html">
+							<span>response</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/root/rmem.html">
+							<span>rmem</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/root/rootobject.html">
+							<span>rootobject</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/root/speller.html">
+							<span>speller</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/root/stringtable.html">
+							<span>stringtable</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>tk</span>
+						</a>
+						<ul class="tree-view">
+					<li>
+						<a class="module " href="../../dmd/tk/dlist.html">
+							<span>dlist</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/access.html">
+							<span>access</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/aggregate.html">
+							<span>aggregate</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/aliasthis.html">
+							<span>aliasthis</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/apply.html">
+							<span>apply</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/argtypes.html">
+							<span>argtypes</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/arrayop.html">
+							<span>arrayop</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/arraytypes.html">
+							<span>arraytypes</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/asttypename.html">
+							<span>asttypename</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/attrib.html">
+							<span>attrib</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/blockexit.html">
+							<span>blockexit</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/builtin.html">
+							<span>builtin</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/canthrow.html">
+							<span>canthrow</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/clone.html">
+							<span>clone</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/complex.html">
+							<span>complex</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/cond.html">
+							<span>cond</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/console.html">
+							<span>console</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/constfold.html">
+							<span>constfold</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/cppmangle.html">
+							<span>cppmangle</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/cppmanglewin.html">
+							<span>cppmanglewin</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/ctfeexpr.html">
+							<span>ctfeexpr</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/dcast.html">
+							<span>dcast</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/dclass.html">
+							<span>dclass</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/declaration.html">
+							<span>declaration</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/delegatize.html">
+							<span>delegatize</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/denum.html">
+							<span>denum</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/dimport.html">
+							<span>dimport</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/dinifile.html">
+							<span>dinifile</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/dinterpret.html">
+							<span>dinterpret</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/dmacro.html">
+							<span>dmacro</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/dmangle.html">
+							<span>dmangle</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/dmodule.html">
+							<span>dmodule</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/dmsc.html">
+							<span>dmsc</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/doc.html">
+							<span>doc</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/dscope.html">
+							<span>dscope</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/dstruct.html">
+							<span>dstruct</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/dsymbol.html">
+							<span>dsymbol</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/dsymbolsem.html">
+							<span>dsymbolsem</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/dtemplate.html">
+							<span>dtemplate</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/dversion.html">
+							<span>dversion</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/e2ir.html">
+							<span>e2ir</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/eh.html">
+							<span>eh</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/entity.html">
+							<span>entity</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/errors.html">
+							<span>errors</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/escape.html">
+							<span>escape</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/expression.html">
+							<span>expression</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/expressionsem.html">
+							<span>expressionsem</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/func.html">
+							<span>func</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/globals.html">
+							<span>globals</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/glue.html">
+							<span>glue</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/gluelayer.html">
+							<span>gluelayer</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/hdrgen.html">
+							<span>hdrgen</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/iasm.html">
+							<span>iasm</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/id.html">
+							<span>id</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/identifier.html">
+							<span>identifier</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/impcnvtab.html">
+							<span>impcnvtab</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/imphint.html">
+							<span>imphint</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/init.html">
+							<span>init</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/initsem.html">
+							<span>initsem</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/inline.html">
+							<span>inline</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/inlinecost.html">
+							<span>inlinecost</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/intrange.html">
+							<span>intrange</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/irstate.html">
+							<span>irstate</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/json.html">
+							<span>json</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/lexer.html">
+							<span>lexer</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/lib.html">
+							<span>lib</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/libelf.html">
+							<span>libelf</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/libomf.html">
+							<span>libomf</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/link.html">
+							<span>link</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/mars.html">
+							<span>mars</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/mtype.html">
+							<span>mtype</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/nogc.html">
+							<span>nogc</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/nspace.html">
+							<span>nspace</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/objc.html">
+							<span>objc</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/opover.html">
+							<span>opover</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/optimize.html">
+							<span>optimize</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/parse.html">
+							<span>parse</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/printast.html">
+							<span>printast</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/s2ir.html">
+							<span>s2ir</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/safe.html">
+							<span>safe</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/sapply.html">
+							<span>sapply</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/scanelf.html">
+							<span>scanelf</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/scanomf.html">
+							<span>scanomf</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/semantic.html">
+							<span>semantic</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/sideeffect.html">
+							<span>sideeffect</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/statement.html">
+							<span>statement</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/statementsem.html">
+							<span>statementsem</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/statement_rewrite_walker.html">
+							<span>statement_rewrite_walker</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/staticassert.html">
+							<span>staticassert</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/staticcond.html">
+							<span>staticcond</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/target.html">
+							<span>target</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/templateparamsem.html">
+							<span>templateparamsem</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/tocsym.html">
+							<span>tocsym</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/toctype.html">
+							<span>toctype</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/tocvdebug.html">
+							<span>tocvdebug</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/todt.html">
+							<span>todt</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/toir.html">
+							<span>toir</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/tokens.html">
+							<span>tokens</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/toobj.html">
+							<span>toobj</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/traits.html">
+							<span>traits</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/typesem.html">
+							<span>typesem</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/typinf.html">
+							<span>typinf</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/utf.html">
+							<span>utf</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/utils.html">
+							<span>utils</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../dmd/visitor.html">
+							<span>visitor</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>etc</span>
+						</a>
+						<ul class="tree-view">
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>c</span>
+						</a>
+						<ul class="tree-view">
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>odbc</span>
+						</a>
+						<ul class="tree-view">
+					<li>
+						<a class="module " href="../../etc/c/odbc/sql.html">
+							<span>sql</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../etc/c/odbc/sqlext.html">
+							<span>sqlext</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../etc/c/odbc/sqltypes.html">
+							<span>sqltypes</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../../etc/c/odbc/sqlucode.html">
+							<span>sqlucode</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li>
+						<a class="module " href="../../etc/c/curl.html">
+							<span>curl</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+						</ul>
+					</li>
+					<li>
+						<a class="module " href="../../object.html">
+							<span>object</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div id="content" class="hyphenate">
+				<div id="tools">
+					<div>
+						<div class="tip smallprint">
+							<a href="https://github.com/dlang/phobos/blob/v2.078.0/std/getopt.d">
+								View source code
+							</a>
+							<div>
+								Display the source code in std/getopt.d from which this
+								page was generated on github.
+							</div>
+						</div>
+						<div class="tip smallprint">
+							<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/library/std/getopt.html&amp;bug_severity=enhancement&amp;component=phobos&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BFunction getopt%5D&amp;version=D2">Report a bug</a>
+							<div>
+								If you spot a problem with this page, click here to create a
+								Bugzilla issue.
+							</div>
+						</div>
+						<div class="tip smallprint">
+							<a href="https://github.com/dlang/phobos/edit/master/std/getopt.d">
+								Improve this page
+							</a>
+							<div>
+								Quickly fork, edit online, and submit a pull request for this page.
+								Requires a signed-in GitHub account. This works well for small changes.
+								If you'd like to make larger changes you may want to consider using
+								local clone.
+							</div>
+						</div>
+					</div>
+				</div><h1>Function <code><a href="../../std/getopt.html">std.getopt</a>.getopt</code></h1><p>Parse and remove command line options from a string array.
+</p>
+				<div class="prototype">
+					<code class="lang-d">
+						<div class="single-prototype">
+				<a href="../../std/getopt/getopt_result.html"><span class="typ">GetoptResult</span></a> <span class="pln">getopt</span>(T...)
+				<span class="pun">(</span>
+				<br/>
+				&nbsp;&nbsp;<span class="kwd">ref </span><span class="typ">string</span><span class="pun">[]</span> <span class="pln">args</span><span class="pun">,</span>
+				<br/>
+				&nbsp;&nbsp;<span class="pln">T</span> <span class="pln">opts</span>
+				<br/>
+				<span class="pun">)</span><span class="pun">;</span>
+						</div>
+					</code>
+				</div>
+				<section></section>
+
+				<section><h2>Synopsis</h2>
+<pre class="code"><code class="lang-d"><span class="kwd">import <a href="../../std/getopt.html"></span><span class="pln">std<wbr/></span><span class="pun">.</span><span class="pln">getopt</span></a><span class="pun">;
+
+</span><span class="typ">string </span><span class="pln">data </span><span class="pun">= </span><span class="str">"file.dat"</span><span class="pun">;
+</span><span class="typ">int </span><span class="pln">length </span><span class="pun">= </span><span class="lit">24</span><span class="pun">;
+</span><span class="typ">bool </span><span class="pln">verbose</span><span class="pun">;
+</span><span class="kwd">enum </span><span class="typ">Color </span><span class="pun">{ </span><span class="pln">no</span><span class="pun">, </span><span class="pln">yes </span><span class="pun">};
+</span><span class="typ">Color </span><span class="pln">color</span><span class="pun">;
+
+</span><span class="typ">void </span><span class="pln">main</span><span class="pun">(</span><span class="typ">string</span><span class="pun">[] <a href="../../std/getopt/getopt.html#args"></span><span class="pln">args</span></a><span class="pun">)
+{
+  </span><span class="kwd">auto </span><span class="pln">helpInformation </span><span class="pun">= </span><span class="pln">getopt</span><span class="pun">(
+    <a href="../../std/getopt/getopt.html#args"></span><span class="pln">args</span></a><span class="pun">,
+    </span><span class="str">"length"</span><span class="pun">,  &amp;</span><span class="pln">length</span><span class="pun">,    </span><span class="com">// numeric
+    </span><span class="str">"file"</span><span class="pun">,    &amp;</span><span class="pln">data</span><span class="pun">,      </span><span class="com">// string
+    </span><span class="str">"verbose"</span><span class="pun">, &amp;</span><span class="pln">verbose</span><span class="pun">,   </span><span class="com">// flag
+    </span><span class="str">"color"</span><span class="pun">, </span><span class="str">"Information about this color"</span><span class="pun">, &amp;</span><span class="pln">color</span><span class="pun">);    </span><span class="com">// enum
+  </span><span class="pun">...
+
+  </span><span class="kwd">if </span><span class="pun">(</span><span class="pln">helpInformation<wbr/></span><span class="pun">.</span><span class="pln">helpWanted</span><span class="pun">)
+  {
+    <a href="../../std/getopt/default_getopt_printer.html"></span><span class="pln">defaultGetoptPrinter</span></a><span class="pun">(</span><span class="str">"Some information about the program."</span><span class="pun">,
+      </span><span class="pln">helpInformation<wbr/></span><span class="pun">.</span><span class="pln">options</span><span class="pun">);
+  }
+}</span></code></pre>
+
+<p> The <code class="lang-d"><span class="pln">getopt</span></code> function takes a reference to the command line
+ (as received by <code class="lang-d"><span class="pln">main</span></code>) as its first argument, and an
+ unbounded number of pairs of strings and pointers. Each string is an
+ option meant to "fill" the value referenced by the pointer to its
+ right (the "bound" pointer). The option string in the call to
+ <code class="lang-d"><span class="pln">getopt</span></code> should not start with a dash.
+</p>
+
+<p> In all cases, the command-line options that were parsed and used by
+ <code class="lang-d"><span class="pln">getopt</span></code> are removed from <code class="lang-d"><a href="../../std/getopt/getopt.html#args"><span class="pln">args</span></a></code>. Whatever in the
+ arguments did not look like an option is left in <code class="lang-d"><a href="../../std/getopt/getopt.html#args"><span class="pln">args</span></a></code> for
+ further processing by the program. Values that were unaffected by the
+ options are not touched, so a common idiom is to initialize options
+ to their defaults and then invoke <code class="lang-d"><span class="pln">getopt</span></code>. If a
+ command-line argument is recognized as an option with a parameter and
+ the parameter cannot be parsed properly (e.g., a number is expected
+ but not present), a <code class="lang-d"><span class="typ">ConvException</span></code> exception is thrown.
+ If <code class="lang-d"><a href="../../std/getopt/config.html#passThrough" title="std.getopt.config.passThrough"><span class="pln">config<wbr/></span><span class="pun">.</span><span class="pln">passThrough</span></a></code> was not passed to <code class="lang-d"><span class="pln">getopt</span></code>
+ and an unrecognized command-line argument is found, a <code class="lang-d"><a href="../../std/getopt/get_opt_exception.html"><span class="typ">GetOptException</span></a></code>
+ is thrown.
+</p>
+
+<p> Depending on the type of the pointer being bound, <code class="lang-d"><span class="pln">getopt</span></code>
+ recognizes the following kinds of options:
+</p>
+
+<p> <ol>    <li><i>Boolean options</i>. A lone argument sets the option to <code class="lang-d"><span class="kwd">true</span></code>.
+    Additionally <b>true</b> or <b>false</b> can be set within the option separated
+    with an "=" sign:
+</p>
+<pre class="code"><code class="lang-d"><span class="typ">bool </span><span class="pln">verbose </span><span class="pun">= </span><span class="kwd">false</span><span class="pun">, </span><span class="pln">debugging </span><span class="pun">= </span><span class="kwd">true</span><span class="pun">;
+</span><span class="pln">getopt</span><span class="pun">(<a href="../../std/getopt/getopt.html#args"></span><span class="pln">args</span></a><span class="pun">, </span><span class="str">"verbose"</span><span class="pun">, &amp;</span><span class="pln">verbose</span><span class="pun">, </span><span class="str">"debug"</span><span class="pun">, &amp;</span><span class="pln">debugging</span><span class="pun">);</span></code></pre>
+<p>    To set <code class="lang-d"><span class="pln">verbose</span></code> to <code class="lang-d"><span class="kwd">true</span></code>, invoke the program with either
+    <code class="lang-d"><span class="pun">--</span><span class="pln">verbose</span></code> or <code class="lang-d"><span class="pun">--</span><span class="pln">verbose</span><span class="pun">=</span><span class="kwd">true</span></code>.
+    To set <code class="lang-d"><span class="pln">debugging</span></code> to <code class="lang-d"><span class="kwd">false</span></code>, invoke the program with
+    <code class="lang-d"><span class="pun">--</span><span class="pln">debugging</span><span class="pun">=</span><span class="kwd">false</span></code>.
+    </li>
+    <li><i>Numeric options.</i> If an option is bound to a numeric type, a
+    number is expected as the next option, or right within the option separated
+    with an "=" sign:
+</p>
+<pre class="code"><code class="lang-d"><span class="typ">uint </span><span class="pln">timeout</span><span class="pun">;
+</span><span class="pln">getopt</span><span class="pun">(<a href="../../std/getopt/getopt.html#args"></span><span class="pln">args</span></a><span class="pun">, </span><span class="str">"timeout"</span><span class="pun">, &amp;</span><span class="pln">timeout</span><span class="pun">);</span></code></pre>
+<p>    To set <code class="lang-d"><span class="pln">timeout</span></code> to <code class="lang-d"><span class="lit">5</span></code>, invoke the program with either
+    <code class="lang-d"><span class="pun">--</span><span class="pln">timeout</span><span class="pun">=</span><span class="lit">5</span></code> or <code class="lang-d"><span class="pun">--</span><span class="pln">timeout </span><span class="lit">5</span></code>.
+    </li>
+    <li><i>Incremental options.</i> If an option name has a "+" suffix and is
+    bound to a numeric type, then the option's value tracks the number of times
+    the option occurred on the command line:
+</p>
+<pre class="code"><code class="lang-d"><span class="typ">uint </span><span class="pln">paranoid</span><span class="pun">;
+</span><span class="pln">getopt</span><span class="pun">(<a href="../../std/getopt/getopt.html#args"></span><span class="pln">args</span></a><span class="pun">, </span><span class="str">"paranoid+"</span><span class="pun">, &amp;</span><span class="pln">paranoid</span><span class="pun">);</span></code></pre>
+<p>    Invoking the program with "--paranoid --paranoid --paranoid" will set <code class="lang-d"><span class="pln">    paranoid</span></code> to 3. Note that an incremental option never expects a parameter,
+    e.g., in the command line "--paranoid 42 --paranoid", the "42" does not set
+    <code class="lang-d"><span class="pln">paranoid</span></code> to 42; instead, <code class="lang-d"><span class="pln">paranoid</span></code> is set to 2 and "42" is not
+    considered as part of the normal program arguments.
+    </li>
+    <li><i>Enum options.</i> If an option is bound to an enum, an enum symbol as
+    a string is expected as the next option, or right within the option
+    separated with an "=" sign:
+</p>
+<pre class="code"><code class="lang-d"><span class="kwd">enum </span><span class="typ">Color </span><span class="pun">{ </span><span class="pln">no</span><span class="pun">, </span><span class="pln">yes </span><span class="pun">};
+</span><span class="typ">Color </span><span class="pln">color</span><span class="pun">; </span><span class="com">// default initialized to Color.no
+</span><span class="pln">getopt</span><span class="pun">(<a href="../../std/getopt/getopt.html#args"></span><span class="pln">args</span></a><span class="pun">, </span><span class="str">"color"</span><span class="pun">, &amp;</span><span class="pln">color</span><span class="pun">);</span></code></pre>
+<p>    To set <code class="lang-d"><span class="pln">color</span></code> to <code class="lang-d"><span class="typ">Color<wbr/></span><span class="pun">.</span><span class="pln">yes</span></code>, invoke the program with either
+    <code class="lang-d"><span class="pun">--</span><span class="pln">color</span><span class="pun">=</span><span class="pln">yes</span></code> or <code class="lang-d"><span class="pun">--</span><span class="pln">color yes</span></code>.
+    </li>
+    <li><i>String options.</i> If an option is bound to a string, a string is
+    expected as the next option, or right within the option separated with an
+    "=" sign:
+</p>
+<pre class="code"><code class="lang-d"><span class="typ">string </span><span class="pln">outputFile</span><span class="pun">;
+</span><span class="pln">getopt</span><span class="pun">(<a href="../../std/getopt/getopt.html#args"></span><span class="pln">args</span></a><span class="pun">, </span><span class="str">"output"</span><span class="pun">, &amp;</span><span class="pln">outputFile</span><span class="pun">);</span></code></pre>
+<p>    Invoking the program with "--output=myfile.txt" or "--output myfile.txt"
+    will set <code class="lang-d"><span class="pln">outputFile</span></code> to "myfile.txt". If you want to pass a string
+    containing spaces, you need to use the quoting that is appropriate to your
+    shell, e.g. --output='my file.txt'.
+    </li>
+    <li><i>Array options.</i> If an option is bound to an array, a new element
+    is appended to the array each time the option occurs:
+</p>
+<pre class="code"><code class="lang-d"><span class="typ">string</span><span class="pun">[] </span><span class="pln">outputFiles</span><span class="pun">;
+</span><span class="pln">getopt</span><span class="pun">(<a href="../../std/getopt/getopt.html#args"></span><span class="pln">args</span></a><span class="pun">, </span><span class="str">"output"</span><span class="pun">, &amp;</span><span class="pln">outputFiles</span><span class="pun">);</span></code></pre>
+<p>    Invoking the program with "--output=myfile.txt --output=yourfile.txt" or
+    "--output myfile.txt --output yourfile.txt" will set <code class="lang-d"><span class="pln">outputFiles</span></code> to
+    <code class="lang-d"><span class="pun">[ </span><span class="str">"myfile.txt"</span><span class="pun">, </span><span class="str">"yourfile.txt" </span><span class="pun">]</span></code>.
+    Alternatively you can set <code class="lang-d"><a href="../../std/getopt/array_sep.html"><span class="pln">arraySep</span></a></code> as the element separator:
+</p>
+<pre class="code"><code class="lang-d"><span class="typ">string</span><span class="pun">[] </span><span class="pln">outputFiles</span><span class="pun">;
+<a href="../../std/getopt/array_sep.html"></span><span class="pln">arraySep</span></a><span class="pln"> </span><span class="pun">= </span><span class="str">","</span><span class="pun">;  </span><span class="com">// defaults to "", separation by whitespace
+</span><span class="pln">getopt</span><span class="pun">(<a href="../../std/getopt/getopt.html#args"></span><span class="pln">args</span></a><span class="pun">, </span><span class="str">"output"</span><span class="pun">, &amp;</span><span class="pln">outputFiles</span><span class="pun">);</span></code></pre>
+<p>    With the above code you can invoke the program with
+    "--output=myfile.txt,yourfile.txt", or "--output myfile.txt,yourfile.txt".</li>
+    <li><i>Hash options.</i> If an option is bound to an associative array, a
+    string of the form "name=value" is expected as the next option, or right
+    within the option separated with an "=" sign:
+</p>
+<pre class="code"><code class="lang-d"><span class="typ">double</span><span class="pun">[</span><span class="typ">string</span><span class="pun">] </span><span class="pln">tuningParms</span><span class="pun">;
+</span><span class="pln">getopt</span><span class="pun">(<a href="../../std/getopt/getopt.html#args"></span><span class="pln">args</span></a><span class="pun">, </span><span class="str">"tune"</span><span class="pun">, &amp;</span><span class="pln">tuningParms</span><span class="pun">);</span></code></pre>
+<p>    Invoking the program with e.g. "--tune=alpha=0.5 --tune beta=0.6" will set
+    <code class="lang-d"><span class="pln">tuningParms</span></code> to [ "alpha" : 0.5, "beta" : 0.6 ].
+    Alternatively you can set <code class="lang-d"><a href="../../std/getopt/array_sep.html"><span class="pln">arraySep</span></a></code> as the element separator:
+</p>
+<pre class="code"><code class="lang-d"><span class="typ">double</span><span class="pun">[</span><span class="typ">string</span><span class="pun">] </span><span class="pln">tuningParms</span><span class="pun">;
+<a href="../../std/getopt/array_sep.html"></span><span class="pln">arraySep</span></a><span class="pln"> </span><span class="pun">= </span><span class="str">","</span><span class="pun">;  </span><span class="com">// defaults to "", separation by whitespace
+</span><span class="pln">getopt</span><span class="pun">(<a href="../../std/getopt/getopt.html#args"></span><span class="pln">args</span></a><span class="pun">, </span><span class="str">"tune"</span><span class="pun">, &amp;</span><span class="pln">tuningParms</span><span class="pun">);</span></code></pre>
+<p>    With the above code you can invoke the program with
+    "--tune=alpha=0.5,beta=0.6", or "--tune alpha=0.5,beta=0.6".
+    In general, the keys and values can be of any parsable types.
+    </li>
+    <li><i>Callback options.</i> An option can be bound to a function or
+    delegate with the signature <code class="lang-d"><span class="typ">void </span><span class="kwd">function</span><span class="pun">()</span></code>, <code class="lang-d"><span class="typ">void </span><span class="kwd">function</span><span class="pun">(</span><span class="typ">string
+    </span><span class="pln">option</span><span class="pun">)</span></code>, <code class="lang-d"><span class="typ">void </span><span class="kwd">function</span><span class="pun">(</span><span class="typ">string </span><span class="pln">option</span><span class="pun">, </span><span class="typ">string </span><span class="pln">value</span><span class="pun">)</span></code>, or their
+    delegate equivalents.
+    <ul>        <li>If the callback doesn't take any arguments, the callback is
+        invoked whenever the option is seen.
+        </li>
+        <li>If the callback takes one string argument, the option string
+        (without the leading dash(es)) is passed to the callback.  After that,
+        the option string is considered handled and removed from the options
+        array.
+</p>
+<pre class="code"><code class="lang-d"><span class="typ">void </span><span class="pln">main</span><span class="pun">(</span><span class="typ">string</span><span class="pun">[] <a href="../../std/getopt/getopt.html#args"></span><span class="pln">args</span></a><span class="pun">)
+{
+  </span><span class="typ">uint </span><span class="pln">verbosityLevel </span><span class="pun">= </span><span class="lit">1</span><span class="pun">;
+  </span><span class="typ">void </span><span class="pln">myHandler</span><span class="pun">(</span><span class="typ">string </span><span class="pln">option</span><span class="pun">)
+  {
+    </span><span class="kwd">if </span><span class="pun">(</span><span class="pln">option </span><span class="pun">== </span><span class="str">"quiet"</span><span class="pun">)
+    {
+      </span><span class="pln">verbosityLevel </span><span class="pun">= </span><span class="lit">0</span><span class="pun">;
+    }
+    </span><span class="kwd">else
+    </span><span class="pun">{
+      </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">option </span><span class="pun">== </span><span class="str">"verbose"</span><span class="pun">);
+      </span><span class="pln">verbosityLevel </span><span class="pun">= </span><span class="lit">2</span><span class="pun">;
+    }
+  }
+  </span><span class="pln">getopt</span><span class="pun">(<a href="../../std/getopt/getopt.html#args"></span><span class="pln">args</span></a><span class="pun">, </span><span class="str">"verbose"</span><span class="pun">, &amp;</span><span class="pln">myHandler</span><span class="pun">, </span><span class="str">"quiet"</span><span class="pun">, &amp;</span><span class="pln">myHandler</span><span class="pun">);
+}</span></code></pre>
+<p>        </li>
+        <li>If the callback takes two string arguments, the option string is
+        handled as an option with one argument, and parsed accordingly. The
+        option and its value are passed to the callback. After that, whatever
+        was passed to the callback is considered handled and removed from the
+        list.
+</p>
+<pre class="code"><code class="lang-d"><span class="typ">int </span><span class="pln">main</span><span class="pun">(</span><span class="typ">string</span><span class="pun">[] <a href="../../std/getopt/getopt.html#args"></span><span class="pln">args</span></a><span class="pun">)
+{
+  </span><span class="typ">uint </span><span class="pln">verbosityLevel </span><span class="pun">= </span><span class="lit">1</span><span class="pun">;
+  </span><span class="typ">bool </span><span class="pln">handlerFailed </span><span class="pun">= </span><span class="kwd">false</span><span class="pun">;
+  </span><span class="typ">void </span><span class="pln">myHandler</span><span class="pun">(</span><span class="typ">string </span><span class="pln">option</span><span class="pun">, </span><span class="typ">string </span><span class="pln">value</span><span class="pun">)
+  {
+    </span><span class="kwd">switch </span><span class="pun">(</span><span class="pln">value</span><span class="pun">)
+    {
+      </span><span class="kwd">case </span><span class="str">"quiet"</span><span class="pun">: </span><span class="pln">verbosityLevel </span><span class="pun">= </span><span class="lit">0</span><span class="pun">; </span><span class="kwd">break</span><span class="pun">;
+      </span><span class="kwd">case </span><span class="str">"verbose"</span><span class="pun">: </span><span class="pln">verbosityLevel </span><span class="pun">= </span><span class="lit">2</span><span class="pun">; </span><span class="kwd">break</span><span class="pun">;
+      </span><span class="kwd">case </span><span class="str">"shouting"</span><span class="pun">: </span><span class="pln">verbosityLevel </span><span class="pun">= </span><span class="pln">verbosityLevel<wbr/></span><span class="pun">.</span><span class="pln">max</span><span class="pun">; </span><span class="kwd">break</span><span class="pun">;
+      </span><span class="kwd">default </span><span class="pun">:
+        </span><span class="pln">stderr<wbr/></span><span class="pun">.</span><span class="pln">writeln</span><span class="pun">(</span><span class="str">"Unknown verbosity level "</span><span class="pun">, </span><span class="pln">value</span><span class="pun">);
+        </span><span class="pln">handlerFailed </span><span class="pun">= </span><span class="kwd">true</span><span class="pun">;
+        </span><span class="kwd">break</span><span class="pun">;
+    }
+  }
+  </span><span class="pln">getopt</span><span class="pun">(<a href="../../std/getopt/getopt.html#args"></span><span class="pln">args</span></a><span class="pun">, </span><span class="str">"verbosity"</span><span class="pun">, &amp;</span><span class="pln">myHandler</span><span class="pun">);
+  </span><span class="kwd">return </span><span class="pln">handlerFailed </span><span class="pun">? </span><span class="lit">1 </span><span class="pun">: </span><span class="lit">0</span><span class="pun">;
+}</span></code></pre>
+<p>        </li>
+    </ul></li>
+</ol>
+</p>
+</section>
+<section><h2>Options with multiple names</h2>
+<p>Sometimes option synonyms are desirable, e.g. "--verbose",
+"--loquacious", and "--garrulous" should have the same effect. Such
+alternate option names can be included in the option specification,
+using "|" as a separator:
+</p>
+
+<pre class="code"><code class="lang-d"><span class="typ">bool </span><span class="pln">verbose</span><span class="pun">;
+</span><span class="pln">getopt</span><span class="pun">(<a href="../../std/getopt/getopt.html#args"></span><span class="pln">args</span></a><span class="pun">, </span><span class="str">"verbose|loquacious|garrulous"</span><span class="pun">, &amp;</span><span class="pln">verbose</span><span class="pun">);</span></code></pre>
+</section>
+<section><h2>Case</h2>
+<p>By default options are case-insensitive. You can change that behavior
+by passing <code class="lang-d"><span class="pln">getopt</span></code> the <code class="lang-d"><span class="pln">caseSensitive</span></code> directive like this:
+</p>
+
+<pre class="code"><code class="lang-d"><span class="typ">bool </span><span class="pln">foo</span><span class="pun">, </span><span class="pln">bar</span><span class="pun">;
+</span><span class="pln">getopt</span><span class="pun">(<a href="../../std/getopt/getopt.html#args"></span><span class="pln">args</span></a><span class="pun">,
+    <a href="../../std/getopt/config.html#caseSensitive" title="std.getopt.config.caseSensitive"></span><span class="pln">config<wbr/></span><span class="pun">.</span><span class="pln">caseSensitive</span></a><span class="pun">,
+    </span><span class="str">"foo"</span><span class="pun">, &amp;</span><span class="pln">foo</span><span class="pun">,
+    </span><span class="str">"bar"</span><span class="pun">, &amp;</span><span class="pln">bar</span><span class="pun">);</span></code></pre>
+
+<p>In the example above, "--foo" and "--bar" are recognized, but "--Foo", "--Bar",
+"--FOo", "--bAr", etc. are rejected.
+The directive is active until the end of <code class="lang-d"><span class="pln">getopt</span></code>, or until the
+converse directive <code class="lang-d"><span class="pln">caseInsensitive</span></code> is encountered:
+</p>
+
+<pre class="code"><code class="lang-d"><span class="typ">bool </span><span class="pln">foo</span><span class="pun">, </span><span class="pln">bar</span><span class="pun">;
+</span><span class="pln">getopt</span><span class="pun">(<a href="../../std/getopt/getopt.html#args"></span><span class="pln">args</span></a><span class="pun">,
+    <a href="../../std/getopt/config.html#caseSensitive" title="std.getopt.config.caseSensitive"></span><span class="pln">config<wbr/></span><span class="pun">.</span><span class="pln">caseSensitive</span></a><span class="pun">,
+    </span><span class="str">"foo"</span><span class="pun">, &amp;</span><span class="pln">foo</span><span class="pun">,
+    <a href="../../std/getopt/config.html#caseInsensitive" title="std.getopt.config.caseInsensitive"></span><span class="pln">config<wbr/></span><span class="pun">.</span><span class="pln">caseInsensitive</span></a><span class="pun">,
+    </span><span class="str">"bar"</span><span class="pun">, &amp;</span><span class="pln">bar</span><span class="pun">);</span></code></pre>
+
+<p>The option "--Foo" is rejected due to <code class="lang-d"><a href="../../std/getopt/config.html#caseSensitive" title="std.getopt.config.caseSensitive"><span class="pln">config<wbr/></span><span class="pun">.</span><span class="pln">caseSensitive</span></a></code>, but not "--Bar", "--bAr"
+etc. because the directive <code class="lang-d"><a href="../../std/getopt/config.html#caseInsensitive" title="std.getopt.config.caseInsensitive"><span class="pln">config<wbr/></span><span class="pun">.</span><span class="pln">caseInsensitive</span></a></code> turned sensitivity off before
+option "bar" was parsed.
+</p>
+</section>
+<section><h2>Short versus long options</h2>
+<p>Traditionally, programs accepted single-letter options preceded by
+only one dash (e.g. <code class="lang-d"><span class="pun">-</span><span class="pln">t</span></code>). <code class="lang-d"><span class="pln">getopt</span></code> accepts such parameters
+seamlessly. When used with a double-dash (e.g. <code class="lang-d"><span class="pun">--</span><span class="pln">t</span></code>), a
+single-letter option behaves the same as a multi-letter option. When
+used with a single dash, a single-letter option is accepted. If the
+option has a parameter, that must be "stuck" to the option without
+any intervening space or "=":
+</p>
+
+<pre class="code"><code class="lang-d"><span class="typ">uint </span><span class="pln">timeout</span><span class="pun">;
+</span><span class="pln">getopt</span><span class="pun">(<a href="../../std/getopt/getopt.html#args"></span><span class="pln">args</span></a><span class="pun">, </span><span class="str">"timeout|t"</span><span class="pun">, &amp;</span><span class="pln">timeout</span><span class="pun">);</span></code></pre>
+
+<p>To set <code class="lang-d"><span class="pln">timeout</span></code> to <code class="lang-d"><span class="lit">5</span></code>, use either of the following: <code class="lang-d"><span class="pun">--</span><span class="pln">timeout</span><span class="pun">=</span><span class="lit">5</span></code>,
+<code class="lang-d"><span class="pun">--</span><span class="pln">timeout </span><span class="lit">5</span></code>, <code class="lang-d"><span class="pun">--</span><span class="pln">t</span><span class="pun">=</span><span class="lit">5</span></code>, <code class="lang-d"><span class="pun">--</span><span class="pln">t </span><span class="lit">5</span></code>, or <code class="lang-d"><span class="pun">-</span><span class="pln">t5</span></code>. Forms such as <code class="lang-d"><span class="pun">-</span><span class="pln">t </span><span class="lit">5</span></code>
+and <code class="lang-d"><span class="pun">-</span><span class="pln">timeout</span><span class="pun">=</span><span class="lit">5</span></code> will be not accepted.
+</p>
+
+<p>For more details about short options, refer also to the next section.
+</p>
+</section>
+<section><h2>Bundling</h2>
+<p>Single-letter options can be bundled together, i.e. "-abc" is the same as
+<code class="lang-d"><span class="str">"-a -b -c"</span></code>. By default, this option is turned off. You can turn it on
+with the <code class="lang-d"><a href="../../std/getopt/config.html#bundling" title="std.getopt.config.bundling"><span class="pln">config<wbr/></span><span class="pun">.</span><span class="pln">bundling</span></a></code> directive:
+</p>
+
+<pre class="code"><code class="lang-d"><span class="typ">bool </span><span class="pln">foo</span><span class="pun">, </span><span class="pln">bar</span><span class="pun">;
+</span><span class="pln">getopt</span><span class="pun">(<a href="../../std/getopt/getopt.html#args"></span><span class="pln">args</span></a><span class="pun">,
+    <a href="../../std/getopt/config.html#bundling" title="std.getopt.config.bundling"></span><span class="pln">config<wbr/></span><span class="pun">.</span><span class="pln">bundling</span></a><span class="pun">,
+    </span><span class="str">"foo|f"</span><span class="pun">, &amp;</span><span class="pln">foo</span><span class="pun">,
+    </span><span class="str">"bar|b"</span><span class="pun">, &amp;</span><span class="pln">bar</span><span class="pun">);</span></code></pre>
+
+<p>In case you want to only enable bundling for some of the parameters,
+bundling can be turned off with <code class="lang-d"><a href="../../std/getopt/config.html#noBundling" title="std.getopt.config.noBundling"><span class="pln">config<wbr/></span><span class="pun">.</span><span class="pln">noBundling</span></a></code>.
+</p>
+</section>
+<section><h2>Required</h2>
+<p>An option can be marked as required. If that option is not present in the
+arguments an exception will be thrown.
+</p>
+
+<pre class="code"><code class="lang-d"><span class="typ">bool </span><span class="pln">foo</span><span class="pun">, </span><span class="pln">bar</span><span class="pun">;
+</span><span class="pln">getopt</span><span class="pun">(<a href="../../std/getopt/getopt.html#args"></span><span class="pln">args</span></a><span class="pun">,
+    <a href="../../std/getopt/config.html#required" title="std.getopt.config.required"></span><span class="pln">config<wbr/></span><span class="pun">.</span><span class="pln">required</span></a><span class="pun">,
+    </span><span class="str">"foo|f"</span><span class="pun">, &amp;</span><span class="pln">foo</span><span class="pun">,
+    </span><span class="str">"bar|b"</span><span class="pun">, &amp;</span><span class="pln">bar</span><span class="pun">);</span></code></pre>
+
+<p>Only the option directly following <code class="lang-d"><a href="../../std/getopt/config.html#required" title="std.getopt.config.required"><span class="pln">config<wbr/></span><span class="pun">.</span><span class="pln">required</span></a></code> is
+required.
+</p>
+</section>
+<section><h2>Passing unrecognized options through</h2>
+<p>If an application needs to do its own processing of whichever arguments
+<code class="lang-d"><span class="pln">getopt</span></code> did not understand, it can pass the
+<code class="lang-d"><a href="../../std/getopt/config.html#passThrough" title="std.getopt.config.passThrough"><span class="pln">config<wbr/></span><span class="pun">.</span><span class="pln">passThrough</span></a></code> directive to <code class="lang-d"><span class="pln">getopt</span></code>:
+</p>
+
+<pre class="code"><code class="lang-d"><span class="typ">bool </span><span class="pln">foo</span><span class="pun">, </span><span class="pln">bar</span><span class="pun">;
+</span><span class="pln">getopt</span><span class="pun">(<a href="../../std/getopt/getopt.html#args"></span><span class="pln">args</span></a><span class="pun">,
+    <a href="../../std/getopt/config.html#passThrough" title="std.getopt.config.passThrough"></span><span class="pln">config<wbr/></span><span class="pun">.</span><span class="pln">passThrough</span></a><span class="pun">,
+    </span><span class="str">"foo"</span><span class="pun">, &amp;</span><span class="pln">foo</span><span class="pun">,
+    </span><span class="str">"bar"</span><span class="pun">, &amp;</span><span class="pln">bar</span><span class="pun">);</span></code></pre>
+
+<p>An unrecognized option such as "--baz" will be found untouched in
+<code class="lang-d"><a href="../../std/getopt/getopt.html#args"><span class="pln">args</span></a></code> after <code class="lang-d"><span class="pln">getopt</span></code> returns.
+</p>
+</section>
+<section><h2>Help Information Generation</h2>
+<p>If an option string is followed by another string, this string serves as a
+description for this option. The <code class="lang-d"><span class="pln">getopt</span></code> function returns a struct of type
+<code class="lang-d"><a href="../../std/getopt/getopt_result.html"><span class="typ">GetoptResult</span></a></code>. This return value contains information about all passed options
+as well a <code class="lang-d"><span class="typ">bool <a href="../../std/getopt/getopt_result.help_wanted.html"></span><span class="typ">GetoptResult<wbr/></span><span class="pun">.</span><span class="pln">helpWanted</span></a></code> flag indicating whether information
+about these options was requested. The <code class="lang-d"><span class="pln">getopt</span></code> function always adds an option for
+<code class="lang-d"><span class="pun">--</span><span class="pln">help</span><span class="pun">|-</span><span class="pln">h</span></code> to set the flag if the option is seen on the command line.
+</p>
+</section>
+<section><h2>Options Terminator</h2>
+<p>A lone double-dash terminates <code class="lang-d"><span class="pln">getopt</span></code> gathering. It is used to
+separate program options from other parameters (e.g., options to be passed
+to another program). Invoking the example above with <code class="lang-d"><span class="str">"--foo -- --bar"</span></code>
+parses foo but leaves "--bar" in <code class="lang-d"><a href="../../std/getopt/getopt.html#args"><span class="pln">args</span></a></code>. The double-dash itself is
+removed from the argument array unless the <code class="lang-d"><a href="../../std/getopt/config.html#keepEndOfOptions" title="std.getopt.config.keepEndOfOptions"><span class="pln">config<wbr/></span><span class="pun">.</span><span class="pln">keepEndOfOptions</span></a></code>
+directive is given.
+</p>
+</section>
+<section><h2>Example</h2>
+<p><span class="dlang_runnable"></span>
+</p>
+<pre class="code"><code class="lang-d"><span class="kwd">auto <a href="../../std/getopt/getopt.html#args"></span><span class="pln">args</span></a><span class="pln"> </span><span class="pun">= [</span><span class="str">"prog"</span><span class="pun">, </span><span class="str">"--foo"</span><span class="pun">, </span><span class="str">"-b"</span><span class="pun">];
+
+</span><span class="typ">bool </span><span class="pln">foo</span><span class="pun">;
+</span><span class="typ">bool </span><span class="pln">bar</span><span class="pun">;
+</span><span class="kwd">auto </span><span class="pln">rslt </span><span class="pun">= </span><span class="pln">getopt</span><span class="pun">(<a href="../../std/getopt/getopt.html#args"></span><span class="pln">args</span></a><span class="pun">, </span><span class="str">"foo|f"</span><span class="pun">, </span><span class="str">"Some information about foo."</span><span class="pun">, &amp;</span><span class="pln">foo</span><span class="pun">, </span><span class="str">"bar|b"</span><span class="pun">,
+    </span><span class="str">"Some help message about bar."</span><span class="pun">, &amp;</span><span class="pln">bar</span><span class="pun">);
+
+</span><span class="kwd">if </span><span class="pun">(</span><span class="pln">rslt<wbr/></span><span class="pun">.</span><span class="pln">helpWanted</span><span class="pun">)
+{
+    <a href="../../std/getopt/default_getopt_printer.html"></span><span class="pln">defaultGetoptPrinter</span></a><span class="pun">(</span><span class="str">"Some information about the program."</span><span class="pun">,
+        </span><span class="pln">rslt<wbr/></span><span class="pun">.</span><span class="pln">options</span><span class="pun">);
+}
+</span></code></pre>
+</section>
+
+				<section>
+					<h2>Authors</h2><p><a href="http://erdani.org">Andrei Alexandrescu</a>
+</p>
+
+				</section>
+				<section>
+					<h2>License</h2><p><a href="http://www.boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
+</p>
+
+				</section>
+				<section>
+					<h2>Comments</h2><div id="disqus_thread"></div><script language="javascript">var disqus_shortname = 'vibe-d'; // required: replace example with your forum shortname
+var disqus_developer = 1;
+var disqus_identifier = "phobos-std.getopt";
+
+
+/* * * DON'T EDIT BELOW THIS LINE * * */
+(function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><noscript>Please enable JavaScript to view the comments.</noscript>
+				</section>
+				    
+				<div id="quickindex" class="quickindex"></div>
+				<div id="copyright" class="smallprint">
+					Copyright &copy; 1999-2018 by the <a href="../../../foundation.html">D Language Foundation</a> | Page generated by <a href="https://github.com/rejectedsoftware/ddox">ddox</a>.
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>    
+		<script type="text/javascript">window.jQuery || document.write('\\x3Cscript src="../../../js/jquery-1.7.2.min.js">\\x3C/script>')</script>    
+		<script type="text/javascript" src="../../../js/codemirror-compressed.js"></script>    
+		<script type="text/javascript" src="../../../js/run.js"></script><script type="text/javascript" src="../../../js/run_examples.js"></script><script type="text/javascript" src="../../../js/dlang.js"></script><script type="text/javascript" src="../../../js/listanchors.js"></script><script type="text/javascript">jQuery(document).ready(listanchors);
+setupDdox();</script>
+	</body>
+</html>

@@ -3,6 +3,7 @@ dlang.org archives
 
 > Go back in time to a previous released version of dlang.org, its documentation and specification
 
+- [x] [2.078.0](https://docarchives.dlang.io/v2.078.0) ([Phobos](https://docarchives.dlang.io/v2.078.0/phobos))
 - [x] [2.077.0](https://docarchives.dlang.io/v2.077.0) ([Phobos](https://docarchives.dlang.io/v2.077.0/phobos))
 - [x] [2.076.0](https://docarchives.dlang.io/v2.076.0) ([Phobos](https://docarchives.dlang.io/v2.076.0/phobos))
 - [x] [2.075.0](https://docarchives.dlang.io/v2.075.0) ([Phobos](https://docarchives.dlang.io/v2.075.0/phobos))

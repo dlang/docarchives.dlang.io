@@ -1,0 +1,635 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2018 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Writing Shared Libraries With D On Linux - D Programming Language</title>
+
+<link rel="stylesheet" href="css/codemirror.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/print.css" media="print">
+<link rel="shortcut icon" href="favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Writing Shared Libraries With D On Linux' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="images/dlogo.svg"></a></div>
+    <a href="menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='spec/spec.html'>Language Reference</a></li>
+    <li><a href='phobos/index.html'>Library Reference</a></li>
+    <li><a href='dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='comparison.html'>Feature Overview</a></li>
+    <li><a href='articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.freenode.net/d'>IRC</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='contributors.html'>Contributors</a></li>
+    <li><a href='foundation.html'>Foundation</a></li>
+    <li><a href='donate.html'>Donate</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='dstyle.html'>D Style</a></li>
+    <li><a href='glossary.html'>Glossary</a></li>
+    <li><a href='sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;bug_severity=enhancement&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BWriting Shared Libraries With D On Linux%5D&amp;version=D2">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/dll-linux.dd">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Writing Shared Libraries With D On Linux</h1>
+        
+        
+
+
+<p><span class="red">Preliminary and subject to change.</span></p>
+
+<ul><li><a href="#dso1">Statically Linking C</a></li>
+<li><a href="#dso2">Statically Loading a Shared library in C</a></li>
+<li><a href="#dso3">Dynamically Loading a Shared library in C</a></li>
+<li><a href="#dso4">Dynamically Loading a C++ Shared library in C</a></li>
+<li><a href="#dso5">Statically Linking D Program With libphobos2.a</a></li>
+<li><a href="#dso6">Statically Linking D Program With libphobos2.so</a></li>
+<li><a href="#dso7">Creating a D Shared Library and Statically Linking With libphobos2.so</a></li>
+<li><a href="#dso8">Dynamically Loading a C++ DLL From a D Program</a></li>
+<li><a href="#dso9">Dynamically Loading a D DLL From a C Program</a></li>
+<li><a href="#dso10">Dynamically Loading a D DLL From a D Program</a></li>
+</ul>
+
+<p>For comparison purposes and looking at the mechanics, here's how it's done in C first.
+</p>
+
+<h2><a class="anchor" title="Permalink to this section" id="dso1" href="#dso1">Statically Linking C</a></h2>
+
+<p>To statically link a C module with a C program,
+</p>
+
+main.c:
+
+<pre class="ccode notranslate">#include &lt;stdio.h&gt;
+
+extern int dll();
+
+int main()
+{
+    printf("+main()\n");
+    dll();
+    printf("-main()\n");
+    return 0;
+}
+</pre>
+
+dll.c:
+
+<pre class="ccode notranslate">#include &lt;stdio.h&gt;
+
+int dll()
+{
+    printf("dll()\n");
+    return 0;
+}
+</pre>
+
+Build:
+
+<pre class="console notranslate">gcc -c dll.c
+gcc -c main.c
+gcc -o main main.o dll.o
+
+./main
+</pre>
+
+Results:
+
+<pre class="console notranslate">+main()
+dll()
+-main()
+</pre>
+
+<h2><a class="anchor" title="Permalink to this section" id="dso2" href="#dso2">Statically Loading a Shared library in C</a></h2>
+
+Build:
+
+<pre class="console notranslate">gcc -c dll.c -fpic
+gcc -shared -o libdll.so dll.o
+gcc -c main.c
+gcc -L/home/username/tmp -Wl,-rpath=/home/username/tmp main.o -o main -ldll
+</pre>
+
+<p>(The source files, run, and results should be identical.)
+</p>
+
+<p>-rpath is used to embed the path to libdll.so into main, so that it can be found
+at runtime. Other ways to do it are (but are not discussed further here):
+</p>
+
+<ol><li>Setting the environment variable LD_LIBRARY_PATH.</li>
+<li>Copy shared library to a standard location and use ldconfig to modify ld.so.</li>
+</ol>
+
+
+<h2><a class="anchor" title="Permalink to this section" id="dso3" href="#dso3">Dynamically Loading a Shared library in C</a></h2>
+
+<p>Add code to main.c to load the library at runtime:
+</p>
+
+main.c:
+
+<pre class="ccode notranslate">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;dlfcn.h&gt;
+
+int main()
+{
+    printf("+main()\n");
+
+    void *lh = dlopen("/home/walter/tmp/libdll.so", RTLD_LAZY);
+    if (!lh)
+    {
+        fprintf(stderr, "dlopen error: %s\n", dlerror());
+        exit(1);
+    }
+    printf("libdll.so is loaded\n");
+
+    int (*fn)() = dlsym(lh, "dll");
+    char *error = dlerror();
+    if (error)
+    {
+        fprintf(stderr, "dlsym error: %s\n", error);
+        exit(1);
+    }
+    printf("dll() function is found\n");
+
+    (*fn)();
+
+    printf("unloading libdll.so\n");
+    dlclose(lh);
+
+    printf("-main()\n");
+    return 0;
+}
+</pre>
+
+Build:
+
+<pre class="console notranslate">gcc -c dll.c -fpic
+gcc -shared -o libdll.so dll.o
+gcc -c main.c
+gcc -rdynamic main.o -o main -ldl
+
+./main
+</pre>
+
+Results:
+
+<pre class="console notranslate">+main()
+libdll.so is loaded
+dll() function is found
+dll()
+unloading libdll.so
+-main()
+</pre>
+
+<h2><a class="anchor" title="Permalink to this section" id="dso4" href="#dso4">Dynamically Loading a C++ Shared library in C</a></h2>
+
+<p>The complication here is noting when the shared library's static constructors
+and destructors are run. Instrument dll.c, which is now C++ code, with those
+static constructors and destructors:
+</p>
+
+dll.c:
+
+<pre class="ccode notranslate">#include &lt;stdio.h&gt;
+
+extern "C" int dll()
+{
+    printf("dll()\n");
+    return 0;
+}
+
+struct S
+{
+    S() { printf("libdll.so construction\n"); }
+    ~S() { printf("~libdll.so destruction\n"); }
+};
+
+S ss;
+</pre>
+
+Build:
+
+<pre class="console notranslate">g++ -c dll.c -fpic
+g++ -shared -o libdll.so dll.o
+gcc -c main.c
+gcc -rdynamic main.o -o main -ldl
+
+./main
+</pre>
+
+Results:
+
+<pre class="console notranslate">+main()
+libdll.so construction
+libdll.so is loaded
+dll() function is found
+dll()
+unloading libdll.so
+libdll.so destruction
+-main()
+</pre>
+
+<h2><a class="anchor" title="Permalink to this section" id="dso5" href="#dso5">Statically Linking D Program With libphobos2.a</a></h2>
+
+main.d:
+
+<pre class="d_code notranslate"><span class="d_keyword">import</span> core.stdc.stdio;
+<span class="d_keyword">import</span> dll;
+
+<span class="d_keyword">int</span> main()
+{
+    printf(<span class="d_string">"+main()\n"</span>);
+    dll.dll();
+    printf(<span class="d_string">"-main()\n"</span>);
+    <span class="d_keyword">return</span> 0;
+}
+</pre>
+
+dll.d:
+
+<pre class="d_code notranslate"><span class="d_keyword">import</span> core.stdc.stdio;
+
+<span class="d_keyword">extern</span> (C) <span class="d_keyword">int</span> dll()
+{
+    printf(<span class="d_string">"dll()\n"</span>);
+    <span class="d_keyword">return</span> 0;
+}
+</pre>
+
+Build:
+
+<pre class="console notranslate">dmd -c dll.d
+dmd -c main.d
+dmd  main.o dll.o
+
+./main
+</pre>
+
+Results:
+
+<pre class="console notranslate">+main()
+dll()
+-main()
+</pre>
+
+<h2><a class="anchor" title="Permalink to this section" id="dso6" href="#dso6">Statically Linking D Program With libphobos2.so</a></h2>
+
+Build:
+
+<pre class="console notranslate">dmd -c dll.d
+dmd -c main.d
+dmd  main.o dll.o -defaultlib=libphobos2.so -L-rpath=/path/to/where/shared/library/is
+
+./main
+</pre>
+
+<h2><a class="anchor" title="Permalink to this section" id="dso7" href="#dso7">Creating a D Shared Library and Statically Linking With libphobos2.so</a></h2>
+
+<p>When using D shared libraries, the code must be linked with libphobos2.so,
+not libphobos2.a. This is so that there will be only one instance of the
+garbage collector.
+</p>
+
+Build:
+
+<pre class="console notranslate">dmd -c dll.d -fPIC
+dmd -oflibdll.so dll.o -shared -defaultlib=libphobos2.so -L-rpath=/path/to/where/shared/library/is
+dmd -c main.d
+dmd main.o -L-l:libdll.so -defaultlib=libphobos2.so -L-rpath=.:/path/to/where/shared/library/is
+
+./main
+</pre>
+
+<h2><a class="anchor" title="Permalink to this section" id="dso8" href="#dso8">Dynamically Loading a C++ DLL From a D Program</a></h2>
+
+main.d:
+
+<pre class="d_code notranslate"><span class="d_keyword">import</span> core.stdc.stdio;
+<span class="d_keyword">import</span> core.stdc.stdlib;
+<span class="d_keyword">import</span> core.sys.posix.dlfcn;
+
+<span class="d_keyword">extern</span> (C) <span class="d_keyword">int</span> dll();
+
+<span class="d_keyword">int</span> main()
+{
+    printf(<span class="d_string">"+main()\n"</span>);
+
+    <span class="d_keyword">void</span>* lh = dlopen(<span class="d_string">"libdll.so"</span>, RTLD_LAZY);
+    <span class="d_keyword">if</span> (!lh)
+    {
+        fprintf(stderr, <span class="d_string">"dlopen error: %s\n"</span>, dlerror());
+        exit(1);
+    }
+    printf(<span class="d_string">"libdll.so is loaded\n"</span>);
+
+    <span class="d_keyword">int</span> <span class="d_keyword">function</span>() fn = <span class="d_keyword">cast</span>(<span class="d_keyword">int</span> <span class="d_keyword">function</span>())dlsym(lh, <span class="d_string">"dll"</span>);
+    <span class="d_keyword">char</span>* error = dlerror();
+    <span class="d_keyword">if</span> (error)
+    {
+        fprintf(stderr, <span class="d_string">"dlsym error: %s\n"</span>, error);
+        exit(1);
+    }
+    printf(<span class="d_string">"dll() function is found\n"</span>);
+
+    fn();
+
+    printf(<span class="d_string">"unloading libdll.so\n"</span>);
+    dlclose(lh);
+
+    printf(<span class="d_string">"-main()\n"</span>);
+    <span class="d_keyword">return</span> 0;
+}
+</pre>
+
+dll.c:
+
+<pre class="ccode notranslate">#include &lt;stdio.h&gt;
+
+extern "C" int dll()
+{
+    printf("dll()\n");
+    return 0;
+}
+
+struct S
+{
+    S() { printf("libdll.so construction\n"); }
+    ~S() { printf("libdll.so destruction\n"); }
+};
+
+S ss;
+</pre>
+
+Build:
+
+<pre class="console notranslate">g++ -c dll.c -fpic
+g++ -shared -o libdll.so dll.o
+dmd -c main.d
+dmd main.o -L-ldl -L-rpath=.
+
+./main
+</pre>
+
+Results:
+
+<pre class="console notranslate">+main()
+libdll.so construction
+libdll.so is loaded
+dll() function is found
+dll()
+unloading libdll.so
+libdll.so destruction
+-main()
+</pre>
+
+<h2><a class="anchor" title="Permalink to this section" id="dso9" href="#dso9">Dynamically Loading a D DLL From a C Program</a></h2>
+
+main.c:
+
+<pre class="ccode notranslate">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;dlfcn.h&gt;
+
+int main()
+{
+    printf("+main()\n");
+
+    void *lh = dlopen("/home/walter/tmp/libdll.so", RTLD_LAZY);
+    if (!lh)
+    {
+        fprintf(stderr, "dlopen error: %s\n", dlerror());
+        exit(1);
+    }
+    printf("libdll.so is loaded\n");
+
+    int (*fn)() = dlsym(lh, "dll");
+    char *error = dlerror();
+    if (error)
+    {
+        fprintf(stderr, "dlsym error: %s\n", error);
+        exit(1);
+    }
+    printf("dll() function is found\n");
+
+    (*fn)();
+
+    printf("unloading libdll.so\n");
+    dlclose(lh);
+
+    printf("-main()\n");
+    return 0;
+}
+</pre>
+
+dll.d:
+
+<pre class="d_code notranslate"><span class="d_keyword">import</span> core.stdc.stdio;
+
+<span class="d_keyword">extern</span> (C) <span class="d_keyword">int</span> dll()
+{
+    printf(<span class="d_string">"dll()\n"</span>);
+    <span class="d_keyword">return</span> 0;
+}
+
+<span class="d_keyword">shared</span> <span class="d_keyword">static</span> <span class="d_keyword">this</span>()
+{
+    printf(<span class="d_string">"libdll.so shared static this\n"</span>);
+}
+
+<span class="d_keyword">shared</span> <span class="d_keyword">static</span> ~<span class="d_keyword">this</span>()
+{
+    printf(<span class="d_string">"libdll.so shared static ~this\n"</span>);
+}
+</pre>
+
+Build:
+
+<pre class="console notranslate">dmd -c dll.d -fPIC
+dmd -oflibdll.so dll.o -shared -defaultlib=libphobos2.so -L-rpath=/path/to/where/shared/library/is
+
+gcc -c main.c
+gcc -rdynamic main.o -o main -ldl
+
+./main
+</pre>
+
+Results:
+
+<pre class="console notranslate">+main()
+libdll.so shared static this
+libdll.so is loaded
+dll() function is found
+dll()
+unloading libdll.so
+libdll.so shared static ~this
+-main()
+</pre>
+
+<p>Note that libphobos2.so gets automatically dynamically loaded as well.
+</p>
+
+<h2><a class="anchor" title="Permalink to this section" id="dso10" href="#dso10">Dynamically Loading a D DLL From a D Program</a></h2>
+
+<p>It is important to link the main program with libphobos2.so, not libphobos2.a. Otherwise,
+the result will be multiple instances of the D runtime conflicting with each other.
+</p>
+
+main.d:
+
+<pre class="d_code notranslate"><span class="d_keyword">import</span> core.stdc.stdio;
+<span class="d_keyword">import</span> core.stdc.stdlib;
+<span class="d_keyword">import</span> core.sys.posix.dlfcn;
+
+<span class="d_keyword">extern</span> (C) <span class="d_keyword">int</span> dll();
+
+<span class="d_keyword">int</span> main()
+{
+    printf(<span class="d_string">"+main()\n"</span>);
+
+    <span class="d_keyword">void</span>* lh = dlopen(<span class="d_string">"libdll.so"</span>, RTLD_LAZY);
+    <span class="d_keyword">if</span> (!lh)
+    {
+        fprintf(stderr, <span class="d_string">"dlopen error: %s\n"</span>, dlerror());
+        exit(1);
+    }
+    printf(<span class="d_string">"libdll.so is loaded\n"</span>);
+
+    <span class="d_keyword">int</span> <span class="d_keyword">function</span>() fn = <span class="d_keyword">cast</span>(<span class="d_keyword">int</span> <span class="d_keyword">function</span>())dlsym(lh, <span class="d_string">"dll"</span>);
+    <span class="d_keyword">char</span>* error = dlerror();
+    <span class="d_keyword">if</span> (error)
+    {
+        fprintf(stderr, <span class="d_string">"dlsym error: %s\n"</span>, error);
+        exit(1);
+    }
+    printf(<span class="d_string">"dll() function is found\n"</span>);
+
+    fn();
+
+    printf(<span class="d_string">"unloading libdll.so\n"</span>);
+    dlclose(lh);
+
+    printf(<span class="d_string">"-main()\n"</span>);
+    <span class="d_keyword">return</span> 0;
+}
+
+<span class="d_keyword">shared</span> <span class="d_keyword">static</span> <span class="d_keyword">this</span>() { printf(<span class="d_string">"main shared static this\n"</span>); }
+
+<span class="d_keyword">shared</span> <span class="d_keyword">static</span> ~<span class="d_keyword">this</span>() { printf(<span class="d_string">"main shared static ~this\n"</span>); }
+</pre>
+
+Build:
+
+<pre class="console notranslate">dmd -c dll.d -fPIC
+dmd -oflibdll.so dll.o -shared -defaultlib=libphobos2.so -L-rpath=/path/to/where/shared/library/is
+
+dmd -c main.d
+dmd main.o -L-ldl -defaultlib=libphobos2.so -L-rpath=.:/path/to/where/shared/library/is -map
+
+./main
+</pre>
+
+Results:
+
+<pre class="console notranslate">main shared static this
++main()
+libdll.so shared static this
+libdll.so is loaded
+dll() function is found
+dll()
+unloading libdll.so
+libdll.so shared static ~this
+-main()
+main shared static ~this
+</pre>
+
+<p>Note how the DLL's static constructors are called before dlopen() returns,
+and the static destructors are called by dlclose().
+</p>
+
+
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2018 by the <a href="foundation.html">D Language Foundation</a> | Page generated by
+<a href="spec/ddoc.html">Ddoc</a> on (no date time)</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="js/dlang.js"></script>
+    
+    <script type="text/javascript" src="js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>
