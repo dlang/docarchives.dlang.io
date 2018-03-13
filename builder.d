@@ -1,38 +1,52 @@
 #!/usr/bin/env rdmd
 
+import std.algorithm, std.conv, std.file, std.path, std.process, std.range, std.stdio;
+
+auto digger = "/home/seb/dlang/Digger/digger";
+auto dlangOrgFolder = "dlang.org";
+
+void checkoutRelease(string web, string tag)
+{
+	writefln("Nuke web: %s", tag);
+	if (web.exists)
+		web.rmdirRecurse;
+
+	// reset
+	auto pipes = pipeShell("cd dlang.org && git clean -f && git checkout .");
+	pipes.pid.wait;
+
+	writefln("Checking out: %s", tag);
+	foreach (file; ["dlang.org"])
+	{
+		executeShell("git -C " ~ dlangOrgFolder.dirName.buildPath(file) ~ " clean -f");
+		executeShell("git -C " ~ dlangOrgFolder.dirName.buildPath(file) ~ " checkout " ~ tag);
+		executeShell("make -C " ~ dlangOrgFolder.dirName.buildPath(file) ~ " clean");
+	}
+
+	pipes = pipeShell(digger ~ " checkout " ~ tag, Redirect.stdin);
+	pipes.pid.wait;
+	pipes = pipeShell(digger ~ " build " ~ tag, Redirect.stdin);
+	pipes.pid.wait;
+}
+
+void execute(string command, string[string] env)
+{
+    stderr.writefln("---> Executing: %s", command);
+    auto pipes = pipeShell(command, Redirect.stdin, env);
+    pipes.pid.wait;
+}
+
 void main(string[] args)
 {
     auto outFolder = "archives";
-    auto dlangOrgFolder = "dlang.org";
-    auto digger = "/home/seb/dlang/Digger/digger";
 
-    import std.algorithm, std.conv, std.file, std.path, std.process, std.range, std.stdio;
     outFolder.mkdirRecurse;
-    auto tags = iota(69, 75).map!(e => text("v2.0", e, e >= 65 ? ".0" : ""));
+    auto tags = iota(78, 79).map!(e => text("v2.0", e, e >= 65 ? ".0" : ""));
     foreach (tag; tags)
     {
         auto web = dlangOrgFolder.buildPath("web");
+        //checkoutRelease(web, tag);
 
-        writefln("Nuke web: %s", tag);
-        if (web.exists)
-            web.rmdirRecurse;
-
-		// reset
-		auto pipes = pipeShell("cd dlang.org && git clean -f && git checkout .");
-        pipes.pid.wait;
-
-		writefln("Checking out: %s", tag);
-		foreach (file; ["dlang.org"])
-		{
-			executeShell("git -C " ~ dlangOrgFolder.dirName.buildPath(file) ~ " clean -f");
-			executeShell("git -C " ~ dlangOrgFolder.dirName.buildPath(file) ~ " checkout " ~ tag);
-			executeShell("make -C " ~ dlangOrgFolder.dirName.buildPath(file) ~ " clean");
-		}
-
-		pipes = pipeShell(digger ~ " checkout " ~ tag, Redirect.stdin);
-		pipes.pid.wait;
-        pipes = pipeShell(digger ~ " build " ~ tag, Redirect.stdin);
-        pipes.pid.wait;
         auto env = [
             "DMD": "/dmd",
             "PATH": "/home/seb/dlang/docs/work/result/bin:/usr/local/sbin:/usr/local/bin:/usr/bin",
@@ -47,26 +61,16 @@ void main(string[] args)
 					  " TOOLS_DIR=" ~ diggerWorkRepo.buildPath("repo", "tools") ~
 					  " LATEST=" ~ tag[1..$];
 
-		// hack to simulated cloned folders (<=2.0.68)
-		/*foreach (folder; ["dmd", "druntime", "phobos"])*/
-			/*std.file.write(diggerWorkRepo.buildPath("repo", folder, ".cloned"), "");*/
-
 		auto posixMak = dlangOrgFolder.buildPath("posix.mak");
 		std.file.write(posixMak, posixMak.readText.replace("| dpl-docs", ""));
-		/*pipes = pipeShell("cd dlang.org/dpl-docs && dub upgrade && rm -rf /home/seb/.dub/packages/ddox-0.10.9", Redirect.stdin);*/
-        /*pipes.pid.wait;*/
 
-		folders.writeln;
         // build
         writefln("Building: %s", tag);
-        pipes = pipeShell("make -f posix.mak all -C" ~ dlangOrgFolder ~ folders, Redirect.stdin, env);
-        pipes.pid.wait;
-        pipes = pipeShell("make -f posix.mak html pdf kindle -C" ~ dlangOrgFolder ~ folders, Redirect.stdin, env);
-        pipes.pid.wait;
-		pipes = pipeShell("make -f posix.mak docs-prerelease.json -C" ~ dlangOrgFolder ~ folders, Redirect.stdin, env);
-		pipes.pid.wait;
-        pipes = pipeShell("make -f posix.mak phobos-prerelease -C" ~ dlangOrgFolder ~ folders, Redirect.stdin, env);
-        pipes.pid.wait;
+        auto make = (string c) => execute("make -f posix.mak " ~ c ~ " -C " ~ dlangOrgFolder ~ folders, env);
+        make("all");
+        make("html pdf kindle");
+        make("docs-prerelease.json");
+        make("phobos-prerelease");
 
         void renameInWeb(string from, string to)
         {
@@ -100,7 +104,7 @@ void main(string[] args)
                 t.dirName.mkdirRecurse;
                 file.rename(t);
             }
-            dlangOrgFolder.buildPath("docs-prerelease.json").rename(target.buildPath("docs.json"));
+            dlangOrgFolder.buildPath(".generated/docs-prerelease.json").rename(target.buildPath("docs.json"));
         }
     }
     tags.writeln;

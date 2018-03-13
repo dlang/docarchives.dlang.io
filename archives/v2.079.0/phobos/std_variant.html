@@ -1,0 +1,642 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2018 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>std.variant - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='std.variant' class='std'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href=".."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.freenode.net/d'>IRC</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option selected value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+<div class="subnav-helper"></div> <div class="subnav">    <div class="head">        <h2>Library Reference</h2>
+        <p><span class="smallprint">version 2.079.0 <span class="separator"><br></span>
+            </span>
+        </p>
+        <p><a href="index.html">overview</a></p>
+    </div>
+    <ul>
+<li><a href='object.html'><span><em class="tt">object</em></span></a></li>
+
+<li class='expand-container'><a class='expand-toggle' href='#'><span><em class="tt">std</em></span></a>
+<ul><li>  <a href="std_algorithm.html" title="std.algorithm"><span class="d_inlinecode donthyphenate notranslate">algorithm</span></a><ul><li>    <a href="std_algorithm_comparison.html" title="std.algorithm.comparison"><span class="d_inlinecode donthyphenate notranslate">comparison</span></a></li><li>    <a href="std_algorithm_iteration.html" title="std.algorithm.iteration"><span class="d_inlinecode donthyphenate notranslate">iteration</span></a></li><li>    <a href="std_algorithm_mutation.html" title="std.algorithm.mutation"><span class="d_inlinecode donthyphenate notranslate">mutation</span></a></li><li>    <a href="std_algorithm_searching.html" title="std.algorithm.searching"><span class="d_inlinecode donthyphenate notranslate">searching</span></a></li><li>    <a href="std_algorithm_setops.html" title="std.algorithm.setops"><span class="d_inlinecode donthyphenate notranslate">setops</span></a></li><li>    <a href="std_algorithm_sorting.html" title="std.algorithm.sorting"><span class="d_inlinecode donthyphenate notranslate">sorting</span></a>
+  </li></ul></li><li>  <a href="std_array.html" title="std.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>  <a href="std_ascii.html" title="std.ascii"><span class="d_inlinecode donthyphenate notranslate">ascii</span></a></li><li>  <a href="std_base64.html" title="std.base64"><span class="d_inlinecode donthyphenate notranslate">base64</span></a></li><li>  <a href="std_bigint.html" title="std.bigint"><span class="d_inlinecode donthyphenate notranslate">bigint</span></a></li><li>  <a href="std_bitmanip.html" title="std.bitmanip"><span class="d_inlinecode donthyphenate notranslate">bitmanip</span></a></li><li>  <a href="std_compiler.html" title="std.compiler"><span class="d_inlinecode donthyphenate notranslate">compiler</span></a></li><li>  <a href="std_complex.html" title="std.complex"><span class="d_inlinecode donthyphenate notranslate">complex</span></a></li><li>  <a href="std_concurrency.html" title="std.concurrency"><span class="d_inlinecode donthyphenate notranslate">concurrency</span></a></li><li>  <a href="std_container.html" title="std.container"><span class="d_inlinecode donthyphenate notranslate">container</span></a><ul><li>    <a href="std_container_array.html" title="std.container.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>    <a href="std_container_binaryheap.html" title="std.container.binaryheap"><span class="d_inlinecode donthyphenate notranslate">binaryheap</span></a></li><li>    <a href="std_container_dlist.html" title="std.container.dlist"><span class="d_inlinecode donthyphenate notranslate">dlist</span></a></li><li>    <a href="std_container_rbtree.html" title="std.container.rbtree"><span class="d_inlinecode donthyphenate notranslate">rbtree</span></a></li><li>    <a href="std_container_slist.html" title="std.container.slist"><span class="d_inlinecode donthyphenate notranslate">slist</span></a></li><li>    <a href="std_container_util.html" title="std.container.util"><span class="d_inlinecode donthyphenate notranslate">util</span></a>
+  </li></ul></li><li>  <a href="std_conv.html" title="std.conv"><span class="d_inlinecode donthyphenate notranslate">conv</span></a></li><li>  <a href="std_csv.html" title="std.csv"><span class="d_inlinecode donthyphenate notranslate">csv</span></a></li><li>  <a href="std_datetime.html" title="std.datetime"><span class="d_inlinecode donthyphenate notranslate">datetime</span></a><ul><li>    <a href="std_datetime_date.html" title="std.datetime.date"><span class="d_inlinecode donthyphenate notranslate">date</span></a></li><li>    <a href="std_datetime_interval.html" title="std.datetime.interval"><span class="d_inlinecode donthyphenate notranslate">interval</span></a></li><li>    <a href="std_datetime_stopwatch.html" title="std.datetime.stopwatch"><span class="d_inlinecode donthyphenate notranslate">stopwatch</span></a></li><li>    <a href="std_datetime_systime.html" title="std.datetime.systime"><span class="d_inlinecode donthyphenate notranslate">systime</span></a></li><li>    <a href="std_datetime_timezone.html" title="std.datetime.timezone"><span class="d_inlinecode donthyphenate notranslate">timezone</span></a>
+  </li></ul></li><li>  <a href="std_demangle.html" title="std.demangle"><span class="d_inlinecode donthyphenate notranslate">demangle</span></a></li><li>  <a href="std_digest.html" title="std.digest"><span class="d_inlinecode donthyphenate notranslate">digest</span></a><ul><li>    <a href="std_digest_crc.html" title="std.digest.crc"><span class="d_inlinecode donthyphenate notranslate">crc</span></a></li><li>    <a href="std_digest_digest.html" title="std.digest.digest"><span class="d_inlinecode donthyphenate notranslate">digest</span></a></li><li>    <a href="std_digest_hmac.html" title="std.digest.hmac"><span class="d_inlinecode donthyphenate notranslate">hmac</span></a></li><li>    <a href="std_digest_md.html" title="std.digest.md"><span class="d_inlinecode donthyphenate notranslate">md</span></a></li><li>    <a href="std_digest_murmurhash.html" title="std.digest.murmurhash"><span class="d_inlinecode donthyphenate notranslate">murmurhash</span></a></li><li>    <a href="std_digest_ripemd.html" title="std.digest.ripemd"><span class="d_inlinecode donthyphenate notranslate">ripemd</span></a></li><li>    <a href="std_digest_sha.html" title="std.digest.sha"><span class="d_inlinecode donthyphenate notranslate">sha</span></a>
+  </li></ul></li><li>  <a href="std_encoding.html" title="std.encoding"><span class="d_inlinecode donthyphenate notranslate">encoding</span></a></li><li>  <a href="std_exception.html" title="std.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">experimental</span></h7><ul><li>    <a href="std_experimental_all.html" title="std.experimental.all"><span class="d_inlinecode donthyphenate notranslate">all</span></a></li><li>    <a href="std_experimental_allocator.html" title="std.experimental.allocator"><span class="d_inlinecode donthyphenate notranslate">allocator</span></a><ul><li>      <a href="std_experimental_allocator_building_blocks.html" title="std.experimental.allocator.building_blocks"><span class="d_inlinecode donthyphenate notranslate">building_blocks</span></a><ul><li>        <a href="std_experimental_allocator_building_blocks_affix_allocator.html" title="std.experimental.allocator.building_blocks.affix_allocator"><span class="d_inlinecode donthyphenate notranslate">affix_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_allocator_list.html" title="std.experimental.allocator.building_blocks.allocator_list"><span class="d_inlinecode donthyphenate notranslate">allocator_list</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_ascending_page_allocator.html" title="std.experimental.allocator.building_blocks.ascending_page_allocator"><span class="d_inlinecode donthyphenate notranslate">ascending_page_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_bitmapped_block.html" title="std.experimental.allocator.building_blocks.bitmapped_block"><span class="d_inlinecode donthyphenate notranslate">bitmapped_block</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_bucketizer.html" title="std.experimental.allocator.building_blocks.bucketizer"><span class="d_inlinecode donthyphenate notranslate">bucketizer</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_fallback_allocator.html" title="std.experimental.allocator.building_blocks.fallback_allocator"><span class="d_inlinecode donthyphenate notranslate">fallback_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_free_list.html" title="std.experimental.allocator.building_blocks.free_list"><span class="d_inlinecode donthyphenate notranslate">free_list</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_free_tree.html" title="std.experimental.allocator.building_blocks.free_tree"><span class="d_inlinecode donthyphenate notranslate">free_tree</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_kernighan_ritchie.html" title="std.experimental.allocator.building_blocks.kernighan_ritchie"><span class="d_inlinecode donthyphenate notranslate">kernighan_ritchie</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_null_allocator.html" title="std.experimental.allocator.building_blocks.null_allocator"><span class="d_inlinecode donthyphenate notranslate">null_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_quantizer.html" title="std.experimental.allocator.building_blocks.quantizer"><span class="d_inlinecode donthyphenate notranslate">quantizer</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_region.html" title="std.experimental.allocator.building_blocks.region"><span class="d_inlinecode donthyphenate notranslate">region</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_scoped_allocator.html" title="std.experimental.allocator.building_blocks.scoped_allocator"><span class="d_inlinecode donthyphenate notranslate">scoped_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_segregator.html" title="std.experimental.allocator.building_blocks.segregator"><span class="d_inlinecode donthyphenate notranslate">segregator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_stats_collector.html" title="std.experimental.allocator.building_blocks.stats_collector"><span class="d_inlinecode donthyphenate notranslate">stats_collector</span></a>
+      </li></ul></li><li>      <a href="std_experimental_allocator_common.html" title="std.experimental.allocator.common"><span class="d_inlinecode donthyphenate notranslate">common</span></a></li><li>      <a href="std_experimental_allocator_gc_allocator.html" title="std.experimental.allocator.gc_allocator"><span class="d_inlinecode donthyphenate notranslate">gc_allocator</span></a></li><li>      <a href="std_experimental_allocator_mallocator.html" title="std.experimental.allocator.mallocator"><span class="d_inlinecode donthyphenate notranslate">mallocator</span></a></li><li>      <a href="std_experimental_allocator_mmap_allocator.html" title="std.experimental.allocator.mmap_allocator"><span class="d_inlinecode donthyphenate notranslate">mmap_allocator</span></a></li><li>      <a href="std_experimental_allocator_showcase.html" title="std.experimental.allocator.showcase"><span class="d_inlinecode donthyphenate notranslate">showcase</span></a></li><li>      <a href="std_experimental_allocator_typed.html" title="std.experimental.allocator.typed"><span class="d_inlinecode donthyphenate notranslate">typed</span></a>
+    </li></ul></li><li>    <a href="std_experimental_checkedint.html" title="std.experimental.checkedint"><span class="d_inlinecode donthyphenate notranslate">checkedint</span></a></li><li>    <a href="std_experimental_logger.html" title="std.experimental.logger"><span class="d_inlinecode donthyphenate notranslate">logger</span></a><ul><li>      <a href="std_experimental_logger_core.html" title="std.experimental.logger.core"><span class="d_inlinecode donthyphenate notranslate">core</span></a></li><li>      <a href="std_experimental_logger_filelogger.html" title="std.experimental.logger.filelogger"><span class="d_inlinecode donthyphenate notranslate">filelogger</span></a></li><li>      <a href="std_experimental_logger_multilogger.html" title="std.experimental.logger.multilogger"><span class="d_inlinecode donthyphenate notranslate">multilogger</span></a></li><li>      <a href="std_experimental_logger_nulllogger.html" title="std.experimental.logger.nulllogger"><span class="d_inlinecode donthyphenate notranslate">nulllogger</span></a>
+    </li></ul></li><li>    <a href="std_experimental_typecons.html" title="std.experimental.typecons"><span class="d_inlinecode donthyphenate notranslate">typecons</span></a>
+  </li></ul></li><li>  <a href="std_file.html" title="std.file"><span class="d_inlinecode donthyphenate notranslate">file</span></a></li><li>  <a href="std_format.html" title="std.format"><span class="d_inlinecode donthyphenate notranslate">format</span></a></li><li>  <a href="std_functional.html" title="std.functional"><span class="d_inlinecode donthyphenate notranslate">functional</span></a></li><li>  <a href="std_getopt.html" title="std.getopt"><span class="d_inlinecode donthyphenate notranslate">getopt</span></a></li><li>  <a href="std_json.html" title="std.json"><span class="d_inlinecode donthyphenate notranslate">json</span></a></li><li>  <a href="std_math.html" title="std.math"><span class="d_inlinecode donthyphenate notranslate">math</span></a></li><li>  <a href="std_mathspecial.html" title="std.mathspecial"><span class="d_inlinecode donthyphenate notranslate">mathspecial</span></a></li><li>  <a href="std_meta.html" title="std.meta"><span class="d_inlinecode donthyphenate notranslate">meta</span></a></li><li>  <a href="std_mmfile.html" title="std.mmfile"><span class="d_inlinecode donthyphenate notranslate">mmfile</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">net</span></h7><ul><li>    <a href="std_net_curl.html" title="std.net.curl"><span class="d_inlinecode donthyphenate notranslate">curl</span></a></li><li>    <a href="std_net_isemail.html" title="std.net.isemail"><span class="d_inlinecode donthyphenate notranslate">isemail</span></a>
+  </li></ul></li><li>  <a href="std_numeric.html" title="std.numeric"><span class="d_inlinecode donthyphenate notranslate">numeric</span></a></li><li>  <a href="std_outbuffer.html" title="std.outbuffer"><span class="d_inlinecode donthyphenate notranslate">outbuffer</span></a></li><li>  <a href="std_parallelism.html" title="std.parallelism"><span class="d_inlinecode donthyphenate notranslate">parallelism</span></a></li><li>  <a href="std_path.html" title="std.path"><span class="d_inlinecode donthyphenate notranslate">path</span></a></li><li>  <a href="std_process.html" title="std.process"><span class="d_inlinecode donthyphenate notranslate">process</span></a></li><li>  <a href="std_random.html" title="std.random"><span class="d_inlinecode donthyphenate notranslate">random</span></a></li><li>  <a href="std_range.html" title="std.range"><span class="d_inlinecode donthyphenate notranslate">range</span></a><ul><li>    <a href="std_range_interfaces.html" title="std.range.interfaces"><span class="d_inlinecode donthyphenate notranslate">interfaces</span></a></li><li>    <a href="std_range_primitives.html" title="std.range.primitives"><span class="d_inlinecode donthyphenate notranslate">primitives</span></a>
+  </li></ul></li><li>  <a href="std_regex.html" title="std.regex"><span class="d_inlinecode donthyphenate notranslate">regex</span></a></li><li>  <a href="std_signals.html" title="std.signals"><span class="d_inlinecode donthyphenate notranslate">signals</span></a></li><li>  <a href="std_socket.html" title="std.socket"><span class="d_inlinecode donthyphenate notranslate">socket</span></a></li><li>  <a href="std_stdint.html" title="std.stdint"><span class="d_inlinecode donthyphenate notranslate">stdint</span></a></li><li>  <a href="std_stdio.html" title="std.stdio"><span class="d_inlinecode donthyphenate notranslate">stdio</span></a></li><li>  <a href="std_string.html" title="std.string"><span class="d_inlinecode donthyphenate notranslate">string</span></a></li><li>  <a href="std_system.html" title="std.system"><span class="d_inlinecode donthyphenate notranslate">system</span></a></li><li>  <a href="std_traits.html" title="std.traits"><span class="d_inlinecode donthyphenate notranslate">traits</span></a></li><li>  <a href="std_typecons.html" title="std.typecons"><span class="d_inlinecode donthyphenate notranslate">typecons</span></a></li><li>  <a href="std_uni.html" title="std.uni"><span class="d_inlinecode donthyphenate notranslate">uni</span></a></li><li>  <a href="std_uri.html" title="std.uri"><span class="d_inlinecode donthyphenate notranslate">uri</span></a></li><li>  <a href="std_utf.html" title="std.utf"><span class="d_inlinecode donthyphenate notranslate">utf</span></a></li><li>  <a href="std_uuid.html" title="std.uuid"><span class="d_inlinecode donthyphenate notranslate">uuid</span></a></li><li>  <a href="std_variant.html" title="std.variant"><span class="d_inlinecode donthyphenate notranslate">variant</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">windows</span></h7><ul><li>    <a href="std_windows_charset.html" title="std.windows.charset"><span class="d_inlinecode donthyphenate notranslate">charset</span></a></li><li>    <a href="std_windows_syserror.html" title="std.windows.syserror"><span class="d_inlinecode donthyphenate notranslate">syserror</span></a>
+  </li></ul></li><li>  <a href="std_xml.html" title="std.xml"><span class="d_inlinecode donthyphenate notranslate">xml</span></a></li><li>  <a href="std_zip.html" title="std.zip"><span class="d_inlinecode donthyphenate notranslate">zip</span></a></li><li>  <a href="std_zlib.html" title="std.zlib"><span class="d_inlinecode donthyphenate notranslate">zlib</span></a>
+</li></ul>
+</li>
+
+<li class='expand-container'><a class='expand-toggle' href='#'><span><em class="tt">etc</em></span></a>
+<ul><li>  <h7><span class="d_inlinecode donthyphenate notranslate">c</span></h7><ul><li>    <a href="etc_c_curl.html" title="etc.c.curl"><span class="d_inlinecode donthyphenate notranslate">curl</span></a></li><li>    <h7><span class="d_inlinecode donthyphenate notranslate">odbc</span></h7><ul><li>      <a href="etc_c_odbc_sql.html" title="etc.c.odbc.sql"><span class="d_inlinecode donthyphenate notranslate">sql</span></a></li><li>      <a href="etc_c_odbc_sqlext.html" title="etc.c.odbc.sqlext"><span class="d_inlinecode donthyphenate notranslate">sqlext</span></a></li><li>      <a href="etc_c_odbc_sqltypes.html" title="etc.c.odbc.sqltypes"><span class="d_inlinecode donthyphenate notranslate">sqltypes</span></a></li><li>      <a href="etc_c_odbc_sqlucode.html" title="etc.c.odbc.sqlucode"><span class="d_inlinecode donthyphenate notranslate">sqlucode</span></a>
+    </li></ul></li><li>    <a href="etc_c_sqlite3.html" title="etc.c.sqlite3"><span class="d_inlinecode donthyphenate notranslate">sqlite3</span></a></li><li>    <a href="etc_c_zlib.html" title="etc.c.zlib"><span class="d_inlinecode donthyphenate notranslate">zlib</span></a>
+  </li></ul>
+</li></ul>
+</li>
+
+<li class='expand-container'><a class='expand-toggle' href='#'><span><em class="tt">core</em></span></a>
+<ul><li>  <a href="core_atomic.html" title="core.atomic"><span class="d_inlinecode donthyphenate notranslate">atomic</span></a></li><li>  <a href="core_attribute.html" title="core.attribute"><span class="d_inlinecode donthyphenate notranslate">attribute</span></a></li><li>  <a href="core_bitop.html" title="core.bitop"><span class="d_inlinecode donthyphenate notranslate">bitop</span></a></li><li>  <a href="core_checkedint.html" title="core.checkedint"><span class="d_inlinecode donthyphenate notranslate">checkedint</span></a></li><li>  <a href="core_cpuid.html" title="core.cpuid"><span class="d_inlinecode donthyphenate notranslate">cpuid</span></a></li><li>  <a href="core_demangle.html" title="core.demangle"><span class="d_inlinecode donthyphenate notranslate">demangle</span></a></li><li>  <a href="core_exception.html" title="core.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>  <a href="core_math.html" title="core.math"><span class="d_inlinecode donthyphenate notranslate">math</span></a></li><li>  <a href="core_memory.html" title="core.memory"><span class="d_inlinecode donthyphenate notranslate">memory</span></a></li><li>  <a href="core_runtime.html" title="core.runtime"><span class="d_inlinecode donthyphenate notranslate">runtime</span></a></li><li>  <a href="core_simd.html" title="core.simd"><span class="d_inlinecode donthyphenate notranslate">simd</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">stdc</span></h7><ul><li>    <a href="core_stdc_assert_.html" title="core.stdc.assert_"><span class="d_inlinecode donthyphenate notranslate">assert_</span></a></li><li>    <a href="core_stdc_complex.html" title="core.stdc.complex"><span class="d_inlinecode donthyphenate notranslate">complex</span></a></li><li>    <a href="core_stdc_ctype.html" title="core.stdc.ctype"><span class="d_inlinecode donthyphenate notranslate">ctype</span></a></li><li>    <a href="core_stdc_errno.html" title="core.stdc.errno"><span class="d_inlinecode donthyphenate notranslate">errno</span></a></li><li>    <a href="core_stdc_fenv.html" title="core.stdc.fenv"><span class="d_inlinecode donthyphenate notranslate">fenv</span></a></li><li>    <a href="core_stdc_float_.html" title="core.stdc.float_"><span class="d_inlinecode donthyphenate notranslate">float_</span></a></li><li>    <a href="core_stdc_inttypes.html" title="core.stdc.inttypes"><span class="d_inlinecode donthyphenate notranslate">inttypes</span></a></li><li>    <a href="core_stdc_limits.html" title="core.stdc.limits"><span class="d_inlinecode donthyphenate notranslate">limits</span></a></li><li>    <a href="core_stdc_locale.html" title="core.stdc.locale"><span class="d_inlinecode donthyphenate notranslate">locale</span></a></li><li>    <a href="core_stdc_math.html" title="core.stdc.math"><span class="d_inlinecode donthyphenate notranslate">math</span></a></li><li>    <a href="core_stdc_signal.html" title="core.stdc.signal"><span class="d_inlinecode donthyphenate notranslate">signal</span></a></li><li>    <a href="core_stdc_stdarg.html" title="core.stdc.stdarg"><span class="d_inlinecode donthyphenate notranslate">stdarg</span></a></li><li>    <a href="core_stdc_stddef.html" title="core.stdc.stddef"><span class="d_inlinecode donthyphenate notranslate">stddef</span></a></li><li>    <a href="core_stdc_stdint.html" title="core.stdc.stdint"><span class="d_inlinecode donthyphenate notranslate">stdint</span></a></li><li>    <a href="core_stdc_stdio.html" title="core.stdc.stdio"><span class="d_inlinecode donthyphenate notranslate">stdio</span></a></li><li>    <a href="core_stdc_stdlib.html" title="core.stdc.stdlib"><span class="d_inlinecode donthyphenate notranslate">stdlib</span></a></li><li>    <a href="core_stdc_string.html" title="core.stdc.string"><span class="d_inlinecode donthyphenate notranslate">string</span></a></li><li>    <a href="core_stdc_tgmath.html" title="core.stdc.tgmath"><span class="d_inlinecode donthyphenate notranslate">tgmath</span></a></li><li>    <a href="core_stdc_time.html" title="core.stdc.time"><span class="d_inlinecode donthyphenate notranslate">time</span></a></li><li>    <a href="core_stdc_wchar_.html" title="core.stdc.wchar_"><span class="d_inlinecode donthyphenate notranslate">wchar_</span></a></li><li>    <a href="core_stdc_wctype.html" title="core.stdc.wctype"><span class="d_inlinecode donthyphenate notranslate">wctype</span></a>
+  </li></ul></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">stdcpp</span></h7><ul><li>    <a href="core_stdcpp_exception.html" title="core.stdcpp.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>    <a href="core_stdcpp_typeinfo.html" title="core.stdcpp.typeinfo"><span class="d_inlinecode donthyphenate notranslate">typeinfo</span></a>
+  </li></ul></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">sync</span></h7><ul><li>    <a href="core_sync_barrier.html" title="core.sync.barrier"><span class="d_inlinecode donthyphenate notranslate">barrier</span></a></li><li>    <a href="core_sync_condition.html" title="core.sync.condition"><span class="d_inlinecode donthyphenate notranslate">condition</span></a></li><li>    <a href="core_sync_config.html" title="core.sync.config"><span class="d_inlinecode donthyphenate notranslate">config</span></a></li><li>    <a href="core_sync_exception.html" title="core.sync.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>    <a href="core_sync_mutex.html" title="core.sync.mutex"><span class="d_inlinecode donthyphenate notranslate">mutex</span></a></li><li>    <a href="core_sync_rwmutex.html" title="core.sync.rwmutex"><span class="d_inlinecode donthyphenate notranslate">rwmutex</span></a></li><li>    <a href="core_sync_semaphore.html" title="core.sync.semaphore"><span class="d_inlinecode donthyphenate notranslate">semaphore</span></a>
+  </li></ul></li><li>  <a href="core_thread.html" title="core.thread"><span class="d_inlinecode donthyphenate notranslate">thread</span></a></li><li>  <a href="core_time.html" title="core.time"><span class="d_inlinecode donthyphenate notranslate">time</span></a></li><li>  <a href="core_vararg.html" title="core.vararg"><span class="d_inlinecode donthyphenate notranslate">vararg</span></a>
+</li></ul>
+</li>
+
+<li class='expand-container'><a class='expand-toggle' href='#'><span><em class="tt">dmd</em></span></a>
+<ul><li>  <a href="dmd_access.html" title="dmd.access"><span class="d_inlinecode donthyphenate notranslate">access</span></a></li><li>  <a href="dmd_aggregate.html" title="dmd.aggregate"><span class="d_inlinecode donthyphenate notranslate">aggregate</span></a></li><li>  <a href="dmd_aliasthis.html" title="dmd.aliasthis"><span class="d_inlinecode donthyphenate notranslate">aliasthis</span></a></li><li>  <a href="dmd_apply.html" title="dmd.apply"><span class="d_inlinecode donthyphenate notranslate">apply</span></a></li><li>  <a href="dmd_argtypes.html" title="dmd.argtypes"><span class="d_inlinecode donthyphenate notranslate">argtypes</span></a></li><li>  <a href="dmd_arrayop.html" title="dmd.arrayop"><span class="d_inlinecode donthyphenate notranslate">arrayop</span></a></li><li>  <a href="dmd_arraytypes.html" title="dmd.arraytypes"><span class="d_inlinecode donthyphenate notranslate">arraytypes</span></a></li><li>  <a href="dmd_astbase.html" title="dmd.astbase"><span class="d_inlinecode donthyphenate notranslate">astbase</span></a></li><li>  <a href="dmd_astcodegen.html" title="dmd.astcodegen"><span class="d_inlinecode donthyphenate notranslate">astcodegen</span></a></li><li>  <a href="dmd_asttypename.html" title="dmd.asttypename"><span class="d_inlinecode donthyphenate notranslate">asttypename</span></a></li><li>  <a href="dmd_attrib.html" title="dmd.attrib"><span class="d_inlinecode donthyphenate notranslate">attrib</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">backend</span></h7><ul><li>    <a href="dmd_backend_bcomplex.html" title="dmd.backend.bcomplex"><span class="d_inlinecode donthyphenate notranslate">bcomplex</span></a></li><li>    <a href="dmd_backend_cc.html" title="dmd.backend.cc"><span class="d_inlinecode donthyphenate notranslate">cc</span></a></li><li>    <a href="dmd_backend_cdef.html" title="dmd.backend.cdef"><span class="d_inlinecode donthyphenate notranslate">cdef</span></a></li><li>    <a href="dmd_backend_cgcv.html" title="dmd.backend.cgcv"><span class="d_inlinecode donthyphenate notranslate">cgcv</span></a></li><li>    <a href="dmd_backend_code.html" title="dmd.backend.code"><span class="d_inlinecode donthyphenate notranslate">code</span></a></li><li>    <a href="dmd_backend_code_x86.html" title="dmd.backend.code_x86"><span class="d_inlinecode donthyphenate notranslate">code_x86</span></a></li><li>    <a href="dmd_backend_cv4.html" title="dmd.backend.cv4"><span class="d_inlinecode donthyphenate notranslate">cv4</span></a></li><li>    <a href="dmd_backend_dt.html" title="dmd.backend.dt"><span class="d_inlinecode donthyphenate notranslate">dt</span></a></li><li>    <a href="dmd_backend_dwarf.html" title="dmd.backend.dwarf"><span class="d_inlinecode donthyphenate notranslate">dwarf</span></a></li><li>    <a href="dmd_backend_dwarf2.html" title="dmd.backend.dwarf2"><span class="d_inlinecode donthyphenate notranslate">dwarf2</span></a></li><li>    <a href="dmd_backend_el.html" title="dmd.backend.el"><span class="d_inlinecode donthyphenate notranslate">el</span></a></li><li>    <a href="dmd_backend_exh.html" title="dmd.backend.exh"><span class="d_inlinecode donthyphenate notranslate">exh</span></a></li><li>    <a href="dmd_backend_global.html" title="dmd.backend.global"><span class="d_inlinecode donthyphenate notranslate">global</span></a></li><li>    <a href="dmd_backend_iasm.html" title="dmd.backend.iasm"><span class="d_inlinecode donthyphenate notranslate">iasm</span></a></li><li>    <a href="dmd_backend_mach.html" title="dmd.backend.mach"><span class="d_inlinecode donthyphenate notranslate">mach</span></a></li><li>    <a href="dmd_backend_md5.html" title="dmd.backend.md5"><span class="d_inlinecode donthyphenate notranslate">md5</span></a></li><li>    <a href="dmd_backend_mscoff.html" title="dmd.backend.mscoff"><span class="d_inlinecode donthyphenate notranslate">mscoff</span></a></li><li>    <a href="dmd_backend_obj.html" title="dmd.backend.obj"><span class="d_inlinecode donthyphenate notranslate">obj</span></a></li><li>    <a href="dmd_backend_oper.html" title="dmd.backend.oper"><span class="d_inlinecode donthyphenate notranslate">oper</span></a></li><li>    <a href="dmd_backend_outbuf.html" title="dmd.backend.outbuf"><span class="d_inlinecode donthyphenate notranslate">outbuf</span></a></li><li>    <a href="dmd_backend_rtlsym.html" title="dmd.backend.rtlsym"><span class="d_inlinecode donthyphenate notranslate">rtlsym</span></a></li><li>    <a href="dmd_backend_ty.html" title="dmd.backend.ty"><span class="d_inlinecode donthyphenate notranslate">ty</span></a></li><li>    <a href="dmd_backend_type.html" title="dmd.backend.type"><span class="d_inlinecode donthyphenate notranslate">type</span></a></li><li>    <a href="dmd_backend_xmm.html" title="dmd.backend.xmm"><span class="d_inlinecode donthyphenate notranslate">xmm</span></a>
+  </li></ul></li><li>  <a href="dmd_blockexit.html" title="dmd.blockexit"><span class="d_inlinecode donthyphenate notranslate">blockexit</span></a></li><li>  <a href="dmd_builtin.html" title="dmd.builtin"><span class="d_inlinecode donthyphenate notranslate">builtin</span></a></li><li>  <a href="dmd_canthrow.html" title="dmd.canthrow"><span class="d_inlinecode donthyphenate notranslate">canthrow</span></a></li><li>  <a href="dmd_cli.html" title="dmd.cli"><span class="d_inlinecode donthyphenate notranslate">cli</span></a></li><li>  <a href="dmd_clone.html" title="dmd.clone"><span class="d_inlinecode donthyphenate notranslate">clone</span></a></li><li>  <a href="dmd_compiler.html" title="dmd.compiler"><span class="d_inlinecode donthyphenate notranslate">compiler</span></a></li><li>  <a href="dmd_complex.html" title="dmd.complex"><span class="d_inlinecode donthyphenate notranslate">complex</span></a></li><li>  <a href="dmd_cond.html" title="dmd.cond"><span class="d_inlinecode donthyphenate notranslate">cond</span></a></li><li>  <a href="dmd_console.html" title="dmd.console"><span class="d_inlinecode donthyphenate notranslate">console</span></a></li><li>  <a href="dmd_constfold.html" title="dmd.constfold"><span class="d_inlinecode donthyphenate notranslate">constfold</span></a></li><li>  <a href="dmd_cppmangle.html" title="dmd.cppmangle"><span class="d_inlinecode donthyphenate notranslate">cppmangle</span></a></li><li>  <a href="dmd_cppmanglewin.html" title="dmd.cppmanglewin"><span class="d_inlinecode donthyphenate notranslate">cppmanglewin</span></a></li><li>  <a href="dmd_ctfeexpr.html" title="dmd.ctfeexpr"><span class="d_inlinecode donthyphenate notranslate">ctfeexpr</span></a></li><li>  <a href="dmd_dcast.html" title="dmd.dcast"><span class="d_inlinecode donthyphenate notranslate">dcast</span></a></li><li>  <a href="dmd_dclass.html" title="dmd.dclass"><span class="d_inlinecode donthyphenate notranslate">dclass</span></a></li><li>  <a href="dmd_declaration.html" title="dmd.declaration"><span class="d_inlinecode donthyphenate notranslate">declaration</span></a></li><li>  <a href="dmd_delegatize.html" title="dmd.delegatize"><span class="d_inlinecode donthyphenate notranslate">delegatize</span></a></li><li>  <a href="dmd_denum.html" title="dmd.denum"><span class="d_inlinecode donthyphenate notranslate">denum</span></a></li><li>  <a href="dmd_dimport.html" title="dmd.dimport"><span class="d_inlinecode donthyphenate notranslate">dimport</span></a></li><li>  <a href="dmd_dinifile.html" title="dmd.dinifile"><span class="d_inlinecode donthyphenate notranslate">dinifile</span></a></li><li>  <a href="dmd_dinterpret.html" title="dmd.dinterpret"><span class="d_inlinecode donthyphenate notranslate">dinterpret</span></a></li><li>  <a href="dmd_dmacro.html" title="dmd.dmacro"><span class="d_inlinecode donthyphenate notranslate">dmacro</span></a></li><li>  <a href="dmd_dmangle.html" title="dmd.dmangle"><span class="d_inlinecode donthyphenate notranslate">dmangle</span></a></li><li>  <a href="dmd_dmodule.html" title="dmd.dmodule"><span class="d_inlinecode donthyphenate notranslate">dmodule</span></a></li><li>  <a href="dmd_dmsc.html" title="dmd.dmsc"><span class="d_inlinecode donthyphenate notranslate">dmsc</span></a></li><li>  <a href="dmd_doc.html" title="dmd.doc"><span class="d_inlinecode donthyphenate notranslate">doc</span></a></li><li>  <a href="dmd_dscope.html" title="dmd.dscope"><span class="d_inlinecode donthyphenate notranslate">dscope</span></a></li><li>  <a href="dmd_dstruct.html" title="dmd.dstruct"><span class="d_inlinecode donthyphenate notranslate">dstruct</span></a></li><li>  <a href="dmd_dsymbol.html" title="dmd.dsymbol"><span class="d_inlinecode donthyphenate notranslate">dsymbol</span></a></li><li>  <a href="dmd_dsymbolsem.html" title="dmd.dsymbolsem"><span class="d_inlinecode donthyphenate notranslate">dsymbolsem</span></a></li><li>  <a href="dmd_dtemplate.html" title="dmd.dtemplate"><span class="d_inlinecode donthyphenate notranslate">dtemplate</span></a></li><li>  <a href="dmd_dversion.html" title="dmd.dversion"><span class="d_inlinecode donthyphenate notranslate">dversion</span></a></li><li>  <a href="dmd_e2ir.html" title="dmd.e2ir"><span class="d_inlinecode donthyphenate notranslate">e2ir</span></a></li><li>  <a href="dmd_eh.html" title="dmd.eh"><span class="d_inlinecode donthyphenate notranslate">eh</span></a></li><li>  <a href="dmd_entity.html" title="dmd.entity"><span class="d_inlinecode donthyphenate notranslate">entity</span></a></li><li>  <a href="dmd_errors.html" title="dmd.errors"><span class="d_inlinecode donthyphenate notranslate">errors</span></a></li><li>  <a href="dmd_escape.html" title="dmd.escape"><span class="d_inlinecode donthyphenate notranslate">escape</span></a></li><li>  <a href="dmd_expression.html" title="dmd.expression"><span class="d_inlinecode donthyphenate notranslate">expression</span></a></li><li>  <a href="dmd_expressionsem.html" title="dmd.expressionsem"><span class="d_inlinecode donthyphenate notranslate">expressionsem</span></a></li><li>  <a href="dmd_frontend.html" title="dmd.frontend"><span class="d_inlinecode donthyphenate notranslate">frontend</span></a></li><li>  <a href="dmd_func.html" title="dmd.func"><span class="d_inlinecode donthyphenate notranslate">func</span></a></li><li>  <a href="dmd_globals.html" title="dmd.globals"><span class="d_inlinecode donthyphenate notranslate">globals</span></a></li><li>  <a href="dmd_glue.html" title="dmd.glue"><span class="d_inlinecode donthyphenate notranslate">glue</span></a></li><li>  <a href="dmd_gluelayer.html" title="dmd.gluelayer"><span class="d_inlinecode donthyphenate notranslate">gluelayer</span></a></li><li>  <a href="dmd_hdrgen.html" title="dmd.hdrgen"><span class="d_inlinecode donthyphenate notranslate">hdrgen</span></a></li><li>  <a href="dmd_iasm.html" title="dmd.iasm"><span class="d_inlinecode donthyphenate notranslate">iasm</span></a></li><li>  <a href="dmd_id.html" title="dmd.id"><span class="d_inlinecode donthyphenate notranslate">id</span></a></li><li>  <a href="dmd_identifier.html" title="dmd.identifier"><span class="d_inlinecode donthyphenate notranslate">identifier</span></a></li><li>  <a href="dmd_impcnvtab.html" title="dmd.impcnvtab"><span class="d_inlinecode donthyphenate notranslate">impcnvtab</span></a></li><li>  <a href="dmd_imphint.html" title="dmd.imphint"><span class="d_inlinecode donthyphenate notranslate">imphint</span></a></li><li>  <a href="dmd_init.html" title="dmd.init"><span class="d_inlinecode donthyphenate notranslate">init</span></a></li><li>  <a href="dmd_initsem.html" title="dmd.initsem"><span class="d_inlinecode donthyphenate notranslate">initsem</span></a></li><li>  <a href="dmd_inline.html" title="dmd.inline"><span class="d_inlinecode donthyphenate notranslate">inline</span></a></li><li>  <a href="dmd_inlinecost.html" title="dmd.inlinecost"><span class="d_inlinecode donthyphenate notranslate">inlinecost</span></a></li><li>  <a href="dmd_intrange.html" title="dmd.intrange"><span class="d_inlinecode donthyphenate notranslate">intrange</span></a></li><li>  <a href="dmd_irstate.html" title="dmd.irstate"><span class="d_inlinecode donthyphenate notranslate">irstate</span></a></li><li>  <a href="dmd_json.html" title="dmd.json"><span class="d_inlinecode donthyphenate notranslate">json</span></a></li><li>  <a href="dmd_lambdacomp.html" title="dmd.lambdacomp"><span class="d_inlinecode donthyphenate notranslate">lambdacomp</span></a></li><li>  <a href="dmd_lexer.html" title="dmd.lexer"><span class="d_inlinecode donthyphenate notranslate">lexer</span></a></li><li>  <a href="dmd_lib.html" title="dmd.lib"><span class="d_inlinecode donthyphenate notranslate">lib</span></a></li><li>  <a href="dmd_libelf.html" title="dmd.libelf"><span class="d_inlinecode donthyphenate notranslate">libelf</span></a></li><li>  <a href="dmd_libomf.html" title="dmd.libomf"><span class="d_inlinecode donthyphenate notranslate">libomf</span></a></li><li>  <a href="dmd_link.html" title="dmd.link"><span class="d_inlinecode donthyphenate notranslate">link</span></a></li><li>  <a href="dmd_mars.html" title="dmd.mars"><span class="d_inlinecode donthyphenate notranslate">mars</span></a></li><li>  <a href="dmd_mtype.html" title="dmd.mtype"><span class="d_inlinecode donthyphenate notranslate">mtype</span></a></li><li>  <a href="dmd_nogc.html" title="dmd.nogc"><span class="d_inlinecode donthyphenate notranslate">nogc</span></a></li><li>  <a href="dmd_nspace.html" title="dmd.nspace"><span class="d_inlinecode donthyphenate notranslate">nspace</span></a></li><li>  <a href="dmd_objc.html" title="dmd.objc"><span class="d_inlinecode donthyphenate notranslate">objc</span></a></li><li>  <a href="dmd_objc_glue.html" title="dmd.objc_glue"><span class="d_inlinecode donthyphenate notranslate">objc_glue</span></a></li><li>  <a href="dmd_opover.html" title="dmd.opover"><span class="d_inlinecode donthyphenate notranslate">opover</span></a></li><li>  <a href="dmd_optimize.html" title="dmd.optimize"><span class="d_inlinecode donthyphenate notranslate">optimize</span></a></li><li>  <a href="dmd_parse.html" title="dmd.parse"><span class="d_inlinecode donthyphenate notranslate">parse</span></a></li><li>  <a href="dmd_parsetimevisitor.html" title="dmd.parsetimevisitor"><span class="d_inlinecode donthyphenate notranslate">parsetimevisitor</span></a></li><li>  <a href="dmd_permissivevisitor.html" title="dmd.permissivevisitor"><span class="d_inlinecode donthyphenate notranslate">permissivevisitor</span></a></li><li>  <a href="dmd_printast.html" title="dmd.printast"><span class="d_inlinecode donthyphenate notranslate">printast</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">root</span></h7><ul><li>    <a href="dmd_root_aav.html" title="dmd.root.aav"><span class="d_inlinecode donthyphenate notranslate">aav</span></a></li><li>    <a href="dmd_root_array.html" title="dmd.root.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>    <a href="dmd_root_ctfloat.html" title="dmd.root.ctfloat"><span class="d_inlinecode donthyphenate notranslate">ctfloat</span></a></li><li>    <a href="dmd_root_file.html" title="dmd.root.file"><span class="d_inlinecode donthyphenate notranslate">file</span></a></li><li>    <a href="dmd_root_filename.html" title="dmd.root.filename"><span class="d_inlinecode donthyphenate notranslate">filename</span></a></li><li>    <a href="dmd_root_hash.html" title="dmd.root.hash"><span class="d_inlinecode donthyphenate notranslate">hash</span></a></li><li>    <a href="dmd_root_man.html" title="dmd.root.man"><span class="d_inlinecode donthyphenate notranslate">man</span></a></li><li>    <a href="dmd_root_outbuffer.html" title="dmd.root.outbuffer"><span class="d_inlinecode donthyphenate notranslate">outbuffer</span></a></li><li>    <a href="dmd_root_port.html" title="dmd.root.port"><span class="d_inlinecode donthyphenate notranslate">port</span></a></li><li>    <a href="dmd_root_response.html" title="dmd.root.response"><span class="d_inlinecode donthyphenate notranslate">response</span></a></li><li>    <a href="dmd_root_rmem.html" title="dmd.root.rmem"><span class="d_inlinecode donthyphenate notranslate">rmem</span></a></li><li>    <a href="dmd_root_rootobject.html" title="dmd.root.rootobject"><span class="d_inlinecode donthyphenate notranslate">rootobject</span></a></li><li>    <a href="dmd_root_speller.html" title="dmd.root.speller"><span class="d_inlinecode donthyphenate notranslate">speller</span></a></li><li>    <a href="dmd_root_stringtable.html" title="dmd.root.stringtable"><span class="d_inlinecode donthyphenate notranslate">stringtable</span></a>
+  </li></ul></li><li>  <a href="dmd_s2ir.html" title="dmd.s2ir"><span class="d_inlinecode donthyphenate notranslate">s2ir</span></a></li><li>  <a href="dmd_safe.html" title="dmd.safe"><span class="d_inlinecode donthyphenate notranslate">safe</span></a></li><li>  <a href="dmd_sapply.html" title="dmd.sapply"><span class="d_inlinecode donthyphenate notranslate">sapply</span></a></li><li>  <a href="dmd_scanelf.html" title="dmd.scanelf"><span class="d_inlinecode donthyphenate notranslate">scanelf</span></a></li><li>  <a href="dmd_scanomf.html" title="dmd.scanomf"><span class="d_inlinecode donthyphenate notranslate">scanomf</span></a></li><li>  <a href="dmd_semantic2.html" title="dmd.semantic2"><span class="d_inlinecode donthyphenate notranslate">semantic2</span></a></li><li>  <a href="dmd_semantic3.html" title="dmd.semantic3"><span class="d_inlinecode donthyphenate notranslate">semantic3</span></a></li><li>  <a href="dmd_sideeffect.html" title="dmd.sideeffect"><span class="d_inlinecode donthyphenate notranslate">sideeffect</span></a></li><li>  <a href="dmd_statement.html" title="dmd.statement"><span class="d_inlinecode donthyphenate notranslate">statement</span></a></li><li>  <a href="dmd_statement_rewrite_walker.html" title="dmd.statement_rewrite_walker"><span class="d_inlinecode donthyphenate notranslate">statement_rewrite_walker</span></a></li><li>  <a href="dmd_statementsem.html" title="dmd.statementsem"><span class="d_inlinecode donthyphenate notranslate">statementsem</span></a></li><li>  <a href="dmd_staticassert.html" title="dmd.staticassert"><span class="d_inlinecode donthyphenate notranslate">staticassert</span></a></li><li>  <a href="dmd_staticcond.html" title="dmd.staticcond"><span class="d_inlinecode donthyphenate notranslate">staticcond</span></a></li><li>  <a href="dmd_strictvisitor.html" title="dmd.strictvisitor"><span class="d_inlinecode donthyphenate notranslate">strictvisitor</span></a></li><li>  <a href="dmd_target.html" title="dmd.target"><span class="d_inlinecode donthyphenate notranslate">target</span></a></li><li>  <a href="dmd_templateparamsem.html" title="dmd.templateparamsem"><span class="d_inlinecode donthyphenate notranslate">templateparamsem</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">tk</span></h7><ul><li>    <a href="dmd_tk_dlist.html" title="dmd.tk.dlist"><span class="d_inlinecode donthyphenate notranslate">dlist</span></a>
+  </li></ul></li><li>  <a href="dmd_tocsym.html" title="dmd.tocsym"><span class="d_inlinecode donthyphenate notranslate">tocsym</span></a></li><li>  <a href="dmd_toctype.html" title="dmd.toctype"><span class="d_inlinecode donthyphenate notranslate">toctype</span></a></li><li>  <a href="dmd_tocvdebug.html" title="dmd.tocvdebug"><span class="d_inlinecode donthyphenate notranslate">tocvdebug</span></a></li><li>  <a href="dmd_todt.html" title="dmd.todt"><span class="d_inlinecode donthyphenate notranslate">todt</span></a></li><li>  <a href="dmd_toir.html" title="dmd.toir"><span class="d_inlinecode donthyphenate notranslate">toir</span></a></li><li>  <a href="dmd_tokens.html" title="dmd.tokens"><span class="d_inlinecode donthyphenate notranslate">tokens</span></a></li><li>  <a href="dmd_toobj.html" title="dmd.toobj"><span class="d_inlinecode donthyphenate notranslate">toobj</span></a></li><li>  <a href="dmd_traits.html" title="dmd.traits"><span class="d_inlinecode donthyphenate notranslate">traits</span></a></li><li>  <a href="dmd_transitivevisitor.html" title="dmd.transitivevisitor"><span class="d_inlinecode donthyphenate notranslate">transitivevisitor</span></a></li><li>  <a href="dmd_typesem.html" title="dmd.typesem"><span class="d_inlinecode donthyphenate notranslate">typesem</span></a></li><li>  <a href="dmd_typinf.html" title="dmd.typinf"><span class="d_inlinecode donthyphenate notranslate">typinf</span></a></li><li>  <a href="dmd_utf.html" title="dmd.utf"><span class="d_inlinecode donthyphenate notranslate">utf</span></a></li><li>  <a href="dmd_utils.html" title="dmd.utils"><span class="d_inlinecode donthyphenate notranslate">utils</span></a></li><li>  <a href="dmd_visitor.html" title="dmd.visitor"><span class="d_inlinecode donthyphenate notranslate">visitor</span></a>
+</li></ul>
+</li></ul>
+</div>
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/phobos/&amp;component=phobos&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5Bstd.variant%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/phobos/edit/master/std/variant.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1><span class="d_title">std.variant</span></h1>
+        <div class="quickindex" id="quickindex"></div>
+        <div class="summary">This module implements a
+<a href="http://erdani.org/publications/cuj-04-2002.html">discriminated union</a>
+type (a.k.a.
+<a href="http://en.wikipedia.org/wiki/Tagged_union">tagged union</a>,
+<a href="http://en.wikipedia.org/wiki/Algebraic_data_type">algebraic type</a>).
+Such types are useful
+for type-uniform binary interfaces, interfacing with scripting
+languages, and comfortable exploratory programming.
+</div><div class="description">A <a href="#Variant"><span class="d_inlinecode donthyphenate notranslate">Variant</span></a> object can hold a value of any type, with very few
+restrictions (such as <span class="d_inlinecode donthyphenate notranslate">shared</span> types and noncopyable types). Setting the value
+is as immediate as assigning to the <span class="d_inlinecode donthyphenate notranslate">Variant</span> object. To read back the value of
+the appropriate type <span class="d_inlinecode donthyphenate notranslate">T</span>, use the <a href="#get!T"><span class="d_inlinecode donthyphenate notranslate">get!T</span></a> call. To query whether a
+<span class="d_inlinecode donthyphenate notranslate">Variant</span> currently holds a value of type <span class="d_inlinecode donthyphenate notranslate">T</span>, use <a href="#peek!T"><span class="d_inlinecode donthyphenate notranslate">peek!T</span></a>. To fetch the
+exact type currently held, call <a href="#type"><span class="d_inlinecode donthyphenate notranslate">type</span></a>, which returns the <span class="d_inlinecode donthyphenate notranslate">TypeInfo</span> of
+the current value.
+<div class="blankline"></div>
+
+In addition to <a href="#Variant"><span class="d_inlinecode donthyphenate notranslate">Variant</span></a>, this module also defines the <a href="#Algebraic"><span class="d_inlinecode donthyphenate notranslate">Algebraic</span></a>
+type constructor. Unlike <span class="d_inlinecode donthyphenate notranslate">Variant</span>, <span class="d_inlinecode donthyphenate notranslate">Algebraic</span> only allows a finite set of
+types, which are specified in the instantiation (e.g. <span class="d_inlinecode donthyphenate notranslate">Algebraic!(int,
+string)</span> may only hold an <span class="d_inlinecode donthyphenate notranslate">int</span> or a <span class="d_inlinecode donthyphenate notranslate">string</span>).
+
+</div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Credits</span>
+Reviewed by Brad Roberts. Daniel Keep provided a detailed code review
+prompting the following improvements: (1) better support for arrays; (2) support
+for associative arrays; (3) friendlier behavior towards the garbage collector.
+</p></div>
+<div class="keyval License"><span class="key keyLicense">License:</span> <div class="val valLicense"><a href="http://www.boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
+</div></div>
+<div class="keyval Authors"><span class="key keyAuthors">Authors:</span> <div class="val valAuthors"><a href="http://erdani.org">Andrei Alexandrescu</a>
+</div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Source</span>
+<span class="phobos_src"><a class="https" href="https://github.com/dlang/phobos/blob/master/std/variant.d">std/variant.d</a></span></p></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">Variant a; <span class="d_comment">// Must assign before use, otherwise exception ensues
+</span><span class="d_comment">// Initialize with an integer; make the type int
+</span>Variant b = 42;
+writeln(b.type); <span class="d_comment">// typeid (int)
+</span><span class="d_comment">// Peek at the value
+</span><span class="d_keyword">assert</span>(b.peek!(<span class="d_keyword">int</span>) !<span class="d_keyword">is</span> <span class="d_keyword">null</span> &amp;&amp; *b.peek!(<span class="d_keyword">int</span>) == 42);
+<span class="d_comment">// Automatically convert per language rules
+</span><span class="d_keyword">auto</span> x = b.get!(<span class="d_keyword">real</span>);
+
+<span class="d_comment">// Assign any other type, including other variants
+</span>a = b;
+a = 3.14;
+writeln(a.type); <span class="d_comment">// typeid (double)
+</span><span class="d_comment">// Implicit conversions work just as with built-in types
+</span><span class="d_keyword">assert</span>(a &lt; b);
+<span class="d_comment">// Check for convertibility
+</span><span class="d_keyword">assert</span>(!a.convertsTo!(<span class="d_keyword">int</span>)); <span class="d_comment">// double not convertible to int
+</span><span class="d_comment">// Strings and all other arrays are supported
+</span>a = <span class="d_string">"now I'm a string"</span>;
+writeln(a); <span class="d_comment">// "now I'm a string"
+</span>
+<span class="d_comment">// can also assign arrays
+</span>a = <span class="d_keyword">new</span> <span class="d_keyword">int</span>[42];
+writeln(a.length); <span class="d_comment">// 42
+</span>a[5] = 7;
+writeln(a[5]); <span class="d_comment">// 7
+</span>
+<span class="d_comment">// Can also assign class values
+</span><span class="d_keyword">class</span> Foo {}
+<span class="d_keyword">auto</span> foo = <span class="d_keyword">new</span> Foo;
+a = foo;
+<span class="d_keyword">assert</span>(*a.peek!(Foo) == foo); <span class="d_comment">// and full type information is preserved
+</span></pre>
+</div></div>
+
+<dl><dt class="d_decl"><div ><span class="def-anchor" id=".maxSize"></span><div class="quickindex" id="quickindex.maxSize"></div>template <span class="def-anchor" id="maxSize"></span><code class="ddoc_psymbol">maxSize</code>(T...)<br></div></dt>
+<dd><div class="summary">Gives the <span class="d_inlinecode donthyphenate notranslate">sizeof</span> the largest type given.</div><span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_psymbol">maxSize</span>!(<span class="d_keyword">int</span>, <span class="d_keyword">long</span>) == 8);
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_psymbol">maxSize</span>!(<span class="d_keyword">bool</span>, <span class="d_keyword">byte</span>) == 1);
+
+<span class="d_keyword">struct</span> Cat { <span class="d_keyword">int</span> a, b, c; }
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_psymbol">maxSize</span>!(<span class="d_keyword">bool</span>, Cat) == 12);
+</pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".VariantN"></span><div class="quickindex" id="quickindex.VariantN"></div>struct <span class="def-anchor" id="VariantN"></span><code class="ddoc_psymbol">VariantN</code>(size_t maxDataSize, AllowedTypesParam...);
+<br></div></dt>
+<dd><div class="summary">Back-end type seldom used directly by user
+ code. Two commonly-used types using <span class="d_inlinecode donthyphenate notranslate"><span class="def-anchor" id="VariantN"></span><code class="ddoc_psymbol">VariantN</code></span> are:
+</div><div class="description"><ol><li><a href="#Algebraic"><span class="d_inlinecode donthyphenate notranslate">Algebraic</span></a>: A closed discriminated union with a
+ limited type universe (e.g., <span class="d_inlinecode donthyphenate notranslate">Algebraic!(int, double,
+ string)</span> only accepts these three types and rejects anything
+ else).</li> <li><a href="#Variant"><span class="d_inlinecode donthyphenate notranslate">Variant</span></a>: An open discriminated union allowing an
+ unbounded set of types. If any of the types in the <span class="d_inlinecode donthyphenate notranslate">Variant</span>
+ are larger than the largest built-in type, they will automatically
+ be boxed. This means that even large types will only be the size
+ of a pointer within the <span class="d_inlinecode donthyphenate notranslate">Variant</span>, but this also implies some
+ overhead. <span class="d_inlinecode donthyphenate notranslate">Variant</span> can accommodate all primitive types and
+ all user-defined types.</li></ol>
+<div class="blankline"></div>
+
+ Both <span class="d_inlinecode donthyphenate notranslate">Algebraic</span> and <span class="d_inlinecode donthyphenate notranslate">Variant</span> share <span class="d_inlinecode donthyphenate notranslate"> <span class="def-anchor" id="VariantN"></span><code class="ddoc_psymbol">VariantN</code></span>'s interface. (See their respective documentations below.)
+<div class="blankline"></div>
+
+ <span class="d_inlinecode donthyphenate notranslate"><span class="def-anchor" id="VariantN"></span><code class="ddoc_psymbol">VariantN</code></span> is a discriminated union type parameterized
+ with the largest size of the types stored (<span class="d_inlinecode donthyphenate notranslate">maxDataSize</span>)
+ and with the list of allowed types (<span class="d_inlinecode donthyphenate notranslate">AllowedTypes</span>). If
+ the list is empty, then any type up of size up to <span class="d_inlinecode donthyphenate notranslate"> maxDataSize</span> (rounded up for alignment) can be stored in a
+ <span class="d_inlinecode donthyphenate notranslate"><span class="def-anchor" id="VariantN"></span><code class="ddoc_psymbol">VariantN</code></span> object without being boxed (types larger
+ than this will be boxed).</div>
+
+<dl><dt class="d_decl"><div ><span class="def-anchor" id=".VariantN.AllowedTypes"></span><div class="quickindex" id="quickindex.VariantN.AllowedTypes"></div>alias <span class="def-anchor" id="AllowedTypes"></span><code class="ddoc_psymbol">AllowedTypes</code> = This2Variant!(VariantN, AllowedTypesParam);
+<br></div></dt>
+<dd><div class="summary">The list of allowed types. If empty, any type is allowed.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".VariantN.allowed"></span><div class="quickindex" id="quickindex.VariantN.allowed"></div>enum bool <span class="def-anchor" id="allowed"></span><code class="ddoc_psymbol">allowed</code>(T);
+<br></div></dt>
+<dd><div class="summary">Tells whether a type <span class="d_inlinecode donthyphenate notranslate">T</span> is statically allowed for
+ storage inside a <span class="d_inlinecode donthyphenate notranslate">VariantN</span> object by looking
+ <span class="d_inlinecode donthyphenate notranslate">T</span> up in <span class="d_inlinecode donthyphenate notranslate">AllowedTypes</span>.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".VariantN.this"></span><div class="quickindex" id="quickindex.VariantN.this"></div>this<span class="template_param_list" title="Template parameter list">(T)</span>(T <code class="ddoc_param">value</code>);
+<br></div></dt>
+<dd><div class="summary">Constructs a <span class="d_inlinecode donthyphenate notranslate">VariantN</span> <code class="ddoc_param">value</code> given an argument of a
+ generic type. Statically rejects disallowed types.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".VariantN.this.2"></span><div class="quickindex" id="quickindex.VariantN.this.2"></div>this<span class="template_param_list" title="Template parameter list">(T : VariantN!(tsize, Types), size_t tsize, Types...)</span>(T <code class="ddoc_param">value</code>)<br><span class="constraint">if (!is(T : VariantN) &amp;&amp; (Types.length &gt; 0) &amp;&amp; allSatisfy!(allowed, Types))</span>;
+<br></div></dt>
+<dd><div class="summary">Allows assignment from a subset algebraic type</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".VariantN.opAssign"></span><div class="quickindex" id="quickindex.VariantN.opAssign"></div>VariantN <span class="def-anchor" id="opAssign"></span><code class="ddoc_psymbol">opAssign</code><span class="template_param_list" title="Template parameter list">(T)</span>(T <code class="ddoc_param">rhs</code>);
+<br></div></dt>
+<dd><div class="summary">Assigns a <span class="d_inlinecode donthyphenate notranslate">VariantN</span> from a generic
+ argument. Statically rejects disallowed types.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".VariantN.hasValue"></span><div class="quickindex" id="quickindex.VariantN.hasValue"></div>const pure nothrow @property bool <span class="def-anchor" id="hasValue"></span><code class="ddoc_psymbol">hasValue</code>();
+<br></div></dt>
+<dd><div class="summary">Returns <code class="ddoc_keyword">true</code> if and only if the <span class="d_inlinecode donthyphenate notranslate">VariantN</span> object
+ holds a valid value (has been initialized with, or assigned
+ from, a valid value).</div><span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">Variant a;
+<span class="d_keyword">assert</span>(!a.<span class="d_psymbol">hasValue</span>);
+Variant b;
+a = b;
+<span class="d_keyword">assert</span>(!a.<span class="d_psymbol">hasValue</span>); <span class="d_comment">// still no value
+</span>a = 5;
+<span class="d_keyword">assert</span>(a.<span class="d_psymbol">hasValue</span>);
+</pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".VariantN.peek"></span><div class="quickindex" id="quickindex.VariantN.peek"></div>inout @property inout<span class="template_param_list" title="Template parameter list">(T)</span>* <span class="def-anchor" id="peek"></span><code class="ddoc_psymbol">peek</code>(T)();
+<br></div></dt>
+<dd><div class="summary">If the <span class="d_inlinecode donthyphenate notranslate">VariantN</span> object holds a value of the
+ <i>exact</i> type <span class="d_inlinecode donthyphenate notranslate">T</span>, returns a pointer to that
+ value. Otherwise, returns <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_keyword">null</code></span>. In cases
+ where <span class="d_inlinecode donthyphenate notranslate">T</span> is statically disallowed, <span class="d_inlinecode donthyphenate notranslate"> <span class="def-anchor" id="peek"></span><code class="ddoc_psymbol">peek</code></span> will not compile.</div><span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">Variant a = 5;
+<span class="d_keyword">auto</span> b = a.<span class="d_psymbol">peek</span>!(<span class="d_keyword">int</span>);
+<span class="d_keyword">assert</span>(b !<span class="d_keyword">is</span> <span class="d_keyword">null</span>);
+*b = 6;
+writeln(a); <span class="d_comment">// 6
+</span></pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".VariantN.type"></span><div class="quickindex" id="quickindex.VariantN.type"></div>const nothrow @property @trusted TypeInfo <span class="def-anchor" id="type"></span><code class="ddoc_psymbol">type</code>();
+<br></div></dt>
+<dd><div class="summary">Returns the <span class="d_inlinecode donthyphenate notranslate">typeid</span> of the currently held value.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".VariantN.convertsTo"></span><div class="quickindex" id="quickindex.VariantN.convertsTo"></div>const @property bool <span class="def-anchor" id="convertsTo"></span><code class="ddoc_psymbol">convertsTo</code><span class="template_param_list" title="Template parameter list">(T)</span>();
+<br></div></dt>
+<dd><div class="summary">Returns <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_keyword">true</code></span> if and only if the <span class="d_inlinecode donthyphenate notranslate">VariantN</span>
+ object holds an object implicitly convertible to type <span class="d_inlinecode donthyphenate notranslate">T</span>.
+ Implicit convertibility is defined as per
+ <a href="std_traits.html#.ImplicitConversionTargets">ImplicitConversionTargets</a>.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".VariantN.get"></span><div class="quickindex" id="quickindex.VariantN.get"></div>inout @property inout<span class="template_param_list" title="Template parameter list">(T)</span> <span class="def-anchor" id="get"></span><code class="ddoc_psymbol">get</code>(T)();
+<br><br>inout @property auto <span class="def-anchor" id="get"></span><code class="ddoc_psymbol">get</code><span class="template_param_list" title="Template parameter list">(uint index)</span>()<br><span class="constraint">if (index &lt; AllowedTypes.length)</span>;
+<br></div></dt>
+<dd><div class="summary">Returns the value stored in the <span class="d_inlinecode donthyphenate notranslate">VariantN</span> object, either by specifying the
+    needed type or the index in the list of allowed types. The latter overload
+    only applies to bounded variants (e.g. <a href="#Algebraic"><span class="d_inlinecode donthyphenate notranslate">Algebraic</span></a>).
+</div><div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">T</td>
+<td class="param_desc">The requested type. The currently stored value must implicitly convert
+    to the requested type, in fact <span class="d_inlinecode donthyphenate notranslate">DecayStaticToDynamicArray!T</span>. If an
+    implicit conversion is not possible, throws a <span class="d_inlinecode donthyphenate notranslate">VariantException</span>.</td></tr>
+<tr class="param"><td class="param_id">index</td>
+<td class="param_desc">The index of the type among <span class="d_inlinecode donthyphenate notranslate">AllowedTypesParam</span>, zero-based.</td></tr>
+</table></div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".VariantN.coerce"></span><div class="quickindex" id="quickindex.VariantN.coerce"></div>@property T <span class="def-anchor" id="coerce"></span><code class="ddoc_psymbol">coerce</code><span class="template_param_list" title="Template parameter list">(T)</span>();
+<br></div></dt>
+<dd><div class="summary">Returns the value stored in the <span class="d_inlinecode donthyphenate notranslate">VariantN</span> object,
+ explicitly converted (coerced) to the requested type <span class="d_inlinecode donthyphenate notranslate"> T</span>. If <span class="d_inlinecode donthyphenate notranslate">T</span> is a string type, the value is formatted as
+ a string. If the <span class="d_inlinecode donthyphenate notranslate">VariantN</span> object is a string, a
+ parse of the string to type <span class="d_inlinecode donthyphenate notranslate">T</span> is attempted. If a
+ conversion is not possible, throws a <span class="d_inlinecode donthyphenate notranslate"> VariantException</span>.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".VariantN.toString"></span><div class="quickindex" id="quickindex.VariantN.toString"></div>string <span class="def-anchor" id="toString"></span><code class="ddoc_psymbol">toString</code>();
+<br></div></dt>
+<dd><div class="summary">Formats the stored value as a string.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".VariantN.opEquals"></span><div class="quickindex" id="quickindex.VariantN.opEquals"></div>const bool <span class="def-anchor" id="opEquals"></span><code class="ddoc_psymbol">opEquals</code><span class="template_param_list" title="Template parameter list">(T)</span>(auto ref T <code class="ddoc_param">rhs</code>)<br><span class="constraint">if (allowed!T || is(Unqual!T == VariantN))</span>;
+<br></div></dt>
+<dd><div class="summary">Comparison for equality used by the "==" and "!="  operators.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".VariantN.opCmp"></span><div class="quickindex" id="quickindex.VariantN.opCmp"></div>int <span class="def-anchor" id="opCmp"></span><code class="ddoc_psymbol">opCmp</code><span class="template_param_list" title="Template parameter list">(T)</span>(T <code class="ddoc_param">rhs</code>)<br><span class="constraint">if (allowed!T)</span>;
+<br></div></dt>
+<dd><div class="summary">Ordering comparison used by the "&lt;", "&lt;=", "&gt;", and "&gt;="
+ operators. In case comparison is not sensible between the held
+ value and <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">rhs</code></span>, an exception is thrown.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".VariantN.toHash"></span><div class="quickindex" id="quickindex.VariantN.toHash"></div>const nothrow @safe size_t <span class="def-anchor" id="toHash"></span><code class="ddoc_psymbol">toHash</code>();
+<br></div></dt>
+<dd><div class="summary">Computes the hash of the held value.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".VariantN.opAdd"></span><div class="quickindex" id="quickindex.VariantN.opAdd"></div>VariantN <span class="def-anchor" id="opAdd"></span><code class="ddoc_psymbol">opAdd</code><span class="template_param_list" title="Template parameter list">(T)</span>(T <code class="ddoc_param">rhs</code>);
+<br><br><span class="def-anchor" id=".VariantN.opSub"></span><div class="quickindex" id="quickindex.VariantN.opSub"></div>VariantN <span class="def-anchor" id="opSub"></span><code class="ddoc_psymbol">opSub</code><span class="template_param_list" title="Template parameter list">(T)</span>(T <code class="ddoc_param">rhs</code>);
+<br><br><span class="def-anchor" id=".VariantN.opMul"></span><div class="quickindex" id="quickindex.VariantN.opMul"></div>VariantN <span class="def-anchor" id="opMul"></span><code class="ddoc_psymbol">opMul</code><span class="template_param_list" title="Template parameter list">(T)</span>(T <code class="ddoc_param">rhs</code>);
+<br><br><span class="def-anchor" id=".VariantN.opDiv"></span><div class="quickindex" id="quickindex.VariantN.opDiv"></div>VariantN <span class="def-anchor" id="opDiv"></span><code class="ddoc_psymbol">opDiv</code><span class="template_param_list" title="Template parameter list">(T)</span>(T <code class="ddoc_param">rhs</code>);
+<br><br><span class="def-anchor" id=".VariantN.opMod"></span><div class="quickindex" id="quickindex.VariantN.opMod"></div>VariantN <span class="def-anchor" id="opMod"></span><code class="ddoc_psymbol">opMod</code><span class="template_param_list" title="Template parameter list">(T)</span>(T <code class="ddoc_param">rhs</code>);
+<br><br><span class="def-anchor" id=".VariantN.opAnd"></span><div class="quickindex" id="quickindex.VariantN.opAnd"></div>VariantN <span class="def-anchor" id="opAnd"></span><code class="ddoc_psymbol">opAnd</code><span class="template_param_list" title="Template parameter list">(T)</span>(T <code class="ddoc_param">rhs</code>);
+<br><br><span class="def-anchor" id=".VariantN.opOr"></span><div class="quickindex" id="quickindex.VariantN.opOr"></div>VariantN <span class="def-anchor" id="opOr"></span><code class="ddoc_psymbol">opOr</code><span class="template_param_list" title="Template parameter list">(T)</span>(T <code class="ddoc_param">rhs</code>);
+<br><br><span class="def-anchor" id=".VariantN.opXor"></span><div class="quickindex" id="quickindex.VariantN.opXor"></div>VariantN <span class="def-anchor" id="opXor"></span><code class="ddoc_psymbol">opXor</code><span class="template_param_list" title="Template parameter list">(T)</span>(T <code class="ddoc_param">rhs</code>);
+<br><br><span class="def-anchor" id=".VariantN.opShl"></span><div class="quickindex" id="quickindex.VariantN.opShl"></div>VariantN <span class="def-anchor" id="opShl"></span><code class="ddoc_psymbol">opShl</code><span class="template_param_list" title="Template parameter list">(T)</span>(T <code class="ddoc_param">rhs</code>);
+<br><br><span class="def-anchor" id=".VariantN.opShr"></span><div class="quickindex" id="quickindex.VariantN.opShr"></div>VariantN <span class="def-anchor" id="opShr"></span><code class="ddoc_psymbol">opShr</code><span class="template_param_list" title="Template parameter list">(T)</span>(T <code class="ddoc_param">rhs</code>);
+<br><br><span class="def-anchor" id=".VariantN.opUShr"></span><div class="quickindex" id="quickindex.VariantN.opUShr"></div>VariantN <span class="def-anchor" id="opUShr"></span><code class="ddoc_psymbol">opUShr</code><span class="template_param_list" title="Template parameter list">(T)</span>(T <code class="ddoc_param">rhs</code>);
+<br><br><span class="def-anchor" id=".VariantN.opCat"></span><div class="quickindex" id="quickindex.VariantN.opCat"></div>VariantN <span class="def-anchor" id="opCat"></span><code class="ddoc_psymbol">opCat</code><span class="template_param_list" title="Template parameter list">(T)</span>(T <code class="ddoc_param">rhs</code>);
+<br><br><span class="def-anchor" id=".VariantN.opAddAssign"></span><div class="quickindex" id="quickindex.VariantN.opAddAssign"></div>VariantN <span class="def-anchor" id="opAddAssign"></span><code class="ddoc_psymbol">opAddAssign</code><span class="template_param_list" title="Template parameter list">(T)</span>(T <code class="ddoc_param">rhs</code>);
+<br><br><span class="def-anchor" id=".VariantN.opSubAssign"></span><div class="quickindex" id="quickindex.VariantN.opSubAssign"></div>VariantN <span class="def-anchor" id="opSubAssign"></span><code class="ddoc_psymbol">opSubAssign</code><span class="template_param_list" title="Template parameter list">(T)</span>(T <code class="ddoc_param">rhs</code>);
+<br><br><span class="def-anchor" id=".VariantN.opMulAssign"></span><div class="quickindex" id="quickindex.VariantN.opMulAssign"></div>VariantN <span class="def-anchor" id="opMulAssign"></span><code class="ddoc_psymbol">opMulAssign</code><span class="template_param_list" title="Template parameter list">(T)</span>(T <code class="ddoc_param">rhs</code>);
+<br><br><span class="def-anchor" id=".VariantN.opDivAssign"></span><div class="quickindex" id="quickindex.VariantN.opDivAssign"></div>VariantN <span class="def-anchor" id="opDivAssign"></span><code class="ddoc_psymbol">opDivAssign</code><span class="template_param_list" title="Template parameter list">(T)</span>(T <code class="ddoc_param">rhs</code>);
+<br><br><span class="def-anchor" id=".VariantN.opModAssign"></span><div class="quickindex" id="quickindex.VariantN.opModAssign"></div>VariantN <span class="def-anchor" id="opModAssign"></span><code class="ddoc_psymbol">opModAssign</code><span class="template_param_list" title="Template parameter list">(T)</span>(T <code class="ddoc_param">rhs</code>);
+<br><br><span class="def-anchor" id=".VariantN.opAndAssign"></span><div class="quickindex" id="quickindex.VariantN.opAndAssign"></div>VariantN <span class="def-anchor" id="opAndAssign"></span><code class="ddoc_psymbol">opAndAssign</code><span class="template_param_list" title="Template parameter list">(T)</span>(T <code class="ddoc_param">rhs</code>);
+<br><br><span class="def-anchor" id=".VariantN.opOrAssign"></span><div class="quickindex" id="quickindex.VariantN.opOrAssign"></div>VariantN <span class="def-anchor" id="opOrAssign"></span><code class="ddoc_psymbol">opOrAssign</code><span class="template_param_list" title="Template parameter list">(T)</span>(T <code class="ddoc_param">rhs</code>);
+<br><br><span class="def-anchor" id=".VariantN.opXorAssign"></span><div class="quickindex" id="quickindex.VariantN.opXorAssign"></div>VariantN <span class="def-anchor" id="opXorAssign"></span><code class="ddoc_psymbol">opXorAssign</code><span class="template_param_list" title="Template parameter list">(T)</span>(T <code class="ddoc_param">rhs</code>);
+<br><br><span class="def-anchor" id=".VariantN.opShlAssign"></span><div class="quickindex" id="quickindex.VariantN.opShlAssign"></div>VariantN <span class="def-anchor" id="opShlAssign"></span><code class="ddoc_psymbol">opShlAssign</code><span class="template_param_list" title="Template parameter list">(T)</span>(T <code class="ddoc_param">rhs</code>);
+<br><br><span class="def-anchor" id=".VariantN.opShrAssign"></span><div class="quickindex" id="quickindex.VariantN.opShrAssign"></div>VariantN <span class="def-anchor" id="opShrAssign"></span><code class="ddoc_psymbol">opShrAssign</code><span class="template_param_list" title="Template parameter list">(T)</span>(T <code class="ddoc_param">rhs</code>);
+<br><br><span class="def-anchor" id=".VariantN.opUShrAssign"></span><div class="quickindex" id="quickindex.VariantN.opUShrAssign"></div>VariantN <span class="def-anchor" id="opUShrAssign"></span><code class="ddoc_psymbol">opUShrAssign</code><span class="template_param_list" title="Template parameter list">(T)</span>(T <code class="ddoc_param">rhs</code>);
+<br><br><span class="def-anchor" id=".VariantN.opCatAssign"></span><div class="quickindex" id="quickindex.VariantN.opCatAssign"></div>VariantN <span class="def-anchor" id="opCatAssign"></span><code class="ddoc_psymbol">opCatAssign</code><span class="template_param_list" title="Template parameter list">(T)</span>(T <code class="ddoc_param">rhs</code>);
+<br></div></dt>
+<dd><div class="summary">Arithmetic between <span class="d_inlinecode donthyphenate notranslate">VariantN</span> objects and numeric
+ values. All arithmetic operations return a <span class="d_inlinecode donthyphenate notranslate">VariantN</span>
+ object typed depending on the types of both values
+ involved. The conversion rules mimic D's built-in rules for
+ arithmetic conversions.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".VariantN.opIndex"></span><div class="quickindex" id="quickindex.VariantN.opIndex"></div>inout inout(Variant) <span class="def-anchor" id="opIndex"></span><code class="ddoc_psymbol">opIndex</code><span class="template_param_list" title="Template parameter list">(K)</span>(K <code class="ddoc_param">i</code>);
+<br><br><span class="def-anchor" id=".VariantN.opIndexAssign"></span><div class="quickindex" id="quickindex.VariantN.opIndexAssign"></div>Variant <span class="def-anchor" id="opIndexAssign"></span><code class="ddoc_psymbol">opIndexAssign</code><span class="template_param_list" title="Template parameter list">(T, N)</span>(T <code class="ddoc_param">value</code>, N <code class="ddoc_param">i</code>);
+<br><br><span class="def-anchor" id=".VariantN.opIndexOpAssign"></span><div class="quickindex" id="quickindex.VariantN.opIndexOpAssign"></div>Variant <span class="def-anchor" id="opIndexOpAssign"></span><code class="ddoc_psymbol">opIndexOpAssign</code><span class="template_param_list" title="Template parameter list">(string op, T, N)</span>(T <code class="ddoc_param">value</code>, N <code class="ddoc_param">i</code>);
+<br></div></dt>
+<dd><div class="summary">Array and associative array operations. If a <span class="d_inlinecode donthyphenate notranslate"> VariantN</span> contains an (associative) array, it can be indexed
+ into. Otherwise, an exception is thrown.</div><span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">Variant a = <span class="d_keyword">new</span> <span class="d_keyword">int</span>[10];
+a[5] = 42;
+writeln(a[5]); <span class="d_comment">// 42
+</span>a[5] += 8;
+writeln(a[5]); <span class="d_comment">// 50
+</span>
+<span class="d_keyword">int</span>[<span class="d_keyword">int</span>] hash = [ 42:24 ];
+a = hash;
+writeln(a[42]); <span class="d_comment">// 24
+</span>a[42] /= 2;
+writeln(a[42]); <span class="d_comment">// 12
+</span></pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".VariantN.length"></span><div class="quickindex" id="quickindex.VariantN.length"></div>@property size_t <span class="def-anchor" id="length"></span><code class="ddoc_psymbol">length</code>();
+<br></div></dt>
+<dd><div class="summary">If the <span class="d_inlinecode donthyphenate notranslate">VariantN</span> contains an (associative) array,
+ returns the length of that array. Otherwise, throws an
+ exception.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".VariantN.opApply"></span><div class="quickindex" id="quickindex.VariantN.opApply"></div>int <span class="def-anchor" id="opApply"></span><code class="ddoc_psymbol">opApply</code><span class="template_param_list" title="Template parameter list">(Delegate)</span>(scope Delegate <code class="ddoc_param">dg</code>)<br><span class="constraint">if (is(Delegate == delegate))</span>;
+<br></div></dt>
+<dd><div class="summary">If the <span class="d_inlinecode donthyphenate notranslate">VariantN</span> contains an array, applies <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">dg</code></span> to each
+       element of the array in turn. Otherwise, throws an exception.</div>
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Algebraic"></span><div class="quickindex" id="quickindex.Algebraic"></div>template <span class="def-anchor" id="Algebraic"></span><code class="ddoc_psymbol">Algebraic</code>(T...)<br></div></dt>
+<dd><div class="summary">Algebraic data type restricted to a closed set of possible
+types. It's an alias for <a href="#VariantN"><span class="d_inlinecode donthyphenate notranslate">VariantN</span></a> with an
+appropriately-constructed maximum size. <span class="d_inlinecode donthyphenate notranslate"><span class="def-anchor" id="Algebraic"></span><code class="ddoc_psymbol">Algebraic</code></span> is
+useful when it is desirable to restrict what a discriminated type
+could hold to the end of defining simpler and more efficient
+manipulation.
+</div><span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">auto</span> v = <span class="d_psymbol">Algebraic</span>!(<span class="d_keyword">int</span>, <span class="d_keyword">double</span>, string)(5);
+<span class="d_keyword">assert</span>(v.peek!(<span class="d_keyword">int</span>));
+v = 3.14;
+<span class="d_keyword">assert</span>(v.peek!(<span class="d_keyword">double</span>));
+<span class="d_comment">// auto x = v.peek!(long); // won't compile, type long not allowed
+</span><span class="d_comment">// v = '1'; // won't compile, type char not allowed
+</span></pre>
+</div></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><h4>Self-Referential Types</h4>
+<div class="blankline"></div>
+
+A useful and popular use of algebraic data structures is for defining <a href="https://google.com/search?btnI=I%27m+Feeling+Lucky&amp;ie=UTF-8&amp;oe=UTF-8&amp;q=self-referential data structures">self-referential data structures</a>, i.e. structures that embed references to
+values of their own type within.
+<div class="blankline"></div>
+
+This is achieved with <span class="d_inlinecode donthyphenate notranslate"><span class="def-anchor" id="Algebraic"></span><code class="ddoc_psymbol">Algebraic</code></span> by using <span class="d_inlinecode donthyphenate notranslate">This</span> as a placeholder whenever a
+reference to the type being defined is needed. The <span class="d_inlinecode donthyphenate notranslate"><span class="def-anchor" id="Algebraic"></span><code class="ddoc_psymbol">Algebraic</code></span> instantiation
+will perform <a href="https://en.wikipedia.org/wiki/Name_resolution_(programming_languages)#Alpha_renaming_to_make_name_resolution_trivial">alpha renaming</a> on its constituent types, replacing <span class="d_inlinecode donthyphenate notranslate">This</span>
+with the self-referenced type. The structure of the type involving <span class="d_inlinecode donthyphenate notranslate">This</span> may
+be arbitrarily complex.
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.typecons : Tuple, tuple;
+
+<span class="d_comment">// A tree is either a leaf or a branch of two other trees
+</span><span class="d_keyword">alias</span> Tree(Leaf) = <span class="d_psymbol">Algebraic</span>!(Leaf, Tuple!(This*, This*));
+Tree!<span class="d_keyword">int</span> tree = tuple(<span class="d_keyword">new</span> Tree!<span class="d_keyword">int</span>(42), <span class="d_keyword">new</span> Tree!<span class="d_keyword">int</span>(43));
+Tree!<span class="d_keyword">int</span>* right = tree.get!1[1];
+writeln(*right); <span class="d_comment">// 43
+</span>
+<span class="d_comment">// An object is a double, a string, or a hash of objects
+</span><span class="d_keyword">alias</span> Obj = <span class="d_psymbol">Algebraic</span>!(<span class="d_keyword">double</span>, string, This[string]);
+Obj obj = <span class="d_string">"hello"</span>;
+writeln(obj.get!1); <span class="d_comment">// "hello"
+</span>obj = 42.0;
+writeln(obj.get!0); <span class="d_comment">// 42
+</span>obj = [<span class="d_string">"customer"</span>: Obj(<span class="d_string">"John"</span>), <span class="d_string">"paid"</span>: Obj(23.95)];
+writeln(obj.get!2[<span class="d_string">"customer"</span>]); <span class="d_comment">// "John"
+</span></pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Variant"></span><div class="quickindex" id="quickindex.Variant"></div>alias <span class="def-anchor" id="Variant"></span><code class="ddoc_psymbol">Variant</code> = VariantN!32LU.VariantN;
+<br></div></dt>
+<dd><div class="summary">Alias for <a href="#VariantN"><span class="d_inlinecode donthyphenate notranslate">VariantN</span></a> instantiated with the largest size of <span class="d_inlinecode donthyphenate notranslate">creal</span>,
+<span class="d_inlinecode donthyphenate notranslate">char[]</span>, and <span class="d_inlinecode donthyphenate notranslate">void delegate()</span>. This ensures that <span class="d_inlinecode donthyphenate notranslate"><span class="def-anchor" id="Variant"></span><code class="ddoc_psymbol">Variant</code></span> is large enough
+to hold all of D's predefined types unboxed, including all numeric types,
+pointers, delegates, and class references.  You may want to use
+<span class="d_inlinecode donthyphenate notranslate">VariantN</span> directly with a different maximum size either for
+storing larger types unboxed, or for saving memory.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".variantArray"></span><div class="quickindex" id="quickindex.variantArray"></div>Variant[] <span class="def-anchor" id="variantArray"></span><code class="ddoc_psymbol">variantArray</code><span class="template_param_list" title="Template parameter list">(T...)</span>(T <code class="ddoc_param">args</code>);
+<br></div></dt>
+<dd><div class="summary">Returns an array of variants constructed from <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">args</code></span>.
+</div><div class="description">This is by design. During construction the <span class="d_inlinecode donthyphenate notranslate">Variant</span> needs
+ static type information about the type being held, so as to store a
+ pointer to function for fast retrieval.</div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">auto</span> a = <span class="d_psymbol">variantArray</span>(1, 3.14, <span class="d_string">"Hi!"</span>);
+writeln(a[1]); <span class="d_comment">// 3.14
+</span><span class="d_keyword">auto</span> b = Variant(a); <span class="d_comment">// variant array as variant
+</span>writeln(b[1]); <span class="d_comment">// 3.14
+</span></pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".VariantException"></span><div class="quickindex" id="quickindex.VariantException"></div>class <span class="def-anchor" id="VariantException"></span><code class="ddoc_psymbol">VariantException</code>: <span class="ddoc_psuper_symbol">object.Exception</span>;
+<br></div></dt>
+<dd><div class="summary">Thrown in three cases:
+</div><div class="description"><ol><li>An uninitialized <span class="d_inlinecode donthyphenate notranslate">Variant</span> is used in any way except
+ assignment and <span class="d_inlinecode donthyphenate notranslate">hasValue</span>;</li> <li>A <span class="d_inlinecode donthyphenate notranslate">get</span> or
+ <span class="d_inlinecode donthyphenate notranslate">coerce</span> is attempted with an incompatible target type;</li>
+ <li>A comparison between <span class="d_inlinecode donthyphenate notranslate">Variant</span> objects of
+ incompatible types is attempted.</li></ol></div>
+
+<dl><dt class="d_decl"><div ><span class="def-anchor" id=".VariantException.source"></span><div class="quickindex" id="quickindex.VariantException.source"></div>TypeInfo <span class="def-anchor" id="source"></span><code class="ddoc_psymbol">source</code>;
+<br></div></dt>
+<dd><div class="summary">The <span class="def-anchor" id="source"></span><code class="ddoc_psymbol">source</code> type in the conversion or comparison</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".VariantException.target"></span><div class="quickindex" id="quickindex.VariantException.target"></div>TypeInfo <span class="def-anchor" id="target"></span><code class="ddoc_psymbol">target</code>;
+<br></div></dt>
+<dd><div class="summary">The <span class="def-anchor" id="target"></span><code class="ddoc_psymbol">target</code> type in the conversion or comparison</div>
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".visit"></span><div class="quickindex" id="quickindex.visit"></div>template <span class="def-anchor" id="visit"></span><code class="ddoc_psymbol">visit</code>(Handlers...) if (Handlers.length &gt; 0)<br></div></dt>
+<dd><div class="summary">Applies a delegate or function to the given <a href="#Algebraic"><span class="d_inlinecode donthyphenate notranslate">Algebraic</span></a> depending on the held type,
+ ensuring that all types are handled by the visiting functions.
+</div><div class="description">The delegate or function having the currently held value as parameter is called
+ with <span class="d_inlinecode donthyphenate notranslate">variant</span>'s current value. Visiting handlers are passed
+ in the template parameter list.
+ It is statically ensured that all held types of
+ <span class="d_inlinecode donthyphenate notranslate">variant</span> are handled across all handlers.
+ <span class="d_inlinecode donthyphenate notranslate"><span class="def-anchor" id="visit"></span><code class="ddoc_psymbol">visit</code></span> allows delegates and static functions to be passed
+ as parameters.
+<div class="blankline"></div>
+
+ If a function with an untyped parameter is specified, this function is called
+ when the variant contains a type that does not match any other function.
+ This can be used to apply the same function across multiple possible types.
+ Exactly one generic function is allowed.
+<div class="blankline"></div>
+
+ If a function without parameters is specified, this function is called
+ when <span class="d_inlinecode donthyphenate notranslate">variant</span> doesn't hold a value. Exactly one parameter-less function
+ is allowed.
+<div class="blankline"></div>
+
+ Duplicate overloads matching the same type in one of the visitors are disallowed.
+
+</div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">The return type of <span class="def-anchor" id="visit"></span><code class="ddoc_psymbol">visit</code> is deduced from the visiting functions and must be
+ the same across all overloads.
+</div></div>
+<div class="keyval Throws"><span class="key keyThrows">Throws:</span> <div class="val valThrows"><a href="#VariantException"><span class="d_inlinecode donthyphenate notranslate">VariantException</span></a> if <span class="d_inlinecode donthyphenate notranslate">variant</span> doesn't hold a value and no
+ parameter-less fallback function is specified.</div></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">Algebraic!(<span class="d_keyword">int</span>, string) variant;
+
+variant = 10;
+<span class="d_keyword">assert</span>(variant.<span class="d_psymbol">visit</span>!((string s) =&gt; <span class="d_keyword">cast</span>(<span class="d_keyword">int</span>) s.length,
+                      (<span class="d_keyword">int</span> i)    =&gt; i)()
+                      == 10);
+variant = <span class="d_string">"string"</span>;
+<span class="d_keyword">assert</span>(variant.<span class="d_psymbol">visit</span>!((<span class="d_keyword">int</span> i) =&gt; i,
+                      (string s) =&gt; <span class="d_keyword">cast</span>(<span class="d_keyword">int</span>) s.length)()
+                      == 6);
+
+<span class="d_comment">// Error function usage
+</span>Algebraic!(<span class="d_keyword">int</span>, string) emptyVar;
+<span class="d_keyword">auto</span> rslt = emptyVar.<span class="d_psymbol">visit</span>!((string s) =&gt; <span class="d_keyword">cast</span>(<span class="d_keyword">int</span>) s.length,
+                      (<span class="d_keyword">int</span> i)    =&gt; i,
+                      () =&gt; -1)();
+writeln(rslt); <span class="d_comment">// -1
+</span>
+<span class="d_comment">// Generic function usage
+</span>Algebraic!(<span class="d_keyword">int</span>, <span class="d_keyword">float</span>, <span class="d_keyword">real</span>) number = 2;
+writeln(number.<span class="d_psymbol">visit</span>!(x =&gt; x += 1)); <span class="d_comment">// 3
+</span>
+<span class="d_comment">// Generic function for int/float with separate behavior for string
+</span>Algebraic!(<span class="d_keyword">int</span>, <span class="d_keyword">float</span>, string) something = 2;
+<span class="d_keyword">assert</span>(something.<span class="d_psymbol">visit</span>!((string s) =&gt; s.length, x =&gt; x) == 2); <span class="d_comment">// generic
+</span>something = <span class="d_string">"asdf"</span>;
+<span class="d_keyword">assert</span>(something.<span class="d_psymbol">visit</span>!((string s) =&gt; s.length, x =&gt; x) == 4); <span class="d_comment">// string
+</span>
+<span class="d_comment">// Generic handler and empty handler
+</span>Algebraic!(<span class="d_keyword">int</span>, <span class="d_keyword">float</span>, <span class="d_keyword">real</span>) empty2;
+writeln(empty2.<span class="d_psymbol">visit</span>!(x =&gt; x + 1,  () =&gt; -1)); <span class="d_comment">// -1
+</span></pre>
+</div></div>
+
+<dl><dt class="d_decl"><div ><span class="def-anchor" id=".visit.visit"></span><div class="quickindex" id="quickindex.visit.visit"></div>auto <span class="def-anchor" id="visit"></span><code class="ddoc_psymbol">visit</code><span class="template_param_list" title="Template parameter list">(VariantType)</span>(VariantType <code class="ddoc_param">variant</code>)<br><span class="constraint">if (isAlgebraic!VariantType)</span>;
+<br></div></dt>
+<dd>
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".tryVisit"></span><div class="quickindex" id="quickindex.tryVisit"></div>template <span class="def-anchor" id="tryVisit"></span><code class="ddoc_psymbol">tryVisit</code>(Handlers...) if (Handlers.length &gt; 0)<br></div></dt>
+<dd><div class="summary">Behaves as <a href="#visit"><span class="d_inlinecode donthyphenate notranslate">visit</span></a> but doesn't enforce that all types are handled
+ by the visiting functions.
+</div><div class="description">If a parameter-less function is specified it is called when
+ either <span class="d_inlinecode donthyphenate notranslate">variant</span> doesn't hold a value or holds a type
+ which isn't handled by the visiting functions.
+
+</div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">The return type of <span class="def-anchor" id="tryVisit"></span><code class="ddoc_psymbol">tryVisit</code> is deduced from the visiting functions and must be
+ the same across all overloads.
+</div></div>
+<div class="keyval Throws"><span class="key keyThrows">Throws:</span> <div class="val valThrows"><a href="#VariantException"><span class="d_inlinecode donthyphenate notranslate">VariantException</span></a> if <span class="d_inlinecode donthyphenate notranslate">variant</span> doesn't hold a value or
+ <span class="d_inlinecode donthyphenate notranslate">variant</span> holds a value which isn't handled by the visiting functions,
+ when no parameter-less fallback function is specified.</div></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">Algebraic!(<span class="d_keyword">int</span>, string) variant;
+
+variant = 10;
+<span class="d_keyword">auto</span> which = -1;
+variant.<span class="d_psymbol">tryVisit</span>!((<span class="d_keyword">int</span> i) { which = 0; })();
+writeln(which); <span class="d_comment">// 0
+</span>
+<span class="d_comment">// Error function usage
+</span>variant = <span class="d_string">"test"</span>;
+variant.<span class="d_psymbol">tryVisit</span>!((<span class="d_keyword">int</span> i) { which = 0; },
+                  ()      { which = -100; })();
+writeln(which); <span class="d_comment">// -100
+</span></pre>
+</div></div>
+
+<dl><dt class="d_decl"><div ><span class="def-anchor" id=".tryVisit.tryVisit"></span><div class="quickindex" id="quickindex.tryVisit.tryVisit"></div>auto <span class="def-anchor" id="tryVisit"></span><code class="ddoc_psymbol">tryVisit</code><span class="template_param_list" title="Template parameter list">(VariantType)</span>(VariantType <code class="ddoc_param">variant</code>)<br><span class="constraint">if (isAlgebraic!VariantType)</span>;
+<br></div></dt>
+<dd>
+</dd>
+</dl>
+</dd>
+</dl>
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2018 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on Tue Mar 13 17:32:22 2018
+</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+<script type="text/javascript" src="../js/run_examples.js"></script>
+
+<script type="text/javascript" src="../js/listanchors.js"></script>
+<script type="text/javascript" src="../js/show_contributors.js"></script>
+<script type="text/javascript">jQuery(document).ready(listanchors);</script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>
