@@ -1,0 +1,4234 @@
+<!DOCTYPE html>
+<html lang="en-US">
+	<!--
+| Copyright (c) 1999-$#{year} by the D Language Foundation
+| All Rights Reserved.
+| https://dlang.org/foundation_overview.html-->
+	<head>
+		<meta charset="utf-8"/>
+		<meta name="keywords" content="D programming language"/>
+		<meta name="description" content="D Programming Language"/>
+		<title>Module std.traits - D Programming Language</title>
+		<link rel="stylesheet" href="../../css/codemirror.css"/>
+		<link rel="stylesheet" href="../../css/style.css"/>
+		<link rel="stylesheet" href="../../css/print.css" media="print"/>
+		<link rel="stylesheet" href="../../css/ddox.css"/>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"/>
+		<link rel="shortcut icon" href="../../favicon.ico"/>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0"/>
+	</head>
+	<body class="std" id="std.traits">
+		<script type="text/javascript">document.body.className += ' have-javascript';</script>
+		<div id="top">
+			<div class="helper">
+				<div class="helper expand-container">
+					<a class="logo" href="../../">
+						<img id="logo" width="125" height="95" alt="D Logo" src="../../images/dlogo.svg"/>
+					</a>
+					<a class="hamburger expand-toggle" href="../../menu.html" title="Menu">
+						<span>Menu</span>
+					</a>
+					<div id="cssmenu">
+						<ul>
+							<li>
+								<a href="https://tour.dlang.org">
+									<span>Learn</span>
+								</a>
+							</li>
+							<li class="expand-container">
+								<a class="expand-toggle" href="../../documentation.html">
+									<span>Documentation</span>
+								</a>
+								<ul>
+									<li>
+										<a href="../../spec/spec.html">Language Reference</a>
+									</li>
+									<li>
+										<a href="../../phobos/index.html">Library Reference</a>
+									</li>
+									<li>
+										<a href="../../dmd.html">Command-line Reference</a>
+									</li>
+									<li class="menu-divider">
+										<a href="../../comparison.html">Feature Overview</a>
+									</li>
+									<li>
+										<a href="../../articles.html">Articles</a>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<a href="../../download.html">
+									<span>Downloads</span>
+								</a>
+							</li>
+							<li>
+								<a href="https://code.dlang.org">
+									<span>Packages</span>
+								</a>
+							</li>
+							<li class="expand-container">
+								<a class="expand-toggle" href="../../community.html">
+									<span>Community</span>
+								</a>
+								<ul>
+									<li>
+										<a href="https://dlang.org/blog">Blog</a>
+									</li>
+									<li>
+										<a href="../../orgs-using-d.html">Orgs using D</a>
+									</li>
+									<li>
+										<a href="https://twitter.com/search?q=%23dlang">Twitter</a>
+									</li>
+									<li class="menu-divider">
+										<a href="https://forum.dlang.org">Forums</a>
+									</li>
+									<li>
+										<a href="irc://irc.freenode.net/d">IRC</a>
+									</li>
+									<li>
+										<a href="https://wiki.dlang.org">Wiki</a>
+									</li>
+									<li class="menu-divider">
+										<a href="https://github.com/dlang">GitHub</a>
+									</li>
+									<li>
+										<a href="../../bugstats.html">Issues</a>
+									</li>
+								</ul>
+							</li>
+							<li class="expand-container">
+								<a class="expand-toggle" href="../../resources.html">
+									<span>Resources</span>
+								</a>
+								<ul>
+									<li>
+										<a href="https://wiki.dlang.org/Books">Books</a>
+									</li>
+									<li>
+										<a href="https://wiki.dlang.org/Tutorials">Tutorials</a>
+									</li>
+									<li class="menu-divider">
+										<a href="https://wiki.dlang.org/Development_tools">Tools</a>
+									</li>
+									<li>
+										<a href="https://wiki.dlang.org/Editors">Editors</a>
+									</li>
+									<li>
+										<a href="https://wiki.dlang.org/IDEs">IDEs</a>
+									</li>
+									<li>
+										<a href="http://rainers.github.io/visuald/visuald/StartPage.html">Visual D</a>
+									</li>
+									<li class="menu-divider">
+										<a href="../../acknowledgements.html">Acknowledgments</a>
+									</li>
+									<li>
+										<a href="../../dstyle.html">D Style</a>
+									</li>
+									<li>
+										<a href="../../glossary.html">Glossary</a>
+									</li>
+									<li>
+										<a href="../../sitemap.html">Sitemap</a>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+					<div class="search-container expand-container">
+						<a class="expand-toggle" href="../../search.html" title="Search">
+							<span>Search</span>
+						</a>
+						<div id="search-box">
+							<form method="get" action="https://google.com/search" autocomplete="off">
+								<input id="domains" type="hidden" name="domains" value="dlang.org"/>
+								            
+								<input id="sourceid" type="hidden" name="sourceid" value="google-search"/>
+								            
+								<span id="search-query">
+									<input id="q" name="q" placeholder="Search"/>
+									<input id="symbolSearch" style="display: none" type="text" name="symbolSearch" placeholder="API Search" onchange="performSymbolSearch(80);" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" autofocus/>
+								</span>
+								<span id="search-dropdown">
+									<div class="helper">
+										<select id="sitesearch" name="sitesearch" size="1">
+											<option value="dlang.org">Entire D Site</option>                    
+											<option selected="" value="dlang.org/spec">Language</option>                    
+											<option selected="" value="dlang.org/library">Library</option>                    
+											<option value="forum.dlang.org">Forums</option>
+										</select>
+									</div>
+								</span>
+								<span id="search-submit">
+									<button type="submit">
+										<i class="fa fa-search"></i><span>go</span>
+									</button>
+								</span>
+							</form>
+							<ul id="symbolSearchResults" class="symbolList" style="display: none"></ul><script type="application/javascript" src="../symbols.js"></script><script type="application/javascript">var symbolSearchRootDir = "../";
+$('#symbolSearchPane').show();</script>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+			<div class="subnav-helper"></div>
+			<div class="subnav">
+				<h2>API Documentation</h2>
+				<p>
+					<span class="smallprint">
+						version 2.081.0
+					</span>
+				</p>
+				<p>
+					<a href="../../library/index.html">overview</a>
+				</p>
+				<ul>
+					<li class="expand-container open">
+						<a class="package expand-toggle" href="#">
+							<span>std</span>
+						</a>
+						<ul class="tree-view">
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>algorithm</span>
+						</a>
+						<ul class="tree-view">
+					<li>
+						<a class="module " href="../std/algorithm.html">
+							<span>Package members</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/algorithm/comparison.html">
+							<span>comparison</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/algorithm/iteration.html">
+							<span>iteration</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/algorithm/mutation.html">
+							<span>mutation</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/algorithm/searching.html">
+							<span>searching</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/algorithm/setops.html">
+							<span>setops</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/algorithm/sorting.html">
+							<span>sorting</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>container</span>
+						</a>
+						<ul class="tree-view">
+					<li>
+						<a class="module " href="../std/container.html">
+							<span>Package members</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/container/array.html">
+							<span>array</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/container/binaryheap.html">
+							<span>binaryheap</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/container/dlist.html">
+							<span>dlist</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/container/rbtree.html">
+							<span>rbtree</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/container/slist.html">
+							<span>slist</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/container/util.html">
+							<span>util</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>datetime</span>
+						</a>
+						<ul class="tree-view">
+					<li>
+						<a class="module " href="../std/datetime.html">
+							<span>Package members</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/datetime/date.html">
+							<span>date</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/datetime/interval.html">
+							<span>interval</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/datetime/stopwatch.html">
+							<span>stopwatch</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/datetime/systime.html">
+							<span>systime</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/datetime/timezone.html">
+							<span>timezone</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>digest</span>
+						</a>
+						<ul class="tree-view">
+					<li>
+						<a class="module " href="../std/digest.html">
+							<span>Package members</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/digest/crc.html">
+							<span>crc</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/digest/hmac.html">
+							<span>hmac</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/digest/md.html">
+							<span>md</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/digest/murmurhash.html">
+							<span>murmurhash</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/digest/ripemd.html">
+							<span>ripemd</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/digest/sha.html">
+							<span>sha</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>experimental</span>
+						</a>
+						<ul class="tree-view">
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>allocator</span>
+						</a>
+						<ul class="tree-view">
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>building_blocks</span>
+						</a>
+						<ul class="tree-view">
+					<li>
+						<a class="module " href="../std/experimental/allocator/building_blocks.html">
+							<span>Package members</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/experimental/allocator/building_blocks/affix_allocator.html">
+							<span>affix_allocator</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/experimental/allocator/building_blocks/aligned_block_list.html">
+							<span>aligned_block_list</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/experimental/allocator/building_blocks/allocator_list.html">
+							<span>allocator_list</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/experimental/allocator/building_blocks/ascending_page_allocator.html">
+							<span>ascending_page_allocator</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/experimental/allocator/building_blocks/bitmapped_block.html">
+							<span>bitmapped_block</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/experimental/allocator/building_blocks/bucketizer.html">
+							<span>bucketizer</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/experimental/allocator/building_blocks/fallback_allocator.html">
+							<span>fallback_allocator</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/experimental/allocator/building_blocks/free_list.html">
+							<span>free_list</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/experimental/allocator/building_blocks/free_tree.html">
+							<span>free_tree</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/experimental/allocator/building_blocks/kernighan_ritchie.html">
+							<span>kernighan_ritchie</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/experimental/allocator/building_blocks/null_allocator.html">
+							<span>null_allocator</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/experimental/allocator/building_blocks/quantizer.html">
+							<span>quantizer</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/experimental/allocator/building_blocks/region.html">
+							<span>region</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/experimental/allocator/building_blocks/scoped_allocator.html">
+							<span>scoped_allocator</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/experimental/allocator/building_blocks/segregator.html">
+							<span>segregator</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/experimental/allocator/building_blocks/stats_collector.html">
+							<span>stats_collector</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li>
+						<a class="module " href="../std/experimental/allocator.html">
+							<span>Package members</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/experimental/allocator/common.html">
+							<span>common</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/experimental/allocator/gc_allocator.html">
+							<span>gc_allocator</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/experimental/allocator/mallocator.html">
+							<span>mallocator</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/experimental/allocator/mmap_allocator.html">
+							<span>mmap_allocator</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/experimental/allocator/showcase.html">
+							<span>showcase</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/experimental/allocator/typed.html">
+							<span>typed</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>logger</span>
+						</a>
+						<ul class="tree-view">
+					<li>
+						<a class="module " href="../std/experimental/logger.html">
+							<span>Package members</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/experimental/logger/filelogger.html">
+							<span>filelogger</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/experimental/logger/multilogger.html">
+							<span>multilogger</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/experimental/logger/nulllogger.html">
+							<span>nulllogger</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li>
+						<a class="module " href="../std/experimental/all.html">
+							<span>all</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/experimental/checkedint.html">
+							<span>checkedint</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/experimental/typecons.html">
+							<span>typecons</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>net</span>
+						</a>
+						<ul class="tree-view">
+					<li>
+						<a class="module " href="../std/net/curl.html">
+							<span>curl</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/net/isemail.html">
+							<span>isemail</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>range</span>
+						</a>
+						<ul class="tree-view">
+					<li>
+						<a class="module " href="../std/range.html">
+							<span>Package members</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/range/interfaces.html">
+							<span>interfaces</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/range/primitives.html">
+							<span>primitives</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>windows</span>
+						</a>
+						<ul class="tree-view">
+					<li>
+						<a class="module " href="../std/windows/charset.html">
+							<span>charset</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/windows/syserror.html">
+							<span>syserror</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li>
+						<a class="module " href="../std/array.html">
+							<span>array</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/ascii.html">
+							<span>ascii</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/base64.html">
+							<span>base64</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/bigint.html">
+							<span>bigint</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/bitmanip.html">
+							<span>bitmanip</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/compiler.html">
+							<span>compiler</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/complex.html">
+							<span>complex</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/concurrency.html">
+							<span>concurrency</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/conv.html">
+							<span>conv</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/csv.html">
+							<span>csv</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/demangle.html">
+							<span>demangle</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/encoding.html">
+							<span>encoding</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/exception.html">
+							<span>exception</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/file.html">
+							<span>file</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/format.html">
+							<span>format</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/functional.html">
+							<span>functional</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/getopt.html">
+							<span>getopt</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/json.html">
+							<span>json</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/math.html">
+							<span>math</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/mathspecial.html">
+							<span>mathspecial</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/meta.html">
+							<span>meta</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/mmfile.html">
+							<span>mmfile</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/numeric.html">
+							<span>numeric</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/outbuffer.html">
+							<span>outbuffer</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/parallelism.html">
+							<span>parallelism</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/path.html">
+							<span>path</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/process.html">
+							<span>process</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/random.html">
+							<span>random</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/regex.html">
+							<span>regex</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/signals.html">
+							<span>signals</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/socket.html">
+							<span>socket</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/stdint.html">
+							<span>stdint</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/stdio.html">
+							<span>stdio</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/string.html">
+							<span>string</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/system.html">
+							<span>system</span>
+						</a>
+					</li>
+					<li>
+						<a class="module selected" href="../std/traits.html">
+							<span>traits</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/typecons.html">
+							<span>typecons</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/uni.html">
+							<span>uni</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/uri.html">
+							<span>uri</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/utf.html">
+							<span>utf</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/uuid.html">
+							<span>uuid</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/variant.html">
+							<span>variant</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/xml.html">
+							<span>xml</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/zip.html">
+							<span>zip</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../std/zlib.html">
+							<span>zlib</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>core</span>
+						</a>
+						<ul class="tree-view">
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>stdc</span>
+						</a>
+						<ul class="tree-view">
+					<li>
+						<a class="module " href="../core/stdc/assert_.html">
+							<span>assert_</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/stdc/complex.html">
+							<span>complex</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/stdc/ctype.html">
+							<span>ctype</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/stdc/errno.html">
+							<span>errno</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/stdc/fenv.html">
+							<span>fenv</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/stdc/float_.html">
+							<span>float_</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/stdc/inttypes.html">
+							<span>inttypes</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/stdc/limits.html">
+							<span>limits</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/stdc/locale.html">
+							<span>locale</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/stdc/math.html">
+							<span>math</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/stdc/signal.html">
+							<span>signal</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/stdc/stdarg.html">
+							<span>stdarg</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/stdc/stddef.html">
+							<span>stddef</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/stdc/stdint.html">
+							<span>stdint</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/stdc/stdio.html">
+							<span>stdio</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/stdc/stdlib.html">
+							<span>stdlib</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/stdc/string.html">
+							<span>string</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/stdc/tgmath.html">
+							<span>tgmath</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/stdc/time.html">
+							<span>time</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/stdc/wchar_.html">
+							<span>wchar_</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/stdc/wctype.html">
+							<span>wctype</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>stdcpp</span>
+						</a>
+						<ul class="tree-view">
+					<li>
+						<a class="module " href="../core/stdcpp/exception.html">
+							<span>exception</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/stdcpp/typeinfo.html">
+							<span>typeinfo</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>sync</span>
+						</a>
+						<ul class="tree-view">
+					<li>
+						<a class="module " href="../core/sync/barrier.html">
+							<span>barrier</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/sync/condition.html">
+							<span>condition</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/sync/config.html">
+							<span>config</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/sync/exception.html">
+							<span>exception</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/sync/mutex.html">
+							<span>mutex</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/sync/rwmutex.html">
+							<span>rwmutex</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/sync/semaphore.html">
+							<span>semaphore</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li>
+						<a class="module " href="../core/atomic.html">
+							<span>atomic</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/attribute.html">
+							<span>attribute</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/bitop.html">
+							<span>bitop</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/checkedint.html">
+							<span>checkedint</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/cpuid.html">
+							<span>cpuid</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/demangle.html">
+							<span>demangle</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/exception.html">
+							<span>exception</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/math.html">
+							<span>math</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/memory.html">
+							<span>memory</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/runtime.html">
+							<span>runtime</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/simd.html">
+							<span>simd</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/thread.html">
+							<span>thread</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/time.html">
+							<span>time</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../core/vararg.html">
+							<span>vararg</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>dmd</span>
+						</a>
+						<ul class="tree-view">
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>backend</span>
+						</a>
+						<ul class="tree-view">
+					<li>
+						<a class="module " href="../dmd/backend/bcomplex.html">
+							<span>bcomplex</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/backend/cc.html">
+							<span>cc</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/backend/cdef.html">
+							<span>cdef</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/backend/cgcv.html">
+							<span>cgcv</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/backend/code.html">
+							<span>code</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/backend/code_x86.html">
+							<span>code_x86</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/backend/cv4.html">
+							<span>cv4</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/backend/dt.html">
+							<span>dt</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/backend/dwarf.html">
+							<span>dwarf</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/backend/el.html">
+							<span>el</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/backend/exh.html">
+							<span>exh</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/backend/global.html">
+							<span>global</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/backend/iasm.html">
+							<span>iasm</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/backend/md5.html">
+							<span>md5</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/backend/mscoff.html">
+							<span>mscoff</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/backend/obj.html">
+							<span>obj</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/backend/oper.html">
+							<span>oper</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/backend/outbuf.html">
+							<span>outbuf</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/backend/rtlsym.html">
+							<span>rtlsym</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/backend/ty.html">
+							<span>ty</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/backend/type.html">
+							<span>type</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/backend/xmm.html">
+							<span>xmm</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>root</span>
+						</a>
+						<ul class="tree-view">
+					<li>
+						<a class="module " href="../dmd/root/aav.html">
+							<span>aav</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/root/array.html">
+							<span>array</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/root/ctfloat.html">
+							<span>ctfloat</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/root/file.html">
+							<span>file</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/root/filename.html">
+							<span>filename</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/root/hash.html">
+							<span>hash</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/root/man.html">
+							<span>man</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/root/outbuffer.html">
+							<span>outbuffer</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/root/port.html">
+							<span>port</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/root/response.html">
+							<span>response</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/root/rmem.html">
+							<span>rmem</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/root/rootobject.html">
+							<span>rootobject</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/root/speller.html">
+							<span>speller</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/root/stringtable.html">
+							<span>stringtable</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>tk</span>
+						</a>
+						<ul class="tree-view">
+					<li>
+						<a class="module " href="../dmd/tk/dlist.html">
+							<span>dlist</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li>
+						<a class="module " href="../dmd/access.html">
+							<span>access</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/aggregate.html">
+							<span>aggregate</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/aliasthis.html">
+							<span>aliasthis</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/apply.html">
+							<span>apply</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/argtypes.html">
+							<span>argtypes</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/arrayop.html">
+							<span>arrayop</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/arraytypes.html">
+							<span>arraytypes</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/asttypename.html">
+							<span>asttypename</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/attrib.html">
+							<span>attrib</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/blockexit.html">
+							<span>blockexit</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/builtin.html">
+							<span>builtin</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/canthrow.html">
+							<span>canthrow</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/cli.html">
+							<span>cli</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/clone.html">
+							<span>clone</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/compiler.html">
+							<span>compiler</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/complex.html">
+							<span>complex</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/cond.html">
+							<span>cond</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/console.html">
+							<span>console</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/constfold.html">
+							<span>constfold</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/cppmangle.html">
+							<span>cppmangle</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/cppmanglewin.html">
+							<span>cppmanglewin</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/ctfeexpr.html">
+							<span>ctfeexpr</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/ctorflow.html">
+							<span>ctorflow</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/dcast.html">
+							<span>dcast</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/dclass.html">
+							<span>dclass</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/declaration.html">
+							<span>declaration</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/delegatize.html">
+							<span>delegatize</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/denum.html">
+							<span>denum</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/dimport.html">
+							<span>dimport</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/dinifile.html">
+							<span>dinifile</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/dinterpret.html">
+							<span>dinterpret</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/dmacro.html">
+							<span>dmacro</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/dmangle.html">
+							<span>dmangle</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/dmodule.html">
+							<span>dmodule</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/dmsc.html">
+							<span>dmsc</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/doc.html">
+							<span>doc</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/dscope.html">
+							<span>dscope</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/dstruct.html">
+							<span>dstruct</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/dsymbol.html">
+							<span>dsymbol</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/dsymbolsem.html">
+							<span>dsymbolsem</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/dtemplate.html">
+							<span>dtemplate</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/dversion.html">
+							<span>dversion</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/e2ir.html">
+							<span>e2ir</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/eh.html">
+							<span>eh</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/entity.html">
+							<span>entity</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/errors.html">
+							<span>errors</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/escape.html">
+							<span>escape</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/expression.html">
+							<span>expression</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/expressionsem.html">
+							<span>expressionsem</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/frontend.html">
+							<span>frontend</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/func.html">
+							<span>func</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/globals.html">
+							<span>globals</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/glue.html">
+							<span>glue</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/gluelayer.html">
+							<span>gluelayer</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/hdrgen.html">
+							<span>hdrgen</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/iasm.html">
+							<span>iasm</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/id.html">
+							<span>id</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/identifier.html">
+							<span>identifier</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/impcnvtab.html">
+							<span>impcnvtab</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/imphint.html">
+							<span>imphint</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/init.html">
+							<span>init</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/initsem.html">
+							<span>initsem</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/inline.html">
+							<span>inline</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/inlinecost.html">
+							<span>inlinecost</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/intrange.html">
+							<span>intrange</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/irstate.html">
+							<span>irstate</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/json.html">
+							<span>json</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/lambdacomp.html">
+							<span>lambdacomp</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/lexer.html">
+							<span>lexer</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/lib.html">
+							<span>lib</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/libelf.html">
+							<span>libelf</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/libomf.html">
+							<span>libomf</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/link.html">
+							<span>link</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/mars.html">
+							<span>mars</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/mtype.html">
+							<span>mtype</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/nogc.html">
+							<span>nogc</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/nspace.html">
+							<span>nspace</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/objc.html">
+							<span>objc</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/objc_glue.html">
+							<span>objc_glue</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/opover.html">
+							<span>opover</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/optimize.html">
+							<span>optimize</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/parse.html">
+							<span>parse</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/parsetimevisitor.html">
+							<span>parsetimevisitor</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/permissivevisitor.html">
+							<span>permissivevisitor</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/printast.html">
+							<span>printast</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/s2ir.html">
+							<span>s2ir</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/safe.html">
+							<span>safe</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/sapply.html">
+							<span>sapply</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/scanelf.html">
+							<span>scanelf</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/scanomf.html">
+							<span>scanomf</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/semantic2.html">
+							<span>semantic2</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/semantic3.html">
+							<span>semantic3</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/sideeffect.html">
+							<span>sideeffect</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/statement.html">
+							<span>statement</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/statementsem.html">
+							<span>statementsem</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/statement_rewrite_walker.html">
+							<span>statement_rewrite_walker</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/staticassert.html">
+							<span>staticassert</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/staticcond.html">
+							<span>staticcond</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/strictvisitor.html">
+							<span>strictvisitor</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/target.html">
+							<span>target</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/templateparamsem.html">
+							<span>templateparamsem</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/tocsym.html">
+							<span>tocsym</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/toctype.html">
+							<span>toctype</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/tocvdebug.html">
+							<span>tocvdebug</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/todt.html">
+							<span>todt</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/toir.html">
+							<span>toir</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/tokens.html">
+							<span>tokens</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/toobj.html">
+							<span>toobj</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/traits.html">
+							<span>traits</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/transitivevisitor.html">
+							<span>transitivevisitor</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/typesem.html">
+							<span>typesem</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/typinf.html">
+							<span>typinf</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/utf.html">
+							<span>utf</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/utils.html">
+							<span>utils</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../dmd/visitor.html">
+							<span>visitor</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>etc</span>
+						</a>
+						<ul class="tree-view">
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>c</span>
+						</a>
+						<ul class="tree-view">
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>odbc</span>
+						</a>
+						<ul class="tree-view">
+					<li>
+						<a class="module " href="../etc/c/odbc/sql.html">
+							<span>sql</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../etc/c/odbc/sqlext.html">
+							<span>sqlext</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../etc/c/odbc/sqltypes.html">
+							<span>sqltypes</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../etc/c/odbc/sqlucode.html">
+							<span>sqlucode</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li>
+						<a class="module " href="../etc/c/curl.html">
+							<span>curl</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+						</ul>
+					</li>
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>gc</span>
+						</a>
+						<ul class="tree-view">
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>impl</span>
+						</a>
+						<ul class="tree-view">
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>conservative</span>
+						</a>
+						<ul class="tree-view">
+						</ul>
+					</li>
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>manual</span>
+						</a>
+						<ul class="tree-view">
+						</ul>
+					</li>
+						</ul>
+					</li>
+					<li>
+						<a class="module " href="../gc/bits.html">
+							<span>bits</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../gc/config.html">
+							<span>config</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../gc/gcinterface.html">
+							<span>gcinterface</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../gc/os.html">
+							<span>os</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../gc/pooltable.html">
+							<span>pooltable</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../gc/proxy.html">
+							<span>proxy</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>rt</span>
+						</a>
+						<ul class="tree-view">
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>backtrace</span>
+						</a>
+						<ul class="tree-view">
+					<li>
+						<a class="module " href="../rt/backtrace/dwarf.html">
+							<span>dwarf</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/backtrace/elf.html">
+							<span>elf</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/backtrace/macho.html">
+							<span>macho</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>typeinfo</span>
+						</a>
+						<ul class="tree-view">
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_Acdouble.html">
+							<span>ti_Acdouble</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_Acfloat.html">
+							<span>ti_Acfloat</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_Acreal.html">
+							<span>ti_Acreal</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_Adouble.html">
+							<span>ti_Adouble</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_Afloat.html">
+							<span>ti_Afloat</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_Ag.html">
+							<span>ti_Ag</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_Aint.html">
+							<span>ti_Aint</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_Along.html">
+							<span>ti_Along</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_Areal.html">
+							<span>ti_Areal</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_Ashort.html">
+							<span>ti_Ashort</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_byte.html">
+							<span>ti_byte</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_C.html">
+							<span>ti_C</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_cdouble.html">
+							<span>ti_cdouble</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_cent.html">
+							<span>ti_cent</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_cfloat.html">
+							<span>ti_cfloat</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_char.html">
+							<span>ti_char</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_creal.html">
+							<span>ti_creal</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_dchar.html">
+							<span>ti_dchar</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_delegate.html">
+							<span>ti_delegate</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_double.html">
+							<span>ti_double</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_float.html">
+							<span>ti_float</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_idouble.html">
+							<span>ti_idouble</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_ifloat.html">
+							<span>ti_ifloat</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_int.html">
+							<span>ti_int</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_ireal.html">
+							<span>ti_ireal</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_long.html">
+							<span>ti_long</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_n.html">
+							<span>ti_n</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_ptr.html">
+							<span>ti_ptr</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_real.html">
+							<span>ti_real</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_short.html">
+							<span>ti_short</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_ubyte.html">
+							<span>ti_ubyte</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_ucent.html">
+							<span>ti_ucent</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_uint.html">
+							<span>ti_uint</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_ulong.html">
+							<span>ti_ulong</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_ushort.html">
+							<span>ti_ushort</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_void.html">
+							<span>ti_void</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/typeinfo/ti_wchar.html">
+							<span>ti_wchar</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>util</span>
+						</a>
+						<ul class="tree-view">
+					<li class="expand-container">
+						<a class="package expand-toggle" href="#">
+							<span>container</span>
+						</a>
+						<ul class="tree-view">
+					<li>
+						<a class="module " href="../rt/util/container/array.html">
+							<span>array</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/util/container/common.html">
+							<span>common</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/util/container/hashtab.html">
+							<span>hashtab</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/util/container/treap.html">
+							<span>treap</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li>
+						<a class="module " href="../rt/util/array.html">
+							<span>array</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/util/hash.html">
+							<span>hash</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/util/random.html">
+							<span>random</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/util/utf.html">
+							<span>utf</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li>
+						<a class="module " href="../rt/aaA.html">
+							<span>aaA</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/aApply.html">
+							<span>aApply</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/aApplyR.html">
+							<span>aApplyR</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/adi.html">
+							<span>adi</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/alloca.html">
+							<span>alloca</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/arrayassign.html">
+							<span>arrayassign</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/arraycast.html">
+							<span>arraycast</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/arraycat.html">
+							<span>arraycat</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/cast_.html">
+							<span>cast_</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/cmath2.html">
+							<span>cmath2</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/config.html">
+							<span>config</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/cover.html">
+							<span>cover</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/critical_.html">
+							<span>critical_</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/deh.html">
+							<span>deh</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/deh_win32.html">
+							<span>deh_win32</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/deh_win64_posix.html">
+							<span>deh_win64_posix</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/dmain2.html">
+							<span>dmain2</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/dwarfeh.html">
+							<span>dwarfeh</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/ehalloc.html">
+							<span>ehalloc</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/lifetime.html">
+							<span>lifetime</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/llmath.html">
+							<span>llmath</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/memory.html">
+							<span>memory</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/memset.html">
+							<span>memset</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/minfo.html">
+							<span>minfo</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/monitor_.html">
+							<span>monitor_</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/obj.html">
+							<span>obj</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/qsort.html">
+							<span>qsort</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/sections.html">
+							<span>sections</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/sections_android.html">
+							<span>sections_android</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/sections_elf_shared.html">
+							<span>sections_elf_shared</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/sections_osx_x86.html">
+							<span>sections_osx_x86</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/sections_osx_x86_64.html">
+							<span>sections_osx_x86_64</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/sections_solaris.html">
+							<span>sections_solaris</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/sections_win32.html">
+							<span>sections_win32</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/sections_win64.html">
+							<span>sections_win64</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/tlsgc.html">
+							<span>tlsgc</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/trace.html">
+							<span>trace</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/tracegc.html">
+							<span>tracegc</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../rt/unwind.html">
+							<span>unwind</span>
+						</a>
+					</li>
+						</ul>
+					</li>
+					<li>
+						<a class="module " href="../dvec.html">
+							<span>dvec</span>
+						</a>
+					</li>
+					<li>
+						<a class="module " href="../object.html">
+							<span>object</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div id="content" class="hyphenate">
+				<div id="tools">
+					<div>
+						<div class="tip smallprint">
+							<a href="https://github.com/dlang/phobos/blob/v2.081.0/std/traits.d">
+								View source code
+							</a>
+							<div>
+								Display the source code in std/traits.d from which this
+								page was generated on github.
+							</div>
+						</div>
+						<div class="tip smallprint">
+							<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/library/std/traits.html&amp;bug_severity=enhancement&amp;component=phobos&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BModule std.traits%5D&amp;version=D2">Report a bug</a>
+							<div>
+								If you spot a problem with this page, click here to create a
+								Bugzilla issue.
+							</div>
+						</div>
+						<div class="tip smallprint">
+							<a href="https://github.com/dlang/phobos/edit/master/std/traits.d">
+								Improve this page
+							</a>
+							<div>
+								Quickly fork, edit online, and submit a pull request for this page.
+								Requires a signed-in GitHub account. This works well for small changes.
+								If you'd like to make larger changes you may want to consider using
+								local clone.
+							</div>
+						</div>
+					</div>
+				</div><h1>Module <code>std.traits</code></h1><p>Templates which extract information about types and symbols at compile time.
+</p><section><p><script type="text/javascript">inhibitQuickIndex = 1;</script>
+</p>
+
+<p> <div class="quickindex"> <table class="book"><caption></caption> <tr><th scope="col">Category</th> <th scope="col">Templates</th></tr>
+ <tr><td>Symbol Name traits</td> <td>           <code class="lang-d"><a href="../std/traits/fully_qualified_name.html"><span class="pln">fullyQualifiedName</span></a></code>
+           <code class="lang-d"><a href="../std/traits/module_name.html"><span class="pln">moduleName</span></a></code>
+           <code class="lang-d"><a href="../std/traits/package_name.html"><span class="pln">packageName</span></a></code>
+ </td></tr>
+ <tr><td>Function traits</td> <td>           <code class="lang-d"><a href="../std/traits/is_function.html"><span class="pln">isFunction</span></a></code>
+           <code class="lang-d"><a href="../std/traits/arity.html"><span class="pln">arity</span></a></code>
+           <code class="lang-d"><a href="../std/traits/function_attributes.html"><span class="pln">functionAttributes</span></a></code>
+           <code class="lang-d"><a href="../std/traits/has_function_attributes.html"><span class="pln">hasFunctionAttributes</span></a></code>
+           <code class="lang-d"><a href="../std/traits/function_linkage.html"><span class="pln">functionLinkage</span></a></code>
+           <code class="lang-d"><a href="../std/traits/function_type_of.html"><span class="typ">FunctionTypeOf</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_safe.html"><span class="pln">isSafe</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_unsafe.html"><span class="pln">isUnsafe</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_final.html"><span class="pln">isFinal</span></a></code>
+           <code class="lang-d"><a href="../std/traits/parameter_defaults.html"><span class="typ">ParameterDefaults</span></a></code>
+           <code class="lang-d"><a href="../std/traits/parameter_identifier_tuple.html"><span class="typ">ParameterIdentifierTuple</span></a></code>
+           <code class="lang-d"><a href="../std/traits/parameter_storage_class_tuple.html"><span class="typ">ParameterStorageClassTuple</span></a></code>
+           <code class="lang-d"><a href="../std/traits/parameters.html"><span class="typ">Parameters</span></a></code>
+           <code class="lang-d"><a href="../std/traits/return_type.html"><span class="typ">ReturnType</span></a></code>
+           <code class="lang-d"><a href="../std/traits/set_function_attributes.html"><span class="typ">SetFunctionAttributes</span></a></code>
+           <code class="lang-d"><a href="../std/traits/variadic_function_style.html"><span class="pln">variadicFunctionStyle</span></a></code>
+ </td></tr>
+ <tr><td>Aggregate Type traits</td> <td>           <code class="lang-d"><a href="../std/traits/base_classes_tuple.html"><span class="typ">BaseClassesTuple</span></a></code>
+           <code class="lang-d"><a href="../std/traits/base_type_tuple.html"><span class="typ">BaseTypeTuple</span></a></code>
+           <code class="lang-d"><a href="../std/traits/class_instance_alignment.html"><span class="pln">classInstanceAlignment</span></a></code>
+           <code class="lang-d"><a href="../std/traits/enum_members.html"><span class="typ">EnumMembers</span></a></code>
+           <code class="lang-d"><a href="../std/traits/field_name_tuple.html"><span class="typ">FieldNameTuple</span></a></code>
+           <code class="lang-d"><a href="../std/traits/fields.html"><span class="typ">Fields</span></a></code>
+           <code class="lang-d"><a href="../std/traits/has_aliasing.html"><span class="pln">hasAliasing</span></a></code>
+           <code class="lang-d"><a href="../std/traits/has_elaborate_assign.html"><span class="pln">hasElaborateAssign</span></a></code>
+           <code class="lang-d"><a href="../std/traits/has_elaborate_copy_constructor.html"><span class="pln">hasElaborateCopyConstructor</span></a></code>
+           <code class="lang-d"><a href="../std/traits/has_elaborate_destructor.html"><span class="pln">hasElaborateDestructor</span></a></code>
+           <code class="lang-d"><a href="../std/traits/has_indirections.html"><span class="pln">hasIndirections</span></a></code>
+           <code class="lang-d"><a href="../std/traits/has_member.html"><span class="pln">hasMember</span></a></code>
+           <code class="lang-d"><a href="../std/traits/has_static_member.html"><span class="pln">hasStaticMember</span></a></code>
+           <code class="lang-d"><a href="../std/traits/has_nested.html"><span class="pln">hasNested</span></a></code>
+           <code class="lang-d"><a href="../std/traits/has_unshared_aliasing.html"><span class="pln">hasUnsharedAliasing</span></a></code>
+           <code class="lang-d"><a href="../std/traits/interfaces_tuple.html"><span class="typ">InterfacesTuple</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_inner_class.html"><span class="pln">isInnerClass</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_nested.html"><span class="pln">isNested</span></a></code>
+           <code class="lang-d"><a href="../std/traits/member_functions_tuple.html"><span class="typ">MemberFunctionsTuple</span></a></code>
+           <code class="lang-d"><a href="../std/traits/representation_type_tuple.html"><span class="typ">RepresentationTypeTuple</span></a></code>
+           <code class="lang-d"><a href="../std/traits/template_args_of.html"><span class="typ">TemplateArgsOf</span></a></code>
+           <code class="lang-d"><a href="../std/traits/template_of.html"><span class="typ">TemplateOf</span></a></code>
+           <code class="lang-d"><a href="../std/traits/transitive_base_type_tuple.html"><span class="typ">TransitiveBaseTypeTuple</span></a></code>
+ </td></tr>
+ <tr><td>Type Conversion</td> <td>           <code class="lang-d"><a href="../std/traits/common_type.html"><span class="typ">CommonType</span></a></code>
+           <code class="lang-d"><a href="../std/traits/implicit_conversion_targets.html"><span class="typ">ImplicitConversionTargets</span></a></code>
+           <code class="lang-d"><a href="../std/traits/copy_type_qualifiers.html"><span class="typ">CopyTypeQualifiers</span></a></code>
+           <code class="lang-d"><a href="../std/traits/copy_constness.html"><span class="typ">CopyConstness</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_assignable.html"><span class="pln">isAssignable</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_covariant_with.html"><span class="pln">isCovariantWith</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_implicitly_convertible.html"><span class="pln">isImplicitlyConvertible</span></a></code>
+ </td></tr>
+ <tr><td>SomethingTypeOf</td> <td>           <code class="lang-d"><a href="../std/traits/rvalue_of.html"><span class="pln">rvalueOf</span></a></code>
+           <code class="lang-d"><a href="../std/traits/lvalue_of.html"><span class="pln">lvalueOf</span></a></code>
+           <code class="lang-d"><a href="../std/traits/inout_of.html"><span class="typ">InoutOf</span></a></code>
+           <code class="lang-d"><a href="../std/traits/const_of.html"><span class="typ">ConstOf</span></a></code>
+           <code class="lang-d"><a href="../std/traits/shared_of.html"><span class="typ">SharedOf</span></a></code>
+           <code class="lang-d"><a href="../std/traits/shared_inout_of.html"><span class="typ">SharedInoutOf</span></a></code>
+           <code class="lang-d"><a href="../std/traits/shared_const_of.html"><span class="typ">SharedConstOf</span></a></code>
+           <code class="lang-d"><a href="../std/traits/immutable_of.html"><span class="typ">ImmutableOf</span></a></code>
+           <code class="lang-d"><a href="../std/traits/qualifier_of.html"><span class="typ">QualifierOf</span></a></code>
+ </td></tr>
+ <tr><td>Categories of types</td> <td>           <code class="lang-d"><a href="../std/traits/all_same_type.html"><span class="pln">allSameType</span></a></code>
+           <code class="lang-d"><a href="../std/traits/if_testable.html"><span class="pln">ifTestable</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_type.html"><span class="pln">isType</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_aggregate_type.html"><span class="pln">isAggregateType</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_array.html"><span class="pln">isArray</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_associative_array.html"><span class="pln">isAssociativeArray</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_autodecodable_string.html"><span class="pln">isAutodecodableString</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_basic_type.html"><span class="pln">isBasicType</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_boolean.html"><span class="pln">isBoolean</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_builtin_type.html"><span class="pln">isBuiltinType</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_copyable.html"><span class="pln">isCopyable</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_dynamic_array.html"><span class="pln">isDynamicArray</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_equality_comparable.html"><span class="pln">isEqualityComparable</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_floating_point.html"><span class="pln">isFloatingPoint</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_integral.html"><span class="pln">isIntegral</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_narrow_string.html"><span class="pln">isNarrowString</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_convertible_to_string.html"><span class="pln">isConvertibleToString</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_numeric.html"><span class="pln">isNumeric</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_ordering_comparable.html"><span class="pln">isOrderingComparable</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_pointer.html"><span class="pln">isPointer</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_scalar_type.html"><span class="pln">isScalarType</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_signed.html"><span class="pln">isSigned</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_simd_vector.html"><span class="pln">isSIMDVector</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_some_char.html"><span class="pln">isSomeChar</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_some_string.html"><span class="pln">isSomeString</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_static_array.html"><span class="pln">isStaticArray</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_unsigned.html"><span class="pln">isUnsigned</span></a></code>
+ </td></tr>
+ <tr><td>Type behaviours</td> <td>           <code class="lang-d"><a href="../std/traits/is_abstract_class.html"><span class="pln">isAbstractClass</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_abstract_function.html"><span class="pln">isAbstractFunction</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_callable.html"><span class="pln">isCallable</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_delegate.html"><span class="pln">isDelegate</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_expressions.html"><span class="pln">isExpressions</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_final_class.html"><span class="pln">isFinalClass</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_final_function.html"><span class="pln">isFinalFunction</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_function_pointer.html"><span class="pln">isFunctionPointer</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_instance_of.html"><span class="pln">isInstanceOf</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_iterable.html"><span class="pln">isIterable</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_mutable.html"><span class="pln">isMutable</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_some_function.html"><span class="pln">isSomeFunction</span></a></code>
+           <code class="lang-d"><a href="../std/traits/is_type_tuple.html"><span class="pln">isTypeTuple</span></a></code>
+ </td></tr>
+ <tr><td>General Types</td> <td>           <code class="lang-d"><a href="../std/traits/foreach_type.html"><span class="typ">ForeachType</span></a></code>
+           <code class="lang-d"><a href="../std/traits/key_type.html"><span class="typ">KeyType</span></a></code>
+           <code class="lang-d"><a href="../std/traits/largest.html"><span class="typ">Largest</span></a></code>
+           <code class="lang-d"><a href="../std/traits/most_negative.html"><span class="pln">mostNegative</span></a></code>
+           <code class="lang-d"><a href="../std/traits/original_type.html"><span class="typ">OriginalType</span></a></code>
+           <code class="lang-d"><a href="../std/traits/pointer_target.html"><span class="typ">PointerTarget</span></a></code>
+           <code class="lang-d"><a href="../std/traits/signed.html"><span class="typ">Signed</span></a></code>
+           <code class="lang-d"><a href="../std/traits/unqual.html"><span class="typ">Unqual</span></a></code>
+           <code class="lang-d"><a href="../std/traits/unsigned.html"><span class="typ">Unsigned</span></a></code>
+           <code class="lang-d"><a href="../std/traits/value_type.html"><span class="typ">ValueType</span></a></code>
+           <code class="lang-d"><a href="../std/traits/promoted.html"><span class="typ">Promoted</span></a></code>
+ </td></tr>
+ <tr><td>Misc</td> <td>           <code class="lang-d"><a href="../std/traits/mangled_name.html"><span class="pln">mangledName</span></a></code>
+           <code class="lang-d"><a href="../std/traits/select.html"><span class="typ">Select</span></a></code>
+           <code class="lang-d"><a href="../std/traits/select.html"><span class="pln">select</span></a></code>
+ </td></tr>
+ <tr><td>User-Defined Attributes</td> <td>           <code class="lang-d"><a href="../std/traits/has_uda.html"><span class="pln">hasUDA</span></a></code>
+           <code class="lang-d"><a href="../std/traits/get_ud_as.html"><span class="pln">getUDAs</span></a></code>
+           <code class="lang-d"><a href="../std/traits/get_symbols_byuda.html"><span class="pln">getSymbolsByUDA</span></a></code>
+ </td></tr>
+ </table>
+ </div>
+</p>
+</section>
+
+				<section></section>
+				<section>
+					<h2>Functions</h2>
+					<table>
+						<col class="caption"/>
+						<tr>
+							<th>Name</th><th>Description</th>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="lvalueOf" class="public" href="../std/traits/lvalue_of.html">lvalueOf</a><span class="decoration">()</span>
+								</code>
+							</td>
+							<td>Creates an lvalue or rvalue of type <code class="lang-d"><span class="pln">T</span></code> for <code class="lang-d"><span class="kwd">typeof</span><span class="pun">(...)</span></code> and
+<code class="lang-d"><span class="kwd">__traits</span><span class="pun">(</span><span class="pln">compiles</span><span class="pun">, ...)</span></code> purposes. No actual value is returned.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="rvalueOf" class="public" href="../std/traits/rvalue_of.html">rvalueOf</a><span class="decoration">()</span>
+								</code>
+							</td>
+							<td>Creates an lvalue or rvalue of type <code class="lang-d"><span class="pln">T</span></code> for <code class="lang-d"><span class="kwd">typeof</span><span class="pun">(...)</span></code> and
+<code class="lang-d"><span class="kwd">_traits</span><span class="pun">(</span><span class="pln">compiles</span><span class="pun">, ...)</span></code> purposes. No actual value is returned.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="select" class="public" href="../std/traits/select.html">select</a><span class="decoration">(a, b)</span>
+								</code>
+							</td>
+							<td>Select one of two functions to run via template parameter.
+</td>
+						</tr>
+					</table>
+				</section>
+				<section>
+					<h2>Enums</h2>
+					<table>
+						<col class="caption"/>
+						<tr>
+							<th>Name</th><th>Description</th>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="FunctionAttribute" class="public" href="../std/traits/function_attribute.html">FunctionAttribute</a>
+								</code>
+							</td>
+							<td>Returns the FunctionAttribute mask for function <code class="lang-d"><span class="pln">func</span></code>.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="ParameterStorageClass" class="public" href="../std/traits/parameter_storage_class.html">ParameterStorageClass</a>
+								</code>
+							</td>
+							<td>Get tuple, one per function parameter, of the storage classes of the parameters.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="Variadic" class="public" href="../std/traits/variadic.html">Variadic</a>
+								</code>
+							</td>
+							<td>Determines what kind of variadic parameters function has.
+</td>
+						</tr>
+					</table>
+				</section>
+				<section>
+					<h2>Templates</h2>
+					<table>
+						<col class="caption"/>
+						<tr>
+							<th>Name</th><th>Description</th>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="SetFunctionAttributes" class="public" href="../std/traits/set_function_attributes.html">SetFunctionAttributes</a>
+								</code>
+							</td>
+							<td>Constructs a new function or delegate type with the same basic signature
+ as the given one, but different attributes (including linkage).
+</td>
+						</tr>
+					</table>
+				</section>
+				<section>
+					<h2>Manifest constants</h2>
+					<table>
+						<col class="caption"/>
+						<tr>
+							<th>Name</th><th>Type</th><th>Description</th>
+						</tr>
+						<tr>
+							<td>
+								<a id="allSameType" class="public" href="../std/traits/all_same_type.html">
+									<code>allSameType</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="arity" class="public" href="../std/traits/arity.html">
+									<code>arity</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Returns the number of arguments of function <code class="lang-d"><span class="pln">func</span></code>.
+arity is undefined for variadic functions.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="extractParameterStorageClassFlags" class="public" href="../std/traits/extract_parameter_storage_class_flags.html">
+									<code>extractParameterStorageClassFlags</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Convert the result of <code class="lang-d"><span class="kwd">__traits</span><span class="pun">(</span><span class="pln">getParameterStorageClasses</span><span class="pun">)</span></code>
+to <code class="lang-d"><a href="../std/traits/parameter_storage_class.html"><span class="typ">ParameterStorageClass</span></a></code> <code class="lang-d"><span class="kwd">enum</span></code>s.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="fullyQualifiedName" class="public" href="../std/traits/fully_qualified_name.html">
+									<code>fullyQualifiedName</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Get the fully qualified name of a type or a symbol. Can act as an intelligent type/symbol to string  converter.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="functionAttributes" class="public" href="../std/traits/function_attributes.html">
+									<code>functionAttributes</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Returns the FunctionAttribute mask for function <code class="lang-d"><span class="pln">func</span></code>.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="functionLinkage" class="public" href="../std/traits/function_linkage.html">
+									<code>functionLinkage</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Determine the linkage attribute of the function.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="hasAliasing" class="public" href="../std/traits/has_aliasing.html">
+									<code>hasAliasing</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Returns <code class="lang-d"><span class="kwd">true</span></code> if and only if <code class="lang-d"><span class="pln">T</span></code>'s representation includes at
+least one of the following: <ol><li>a raw pointer <code class="lang-d"><span class="pln">U</span><span class="pun">*</span></code> and <code class="lang-d"><span class="pln">U</span></code>
+is not immutable;</li> <li>an array <code class="lang-d"><span class="pln">U</span><span class="pun">[]</span></code> and <code class="lang-d"><span class="pln">U</span></code> is not
+immutable;</li> <li>a reference to a class or interface type <code class="lang-d"><span class="pln">C</span></code> and <code class="lang-d"><span class="pln">C</span></code> is
+not immutable.</li> <li>an associative array that is not immutable.</li>
+<li>a delegate.</li></ol>
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="hasElaborateAssign" class="public" href="../std/traits/has_elaborate_assign.html">
+									<code>hasElaborateAssign</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>True if <code class="lang-d"><span class="pln">S</span></code> or any type directly embedded in the representation of <code class="lang-d"><span class="pln">S</span></code>
+   defines an elaborate assignment. Elaborate assignments are introduced by
+   defining <code class="lang-d"><span class="pln">opAssign</span><span class="pun">(</span><span class="kwd">typeof</span><span class="pun">(</span><span class="kwd">this</span><span class="pun">))</span></code> or <code class="lang-d"><span class="pln">opAssign</span><span class="pun">(</span><span class="kwd">ref typeof</span><span class="pun">(</span><span class="kwd">this</span><span class="pun">))</span></code>
+   for a <code class="lang-d"><span class="kwd">struct</span></code> or when there is a compiler-generated <code class="lang-d"><span class="pln">opAssign</span></code>.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="hasElaborateCopyConstructor" class="public" href="../std/traits/has_elaborate_copy_constructor.html">
+									<code>hasElaborateCopyConstructor</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>True if <code class="lang-d"><span class="pln">S</span></code> or any type embedded directly in the representation of <code class="lang-d"><span class="pln">S</span></code>
+ defines an elaborate copy constructor. Elaborate copy constructors are
+ introduced by defining <code class="lang-d"><span class="kwd">this</span><span class="pun">(</span><span class="kwd">this</span><span class="pun">)</span></code> for a <code class="lang-d"><span class="kwd">struct</span></code>.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="hasElaborateDestructor" class="public" href="../std/traits/has_elaborate_destructor.html">
+									<code>hasElaborateDestructor</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>True if <code class="lang-d"><span class="pln">S</span></code> or any type directly embedded in the representation
+   of <code class="lang-d"><span class="pln">S</span></code> defines an elaborate destructor. Elaborate destructors
+   are introduced by defining <code class="lang-d"><span class="pun">~</span><span class="kwd">this</span><span class="pun">()</span></code> for a <code class="lang-d"><span class="pln">   </span><span class="kwd">struct</span></code>.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="hasFunctionAttributes" class="public" href="../std/traits/has_function_attributes.html">
+									<code>hasFunctionAttributes</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Checks whether a function has the given attributes attached.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="hasIndirections" class="public" href="../std/traits/has_indirections.html">
+									<code>hasIndirections</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Returns <code class="lang-d"><span class="kwd">true</span></code> if and only if <code class="lang-d"><span class="pln">T</span></code>'s representation includes at
+least one of the following: <ol><li>a raw pointer <code class="lang-d"><span class="pln">U</span><span class="pun">*</span></code>;</li> <li>an
+array <code class="lang-d"><span class="pln">U</span><span class="pun">[]</span></code>;</li> <li>a reference to a class type <code class="lang-d"><span class="pln">C</span></code>.</li>
+<li>an associative array.</li> <li>a delegate.</li></ol>
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="hasMember" class="public" href="../std/traits/has_member.html">
+									<code>hasMember</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Yields <code class="lang-d"><span class="kwd">true</span></code> if and only if <code class="lang-d"><span class="pln">T</span></code> is an aggregate that defines
+   a symbol called <code class="lang-d"><span class="pln">name</span></code>.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="hasNested" class="public" href="../std/traits/has_nested.html">
+									<code>hasNested</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Determines whether <code class="lang-d"><span class="pln">T</span></code> or any of its representation types
+have a context pointer.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="hasStaticMember" class="public" href="../std/traits/has_static_member.html">
+									<code>hasStaticMember</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Whether the symbol represented by the string, member, exists and is a static member of T.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="hasUDA" class="public" href="../std/traits/has_uda.html">
+									<code>hasUDA</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Determine if a symbol has a given
+    <a href="/spec/attribute.html#uda">user-defined attribute</a>.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="hasUnsharedAliasing" class="public" href="../std/traits/has_unshared_aliasing.html">
+									<code>hasUnsharedAliasing</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Returns <code class="lang-d"><span class="kwd">true</span></code> if and only if <code class="lang-d"><span class="pln">T</span></code>'s representation includes at
+least one of the following: <ol><li>a raw pointer <code class="lang-d"><span class="pln">U</span><span class="pun">*</span></code> and <code class="lang-d"><span class="pln">U</span></code>
+is not immutable or shared;</li> <li>an array <code class="lang-d"><span class="pln">U</span><span class="pun">[]</span></code> and <code class="lang-d"><span class="pln">U</span></code> is not
+immutable or shared;</li> <li>a reference to a class type <code class="lang-d"><span class="pln">C</span></code> and
+<code class="lang-d"><span class="pln">C</span></code> is not immutable or shared.</li> <li>an associative array that is not
+immutable or shared.</li> <li>a delegate that is not shared.</li></ol>
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="ifTestable" class="public" href="../std/traits/if_testable.html">
+									<code>ifTestable</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isAbstractClass" class="public" href="../std/traits/is_abstract_class.html">
+									<code>isAbstractClass</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Detect whether <code class="lang-d"><span class="pln">T</span></code> is an abstract class.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isAbstractFunction" class="public" href="../std/traits/is_abstract_function.html">
+									<code>isAbstractFunction</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Detect whether <code class="lang-d"><span class="pln">T</span></code> is an abstract function.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isAggregateType" class="public" href="../std/traits/is_aggregate_type.html">
+									<code>isAggregateType</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Detect whether type <code class="lang-d"><span class="pln">T</span></code> is an aggregate type.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isArray" class="public" href="../std/traits/is_array.html">
+									<code>isArray</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Detect whether type <code class="lang-d"><span class="pln">T</span></code> is an array (static or dynamic; for associative
+  arrays see <code class="lang-d"><a href="../std/traits/is_associative_array.html"><span class="pln">isAssociativeArray</span></a></code>).
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isAssignable" class="public" href="../std/traits/is_assignable.html">
+									<code>isAssignable</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Returns <code class="lang-d"><span class="kwd">true</span></code> iff a value of type <code class="lang-d"><span class="typ">Rhs</span></code> can be assigned to a variable of
+type <code class="lang-d"><span class="typ">Lhs</span></code>.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isAssociativeArray" class="public" href="../std/traits/is_associative_array.html">
+									<code>isAssociativeArray</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Detect whether <code class="lang-d"><span class="pln">T</span></code> is an associative array type
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isAutodecodableString" class="public" href="../std/traits/is_autodecodable_string.html">
+									<code>isAutodecodableString</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Detect whether type <code class="lang-d"><span class="pln">T</span></code> is a string that will be autodecoded.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isBasicType" class="public" href="../std/traits/is_basic_type.html">
+									<code>isBasicType</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Detect whether <code class="lang-d"><span class="pln">T</span></code> is a basic type (scalar type or void).
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isBoolean" class="public" href="../std/traits/is_boolean.html">
+									<code>isBoolean</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Detect whether <code class="lang-d"><span class="pln">T</span></code> is a built-in boolean type.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isBuiltinType" class="public" href="../std/traits/is_builtin_type.html">
+									<code>isBuiltinType</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Detect whether type <code class="lang-d"><span class="pln">T</span></code> is a builtin type.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isCallable" class="public" href="../std/traits/is_callable.html">
+									<code>isCallable</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Detect whether <code class="lang-d"><span class="pln">T</span></code> is a callable object, which can be called with the
+function call operator <code class="lang-d"><span class="pun">class="pln"&gt;LPAREN</span><span class="pun">...class="pln"&gt;RPAREN</span><span class="pun"></span></code>.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isConvertibleToString" class="public" href="../std/traits/is_convertible_to_string.html">
+									<code>isConvertibleToString</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td><span class="red">Warning: This trait will be deprecated as soon as it is no longer used
+                 in Phobos. For a function parameter to safely accept a type
+                 that implicitly converts to string as a string, the conversion
+                 needs to happen at the callsite; otherwise, the conversion is
+                 done inside the function, and in many cases, that means that
+                 local memory is sliced (e.g. if a static array is passed to
+                 the function, then it's copied, and the resulting dynamic
+                 array will be a slice of a local variable). So, if the
+                 resulting string escapes the function, the string refers to
+                 invalid memory, and accessing it would mean accessing invalid
+                 memory. As such, the only safe way for a function to accept
+                 types that implicitly convert to string is for the implicit
+                 conversion to be done at the callsite, and that can only occur
+                 if the parameter is explicitly typed as an array, whereas
+                 using isConvertibleToString in a template constraint would
+                 result in the conversion being done inside the function. As
+                 such, isConvertibleToString is inherently unsafe and is going
+                 to be deprecated.</span>
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isCopyable" class="public" href="../std/traits/is_copyable.html">
+									<code>isCopyable</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Determines whether the type <code class="lang-d"><span class="pln">S</span></code> can be copied.
+ If a type cannot be copied, then code such as <code class="lang-d"><span class="typ">MyStruct </span><span class="pln">x</span><span class="pun">; </span><span class="kwd">auto </span><span class="pln">y </span><span class="pun">= </span><span class="pln">x</span><span class="pun">;</span></code> will fail to compile.
+ Copying for structs can be disabled by using <code class="lang-d"><span class="kwd">@disable this</span><span class="pun">(</span><span class="kwd">this</span><span class="pun">)</span></code>.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isCovariantWith" class="public" href="../std/traits/is_covariant_with.html">
+									<code>isCovariantWith</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Determines whether the function type <code class="lang-d"><span class="pln">F</span></code> is covariant with <code class="lang-d"><span class="pln">G</span></code>, i.e.,
+functions of the type <code class="lang-d"><span class="pln">F</span></code> can override ones of the type <code class="lang-d"><span class="pln">G</span></code>.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isDelegate" class="public" href="../std/traits/is_delegate.html">
+									<code>isDelegate</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Detect whether symbol or type <code class="lang-d"><span class="pln">T</span></code> is a delegate.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isDynamicArray" class="public" href="../std/traits/is_dynamic_array.html">
+									<code>isDynamicArray</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Detect whether type <code class="lang-d"><span class="pln">T</span></code> is a dynamic array.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isEqualityComparable" class="public" href="../std/traits/is_equality_comparable.html">
+									<code>isEqualityComparable</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Detects whether <code class="lang-d"><span class="pln">T</span></code> is a comparable type. Basic types and structs and
+ classes that implement opCmp are ordering comparable.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isExpressions" class="public" href="../std/traits/is_expressions.html">
+									<code>isExpressions</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Check whether the tuple T is an expression tuple.
+ An expression tuple only contains expressions.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isFinal" class="public" href="../std/traits/is_final.html">
+									<code>isFinal</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Detect whether <code class="lang-d"><span class="pln">X</span></code> is a final method or class.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isFinalClass" class="public" href="../std/traits/is_final_class.html">
+									<code>isFinalClass</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Detect whether <code class="lang-d"><span class="pln">T</span></code> is a final class.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isFinalFunction" class="public" href="../std/traits/is_final_function.html">
+									<code>isFinalFunction</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Detect whether <code class="lang-d"><span class="pln">T</span></code> is a final function.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isFloatingPoint" class="public" href="../std/traits/is_floating_point.html">
+									<code>isFloatingPoint</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Detect whether <code class="lang-d"><span class="pln">T</span></code> is a built-in floating point type.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isFunction" class="public" href="../std/traits/is_function.html">
+									<code>isFunction</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Detect whether symbol or type <code class="lang-d"><span class="pln">X</span></code> is a function. This is different that finding
+ if a symbol is callable or satisfying <code class="lang-d"><span class="kwd">is</span><span class="pun">(</span><span class="pln">X </span><span class="pun">== </span><span class="kwd">function</span><span class="pun">)</span></code>, it finds
+ specifically if the symbol represents a normal function declaration, i.e.
+ not a delegate or a function pointer.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isFunctionPointer" class="public" href="../std/traits/is_function_pointer.html">
+									<code>isFunctionPointer</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Detect whether symbol or type <code class="lang-d"><span class="pln">T</span></code> is a function pointer.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isImplicitlyConvertible" class="public" href="../std/traits/is_implicitly_convertible.html">
+									<code>isImplicitlyConvertible</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Is <code class="lang-d"><span class="typ">From</span></code> implicitly convertible to <code class="lang-d"><span class="typ">To</span></code>?
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isInnerClass" class="public" href="../std/traits/is_inner_class.html">
+									<code>isInnerClass</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Determines whether <code class="lang-d"><span class="pln">T</span></code> is a class nested inside another class
+and that <code class="lang-d"><span class="pln">T<wbr/></span><span class="pun">.</span><span class="pln">outer</span></code> is the implicit reference to the outer class
+(i.e. <code class="lang-d"><span class="pln">outer</span></code> has not been used as a field or method name)
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isInstanceOf" class="public" href="../std/traits/is_instance_of.html">
+									<code>isInstanceOf</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Returns true if T is an instance of the template S.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isIntegral" class="public" href="../std/traits/is_integral.html">
+									<code>isIntegral</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Detect whether <code class="lang-d"><span class="pln">T</span></code> is a built-in integral type. Types <code class="lang-d"><span class="typ">bool</span></code>,
+ <code class="lang-d"><span class="typ">char</span></code>, <code class="lang-d"><span class="typ">wchar</span></code>, and <code class="lang-d"><span class="typ">dchar</span></code> are not considered integral.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isIterable" class="public" href="../std/traits/is_iterable.html">
+									<code>isIterable</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Returns <code class="lang-d"><span class="kwd">true</span></code> if T can be iterated over using a <code class="lang-d"><span class="kwd">foreach</span></code> loop with
+ a single loop variable of automatically inferred type, regardless of how
+ the <code class="lang-d"><span class="kwd">foreach</span></code> loop is implemented.  This includes ranges, structs/classes
+ that define <code class="lang-d"><span class="pln">opApply</span></code> with a single loop variable, and builtin dynamic,
+ static and associative arrays.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isMutable" class="public" href="../std/traits/is_mutable.html">
+									<code>isMutable</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Returns true if T is not const or immutable.  Note that isMutable is true for
+ string, or immutable(char)[], because the 'head' is mutable.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isNarrowString" class="public" href="../std/traits/is_narrow_string.html">
+									<code>isNarrowString</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Detect whether type <code class="lang-d"><span class="pln">T</span></code> is a narrow string.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isNested" class="public" href="../std/traits/is_nested.html">
+									<code>isNested</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Determines whether <code class="lang-d"><span class="pln">T</span></code> has its own context pointer.
+<code class="lang-d"><span class="pln">T</span></code> must be either <code class="lang-d"><span class="kwd">class</span></code>, <code class="lang-d"><span class="kwd">struct</span></code>, or <code class="lang-d"><span class="kwd">union</span></code>.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isNestedFunction" class="public" href="../std/traits/is_nested_function.html">
+									<code>isNestedFunction</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Determines if <code class="lang-d"><span class="pln">f</span></code> is a function that requires a context pointer.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isNumeric" class="public" href="../std/traits/is_numeric.html">
+									<code>isNumeric</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Detect whether <code class="lang-d"><span class="pln">T</span></code> is a built-in numeric type (integral or floating
+ point).
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isOrderingComparable" class="public" href="../std/traits/is_ordering_comparable.html">
+									<code>isOrderingComparable</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Detects whether <code class="lang-d"><span class="pln">T</span></code> is a comparable type. Basic types and structs and
+ classes that implement opCmp are ordering comparable.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isPointer" class="public" href="../std/traits/is_pointer.html">
+									<code>isPointer</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Detect whether type <code class="lang-d"><span class="pln">T</span></code> is a pointer.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isSafe" class="public" href="../std/traits/is_safe.html">
+									<code>isSafe</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td><code class="lang-d"><span class="kwd">true</span></code> if <code class="lang-d"><span class="pln">func</span></code> is <code class="lang-d"><span class="kwd">@safe</span></code> or <code class="lang-d"><span class="kwd">@trusted</span></code>.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isScalarType" class="public" href="../std/traits/is_scalar_type.html">
+									<code>isScalarType</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Detect whether <code class="lang-d"><span class="pln">T</span></code> is a scalar type (a built-in numeric, character or
+ boolean type).
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isSigned" class="public" href="../std/traits/is_signed.html">
+									<code>isSigned</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Detect whether <code class="lang-d"><span class="pln">T</span></code> is a built-in signed numeric type.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isSIMDVector" class="public" href="../std/traits/is_simd_vector.html">
+									<code>isSIMDVector</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Detect whether type <code class="lang-d"><span class="pln">T</span></code> is a SIMD vector type.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isSomeChar" class="public" href="../std/traits/is_some_char.html">
+									<code>isSomeChar</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Detect whether <code class="lang-d"><span class="pln">T</span></code> is one of the built-in character types.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isSomeFunction" class="public" href="../std/traits/is_some_function.html">
+									<code>isSomeFunction</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Detect whether symbol or type <code class="lang-d"><span class="pln">T</span></code> is a function, a function pointer or a delegate.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isSomeString" class="public" href="../std/traits/is_some_string.html">
+									<code>isSomeString</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Detect whether <code class="lang-d"><span class="pln">T</span></code> is one of the built-in string types.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isStaticArray" class="public" href="../std/traits/is_static_array.html">
+									<code>isStaticArray</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Detect whether type <code class="lang-d"><span class="pln">T</span></code> is a static array.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isType" class="public" href="../std/traits/is_type.html">
+									<code>isType</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Detect whether <code class="lang-d"><span class="pln">X</span></code> is a type. Analogous to <code class="lang-d"><span class="kwd">is</span><span class="pun">(</span><span class="pln">X</span><span class="pun">)</span></code>. This is useful when used
+ in conjunction with other templates, e.g. <code class="lang-d"><span class="pln">allSatisfy</span><span class="pun">!(</span><span class="pln">isType</span><span class="pun">, </span><span class="pln">X</span><span class="pun">)</span></code>.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isTypeTuple" class="public" href="../std/traits/is_type_tuple.html">
+									<code>isTypeTuple</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Check whether the tuple <code class="lang-d"><span class="pln">T</span></code> is a type tuple.
+ A type tuple only contains types.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isUnsafe" class="public" href="../std/traits/is_unsafe.html">
+									<code>isUnsafe</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td><code class="lang-d"><span class="kwd">true</span></code> if <code class="lang-d"><span class="pln">func</span></code> is <code class="lang-d"><span class="kwd">@system</span></code>.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isUnsigned" class="public" href="../std/traits/is_unsigned.html">
+									<code>isUnsigned</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Detect whether <code class="lang-d"><span class="pln">T</span></code> is a built-in unsigned numeric type.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="mangledName" class="public" href="../std/traits/mangled_name.html">
+									<code>mangledName</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Returns the mangled name of symbol or type <code class="lang-d"><span class="pln">sth</span></code>.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="moduleName" class="public" href="../std/traits/module_name.html">
+									<code>moduleName</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Get the module name (including package) for the given symbol.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="mostNegative" class="public" href="../std/traits/most_negative.html">
+									<code>mostNegative</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Returns the most negative value of the numeric type T.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="packageName" class="public" href="../std/traits/package_name.html">
+									<code>packageName</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Get the full package name for the given symbol.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="variadicFunctionStyle" class="public" href="../std/traits/variadic_function_style.html">
+									<code>variadicFunctionStyle</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>Determines what kind of variadic parameters function has.
+</td>
+						</tr>
+					</table>
+				</section>
+				<section>
+					<h2>Aliases</h2>
+					<table>
+						<col class="caption"/>
+						<tr>
+							<th>Name</th><th>Type</th><th>Description</th>
+						</tr>
+						<tr>
+							<td>
+								<a id="BaseClassesTuple" class="public" href="../std/traits/base_classes_tuple.html">
+									<code>BaseClassesTuple</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><a href="../std/meta/alias_seq.html"><span class="typ">AliasSeq</span></a>!()</code>
+							</td>
+							<td>Get a <span class="d_param">AliasSeq</span> of <i>all</i> base classes of this class,
+ in decreasing order. Interfaces are not included. <span class="d_param"> BaseClassesTuple!Object</span> yields the empty type tuple.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="BaseTypeTuple" class="public" href="../std/traits/base_type_tuple.html">
+									<code>BaseTypeTuple</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><span class="pln">P</span></code>
+							</td>
+							<td>Get a <span class="d_param">AliasSeq</span> of the base class and base interfaces of
+ this class or interface. <span class="d_param">BaseTypeTuple!Object</span> returns
+ the empty type tuple.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="CentTypeList" class="public" href="../std/traits/cent_type_list.html">
+									<code>CentTypeList</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><a href="../std/meta/alias_seq.html"><span class="typ">AliasSeq</span></a>!(cent,ucent)</code>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="classInstanceAlignment" class="public" href="../std/traits/class_instance_alignment.html">
+									<code>classInstanceAlignment</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><span class="pln">maxAlignment</span>!(void*,typeof(T.tupleof))</code>
+							</td>
+							<td>Returns class instance alignment.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="CommonType" class="public" href="../std/traits/common_type.html">
+									<code>CommonType</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><span class="typ">void</span></code>
+							</td>
+							<td>Get the type that all types can be implicitly converted to. Useful
+e.g. in figuring out an array type from a bunch of initializing
+values. Returns <span class="d_param">void</span> if passed an empty list, or if the
+types have no common type.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="ConstOf" class="public" href="../std/traits/const_of.html">
+									<code>ConstOf</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><span class="kwd">const</span><span class="pun">(</span><span class="pln">T</span><span class="pun">)</span></code>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="CopyConstness" class="public" href="../std/traits/copy_constness.html">
+									<code>CopyConstness</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><span class="typ">Unshared</span>!(CopyTypeQualifiers!(FromType,ToType))</code>
+							</td>
+							<td>Returns the type of <code class="lang-d"><span class="typ">Target</span></code> with the "constness" of <code class="lang-d"><span class="typ">Source</span></code>. A type's <b>constness</b>
+refers to whether it is <code class="lang-d"><span class="kwd">const</span></code>, <code class="lang-d"><span class="kwd">immutable</span></code>, or <code class="lang-d"><span class="kwd">inout</span></code>. If <code class="lang-d"><span class="pln">source</span></code> has no constness, the
+returned type will be the same as <code class="lang-d"><span class="typ">Target</span></code>.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="CopyTypeQualifiers" class="public" href="../std/traits/copy_type_qualifiers.html">
+									<code>CopyTypeQualifiers</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><span class="typ">ModifyTypePreservingTQ</span>!(T,FromType)</code>
+							</td>
+							<td>Copies type qualifiers from <code class="lang-d"><span class="typ">FromType</span></code> to <code class="lang-d"><span class="typ">ToType</span></code>.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="EnumMembers" class="public" href="../std/traits/enum_members.html">
+									<code>EnumMembers</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><span class="typ">EnumSpecificMembers</span>!(__traits(allMembers,E))</code>
+							</td>
+							<td>Retrieves the members of an enumerated type <code class="lang-d"><span class="kwd">enum </span><span class="pln">E</span></code>.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="FieldNameTuple" class="public" href="../std/traits/field_name_tuple.html">
+									<code>FieldNameTuple</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><a href="../std/meta/static_map.html"><span class="pln">staticMap</span></a>!(NameOf,T.tupleof[0..__dollar-isNested!T])</code>
+							</td>
+							<td>Get as an expression tuple the names of the fields of a struct, class, or
+ union. This consists of the fields that take up memory space, excluding the
+ hidden fields like the virtual function table pointer or a context pointer
+ for nested types.
+ Inherited fields (for classes) are not included.
+ If <code class="lang-d"><span class="pln">T</span></code> isn't a struct, class, or union, an
+ expression tuple with an empty string is returned.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="Fields" class="public" href="../std/traits/fields.html">
+									<code>Fields</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><span class="kwd">typeof</span><span class="pun">(</span><span class="pln">T<wbr/></span><span class="pun">.</span><span class="pln">tupleof</span><span class="pun">[</span><span class="lit">0</span><span class="pun">..</span><span class="pln">__dollar</span><span class="pun">-</span><span class="pln">isNested</span><span class="pun">!</span><span class="pln">T</span><span class="pun">])</span></code>
+							</td>
+							<td>Get as a tuple the types of the fields of a struct, class, or union.
+ This consists of the fields that take up memory space,
+ excluding the hidden fields like the virtual function
+ table pointer or a context pointer for nested types.
+ If <code class="lang-d"><span class="pln">T</span></code> isn't a struct, class, or union returns a tuple
+ with one element <code class="lang-d"><span class="pln">T</span></code>.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="FieldTypeTuple" class="public" href="../std/traits/field_type_tuple.html">
+									<code>FieldTypeTuple</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"></code>
+							</td>
+							<td>Alternate name for <code class="lang-d"><a href="../std/traits/fields.html"><span class="typ">Fields</span></a></code>, kept for legacy compatibility.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="ForeachType" class="public" href="../std/traits/foreach_type.html">
+									<code>ForeachType</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><a href="../std/traits/return_type.html"><span class="typ">ReturnType</span></a>!(typeof((inoutintx=0){foreach(elem;T.init){returnelem;}assert(0);}))</code>
+							</td>
+							<td>Returns the inferred type of the loop variable when a variable of type T
+is iterated over using a <code class="lang-d"><span class="kwd">foreach</span></code> loop with a single loop variable and
+automatically inferred return type.  Note that this may not be the same as
+<code class="lang-d"><span class="pln">std<wbr/></span><span class="pun">.</span><span class="pln">range<wbr/></span><span class="pun">.</span><span class="typ">ElementType</span><span class="pun">!</span><span class="typ">Range</span></code> in the case of narrow strings, or if T
+has both opApply and a range interface.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="FunctionTypeOf" class="public" href="../std/traits/function_type_of.html">
+									<code>FunctionTypeOf</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><span class="typ">Fsym</span></code>
+							</td>
+							<td>Get the function type from a callable object <code class="lang-d"><span class="pln">func</span></code>.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="getSymbolsByUDA" class="public" href="../std/traits/get_symbols_byuda.html">
+									<code>getSymbolsByUDA</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><a href="../std/meta/alias_seq.html"><span class="typ">AliasSeq</span></a>!(symbol,membersWithUDA)</code>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="getUDAs" class="public" href="../std/traits/get_ud_as.html">
+									<code>getUDAs</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><a href="../std/meta/filter.html"><span class="typ">Filter</span></a>!(isDesiredUDA!attribute,__traits(getAttributes,symbol))</code>
+							</td>
+							<td>Gets the matching <a href="/spec/attribute.html#uda">user-defined attributes</a>
+    from the given symbol.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="ImmutableOf" class="public" href="../std/traits/immutable_of.html">
+									<code>ImmutableOf</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><span class="kwd">immutable</span><span class="pun">(</span><span class="pln">T</span><span class="pun">)</span></code>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="ImplicitConversionTargets" class="public" href="../std/traits/implicit_conversion_targets.html">
+									<code>ImplicitConversionTargets</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><a href="../std/meta/alias_seq.html"><span class="typ">AliasSeq</span></a>!(byte,ubyte,short,ushort,int,uint,long,ulong,CentTypeList,float,double,real,char,wchar,dchar)</code>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="InoutOf" class="public" href="../std/traits/inout_of.html">
+									<code>InoutOf</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><span class="kwd">inout</span><span class="pun">(</span><span class="pln">T</span><span class="pun">)</span></code>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="InterfacesTuple" class="public" href="../std/traits/interfaces_tuple.html">
+									<code>InterfacesTuple</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><a href="../std/meta/no_duplicates.html"><span class="typ">NoDuplicates</span></a>!(Flatten!S)</code>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="isExpressionTuple" class="public" href="../std/traits/is_expression_tuple.html">
+									<code>isExpressionTuple</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"></code>
+							</td>
+							<td>Alternate name for <code class="lang-d"><a href="../std/traits/is_expressions.html"><span class="pln">isExpressions</span></a></code>, kept for legacy compatibility.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="KeyType" class="public" href="../std/traits/key_type.html">
+									<code>KeyType</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><span class="pln">K</span></code>
+							</td>
+							<td>Get the Key type of an Associative Array.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="Largest" class="public" href="../std/traits/largest.html">
+									<code>Largest</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><span class="pln">T</span><span class="pun">[</span><span class="lit">0</span><span class="pun">]</span></code>
+							</td>
+							<td>Returns the largest type, i.e. T such that T.sizeof is the largest.  If more
+than one type is of the same size, the leftmost argument of these in will be
+returned.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="MemberFunctionsTuple" class="public" href="../std/traits/member_functions_tuple.html">
+									<code>MemberFunctionsTuple</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><span class="pln">shrink</span>!overloads</code>
+							</td>
+							<td>Returns a tuple of non-static functions with the name <code class="lang-d"><span class="pln">name</span></code> declared in the
+class or interface <code class="lang-d"><span class="pln">C</span></code>.  Covariant duplicates are shrunk into the most
+derived one.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="OriginalType" class="public" href="../std/traits/original_type.html">
+									<code>OriginalType</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><span class="typ">ModifyTypePreservingTQ</span>!(Impl,T)</code>
+							</td>
+							<td>Strips off all <code class="lang-d"><span class="kwd">enum</span></code>s from type <code class="lang-d"><span class="pln">T</span></code>.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="ParameterDefaults" class="public" href="../std/traits/parameter_defaults.html">
+									<code>ParameterDefaults</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><span class="typ">Impl</span>!()</code>
+							</td>
+							<td>Get, as a tuple, the default value of the parameters to a function symbol.
+If a parameter doesn't have the default value, <code class="lang-d"><span class="typ">void</span></code> is returned instead.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="ParameterDefaultValueTuple" class="public" href="../std/traits/parameter_default_value_tuple.html">
+									<code>ParameterDefaultValueTuple</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"></code>
+							</td>
+							<td>Alternate name for <code class="lang-d"><a href="../std/traits/parameter_defaults.html"><span class="typ">ParameterDefaults</span></a></code>, kept for legacy compatibility.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="ParameterIdentifierTuple" class="public" href="../std/traits/parameter_identifier_tuple.html">
+									<code>ParameterIdentifierTuple</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><span class="typ">Impl</span>!()</code>
+							</td>
+							<td>Get, as a tuple, the identifiers of the parameters to a function symbol.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="Parameters" class="public" href="../std/traits/parameters.html">
+									<code>Parameters</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><span class="pln">P</span></code>
+							</td>
+							<td>Get, as a tuple, the types of the parameters to a function, a pointer
+to function, a delegate, a struct with an <code class="lang-d"><span class="pln">opCall</span></code>, a pointer to a
+struct with an <code class="lang-d"><span class="pln">opCall</span></code>, or a class with an <code class="lang-d"><span class="pln">opCall</span></code>.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="ParameterStorageClassTuple" class="public" href="../std/traits/parameter_storage_class_tuple.html">
+									<code>ParameterStorageClassTuple</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><span class="typ">StorageClass</span>!0</code>
+							</td>
+							<td>Get tuple, one per function parameter, of the storage classes of the parameters.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="ParameterTypeTuple" class="public" href="../std/traits/parameter_type_tuple.html">
+									<code>ParameterTypeTuple</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"></code>
+							</td>
+							<td>Alternate name for <code class="lang-d"><a href="../std/traits/parameters.html"><span class="typ">Parameters</span></a></code>, kept for legacy compatibility.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="PointerTarget" class="public" href="../std/traits/pointer_target.html">
+									<code>PointerTarget</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><span class="pln">T</span></code>
+							</td>
+							<td>Returns the target type of a pointer.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="Promoted" class="public" href="../std/traits/promoted.html">
+									<code>Promoted</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><a href="../std/traits/copy_type_qualifiers.html"><span class="typ">CopyTypeQualifiers</span></a>!(T,typeof(T.init+T.init))</code>
+							</td>
+							<td>Get the type that a scalar type <code class="lang-d"><span class="pln">T</span></code> will <a href="/spec/type.html#integer-promotions">promote</a>
+to in multi-term arithmetic expressions.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="QualifierOf" class="public" href="../std/traits/qualifier_of.html">
+									<code>QualifierOf</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><a href="../std/traits/shared_const_of.html"><span class="typ">SharedConstOf</span></a></code>
+							</td>
+							<td>Gives a template that can be used to apply the same
+ attributes that are on the given type <code class="lang-d"><span class="pln">T</span></code>. E.g. passing
+ <code class="lang-d"><span class="kwd">inout shared </span><span class="typ">int</span></code> will return <code class="lang-d"><a href="../std/traits/shared_inout_of.html"><span class="typ">SharedInoutOf</span></a></code>.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="RepresentationTypeTuple" class="public" href="../std/traits/representation_type_tuple.html">
+									<code>RepresentationTypeTuple</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><span class="typ">Impl</span>!(FieldTypeTuple!T)</code>
+							</td>
+							<td>Get the primitive types of the fields of a struct or class, in
+topological order.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="ReturnType" class="public" href="../std/traits/return_type.html">
+									<code>ReturnType</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><a href="../std/digest/crc/crc.r.html"><span class="pln">CRC<wbr/></span><span class="pun">.<wbr/></span><span class="pln">R</span></a></code>
+							</td>
+							<td>Get the type of the return value from a function,
+ a pointer to function, a delegate, a struct
+ with an opCall, a pointer to a struct with an opCall,
+ or a class with an <code class="lang-d"><span class="pln">opCall</span></code>. Please note that <span class="d_keyword">ref</span>
+ is not part of a type, but the attribute of the function
+ (see template <code class="lang-d"><a href="../std/traits/function_attributes.html"><span class="pln">functionAttributes</span></a></code>).
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="Select" class="public" href="../std/traits/select.html">
+									<code>Select</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><a href="../std/meta/alias.html"><span class="typ">Alias</span></a>!(T[!condition])</code>
+							</td>
+							<td>Aliases itself to <code class="lang-d"><span class="pln">T</span><span class="pun">[</span><span class="lit">0</span><span class="pun">]</span></code> if the boolean <code class="lang-d"><span class="pln">condition</span></code> is <code class="lang-d"><span class="kwd">true</span></code>
+and to <code class="lang-d"><span class="pln">T</span><span class="pun">[</span><span class="lit">1</span><span class="pun">]</span></code> otherwise.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="SetFunctionAttributes" class="public" href="../std/traits/set_function_attributes.html">
+									<code>SetFunctionAttributes</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><a href="../std/traits/function_type_of.html"><span class="typ">FunctionTypeOf</span></a>!(SetFunctionAttributes!(T*,linkage,attrs))</code>
+							</td>
+							<td>Constructs a new function or delegate type with the same basic signature
+ as the given one, but different attributes (including linkage).
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="SharedConstOf" class="public" href="../std/traits/shared_const_of.html">
+									<code>SharedConstOf</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><span class="kwd">const</span><span class="pun">(</span><span class="kwd">shared</span><span class="pun">(</span><span class="pln">T</span><span class="pun">)</span><span class="pun">)</span></code>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="SharedInoutOf" class="public" href="../std/traits/shared_inout_of.html">
+									<code>SharedInoutOf</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><span class="kwd">inout</span><span class="pun">(</span><span class="kwd">shared</span><span class="pun">(</span><span class="pln">T</span><span class="pun">)</span><span class="pun">)</span></code>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="SharedOf" class="public" href="../std/traits/shared_of.html">
+									<code>SharedOf</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><span class="kwd">shared</span><span class="pun">(</span><span class="pln">T</span><span class="pun">)</span></code>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="Signed" class="public" href="../std/traits/signed.html">
+									<code>Signed</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><span class="typ">ModifyTypePreservingTQ</span>!(Impl,OriginalType!T)</code>
+							</td>
+							<td>Returns the corresponding signed type for T. T must be a numeric integral type,
+otherwise a compile-time error occurs.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="SignedCentTypeList" class="public" href="../std/traits/signed_cent_type_list.html">
+									<code>SignedCentTypeList</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><a href="../std/meta/alias_seq.html"><span class="typ">AliasSeq</span></a>!cent</code>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="TemplateArgsOf" class="public" href="../std/traits/template_args_of.html">
+									<code>TemplateArgsOf</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><span class="typ">Args</span></code>
+							</td>
+							<td>Returns a <code class="lang-d"><span class="typ">AliasSeq</span></code> of the template arguments used to instantiate <code class="lang-d"><span class="pln">T</span></code>.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="TemplateOf" class="public" href="../std/traits/template_of.html">
+									<code>TemplateOf</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><span class="typ">Base</span></code>
+							</td>
+							<td>Returns an alias to the template that <code class="lang-d"><span class="pln">T</span></code> is an instance of.
+It will return <code class="lang-d"><span class="typ">void</span></code> if a symbol without a template is given.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="TransitiveBaseTypeTuple" class="public" href="../std/traits/transitive_base_type_tuple.html">
+									<code>TransitiveBaseTypeTuple</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><a href="../std/meta/alias_seq.html"><span class="typ">AliasSeq</span></a>!()</code>
+							</td>
+							<td>Get a <span class="d_param">AliasSeq</span> of <i>all</i> base classes of <span class="d_param"> T</span>, in decreasing order, followed by <span class="d_param">T</span>'s
+ interfaces. <span class="d_param">TransitiveBaseTypeTuple!Object</span> yields the
+ empty type tuple.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="Unqual" class="public" href="../std/traits/unqual.html">
+									<code>Unqual</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><span class="pln">U</span></code>
+							</td>
+							<td>Removes all qualifiers, if any, from type <code class="lang-d"><span class="pln">T</span></code>.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="Unsigned" class="public" href="../std/traits/unsigned.html">
+									<code>Unsigned</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><span class="typ">ModifyTypePreservingTQ</span>!(Impl,OriginalType!T)</code>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="UnsignedCentTypeList" class="public" href="../std/traits/unsigned_cent_type_list.html">
+									<code>UnsignedCentTypeList</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><a href="../std/meta/alias_seq.html"><span class="typ">AliasSeq</span></a>!ucent</code>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<a id="ValueType" class="public" href="../std/traits/value_type.html">
+									<code>ValueType</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><span class="pln">V</span></code>
+							</td>
+							<td>Get the Value type of an Associative Array.
+</td>
+						</tr>
+					</table>
+				</section>
+				<section>
+					<h2>Authors</h2><p><a href="http://digitalmars.com">Walter Bright</a>,
+            Tomasz Stachowiak (<code class="lang-d"><a href="../std/traits/is_expressions.html"><span class="pln">isExpressions</span></a></code>),
+            <a href="http://erdani.org">Andrei Alexandrescu</a>,
+            Shin Fujishiro,
+            <a href="http://octarineparrot.com">Robert Clipsham</a>,
+            <a href="http://klickverbot.at">David Nadlinger</a>,
+            Kenji Hara,
+            Shoichi Kato
+</p>
+
+				</section>
+				<section>
+					<h2>License</h2><p><a href="http://www.boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
+</p>
+
+				</section>
+				    
+				<div id="quickindex" class="quickindex"></div>
+				<div id="copyright" class="smallprint">
+					Copyright &copy; 1999-2018 by the <a href="../../foundation_overview.html">D Language Foundation</a> | Page generated by <a href="https://github.com/rejectedsoftware/ddox">ddox</a>.
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>    
+		<script type="text/javascript">window.jQuery || document.write('\\x3Cscript src="../../js/jquery-1.7.2.min.js">\\x3C/script>')</script>    
+		<script type="text/javascript" src="../../js/codemirror-compressed.js"></script>    
+		<script type="text/javascript" src="../../js/run.js"></script><script type="text/javascript" src="../../js/run_examples.js"></script><script type="text/javascript" src="../../js/dlang.js"></script><script type="text/javascript" src="../../js/listanchors.js"></script><script type="text/javascript" src="../../js/ddox.js"></script><script type="text/javascript">jQuery(document).ready(listanchors);
+setupDdox();</script>
+	</body>
+</html>
