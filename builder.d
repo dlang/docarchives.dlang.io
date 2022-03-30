@@ -47,6 +47,19 @@ void main(string[] args)
         auto installerFolder = diggerWorkRepo.buildPath("installer");
         auto web = dlangOrgFolder.buildPath("web");
 
+        // cleanup
+        if (diggerWorkRepo.exists) 
+        {
+            auto removeWorkTree = (string p) => p.exists && p.remove;
+            auto diggerModulePath = diggerWorkRepo.buildPath(".git", "modules");
+            removeWorkTree(diggerModulePath.buildPath("dmd", "ae-sys-d-worktree.json"));
+            removeWorkTree(diggerModulePath.buildPath("druntime", "ae-sys-d-worktree.json"));
+            removeWorkTree(diggerModulePath.buildPath("phobos", "ae-sys-d-worktree.json"));
+            removeWorkTree(diggerModulePath.buildPath("dlang.org", "ae-sys-d-worktree.json"));
+            removeWorkTree(diggerModulePath.buildPath("installer", "ae-sys-d-worktree.json"));
+            removeWorkTree(diggerModulePath.buildPath("tools", "ae-sys-d-worktree.json"));
+        }
+
         // checkout
         console("Checking out: ", tag);
         executeOrFail(digger ~ "checkout --with=website " ~ tag);
@@ -73,14 +86,9 @@ void main(string[] args)
         make("all");
         make("kindle");
 
-        void removeFromWeb(string dir)
-        {
-            auto path = web.buildPath(dir);
-            if (path.exists)
-                path.rmdirRecurse;
-        }
-        removeFromWeb("phobos-prerelease");
-        removeFromWeb("library-prerelease");
+        auto removeFromWeb = (string d) => d.exists && d.rmdirRecurse;
+        removeFromWeb(web.buildPath("phobos-prerelease"));
+        removeFromWeb(web.buildPath("library-prerelease"));
 
         // save
         console("Storing: ", tag);
