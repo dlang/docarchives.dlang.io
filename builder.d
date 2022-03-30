@@ -2,34 +2,10 @@
 
 import std.algorithm, std.conv, std.file, std.path, std.process, std.range, std.stdio;
 
-auto digger = "/home/seb/dlang/Digger/digger";
+auto digger = "dub run digger -- ";
 auto dlangOrgFolder = "dlang.org";
 
-void checkoutRelease(string web, string tag)
-{
-	writefln("Nuke web: %s", tag);
-	if (web.exists)
-		web.rmdirRecurse;
-
-	// reset
-	auto pipes = pipeShell("cd dlang.org && git clean -f && git checkout .");
-	pipes.pid.wait;
-
-	writefln("Checking out: %s", tag);
-	foreach (file; ["dlang.org"])
-	{
-		executeShell("git -C " ~ dlangOrgFolder.dirName.buildPath(file) ~ " clean -f");
-		executeShell("git -C " ~ dlangOrgFolder.dirName.buildPath(file) ~ " checkout " ~ tag);
-		executeShell("make -C " ~ dlangOrgFolder.dirName.buildPath(file) ~ " clean");
-	}
-
-	pipes = pipeShell(digger ~ " checkout " ~ tag, Redirect.stdin);
-	pipes.pid.wait;
-	pipes = pipeShell(digger ~ " build " ~ tag, Redirect.stdin);
-	pipes.pid.wait;
-}
-
-void execute(string command, string[string] env)
+void execute(string command, string[string] env = null)
 {
     stderr.writefln("---> Executing: %s", command);
     auto pipes = pipeShell(command, Redirect.stdin, env);
@@ -39,73 +15,59 @@ void execute(string command, string[string] env)
 void main(string[] args)
 {
     auto outFolder = "archives";
-
     outFolder.mkdirRecurse;
+
+    writeln("Building digger...");
+    execute("dub fetch digger");
+
+    auto cwd = getcwd();
     auto tags = iota(78, 79).map!(e => text("v2.0", e, e >= 65 ? ".0" : ""));
     foreach (tag; tags)
     {
+        auto diggerWorkRepo = cwd.buildPath("work", "repo");
+        auto dlangOrgFolder = diggerWorkRepo.buildPath("dlang.org");
+        auto installerFolder = diggerWorkRepo.buildPath("installer");
         auto web = dlangOrgFolder.buildPath("web");
-        //checkoutRelease(web, tag);
 
-        auto env = [
-            "DMD": "/dmd",
-            "PATH": "/home/seb/dlang/docs/work/result/bin:/usr/local/sbin:/usr/local/bin:/usr/bin",
-            "NODATETIME": "nodatetime.ddoc"
-        ];
-        env["DC"] = env["DMD"];
-        auto diggerWorkRepo = "/home/seb/dlang/docs/work";
-        auto folders = " DMD_DIR=" ~ diggerWorkRepo.buildPath("repo", "dmd") ~
-					  " DRUNTIME_DIR=" ~ diggerWorkRepo.buildPath("repo", "druntime") ~
-					  " PHOBOS_DIR=" ~ diggerWorkRepo.buildPath("repo", "phobos") ~
-					  " INSTALLER_DIR=" ~ diggerWorkRepo.buildPath("repo", "installer") ~
-					  " TOOLS_DIR=" ~ diggerWorkRepo.buildPath("repo", "tools") ~
-					  " LATEST=" ~ tag[1..$];
+        if (diggerWorkRepo.exists)
+            diggerWorkRepo.rmdirRecurse;
 
-		auto posixMak = dlangOrgFolder.buildPath("posix.mak");
-		std.file.write(posixMak, posixMak.readText.replace("| dpl-docs", ""));
+        writefln("Checking out: %s", tag);
+        execute(digger ~ "checkout --with=website " ~ tag);
+        execute("git -C " ~ diggerWorkRepo ~ " submodule update --init installer");
+        execute("git -C " ~ installerFolder ~ " checkout " ~ tag);
 
         // build
         writefln("Building: %s", tag);
+        auto env = [
+            "NODATETIME": "nodatetime.ddoc"
+        ];
+        auto folders = " DMD_DIR=" ~ diggerWorkRepo.buildPath("dmd") ~
+            " DRUNTIME_DIR=" ~ diggerWorkRepo.buildPath("druntime") ~
+            " PHOBOS_DIR=" ~ diggerWorkRepo.buildPath("phobos") ~
+            " INSTALLER_DIR=" ~ diggerWorkRepo.buildPath("installer") ~
+            " TOOLS_DIR=" ~ diggerWorkRepo.buildPath("tools") ~
+            " LATEST=" ~ tag[1..$];
         auto make = (string c) => execute("make -f posix.mak " ~ c ~ " -C " ~ dlangOrgFolder ~ folders, env);
         make("all");
-        make("html pdf kindle");
-        make("docs-prerelease.json");
-        make("phobos-prerelease");
+        make("kindle");
 
-        void renameInWeb(string from, string to)
+        void removeFromWeb(string dir)
         {
-        	// rename phobos-prerelease to phobos
-			auto webPhobos = web.buildPath(to);
-        	if (webPhobos.exists)
-        	    webPhobos.rmdirRecurse;
-
-        	web.buildPath(from).rename(webPhobos);
-        	// rewrite links
-        	foreach (file; webPhobos.dirEntries(SpanMode.depth).filter!isFile)
-        	{
-        		auto text = file.readText;
-        		text = text.replace(from, to);
-        		std.file.write(file, text);
-        	}
+            auto path = web.buildPath(dir);
+            if (path.exists)
+                path.rmdirRecurse;
         }
-		renameInWeb("phobos-prerelease", "phobos");
-		/*renameInWeb("library-prerelease", "library");*/
+        removeFromWeb("phobos-prerelease");
+        removeFromWeb("library-prerelease");
 
         // save
         writefln("Storing: %s", tag);
         auto target = outFolder.buildPath(tag);
-        if (!target.exists)
-            web.rename(target);
-        else
-        {
-            foreach (file; web.dirEntries(SpanMode.depth).filter!isFile)
-            {
-                auto t = target.buildPath(file.absolutePath.relativePath(web.absolutePath));
-                t.dirName.mkdirRecurse;
-                file.rename(t);
-            }
-            dlangOrgFolder.buildPath(".generated/docs-prerelease.json").rename(target.buildPath("docs.json"));
-        }
+        if (target.exists)
+            target.rmdirRecurse;
+        web.rename(target);
+        dlangOrgFolder.buildPath(".generated", "docs-latest.json").rename(target.buildPath("docs.json"));
     }
     tags.writeln;
 }
