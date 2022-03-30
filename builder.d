@@ -28,7 +28,7 @@ void main(string[] args)
     execute("dub fetch digger");
 
     auto cwd = getcwd();
-    auto tags = iota(78, 79).map!(e => text("v2.0", e, e >= 65 ? ".0" : ""));
+    auto tags = iota(78, 79).map!(e => text("v2.", e < 100 ? "0" : "", e, e >= 65 ? ".0" : ""));
     foreach (tag; tags)
     {
         auto diggerWorkRepo = cwd.buildPath("work", "repo");
