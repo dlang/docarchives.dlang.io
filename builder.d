@@ -7,9 +7,16 @@ auto dlangOrgFolder = "dlang.org";
 
 void execute(string command, string[string] env = null)
 {
-    stderr.writefln("---> Executing: %s", command);
+    stderr.writefln("\033[1;33m---> Executing: %s\033[00m", command);
     auto pipes = pipeShell(command, Redirect.stdin, env);
     pipes.pid.wait;
+}
+
+void console(S...)(S args)
+{
+    stdout.write("\033[1;32m");
+    stdout.write(args);
+    stdout.writeln("\033[00m");
 }
 
 void main(string[] args)
@@ -17,7 +24,7 @@ void main(string[] args)
     auto outFolder = "archives";
     outFolder.mkdirRecurse;
 
-    writeln("Building digger...");
+    console("Building digger...");
     execute("dub fetch digger");
 
     auto cwd = getcwd();
@@ -32,13 +39,13 @@ void main(string[] args)
         if (diggerWorkRepo.exists)
             diggerWorkRepo.rmdirRecurse;
 
-        writefln("Checking out: %s", tag);
+        console("Checking out: ", tag);
         execute(digger ~ "checkout --with=website " ~ tag);
         execute("git -C " ~ diggerWorkRepo ~ " submodule update --init installer");
         execute("git -C " ~ installerFolder ~ " checkout " ~ tag);
 
         // build
-        writefln("Building: %s", tag);
+        console("Building: ", tag);
         auto env = [
             "NODATETIME": "nodatetime.ddoc"
         ];
@@ -62,12 +69,12 @@ void main(string[] args)
         removeFromWeb("library-prerelease");
 
         // save
-        writefln("Storing: %s", tag);
+        console("Storing: ", tag);
         auto target = outFolder.buildPath(tag);
         if (target.exists)
             target.rmdirRecurse;
         web.rename(target);
         dlangOrgFolder.buildPath(".generated", "docs-latest.json").rename(target.buildPath("docs.json"));
     }
-    tags.writeln;
+    console(tags);
 }
