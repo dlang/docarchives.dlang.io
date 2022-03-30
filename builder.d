@@ -12,6 +12,12 @@ int execute(string command, string[string] env = null)
     return pipes.pid.wait;
 }
 
+void executeOrFail(string command, string[string] env = null)
+{
+    import core.stdc.stdlib;
+    execute(command, env) == 0 || exit(1);
+}
+
 void console(S...)(S args)
 {
     stdout.write("\033[1;32m");
@@ -30,7 +36,7 @@ void main(string[] args)
     outFolder.mkdirRecurse;
 
     console("Building digger...");
-    execute("dub fetch digger");
+    executeOrFail("dub fetch digger");
 
     auto cwd = getcwd();
     auto tags = iota(78, 79).map!(e => tagVersion(e));
@@ -43,9 +49,9 @@ void main(string[] args)
 
         // checkout
         console("Checking out: ", tag);
-        execute(digger ~ "checkout --with=website " ~ tag);
-        execute("git -C " ~ diggerWorkRepo ~ " submodule update --init installer");
-        execute("git -C " ~ installerFolder ~ " checkout " ~ tag);
+        executeOrFail(digger ~ "checkout --with=website " ~ tag);
+        executeOrFail("git -C " ~ diggerWorkRepo ~ " submodule update --init installer");
+        executeOrFail("git -C " ~ installerFolder ~ " checkout " ~ tag);
 
         // build
         console("Building: ", tag);
@@ -63,7 +69,7 @@ void main(string[] args)
         if (execute("git -C " ~ diggerWorkRepo ~ " show-ref --tags " ~ nextTag) == 0)
             folders ~= " CHANGELOG_VERSION_MASTER=" ~ tag ~ ".." ~ nextTag;
 
-        auto make = (string c) => execute("make -f posix.mak " ~ c ~ " -C " ~ dlangOrgFolder ~ folders, env);
+        auto make = (string c) => executeOrFail("make -f posix.mak " ~ c ~ " -C " ~ dlangOrgFolder ~ folders, env);
         make("all");
         make("kindle");
 
