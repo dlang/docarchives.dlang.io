@@ -5,11 +5,11 @@ import std.algorithm, std.conv, std.file, std.path, std.process, std.range, std.
 auto digger = "dub run digger -- ";
 auto dlangOrgFolder = "dlang.org";
 
-void execute(string command, string[string] env = null)
+int execute(string command, string[string] env = null)
 {
     stderr.writefln("\033[1;33m---> Executing: %s\033[00m", command);
     auto pipes = pipeShell(command, Redirect.stdin, env);
-    pipes.pid.wait;
+    return pipes.pid.wait;
 }
 
 void console(S...)(S args)
@@ -17,6 +17,11 @@ void console(S...)(S args)
     stdout.write("\033[1;32m");
     stdout.write(args);
     stdout.writeln("\033[00m");
+}
+
+string tagVersion(int minor)
+{
+    return text("v2.", minor < 100 ? "0" : "", minor, minor >= 65 ? ".0" : "");
 }
 
 void main(string[] args)
@@ -28,7 +33,7 @@ void main(string[] args)
     execute("dub fetch digger");
 
     auto cwd = getcwd();
-    auto tags = iota(78, 79).map!(e => text("v2.", e < 100 ? "0" : "", e, e >= 65 ? ".0" : ""));
+    auto tags = iota(78, 79).map!(e => tagVersion(e));
     foreach (tag; tags)
     {
         auto diggerWorkRepo = cwd.buildPath("work", "repo");
@@ -36,9 +41,7 @@ void main(string[] args)
         auto installerFolder = diggerWorkRepo.buildPath("installer");
         auto web = dlangOrgFolder.buildPath("web");
 
-        if (diggerWorkRepo.exists)
-            diggerWorkRepo.rmdirRecurse;
-
+        // checkout
         console("Checking out: ", tag);
         execute(digger ~ "checkout --with=website " ~ tag);
         execute("git -C " ~ diggerWorkRepo ~ " submodule update --init installer");
@@ -55,6 +58,11 @@ void main(string[] args)
             " INSTALLER_DIR=" ~ diggerWorkRepo.buildPath("installer") ~
             " TOOLS_DIR=" ~ diggerWorkRepo.buildPath("tools") ~
             " LATEST=" ~ tag[1..$];
+
+        auto nextTag = tagVersion(tag.split(".")[1].to!int + 1);
+        if (execute("git -C " ~ diggerWorkRepo ~ " show-ref --tags " ~ nextTag) == 0)
+            folders ~= " CHANGELOG_VERSION_MASTER=" ~ tag ~ ".." ~ nextTag;
+
         auto make = (string c) => execute("make -f posix.mak " ~ c ~ " -C " ~ dlangOrgFolder ~ folders, env);
         make("all");
         make("kindle");
