@@ -3,6 +3,23 @@ dlang.org archives
 
 > Go back in time to a previous released version of dlang.org, its documentation and specification
 
+- [x] [2.098.0](https://docarchives.dlang.io/v2.098.0) ([Phobos](https://docarchives.dlang.io/v2.098.0/phobos))
+- [x] [2.097.0](https://docarchives.dlang.io/v2.097.0) ([Phobos](https://docarchives.dlang.io/v2.097.0/phobos))
+- [x] [2.096.0](https://docarchives.dlang.io/v2.096.0) ([Phobos](https://docarchives.dlang.io/v2.096.0/phobos))
+- [x] [2.095.0](https://docarchives.dlang.io/v2.095.0) ([Phobos](https://docarchives.dlang.io/v2.095.0/phobos))
+- [x] [2.094.0](https://docarchives.dlang.io/v2.094.0) ([Phobos](https://docarchives.dlang.io/v2.094.0/phobos))
+- [x] [2.093.0](https://docarchives.dlang.io/v2.093.0) ([Phobos](https://docarchives.dlang.io/v2.093.0/phobos))
+- [x] [2.092.0](https://docarchives.dlang.io/v2.092.0) ([Phobos](https://docarchives.dlang.io/v2.092.0/phobos))
+- [x] [2.091.0](https://docarchives.dlang.io/v2.091.0) ([Phobos](https://docarchives.dlang.io/v2.091.0/phobos))
+- [x] [2.090.0](https://docarchives.dlang.io/v2.090.0) ([Phobos](https://docarchives.dlang.io/v2.090.0/phobos))
+- [x] [2.089.0](https://docarchives.dlang.io/v2.089.0) ([Phobos](https://docarchives.dlang.io/v2.089.0/phobos))
+- [x] [2.088.0](https://docarchives.dlang.io/v2.088.0) ([Phobos](https://docarchives.dlang.io/v2.088.0/phobos))
+- [x] [2.087.0](https://docarchives.dlang.io/v2.087.0) ([Phobos](https://docarchives.dlang.io/v2.087.0/phobos))
+- [x] [2.086.0](https://docarchives.dlang.io/v2.086.0) ([Phobos](https://docarchives.dlang.io/v2.086.0/phobos))
+- [x] [2.085.0](https://docarchives.dlang.io/v2.085.0) ([Phobos](https://docarchives.dlang.io/v2.085.0/phobos))
+- [x] [2.084.0](https://docarchives.dlang.io/v2.084.0) ([Phobos](https://docarchives.dlang.io/v2.084.0/phobos))
+- [x] [2.083.0](https://docarchives.dlang.io/v2.083.0) ([Phobos](https://docarchives.dlang.io/v2.083.0/phobos))
+- [x] [2.082.0](https://docarchives.dlang.io/v2.082.0) ([Phobos](https://docarchives.dlang.io/v2.082.0/phobos))
 - [x] [2.081.0](https://docarchives.dlang.io/v2.081.0) ([Phobos](https://docarchives.dlang.io/v2.081.0/phobos))
 - [x] [2.080.0](https://docarchives.dlang.io/v2.080.0) ([Phobos](https://docarchives.dlang.io/v2.080.0/phobos))
 - [x] [2.079.0](https://docarchives.dlang.io/v2.079.0) ([Phobos](https://docarchives.dlang.io/v2.079.0/phobos))

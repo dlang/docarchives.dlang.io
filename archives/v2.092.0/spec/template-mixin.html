@@ -1,0 +1,494 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2022 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Template Mixins - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Template Mixins' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href=".."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.freenode.net/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option selected value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+<div class="subnav-helper"></div> <div class="subnav">    <div class="head"><h5>Language Reference</h5> <p class="subnav-duplicate"><a href="../spec/spec.html">table of contents</a></p></div>
+    <ul>        <li><a href='            ../spec/intro.html'>Introduction</a></li><li><a href='            ../spec/lex.html'>Lexical</a></li><li><a href='            ../spec/grammar.html'>Grammar</a></li><li><a href='            ../spec/module.html'>Modules</a></li><li><a href='            ../spec/declaration.html'>Declarations</a></li><li><a href='            ../spec/type.html'>Types</a></li><li><a href='            ../spec/property.html'>Properties</a></li><li><a href='            ../spec/attribute.html'>Attributes</a></li><li><a href='            ../spec/pragma.html'>Pragmas</a></li><li><a href='            ../spec/expression.html'>Expressions</a></li><li><a href='            ../spec/statement.html'>Statements</a></li><li><a href='            ../spec/arrays.html'>Arrays</a></li><li><a href='            ../spec/hash-map.html'>Associative Arrays</a></li><li><a href='            ../spec/struct.html'>Structs and Unions</a></li><li><a href='            ../spec/class.html'>Classes</a></li><li><a href='            ../spec/interface.html'>Interfaces</a></li><li><a href='            ../spec/enum.html'>Enums</a></li><li><a href='            ../spec/const3.html'>Type Qualifiers</a></li><li><a href='            ../spec/function.html'>Functions</a></li><li><a href='            ../spec/operatoroverloading.html'>Operator Overloading</a></li><li><a href='            ../spec/template.html'>Templates</a></li><li><a href='            ../spec/template-mixin.html'>Template Mixins</a></li><li><a href='            ../spec/contracts.html'>Contract Programming</a></li><li><a href='            ../spec/version.html'>Conditional Compilation</a></li><li><a href='            ../spec/traits.html'>Traits</a></li><li><a href='            ../spec/errors.html'>Error Handling</a></li><li><a href='            ../spec/unittest.html'>Unit Tests</a></li><li><a href='            ../spec/garbage.html'>Garbage Collection</a></li><li><a href='            ../spec/float.html'>Floating Point</a></li><li><a href='            ../spec/iasm.html'>D x86 Inline Assembler</a></li><li><a href='            ../spec/ddoc.html'>Embedded Documentation</a></li><li><a href='            ../spec/interfaceToC.html'>Interfacing to C</a></li><li><a href='            ../spec/cpp_interface.html'>Interfacing to C++</a></li><li><a href='            ../spec/objc_interface.html'>Interfacing to Objective-C</a></li><li><a href='            ../spec/portability.html'>Portability Guide</a></li><li><a href='            ../spec/entity.html'>Named Character Entities</a></li><li><a href='            ../spec/memory-safe-d.html'>Memory Safety</a></li><li><a href='            ../spec/abi.html'>Application Binary Interface</a></li><li><a href='            ../spec/simd.html'>Vector Extensions</a></li><li><a href='            ../spec/betterc.html'>Better C
+        </a></li>
+    </ul>
+</div>
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BTemplate Mixins%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/spec/template-mixin.dd">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Template Mixins</h1>
+        
+<style>    body { counter-reset: h1 22; counter-increment: h1 -1; }
+    h1 { counter-reset: h2 h3 p; }
+    h2 { counter-reset: h3 h4 p; }
+    h3 { counter-reset: h4 p; }
+    h4 { counter-reset: p; }
+    h1::before {
+        counter-increment: h1;
+        content: counter(h1) ". ";
+    }
+    h2::before {
+        counter-increment: h2;
+        content: counter(h1) "." counter(h2) " ";
+    }
+    h3::before {
+        counter-increment: h3;
+        content: counter(h1) "." counter(h2) "." counter(h3) " ";
+    }
+    h4::before {
+        counter-increment: h4;
+        content: counter(h1) "." counter(h2) "." counter(h3) "." counter(h4) " ";
+    }
+    p::before, .spec-boxes::before {
+        counter-increment: p;
+        content: counter(p) ". ";
+    }
+    h1::before, h2::before, h3::before, h4::before, p::before, .spec-boxes::before
+    {
+        color: #999;
+        font-size: 80%;
+        margin-right: 0.25em;
+    }
+</style>
+        <div class="blankline"></div>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<div class="page-contents quickindex">    <div class="page-contents-header">        <b>Contents</b>
+    </div>
+    <ol>    <li><a href="#mixin_scope">Mixin Scope</a></li>
+</ol>
+</div>
+<div class="blankline"></div>
+        <p>A <i>TemplateMixin</i> takes an arbitrary set of declarations from
+        the body of a <i>TemplateDeclaration</i> and inserts them
+        into the current context.</p>
+<div class="blankline"></div>
+<pre class="bnf notranslate"><a id="TemplateMixinDeclaration"><span class="gname">TemplateMixinDeclaration</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">mixin</span> <span class="d_inlinecode donthyphenate notranslate">template</span> <a href="../spec/lex.html#Identifier"><i>Identifier</i></a> <a href="../spec/template.html#TemplateParameters"><i>TemplateParameters</i></a> <a href="../spec/template.html#Constraint"><i>Constraint</i></a><sub>opt</sub> <span class="d_inlinecode donthyphenate notranslate">{</span> <a href="../spec/module.html#DeclDefs"><i>DeclDefs</i></a><sub>opt</sub> <span class="d_inlinecode donthyphenate notranslate">}</span>
+<div class="blankline"></div>
+<a id="TemplateMixin"><span class="gname">TemplateMixin</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">mixin</span> <a href="#MixinTemplateName"><i>MixinTemplateName</i></a> <a href="../spec/template.html#TemplateArguments"><i>TemplateArguments</i></a><sub>opt</sub> <a href="../spec/lex.html#Identifier"><i>Identifier</i></a><sub>opt</sub> <span class="d_inlinecode donthyphenate notranslate">;</span>
+<div class="blankline"></div>
+<a id="MixinTemplateName"><span class="gname">MixinTemplateName</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">.</span> <a href="#QualifiedIdentifierList"><i>QualifiedIdentifierList</i></a>
+    <a href="#QualifiedIdentifierList"><i>QualifiedIdentifierList</i></a>
+    <a href="../spec/declaration.html#Typeof"><i>Typeof</i></a> <span class="d_inlinecode donthyphenate notranslate">.</span> <a href="#QualifiedIdentifierList"><i>QualifiedIdentifierList</i></a>
+<div class="blankline"></div>
+<a id="QualifiedIdentifierList"><span class="gname">QualifiedIdentifierList</span></a>:
+    <a href="../spec/lex.html#Identifier"><i>Identifier</i></a>
+    <a href="../spec/lex.html#Identifier"><i>Identifier</i></a> <span class="d_inlinecode donthyphenate notranslate">.</span> <i>QualifiedIdentifierList</i>
+    <a href="../spec/template.html#TemplateInstance"><i>TemplateInstance</i></a> <span class="d_inlinecode donthyphenate notranslate">.</span> <i>QualifiedIdentifierList</i>
+</pre>
+<div class="blankline"></div>
+        <p>A <i>TemplateMixin</i> can occur in declaration lists of modules,
+        classes, structs, unions, and as a statement.
+        The <i>MixinTemplateName</i> refers to a <i>TemplateDeclaration</i> or
+        <i>TemplateMixinDeclaration</i>.
+        If the <i>TemplateDeclaration</i> has no parameters, the mixin
+        form that has no !(<i>TemplateArgumentList</i>)
+        can be used.
+        </p>
+<div class="blankline"></div>
+        <p>Unlike a template instantiation, a template mixin's body is evaluated
+        within the scope where the mixin appears, not where the template declaration
+        is defined. It is analogous to cutting and pasting the body of
+        the template into the location of the mixin into a <a href="#mixin_scope">nested scope</a>. It is useful for injecting
+        parameterized &lsquo;boilerplate&rsquo; code, as well as for creating
+        templated nested functions, which is not possible with
+        template instantiations.
+        </p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">mixin</span> <span class="d_keyword">template</span> Foo()
+{
+    <span class="d_keyword">int</span> x = 5;
+}
+
+<b><i><span class="d_keyword">mixin</span> Foo;</i></b>
+
+<span class="d_keyword">struct</span> Bar
+{
+    <b><i><span class="d_keyword">mixin</span> Foo;</i></b>
+}
+
+<span class="d_keyword">void</span> test()
+{
+    writefln(<span class="d_string">"x = %d"</span>, x);         <span class="d_comment">// prints 5
+</span>    {
+        Bar b;
+        <span class="d_keyword">int</span> x = 3;
+
+        writefln(<span class="d_string">"b.x = %d"</span>, b.x); <span class="d_comment">// prints 5
+</span>        writefln(<span class="d_string">"x = %d"</span>, x);     <span class="d_comment">// prints 3
+</span>        {
+            <b><i><span class="d_keyword">mixin</span> Foo;</i></b>
+            writefln(<span class="d_string">"x = %d"</span>, x); <span class="d_comment">// prints 5
+</span>            x = 4;
+            writefln(<span class="d_string">"x = %d"</span>, x); <span class="d_comment">// prints 4
+</span>        }
+        writefln(<span class="d_string">"x = %d"</span>, x);     <span class="d_comment">// prints 3
+</span>    }
+    writefln(<span class="d_string">"x = %d"</span>, x);         <span class="d_comment">// prints 5
+</span>}
+</pre>
+<div class="blankline"></div>
+        <p>Mixins can be parameterized:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">mixin</span> <span class="d_keyword">template</span> Foo(T)
+{
+    T x = 5;
+}
+
+<b><i><span class="d_keyword">mixin</span> Foo!(<span class="d_keyword">int</span>);</i></b>           <span class="d_comment">// create x of type int
+</span></pre>
+<div class="blankline"></div>
+        <p>Mixins can add virtual functions to a class:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">mixin</span> <span class="d_keyword">template</span> Foo()
+{
+    <span class="d_keyword">void</span> func() { writeln(<span class="d_string">"Foo.func()"</span>); }
+}
+
+<span class="d_keyword">class</span> Bar
+{
+    <b><i><span class="d_keyword">mixin</span> Foo;</i></b>
+}
+
+<span class="d_keyword">class</span> Code : Bar
+{
+    <span class="d_keyword">override</span> <span class="d_keyword">void</span> func() { writeln(<span class="d_string">"Code.func()"</span>); }
+}
+
+<span class="d_keyword">void</span> test()
+{
+    Bar b = <span class="d_keyword">new</span> Bar();
+    b.func();      <span class="d_comment">// calls Foo.func()
+</span>
+    b = <span class="d_keyword">new</span> Code();
+    b.func();      <span class="d_comment">// calls Code.func()
+</span>}
+</pre>
+<div class="blankline"></div>
+        <p>Mixins are evaluated in the scope of where they appear, not the scope
+        of the template declaration:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">int</span> y = 3;
+
+<span class="d_keyword">mixin</span> <span class="d_keyword">template</span> Foo()
+{
+    <span class="d_keyword">int</span> abc() { <span class="d_keyword">return</span> y; }
+}
+
+<span class="d_keyword">void</span> test()
+{
+    <span class="d_keyword">int</span> y = 8;
+    <b><i><span class="d_keyword">mixin</span> Foo;</i></b> <span class="d_comment">// local y is picked up, not global y
+</span>    <span class="d_keyword">assert</span>(abc() == 8);
+}
+</pre>
+<div class="blankline"></div>
+        <p>Mixins can parameterize symbols using alias parameters:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">mixin</span> <span class="d_keyword">template</span> Foo(<span class="d_keyword">alias</span> b)
+{
+    <span class="d_keyword">int</span> abc() { <span class="d_keyword">return</span> b; }
+}
+
+<span class="d_keyword">void</span> test()
+{
+    <span class="d_keyword">int</span> y = 8;
+    <b><i><span class="d_keyword">mixin</span> Foo!(y);</i></b>
+    <span class="d_keyword">assert</span>(abc() == 8);
+}
+</pre>
+<div class="blankline"></div>
+        <p>This example uses a mixin to implement a generic Duff's device
+        for an arbitrary statement (in this case, the arbitrary statement
+        is in bold). A nested function is generated as well as a
+        delegate literal, these can be inlined by the compiler:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">mixin</span> <span class="d_keyword">template</span> duffs_device(<span class="d_keyword">alias</span> id1, <span class="d_keyword">alias</span> id2, <span class="d_keyword">alias</span> s)
+{
+    <span class="d_keyword">void</span> duff_loop()
+    {
+        <span class="d_keyword">if</span> (id1 &lt; id2)
+        {
+            <span class="d_keyword">typeof</span>(id1) n = (id2 - id1 + 7) / 8;
+            <span class="d_keyword">switch</span> ((id2 - id1) % 8)
+            {
+                <span class="d_keyword">case</span> 0: <span class="d_keyword">do</span> { s(); <span class="d_keyword">goto</span> <span class="d_keyword">case</span>;
+                <span class="d_keyword">case</span> 7:      s(); <span class="d_keyword">goto</span> <span class="d_keyword">case</span>;
+                <span class="d_keyword">case</span> 6:      s(); <span class="d_keyword">goto</span> <span class="d_keyword">case</span>;
+                <span class="d_keyword">case</span> 5:      s(); <span class="d_keyword">goto</span> <span class="d_keyword">case</span>;
+                <span class="d_keyword">case</span> 4:      s(); <span class="d_keyword">goto</span> <span class="d_keyword">case</span>;
+                <span class="d_keyword">case</span> 3:      s(); <span class="d_keyword">goto</span> <span class="d_keyword">case</span>;
+                <span class="d_keyword">case</span> 2:      s(); <span class="d_keyword">goto</span> <span class="d_keyword">case</span>;
+                <span class="d_keyword">case</span> 1:      s(); <span class="d_keyword">continue</span>;
+                <span class="d_keyword">default</span>:     <span class="d_keyword">assert</span>(0, <span class="d_string">"Impossible"</span>);
+                        } <span class="d_keyword">while</span> (--n &gt; 0);
+            }
+        }
+    }
+}
+
+<span class="d_keyword">void</span> foo() { writeln(<span class="d_string">"foo"</span>); }
+
+<span class="d_keyword">void</span> test()
+{
+    <span class="d_keyword">int</span> i = 1;
+    <span class="d_keyword">int</span> j = 11;
+
+    <span class="d_keyword">mixin</span> duffs_device!(i, j, <b><i><span class="d_keyword">delegate</span> { foo(); }</i></b>);
+    duff_loop();  <span class="d_comment">// executes foo() 10 times
+</span>}
+</pre>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="mixin_scope" href="#mixin_scope">Mixin Scope</a></h2>
+<div class="blankline"></div>
+        <p>The declarations in a mixin are placed in a nested scope and then
+        &lsquo;imported&rsquo; into the surrounding
+        scope. If the name of a declaration in a mixin is the same
+        as a declaration in the surrounding scope, the surrounding declaration
+        overrides the mixin one:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">int</span> x = 3;
+
+<span class="d_keyword">mixin</span> <span class="d_keyword">template</span> Foo()
+{
+    <span class="d_keyword">int</span> x = 5;
+    <span class="d_keyword">int</span> y = 5;
+}
+
+<b><i><span class="d_keyword">mixin</span> Foo;</i></b>
+<span class="d_keyword">int</span> y = 3;
+
+<span class="d_keyword">void</span> test()
+{
+    writefln(<span class="d_string">"x = %d"</span>, x);  <span class="d_comment">// prints 3
+</span>    writefln(<span class="d_string">"y = %d"</span>, y);  <span class="d_comment">// prints 3
+</span>}
+</pre>
+<div class="blankline"></div>
+        <p>If two different mixins are put in the same scope, and each
+        define a declaration with the same name, there is an ambiguity
+        error when the declaration is referenced:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">mixin</span> <span class="d_keyword">template</span> Foo()
+{
+    <span class="d_keyword">int</span> x = 5;
+    <span class="d_keyword">void</span> func(<span class="d_keyword">int</span> x) { }
+}
+
+<span class="d_keyword">mixin</span> <span class="d_keyword">template</span> Bar()
+{
+    <span class="d_keyword">int</span> x = 4;
+    <span class="d_keyword">void</span> func(<span class="d_keyword">long</span> x) { }
+}
+
+<b><i><span class="d_keyword">mixin</span> Foo;</i></b>
+<b><i><span class="d_keyword">mixin</span> Bar;</i></b>
+
+<span class="d_keyword">void</span> test()
+{
+    <span class="d_keyword">import</span> std.stdio : writefln;
+    writefln(<span class="d_string">"x = %d"</span>, x); <span class="d_comment">// error, x is ambiguous
+</span>    func(1);               <span class="d_comment">// error, func is ambiguous
+</span>}
+</pre>
+        <p>The call to <span class="d_inlinecode donthyphenate notranslate">func()</span> is ambiguous because
+        Foo.func and Bar.func are in different scopes.
+        </p>
+<div class="blankline"></div>
+        <p>If a mixin has an <i>Identifier</i>, it can be used to
+        disambiguate between conflicting symbols:
+        </p>
+<pre class="d_code notranslate"><span class="d_keyword">int</span> x = 6;
+
+<span class="d_keyword">mixin</span> <span class="d_keyword">template</span> Foo()
+{
+    <span class="d_keyword">int</span> x = 5;
+    <span class="d_keyword">int</span> y = 7;
+    <span class="d_keyword">void</span> func() { }
+}
+
+<span class="d_keyword">mixin</span> <span class="d_keyword">template</span> Bar()
+{
+    <span class="d_keyword">int</span> x = 4;
+    <span class="d_keyword">void</span> func() { }
+}
+
+<b><i><span class="d_keyword">mixin</span> Foo F;</i></b>
+<b><i><span class="d_keyword">mixin</span> Bar B;</i></b>
+
+<span class="d_keyword">void</span> test()
+{
+    writefln(<span class="d_string">"y = %d"</span>, y);     <span class="d_comment">// prints 7
+</span>    writefln(<span class="d_string">"x = %d"</span>, x);     <span class="d_comment">// prints 6
+</span>    writefln(<span class="d_string">"F.x = %d"</span>, F.x); <span class="d_comment">// prints 5
+</span>    writefln(<span class="d_string">"B.x = %d"</span>, B.x); <span class="d_comment">// prints 4
+</span>    F.func();                  <span class="d_comment">// calls Foo.func
+</span>    B.func();                  <span class="d_comment">// calls Bar.func
+</span>}
+</pre>
+        <p>Alias declarations can be used to overload together
+        functions declared in different mixins:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">mixin</span> <span class="d_keyword">template</span> Foo()
+{
+    <span class="d_keyword">void</span> func(<span class="d_keyword">int</span> x) {  }
+}
+
+<span class="d_keyword">mixin</span> <span class="d_keyword">template</span> Bar()
+{
+    <span class="d_keyword">void</span> func(<span class="d_keyword">long</span> x) {  }
+}
+
+<span class="d_keyword">mixin</span> Foo!() F;
+<span class="d_keyword">mixin</span> Bar!() B;
+
+<b><i><span class="d_keyword">alias</span> func = F.func;</i></b>
+<b><i><span class="d_keyword">alias</span> func = B.func;</i></b>
+
+<span class="d_keyword">void</span> main()
+{
+    func(1);  <span class="d_comment">// calls B.func
+</span>    func(1L); <span class="d_comment">// calls F.func
+</span>}
+</pre>
+<div class="blankline"></div>
+<div class="blankline"></div>
+        <p>A mixin has its own scope, even if a declaration is overridden
+        by the enclosing one:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">int</span> x = 4;
+
+<span class="d_keyword">mixin</span> <span class="d_keyword">template</span> Foo()
+{
+    <span class="d_keyword">int</span> x = 5;
+    <span class="d_keyword">int</span> bar() { <span class="d_keyword">return</span> x; }
+}
+
+<b><i><span class="d_keyword">mixin</span> Foo;</i></b>
+
+<span class="d_keyword">void</span> test()
+{
+    writefln(<span class="d_string">"x = %d"</span>, x);         <span class="d_comment">// prints 4
+</span>    writefln(<span class="d_string">"bar() = %d"</span>, bar()); <span class="d_comment">// prints 5
+</span>}
+</pre>
+<div class="blankline"></div>
+
+<div style="float: left"><i class="fa fa-angle-left" aria-hidden="true"></i> <a href="../spec/template.html">Templates</a></div>
+<div style="float: right"><a href="../spec/contracts.html">Contract Programming</a> <i class="fa fa-angle-right" aria-hidden="true"></i></div>
+<div style="clear:both"></div>
+
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2022 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on (no date time)</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<script type="text/javascript" src="../js/listanchors.js"></script>
+<script type="text/javascript">jQuery(document).ready(addVersionSelector);</script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

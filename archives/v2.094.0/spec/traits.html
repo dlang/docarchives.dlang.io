@@ -1,0 +1,1832 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2022 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Traits - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Traits' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href=".."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.freenode.net/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option selected value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+<div class="subnav-helper"></div> <div class="subnav">    <div class="head"><h5>Language Reference</h5> <p class="subnav-duplicate"><a href="../spec/spec.html">table of contents</a></p></div>
+    <ul>        <li><a href='            ../spec/intro.html'>Introduction</a></li><li><a href='            ../spec/lex.html'>Lexical</a></li><li><a href='            ../spec/grammar.html'>Grammar</a></li><li><a href='            ../spec/module.html'>Modules</a></li><li><a href='            ../spec/declaration.html'>Declarations</a></li><li><a href='            ../spec/type.html'>Types</a></li><li><a href='            ../spec/property.html'>Properties</a></li><li><a href='            ../spec/attribute.html'>Attributes</a></li><li><a href='            ../spec/pragma.html'>Pragmas</a></li><li><a href='            ../spec/expression.html'>Expressions</a></li><li><a href='            ../spec/statement.html'>Statements</a></li><li><a href='            ../spec/arrays.html'>Arrays</a></li><li><a href='            ../spec/hash-map.html'>Associative Arrays</a></li><li><a href='            ../spec/struct.html'>Structs and Unions</a></li><li><a href='            ../spec/class.html'>Classes</a></li><li><a href='            ../spec/interface.html'>Interfaces</a></li><li><a href='            ../spec/enum.html'>Enums</a></li><li><a href='            ../spec/const3.html'>Type Qualifiers</a></li><li><a href='            ../spec/function.html'>Functions</a></li><li><a href='            ../spec/operatoroverloading.html'>Operator Overloading</a></li><li><a href='            ../spec/template.html'>Templates</a></li><li><a href='            ../spec/template-mixin.html'>Template Mixins</a></li><li><a href='            ../spec/contracts.html'>Contract Programming</a></li><li><a href='            ../spec/version.html'>Conditional Compilation</a></li><li><a href='            ../spec/traits.html'>Traits</a></li><li><a href='            ../spec/errors.html'>Error Handling</a></li><li><a href='            ../spec/unittest.html'>Unit Tests</a></li><li><a href='            ../spec/garbage.html'>Garbage Collection</a></li><li><a href='            ../spec/float.html'>Floating Point</a></li><li><a href='            ../spec/iasm.html'>D x86 Inline Assembler</a></li><li><a href='            ../spec/ddoc.html'>Embedded Documentation</a></li><li><a href='            ../spec/interfaceToC.html'>Interfacing to C</a></li><li><a href='            ../spec/cpp_interface.html'>Interfacing to C++</a></li><li><a href='            ../spec/objc_interface.html'>Interfacing to Objective-C</a></li><li><a href='            ../spec/portability.html'>Portability Guide</a></li><li><a href='            ../spec/entity.html'>Named Character Entities</a></li><li><a href='            ../spec/memory-safe-d.html'>Memory Safety</a></li><li><a href='            ../spec/abi.html'>Application Binary Interface</a></li><li><a href='            ../spec/simd.html'>Vector Extensions</a></li><li><a href='            ../spec/betterc.html'>Better C</a></li><li><a href='            ../spec/ob.html'>Live Functions
+        </a></li>
+    </ul>
+</div>
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BTraits%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/spec/traits.dd">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Traits</h1>
+        
+<style>    body { counter-reset: h1 25; counter-increment: h1 -1; }
+    h1 { counter-reset: h2 h3 p; }
+    h2 { counter-reset: h3 h4 p; }
+    h3 { counter-reset: h4 p; }
+    h4 { counter-reset: p; }
+    h1::before {
+        counter-increment: h1;
+        content: counter(h1) ". ";
+    }
+    h2::before {
+        counter-increment: h2;
+        content: counter(h1) "." counter(h2) " ";
+    }
+    h3::before {
+        counter-increment: h3;
+        content: counter(h1) "." counter(h2) "." counter(h3) " ";
+    }
+    h4::before {
+        counter-increment: h4;
+        content: counter(h1) "." counter(h2) "." counter(h3) "." counter(h4) " ";
+    }
+    p::before, .spec-boxes::before {
+        counter-increment: p;
+        content: counter(p) ". ";
+    }
+    h1::before, h2::before, h3::before, h4::before, p::before, .spec-boxes::before
+    {
+        color: #999;
+        font-size: 80%;
+        margin-right: 0.25em;
+    }
+</style>
+        <div class="blankline"></div>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<div class="page-contents quickindex">    <div class="page-contents-header">        <b>Contents</b>
+    </div>
+    <ol>    <li><a href="#isArithmetic">isArithmetic</a></li>
+    <li><a href="#isFloating">isFloating</a></li>
+    <li><a href="#isIntegral">isIntegral</a></li>
+    <li><a href="#isScalar">isScalar</a></li>
+    <li><a href="#isUnsigned">isUnsigned</a></li>
+    <li><a href="#isStaticArray">isStaticArray</a></li>
+    <li><a href="#isAssociativeArray">isAssociativeArray</a></li>
+    <li><a href="#isAbstractClass">isAbstractClass</a></li>
+    <li><a href="#isFinalClass">isFinalClass</a></li>
+    <li><a href="#isPOD">isPOD</a></li>
+    <li><a href="#isNested">isNested</a></li>
+    <li><a href="#isFuture">isFuture</a></li>
+    <li><a href="#isDeprecated">isDeprecated</a></li>
+    <li><a href="#isDisabled">isDisabled</a></li>
+    <li><a href="#isVirtualFunction">isVirtualFunction</a></li>
+    <li><a href="#isVirtualMethod">isVirtualMethod</a></li>
+    <li><a href="#isAbstractFunction">isAbstractFunction</a></li>
+    <li><a href="#isFinalFunction">isFinalFunction</a></li>
+    <li><a href="#isOverrideFunction">isOverrideFunction</a></li>
+    <li><a href="#isStaticFunction">isStaticFunction</a></li>
+    <li><a href="#isRef">isRef</a></li>
+    <li><a href="#isTemplate">isTemplate</a></li>
+    <li><a href="#isZeroInit">isZeroInit</a></li>
+    <li><a href="#isReturnOnStack">isReturnOnStack</a></li>
+    <li><a href="#isModule">isModule</a></li>
+    <li><a href="#isPackage">isPackage</a></li>
+    <li><a href="#hasMember">hasMember</a></li>
+    <li><a href="#hasCopyConstructor">hasCopyConstructor</a></li>
+    <li><a href="#hasPostblit">hasPostblit</a></li>
+    <li><a href="#identifier">identifier</a></li>
+    <li><a href="#getAliasThis">getAliasThis</a></li>
+    <li><a href="#getAttributes">getAttributes</a></li>
+    <li><a href="#getFunctionVariadicStyle">getFunctionVariadicStyle</a></li>
+    <li><a href="#getFunctionAttributes">getFunctionAttributes</a></li>
+    <li><a href="#getLinkage">getLinkage</a></li>
+    <li><a href="#getLocation">getLocation</a></li>
+    <li><a href="#getMember">getMember</a></li>
+    <li><a href="#getOverloads">getOverloads</a></li>
+    <li><a href="#getParameterStorageClasses">getParameterStorageClasses</a></li>
+    <li><a href="#getPointerBitmap">getPointerBitmap</a></li>
+    <li><a href="#getProtection">getProtection</a></li>
+    <li><a href="#getTargetInfo">getTargetInfo</a></li>
+    <li><a href="#getVirtualFunctions">getVirtualFunctions</a></li>
+    <li><a href="#getVirtualMethods">getVirtualMethods</a></li>
+    <li><a href="#getUnitTests">getUnitTests</a></li>
+    <li><a href="#parent">parent</a></li>
+    <li><a href="#child">child</a></li>
+    <li><a href="#classInstanceSize">classInstanceSize</a></li>
+    <li><a href="#getVirtualIndex">getVirtualIndex</a></li>
+    <li><a href="#allMembers">allMembers</a></li>
+    <li><a href="#derivedMembers">derivedMembers</a></li>
+    <li><a href="#isSame">isSame</a></li>
+    <li><a href="#compiles">compiles</a></li>
+</ol>
+</div>
+<div class="blankline"></div>
+        <p>Traits are extensions to the language to enable
+        programs, at compile time, to get at information
+        internal to the compiler. This is also known as
+        compile time reflection.
+        It is done as a special, easily extended syntax (similar
+        to Pragmas) so that new capabilities can be added
+        as required.
+        </p>
+<div class="blankline"></div>
+<pre class="bnf notranslate"><a id="TraitsExpression"><span class="gname">TraitsExpression</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">__traits</span> <span class="d_inlinecode donthyphenate notranslate">(</span> <a href="#TraitsKeyword"><i>TraitsKeyword</i></a> <span class="d_inlinecode donthyphenate notranslate">,</span> <a href="#TraitsArguments"><i>TraitsArguments</i></a> <span class="d_inlinecode donthyphenate notranslate">)</span>
+<div class="blankline"></div>
+<a id="TraitsKeyword"><span class="gname">TraitsKeyword</span></a>:
+    <a href="#isAbstractClass"><i>isAbstractClass</i></a>
+    <a href="#isArithmetic"><i>isArithmetic</i></a>
+    <a href="#isAssociativeArray"><i>isAssociativeArray</i></a>
+    <a href="#isFinalClass"><i>isFinalClass</i></a>
+    <a href="#isPOD"><i>isPOD</i></a>
+    <a href="#isNested"><i>isNested</i></a>
+    <a href="#isFuture"><i>isFuture</i></a>
+    <a href="#isDeprecated"><i>isDeprecated</i></a>
+    <a href="#isFloating"><i>isFloating</i></a>
+    <a href="#isIntegral"><i>isIntegral</i></a>
+    <a href="#isScalar"><i>isScalar</i></a>
+    <a href="#isStaticArray"><i>isStaticArray</i></a>
+    <a href="#isUnsigned"><i>isUnsigned</i></a>
+    <a href="#isDisabled"><i>isDisabled</i></a>
+    <a href="#isVirtualFunction"><i>isVirtualFunction</i></a>
+    <a href="#isVirtualMethod"><i>isVirtualMethod</i></a>
+    <a href="#isAbstractFunction"><i>isAbstractFunction</i></a>
+    <a href="#isFinalFunction"><i>isFinalFunction</i></a>
+    <a href="#isStaticFunction"><i>isStaticFunction</i></a>
+    <a href="#isOverrideFunction"><i>isOverrideFunction</i></a>
+    <a href="#isTemplate"><i>isTemplate</i></a>
+    <a href="#isRef"><i>isRef</i></a>
+    <a href="#isOut"><i>isOut</i></a>
+    <a href="#isLazy"><i>isLazy</i></a>
+    <a href="#isReturnOnStack"><i>isReturnOnStack</i></a>
+    <a href="#isZeroInit"><i>isZeroInit</i></a>
+    <a href="#isModule"><i>isModule</i></a>
+    <a href="#isPackage"><i>isPackage</i></a>
+    <a href="#hasMember"><i>hasMember</i></a>
+    <a href="#hasCopyConstructor"><i>hasCopyConstructor</i></a>
+    <a href="#hasPostblit"><i>hasPostblit</i></a>
+    <a href="#identifier"><i>identifier</i></a>
+    <a href="#getAliasThis"><i>getAliasThis</i></a>
+    <a href="#getAttributes"><i>getAttributes</i></a>
+    <a href="#getFunctionAttributes"><i>getFunctionAttributes</i></a>
+    <a href="#getFunctionVariadicStyle"><i>getFunctionVariadicStyle</i></a>
+    <a href="#getLinkage"><i>getLinkage</i></a>
+    <a href="#getLocation"><i>getLocation</i></a>
+    <a href="#getMember"><i>getMember</i></a>
+    <a href="#getOverloads"><i>getOverloads</i></a>
+    <a href="#getParameterStorageClasses"><i>getParameterStorageClasses</i></a>
+    <a href="#getPointerBitmap"><i>getPointerBitmap</i></a>
+    <a href="#getProtection"><i>getProtection</i></a>
+    <a href="#getTargetInfo"><i>getTargetInfo</i></a>
+    <a href="#getVirtualFunctions"><i>getVirtualFunctions</i></a>
+    <a href="#getVirtualMethods"><i>getVirtualMethods</i></a>
+    <a href="#getUnitTests"><i>getUnitTests</i></a>
+    <a href="#parent"><i>parent</i></a>
+    <a href="#child"><i>child</i></a>
+    <a href="#classInstanceSize"><i>classInstanceSize</i></a>
+    <a href="#getVirtualIndex"><i>getVirtualIndex</i></a>
+    <a href="#allMembers"><i>allMembers</i></a>
+    <a href="#derivedMembers"><i>derivedMembers</i></a>
+    <a href="#isSame"><i>isSame</i></a>
+    <a href="#compiles"><i>compiles</i></a>
+<div class="blankline"></div>
+<a id="TraitsArguments"><span class="gname">TraitsArguments</span></a>:
+    <a href="#TraitsArgument"><i>TraitsArgument</i></a>
+    <a href="#TraitsArgument"><i>TraitsArgument</i></a> <span class="d_inlinecode donthyphenate notranslate">,</span> <i>TraitsArguments</i>
+<div class="blankline"></div>
+<a id="TraitsArgument"><span class="gname">TraitsArgument</span></a>:
+    <a href="../spec/expression.html#AssignExpression"><i>AssignExpression</i></a>
+    <a href="../spec/declaration.html#Type"><i>Type</i></a>
+</pre>
+<div class="blankline"></div>
+<h2><a id="isArithmetic"><span class="gname">isArithmetic</span></a></h2>
+<div class="blankline"></div>
+        <p>If the arguments are all either types that are arithmetic types,
+        or expressions that are typed as arithmetic types, then <span class="d_inlinecode donthyphenate notranslate">true</span>
+        is returned.
+        Otherwise, <span class="d_inlinecode donthyphenate notranslate">false</span> is returned.
+        If there are no arguments, <span class="d_inlinecode donthyphenate notranslate">false</span> is returned.</p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">int</span> i;
+    writeln(<span class="d_keyword">__traits</span>(isArithmetic, <span class="d_keyword">int</span>));
+    writeln(<span class="d_keyword">__traits</span>(isArithmetic, i, i+1, <span class="d_keyword">int</span>));
+    writeln(<span class="d_keyword">__traits</span>(isArithmetic));
+    writeln(<span class="d_keyword">__traits</span>(isArithmetic, <span class="d_keyword">int</span>*));
+}
+</pre>
+
+</div>
+<div class="blankline"></div>
+        Prints:
+<div class="blankline"></div>
+<pre class="console notranslate">true
+true
+false
+false
+</pre>
+<div class="blankline"></div>
+<h2><a id="isFloating"><span class="gname">isFloating</span></a></h2>
+<div class="blankline"></div>
+        <p>Works like <span class="d_inlinecode donthyphenate notranslate">isArithmetic</span>, except it's for floating
+        point types (including imaginary and complex types).</p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">import</span> core.simd : float4;
+
+<span class="d_keyword">enum</span> E : <span class="d_keyword">float</span> { a, b }
+
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isFloating, <span class="d_keyword">float</span>));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isFloating, <span class="d_keyword">idouble</span>));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isFloating, <span class="d_keyword">creal</span>));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isFloating, E));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isFloating, float4));
+
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(isFloating, <span class="d_keyword">float</span>[4]));
+</pre>
+
+</div>
+<div class="blankline"></div>
+<h2><a id="isIntegral"><span class="gname">isIntegral</span></a></h2>
+<div class="blankline"></div>
+        <p>Works like <span class="d_inlinecode donthyphenate notranslate">isArithmetic</span>, except it's for integral
+        types (including character types).</p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">import</span> core.simd : int4;
+
+<span class="d_keyword">enum</span> E { a, b }
+
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isIntegral, <span class="d_keyword">bool</span>));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isIntegral, <span class="d_keyword">char</span>));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isIntegral, <span class="d_keyword">int</span>));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isIntegral, E));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isIntegral, int4));
+
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(isIntegral, <span class="d_keyword">float</span>));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(isIntegral, <span class="d_keyword">int</span>[4]));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(isIntegral, <span class="d_keyword">void</span>*));
+</pre>
+
+</div>
+<div class="blankline"></div>
+<h2><a id="isScalar"><span class="gname">isScalar</span></a></h2>
+<div class="blankline"></div>
+        <p>Works like <span class="d_inlinecode donthyphenate notranslate">isArithmetic</span>, except it's for scalar
+        types.</p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">import</span> core.simd : int4, void16;
+
+<span class="d_keyword">enum</span> E { a, b }
+
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isScalar, <span class="d_keyword">bool</span>));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isScalar, <span class="d_keyword">char</span>));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isScalar, <span class="d_keyword">int</span>));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isScalar, <span class="d_keyword">float</span>));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isScalar, E));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isScalar, int4));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isScalar, <span class="d_keyword">void</span>*)); <span class="d_comment">// Includes pointers!
+</span>
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(isScalar, <span class="d_keyword">int</span>[4]));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(isScalar, void16));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(isScalar, <span class="d_keyword">void</span>));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(isScalar, <span class="d_keyword">typeof</span>(<span class="d_keyword">null</span>)));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(isScalar, Object));
+</pre>
+
+</div>
+<div class="blankline"></div>
+<h2><a id="isUnsigned"><span class="gname">isUnsigned</span></a></h2>
+<div class="blankline"></div>
+        <p>Works like <span class="d_inlinecode donthyphenate notranslate">isArithmetic</span>, except it's for unsigned
+        types.</p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">import</span> core.simd : uint4;
+
+<span class="d_keyword">enum</span> SignedEnum { a, b }
+<span class="d_keyword">enum</span> UnsignedEnum : <span class="d_keyword">uint</span> { a, b }
+
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isUnsigned, <span class="d_keyword">bool</span>));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isUnsigned, <span class="d_keyword">char</span>));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isUnsigned, <span class="d_keyword">uint</span>));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isUnsigned, UnsignedEnum));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isUnsigned, uint4));
+
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(isUnsigned, <span class="d_keyword">int</span>));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(isUnsigned, <span class="d_keyword">float</span>));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(isUnsigned, SignedEnum));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(isUnsigned, <span class="d_keyword">uint</span>[4]));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(isUnsigned, <span class="d_keyword">void</span>*));
+</pre>
+
+</div>
+<div class="blankline"></div>
+<h2><a id="isStaticArray"><span class="gname">isStaticArray</span></a></h2>
+<div class="blankline"></div>
+        <p>Works like <span class="d_inlinecode donthyphenate notranslate">isArithmetic</span>, except it's for static array
+        types.</p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">import</span> core.simd : int4;
+
+<span class="d_keyword">enum</span> E : <span class="d_keyword">int</span>[4] { a = [1, 2, 3, 4] }
+
+<span class="d_keyword">static</span> array = [1, 2, 3]; <span class="d_comment">// Not a static array: the type is inferred as int[] not int[3].
+</span>
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isStaticArray, <span class="d_keyword">void</span>[0]));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isStaticArray, E));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(isStaticArray, int4));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(isStaticArray, array));
+</pre>
+
+</div>
+<div class="blankline"></div>
+<h2><a id="isAssociativeArray"><span class="gname">isAssociativeArray</span></a></h2>
+<div class="blankline"></div>
+        <p>Works like <span class="d_inlinecode donthyphenate notranslate">isArithmetic</span>, except it's for associative array
+        types.</p>
+<div class="blankline"></div>
+<h2><a id="isAbstractClass"><span class="gname">isAbstractClass</span></a></h2>
+<div class="blankline"></div>
+        <p>If the arguments are all either types that are abstract classes,
+        or expressions that are typed as abstract classes, then <span class="d_inlinecode donthyphenate notranslate">true</span>
+        is returned.
+        Otherwise, <span class="d_inlinecode donthyphenate notranslate">false</span> is returned.
+        If there are no arguments, <span class="d_inlinecode donthyphenate notranslate">false</span> is returned.</p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">abstract</span> <span class="d_keyword">class</span> C { <span class="d_keyword">int</span> foo(); }
+
+<span class="d_keyword">void</span> main()
+{
+    C c;
+    writeln(<span class="d_keyword">__traits</span>(isAbstractClass, C));
+    writeln(<span class="d_keyword">__traits</span>(isAbstractClass, c, C));
+    writeln(<span class="d_keyword">__traits</span>(isAbstractClass));
+    writeln(<span class="d_keyword">__traits</span>(isAbstractClass, <span class="d_keyword">int</span>*));
+}
+</pre>
+
+</div>
+<div class="blankline"></div>
+        Prints:
+<div class="blankline"></div>
+<pre class="console notranslate">true
+true
+false
+false
+</pre>
+<div class="blankline"></div>
+<h2><a id="isFinalClass"><span class="gname">isFinalClass</span></a></h2>
+<div class="blankline"></div>
+        <p>Works like <span class="d_inlinecode donthyphenate notranslate">isAbstractClass</span>, except it's for final
+        classes.</p>
+<div class="blankline"></div>
+<h2><a id="isPOD"><span class="gname">isPOD</span></a></h2>
+<div class="blankline"></div>
+        <p>Takes one argument, which must be a type. It returns
+        <span class="d_inlinecode donthyphenate notranslate">true</span> if the type is a <a href="../glossary.html#pod">POD</a> type, otherwise <span class="d_inlinecode donthyphenate notranslate">false</span>.</p>
+<div class="blankline"></div>
+<h2><a id="isNested"><span class="gname">isNested</span></a></h2>
+<div class="blankline"></div>
+    <p>Takes one argument.
+    It returns <span class="d_inlinecode donthyphenate notranslate">true</span> if the argument is a nested type which internally
+    stores a context pointer, otherwise it returns <span class="d_inlinecode donthyphenate notranslate">false</span>.
+    Nested types can be  <a href="../spec/class.html#nested">classes</a>,
+    <a href="../spec/struct.html#nested">structs</a>, and
+    <a href="../spec/function.html#variadicnested">functions</a>.</p>
+<div class="blankline"></div>
+<h2><a id="isFuture"><span class="gname">isFuture</span></a></h2>
+<div class="blankline"></div>
+    <p>Takes one argument. It returns <span class="d_inlinecode donthyphenate notranslate">true</span> if the argument is a symbol
+    marked with the <span class="d_inlinecode donthyphenate notranslate">@future</span> keyword, otherwise <span class="d_inlinecode donthyphenate notranslate">false</span>. Currently, only
+    functions and variable declarations have support for the <span class="d_inlinecode donthyphenate notranslate">@future</span> keyword.</p>
+<div class="blankline"></div>
+<h2><a id="isDeprecated"><span class="gname">isDeprecated</span></a></h2>
+<div class="blankline"></div>
+    <p>Takes one argument. It returns <span class="d_inlinecode donthyphenate notranslate">true</span> if the argument is a symbol
+    marked with the <span class="d_inlinecode donthyphenate notranslate">deprecated</span> keyword, otherwise <span class="d_inlinecode donthyphenate notranslate">false</span>.</p>
+<div class="blankline"></div>
+<h2><a id="isDisabled"><span class="gname">isDisabled</span></a></h2>
+<div class="blankline"></div>
+    <p>Takes one argument and returns <span class="d_inlinecode donthyphenate notranslate">true</span> if it's a function declaration
+    marked with <span class="d_inlinecode donthyphenate notranslate">@disable</span>.</p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> Foo
+{
+    @disable <span class="d_keyword">void</span> foo();
+    <span class="d_keyword">void</span> bar(){}
+}
+
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isDisabled, Foo.foo));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(isDisabled, Foo.bar));
+</pre>
+
+</div>
+<div class="blankline"></div>
+    <p>For any other declaration even if <span class="d_inlinecode donthyphenate notranslate">@disable</span> is a syntactically valid
+    attribute <span class="d_inlinecode donthyphenate notranslate">false</span> is returned because the annotation has no effect.</p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate">@disable <span class="d_keyword">struct</span> Bar{}
+
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(isDisabled, Bar));
+</pre>
+
+</div>
+<div class="blankline"></div>
+<h2><a id="isVirtualFunction"><span class="gname">isVirtualFunction</span></a></h2>
+<div class="blankline"></div>
+        <p>The same as <a href="#isVirtualMethod"><i>isVirtualMethod</i></a>, except
+        that final functions that don't override anything return true.
+        </p>
+<div class="blankline"></div>
+<h2><a id="isVirtualMethod"><span class="gname">isVirtualMethod</span></a></h2>
+<div class="blankline"></div>
+        <p>Takes one argument. If that argument is a virtual function,
+        <span class="d_inlinecode donthyphenate notranslate">true</span> is returned, otherwise <span class="d_inlinecode donthyphenate notranslate">false</span>.
+        Final functions that don't override anything return false.
+        </p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">void</span> bar() { }
+}
+
+<span class="d_keyword">class</span> C
+{
+    <span class="d_keyword">void</span> bar() { }
+}
+
+<span class="d_keyword">void</span> main()
+{
+    writeln(<span class="d_keyword">__traits</span>(isVirtualMethod, C.bar));  <span class="d_comment">// true
+</span>    writeln(<span class="d_keyword">__traits</span>(isVirtualMethod, S.bar));  <span class="d_comment">// false
+</span>}
+</pre>
+
+</div>
+<div class="blankline"></div>
+<h2><a id="isAbstractFunction"><span class="gname">isAbstractFunction</span></a></h2>
+<div class="blankline"></div>
+        <p>Takes one argument. If that argument is an abstract function,
+        <span class="d_inlinecode donthyphenate notranslate">true</span> is returned, otherwise <span class="d_inlinecode donthyphenate notranslate">false</span>.
+        </p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">void</span> bar() { }
+}
+
+<span class="d_keyword">class</span> C
+{
+    <span class="d_keyword">void</span> bar() { }
+}
+
+<span class="d_keyword">class</span> AC
+{
+    <span class="d_keyword">abstract</span> <span class="d_keyword">void</span> foo();
+}
+
+<span class="d_keyword">void</span> main()
+{
+    writeln(<span class="d_keyword">__traits</span>(isAbstractFunction, C.bar));   <span class="d_comment">// false
+</span>    writeln(<span class="d_keyword">__traits</span>(isAbstractFunction, S.bar));   <span class="d_comment">// false
+</span>    writeln(<span class="d_keyword">__traits</span>(isAbstractFunction, AC.foo));  <span class="d_comment">// true
+</span>}
+</pre>
+
+</div>
+<div class="blankline"></div>
+<h2><a id="isFinalFunction"><span class="gname">isFinalFunction</span></a></h2>
+<div class="blankline"></div>
+        <p>Takes one argument. If that argument is a final function,
+        <span class="d_inlinecode donthyphenate notranslate">true</span> is returned, otherwise <span class="d_inlinecode donthyphenate notranslate">false</span>.
+        </p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">void</span> bar() { }
+}
+
+<span class="d_keyword">class</span> C
+{
+    <span class="d_keyword">void</span> bar() { }
+    <span class="d_keyword">final</span> <span class="d_keyword">void</span> foo();
+}
+
+<span class="d_keyword">final</span> <span class="d_keyword">class</span> FC
+{
+    <span class="d_keyword">void</span> foo();
+}
+
+<span class="d_keyword">void</span> main()
+{
+    writeln(<span class="d_keyword">__traits</span>(isFinalFunction, C.bar));  <span class="d_comment">// false
+</span>    writeln(<span class="d_keyword">__traits</span>(isFinalFunction, S.bar));  <span class="d_comment">// false
+</span>    writeln(<span class="d_keyword">__traits</span>(isFinalFunction, C.foo));  <span class="d_comment">// true
+</span>    writeln(<span class="d_keyword">__traits</span>(isFinalFunction, FC.foo)); <span class="d_comment">// true
+</span>}
+</pre>
+
+</div>
+<div class="blankline"></div>
+<h2><a id="isOverrideFunction"><span class="gname">isOverrideFunction</span></a></h2>
+<div class="blankline"></div>
+        <p>Takes one argument. If that argument is a function marked with
+        <span class="d_keyword">override</span>, <span class="d_inlinecode donthyphenate notranslate">true</span> is returned, otherwise <span class="d_inlinecode donthyphenate notranslate">false</span>.
+        </p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">class</span> Base
+{
+    <span class="d_keyword">void</span> foo() { }
+}
+
+<span class="d_keyword">class</span> Foo : Base
+{
+    <span class="d_keyword">override</span> <span class="d_keyword">void</span> foo() { }
+    <span class="d_keyword">void</span> bar() { }
+}
+
+<span class="d_keyword">void</span> main()
+{
+    writeln(<span class="d_keyword">__traits</span>(isOverrideFunction, Base.foo)); <span class="d_comment">// false
+</span>    writeln(<span class="d_keyword">__traits</span>(isOverrideFunction, Foo.foo));  <span class="d_comment">// true
+</span>    writeln(<span class="d_keyword">__traits</span>(isOverrideFunction, Foo.bar));  <span class="d_comment">// false
+</span>}
+</pre>
+
+</div>
+<div class="blankline"></div>
+<h2><a id="isStaticFunction"><span class="gname">isStaticFunction</span></a></h2>
+<div class="blankline"></div>
+        <p>Takes one argument. If that argument is a static function,
+        meaning it has no context pointer,
+        <span class="d_inlinecode donthyphenate notranslate">true</span> is returned, otherwise <span class="d_inlinecode donthyphenate notranslate">false</span>.
+        </p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> A
+{
+    <span class="d_keyword">int</span> foo() { <span class="d_keyword">return</span> 3; }
+    <span class="d_keyword">static</span> <span class="d_keyword">int</span> boo(<span class="d_keyword">int</span> a) { <span class="d_keyword">return</span> a; }
+}
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isStaticFunction, A.boo));
+    <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(isStaticFunction, A.foo));
+    <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isStaticFunction, main));
+}
+</pre>
+
+</div>
+<div class="blankline"></div>
+<h2><a id="isRef"><span class="gname">isRef</span></a>, <a id="isOut"><span class="gname">isOut</span></a>, <a id="isLazy"><span class="gname">isLazy</span></a></h2>
+<div class="blankline"></div>
+        <p>Takes one argument. If that argument is a declaration,
+        <span class="d_inlinecode donthyphenate notranslate">true</span> is returned if it is <span class="d_keyword">ref</span>, <span class="d_keyword">out</span>,
+        or <span class="d_keyword">lazy</span>, otherwise <span class="d_inlinecode donthyphenate notranslate">false</span>.
+        </p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">void</span> fooref(<span class="d_keyword">ref</span> <span class="d_keyword">int</span> x)
+{
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isRef, x));
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(isOut, x));
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(isLazy, x));
+}
+
+<span class="d_keyword">void</span> fooout(<span class="d_keyword">out</span> <span class="d_keyword">int</span> x)
+{
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(isRef, x));
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isOut, x));
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(isLazy, x));
+}
+
+<span class="d_keyword">void</span> foolazy(<span class="d_keyword">lazy</span> <span class="d_keyword">int</span> x)
+{
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(isRef, x));
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(isOut, x));
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isLazy, x));
+}
+</pre>
+
+</div>
+<div class="blankline"></div>
+<h2><a id="isTemplate"><span class="gname">isTemplate</span></a></h2>
+<div class="blankline"></div>
+        <p>Takes one argument. If that argument is a template then <span class="d_inlinecode donthyphenate notranslate">true</span> is returned,
+        otherwise <span class="d_inlinecode donthyphenate notranslate">false</span>.
+        </p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">void</span> foo(T)(){}
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isTemplate,foo));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(isTemplate,foo!<span class="d_keyword">int</span>()));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(isTemplate,<span class="d_string">"string"</span>));
+</pre>
+
+</div>
+<div class="blankline"></div>
+<h2><a id="isZeroInit"><span class="gname">isZeroInit</span></a></h2>
+<div class="blankline"></div>
+        <p>Takes one argument which must be a type. If the type's
+        <a href="../spec/property.html#init">default initializer</a> is all zero
+        bits then <span class="d_inlinecode donthyphenate notranslate">true</span> is returned, otherwise <span class="d_inlinecode donthyphenate notranslate">false</span>.</p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S1 { <span class="d_keyword">int</span> x; }
+<span class="d_keyword">struct</span> S2 { <span class="d_keyword">int</span> x = -1; }
+
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isZeroInit, S1));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(isZeroInit, S2));
+
+<span class="d_keyword">void</span> test()
+{
+    <span class="d_keyword">int</span> x = 3;
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isZeroInit, <span class="d_keyword">typeof</span>(x)));
+}
+
+<span class="d_comment">// `isZeroInit` will always return true for a class C
+</span><span class="d_comment">// because `C.init` is null reference.
+</span>
+<span class="d_keyword">class</span> C { <span class="d_keyword">int</span> x = -1; }
+
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isZeroInit, C));
+
+<span class="d_comment">// For initializing arrays of element type `void`.
+</span><span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isZeroInit, <span class="d_keyword">void</span>));
+</pre>
+
+</div>
+<div class="blankline"></div>
+<h2><a id="isReturnOnStack"><span class="gname">isReturnOnStack</span></a></h2>
+<div class="blankline"></div>
+    <p>        Takes one argument which must either be a function symbol, function literal,
+        a delegate, or a function pointer.
+        It returns a <span class="d_inlinecode donthyphenate notranslate">bool</span> which is <span class="d_inlinecode donthyphenate notranslate">true</span> if the return value of the function is
+        returned on the stack via a pointer to it passed as a hidden extra
+        parameter to the function.
+    </p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S { <span class="d_keyword">int</span>[20] a; }
+<span class="d_keyword">int</span> test1();
+S test2();
+
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isReturnOnStack, test1) == <span class="d_keyword">false</span>);
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isReturnOnStack, test2) == <span class="d_keyword">true</span>);
+</pre>
+
+</div>
+<div class="blankline"></div>
+    <div class="spec-boxes implementation-defined"><b>Implementation Defined</b>:         This is determined by the function ABI calling convention in use,
+        which is often complex.
+    </div>
+
+
+<div class="blankline"></div>
+    <div class="spec-boxes best-practice"><b>Best Practices:</b> This has applications in:
+    <ol>    <li>Returning values in registers is often faster, so this can be used as
+    a check on a hot function to ensure it is using the fastest method.</li>
+    <li>When using inline assembly to correctly call a function.</li>
+    <li>Testing that the compiler does this correctly is normally hackish and awkward,
+    this enables efficient, direct, and simple testing.</li>
+    </ol></div>
+
+
+<div class="blankline"></div>
+<h2><a id="isModule"><span class="gname">isModule</span></a></h2>
+<div class="blankline"></div>
+        <p>Takes one argument. If that argument is a symbol that refers to a
+        <a href="../spec/module.html">spec/module, module</a> then <span class="d_inlinecode donthyphenate notranslate">true</span> is returned, otherwise <span class="d_inlinecode donthyphenate notranslate">false</span>.
+        <a href="../spec/module.html#package-module">Package modules</a> are considered to be
+        modules even if they have not been directly imported as modules.
+        </p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.algorithm.sorting;
+
+<span class="d_comment">// A regular package (no package.d)
+</span><span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(isModule, std));
+<span class="d_comment">// A package module (has a package.d file)
+</span><span class="d_comment">// Note that we haven't imported std.algorithm directly.
+</span><span class="d_comment">// (In other words, we don't have an "import std.algorithm;" directive.)
+</span><span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isModule, std.algorithm));
+<span class="d_comment">// A regular module
+</span><span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isModule, std.algorithm.sorting));
+</pre>
+<div class="blankline"></div>
+<h2><a id="isPackage"><span class="gname">isPackage</span></a></h2>
+<div class="blankline"></div>
+        <p>Takes one argument. If that argument is a symbol that refers to a
+        <a href="../spec/module.html">spec/module, package</a> then <span class="d_inlinecode donthyphenate notranslate">true</span> is returned, otherwise <span class="d_inlinecode donthyphenate notranslate">false</span>.
+        </p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.algorithm.sorting;
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isPackage, std));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isPackage, std.algorithm));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(isPackage, std.algorithm.sorting));
+</pre>
+<div class="blankline"></div>
+<h2><a id="hasMember"><span class="gname">hasMember</span></a></h2>
+<div class="blankline"></div>
+        <p>The first argument is a type that has members, or
+        is an expression of a type that has members.
+        The second argument is a string.
+        If the string is a valid property of the type,
+        <span class="d_inlinecode donthyphenate notranslate">true</span> is returned, otherwise <span class="d_inlinecode donthyphenate notranslate">false</span>.
+        </p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span> m;
+
+    <span class="d_keyword">import</span> std.stdio; <span class="d_comment">// imports write
+</span>}
+
+<span class="d_keyword">void</span> main()
+{
+    S s;
+
+    writeln(<span class="d_keyword">__traits</span>(hasMember, S, <span class="d_string">"m"</span>)); <span class="d_comment">// true
+</span>    writeln(<span class="d_keyword">__traits</span>(hasMember, s, <span class="d_string">"m"</span>)); <span class="d_comment">// true
+</span>    writeln(<span class="d_keyword">__traits</span>(hasMember, S, <span class="d_string">"y"</span>)); <span class="d_comment">// false
+</span>    writeln(<span class="d_keyword">__traits</span>(hasMember, S, <span class="d_string">"write"</span>)); <span class="d_comment">// true
+</span>    writeln(<span class="d_keyword">__traits</span>(hasMember, <span class="d_keyword">int</span>, <span class="d_string">"sizeof"</span>)); <span class="d_comment">// true
+</span>}
+</pre>
+
+</div>
+<div class="blankline"></div>
+<h2><a id="hasCopyConstructor"><span class="gname">hasCopyConstructor</span></a></h2>
+<div class="blankline"></div>
+        <p>The argument is a type. If it is a struct with a copy constructor, returns <span class="d_inlinecode donthyphenate notranslate">true</span>. Otherwise, return <span class="d_inlinecode donthyphenate notranslate">false</span>. Note that a copy constructor is distinct from a postblit.
+        </p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate">
+<span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">struct</span> S
+{
+}
+
+<span class="d_keyword">class</span> C
+{
+}
+
+<span class="d_keyword">struct</span> P
+{
+    <span class="d_keyword">this</span>(<span class="d_keyword">ref</span> P rhs) {}
+}
+
+<span class="d_keyword">struct</span> B
+{
+    <span class="d_keyword">this</span>(<span class="d_keyword">this</span>) {}
+}
+
+<span class="d_keyword">void</span> main()
+{
+    writeln(<span class="d_keyword">__traits</span>(hasCopyConstructor, S)); <span class="d_comment">// false
+</span>    writeln(<span class="d_keyword">__traits</span>(hasCopyConstructor, C)); <span class="d_comment">// false
+</span>    writeln(<span class="d_keyword">__traits</span>(hasCopyConstructor, P)); <span class="d_comment">// true
+</span>    writeln(<span class="d_keyword">__traits</span>(hasCopyConstructor, B)); <span class="d_comment">// false, this is a postblit
+</span>}
+</pre>
+
+</div>
+<div class="blankline"></div>
+<h2><a id="hasPostblit"><span class="gname">hasPostblit</span></a></h2>
+<div class="blankline"></div>
+        <p>The argument is a type. If it is a struct with a postblit, returns <span class="d_inlinecode donthyphenate notranslate">true</span>. Otherwise, return <span class="d_inlinecode donthyphenate notranslate">false</span>. Note a postblit is distinct from a copy constructor.
+        </p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate">
+<span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">struct</span> S
+{
+}
+
+<span class="d_keyword">class</span> C
+{
+}
+
+<span class="d_keyword">struct</span> P
+{
+    <span class="d_keyword">this</span>(<span class="d_keyword">ref</span> P rhs) {}
+}
+
+<span class="d_keyword">struct</span> B
+{
+    <span class="d_keyword">this</span>(<span class="d_keyword">this</span>) {}
+}
+
+
+<span class="d_keyword">void</span> main()
+{
+    writeln(<span class="d_keyword">__traits</span>(hasPostblit, S)); <span class="d_comment">// false
+</span>    writeln(<span class="d_keyword">__traits</span>(hasPostblit, C)); <span class="d_comment">// false
+</span>    writeln(<span class="d_keyword">__traits</span>(hasPostblit, P)); <span class="d_comment">// false, this is a copy ctor
+</span>    writeln(<span class="d_keyword">__traits</span>(hasPostblit, B)); <span class="d_comment">// true
+</span>}
+</pre>
+
+</div>
+<div class="blankline"></div>
+<h2><a id="identifier"><span class="gname">identifier</span></a></h2>
+<div class="blankline"></div>
+        <p>Takes one argument, a symbol. Returns the identifier
+        for that symbol as a string literal.
+        </p>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">int</span> var = 123;
+<span class="d_keyword">pragma</span>(msg, <span class="d_keyword">typeof</span>(var));                       <span class="d_comment">// int
+</span><span class="d_keyword">pragma</span>(msg, <span class="d_keyword">typeof</span>(<span class="d_keyword">__traits</span>(identifier, var))); <span class="d_comment">// string
+</span>writeln(var);                                   <span class="d_comment">// 123
+</span>writeln(<span class="d_keyword">__traits</span>(identifier, var));             <span class="d_comment">// "var"
+</span></pre>
+
+</div>
+<div class="blankline"></div>
+<h2><a id="getAliasThis"><span class="gname">getAliasThis</span></a></h2>
+<div class="blankline"></div>
+    <p>Takes one argument, a type. If the type has <span class="d_inlinecode donthyphenate notranslate">alias this</span> declarations,
+        returns a sequence of the names (as <span class="d_inlinecode donthyphenate notranslate">string</span>s) of the members used in
+        those declarations. Otherwise returns an empty sequence.
+    </p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">alias</span> AliasSeq(T...) = T;
+
+<span class="d_keyword">struct</span> S1
+{
+    string var;
+    <span class="d_keyword">alias</span> var <span class="d_keyword">this</span>;
+}
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(getAliasThis, S1) == AliasSeq!(<span class="d_string">"var"</span>));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(getAliasThis, <span class="d_keyword">int</span>).length == 0);
+
+<span class="d_keyword">pragma</span>(msg, <span class="d_keyword">__traits</span>(getAliasThis, S1));
+<span class="d_keyword">pragma</span>(msg, <span class="d_keyword">__traits</span>(getAliasThis, <span class="d_keyword">int</span>));
+</pre>
+
+</div>
+<div class="blankline"></div>
+        Prints:
+<div class="blankline"></div>
+<pre class="console notranslate">tuple("var")
+tuple()
+</pre>
+<div class="blankline"></div>
+<h2><a id="getAttributes"><span class="gname">getAttributes</span></a></h2>    <p>        Takes one argument, a symbol. Returns a tuple of all attached user-defined attributes.
+        If no UDAs exist it will return an empty tuple.
+    </p>
+<div class="blankline"></div>
+    <p>        For more information, see: <a href="../spec/attribute.html#uda">User-Defined Attributes</a>
+    </p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate">@(3) <span class="d_keyword">int</span> a;
+@(<span class="d_string">"string"</span>, 7) <span class="d_keyword">int</span> b;
+
+<span class="d_keyword">enum</span> Foo;
+@Foo <span class="d_keyword">int</span> c;
+
+<span class="d_keyword">pragma</span>(msg, <span class="d_keyword">__traits</span>(getAttributes, a));
+<span class="d_keyword">pragma</span>(msg, <span class="d_keyword">__traits</span>(getAttributes, b));
+<span class="d_keyword">pragma</span>(msg, <span class="d_keyword">__traits</span>(getAttributes, c));
+</pre>
+
+</div>
+<div class="blankline"></div>
+        Prints:
+<div class="blankline"></div>
+<pre class="console notranslate">tuple(3)
+tuple("string", 7)
+tuple((Foo))
+</pre>
+
+<div class="blankline"></div>
+<h2><a id="getFunctionVariadicStyle"><span class="gname">getFunctionVariadicStyle</span></a></h2>    <p>        Takes one argument which must either be a function symbol, or a type
+        that is a function, delegate or a function pointer.
+        It returns a string identifying the kind of
+        <a href="function.html#variadic">variadic arguments</a> that are supported.
+    </p>
+<div class="blankline"></div>
+    <center><table><caption>getFunctionVariadicStyle</caption>        <tr><th class="donthyphenate"><b>result</b></th><th class="donthyphenate"><b>kind</b></th><th class="donthyphenate"><b>access</b></th><th class="donthyphenate"><b>example</b></th></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">"none"</span></td><td>not a variadic function</td><td>&nbsp;</td><td><span class="d_inlinecode donthyphenate notranslate">void foo();</span></td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">"argptr"</span></td><td>D style variadic function</td><td><span class="d_inlinecode donthyphenate notranslate">_argptr</span> and <span class="d_inlinecode donthyphenate notranslate">_arguments</span></td><td><span class="d_inlinecode donthyphenate notranslate">void bar(...)</span></td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">"stdarg"</span></td><td>C style variadic function</td><td><a href="../phobos/core_stdc_stdarg.html"><span class="d_inlinecode donthyphenate notranslate">core.stdc.stdarg</span></a></td><td><span class="d_inlinecode donthyphenate notranslate">extern (C) void abc(int, ...)</span></td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">"typesafe"</span></td><td>typesafe variadic function</td><td>array on stack</td><td><span class="d_inlinecode donthyphenate notranslate">void def(int[] ...)</span></td></tr>
+    </table></center>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">import</span> core.stdc.stdarg;
+
+<span class="d_keyword">void</span> novar() {}
+<span class="d_keyword">extern</span>(C) <span class="d_keyword">void</span> cstyle(<span class="d_keyword">int</span>, ...) {}
+<span class="d_keyword">extern</span>(C++) <span class="d_keyword">void</span> cppstyle(<span class="d_keyword">int</span>, ...) {}
+<span class="d_keyword">void</span> dstyle(...) {}
+<span class="d_keyword">void</span> typesafe(<span class="d_keyword">int</span>[]...) {}
+
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(getFunctionVariadicStyle, novar) == <span class="d_string">"none"</span>);
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(getFunctionVariadicStyle, cstyle) == <span class="d_string">"stdarg"</span>);
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(getFunctionVariadicStyle, cppstyle) == <span class="d_string">"stdarg"</span>);
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(getFunctionVariadicStyle, dstyle) == <span class="d_string">"argptr"</span>);
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(getFunctionVariadicStyle, typesafe) == <span class="d_string">"typesafe"</span>);
+
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(getFunctionVariadicStyle, (<span class="d_keyword">int</span>[] a...) {}) == <span class="d_string">"typesafe"</span>);
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(getFunctionVariadicStyle, <span class="d_keyword">typeof</span>(cstyle)) == <span class="d_string">"stdarg"</span>);
+</pre>
+
+</div>
+
+<div class="blankline"></div>
+<h2><a id="getFunctionAttributes"><span class="gname">getFunctionAttributes</span></a></h2>    <p>        Takes one argument which must either be a function symbol, function literal,
+        or a function pointer. It returns a string tuple of all the attributes of
+        that function <b>excluding</b> any user-defined attributes (UDAs can be
+        retrieved with the <a href="#get-attributes">getAttributes</a> trait).
+        If no attributes exist it will return an empty tuple.
+    </p>
+<div class="blankline"></div>
+<div class="blankline"></div>
+        <b>Note:</b> The order of the attributes in the returned tuple is
+        implementation-defined and should not be relied upon.
+<div class="blankline"></div>
+        <p>            A list of currently supported attributes are:</p>
+            <ul><li><span class="d_inlinecode donthyphenate notranslate">pure</span>, <span class="d_inlinecode donthyphenate notranslate">nothrow</span>, <span class="d_inlinecode donthyphenate notranslate">@nogc</span>, <span class="d_inlinecode donthyphenate notranslate">@property</span>, <span class="d_inlinecode donthyphenate notranslate">@system</span>, <span class="d_inlinecode donthyphenate notranslate">@trusted</span>, <span class="d_inlinecode donthyphenate notranslate">@safe</span>, <span class="d_inlinecode donthyphenate notranslate">ref</span> and <span class="d_inlinecode donthyphenate notranslate">@live</span></li></ul>
+            <b>Note:</b> <span class="d_inlinecode donthyphenate notranslate">ref</span> is a function attribute even though it applies to the return type.
+<div class="blankline"></div>
+        <p>            Additionally the following attributes are only valid for non-static member functions:</p>
+            <ul><li><span class="d_inlinecode donthyphenate notranslate">const</span>, <span class="d_inlinecode donthyphenate notranslate">immutable</span>, <span class="d_inlinecode donthyphenate notranslate">inout</span>, <span class="d_inlinecode donthyphenate notranslate">shared</span></li></ul>
+<div class="blankline"></div>
+    For example:
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">int</span> sum(<span class="d_keyword">int</span> x, <span class="d_keyword">int</span> y) <span class="d_keyword">pure</span> <span class="d_keyword">nothrow</span> { <span class="d_keyword">return</span> x + y; }
+
+<span class="d_keyword">pragma</span>(msg, <span class="d_keyword">__traits</span>(getFunctionAttributes, sum));
+
+<span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">void</span> test() <span class="d_keyword">const</span> @system { }
+}
+
+<span class="d_keyword">pragma</span>(msg, <span class="d_keyword">__traits</span>(getFunctionAttributes, S.test));
+
+<span class="d_keyword">void</span> main(){}
+</pre>
+
+</div>
+<div class="blankline"></div>
+        Prints:
+<div class="blankline"></div>
+<pre class="console notranslate">tuple("pure", "nothrow", "@system")
+tuple("const", "@system")
+</pre>
+<div class="blankline"></div>
+    <p>Note that some attributes can be inferred. For example:</p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">pragma</span>(msg, <span class="d_keyword">__traits</span>(getFunctionAttributes, (<span class="d_keyword">int</span> x) @trusted { <span class="d_keyword">return</span> x * 2; }));
+
+<span class="d_keyword">void</span> main(){}
+</pre>
+
+</div>
+<div class="blankline"></div>
+        Prints:
+<div class="blankline"></div>
+<pre class="console notranslate">tuple("pure", "nothrow", "@nogc", "@trusted")
+</pre>
+
+
+<div class="blankline"></div>
+<h2><a id="getLinkage"><span class="gname">getLinkage</span></a></h2>
+<div class="blankline"></div>
+        <p>Takes one argument, which is a declaration symbol, or the type of a function, delegate,
+        pointer to function, struct, class, or interface.
+        Returns a string representing the <a href="attribute.html#LinkageAttribute">LinkageAttribute</a>
+        of the declaration.
+        The string is one of:
+        </p>
+<div class="blankline"></div>
+        <ul>        <li><span class="d_inlinecode donthyphenate notranslate">"D"</span></li>
+        <li><span class="d_inlinecode donthyphenate notranslate">"C"</span></li>
+        <li><span class="d_inlinecode donthyphenate notranslate">"C++"</span></li>
+        <li><span class="d_inlinecode donthyphenate notranslate">"Windows"</span></li>
+        <li><span class="d_inlinecode donthyphenate notranslate">"Objective-C"</span></li>
+        <li><span class="d_inlinecode donthyphenate notranslate">"System"</span></li>
+        </ul>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">extern</span> (C) <span class="d_keyword">int</span> fooc();
+<span class="d_keyword">alias</span> aliasc = fooc;
+
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(getLinkage, fooc) == <span class="d_string">"C"</span>);
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(getLinkage, aliasc) == <span class="d_string">"C"</span>);
+
+<span class="d_keyword">extern</span> (C++) <span class="d_keyword">struct</span> FooCPPStruct {}
+<span class="d_keyword">extern</span> (C++) <span class="d_keyword">class</span> FooCPPClass {}
+<span class="d_keyword">extern</span> (C++) <span class="d_keyword">interface</span> FooCPPInterface {}
+
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(getLinkage, FooCPPStruct) == <span class="d_string">"C++"</span>);
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(getLinkage, FooCPPClass) == <span class="d_string">"C++"</span>);
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(getLinkage, FooCPPInterface) == <span class="d_string">"C++"</span>);
+</pre>
+
+</div>
+<div class="blankline"></div>
+<h2><a id="getLocation"><span class="gname">getLocation</span></a></h2>
+        <p>Takes one argument which is a symbol.
+        To disambiguate between overloads, pass the result of <a href="#getOverloads"><i>getOverloads</i></a> with the desired index, to <span class="d_inlinecode donthyphenate notranslate">getLocation</span>.
+        Returns a <span class="d_inlinecode donthyphenate notranslate">tuple(string, int, int)</span> whose entries correspond to the filename, line number and column number where the argument
+        was declared.
+        </p>
+<div class="blankline"></div>
+<h2><a id="getMember"><span class="gname">getMember</span></a></h2>
+<div class="blankline"></div>
+        <p>Takes two arguments, the second must be a string.
+        The result is an expression formed from the first
+        argument, followed by a &lsquo;.&rsquo;, followed by the second
+        argument as an identifier.
+        </p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span> mx;
+    <span class="d_keyword">static</span> <span class="d_keyword">int</span> my;
+}
+
+<span class="d_keyword">void</span> main()
+{
+    S s;
+
+    <span class="d_keyword">__traits</span>(getMember, s, <span class="d_string">"mx"</span>) = 1;  <span class="d_comment">// same as s.mx=1;
+</span>    writeln(<span class="d_keyword">__traits</span>(getMember, s, <span class="d_string">"m"</span> ~ <span class="d_string">"x"</span>)); <span class="d_comment">// 1
+</span>
+    <span class="d_comment">// __traits(getMember, S, "mx") = 1;  // error, no this for S.mx
+</span>    <span class="d_keyword">__traits</span>(getMember, S, <span class="d_string">"my"</span>) = 2;  <span class="d_comment">// ok
+</span>}
+</pre>
+
+</div>
+<div class="blankline"></div>
+<h2><a id="getOverloads"><span class="gname">getOverloads</span></a></h2>
+<div class="blankline"></div>
+        <p>The first argument is an aggregate (e.g. struct/class/module).
+        The second argument is a <span class="d_inlinecode donthyphenate notranslate">string</span> that matches the name of
+        the member(s) to return.
+        The third argument is a <span class="d_inlinecode donthyphenate notranslate">bool</span>, and is optional.  If <span class="d_inlinecode donthyphenate notranslate">true</span>, the
+        result will also include template overloads.
+        The result is a tuple of all the overloads of the supplied name.
+        </p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">class</span> D
+{
+    <span class="d_keyword">this</span>() { }
+    ~<span class="d_keyword">this</span>() { }
+    <span class="d_keyword">void</span> foo() { }
+    <span class="d_keyword">int</span> foo(<span class="d_keyword">int</span>) { <span class="d_keyword">return</span> 2; }
+    <span class="d_keyword">void</span> bar(T)() { <span class="d_keyword">return</span> T.init; }
+    <span class="d_keyword">class</span> bar(<span class="d_keyword">int</span> n) {}
+}
+
+<span class="d_keyword">void</span> main()
+{
+    D d = <span class="d_keyword">new</span> D();
+
+    <span class="d_keyword">foreach</span> (t; <span class="d_keyword">__traits</span>(getOverloads, D, <span class="d_string">"foo"</span>))
+        writeln(<span class="d_keyword">typeid</span>(<span class="d_keyword">typeof</span>(t)));
+
+    <span class="d_keyword">alias</span> b = <span class="d_keyword">typeof</span>(<span class="d_keyword">__traits</span>(getOverloads, D, <span class="d_string">"foo"</span>));
+    <span class="d_keyword">foreach</span> (t; b)
+        writeln(<span class="d_keyword">typeid</span>(t));
+
+    <span class="d_keyword">auto</span> i = <span class="d_keyword">__traits</span>(getOverloads, d, <span class="d_string">"foo"</span>)[1](1);
+    writeln(i);
+
+    <span class="d_keyword">foreach</span> (t; <span class="d_keyword">__traits</span>(getOverloads, D, <span class="d_string">"bar"</span>, <span class="d_keyword">true</span>))
+        writeln(t.stringof);
+}
+</pre>
+
+</div>
+<div class="blankline"></div>
+        Prints:
+<div class="blankline"></div>
+<pre class="console notranslate">void()
+int()
+void()
+int()
+2
+bar(T)()
+bar(int n)
+</pre>
+<div class="blankline"></div>
+<h2><a id="getParameterStorageClasses"><span class="gname">getParameterStorageClasses</span></a></h2>
+<div class="blankline"></div>
+    <p>        Takes two arguments.
+        The first must either be a function symbol, or a type
+        that is a function, delegate or a function pointer.
+        The second is an integer identifying which parameter, where the first parameter is
+        0.
+        It returns a tuple of strings representing the storage classes of that parameter.
+    </p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">ref</span> <span class="d_keyword">int</span> foo(<span class="d_keyword">return</span> <span class="d_keyword">ref</span> <span class="d_keyword">const</span> <span class="d_keyword">int</span>* p, <span class="d_keyword">scope</span> <span class="d_keyword">int</span>* a, <span class="d_keyword">out</span> <span class="d_keyword">int</span> b, <span class="d_keyword">lazy</span> <span class="d_keyword">int</span> c);
+
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(getParameterStorageClasses, foo, 0)[0] == <span class="d_string">"return"</span>);
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(getParameterStorageClasses, foo, 0)[1] == <span class="d_string">"ref"</span>);
+
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(getParameterStorageClasses, foo, 1)[0] == <span class="d_string">"scope"</span>);
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(getParameterStorageClasses, foo, 2)[0] == <span class="d_string">"out"</span>);
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(getParameterStorageClasses, <span class="d_keyword">typeof</span>(&amp;foo), 3)[0] == <span class="d_string">"lazy"</span>);
+</pre>
+
+</div>
+<div class="blankline"></div>
+<h2><a id="getPointerBitmap"><span class="gname">getPointerBitmap</span></a></h2>
+<div class="blankline"></div>
+    <p>The argument is a type.
+    The result is an array of <span class="d_inlinecode donthyphenate notranslate">size_t</span> describing the memory used by an instance of the given type.
+    </p>
+    <p>The first element of the array is the size of the type (for classes it is
+    the <a href="#classInstanceSize"><i>classInstanceSize</i></a>).</p>
+    <p>The following elements describe the locations of GC managed pointers within the
+    memory occupied by an instance of the type.
+    For type T, there are <span class="d_inlinecode donthyphenate notranslate">T.sizeof / size_t.sizeof</span> possible pointers represented
+    by the bits of the array values.</p>
+    <p>This array can be used by a precise GC to avoid false pointers.</p>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">static</span> <span class="d_keyword">class</span> C
+    {
+        <span class="d_comment">// implicit virtual function table pointer not marked
+</span>        <span class="d_comment">// implicit monitor field not marked, usually managed manually
+</span>        C next;
+        size_t sz;
+        <span class="d_keyword">void</span>* p;
+        <span class="d_keyword">void</span> <span class="d_keyword">function</span> () fn; <span class="d_comment">// not a GC managed pointer
+</span>    }
+
+    <span class="d_keyword">static</span> <span class="d_keyword">struct</span> S
+    {
+        size_t val1;
+        <span class="d_keyword">void</span>* p;
+        C c;
+        <span class="d_keyword">byte</span>[] arr;          <span class="d_comment">// { length, ptr }
+</span>        <span class="d_keyword">void</span> <span class="d_keyword">delegate</span> () dg; <span class="d_comment">// { context, func }
+</span>    }
+
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span> (<span class="d_keyword">__traits</span>(getPointerBitmap, C) == [6*size_t.sizeof, 0b010100]);
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span> (<span class="d_keyword">__traits</span>(getPointerBitmap, S) == [7*size_t.sizeof, 0b0110110]);
+}
+</pre>
+
+</div>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<h2><a id="getProtection"><span class="gname">getProtection</span></a></h2>
+<div class="blankline"></div>
+        <p>The argument is a symbol.
+        The result is a string giving its protection level: "public", "private", "protected", "export", or "package".
+        </p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">class</span> D
+{
+    <span class="d_keyword">export</span> <span class="d_keyword">void</span> foo() { }
+    <span class="d_keyword">public</span> <span class="d_keyword">int</span> bar;
+}
+
+<span class="d_keyword">void</span> main()
+{
+    D d = <span class="d_keyword">new</span> D();
+
+    <span class="d_keyword">auto</span> i = <span class="d_keyword">__traits</span>(getProtection, d.foo);
+    writeln(i);
+
+    <span class="d_keyword">auto</span> j = <span class="d_keyword">__traits</span>(getProtection, d.bar);
+    writeln(j);
+}
+</pre>
+
+</div>
+<div class="blankline"></div>
+        Prints:
+<div class="blankline"></div>
+<pre class="console notranslate">export
+public
+</pre>
+<div class="blankline"></div>
+<h2><a id="getTargetInfo"><span class="gname">getTargetInfo</span></a></h2>
+<div class="blankline"></div>
+        <p>Receives a string key as argument.
+        The result is an expression describing the requested target information.
+        </p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">version</span> (CppRuntime_Microsoft)
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(getTargetInfo, <span class="d_string">"cppRuntimeLibrary"</span>) == <span class="d_string">"libcmt"</span>);
+</pre>
+
+</div>
+<div class="blankline"></div>
+        <p>Keys are implementation defined, allowing relevant data for exotic targets.
+        A reliable subset exists which are always available:
+        </p>
+<div class="blankline"></div>
+        <ul>        <li><span class="d_inlinecode donthyphenate notranslate">"cppRuntimeLibrary"</span> - The C++ runtime library affinity for this toolchain</li>
+        <li><span class="d_inlinecode donthyphenate notranslate">"floatAbi"</span> - Floating point ABI; may be <span class="d_inlinecode donthyphenate notranslate">"hard"</span>, <span class="d_inlinecode donthyphenate notranslate">"soft"</span>, or <span class="d_inlinecode donthyphenate notranslate">"softfp"</span></li>
+        <li><span class="d_inlinecode donthyphenate notranslate">"objectFormat"</span> - Target object format</li>
+        </ul>
+<div class="blankline"></div>
+<h2><a id="getVirtualFunctions"><span class="gname">getVirtualFunctions</span></a></h2>
+<div class="blankline"></div>
+        <p>The same as <a href="#getVirtualMethods"><i>getVirtualMethods</i></a>, except that
+        final functions that do not override anything are included.
+        </p>
+<div class="blankline"></div>
+<h2><a id="getVirtualMethods"><span class="gname">getVirtualMethods</span></a></h2>
+<div class="blankline"></div>
+        <p>The first argument is a class type or an expression of
+        class type.
+        The second argument is a string that matches the name of
+        one of the functions of that class.
+        The result is a tuple of the virtual overloads of that function.
+        It does not include final functions that do not override anything.
+        </p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">class</span> D
+{
+    <span class="d_keyword">this</span>() { }
+    ~<span class="d_keyword">this</span>() { }
+    <span class="d_keyword">void</span> foo() { }
+    <span class="d_keyword">int</span> foo(<span class="d_keyword">int</span>) { <span class="d_keyword">return</span> 2; }
+}
+
+<span class="d_keyword">void</span> main()
+{
+    D d = <span class="d_keyword">new</span> D();
+
+    <span class="d_keyword">foreach</span> (t; <span class="d_keyword">__traits</span>(getVirtualMethods, D, <span class="d_string">"foo"</span>))
+        writeln(<span class="d_keyword">typeid</span>(<span class="d_keyword">typeof</span>(t)));
+
+    <span class="d_keyword">alias</span> b = <span class="d_keyword">typeof</span>(<span class="d_keyword">__traits</span>(getVirtualMethods, D, <span class="d_string">"foo"</span>));
+    <span class="d_keyword">foreach</span> (t; b)
+        writeln(<span class="d_keyword">typeid</span>(t));
+
+    <span class="d_keyword">auto</span> i = <span class="d_keyword">__traits</span>(getVirtualMethods, d, <span class="d_string">"foo"</span>)[1](1);
+    writeln(i);
+}
+</pre>
+
+</div>
+<div class="blankline"></div>
+        Prints:
+<div class="blankline"></div>
+<pre class="console notranslate">void()
+int()
+void()
+int()
+2
+</pre>
+<div class="blankline"></div>
+<h2><a id="getUnitTests"><span class="gname">getUnitTests</span></a></h2>
+<div class="blankline"></div>
+        <p>                Takes one argument, a symbol of an aggregate (e.g. struct/class/module).
+                The result is a tuple of all the unit test functions of that aggregate.
+                The functions returned are like normal nested static functions,
+                <a href="../glossary.html#ctfe">CTFE</a> will work and
+                <a href="../spec/attribute.html#uda">UDAs</a> will be accessible.
+        </p>
+<div class="blankline"></div>
+        <h3>Note:</h3>
+<div class="blankline"></div>
+        <p>                The -unittest flag needs to be passed to the compiler. If the flag
+                is not passed <span class="d_inlinecode donthyphenate notranslate">__traits(getUnitTests)</span> will always return an
+                empty tuple.
+        </p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">module</span> foo;
+
+<span class="d_keyword">import</span> core.runtime;
+<span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">struct</span> name { string name; }
+
+<span class="d_keyword">class</span> Foo
+{
+    <span class="d_keyword">unittest</span>
+    {
+        writeln(<span class="d_string">"foo.Foo.unittest"</span>);
+    }
+}
+
+@name(<span class="d_string">"foo"</span>) <span class="d_keyword">unittest</span>
+{
+    writeln(<span class="d_string">"foo.unittest"</span>);
+}
+
+<span class="d_keyword">template</span> Tuple (T...)
+{
+    <span class="d_keyword">alias</span> Tuple = T;
+}
+
+<span class="d_keyword">shared</span> <span class="d_keyword">static</span> <span class="d_keyword">this</span>()
+{
+  <span class="d_comment">// Override the default unit test runner to do nothing. After that, "main" will
+</span>  <span class="d_comment">// be called.
+</span>  Runtime.moduleUnitTester = { <span class="d_keyword">return</span> <span class="d_keyword">true</span>; };
+}
+
+<span class="d_keyword">void</span> main()
+{
+    writeln(<span class="d_string">"start main"</span>);
+
+    <span class="d_keyword">alias</span> tests = Tuple!(<span class="d_keyword">__traits</span>(getUnitTests, foo));
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(tests.length == 1);
+
+    <span class="d_keyword">alias</span> attributes = Tuple!(<span class="d_keyword">__traits</span>(getAttributes, tests[0]));
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(attributes.length == 1);
+
+    <span class="d_keyword">foreach</span> (test; tests)
+        test();
+
+    <span class="d_keyword">foreach</span> (test; <span class="d_keyword">__traits</span>(getUnitTests, Foo))
+        test();
+}
+</pre>
+
+</div>
+<div class="blankline"></div>
+        <p>By default, the above will print:</p>
+<div class="blankline"></div>
+<pre class="console notranslate">start main
+foo.unittest
+foo.Foo.unittest
+</pre>
+<div class="blankline"></div>
+<h2><a id="parent"><span class="gname">parent</span></a></h2>
+<div class="blankline"></div>
+        <p>Takes a single argument which must evaluate to a symbol.
+        The result is the symbol that is the parent of it.
+        </p>
+<div class="blankline"></div>
+<h2><a id="child"><span class="gname">child</span></a></h2>
+<div class="blankline"></div>
+        <p>Takes two arguments.
+        The first must be a symbol or expression.
+        The second is a symbol, such as an alias to a member of the first
+        argument.
+        The result is the second argument interpreted with its <span class="d_inlinecode donthyphenate notranslate">this</span>
+        context set to the value of the first argument.
+        </p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">struct</span> A
+{
+    <span class="d_keyword">int</span> i;
+    <span class="d_keyword">int</span> foo(<span class="d_keyword">int</span> j) {
+        <span class="d_keyword">return</span> i * j;
+    }
+    T bar(T)(T t) {
+        <span class="d_keyword">return</span> i + t;
+    }
+}
+
+<span class="d_keyword">alias</span> Ai = A.i;
+<span class="d_keyword">alias</span> Abar = A.bar!<span class="d_keyword">int</span>;
+
+<span class="d_keyword">void</span> main()
+{
+    A a;
+
+    <span class="d_keyword">__traits</span>(child, a, Ai) = 3;
+    writeln(a.i);
+    writeln(<span class="d_keyword">__traits</span>(child, a, A.foo)(2));
+    writeln(<span class="d_keyword">__traits</span>(child, a, Abar)(5));
+}
+</pre>
+
+</div>
+<div class="blankline"></div>
+        Prints:
+<div class="blankline"></div>
+<pre class="console notranslate">3
+6
+7
+</pre>
+<div class="blankline"></div>
+<h2><a id="classInstanceSize"><span class="gname">classInstanceSize</span></a></h2>
+<div class="blankline"></div>
+        <p>Takes a single argument, which must evaluate to either
+        a class type or an expression of class type.
+        The result
+        is of type <span class="d_inlinecode donthyphenate notranslate">size_t</span>, and the value is the number of
+        bytes in the runtime instance of the class type.
+        It is based on the static type of a class, not the
+        polymorphic type.
+        </p>
+<div class="blankline"></div>
+<h2><a id="getVirtualIndex"><span class="gname">getVirtualIndex</span></a></h2>
+<div class="blankline"></div>
+  <p>Takes a single argument which must evaluate to a function.
+  The result is a <span class="d_inlinecode donthyphenate notranslate">ptrdiff_t</span> containing the index
+  of that function within the vtable of the parent type.
+  If the function passed in is final and does not override
+  a virtual function, <span class="d_inlinecode donthyphenate notranslate">-1</span> is returned instead.
+  </p>
+<div class="blankline"></div>
+<h2><a id="allMembers"><span class="gname">allMembers</span></a></h2>
+<div class="blankline"></div>
+        <p>Takes a single argument, which must evaluate to either
+        a type or an expression of type.
+        A tuple of string literals is returned, each of which
+        is the name of a member of that type combined with all
+        of the members of the base classes (if the type is a class).
+        No name is repeated.
+        Builtin properties are not included.
+        </p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">class</span> D
+{
+    <span class="d_keyword">this</span>() { }
+    ~<span class="d_keyword">this</span>() { }
+    <span class="d_keyword">void</span> foo() { }
+    <span class="d_keyword">int</span> foo(<span class="d_keyword">int</span>) { <span class="d_keyword">return</span> 0; }
+}
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">auto</span> b = [ <span class="d_keyword">__traits</span>(allMembers, D) ];
+    writeln(b);
+    <span class="d_comment">// ["__ctor", "__dtor", "foo", "toString", "toHash", "opCmp", "opEquals",
+</span>    <span class="d_comment">// "Monitor", "factory"]
+</span>}
+</pre>
+
+</div>
+<div class="blankline"></div>
+        <p>The order in which the strings appear in the result
+        is not defined.</p>
+<div class="blankline"></div>
+<h2><a id="derivedMembers"><span class="gname">derivedMembers</span></a></h2>
+<div class="blankline"></div>
+        <p>Takes a single argument, which must evaluate to either
+        a type or an expression of type.
+        A tuple of string literals is returned, each of which
+        is the name of a member of that type.
+        No name is repeated.
+        Base class member names are not included.
+        Builtin properties are not included.
+        </p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">class</span> D
+{
+    <span class="d_keyword">this</span>() { }
+    ~<span class="d_keyword">this</span>() { }
+    <span class="d_keyword">void</span> foo() { }
+    <span class="d_keyword">int</span> foo(<span class="d_keyword">int</span>) { <span class="d_keyword">return</span> 0; }
+}
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">auto</span> a = [<span class="d_keyword">__traits</span>(derivedMembers, D)];
+    writeln(a);    <span class="d_comment">// ["__ctor", "__dtor", "foo"]
+</span>}
+</pre>
+
+</div>
+<div class="blankline"></div>
+        <p>The order in which the strings appear in the result
+        is not defined.</p>
+<div class="blankline"></div>
+<h2><a id="isSame"><span class="gname">isSame</span></a></h2>
+<div class="blankline"></div>
+        <p>Takes two arguments and returns bool <span class="d_inlinecode donthyphenate notranslate">true</span> if they
+        are the same symbol, <span class="d_inlinecode donthyphenate notranslate">false</span> if not.</p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">struct</span> S { }
+
+<span class="d_keyword">int</span> foo();
+<span class="d_keyword">int</span> bar();
+
+<span class="d_keyword">void</span> main()
+{
+    writeln(<span class="d_keyword">__traits</span>(isSame, foo, foo)); <span class="d_comment">// true
+</span>    writeln(<span class="d_keyword">__traits</span>(isSame, foo, bar)); <span class="d_comment">// false
+</span>    writeln(<span class="d_keyword">__traits</span>(isSame, foo, S));   <span class="d_comment">// false
+</span>    writeln(<span class="d_keyword">__traits</span>(isSame, S, S));     <span class="d_comment">// true
+</span>    writeln(<span class="d_keyword">__traits</span>(isSame, std, S));   <span class="d_comment">// false
+</span>    writeln(<span class="d_keyword">__traits</span>(isSame, std, std)); <span class="d_comment">// true
+</span>}
+</pre>
+
+</div>
+<div class="blankline"></div>
+        <p>If the two arguments are expressions made up of literals
+        or enums that evaluate to the same value, true is returned.</p>
+<div class="blankline"></div>
+        <p>If the two arguments are both lambda functions (or aliases
+        to lambda functions), then they are compared for equality. For
+        the comparison to be computed correctly, the following conditions
+        must be met for both lambda functions:</p>
+<div class="blankline"></div>
+        <ol>        <li>The lambda function arguments must not have a template
+        instantiation as an explicit argument type. Any other argument
+        types (basic, user-defined, template) are supported.</li>
+        <li>The lambda function body must contain a single expression
+        (no return statement) which contains only numeric values,
+        manifest constants, enum values, function arguments and function
+        calls. If the expression contains local variables or return
+        statements, the function is considered incomparable.</li>
+        </ol>
+<div class="blankline"></div>
+        <p>If these constraints aren't fulfilled, the function is considered
+        incomparable and <span class="d_inlinecode donthyphenate notranslate">isSame</span> returns <span class="d_inlinecode donthyphenate notranslate">false</span>.</p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">int</span> f() { <span class="d_keyword">return</span> 2; }
+<span class="d_keyword">void</span> test(<span class="d_keyword">alias</span> pred)()
+{
+    <span class="d_comment">// f() from main is a different function from top-level f()
+</span>    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(isSame, (<span class="d_keyword">int</span> a) =&gt; a + f(), pred));
+}
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isSame, (a, b) =&gt; a + b, (c, d) =&gt; c + d));
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isSame, a =&gt; ++a, b =&gt; ++b));
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(isSame, (<span class="d_keyword">int</span> a, <span class="d_keyword">int</span> b) =&gt; a + b, (a, b) =&gt; a + b));
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isSame, (a, b) =&gt; a + b + 10, (c, d) =&gt; c + d + 10));
+
+    <span class="d_comment">// lambdas accessing local variables are considered incomparable
+</span>    <span class="d_keyword">int</span> b;
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(isSame, a =&gt; a + b, a =&gt; a + b));
+
+    <span class="d_comment">// lambdas calling other functions are comparable
+</span>    <span class="d_keyword">int</span> f() { <span class="d_keyword">return</span> 3;}
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isSame, a =&gt; a + f(), a =&gt; a + f()));
+    test!((<span class="d_keyword">int</span> a) =&gt; a + f())();
+
+    <span class="d_keyword">class</span> A
+    {
+        <span class="d_keyword">int</span> a;
+        <span class="d_keyword">this</span>(<span class="d_keyword">int</span> a)
+        {
+            <span class="d_keyword">this</span>.a = a;
+        }
+    }
+
+    <span class="d_keyword">class</span> B
+    {
+        <span class="d_keyword">int</span> a;
+        <span class="d_keyword">this</span>(<span class="d_keyword">int</span> a)
+        {
+            <span class="d_keyword">this</span>.a = a;
+        }
+    }
+
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(isSame, (A a) =&gt; ++a.a, (A b) =&gt; ++b.a));
+    <span class="d_comment">// lambdas with different data types are considered incomparable,
+</span>    <span class="d_comment">// even if the memory layout is the same
+</span>    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(isSame, (A a) =&gt; ++a.a, (B a) =&gt; ++a.a));
+}
+</pre>
+
+</div>
+<div class="blankline"></div>
+        <p>If the two arguments are tuples then <span class="d_inlinecode donthyphenate notranslate">isSame</span> returns <span class="d_inlinecode donthyphenate notranslate">true</span> if the
+        two tuples, after expansion, have the same length and if each pair
+        of nth argument respects the constraints previously specified.</p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.meta;
+
+<span class="d_keyword">struct</span> S { }
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_comment">// true, like __traits(isSame(0,0)) &amp;&amp; __traits(isSame(1,1))
+</span>    writeln(<span class="d_keyword">__traits</span>(isSame, AliasSeq!(0,1), AliasSeq!(0,1)));
+    <span class="d_comment">// false, like __traits(isSame(S,std.meta)) &amp;&amp; __traits(isSame(1,1))
+</span>    writeln(<span class="d_keyword">__traits</span>(isSame, AliasSeq!(S,1), AliasSeq!(std.meta,1)));
+    <span class="d_comment">// false, the length of the sequences is different
+</span>    writeln(<span class="d_keyword">__traits</span>(isSame, AliasSeq!(1), AliasSeq!(1,2)));
+}
+</pre>
+
+</div>
+<div class="blankline"></div>
+<h2><a id="compiles"><span class="gname">compiles</span></a></h2>
+<div class="blankline"></div>
+        <p>Returns a bool <span class="d_inlinecode donthyphenate notranslate">true</span> if all of the arguments
+        compile (are semantically correct).
+        The arguments can be symbols, types, or expressions that
+        are syntactically correct.
+        The arguments cannot be statements or declarations.
+        </p>
+<div class="blankline"></div>
+        <p>If there are no arguments, the result is <span class="d_inlinecode donthyphenate notranslate">false</span>.</p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">static</span> <span class="d_keyword">int</span> s1;
+    <span class="d_keyword">int</span> s2;
+}
+
+<span class="d_keyword">int</span> foo();
+<span class="d_keyword">int</span> bar();
+
+<span class="d_keyword">void</span> main()
+{
+    writeln(<span class="d_keyword">__traits</span>(compiles));                      <span class="d_comment">// false
+</span>    writeln(<span class="d_keyword">__traits</span>(compiles, foo));                 <span class="d_comment">// true
+</span>    writeln(<span class="d_keyword">__traits</span>(compiles, foo + 1));             <span class="d_comment">// true
+</span>    writeln(<span class="d_keyword">__traits</span>(compiles, &amp;foo + 1));            <span class="d_comment">// false
+</span>    writeln(<span class="d_keyword">__traits</span>(compiles, <span class="d_keyword">typeof</span>(1)));           <span class="d_comment">// true
+</span>    writeln(<span class="d_keyword">__traits</span>(compiles, S.s1));                <span class="d_comment">// true
+</span>    writeln(<span class="d_keyword">__traits</span>(compiles, S.s3));                <span class="d_comment">// false
+</span>    writeln(<span class="d_keyword">__traits</span>(compiles, 1,2,3,<span class="d_keyword">int</span>,<span class="d_keyword">long</span>,std));  <span class="d_comment">// true
+</span>    writeln(<span class="d_keyword">__traits</span>(compiles, 3[1]));                <span class="d_comment">// false
+</span>    writeln(<span class="d_keyword">__traits</span>(compiles, 1,2,3,<span class="d_keyword">int</span>,<span class="d_keyword">long</span>,3[1])); <span class="d_comment">// false
+</span>}
+</pre>
+
+</div>
+<div class="blankline"></div>
+        <p>This is useful for:</p>
+<div class="blankline"></div>
+        <ul>        <li>Giving better error messages inside generic code than
+        the sometimes hard to follow compiler ones.</li>
+        <li>Doing a finer grained specialization than template
+        partial specialization allows for.</li>
+        </ul>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<div class="blankline"></div>
+
+<div style="float: left"><i class="fa fa-angle-left" aria-hidden="true"></i> <a href="../spec/version.html">Conditional Compilation</a></div>
+<div style="float: right"><a href="../spec/errors.html">Error Handling</a> <i class="fa fa-angle-right" aria-hidden="true"></i></div>
+<div style="clear:both"></div>
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2022 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on (no date time)</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<script type="text/javascript" src="../js/listanchors.js"></script>
+<script type="text/javascript">jQuery(document).ready(addVersionSelector);</script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

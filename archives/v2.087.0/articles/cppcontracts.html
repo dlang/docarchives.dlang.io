@@ -1,0 +1,619 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2022 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>D's Contract Programming vs C++'s - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='D's Contract Programming vs C++'s' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.freenode.net/d'>IRC</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+<div class="subnav-helper"></div> <div class="subnav">    
+    <div class="head">        <h2>Articles</h2>
+        <p class="Articles, ../articles/index.html, overview">            <a href="../articles/index.html">overview</a></p>
+    </div>
+    <ul><li><a href='        ../articles/faq.html'>FAQ</a></li><li><a href='        ../articles/const-faq.html'>const(FAQ)</a></li><li><a href='        ../articles/d-floating-point.html'>Floating Point</a></li><li><a href='        ../articles/warnings.html'>Warnings</a></li><li><a href='        ../articles/rationale.html'>Rationale</a></li><li><a href='        ../articles/builtin.html'>Builtin Rationale</a></li><li><a href='        ../articles/ctod.html'>C to D</a></li><li><a href='        ../articles/cpptod.html'>C++ to D</a></li><li><a href='        ../articles/pretod.html'>C Preprocessor vs D</a></li><li><a href='        ../articles/code_coverage.html'>Code coverage analysis</a></li><li><a href='        ../articles/exception-safe.html'>Exception Safety</a></li><li><a href='        ../articles/hijack.html'>Hijacking</a></li><li><a href='        ../articles/intro-to-datetime.html'>Introduction to std.datetime</a></li><li><a href='        ../articles/lazy-evaluation.html'>Lazy Evaluation</a></li><li><a href='        ../articles/migrate-to-shared.html'>Migrating to Shared</a></li><li><a href='        ../articles/mixin.html'>Mixins</a></li><li><a href='        ../articles/regular-expression.html'>Regular Expressions</a></li><li><a href='        ../articles/safed.html'>SafeD</a></li><li><a href='        ../articles/templates-revisited.html'>Templates Revisited</a></li><li><a href='        ../articles/ctarguments.html'>Compile-time Sequences</a></li><li><a href='        ../articles/variadic-function-templates.html'>Variadic Templates</a></li><li><a href='        ../articles/d-array-article.html'>D Slices</a></li><li><a href='        ../articles/cppcontracts.html'>D's Contract Programming</a></li><li><a href='        ../articles/template-comparison.html'>Template Comparison</a></li><li><a href='        ../articles/dll-linux.html'>Writing Shared Libraries
+    </a></li></ul>
+</div>
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BD's Contract Programming vs C++'s%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/articles/cppcontracts.dd">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>D's Contract Programming vs C++'s</h1>
+        
+        
+
+
+<div class="page-contents quickindex">    <div class="page-contents-header">        <b>Contents</b>
+    </div>
+    <ol>    <li><a href="#contract-programming-d">Contract Programming in D</a></li>
+    <li><a href="#contract-progamming-cpp">Contract Programming in C++</a><ol>        <li><a href="#assert-macro">The <span class="d_inlinecode donthyphenate notranslate">assert</span> Macro</a></li>
+        <li><a href="#class-invariant">Class Invariants</a></li>
+        <li><a href="#pre-post-conditions">Preconditions and Postconditions for Member Functions</a></li>
+    </ol></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+    <li><a href="#references">References</a></li>
+</ol>
+</div>
+
+        <p>Many people have written me saying that D's Contract Programming
+        does not add anything that C++ does not already support.
+        They go on to illustrate their point with a technique for doing Contracts in
+        C++.</p>
+
+        <p>It makes sense to review what Contract Programming is, how it is done in D,
+        and stack that up with what each of the various C++ Contract techniques
+        can do.</p>
+
+        <p>Digital Mars C++ adds
+        <a href="http://digitalmars.com/ctg/contract.html">extensions to C++</a>
+        to support Contracts, but they are not covered here because they are not
+        part of standard C++ and are not supported by any other C++ compiler.</p>
+
+<h2><a class="anchor" title="Permalink to this section" id="contract-programming-d" href="#contract-programming-d">Contract Programming in D</a></h2>
+
+        This is more fully documented in the D
+        <a href="contracts.html">Contract Programming</a> document.
+        To sum up, Contract Programming in D has the following characteristics:
+
+        <ol>
+        <li>The <i>assert</i> is the basic contract.
+        </li>
+
+        <li>When an assert contract fails, it throws an exception.
+        Such exceptions can be caught and handled, or allowed to
+        terminate the program.
+        </li>
+
+        <li>Classes can have <i>class invariants</i> which are
+        checked upon entry and exit of each public class member function,
+        the exit of each constructor, and the entry of the destructor.
+        </li>
+
+        <li>Assert contracts on object references check the class
+        invariant for that object.
+        </li>
+
+        <li>Class invariants are inherited, that means that a derived
+        class invariant will implicitly call the base class invariant.
+        </li>
+
+        <li>Functions can have <i>preconditions</i> and <i>postconditions</i>.
+        </li>
+
+        <li>For member functions in a class inheritance hierarchy, the
+        precondition of a derived class function are OR'd together
+        with the preconditions of all the functions it overrides.
+        The postconditions are AND'd together.
+        </li>
+
+        <li>By throwing a compiler switch, Contracts code can be enabled
+        or can be withdrawn from the compiled code.
+        </li>
+
+        <li>Code works semantically the same with or without Contracts
+        checking enabled.
+        </li>
+
+        </ol>
+
+<h2><a class="anchor" title="Permalink to this section" id="contract-progamming-cpp" href="#contract-progamming-cpp">Contract Programming in C++</a></h2>
+
+<h3><a class="anchor" title="Permalink to this section" id="assert-macro" href="#assert-macro">The <span class="d_inlinecode donthyphenate notranslate">assert</span> Macro</a></h3>
+
+        <p>C++ does have the basic <span class="d_inlinecode donthyphenate notranslate">assert</span> macro, which tests its argument
+        and if it fails, aborts the program. <span class="d_inlinecode donthyphenate notranslate">assert</span> can be turned
+        on and off with the <span class="d_inlinecode donthyphenate notranslate">NDEBUG</span> macro.</p>
+
+        <p><span class="d_inlinecode donthyphenate notranslate">assert</span> does not know anything about class invariants,
+        and does not throw an exception when it fails. It just aborts
+        the program after writing a message. <span class="d_inlinecode donthyphenate notranslate">assert</span> relies on
+        a macro text preprocessor to work.</p>
+
+        <p><span class="d_inlinecode donthyphenate notranslate">assert</span> is where explicit support for Contracts in Standard C++
+        begins and ends.</p>
+
+<h3><a class="anchor" title="Permalink to this section" id="class-invariant" href="#class-invariant">Class Invariants</a></h3>
+
+        Consider a class invariant in D:
+
+<pre class="d_code notranslate"><span class="d_keyword">class</span> A
+{
+    <b><i><span class="d_keyword">invariant</span></i></b>() { ...contracts... }
+
+    <span class="d_keyword">this</span>() { ... }      <span class="d_comment">// constructor
+</span>    ~<span class="d_keyword">this</span>() { ... }     <span class="d_comment">// destructor
+</span>
+    <span class="d_keyword">void</span> foo() { ... }  <span class="d_comment">// public member function
+</span>}
+
+<span class="d_keyword">class</span> B : A
+{
+    <b><i><span class="d_keyword">invariant</span></i></b>() { ...contracts... }
+    ...
+}
+</pre>
+
+        To accomplish the equivalent in C++ (thanks to Bob Bell for providing
+        this):
+
+<pre class="ccode notranslate">template<typename T>
+inline void check_invariant(T&amp; iX)
+{
+#ifdef DBC
+    iX.invariant();
+#endif
+}
+
+// A.h:
+
+class A {
+    public:
+#ifdef DBG
+       virtual void invariant() { ...contracts... }
+#endif
+       void foo();
+};
+
+// A.cpp:
+
+void A::foo()
+{
+    check_invariant(*this);
+    ...
+    check_invariant(*this);
+}
+
+// B.h:
+
+#include "A.h"
+
+class B : public A {
+    public:
+#ifdef DBG
+        virtual void invariant()
+        {   ...contracts...
+           A::invariant();
+        }
+#endif
+       void bar();
+};
+
+// B.cpp:
+
+void B::barG()
+{
+    check_invariant(*this);
+    ...
+    check_invariant(*this);
+}
+</pre>
+
+        There's an additional complication with <span class="d_inlinecode donthyphenate notranslate">A::foo()</span>. Upon every
+        normal exit from the function, the <span class="d_inlinecode donthyphenate notranslate">invariant()</span> should be
+        called.
+        This means that code that looks like:
+
+<pre class="ccode notranslate">int A::foo()
+{
+    ...
+    if (...)
+        return bar();
+    return 3;
+}
+</pre>
+
+        would need to be written as:
+
+<pre class="ccode notranslate">int A::foo()
+{
+    int result;
+    check_invariant(*this);
+    ...
+    if (...)
+    {
+        result = bar();
+        check_invariant(*this);
+        return result;
+    }
+    check_invariant(*this);
+    return 3;
+}
+</pre>
+
+        Or recode the function so it has a single exit point.
+        One possibility to mitigate this is to use RAII techniques:
+
+<pre class="ccode notranslate">int A::foo()
+{
+#if DBC
+    struct Sentry {
+       Sentry(A&amp; iA) : mA(iA) { check_invariants(iA); }
+       ~Sentry() { check_invariants(mA); }
+       A&amp; mA;
+    } sentry(*this);
+#endif
+    ...
+    if (...)
+        return bar();
+    return 3;
+}
+</pre>
+
+        The #if DBC is still there because some compilers may not
+        optimize the whole thing away if check_invariants compiles to nothing.
+
+<h3>Preconditions and Postconditions</h3>
+
+        Consider the following in D:
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span> foo()
+<span class="d_keyword">in</span> { ...preconditions... }
+<span class="d_keyword">out</span> { ...postconditions... }
+body
+{
+    ...implementation...
+}
+</pre>
+
+        This is nicely handled in C++ with the nested Sentry struct:
+
+<pre class="ccode notranslate">void foo()
+{
+    struct Sentry
+    {
+        Sentry() { ...preconditions... }
+        ~Sentry() { ...postconditions... }
+    } sentry;
+    ...implementation...
+}
+</pre>
+
+        <p>If the preconditions and postconditions consist of nothing
+        more than <span class="d_inlinecode donthyphenate notranslate">assert</span> macros, the whole doesn't need to
+        be wrapped in a <span class="d_inlinecode donthyphenate notranslate">#ifdef</span> pair, since a good C++ compiler will
+        optimize the whole thing away if the <span class="d_inlinecode donthyphenate notranslate">assert</span>s are turned off.</p>
+
+        <p>But suppose <span class="d_inlinecode donthyphenate notranslate">foo()</span> sorts an array, and the postcondition needs
+        to walk the array and verify that it really is sorted. Now
+        the shebang needs to be wrapped in <span class="d_inlinecode donthyphenate notranslate">#ifdef</span>:</p>
+
+<pre class="ccode notranslate">void foo()
+{
+#ifdef DBC
+    struct Sentry
+    {
+        Sentry() { ...preconditions... }
+        ~Sentry() { ...postconditions... }
+    } sentry;
+#endif
+    ...implementation...
+}
+</pre>
+
+        <p>(One can make use of the C++ rule that templates are only
+        instantiated when used can be used to avoid the <span class="d_inlinecode donthyphenate notranslate">#ifdef</span>, by
+        putting the conditions into a template function referenced
+        by the <span class="d_inlinecode donthyphenate notranslate">assert</span>.)</p>
+
+        <p>Let's add a return value to <span class="d_inlinecode donthyphenate notranslate">foo()</span> that needs to be checked in
+        the postconditions. In D:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span> foo()
+<span class="d_keyword">in</span> { ...preconditions... }
+<span class="d_keyword">out</span> (result) { ...postconditions... }
+body
+{
+    ...implementation...
+    <span class="d_keyword">if</span> (...)
+        <span class="d_keyword">return</span> bar();
+    <span class="d_keyword">return</span> 3;
+}
+</pre>
+
+        In C++:
+
+<pre class="ccode notranslate">int foo()
+{
+#ifdef DBC
+    struct Sentry
+    {
+        int result;
+        Sentry() { ...preconditions... }
+        ~Sentry() { ...postconditions... }
+    } sentry;
+#endif
+    ...implementation...
+    if (...)
+    {
+        int i = bar();
+#ifdef DBC
+        sentry.result = i;
+#endif
+        return i;
+    }
+#ifdef DBC
+    sentry.result = 3;
+#endif
+    return 3;
+}
+</pre>
+
+        Now add a couple parameters to <span class="d_inlinecode donthyphenate notranslate">foo()</span>. In D:
+
+<pre class="d_code notranslate"><span class="d_keyword">int</span> foo(<span class="d_keyword">int</span> a, <span class="d_keyword">int</span> b)
+<span class="d_keyword">in</span> { ...preconditions... }
+<span class="d_keyword">out</span> (result) { ...postconditions... }
+body
+{
+    ...implementation...
+    <span class="d_keyword">if</span> (...)
+        <span class="d_keyword">return</span> bar();
+    <span class="d_keyword">return</span> 3;
+}
+</pre>
+
+        In C++:
+
+<pre class="ccode notranslate">int foo(int a, int b)
+{
+#ifdef DBC
+    struct Sentry
+    {
+        int a, b;
+        int result;
+        Sentry(int a, int b)
+        {
+            this-&gt;a = a;
+            this-&gt;b = b;
+            ...preconditions...
+        }
+        ~Sentry() { ...postconditions... }
+    } sentry(a, b);
+#endif
+    ...implementation...
+    if (...)
+    {
+        int i = bar();
+#ifdef DBC
+        sentry.result = i;
+#endif
+        return i;
+    }
+#ifdef DBC
+    sentry.result = 3;
+#endif
+    return 3;
+}
+</pre>
+
+<h3><a class="anchor" title="Permalink to this section" id="pre-post-conditions" href="#pre-post-conditions">Preconditions and Postconditions for Member Functions</a></h3>
+
+        Consider the use of preconditions and postconditions for a
+        polymorphic function in D:
+
+<pre class="d_code notranslate"><span class="d_keyword">class</span> A
+{
+    <span class="d_keyword">void</span> foo()
+    <span class="d_keyword">in</span> { ...Apreconditions... }
+    <span class="d_keyword">out</span> { ...Apostconditions... }
+    body
+    {
+        ...implementation...
+    }
+}
+
+<span class="d_keyword">class</span> B : A
+{
+    <span class="d_keyword">void</span> foo()
+    <span class="d_keyword">in</span> { ...Bpreconditions... }
+    <span class="d_keyword">out</span> { ...Bpostconditions... }
+    body
+    {
+        ...implementation...
+    }
+}
+</pre>
+
+        The semantics for a call to <span class="d_inlinecode donthyphenate notranslate">B.foo()</span> are:
+
+        <ul>        <li>Either Apreconditions or Bpreconditions must be satisfied.</li>
+        <li>Both Apostconditions and Bpostconditions must be satisfied.</li>
+        </ul>
+
+        Let's get this to work in C++:
+
+<pre class="ccode notranslate">class A
+{
+protected:
+    #if DBC
+    int foo_preconditions() { ...Apreconditions... }
+    void foo_postconditions() { ...Apostconditions... }
+    #else
+    int foo_preconditions() { return 1; }
+    void foo_postconditions() { }
+    #endif
+
+    void foo_internal()
+    {
+        ...implementation...
+    }
+
+public:
+    virtual void foo()
+    {
+        foo_preconditions();
+        foo_internal();
+        foo_postconditions();
+    }
+};
+
+class B : A
+{
+protected:
+   #if DBC
+    int foo_preconditions() { ...Bpreconditions... }
+    void foo_postconditions() { ...Bpostconditions... }
+    #else
+    int foo_preconditions() { return 1; }
+    void foo_postconditions() { }
+    #endif
+
+    void foo_internal()
+    {
+        ...implementation...
+    }
+
+public:
+    virtual void foo()
+    {
+        assert(foo_preconditions() || A::foo_preconditions());
+        foo_internal();
+        A::foo_postconditions();
+        foo_postconditions();
+    }
+};
+</pre>
+
+        Something interesting has happened here. The preconditions can
+        no longer be done using <span class="d_inlinecode donthyphenate notranslate">assert</span>, since the results need
+        to be OR'd together. I'll leave as a reader exercise adding
+        in a class invariant, function return values for <span class="d_inlinecode donthyphenate notranslate">foo()</span>,
+        and parameters
+        for <span class="d_inlinecode donthyphenate notranslate">foo()</span>.
+
+<h2><a class="anchor" title="Permalink to this section" id="conclusion" href="#conclusion">Conclusion</a></h2>
+
+        <p>These C++ techniques can work up to a point. But, aside from
+        <span class="d_inlinecode donthyphenate notranslate">assert</span>, they are not standardized and so will vary from
+        project to project. Furthermore, they require much tedious
+        adhesion to a particular convention, and add significant clutter
+        to the code. Perhaps that's why it's rarely seen in practice.</p>
+
+        <p>By adding support for Contracts into the language, D offers an easy
+        way to use Contracts and get it right. Being in the language standardizes
+        the way it will be used from project to project.</p>
+
+<h2><a class="anchor" title="Permalink to this section" id="references" href="#references">References</a></h2>
+
+        <p>Chapter C.11 introduces the theory and rationale of
+        Contract Programming in
+        <a href="https://www.amazon.com/exec/obidos/ASIN/0136291554/classicempire">
+        Object-Oriented Software Construction
+        </a><br>
+        Bertrand Meyer, Prentice Hall</p>
+
+        <p>Chapters 24.3.7.1 to 24.3.7.3 discuss Contract Programming in C++ in
+        <a href="https://www.amazon.com/exec/obidos/ASIN/0201700735/classicempire">
+        The C++ Programming Language Special Edition
+        </a><br>
+        Bjarne Stroustrup, Addison-Wesley</p>
+
+
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2022 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on (no date time)</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

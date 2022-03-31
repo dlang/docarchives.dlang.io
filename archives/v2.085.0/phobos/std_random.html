@@ -1,0 +1,1111 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2022 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>std.random - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='std.random' class='std'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href=".."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.freenode.net/d'>IRC</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option selected value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+<div class="subnav-helper"></div> <div class="subnav">    <div class="head">        <h2>Library Reference</h2>
+        <p><span class="smallprint">version 2.085.0 <span class="separator"><br></span>
+            </span>
+        </p>
+        <p><a href="index.html">overview</a></p>
+    </div>
+    <ul>
+<li><a href='object.html'><span><em class="tt">object</em></span></a></li>
+
+<li class='expand-container modlist-submenu-std'><a class='expand-toggle' href='#'><span><em class="tt">std</em></span></a>
+<ul><li>  <a href="std_algorithm.html" title="std.algorithm"><span class="d_inlinecode donthyphenate notranslate">algorithm</span></a><ul><li>    <a href="std_algorithm_comparison.html" title="std.algorithm.comparison"><span class="d_inlinecode donthyphenate notranslate">comparison</span></a></li><li>    <a href="std_algorithm_iteration.html" title="std.algorithm.iteration"><span class="d_inlinecode donthyphenate notranslate">iteration</span></a></li><li>    <a href="std_algorithm_mutation.html" title="std.algorithm.mutation"><span class="d_inlinecode donthyphenate notranslate">mutation</span></a></li><li>    <a href="std_algorithm_searching.html" title="std.algorithm.searching"><span class="d_inlinecode donthyphenate notranslate">searching</span></a></li><li>    <a href="std_algorithm_setops.html" title="std.algorithm.setops"><span class="d_inlinecode donthyphenate notranslate">setops</span></a></li><li>    <a href="std_algorithm_sorting.html" title="std.algorithm.sorting"><span class="d_inlinecode donthyphenate notranslate">sorting</span></a>
+  </li></ul></li><li>  <a href="std_array.html" title="std.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>  <a href="std_ascii.html" title="std.ascii"><span class="d_inlinecode donthyphenate notranslate">ascii</span></a></li><li>  <a href="std_base64.html" title="std.base64"><span class="d_inlinecode donthyphenate notranslate">base64</span></a></li><li>  <a href="std_bigint.html" title="std.bigint"><span class="d_inlinecode donthyphenate notranslate">bigint</span></a></li><li>  <a href="std_bitmanip.html" title="std.bitmanip"><span class="d_inlinecode donthyphenate notranslate">bitmanip</span></a></li><li>  <a href="std_compiler.html" title="std.compiler"><span class="d_inlinecode donthyphenate notranslate">compiler</span></a></li><li>  <a href="std_complex.html" title="std.complex"><span class="d_inlinecode donthyphenate notranslate">complex</span></a></li><li>  <a href="std_concurrency.html" title="std.concurrency"><span class="d_inlinecode donthyphenate notranslate">concurrency</span></a></li><li>  <a href="std_container.html" title="std.container"><span class="d_inlinecode donthyphenate notranslate">container</span></a><ul><li>    <a href="std_container_array.html" title="std.container.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>    <a href="std_container_binaryheap.html" title="std.container.binaryheap"><span class="d_inlinecode donthyphenate notranslate">binaryheap</span></a></li><li>    <a href="std_container_dlist.html" title="std.container.dlist"><span class="d_inlinecode donthyphenate notranslate">dlist</span></a></li><li>    <a href="std_container_rbtree.html" title="std.container.rbtree"><span class="d_inlinecode donthyphenate notranslate">rbtree</span></a></li><li>    <a href="std_container_slist.html" title="std.container.slist"><span class="d_inlinecode donthyphenate notranslate">slist</span></a></li><li>    <a href="std_container_util.html" title="std.container.util"><span class="d_inlinecode donthyphenate notranslate">util</span></a>
+  </li></ul></li><li>  <a href="std_conv.html" title="std.conv"><span class="d_inlinecode donthyphenate notranslate">conv</span></a></li><li>  <a href="std_csv.html" title="std.csv"><span class="d_inlinecode donthyphenate notranslate">csv</span></a></li><li>  <a href="std_datetime.html" title="std.datetime"><span class="d_inlinecode donthyphenate notranslate">datetime</span></a><ul><li>    <a href="std_datetime_date.html" title="std.datetime.date"><span class="d_inlinecode donthyphenate notranslate">date</span></a></li><li>    <a href="std_datetime_interval.html" title="std.datetime.interval"><span class="d_inlinecode donthyphenate notranslate">interval</span></a></li><li>    <a href="std_datetime_stopwatch.html" title="std.datetime.stopwatch"><span class="d_inlinecode donthyphenate notranslate">stopwatch</span></a></li><li>    <a href="std_datetime_systime.html" title="std.datetime.systime"><span class="d_inlinecode donthyphenate notranslate">systime</span></a></li><li>    <a href="std_datetime_timezone.html" title="std.datetime.timezone"><span class="d_inlinecode donthyphenate notranslate">timezone</span></a>
+  </li></ul></li><li>  <a href="std_demangle.html" title="std.demangle"><span class="d_inlinecode donthyphenate notranslate">demangle</span></a></li><li>  <a href="std_digest.html" title="std.digest"><span class="d_inlinecode donthyphenate notranslate">digest</span></a><ul><li>    <a href="std_digest_crc.html" title="std.digest.crc"><span class="d_inlinecode donthyphenate notranslate">crc</span></a></li><li>    <a href="std_digest_hmac.html" title="std.digest.hmac"><span class="d_inlinecode donthyphenate notranslate">hmac</span></a></li><li>    <a href="std_digest_md.html" title="std.digest.md"><span class="d_inlinecode donthyphenate notranslate">md</span></a></li><li>    <a href="std_digest_murmurhash.html" title="std.digest.murmurhash"><span class="d_inlinecode donthyphenate notranslate">murmurhash</span></a></li><li>    <a href="std_digest_ripemd.html" title="std.digest.ripemd"><span class="d_inlinecode donthyphenate notranslate">ripemd</span></a></li><li>    <a href="std_digest_sha.html" title="std.digest.sha"><span class="d_inlinecode donthyphenate notranslate">sha</span></a>
+  </li></ul></li><li>  <a href="std_encoding.html" title="std.encoding"><span class="d_inlinecode donthyphenate notranslate">encoding</span></a></li><li>  <a href="std_exception.html" title="std.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">experimental</span></h7><ul><li>    <a href="std_experimental_all.html" title="std.experimental.all"><span class="d_inlinecode donthyphenate notranslate">all</span></a></li><li>    <a href="std_experimental_allocator.html" title="std.experimental.allocator"><span class="d_inlinecode donthyphenate notranslate">allocator</span></a><ul><li>      <a href="std_experimental_allocator_building_blocks.html" title="std.experimental.allocator.building_blocks"><span class="d_inlinecode donthyphenate notranslate">building_blocks</span></a><ul><li>        <a href="std_experimental_allocator_building_blocks_affix_allocator.html" title="std.experimental.allocator.building_blocks.affix_allocator"><span class="d_inlinecode donthyphenate notranslate">affix_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_aligned_block_list.html" title="std.experimental.allocator.building_blocks.aligned_block_list"><span class="d_inlinecode donthyphenate notranslate">aligned_block_list</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_allocator_list.html" title="std.experimental.allocator.building_blocks.allocator_list"><span class="d_inlinecode donthyphenate notranslate">allocator_list</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_ascending_page_allocator.html" title="std.experimental.allocator.building_blocks.ascending_page_allocator"><span class="d_inlinecode donthyphenate notranslate">ascending_page_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_bitmapped_block.html" title="std.experimental.allocator.building_blocks.bitmapped_block"><span class="d_inlinecode donthyphenate notranslate">bitmapped_block</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_bucketizer.html" title="std.experimental.allocator.building_blocks.bucketizer"><span class="d_inlinecode donthyphenate notranslate">bucketizer</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_fallback_allocator.html" title="std.experimental.allocator.building_blocks.fallback_allocator"><span class="d_inlinecode donthyphenate notranslate">fallback_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_free_list.html" title="std.experimental.allocator.building_blocks.free_list"><span class="d_inlinecode donthyphenate notranslate">free_list</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_free_tree.html" title="std.experimental.allocator.building_blocks.free_tree"><span class="d_inlinecode donthyphenate notranslate">free_tree</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_kernighan_ritchie.html" title="std.experimental.allocator.building_blocks.kernighan_ritchie"><span class="d_inlinecode donthyphenate notranslate">kernighan_ritchie</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_null_allocator.html" title="std.experimental.allocator.building_blocks.null_allocator"><span class="d_inlinecode donthyphenate notranslate">null_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_quantizer.html" title="std.experimental.allocator.building_blocks.quantizer"><span class="d_inlinecode donthyphenate notranslate">quantizer</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_region.html" title="std.experimental.allocator.building_blocks.region"><span class="d_inlinecode donthyphenate notranslate">region</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_scoped_allocator.html" title="std.experimental.allocator.building_blocks.scoped_allocator"><span class="d_inlinecode donthyphenate notranslate">scoped_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_segregator.html" title="std.experimental.allocator.building_blocks.segregator"><span class="d_inlinecode donthyphenate notranslate">segregator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_stats_collector.html" title="std.experimental.allocator.building_blocks.stats_collector"><span class="d_inlinecode donthyphenate notranslate">stats_collector</span></a>
+      </li></ul></li><li>      <a href="std_experimental_allocator_common.html" title="std.experimental.allocator.common"><span class="d_inlinecode donthyphenate notranslate">common</span></a></li><li>      <a href="std_experimental_allocator_gc_allocator.html" title="std.experimental.allocator.gc_allocator"><span class="d_inlinecode donthyphenate notranslate">gc_allocator</span></a></li><li>      <a href="std_experimental_allocator_mallocator.html" title="std.experimental.allocator.mallocator"><span class="d_inlinecode donthyphenate notranslate">mallocator</span></a></li><li>      <a href="std_experimental_allocator_mmap_allocator.html" title="std.experimental.allocator.mmap_allocator"><span class="d_inlinecode donthyphenate notranslate">mmap_allocator</span></a></li><li>      <a href="std_experimental_allocator_showcase.html" title="std.experimental.allocator.showcase"><span class="d_inlinecode donthyphenate notranslate">showcase</span></a></li><li>      <a href="std_experimental_allocator_typed.html" title="std.experimental.allocator.typed"><span class="d_inlinecode donthyphenate notranslate">typed</span></a>
+    </li></ul></li><li>    <a href="std_experimental_checkedint.html" title="std.experimental.checkedint"><span class="d_inlinecode donthyphenate notranslate">checkedint</span></a></li><li>    <a href="std_experimental_logger.html" title="std.experimental.logger"><span class="d_inlinecode donthyphenate notranslate">logger</span></a><ul><li>      <a href="std_experimental_logger_core.html" title="std.experimental.logger.core"><span class="d_inlinecode donthyphenate notranslate">core</span></a></li><li>      <a href="std_experimental_logger_filelogger.html" title="std.experimental.logger.filelogger"><span class="d_inlinecode donthyphenate notranslate">filelogger</span></a></li><li>      <a href="std_experimental_logger_multilogger.html" title="std.experimental.logger.multilogger"><span class="d_inlinecode donthyphenate notranslate">multilogger</span></a></li><li>      <a href="std_experimental_logger_nulllogger.html" title="std.experimental.logger.nulllogger"><span class="d_inlinecode donthyphenate notranslate">nulllogger</span></a>
+    </li></ul></li><li>    <a href="std_experimental_typecons.html" title="std.experimental.typecons"><span class="d_inlinecode donthyphenate notranslate">typecons</span></a>
+  </li></ul></li><li>  <a href="std_file.html" title="std.file"><span class="d_inlinecode donthyphenate notranslate">file</span></a></li><li>  <a href="std_format.html" title="std.format"><span class="d_inlinecode donthyphenate notranslate">format</span></a></li><li>  <a href="std_functional.html" title="std.functional"><span class="d_inlinecode donthyphenate notranslate">functional</span></a></li><li>  <a href="std_getopt.html" title="std.getopt"><span class="d_inlinecode donthyphenate notranslate">getopt</span></a></li><li>  <a href="std_json.html" title="std.json"><span class="d_inlinecode donthyphenate notranslate">json</span></a></li><li>  <a href="std_math.html" title="std.math"><span class="d_inlinecode donthyphenate notranslate">math</span></a></li><li>  <a href="std_mathspecial.html" title="std.mathspecial"><span class="d_inlinecode donthyphenate notranslate">mathspecial</span></a></li><li>  <a href="std_meta.html" title="std.meta"><span class="d_inlinecode donthyphenate notranslate">meta</span></a></li><li>  <a href="std_mmfile.html" title="std.mmfile"><span class="d_inlinecode donthyphenate notranslate">mmfile</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">net</span></h7><ul><li>    <a href="std_net_curl.html" title="std.net.curl"><span class="d_inlinecode donthyphenate notranslate">curl</span></a></li><li>    <a href="std_net_isemail.html" title="std.net.isemail"><span class="d_inlinecode donthyphenate notranslate">isemail</span></a>
+  </li></ul></li><li>  <a href="std_numeric.html" title="std.numeric"><span class="d_inlinecode donthyphenate notranslate">numeric</span></a></li><li>  <a href="std_outbuffer.html" title="std.outbuffer"><span class="d_inlinecode donthyphenate notranslate">outbuffer</span></a></li><li>  <a href="std_parallelism.html" title="std.parallelism"><span class="d_inlinecode donthyphenate notranslate">parallelism</span></a></li><li>  <a href="std_path.html" title="std.path"><span class="d_inlinecode donthyphenate notranslate">path</span></a></li><li>  <a href="std_process.html" title="std.process"><span class="d_inlinecode donthyphenate notranslate">process</span></a></li><li>  <a href="std_random.html" title="std.random"><span class="d_inlinecode donthyphenate notranslate">random</span></a></li><li>  <a href="std_range.html" title="std.range"><span class="d_inlinecode donthyphenate notranslate">range</span></a><ul><li>    <a href="std_range_interfaces.html" title="std.range.interfaces"><span class="d_inlinecode donthyphenate notranslate">interfaces</span></a></li><li>    <a href="std_range_primitives.html" title="std.range.primitives"><span class="d_inlinecode donthyphenate notranslate">primitives</span></a>
+  </li></ul></li><li>  <a href="std_regex.html" title="std.regex"><span class="d_inlinecode donthyphenate notranslate">regex</span></a></li><li>  <a href="std_signals.html" title="std.signals"><span class="d_inlinecode donthyphenate notranslate">signals</span></a></li><li>  <a href="std_socket.html" title="std.socket"><span class="d_inlinecode donthyphenate notranslate">socket</span></a></li><li>  <a href="std_stdint.html" title="std.stdint"><span class="d_inlinecode donthyphenate notranslate">stdint</span></a></li><li>  <a href="std_stdio.html" title="std.stdio"><span class="d_inlinecode donthyphenate notranslate">stdio</span></a></li><li>  <a href="std_string.html" title="std.string"><span class="d_inlinecode donthyphenate notranslate">string</span></a></li><li>  <a href="std_system.html" title="std.system"><span class="d_inlinecode donthyphenate notranslate">system</span></a></li><li>  <a href="std_traits.html" title="std.traits"><span class="d_inlinecode donthyphenate notranslate">traits</span></a></li><li>  <a href="std_typecons.html" title="std.typecons"><span class="d_inlinecode donthyphenate notranslate">typecons</span></a></li><li>  <a href="std_uni.html" title="std.uni"><span class="d_inlinecode donthyphenate notranslate">uni</span></a></li><li>  <a href="std_uri.html" title="std.uri"><span class="d_inlinecode donthyphenate notranslate">uri</span></a></li><li>  <a href="std_utf.html" title="std.utf"><span class="d_inlinecode donthyphenate notranslate">utf</span></a></li><li>  <a href="std_uuid.html" title="std.uuid"><span class="d_inlinecode donthyphenate notranslate">uuid</span></a></li><li>  <a href="std_variant.html" title="std.variant"><span class="d_inlinecode donthyphenate notranslate">variant</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">windows</span></h7><ul><li>    <a href="std_windows_charset.html" title="std.windows.charset"><span class="d_inlinecode donthyphenate notranslate">charset</span></a></li><li>    <a href="std_windows_syserror.html" title="std.windows.syserror"><span class="d_inlinecode donthyphenate notranslate">syserror</span></a>
+  </li></ul></li><li>  <a href="std_xml.html" title="std.xml"><span class="d_inlinecode donthyphenate notranslate">xml</span></a></li><li>  <a href="std_zip.html" title="std.zip"><span class="d_inlinecode donthyphenate notranslate">zip</span></a></li><li>  <a href="std_zlib.html" title="std.zlib"><span class="d_inlinecode donthyphenate notranslate">zlib</span></a>
+</li></ul>
+</li>
+
+<li class='expand-container modlist-submenu-etc'><a class='expand-toggle' href='#'><span><em class="tt">etc</em></span></a>
+<ul><li>  <h7><span class="d_inlinecode donthyphenate notranslate">c</span></h7><ul><li>    <a href="etc_c_curl.html" title="etc.c.curl"><span class="d_inlinecode donthyphenate notranslate">curl</span></a></li><li>    <h7><span class="d_inlinecode donthyphenate notranslate">odbc</span></h7><ul><li>      <a href="etc_c_odbc_sql.html" title="etc.c.odbc.sql"><span class="d_inlinecode donthyphenate notranslate">sql</span></a></li><li>      <a href="etc_c_odbc_sqlext.html" title="etc.c.odbc.sqlext"><span class="d_inlinecode donthyphenate notranslate">sqlext</span></a></li><li>      <a href="etc_c_odbc_sqltypes.html" title="etc.c.odbc.sqltypes"><span class="d_inlinecode donthyphenate notranslate">sqltypes</span></a></li><li>      <a href="etc_c_odbc_sqlucode.html" title="etc.c.odbc.sqlucode"><span class="d_inlinecode donthyphenate notranslate">sqlucode</span></a>
+    </li></ul></li><li>    <a href="etc_c_sqlite3.html" title="etc.c.sqlite3"><span class="d_inlinecode donthyphenate notranslate">sqlite3</span></a></li><li>    <a href="etc_c_zlib.html" title="etc.c.zlib"><span class="d_inlinecode donthyphenate notranslate">zlib</span></a>
+  </li></ul>
+</li></ul>
+</li>
+
+<li class='expand-container modlist-submenu-core'><a class='expand-toggle' href='#'><span><em class="tt">core</em></span></a>
+<ul><li>  <a href="core_atomic.html" title="core.atomic"><span class="d_inlinecode donthyphenate notranslate">atomic</span></a></li><li>  <a href="core_attribute.html" title="core.attribute"><span class="d_inlinecode donthyphenate notranslate">attribute</span></a></li><li>  <a href="core_bitop.html" title="core.bitop"><span class="d_inlinecode donthyphenate notranslate">bitop</span></a></li><li>  <a href="core_checkedint.html" title="core.checkedint"><span class="d_inlinecode donthyphenate notranslate">checkedint</span></a></li><li>  <a href="core_cpuid.html" title="core.cpuid"><span class="d_inlinecode donthyphenate notranslate">cpuid</span></a></li><li>  <a href="core_demangle.html" title="core.demangle"><span class="d_inlinecode donthyphenate notranslate">demangle</span></a></li><li>  <a href="core_exception.html" title="core.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>  <a href="core_lifetime.html" title="core.lifetime"><span class="d_inlinecode donthyphenate notranslate">lifetime</span></a></li><li>  <a href="core_math.html" title="core.math"><span class="d_inlinecode donthyphenate notranslate">math</span></a></li><li>  <a href="core_memory.html" title="core.memory"><span class="d_inlinecode donthyphenate notranslate">memory</span></a></li><li>  <a href="core_runtime.html" title="core.runtime"><span class="d_inlinecode donthyphenate notranslate">runtime</span></a></li><li>  <a href="core_simd.html" title="core.simd"><span class="d_inlinecode donthyphenate notranslate">simd</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">stdc</span></h7><ul><li>    <a href="core_stdc_assert_.html" title="core.stdc.assert_"><span class="d_inlinecode donthyphenate notranslate">assert_</span></a></li><li>    <a href="core_stdc_complex.html" title="core.stdc.complex"><span class="d_inlinecode donthyphenate notranslate">complex</span></a></li><li>    <a href="core_stdc_ctype.html" title="core.stdc.ctype"><span class="d_inlinecode donthyphenate notranslate">ctype</span></a></li><li>    <a href="core_stdc_errno.html" title="core.stdc.errno"><span class="d_inlinecode donthyphenate notranslate">errno</span></a></li><li>    <a href="core_stdc_fenv.html" title="core.stdc.fenv"><span class="d_inlinecode donthyphenate notranslate">fenv</span></a></li><li>    <a href="core_stdc_float_.html" title="core.stdc.float_"><span class="d_inlinecode donthyphenate notranslate">float_</span></a></li><li>    <a href="core_stdc_inttypes.html" title="core.stdc.inttypes"><span class="d_inlinecode donthyphenate notranslate">inttypes</span></a></li><li>    <a href="core_stdc_limits.html" title="core.stdc.limits"><span class="d_inlinecode donthyphenate notranslate">limits</span></a></li><li>    <a href="core_stdc_locale.html" title="core.stdc.locale"><span class="d_inlinecode donthyphenate notranslate">locale</span></a></li><li>    <a href="core_stdc_math.html" title="core.stdc.math"><span class="d_inlinecode donthyphenate notranslate">math</span></a></li><li>    <a href="core_stdc_signal.html" title="core.stdc.signal"><span class="d_inlinecode donthyphenate notranslate">signal</span></a></li><li>    <a href="core_stdc_stdarg.html" title="core.stdc.stdarg"><span class="d_inlinecode donthyphenate notranslate">stdarg</span></a></li><li>    <a href="core_stdc_stddef.html" title="core.stdc.stddef"><span class="d_inlinecode donthyphenate notranslate">stddef</span></a></li><li>    <a href="core_stdc_stdint.html" title="core.stdc.stdint"><span class="d_inlinecode donthyphenate notranslate">stdint</span></a></li><li>    <a href="core_stdc_stdio.html" title="core.stdc.stdio"><span class="d_inlinecode donthyphenate notranslate">stdio</span></a></li><li>    <a href="core_stdc_stdlib.html" title="core.stdc.stdlib"><span class="d_inlinecode donthyphenate notranslate">stdlib</span></a></li><li>    <a href="core_stdc_string.html" title="core.stdc.string"><span class="d_inlinecode donthyphenate notranslate">string</span></a></li><li>    <a href="core_stdc_tgmath.html" title="core.stdc.tgmath"><span class="d_inlinecode donthyphenate notranslate">tgmath</span></a></li><li>    <a href="core_stdc_time.html" title="core.stdc.time"><span class="d_inlinecode donthyphenate notranslate">time</span></a></li><li>    <a href="core_stdc_wchar_.html" title="core.stdc.wchar_"><span class="d_inlinecode donthyphenate notranslate">wchar_</span></a></li><li>    <a href="core_stdc_wctype.html" title="core.stdc.wctype"><span class="d_inlinecode donthyphenate notranslate">wctype</span></a>
+  </li></ul></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">stdcpp</span></h7><ul><li>    <a href="core_stdcpp_allocator.html" title="core.stdcpp.allocator"><span class="d_inlinecode donthyphenate notranslate">allocator</span></a></li><li>    <a href="core_stdcpp_array.html" title="core.stdcpp.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>    <a href="core_stdcpp_exception.html" title="core.stdcpp.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>    <a href="core_stdcpp_new_.html" title="core.stdcpp.new_"><span class="d_inlinecode donthyphenate notranslate">new_</span></a></li><li>    <a href="core_stdcpp_string_view.html" title="core.stdcpp.string_view"><span class="d_inlinecode donthyphenate notranslate">string_view</span></a></li><li>    <a href="core_stdcpp_type_traits.html" title="core.stdcpp.type_traits"><span class="d_inlinecode donthyphenate notranslate">type_traits</span></a></li><li>    <a href="core_stdcpp_typeinfo.html" title="core.stdcpp.typeinfo"><span class="d_inlinecode donthyphenate notranslate">typeinfo</span></a></li><li>    <a href="core_stdcpp_xutility.html" title="core.stdcpp.xutility"><span class="d_inlinecode donthyphenate notranslate">xutility</span></a>
+  </li></ul></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">sync</span></h7><ul><li>    <a href="core_sync_barrier.html" title="core.sync.barrier"><span class="d_inlinecode donthyphenate notranslate">barrier</span></a></li><li>    <a href="core_sync_condition.html" title="core.sync.condition"><span class="d_inlinecode donthyphenate notranslate">condition</span></a></li><li>    <a href="core_sync_config.html" title="core.sync.config"><span class="d_inlinecode donthyphenate notranslate">config</span></a></li><li>    <a href="core_sync_exception.html" title="core.sync.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>    <a href="core_sync_mutex.html" title="core.sync.mutex"><span class="d_inlinecode donthyphenate notranslate">mutex</span></a></li><li>    <a href="core_sync_rwmutex.html" title="core.sync.rwmutex"><span class="d_inlinecode donthyphenate notranslate">rwmutex</span></a></li><li>    <a href="core_sync_semaphore.html" title="core.sync.semaphore"><span class="d_inlinecode donthyphenate notranslate">semaphore</span></a>
+  </li></ul></li><li>  <a href="core_thread.html" title="core.thread"><span class="d_inlinecode donthyphenate notranslate">thread</span></a></li><li>  <a href="core_time.html" title="core.time"><span class="d_inlinecode donthyphenate notranslate">time</span></a></li><li>  <a href="core_vararg.html" title="core.vararg"><span class="d_inlinecode donthyphenate notranslate">vararg</span></a>
+</li></ul>
+</li>
+
+<li class='expand-container modlist-submenu-dmd'><a class='expand-toggle' href='#'><span><em class="tt">dmd</em></span></a>
+<ul><li>  <a href="dmd_access.html" title="dmd.access"><span class="d_inlinecode donthyphenate notranslate">access</span></a></li><li>  <a href="dmd_aggregate.html" title="dmd.aggregate"><span class="d_inlinecode donthyphenate notranslate">aggregate</span></a></li><li>  <a href="dmd_aliasthis.html" title="dmd.aliasthis"><span class="d_inlinecode donthyphenate notranslate">aliasthis</span></a></li><li>  <a href="dmd_apply.html" title="dmd.apply"><span class="d_inlinecode donthyphenate notranslate">apply</span></a></li><li>  <a href="dmd_argtypes.html" title="dmd.argtypes"><span class="d_inlinecode donthyphenate notranslate">argtypes</span></a></li><li>  <a href="dmd_arrayop.html" title="dmd.arrayop"><span class="d_inlinecode donthyphenate notranslate">arrayop</span></a></li><li>  <a href="dmd_arraytypes.html" title="dmd.arraytypes"><span class="d_inlinecode donthyphenate notranslate">arraytypes</span></a></li><li>  <a href="dmd_astbase.html" title="dmd.astbase"><span class="d_inlinecode donthyphenate notranslate">astbase</span></a></li><li>  <a href="dmd_astcodegen.html" title="dmd.astcodegen"><span class="d_inlinecode donthyphenate notranslate">astcodegen</span></a></li><li>  <a href="dmd_asttypename.html" title="dmd.asttypename"><span class="d_inlinecode donthyphenate notranslate">asttypename</span></a></li><li>  <a href="dmd_attrib.html" title="dmd.attrib"><span class="d_inlinecode donthyphenate notranslate">attrib</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">backend</span></h7><ul><li>    <a href="dmd_backend_aarray.html" title="dmd.backend.aarray"><span class="d_inlinecode donthyphenate notranslate">aarray</span></a></li><li>    <a href="dmd_backend_backconfig.html" title="dmd.backend.backconfig"><span class="d_inlinecode donthyphenate notranslate">backconfig</span></a></li><li>    <a href="dmd_backend_barray.html" title="dmd.backend.barray"><span class="d_inlinecode donthyphenate notranslate">barray</span></a></li><li>    <a href="dmd_backend_bcomplex.html" title="dmd.backend.bcomplex"><span class="d_inlinecode donthyphenate notranslate">bcomplex</span></a></li><li>    <a href="dmd_backend_blockopt.html" title="dmd.backend.blockopt"><span class="d_inlinecode donthyphenate notranslate">blockopt</span></a></li><li>    <a href="dmd_backend_cc.html" title="dmd.backend.cc"><span class="d_inlinecode donthyphenate notranslate">cc</span></a></li><li>    <a href="dmd_backend_cdef.html" title="dmd.backend.cdef"><span class="d_inlinecode donthyphenate notranslate">cdef</span></a></li><li>    <a href="dmd_backend_cg.html" title="dmd.backend.cg"><span class="d_inlinecode donthyphenate notranslate">cg</span></a></li><li>    <a href="dmd_backend_cg87.html" title="dmd.backend.cg87"><span class="d_inlinecode donthyphenate notranslate">cg87</span></a></li><li>    <a href="dmd_backend_cgcod.html" title="dmd.backend.cgcod"><span class="d_inlinecode donthyphenate notranslate">cgcod</span></a></li><li>    <a href="dmd_backend_cgcs.html" title="dmd.backend.cgcs"><span class="d_inlinecode donthyphenate notranslate">cgcs</span></a></li><li>    <a href="dmd_backend_cgcv.html" title="dmd.backend.cgcv"><span class="d_inlinecode donthyphenate notranslate">cgcv</span></a></li><li>    <a href="dmd_backend_cgelem.html" title="dmd.backend.cgelem"><span class="d_inlinecode donthyphenate notranslate">cgelem</span></a></li><li>    <a href="dmd_backend_cgen.html" title="dmd.backend.cgen"><span class="d_inlinecode donthyphenate notranslate">cgen</span></a></li><li>    <a href="dmd_backend_cgobj.html" title="dmd.backend.cgobj"><span class="d_inlinecode donthyphenate notranslate">cgobj</span></a></li><li>    <a href="dmd_backend_cgreg.html" title="dmd.backend.cgreg"><span class="d_inlinecode donthyphenate notranslate">cgreg</span></a></li><li>    <a href="dmd_backend_cgsched.html" title="dmd.backend.cgsched"><span class="d_inlinecode donthyphenate notranslate">cgsched</span></a></li><li>    <a href="dmd_backend_cgxmm.html" title="dmd.backend.cgxmm"><span class="d_inlinecode donthyphenate notranslate">cgxmm</span></a></li><li>    <a href="dmd_backend_cod1.html" title="dmd.backend.cod1"><span class="d_inlinecode donthyphenate notranslate">cod1</span></a></li><li>    <a href="dmd_backend_cod2.html" title="dmd.backend.cod2"><span class="d_inlinecode donthyphenate notranslate">cod2</span></a></li><li>    <a href="dmd_backend_cod3.html" title="dmd.backend.cod3"><span class="d_inlinecode donthyphenate notranslate">cod3</span></a></li><li>    <a href="dmd_backend_cod4.html" title="dmd.backend.cod4"><span class="d_inlinecode donthyphenate notranslate">cod4</span></a></li><li>    <a href="dmd_backend_cod5.html" title="dmd.backend.cod5"><span class="d_inlinecode donthyphenate notranslate">cod5</span></a></li><li>    <a href="dmd_backend_code.html" title="dmd.backend.code"><span class="d_inlinecode donthyphenate notranslate">code</span></a></li><li>    <a href="dmd_backend_code_x86.html" title="dmd.backend.code_x86"><span class="d_inlinecode donthyphenate notranslate">code_x86</span></a></li><li>    <a href="dmd_backend_codebuilder.html" title="dmd.backend.codebuilder"><span class="d_inlinecode donthyphenate notranslate">codebuilder</span></a></li><li>    <a href="dmd_backend_compress.html" title="dmd.backend.compress"><span class="d_inlinecode donthyphenate notranslate">compress</span></a></li><li>    <a href="dmd_backend_cv4.html" title="dmd.backend.cv4"><span class="d_inlinecode donthyphenate notranslate">cv4</span></a></li><li>    <a href="dmd_backend_cv8.html" title="dmd.backend.cv8"><span class="d_inlinecode donthyphenate notranslate">cv8</span></a></li><li>    <a href="dmd_backend_dcgcv.html" title="dmd.backend.dcgcv"><span class="d_inlinecode donthyphenate notranslate">dcgcv</span></a></li><li>    <a href="dmd_backend_dcode.html" title="dmd.backend.dcode"><span class="d_inlinecode donthyphenate notranslate">dcode</span></a></li><li>    <a href="dmd_backend_debugprint.html" title="dmd.backend.debugprint"><span class="d_inlinecode donthyphenate notranslate">debugprint</span></a></li><li>    <a href="dmd_backend_divcoeff.html" title="dmd.backend.divcoeff"><span class="d_inlinecode donthyphenate notranslate">divcoeff</span></a></li><li>    <a href="dmd_backend_dlist.html" title="dmd.backend.dlist"><span class="d_inlinecode donthyphenate notranslate">dlist</span></a></li><li>    <a href="dmd_backend_drtlsym.html" title="dmd.backend.drtlsym"><span class="d_inlinecode donthyphenate notranslate">drtlsym</span></a></li><li>    <a href="dmd_backend_dt.html" title="dmd.backend.dt"><span class="d_inlinecode donthyphenate notranslate">dt</span></a></li><li>    <a href="dmd_backend_dtype.html" title="dmd.backend.dtype"><span class="d_inlinecode donthyphenate notranslate">dtype</span></a></li><li>    <a href="dmd_backend_dvarstats.html" title="dmd.backend.dvarstats"><span class="d_inlinecode donthyphenate notranslate">dvarstats</span></a></li><li>    <a href="dmd_backend_dvec.html" title="dmd.backend.dvec"><span class="d_inlinecode donthyphenate notranslate">dvec</span></a></li><li>    <a href="dmd_backend_dwarf.html" title="dmd.backend.dwarf"><span class="d_inlinecode donthyphenate notranslate">dwarf</span></a></li><li>    <a href="dmd_backend_dwarf2.html" title="dmd.backend.dwarf2"><span class="d_inlinecode donthyphenate notranslate">dwarf2</span></a></li><li>    <a href="dmd_backend_dwarfdbginf.html" title="dmd.backend.dwarfdbginf"><span class="d_inlinecode donthyphenate notranslate">dwarfdbginf</span></a></li><li>    <a href="dmd_backend_dwarfeh.html" title="dmd.backend.dwarfeh"><span class="d_inlinecode donthyphenate notranslate">dwarfeh</span></a></li><li>    <a href="dmd_backend_ee.html" title="dmd.backend.ee"><span class="d_inlinecode donthyphenate notranslate">ee</span></a></li><li>    <a href="dmd_backend_el.html" title="dmd.backend.el"><span class="d_inlinecode donthyphenate notranslate">el</span></a></li><li>    <a href="dmd_backend_elem.html" title="dmd.backend.elem"><span class="d_inlinecode donthyphenate notranslate">elem</span></a></li><li>    <a href="dmd_backend_elfobj.html" title="dmd.backend.elfobj"><span class="d_inlinecode donthyphenate notranslate">elfobj</span></a></li><li>    <a href="dmd_backend_evalu8.html" title="dmd.backend.evalu8"><span class="d_inlinecode donthyphenate notranslate">evalu8</span></a></li><li>    <a href="dmd_backend_exh.html" title="dmd.backend.exh"><span class="d_inlinecode donthyphenate notranslate">exh</span></a></li><li>    <a href="dmd_backend_filespec.html" title="dmd.backend.filespec"><span class="d_inlinecode donthyphenate notranslate">filespec</span></a></li><li>    <a href="dmd_backend_gdag.html" title="dmd.backend.gdag"><span class="d_inlinecode donthyphenate notranslate">gdag</span></a></li><li>    <a href="dmd_backend_gflow.html" title="dmd.backend.gflow"><span class="d_inlinecode donthyphenate notranslate">gflow</span></a></li><li>    <a href="dmd_backend_global.html" title="dmd.backend.global"><span class="d_inlinecode donthyphenate notranslate">global</span></a></li><li>    <a href="dmd_backend_glocal.html" title="dmd.backend.glocal"><span class="d_inlinecode donthyphenate notranslate">glocal</span></a></li><li>    <a href="dmd_backend_gloop.html" title="dmd.backend.gloop"><span class="d_inlinecode donthyphenate notranslate">gloop</span></a></li><li>    <a href="dmd_backend_go.html" title="dmd.backend.go"><span class="d_inlinecode donthyphenate notranslate">go</span></a></li><li>    <a href="dmd_backend_goh.html" title="dmd.backend.goh"><span class="d_inlinecode donthyphenate notranslate">goh</span></a></li><li>    <a href="dmd_backend_gother.html" title="dmd.backend.gother"><span class="d_inlinecode donthyphenate notranslate">gother</span></a></li><li>    <a href="dmd_backend_gsroa.html" title="dmd.backend.gsroa"><span class="d_inlinecode donthyphenate notranslate">gsroa</span></a></li><li>    <a href="dmd_backend_iasm.html" title="dmd.backend.iasm"><span class="d_inlinecode donthyphenate notranslate">iasm</span></a></li><li>    <a href="dmd_backend_mach.html" title="dmd.backend.mach"><span class="d_inlinecode donthyphenate notranslate">mach</span></a></li><li>    <a href="dmd_backend_machobj.html" title="dmd.backend.machobj"><span class="d_inlinecode donthyphenate notranslate">machobj</span></a></li><li>    <a href="dmd_backend_md5.html" title="dmd.backend.md5"><span class="d_inlinecode donthyphenate notranslate">md5</span></a></li><li>    <a href="dmd_backend_melf.html" title="dmd.backend.melf"><span class="d_inlinecode donthyphenate notranslate">melf</span></a></li><li>    <a href="dmd_backend_memh.html" title="dmd.backend.memh"><span class="d_inlinecode donthyphenate notranslate">memh</span></a></li><li>    <a href="dmd_backend_mscoff.html" title="dmd.backend.mscoff"><span class="d_inlinecode donthyphenate notranslate">mscoff</span></a></li><li>    <a href="dmd_backend_mscoffobj.html" title="dmd.backend.mscoffobj"><span class="d_inlinecode donthyphenate notranslate">mscoffobj</span></a></li><li>    <a href="dmd_backend_newman.html" title="dmd.backend.newman"><span class="d_inlinecode donthyphenate notranslate">newman</span></a></li><li>    <a href="dmd_backend_nteh.html" title="dmd.backend.nteh"><span class="d_inlinecode donthyphenate notranslate">nteh</span></a></li><li>    <a href="dmd_backend_obj.html" title="dmd.backend.obj"><span class="d_inlinecode donthyphenate notranslate">obj</span></a></li><li>    <a href="dmd_backend_oper.html" title="dmd.backend.oper"><span class="d_inlinecode donthyphenate notranslate">oper</span></a></li><li>    <a href="dmd_backend_optabgen.html" title="dmd.backend.optabgen"><span class="d_inlinecode donthyphenate notranslate">optabgen</span></a></li><li>    <a href="dmd_backend_os.html" title="dmd.backend.os"><span class="d_inlinecode donthyphenate notranslate">os</span></a></li><li>    <a href="dmd_backend_out.html" title="dmd.backend.out"><span class="d_inlinecode donthyphenate notranslate">out</span></a></li><li>    <a href="dmd_backend_outbuf.html" title="dmd.backend.outbuf"><span class="d_inlinecode donthyphenate notranslate">outbuf</span></a></li><li>    <a href="dmd_backend_pdata.html" title="dmd.backend.pdata"><span class="d_inlinecode donthyphenate notranslate">pdata</span></a></li><li>    <a href="dmd_backend_ph2.html" title="dmd.backend.ph2"><span class="d_inlinecode donthyphenate notranslate">ph2</span></a></li><li>    <a href="dmd_backend_ptrntab.html" title="dmd.backend.ptrntab"><span class="d_inlinecode donthyphenate notranslate">ptrntab</span></a></li><li>    <a href="dmd_backend_rtlsym.html" title="dmd.backend.rtlsym"><span class="d_inlinecode donthyphenate notranslate">rtlsym</span></a></li><li>    <a href="dmd_backend_symbol.html" title="dmd.backend.symbol"><span class="d_inlinecode donthyphenate notranslate">symbol</span></a></li><li>    <a href="dmd_backend_ty.html" title="dmd.backend.ty"><span class="d_inlinecode donthyphenate notranslate">ty</span></a></li><li>    <a href="dmd_backend_type.html" title="dmd.backend.type"><span class="d_inlinecode donthyphenate notranslate">type</span></a></li><li>    <a href="dmd_backend_util2.html" title="dmd.backend.util2"><span class="d_inlinecode donthyphenate notranslate">util2</span></a></li><li>    <a href="dmd_backend_var.html" title="dmd.backend.var"><span class="d_inlinecode donthyphenate notranslate">var</span></a></li><li>    <a href="dmd_backend_xmm.html" title="dmd.backend.xmm"><span class="d_inlinecode donthyphenate notranslate">xmm</span></a>
+  </li></ul></li><li>  <a href="dmd_blockexit.html" title="dmd.blockexit"><span class="d_inlinecode donthyphenate notranslate">blockexit</span></a></li><li>  <a href="dmd_builtin.html" title="dmd.builtin"><span class="d_inlinecode donthyphenate notranslate">builtin</span></a></li><li>  <a href="dmd_canthrow.html" title="dmd.canthrow"><span class="d_inlinecode donthyphenate notranslate">canthrow</span></a></li><li>  <a href="dmd_cli.html" title="dmd.cli"><span class="d_inlinecode donthyphenate notranslate">cli</span></a></li><li>  <a href="dmd_clone.html" title="dmd.clone"><span class="d_inlinecode donthyphenate notranslate">clone</span></a></li><li>  <a href="dmd_compiler.html" title="dmd.compiler"><span class="d_inlinecode donthyphenate notranslate">compiler</span></a></li><li>  <a href="dmd_complex.html" title="dmd.complex"><span class="d_inlinecode donthyphenate notranslate">complex</span></a></li><li>  <a href="dmd_cond.html" title="dmd.cond"><span class="d_inlinecode donthyphenate notranslate">cond</span></a></li><li>  <a href="dmd_console.html" title="dmd.console"><span class="d_inlinecode donthyphenate notranslate">console</span></a></li><li>  <a href="dmd_constfold.html" title="dmd.constfold"><span class="d_inlinecode donthyphenate notranslate">constfold</span></a></li><li>  <a href="dmd_cppmangle.html" title="dmd.cppmangle"><span class="d_inlinecode donthyphenate notranslate">cppmangle</span></a></li><li>  <a href="dmd_cppmanglewin.html" title="dmd.cppmanglewin"><span class="d_inlinecode donthyphenate notranslate">cppmanglewin</span></a></li><li>  <a href="dmd_ctfeexpr.html" title="dmd.ctfeexpr"><span class="d_inlinecode donthyphenate notranslate">ctfeexpr</span></a></li><li>  <a href="dmd_ctorflow.html" title="dmd.ctorflow"><span class="d_inlinecode donthyphenate notranslate">ctorflow</span></a></li><li>  <a href="dmd_dcast.html" title="dmd.dcast"><span class="d_inlinecode donthyphenate notranslate">dcast</span></a></li><li>  <a href="dmd_dclass.html" title="dmd.dclass"><span class="d_inlinecode donthyphenate notranslate">dclass</span></a></li><li>  <a href="dmd_declaration.html" title="dmd.declaration"><span class="d_inlinecode donthyphenate notranslate">declaration</span></a></li><li>  <a href="dmd_delegatize.html" title="dmd.delegatize"><span class="d_inlinecode donthyphenate notranslate">delegatize</span></a></li><li>  <a href="dmd_denum.html" title="dmd.denum"><span class="d_inlinecode donthyphenate notranslate">denum</span></a></li><li>  <a href="dmd_dimport.html" title="dmd.dimport"><span class="d_inlinecode donthyphenate notranslate">dimport</span></a></li><li>  <a href="dmd_dinifile.html" title="dmd.dinifile"><span class="d_inlinecode donthyphenate notranslate">dinifile</span></a></li><li>  <a href="dmd_dinterpret.html" title="dmd.dinterpret"><span class="d_inlinecode donthyphenate notranslate">dinterpret</span></a></li><li>  <a href="dmd_dmacro.html" title="dmd.dmacro"><span class="d_inlinecode donthyphenate notranslate">dmacro</span></a></li><li>  <a href="dmd_dmangle.html" title="dmd.dmangle"><span class="d_inlinecode donthyphenate notranslate">dmangle</span></a></li><li>  <a href="dmd_dmodule.html" title="dmd.dmodule"><span class="d_inlinecode donthyphenate notranslate">dmodule</span></a></li><li>  <a href="dmd_dmsc.html" title="dmd.dmsc"><span class="d_inlinecode donthyphenate notranslate">dmsc</span></a></li><li>  <a href="dmd_doc.html" title="dmd.doc"><span class="d_inlinecode donthyphenate notranslate">doc</span></a></li><li>  <a href="dmd_dscope.html" title="dmd.dscope"><span class="d_inlinecode donthyphenate notranslate">dscope</span></a></li><li>  <a href="dmd_dstruct.html" title="dmd.dstruct"><span class="d_inlinecode donthyphenate notranslate">dstruct</span></a></li><li>  <a href="dmd_dsymbol.html" title="dmd.dsymbol"><span class="d_inlinecode donthyphenate notranslate">dsymbol</span></a></li><li>  <a href="dmd_dsymbolsem.html" title="dmd.dsymbolsem"><span class="d_inlinecode donthyphenate notranslate">dsymbolsem</span></a></li><li>  <a href="dmd_dtemplate.html" title="dmd.dtemplate"><span class="d_inlinecode donthyphenate notranslate">dtemplate</span></a></li><li>  <a href="dmd_dversion.html" title="dmd.dversion"><span class="d_inlinecode donthyphenate notranslate">dversion</span></a></li><li>  <a href="dmd_e2ir.html" title="dmd.e2ir"><span class="d_inlinecode donthyphenate notranslate">e2ir</span></a></li><li>  <a href="dmd_eh.html" title="dmd.eh"><span class="d_inlinecode donthyphenate notranslate">eh</span></a></li><li>  <a href="dmd_entity.html" title="dmd.entity"><span class="d_inlinecode donthyphenate notranslate">entity</span></a></li><li>  <a href="dmd_errors.html" title="dmd.errors"><span class="d_inlinecode donthyphenate notranslate">errors</span></a></li><li>  <a href="dmd_escape.html" title="dmd.escape"><span class="d_inlinecode donthyphenate notranslate">escape</span></a></li><li>  <a href="dmd_expression.html" title="dmd.expression"><span class="d_inlinecode donthyphenate notranslate">expression</span></a></li><li>  <a href="dmd_expressionsem.html" title="dmd.expressionsem"><span class="d_inlinecode donthyphenate notranslate">expressionsem</span></a></li><li>  <a href="dmd_filecache.html" title="dmd.filecache"><span class="d_inlinecode donthyphenate notranslate">filecache</span></a></li><li>  <a href="dmd_frontend.html" title="dmd.frontend"><span class="d_inlinecode donthyphenate notranslate">frontend</span></a></li><li>  <a href="dmd_func.html" title="dmd.func"><span class="d_inlinecode donthyphenate notranslate">func</span></a></li><li>  <a href="dmd_globals.html" title="dmd.globals"><span class="d_inlinecode donthyphenate notranslate">globals</span></a></li><li>  <a href="dmd_glue.html" title="dmd.glue"><span class="d_inlinecode donthyphenate notranslate">glue</span></a></li><li>  <a href="dmd_gluelayer.html" title="dmd.gluelayer"><span class="d_inlinecode donthyphenate notranslate">gluelayer</span></a></li><li>  <a href="dmd_hdrgen.html" title="dmd.hdrgen"><span class="d_inlinecode donthyphenate notranslate">hdrgen</span></a></li><li>  <a href="dmd_iasm.html" title="dmd.iasm"><span class="d_inlinecode donthyphenate notranslate">iasm</span></a></li><li>  <a href="dmd_iasmdmd.html" title="dmd.iasmdmd"><span class="d_inlinecode donthyphenate notranslate">iasmdmd</span></a></li><li>  <a href="dmd_iasmgcc.html" title="dmd.iasmgcc"><span class="d_inlinecode donthyphenate notranslate">iasmgcc</span></a></li><li>  <a href="dmd_id.html" title="dmd.id"><span class="d_inlinecode donthyphenate notranslate">id</span></a></li><li>  <a href="dmd_identifier.html" title="dmd.identifier"><span class="d_inlinecode donthyphenate notranslate">identifier</span></a></li><li>  <a href="dmd_impcnvtab.html" title="dmd.impcnvtab"><span class="d_inlinecode donthyphenate notranslate">impcnvtab</span></a></li><li>  <a href="dmd_imphint.html" title="dmd.imphint"><span class="d_inlinecode donthyphenate notranslate">imphint</span></a></li><li>  <a href="dmd_init.html" title="dmd.init"><span class="d_inlinecode donthyphenate notranslate">init</span></a></li><li>  <a href="dmd_initsem.html" title="dmd.initsem"><span class="d_inlinecode donthyphenate notranslate">initsem</span></a></li><li>  <a href="dmd_inline.html" title="dmd.inline"><span class="d_inlinecode donthyphenate notranslate">inline</span></a></li><li>  <a href="dmd_inlinecost.html" title="dmd.inlinecost"><span class="d_inlinecode donthyphenate notranslate">inlinecost</span></a></li><li>  <a href="dmd_intrange.html" title="dmd.intrange"><span class="d_inlinecode donthyphenate notranslate">intrange</span></a></li><li>  <a href="dmd_irstate.html" title="dmd.irstate"><span class="d_inlinecode donthyphenate notranslate">irstate</span></a></li><li>  <a href="dmd_json.html" title="dmd.json"><span class="d_inlinecode donthyphenate notranslate">json</span></a></li><li>  <a href="dmd_lambdacomp.html" title="dmd.lambdacomp"><span class="d_inlinecode donthyphenate notranslate">lambdacomp</span></a></li><li>  <a href="dmd_lexer.html" title="dmd.lexer"><span class="d_inlinecode donthyphenate notranslate">lexer</span></a></li><li>  <a href="dmd_lib.html" title="dmd.lib"><span class="d_inlinecode donthyphenate notranslate">lib</span></a></li><li>  <a href="dmd_libelf.html" title="dmd.libelf"><span class="d_inlinecode donthyphenate notranslate">libelf</span></a></li><li>  <a href="dmd_libomf.html" title="dmd.libomf"><span class="d_inlinecode donthyphenate notranslate">libomf</span></a></li><li>  <a href="dmd_link.html" title="dmd.link"><span class="d_inlinecode donthyphenate notranslate">link</span></a></li><li>  <a href="dmd_mars.html" title="dmd.mars"><span class="d_inlinecode donthyphenate notranslate">mars</span></a></li><li>  <a href="dmd_mtype.html" title="dmd.mtype"><span class="d_inlinecode donthyphenate notranslate">mtype</span></a></li><li>  <a href="dmd_nogc.html" title="dmd.nogc"><span class="d_inlinecode donthyphenate notranslate">nogc</span></a></li><li>  <a href="dmd_nspace.html" title="dmd.nspace"><span class="d_inlinecode donthyphenate notranslate">nspace</span></a></li><li>  <a href="dmd_objc.html" title="dmd.objc"><span class="d_inlinecode donthyphenate notranslate">objc</span></a></li><li>  <a href="dmd_objc_glue.html" title="dmd.objc_glue"><span class="d_inlinecode donthyphenate notranslate">objc_glue</span></a></li><li>  <a href="dmd_opover.html" title="dmd.opover"><span class="d_inlinecode donthyphenate notranslate">opover</span></a></li><li>  <a href="dmd_optimize.html" title="dmd.optimize"><span class="d_inlinecode donthyphenate notranslate">optimize</span></a></li><li>  <a href="dmd_parse.html" title="dmd.parse"><span class="d_inlinecode donthyphenate notranslate">parse</span></a></li><li>  <a href="dmd_parsetimevisitor.html" title="dmd.parsetimevisitor"><span class="d_inlinecode donthyphenate notranslate">parsetimevisitor</span></a></li><li>  <a href="dmd_permissivevisitor.html" title="dmd.permissivevisitor"><span class="d_inlinecode donthyphenate notranslate">permissivevisitor</span></a></li><li>  <a href="dmd_printast.html" title="dmd.printast"><span class="d_inlinecode donthyphenate notranslate">printast</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">root</span></h7><ul><li>    <a href="dmd_root_aav.html" title="dmd.root.aav"><span class="d_inlinecode donthyphenate notranslate">aav</span></a></li><li>    <a href="dmd_root_array.html" title="dmd.root.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>    <a href="dmd_root_ctfloat.html" title="dmd.root.ctfloat"><span class="d_inlinecode donthyphenate notranslate">ctfloat</span></a></li><li>    <a href="dmd_root_file.html" title="dmd.root.file"><span class="d_inlinecode donthyphenate notranslate">file</span></a></li><li>    <a href="dmd_root_filename.html" title="dmd.root.filename"><span class="d_inlinecode donthyphenate notranslate">filename</span></a></li><li>    <a href="dmd_root_hash.html" title="dmd.root.hash"><span class="d_inlinecode donthyphenate notranslate">hash</span></a></li><li>    <a href="dmd_root_longdouble.html" title="dmd.root.longdouble"><span class="d_inlinecode donthyphenate notranslate">longdouble</span></a></li><li>    <a href="dmd_root_man.html" title="dmd.root.man"><span class="d_inlinecode donthyphenate notranslate">man</span></a></li><li>    <a href="dmd_root_outbuffer.html" title="dmd.root.outbuffer"><span class="d_inlinecode donthyphenate notranslate">outbuffer</span></a></li><li>    <a href="dmd_root_port.html" title="dmd.root.port"><span class="d_inlinecode donthyphenate notranslate">port</span></a></li><li>    <a href="dmd_root_response.html" title="dmd.root.response"><span class="d_inlinecode donthyphenate notranslate">response</span></a></li><li>    <a href="dmd_root_rmem.html" title="dmd.root.rmem"><span class="d_inlinecode donthyphenate notranslate">rmem</span></a></li><li>    <a href="dmd_root_rootobject.html" title="dmd.root.rootobject"><span class="d_inlinecode donthyphenate notranslate">rootobject</span></a></li><li>    <a href="dmd_root_speller.html" title="dmd.root.speller"><span class="d_inlinecode donthyphenate notranslate">speller</span></a></li><li>    <a href="dmd_root_stringtable.html" title="dmd.root.stringtable"><span class="d_inlinecode donthyphenate notranslate">stringtable</span></a>
+  </li></ul></li><li>  <a href="dmd_s2ir.html" title="dmd.s2ir"><span class="d_inlinecode donthyphenate notranslate">s2ir</span></a></li><li>  <a href="dmd_safe.html" title="dmd.safe"><span class="d_inlinecode donthyphenate notranslate">safe</span></a></li><li>  <a href="dmd_sapply.html" title="dmd.sapply"><span class="d_inlinecode donthyphenate notranslate">sapply</span></a></li><li>  <a href="dmd_scanelf.html" title="dmd.scanelf"><span class="d_inlinecode donthyphenate notranslate">scanelf</span></a></li><li>  <a href="dmd_scanomf.html" title="dmd.scanomf"><span class="d_inlinecode donthyphenate notranslate">scanomf</span></a></li><li>  <a href="dmd_semantic2.html" title="dmd.semantic2"><span class="d_inlinecode donthyphenate notranslate">semantic2</span></a></li><li>  <a href="dmd_semantic3.html" title="dmd.semantic3"><span class="d_inlinecode donthyphenate notranslate">semantic3</span></a></li><li>  <a href="dmd_sideeffect.html" title="dmd.sideeffect"><span class="d_inlinecode donthyphenate notranslate">sideeffect</span></a></li><li>  <a href="dmd_statement.html" title="dmd.statement"><span class="d_inlinecode donthyphenate notranslate">statement</span></a></li><li>  <a href="dmd_statement_rewrite_walker.html" title="dmd.statement_rewrite_walker"><span class="d_inlinecode donthyphenate notranslate">statement_rewrite_walker</span></a></li><li>  <a href="dmd_statementsem.html" title="dmd.statementsem"><span class="d_inlinecode donthyphenate notranslate">statementsem</span></a></li><li>  <a href="dmd_staticassert.html" title="dmd.staticassert"><span class="d_inlinecode donthyphenate notranslate">staticassert</span></a></li><li>  <a href="dmd_staticcond.html" title="dmd.staticcond"><span class="d_inlinecode donthyphenate notranslate">staticcond</span></a></li><li>  <a href="dmd_strictvisitor.html" title="dmd.strictvisitor"><span class="d_inlinecode donthyphenate notranslate">strictvisitor</span></a></li><li>  <a href="dmd_target.html" title="dmd.target"><span class="d_inlinecode donthyphenate notranslate">target</span></a></li><li>  <a href="dmd_templateparamsem.html" title="dmd.templateparamsem"><span class="d_inlinecode donthyphenate notranslate">templateparamsem</span></a></li><li>  <a href="dmd_tocsym.html" title="dmd.tocsym"><span class="d_inlinecode donthyphenate notranslate">tocsym</span></a></li><li>  <a href="dmd_toctype.html" title="dmd.toctype"><span class="d_inlinecode donthyphenate notranslate">toctype</span></a></li><li>  <a href="dmd_tocvdebug.html" title="dmd.tocvdebug"><span class="d_inlinecode donthyphenate notranslate">tocvdebug</span></a></li><li>  <a href="dmd_todt.html" title="dmd.todt"><span class="d_inlinecode donthyphenate notranslate">todt</span></a></li><li>  <a href="dmd_toir.html" title="dmd.toir"><span class="d_inlinecode donthyphenate notranslate">toir</span></a></li><li>  <a href="dmd_tokens.html" title="dmd.tokens"><span class="d_inlinecode donthyphenate notranslate">tokens</span></a></li><li>  <a href="dmd_toobj.html" title="dmd.toobj"><span class="d_inlinecode donthyphenate notranslate">toobj</span></a></li><li>  <a href="dmd_traits.html" title="dmd.traits"><span class="d_inlinecode donthyphenate notranslate">traits</span></a></li><li>  <a href="dmd_transitivevisitor.html" title="dmd.transitivevisitor"><span class="d_inlinecode donthyphenate notranslate">transitivevisitor</span></a></li><li>  <a href="dmd_typesem.html" title="dmd.typesem"><span class="d_inlinecode donthyphenate notranslate">typesem</span></a></li><li>  <a href="dmd_typinf.html" title="dmd.typinf"><span class="d_inlinecode donthyphenate notranslate">typinf</span></a></li><li>  <a href="dmd_utf.html" title="dmd.utf"><span class="d_inlinecode donthyphenate notranslate">utf</span></a></li><li>  <a href="dmd_utils.html" title="dmd.utils"><span class="d_inlinecode donthyphenate notranslate">utils</span></a></li><li>  <a href="dmd_visitor.html" title="dmd.visitor"><span class="d_inlinecode donthyphenate notranslate">visitor</span></a>
+</li></ul>
+</li>
+
+<li class='expand-container modlist-submenu-rt'><a class='expand-toggle' href='#'><span><em class="tt">rt</em></span></a>
+<ul><li>  <a href="rt_aApply.html" title="rt.aApply"><span class="d_inlinecode donthyphenate notranslate">aApply</span></a></li><li>  <a href="rt_aApplyR.html" title="rt.aApplyR"><span class="d_inlinecode donthyphenate notranslate">aApplyR</span></a></li><li>  <a href="rt_aaA.html" title="rt.aaA"><span class="d_inlinecode donthyphenate notranslate">aaA</span></a></li><li>  <a href="rt_adi.html" title="rt.adi"><span class="d_inlinecode donthyphenate notranslate">adi</span></a></li><li>  <a href="rt_alloca.html" title="rt.alloca"><span class="d_inlinecode donthyphenate notranslate">alloca</span></a></li><li>  <a href="rt_arrayassign.html" title="rt.arrayassign"><span class="d_inlinecode donthyphenate notranslate">arrayassign</span></a></li><li>  <a href="rt_arraycast.html" title="rt.arraycast"><span class="d_inlinecode donthyphenate notranslate">arraycast</span></a></li><li>  <a href="rt_arraycat.html" title="rt.arraycat"><span class="d_inlinecode donthyphenate notranslate">arraycat</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">backtrace</span></h7><ul><li>    <a href="rt_backtrace_dwarf.html" title="rt.backtrace.dwarf"><span class="d_inlinecode donthyphenate notranslate">dwarf</span></a></li><li>    <a href="rt_backtrace_elf.html" title="rt.backtrace.elf"><span class="d_inlinecode donthyphenate notranslate">elf</span></a></li><li>    <a href="rt_backtrace_macho.html" title="rt.backtrace.macho"><span class="d_inlinecode donthyphenate notranslate">macho</span></a>
+  </li></ul></li><li>  <a href="rt_cast_.html" title="rt.cast_"><span class="d_inlinecode donthyphenate notranslate">cast_</span></a></li><li>  <a href="rt_cmath2.html" title="rt.cmath2"><span class="d_inlinecode donthyphenate notranslate">cmath2</span></a></li><li>  <a href="rt_config.html" title="rt.config"><span class="d_inlinecode donthyphenate notranslate">config</span></a></li><li>  <a href="rt_cover.html" title="rt.cover"><span class="d_inlinecode donthyphenate notranslate">cover</span></a></li><li>  <a href="rt_critical_.html" title="rt.critical_"><span class="d_inlinecode donthyphenate notranslate">critical_</span></a></li><li>  <a href="rt_deh.html" title="rt.deh"><span class="d_inlinecode donthyphenate notranslate">deh</span></a></li><li>  <a href="rt_deh_win32.html" title="rt.deh_win32"><span class="d_inlinecode donthyphenate notranslate">deh_win32</span></a></li><li>  <a href="rt_deh_win64_posix.html" title="rt.deh_win64_posix"><span class="d_inlinecode donthyphenate notranslate">deh_win64_posix</span></a></li><li>  <a href="rt_dmain2.html" title="rt.dmain2"><span class="d_inlinecode donthyphenate notranslate">dmain2</span></a></li><li>  <a href="rt_dwarfeh.html" title="rt.dwarfeh"><span class="d_inlinecode donthyphenate notranslate">dwarfeh</span></a></li><li>  <a href="rt_ehalloc.html" title="rt.ehalloc"><span class="d_inlinecode donthyphenate notranslate">ehalloc</span></a></li><li>  <a href="rt_invariant.html" title="rt.invariant"><span class="d_inlinecode donthyphenate notranslate">invariant</span></a></li><li>  <a href="rt_lifetime.html" title="rt.lifetime"><span class="d_inlinecode donthyphenate notranslate">lifetime</span></a></li><li>  <a href="rt_llmath.html" title="rt.llmath"><span class="d_inlinecode donthyphenate notranslate">llmath</span></a></li><li>  <a href="rt_memory.html" title="rt.memory"><span class="d_inlinecode donthyphenate notranslate">memory</span></a></li><li>  <a href="rt_memset.html" title="rt.memset"><span class="d_inlinecode donthyphenate notranslate">memset</span></a></li><li>  <a href="rt_minfo.html" title="rt.minfo"><span class="d_inlinecode donthyphenate notranslate">minfo</span></a></li><li>  <a href="rt_monitor_.html" title="rt.monitor_"><span class="d_inlinecode donthyphenate notranslate">monitor_</span></a></li><li>  <a href="rt_obj.html" title="rt.obj"><span class="d_inlinecode donthyphenate notranslate">obj</span></a></li><li>  <a href="rt_profilegc.html" title="rt.profilegc"><span class="d_inlinecode donthyphenate notranslate">profilegc</span></a></li><li>  <a href="rt_qsort.html" title="rt.qsort"><span class="d_inlinecode donthyphenate notranslate">qsort</span></a></li><li>  <a href="rt_sections.html" title="rt.sections"><span class="d_inlinecode donthyphenate notranslate">sections</span></a></li><li>  <a href="rt_sections_android.html" title="rt.sections_android"><span class="d_inlinecode donthyphenate notranslate">sections_android</span></a></li><li>  <a href="rt_sections_elf_shared.html" title="rt.sections_elf_shared"><span class="d_inlinecode donthyphenate notranslate">sections_elf_shared</span></a></li><li>  <a href="rt_sections_osx_x86.html" title="rt.sections_osx_x86"><span class="d_inlinecode donthyphenate notranslate">sections_osx_x86</span></a></li><li>  <a href="rt_sections_osx_x86_64.html" title="rt.sections_osx_x86_64"><span class="d_inlinecode donthyphenate notranslate">sections_osx_x86_64</span></a></li><li>  <a href="rt_sections_solaris.html" title="rt.sections_solaris"><span class="d_inlinecode donthyphenate notranslate">sections_solaris</span></a></li><li>  <a href="rt_sections_win32.html" title="rt.sections_win32"><span class="d_inlinecode donthyphenate notranslate">sections_win32</span></a></li><li>  <a href="rt_sections_win64.html" title="rt.sections_win64"><span class="d_inlinecode donthyphenate notranslate">sections_win64</span></a></li><li>  <a href="rt_tlsgc.html" title="rt.tlsgc"><span class="d_inlinecode donthyphenate notranslate">tlsgc</span></a></li><li>  <a href="rt_trace.html" title="rt.trace"><span class="d_inlinecode donthyphenate notranslate">trace</span></a></li><li>  <a href="rt_tracegc.html" title="rt.tracegc"><span class="d_inlinecode donthyphenate notranslate">tracegc</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">typeinfo</span></h7><ul><li>    <a href="rt_typeinfo_ti_Acdouble.html" title="rt.typeinfo.ti_Acdouble"><span class="d_inlinecode donthyphenate notranslate">ti_Acdouble</span></a></li><li>    <a href="rt_typeinfo_ti_Acfloat.html" title="rt.typeinfo.ti_Acfloat"><span class="d_inlinecode donthyphenate notranslate">ti_Acfloat</span></a></li><li>    <a href="rt_typeinfo_ti_Acreal.html" title="rt.typeinfo.ti_Acreal"><span class="d_inlinecode donthyphenate notranslate">ti_Acreal</span></a></li><li>    <a href="rt_typeinfo_ti_Adouble.html" title="rt.typeinfo.ti_Adouble"><span class="d_inlinecode donthyphenate notranslate">ti_Adouble</span></a></li><li>    <a href="rt_typeinfo_ti_Afloat.html" title="rt.typeinfo.ti_Afloat"><span class="d_inlinecode donthyphenate notranslate">ti_Afloat</span></a></li><li>    <a href="rt_typeinfo_ti_Ag.html" title="rt.typeinfo.ti_Ag"><span class="d_inlinecode donthyphenate notranslate">ti_Ag</span></a></li><li>    <a href="rt_typeinfo_ti_Aint.html" title="rt.typeinfo.ti_Aint"><span class="d_inlinecode donthyphenate notranslate">ti_Aint</span></a></li><li>    <a href="rt_typeinfo_ti_Along.html" title="rt.typeinfo.ti_Along"><span class="d_inlinecode donthyphenate notranslate">ti_Along</span></a></li><li>    <a href="rt_typeinfo_ti_Areal.html" title="rt.typeinfo.ti_Areal"><span class="d_inlinecode donthyphenate notranslate">ti_Areal</span></a></li><li>    <a href="rt_typeinfo_ti_Ashort.html" title="rt.typeinfo.ti_Ashort"><span class="d_inlinecode donthyphenate notranslate">ti_Ashort</span></a></li><li>    <a href="rt_typeinfo_ti_C.html" title="rt.typeinfo.ti_C"><span class="d_inlinecode donthyphenate notranslate">ti_C</span></a></li><li>    <a href="rt_typeinfo_ti_byte.html" title="rt.typeinfo.ti_byte"><span class="d_inlinecode donthyphenate notranslate">ti_byte</span></a></li><li>    <a href="rt_typeinfo_ti_cdouble.html" title="rt.typeinfo.ti_cdouble"><span class="d_inlinecode donthyphenate notranslate">ti_cdouble</span></a></li><li>    <a href="rt_typeinfo_ti_cent.html" title="rt.typeinfo.ti_cent"><span class="d_inlinecode donthyphenate notranslate">ti_cent</span></a></li><li>    <a href="rt_typeinfo_ti_cfloat.html" title="rt.typeinfo.ti_cfloat"><span class="d_inlinecode donthyphenate notranslate">ti_cfloat</span></a></li><li>    <a href="rt_typeinfo_ti_char.html" title="rt.typeinfo.ti_char"><span class="d_inlinecode donthyphenate notranslate">ti_char</span></a></li><li>    <a href="rt_typeinfo_ti_creal.html" title="rt.typeinfo.ti_creal"><span class="d_inlinecode donthyphenate notranslate">ti_creal</span></a></li><li>    <a href="rt_typeinfo_ti_dchar.html" title="rt.typeinfo.ti_dchar"><span class="d_inlinecode donthyphenate notranslate">ti_dchar</span></a></li><li>    <a href="rt_typeinfo_ti_delegate.html" title="rt.typeinfo.ti_delegate"><span class="d_inlinecode donthyphenate notranslate">ti_delegate</span></a></li><li>    <a href="rt_typeinfo_ti_double.html" title="rt.typeinfo.ti_double"><span class="d_inlinecode donthyphenate notranslate">ti_double</span></a></li><li>    <a href="rt_typeinfo_ti_float.html" title="rt.typeinfo.ti_float"><span class="d_inlinecode donthyphenate notranslate">ti_float</span></a></li><li>    <a href="rt_typeinfo_ti_idouble.html" title="rt.typeinfo.ti_idouble"><span class="d_inlinecode donthyphenate notranslate">ti_idouble</span></a></li><li>    <a href="rt_typeinfo_ti_ifloat.html" title="rt.typeinfo.ti_ifloat"><span class="d_inlinecode donthyphenate notranslate">ti_ifloat</span></a></li><li>    <a href="rt_typeinfo_ti_int.html" title="rt.typeinfo.ti_int"><span class="d_inlinecode donthyphenate notranslate">ti_int</span></a></li><li>    <a href="rt_typeinfo_ti_ireal.html" title="rt.typeinfo.ti_ireal"><span class="d_inlinecode donthyphenate notranslate">ti_ireal</span></a></li><li>    <a href="rt_typeinfo_ti_long.html" title="rt.typeinfo.ti_long"><span class="d_inlinecode donthyphenate notranslate">ti_long</span></a></li><li>    <a href="rt_typeinfo_ti_n.html" title="rt.typeinfo.ti_n"><span class="d_inlinecode donthyphenate notranslate">ti_n</span></a></li><li>    <a href="rt_typeinfo_ti_ptr.html" title="rt.typeinfo.ti_ptr"><span class="d_inlinecode donthyphenate notranslate">ti_ptr</span></a></li><li>    <a href="rt_typeinfo_ti_real.html" title="rt.typeinfo.ti_real"><span class="d_inlinecode donthyphenate notranslate">ti_real</span></a></li><li>    <a href="rt_typeinfo_ti_short.html" title="rt.typeinfo.ti_short"><span class="d_inlinecode donthyphenate notranslate">ti_short</span></a></li><li>    <a href="rt_typeinfo_ti_ubyte.html" title="rt.typeinfo.ti_ubyte"><span class="d_inlinecode donthyphenate notranslate">ti_ubyte</span></a></li><li>    <a href="rt_typeinfo_ti_ucent.html" title="rt.typeinfo.ti_ucent"><span class="d_inlinecode donthyphenate notranslate">ti_ucent</span></a></li><li>    <a href="rt_typeinfo_ti_uint.html" title="rt.typeinfo.ti_uint"><span class="d_inlinecode donthyphenate notranslate">ti_uint</span></a></li><li>    <a href="rt_typeinfo_ti_ulong.html" title="rt.typeinfo.ti_ulong"><span class="d_inlinecode donthyphenate notranslate">ti_ulong</span></a></li><li>    <a href="rt_typeinfo_ti_ushort.html" title="rt.typeinfo.ti_ushort"><span class="d_inlinecode donthyphenate notranslate">ti_ushort</span></a></li><li>    <a href="rt_typeinfo_ti_void.html" title="rt.typeinfo.ti_void"><span class="d_inlinecode donthyphenate notranslate">ti_void</span></a></li><li>    <a href="rt_typeinfo_ti_wchar.html" title="rt.typeinfo.ti_wchar"><span class="d_inlinecode donthyphenate notranslate">ti_wchar</span></a>
+  </li></ul></li><li>  <a href="rt_unwind.html" title="rt.unwind"><span class="d_inlinecode donthyphenate notranslate">unwind</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">util</span></h7><ul><li>    <a href="rt_util_array.html" title="rt.util.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>    <h7><span class="d_inlinecode donthyphenate notranslate">container</span></h7><ul><li>      <a href="rt_util_container_array.html" title="rt.util.container.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>      <a href="rt_util_container_common.html" title="rt.util.container.common"><span class="d_inlinecode donthyphenate notranslate">common</span></a></li><li>      <a href="rt_util_container_hashtab.html" title="rt.util.container.hashtab"><span class="d_inlinecode donthyphenate notranslate">hashtab</span></a></li><li>      <a href="rt_util_container_treap.html" title="rt.util.container.treap"><span class="d_inlinecode donthyphenate notranslate">treap</span></a>
+    </li></ul></li><li>    <a href="rt_util_random.html" title="rt.util.random"><span class="d_inlinecode donthyphenate notranslate">random</span></a></li><li>    <a href="rt_util_typeinfo.html" title="rt.util.typeinfo"><span class="d_inlinecode donthyphenate notranslate">typeinfo</span></a>
+  </li></ul>
+</li></ul>
+</li></ul>
+</div>
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/phobos/&amp;component=phobos&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5Bstd.random%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/phobos/edit/master/std/random.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1><span class="d_title">std.random</span></h1>
+        <div class="quickindex" id="quickindex"></div>
+        <div class="summary">Facilities for random number generation.
+</div><div class="description"><script type="text/javascript">inhibitQuickIndex = 1;</script>
+<table class="book"><caption></caption><tr><th scope="col">Category</th> <th scope="col">Functions</th></tr>
+<tr><td>Uniform sampling</td> <td>    <a href="#uniform"><span class="d_inlinecode donthyphenate notranslate">uniform</span></a>
+    <a href="#uniform01"><span class="d_inlinecode donthyphenate notranslate">uniform01</span></a>
+    <a href="#uniformDistribution"><span class="d_inlinecode donthyphenate notranslate">uniformDistribution</span></a>
+</td></tr>
+<tr><td>Element sampling</td> <td>    <a href="#choice"><span class="d_inlinecode donthyphenate notranslate">choice</span></a>
+    <a href="#dice"><span class="d_inlinecode donthyphenate notranslate">dice</span></a>
+</td></tr>
+<tr><td>Range sampling</td> <td>    <a href="#randomCover"><span class="d_inlinecode donthyphenate notranslate">randomCover</span></a>
+    <a href="#randomSample"><span class="d_inlinecode donthyphenate notranslate">randomSample</span></a>
+</td></tr>
+<tr><td>Default Random Engines</td> <td>    <a href="#rndGen"><span class="d_inlinecode donthyphenate notranslate">rndGen</span></a>
+    <a href="#Random"><span class="d_inlinecode donthyphenate notranslate">Random</span></a>
+    <a href="#unpredictableSeed"><span class="d_inlinecode donthyphenate notranslate">unpredictableSeed</span></a>
+</td></tr>
+<tr><td>Linear Congruential Engines</td> <td>    <a href="#MinstdRand"><span class="d_inlinecode donthyphenate notranslate">MinstdRand</span></a>
+    <a href="#MinstdRand0"><span class="d_inlinecode donthyphenate notranslate">MinstdRand0</span></a>
+    <a href="#LinearCongruentialEngine"><span class="d_inlinecode donthyphenate notranslate">LinearCongruentialEngine</span></a>
+</td></tr>
+<tr><td>Mersenne Twister Engines</td> <td>    <a href="#Mt19937"><span class="d_inlinecode donthyphenate notranslate">Mt19937</span></a>
+    <a href="#Mt19937_64"><span class="d_inlinecode donthyphenate notranslate">Mt19937_64</span></a>
+    <a href="#MersenneTwisterEngine"><span class="d_inlinecode donthyphenate notranslate">MersenneTwisterEngine</span></a>
+</td></tr>
+<tr><td>Xorshift Engines</td> <td>    <a href="#Xorshift"><span class="d_inlinecode donthyphenate notranslate">Xorshift</span></a>
+    <a href="#XorshiftEngine"><span class="d_inlinecode donthyphenate notranslate">XorshiftEngine</span></a>
+    <a href="#Xorshift32"><span class="d_inlinecode donthyphenate notranslate">Xorshift32</span></a>
+    <a href="#Xorshift64"><span class="d_inlinecode donthyphenate notranslate">Xorshift64</span></a>
+    <a href="#Xorshift96"><span class="d_inlinecode donthyphenate notranslate">Xorshift96</span></a>
+    <a href="#Xorshift128"><span class="d_inlinecode donthyphenate notranslate">Xorshift128</span></a>
+    <a href="#Xorshift160"><span class="d_inlinecode donthyphenate notranslate">Xorshift160</span></a>
+    <a href="#Xorshift192"><span class="d_inlinecode donthyphenate notranslate">Xorshift192</span></a>
+</td></tr>
+<tr><td>Shuffle</td> <td>    <a href="#partialShuffle"><span class="d_inlinecode donthyphenate notranslate">partialShuffle</span></a>
+    <a href="#randomShuffle"><span class="d_inlinecode donthyphenate notranslate">randomShuffle</span></a>
+</td></tr>
+<tr><td>Traits</td> <td>    <a href="#isSeedable"><span class="d_inlinecode donthyphenate notranslate">isSeedable</span></a>
+    <a href="#isUniformRNG"><span class="d_inlinecode donthyphenate notranslate">isUniformRNG</span></a>
+</td></tr>
+</table>
+<div class="blankline"></div>
+
+<span class="red">Disclaimer:</span> The random number generators and API provided in this
+module are not designed to be cryptographically secure, and are therefore
+unsuitable for cryptographic or security-related purposes such as generating
+authentication tokens or network sequence numbers. For such needs, please use a
+reputable cryptographic library instead.
+<div class="blankline"></div>
+
+The new-style generator objects hold their own state so they are
+immune of threading issues. The generators feature a number of
+well-known and well-documented methods of generating random
+numbers. An overall fast and reliable means to generate random numbers
+is the <span class="d_param">Mt19937</span> generator, which derives its name from
+"<a href="https://en.wikipedia.org/wiki/Mersenne_Twister">Mersenne Twister</a>
+with a period of 2 to the power of
+19937". In memory-constrained situations,
+<a href="https://en.wikipedia.org/wiki/Linear_congruential_generator">linear congruential generators</a> such as <span class="d_inlinecode donthyphenate notranslate">MinstdRand0</span> and <span class="d_inlinecode donthyphenate notranslate">MinstdRand</span> might be
+useful. The standard library provides an alias <span class="d_param">Random</span> for
+whichever generator it considers the most fit for the target
+environment.
+<div class="blankline"></div>
+
+In addition to random number generators, this module features
+distributions, which skew a generator's output statistical
+distribution in various ways. So far the uniform distribution for
+integers and real numbers have been implemented.
+
+</div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Source</span>
+<span class="phobos_src"><a class="https" href="https://github.com/dlang/phobos/blob/master/std/random.d">std/random.d</a></span>
+
+</p></div>
+<div class="keyval License"><span class="key keyLicense">License:</span> <div class="val valLicense"><a href="http://www.boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
+</div></div>
+<div class="keyval Authors"><span class="key keyAuthors">Authors:</span> <div class="val valAuthors"><a href="http://erdani.org">Andrei Alexandrescu</a>
+           Masahiro Nakagawa (Xorshift random generator)
+           <a href="http://braingam.es">Joseph Rushton Wakeling</a> (Algorithm D for random sampling)
+           Ilya Yaroshenko (Mersenne Twister implementation, adapted from <a href="https://github.com/libmir/mir-random">mir-random</a>)
+</div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Credits</span>
+The entire random number library architecture is derived from the
+           excellent <a href="http://open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2461.pdf">C++0X</a>
+           random number facility proposed by Jens Maurer and contributed to by
+           researchers at the Fermi laboratory (excluding Xorshift).</p></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">import</span> std.algorithm.comparison : among, equal;
+<span class="d_keyword">import</span> std.range : iota;
+
+<span class="d_comment">// seed a random generator with a constant
+</span><span class="d_keyword">auto</span> rnd = Random(42);
+
+<span class="d_comment">// Generate a uniformly-distributed integer in the range [0, 14]
+</span><span class="d_comment">// If no random generator is passed, the global `rndGen` would be used
+</span><span class="d_keyword">auto</span> i = uniform(0, 15, rnd);
+<span class="d_keyword">assert</span>(i &gt;= 0 &amp;&amp; i &lt; 15);
+
+<span class="d_comment">// Generate a uniformly-distributed real in the range [0, 100)
+</span><span class="d_keyword">auto</span> r = uniform(0.0L, 100.0L, rnd);
+<span class="d_keyword">assert</span>(r &gt;= 0 &amp;&amp; r &lt; 100);
+
+<span class="d_comment">// Sample from a custom type
+</span><span class="d_keyword">enum</span> Fruit { apple, mango, pear }
+<span class="d_keyword">auto</span> f = rnd.uniform!Fruit;
+<span class="d_keyword">with</span>(Fruit)
+<span class="d_keyword">assert</span>(f.among(apple, mango, pear));
+
+<span class="d_comment">// Generate a 32-bit random number
+</span><span class="d_keyword">auto</span> u = uniform!<span class="d_keyword">uint</span>(rnd);
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">is</span>(<span class="d_keyword">typeof</span>(u) == <span class="d_keyword">uint</span>));
+
+<span class="d_comment">// Generate a random number in the range in the range [0, 1)
+</span><span class="d_keyword">auto</span> u2 = uniform01(rnd);
+<span class="d_keyword">assert</span>(u2 &gt;= 0 &amp;&amp; u2 &lt; 1);
+
+<span class="d_comment">// Select an element randomly
+</span><span class="d_keyword">auto</span> el = 10.iota.choice(rnd);
+<span class="d_keyword">assert</span>(0 &lt;= el &amp;&amp; el &lt; 10);
+
+<span class="d_comment">// Throw a dice with custom proportions
+</span><span class="d_comment">// 0: 20%, 1: 10%, 2: 60%
+</span><span class="d_keyword">auto</span> val = rnd.dice(0.2, 0.1, 0.6);
+<span class="d_keyword">assert</span>(0 &lt;= val &amp;&amp; val &lt;= 2);
+
+<span class="d_keyword">auto</span> rnd2 = MinstdRand0(42);
+
+<span class="d_comment">// Select a random subsample from a range
+</span><span class="d_keyword">assert</span>(10.iota.randomSample(3, rnd2).equal([7, 8, 9]));
+
+<span class="d_comment">// Cover all elements in an array in random order
+</span><span class="d_keyword">version</span> (X86_64) <span class="d_comment">// Issue 15147
+</span><span class="d_keyword">assert</span>(10.iota.randomCover(rnd2).equal([7, 4, 2, 0, 1, 6, 8, 3, 9, 5]));
+
+<span class="d_comment">// Shuffle an array
+</span><span class="d_keyword">version</span> (X86_64) <span class="d_comment">// Issue 15147
+</span><span class="d_keyword">assert</span>([0, 1, 2, 4, 5].randomShuffle(rnd2).equal([2, 0, 4, 5, 1]));
+</pre>
+</div></div>
+
+<dl><dt class="d_decl"><div ><span class="def-anchor" id=".isUniformRNG"></span><div class="quickindex" id="quickindex.isUniformRNG"></div>enum bool <span class="def-anchor" id="isUniformRNG"></span><code class="ddoc_psymbol">isUniformRNG</code>(Rng, ElementType);
+<br><br>enum bool <span class="def-anchor" id="isUniformRNG"></span><code class="ddoc_psymbol">isUniformRNG</code>(Rng);
+<br></div></dt>
+<dd><div class="summary">Test if Rng is a random-number generator. The overload
+ taking a ElementType also makes sure that the Rng generates
+ values of that type.
+</div><div class="description">A random-number generator has at least the following features:
+ <ul>   <li>it's an InputRange</li>
+   <li>it has a 'bool isUniformRandom' field readable in CTFE</li>
+ </ul></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">struct</span> NoRng
+{
+    @property <span class="d_keyword">uint</span> front() {<span class="d_keyword">return</span> 0;}
+    @property <span class="d_keyword">bool</span> empty() {<span class="d_keyword">return</span> <span class="d_keyword">false</span>;}
+    <span class="d_keyword">void</span> popFront() {}
+}
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_psymbol">isUniformRNG</span>!(NoRng));
+
+<span class="d_keyword">struct</span> validRng
+{
+    @property <span class="d_keyword">uint</span> front() {<span class="d_keyword">return</span> 0;}
+    @property <span class="d_keyword">bool</span> empty() {<span class="d_keyword">return</span> <span class="d_keyword">false</span>;}
+    <span class="d_keyword">void</span> popFront() {}
+
+    <span class="d_keyword">enum</span> isUniformRandom = <span class="d_keyword">true</span>;
+}
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_psymbol">isUniformRNG</span>!(validRng, <span class="d_keyword">uint</span>));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_psymbol">isUniformRNG</span>!(validRng));
+</pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".isSeedable"></span><div class="quickindex" id="quickindex.isSeedable"></div>enum bool <span class="def-anchor" id="isSeedable"></span><code class="ddoc_psymbol">isSeedable</code>(Rng, SeedType);
+<br><br>enum bool <span class="def-anchor" id="isSeedable"></span><code class="ddoc_psymbol">isSeedable</code>(Rng);
+<br></div></dt>
+<dd><div class="summary">Test if Rng is seedable. The overload
+ taking a SeedType also makes sure that the Rng can be seeded with SeedType.
+</div><div class="description">A seedable random-number generator has the following additional features:
+ <ul>   <li>it has a 'seed(ElementType)' function</li>
+ </ul></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">struct</span> validRng
+{
+    @property <span class="d_keyword">uint</span> front() {<span class="d_keyword">return</span> 0;}
+    @property <span class="d_keyword">bool</span> empty() {<span class="d_keyword">return</span> <span class="d_keyword">false</span>;}
+    <span class="d_keyword">void</span> popFront() {}
+
+    <span class="d_keyword">enum</span> isUniformRandom = <span class="d_keyword">true</span>;
+}
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_psymbol">isSeedable</span>!(validRng, <span class="d_keyword">uint</span>));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_psymbol">isSeedable</span>!(validRng));
+
+<span class="d_keyword">struct</span> seedRng
+{
+    @property <span class="d_keyword">uint</span> front() {<span class="d_keyword">return</span> 0;}
+    @property <span class="d_keyword">bool</span> empty() {<span class="d_keyword">return</span> <span class="d_keyword">false</span>;}
+    <span class="d_keyword">void</span> popFront() {}
+    <span class="d_keyword">void</span> seed(<span class="d_keyword">uint</span> val){}
+    <span class="d_keyword">enum</span> isUniformRandom = <span class="d_keyword">true</span>;
+}
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_psymbol">isSeedable</span>!(seedRng, <span class="d_keyword">uint</span>));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_psymbol">isSeedable</span>!(seedRng, <span class="d_keyword">ulong</span>));
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_psymbol">isSeedable</span>!(seedRng));
+</pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".LinearCongruentialEngine"></span><div class="quickindex" id="quickindex.LinearCongruentialEngine"></div>struct <span class="def-anchor" id="LinearCongruentialEngine"></span><code class="ddoc_psymbol">LinearCongruentialEngine</code>(UIntType, UIntType a, UIntType c, UIntType m) if (isUnsigned!UIntType);
+<br></div></dt>
+<dd><div class="summary">Linear Congruential generator.</div><span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples">Declare your own linear congruential engine
+<pre class="d_code notranslate"><span class="d_keyword">alias</span> CPP11LCG = <span class="d_psymbol">LinearCongruentialEngine</span>!(<span class="d_keyword">uint</span>, 48271, 0, 2_147_483_647);
+
+<span class="d_comment">// seed with a constant
+</span><span class="d_keyword">auto</span> rnd = CPP11LCG(42);
+<span class="d_keyword">auto</span> n = rnd.front; <span class="d_comment">// same for each run
+</span>writeln(n); <span class="d_comment">// 2027382
+</span></pre>
+</div></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples">Declare your own linear congruential engine
+<pre class="d_code notranslate"><span class="d_comment">// glibc's LCG
+</span><span class="d_keyword">alias</span> GLibcLCG = <span class="d_psymbol">LinearCongruentialEngine</span>!(<span class="d_keyword">uint</span>, 1103515245, 12345, 2_147_483_648);
+
+<span class="d_comment">// Seed with an unpredictable value
+</span><span class="d_keyword">auto</span> rnd = GLibcLCG(unpredictableSeed);
+<span class="d_keyword">auto</span> n = rnd.front; <span class="d_comment">// different across runs
+</span></pre>
+</div></div>
+
+<dl><dt class="d_decl"><div ><span class="def-anchor" id=".LinearCongruentialEngine.isUniformRandom"></span><div class="quickindex" id="quickindex.LinearCongruentialEngine.isUniformRandom"></div>enum bool <span class="def-anchor" id="isUniformRandom"></span><code class="ddoc_psymbol">isUniformRandom</code>;
+<br></div></dt>
+<dd><div class="summary">Mark this as a Rng</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".LinearCongruentialEngine.hasFixedRange"></span><div class="quickindex" id="quickindex.LinearCongruentialEngine.hasFixedRange"></div>enum bool <span class="def-anchor" id="hasFixedRange"></span><code class="ddoc_psymbol">hasFixedRange</code>;
+<br></div></dt>
+<dd><div class="summary">Does this generator have a fixed range? (<span class="d_param">true</span>).</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".LinearCongruentialEngine.min"></span><div class="quickindex" id="quickindex.LinearCongruentialEngine.min"></div>enum UIntType <span class="def-anchor" id="min"></span><code class="ddoc_psymbol">min</code>;
+<br></div></dt>
+<dd><div class="summary">Lowest generated value (<span class="d_inlinecode donthyphenate notranslate">1</span> if <span class="d_inlinecode donthyphenate notranslate">c == 0</span>, <span class="d_inlinecode donthyphenate notranslate">0</span> otherwise).</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".LinearCongruentialEngine.max"></span><div class="quickindex" id="quickindex.LinearCongruentialEngine.max"></div>enum UIntType <span class="def-anchor" id="max"></span><code class="ddoc_psymbol">max</code>;
+<br></div></dt>
+<dd><div class="summary">Highest generated value (<span class="d_inlinecode donthyphenate notranslate">modulus - 1</span>).</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".LinearCongruentialEngine.multiplier"></span><div class="quickindex" id="quickindex.LinearCongruentialEngine.multiplier"></div>enum UIntType <span class="def-anchor" id="multiplier"></span><code class="ddoc_psymbol">multiplier</code>;
+<br><br><span class="def-anchor" id=".LinearCongruentialEngine.increment"></span><div class="quickindex" id="quickindex.LinearCongruentialEngine.increment"></div>enum UIntType <span class="def-anchor" id="increment"></span><code class="ddoc_psymbol">increment</code>;
+<br><br><span class="def-anchor" id=".LinearCongruentialEngine.modulus"></span><div class="quickindex" id="quickindex.LinearCongruentialEngine.modulus"></div>enum UIntType <span class="def-anchor" id="modulus"></span><code class="ddoc_psymbol">modulus</code>;
+<br></div></dt>
+<dd><div class="summary">The parameters of this distribution. The random number is <span class="d_param">x
+= (x * multipler + increment) % modulus</span>.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".LinearCongruentialEngine.this"></span><div class="quickindex" id="quickindex.LinearCongruentialEngine.this"></div>pure nothrow @nogc @safe this(UIntType <code class="ddoc_param">x0</code>);
+<br></div></dt>
+<dd><div class="summary">Constructs a <span class="d_param">LinearCongruentialEngine</span> generator seeded with
+<span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">x0</code></span>.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".LinearCongruentialEngine.seed"></span><div class="quickindex" id="quickindex.LinearCongruentialEngine.seed"></div>pure nothrow @nogc @safe void <span class="def-anchor" id="seed"></span><code class="ddoc_psymbol">seed</code>(UIntType <code class="ddoc_param">x0</code> = 1);
+<br></div></dt>
+<dd><div class="summary">(Re)seeds the generator.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".LinearCongruentialEngine.popFront"></span><div class="quickindex" id="quickindex.LinearCongruentialEngine.popFront"></div>pure nothrow @nogc @safe void <span class="def-anchor" id="popFront"></span><code class="ddoc_psymbol">popFront</code>();
+<br></div></dt>
+<dd><div class="summary">Advances the random sequence.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".LinearCongruentialEngine.front"></span><div class="quickindex" id="quickindex.LinearCongruentialEngine.front"></div>const pure nothrow @nogc @property @safe UIntType <span class="def-anchor" id="front"></span><code class="ddoc_psymbol">front</code>();
+<br></div></dt>
+<dd><div class="summary">Returns the current number in the random sequence.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".LinearCongruentialEngine.save"></span><div class="quickindex" id="quickindex.LinearCongruentialEngine.save"></div>pure nothrow @nogc @property @safe typeof(this) <span class="def-anchor" id="save"></span><code class="ddoc_psymbol">save</code>();
+<br></div></dt>
+<dd>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".LinearCongruentialEngine.empty"></span><div class="quickindex" id="quickindex.LinearCongruentialEngine.empty"></div>enum bool <span class="def-anchor" id="empty"></span><code class="ddoc_psymbol">empty</code>;
+<br></div></dt>
+<dd><div class="summary">Always <span class="d_inlinecode donthyphenate notranslate">false</span> (random generators are infinite ranges).</div>
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".MinstdRand0"></span><div class="quickindex" id="quickindex.MinstdRand0"></div>alias <span class="def-anchor" id="MinstdRand0"></span><code class="ddoc_psymbol">MinstdRand0</code> = LinearCongruentialEngine!(uint, 16807u, 0u, 2147483647u).LinearCongruentialEngine;
+<br><br><span class="def-anchor" id=".MinstdRand"></span><div class="quickindex" id="quickindex.MinstdRand"></div>alias <span class="def-anchor" id="MinstdRand"></span><code class="ddoc_psymbol">MinstdRand</code> = LinearCongruentialEngine!(uint, 48271u, 0u, 2147483647u).LinearCongruentialEngine;
+<br></div></dt>
+<dd><div class="summary">Define <span class="d_param">LinearCongruentialEngine</span> generators with well-chosen
+parameters. <span class="d_inlinecode donthyphenate notranslate"><span class="def-anchor" id="MinstdRand0"></span><code class="ddoc_psymbol">MinstdRand0</code></span> implements Park and Miller's "minimal
+standard" <a href="http://wikipedia.org/wiki/Park%E2%80%93Miller_random_number_generator">generator</a> that uses 16807 for the multiplier. <span class="d_inlinecode donthyphenate notranslate"><span class="def-anchor" id="MinstdRand"></span><code class="ddoc_psymbol">MinstdRand</code></span>
+implements a variant that has slightly better spectral behavior by
+using the multiplier 48271. Both generators are rather simplistic.</div><span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_comment">// seed with a constant
+</span><span class="d_keyword">auto</span> rnd0 = <span class="d_psymbol">MinstdRand0</span>(1);
+<span class="d_keyword">auto</span> n = rnd0.front;
+ <span class="d_comment">// same for each run
+</span>writeln(n); <span class="d_comment">// 16807
+</span>
+<span class="d_comment">// Seed with an unpredictable value
+</span>rnd0.seed(unpredictableSeed);
+n = rnd0.front; <span class="d_comment">// different across runs
+</span></pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".MersenneTwisterEngine"></span><div class="quickindex" id="quickindex.MersenneTwisterEngine"></div>struct <span class="def-anchor" id="MersenneTwisterEngine"></span><code class="ddoc_psymbol">MersenneTwisterEngine</code>(UIntType, size_t w, size_t n, size_t m, size_t r, UIntType a, size_t u, UIntType d, size_t s, UIntType b, size_t t, UIntType c, size_t l, UIntType f) if (isUnsigned!UIntType);
+<br></div></dt>
+<dd><div class="summary">The <a href="https://en.wikipedia.org/wiki/Mersenne_Twister">Mersenne Twister</a> generator.</div><span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_comment">// seed with a constant
+</span>Mt19937 gen;
+<span class="d_keyword">auto</span> n = gen.front; <span class="d_comment">// same for each run
+</span>writeln(n); <span class="d_comment">// 3499211612
+</span>
+<span class="d_comment">// Seed with an unpredictable value
+</span>gen.seed(unpredictableSeed);
+n = gen.front; <span class="d_comment">// different across runs
+</span></pre>
+</div></div>
+
+<dl><dt class="d_decl"><div ><span class="def-anchor" id=".MersenneTwisterEngine.isUniformRandom"></span><div class="quickindex" id="quickindex.MersenneTwisterEngine.isUniformRandom"></div>enum bool <span class="def-anchor" id="isUniformRandom"></span><code class="ddoc_psymbol">isUniformRandom</code>;
+<br></div></dt>
+<dd><div class="summary">Mark this as a Rng</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".MersenneTwisterEngine.wordSize"></span><div class="quickindex" id="quickindex.MersenneTwisterEngine.wordSize"></div>enum size_t <span class="def-anchor" id="wordSize"></span><code class="ddoc_psymbol">wordSize</code>;
+<br><br><span class="def-anchor" id=".MersenneTwisterEngine.stateSize"></span><div class="quickindex" id="quickindex.MersenneTwisterEngine.stateSize"></div>enum size_t <span class="def-anchor" id="stateSize"></span><code class="ddoc_psymbol">stateSize</code>;
+<br><br><span class="def-anchor" id=".MersenneTwisterEngine.shiftSize"></span><div class="quickindex" id="quickindex.MersenneTwisterEngine.shiftSize"></div>enum size_t <span class="def-anchor" id="shiftSize"></span><code class="ddoc_psymbol">shiftSize</code>;
+<br><br><span class="def-anchor" id=".MersenneTwisterEngine.maskBits"></span><div class="quickindex" id="quickindex.MersenneTwisterEngine.maskBits"></div>enum size_t <span class="def-anchor" id="maskBits"></span><code class="ddoc_psymbol">maskBits</code>;
+<br><br><span class="def-anchor" id=".MersenneTwisterEngine.xorMask"></span><div class="quickindex" id="quickindex.MersenneTwisterEngine.xorMask"></div>enum UIntType <span class="def-anchor" id="xorMask"></span><code class="ddoc_psymbol">xorMask</code>;
+<br><br><span class="def-anchor" id=".MersenneTwisterEngine.temperingU"></span><div class="quickindex" id="quickindex.MersenneTwisterEngine.temperingU"></div>enum size_t <span class="def-anchor" id="temperingU"></span><code class="ddoc_psymbol">temperingU</code>;
+<br><br><span class="def-anchor" id=".MersenneTwisterEngine.temperingD"></span><div class="quickindex" id="quickindex.MersenneTwisterEngine.temperingD"></div>enum UIntType <span class="def-anchor" id="temperingD"></span><code class="ddoc_psymbol">temperingD</code>;
+<br><br><span class="def-anchor" id=".MersenneTwisterEngine.temperingS"></span><div class="quickindex" id="quickindex.MersenneTwisterEngine.temperingS"></div>enum size_t <span class="def-anchor" id="temperingS"></span><code class="ddoc_psymbol">temperingS</code>;
+<br><br><span class="def-anchor" id=".MersenneTwisterEngine.temperingB"></span><div class="quickindex" id="quickindex.MersenneTwisterEngine.temperingB"></div>enum UIntType <span class="def-anchor" id="temperingB"></span><code class="ddoc_psymbol">temperingB</code>;
+<br><br><span class="def-anchor" id=".MersenneTwisterEngine.temperingT"></span><div class="quickindex" id="quickindex.MersenneTwisterEngine.temperingT"></div>enum size_t <span class="def-anchor" id="temperingT"></span><code class="ddoc_psymbol">temperingT</code>;
+<br><br><span class="def-anchor" id=".MersenneTwisterEngine.temperingC"></span><div class="quickindex" id="quickindex.MersenneTwisterEngine.temperingC"></div>enum UIntType <span class="def-anchor" id="temperingC"></span><code class="ddoc_psymbol">temperingC</code>;
+<br><br><span class="def-anchor" id=".MersenneTwisterEngine.temperingL"></span><div class="quickindex" id="quickindex.MersenneTwisterEngine.temperingL"></div>enum size_t <span class="def-anchor" id="temperingL"></span><code class="ddoc_psymbol">temperingL</code>;
+<br><br><span class="def-anchor" id=".MersenneTwisterEngine.initializationMultiplier"></span><div class="quickindex" id="quickindex.MersenneTwisterEngine.initializationMultiplier"></div>enum UIntType <span class="def-anchor" id="initializationMultiplier"></span><code class="ddoc_psymbol">initializationMultiplier</code>;
+<br></div></dt>
+<dd><div class="summary">Parameters for the generator.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".MersenneTwisterEngine.min"></span><div class="quickindex" id="quickindex.MersenneTwisterEngine.min"></div>enum UIntType <span class="def-anchor" id="min"></span><code class="ddoc_psymbol">min</code>;
+<br></div></dt>
+<dd><div class="summary">Smallest generated value (0).</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".MersenneTwisterEngine.max"></span><div class="quickindex" id="quickindex.MersenneTwisterEngine.max"></div>enum UIntType <span class="def-anchor" id="max"></span><code class="ddoc_psymbol">max</code>;
+<br></div></dt>
+<dd><div class="summary">Largest generated value.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".MersenneTwisterEngine.defaultSeed"></span><div class="quickindex" id="quickindex.MersenneTwisterEngine.defaultSeed"></div>enum UIntType <span class="def-anchor" id="defaultSeed"></span><code class="ddoc_psymbol">defaultSeed</code>;
+<br></div></dt>
+<dd><div class="summary">The default seed value.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".MersenneTwisterEngine.this"></span><div class="quickindex" id="quickindex.MersenneTwisterEngine.this"></div>pure nothrow @nogc @safe this(UIntType <code class="ddoc_param">value</code>);
+<br></div></dt>
+<dd><div class="summary">Constructs a MersenneTwisterEngine object.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".MersenneTwisterEngine.seed"></span><div class="quickindex" id="quickindex.MersenneTwisterEngine.seed"></div>pure nothrow @nogc @safe void <span class="def-anchor" id="seed"></span><code class="ddoc_psymbol">seed</code><span class="template_param_list" title="Template parameter list">()</span>(UIntType <code class="ddoc_param">value</code> = defaultSeed);
+<br></div></dt>
+<dd><div class="summary">Seeds a MersenneTwisterEngine object.
+</div><div class="val"><p class="keyval Section"><span class="key keySection">Note</span>
+This seed function gives 2^w starting points (the lowest w bits of
+   the value provided will be used). To allow the RNG to be started
+   in any one of its internal states use the seed overload taking an
+   InputRange.</p></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".MersenneTwisterEngine.seed.2"></span><div class="quickindex" id="quickindex.MersenneTwisterEngine.seed.2"></div>void <span class="def-anchor" id="seed"></span><code class="ddoc_psymbol">seed</code><span class="template_param_list" title="Template parameter list">(T)</span>(T <code class="ddoc_param">range</code>)<br><span class="constraint">if (isInputRange!T &amp;&amp; is(Unqual!(ElementType!T) == UIntType))</span>;
+<br></div></dt>
+<dd><div class="summary">Seeds a MersenneTwisterEngine object using an InputRange.
+</div><div class="keyval Throws"><span class="key keyThrows">Throws:</span> <div class="val valThrows"><span class="d_inlinecode donthyphenate notranslate">Exception</span> if the InputRange didn't provide enough elements to seed the generator.
+   The number of elements required is the 'n' template parameter of the MersenneTwisterEngine struct.</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".MersenneTwisterEngine.popFront"></span><div class="quickindex" id="quickindex.MersenneTwisterEngine.popFront"></div>pure nothrow @nogc @safe void <span class="def-anchor" id="popFront"></span><code class="ddoc_psymbol">popFront</code>();
+<br></div></dt>
+<dd><div class="summary">Advances the generator.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".MersenneTwisterEngine.front"></span><div class="quickindex" id="quickindex.MersenneTwisterEngine.front"></div>const pure nothrow @nogc @property @safe UIntType <span class="def-anchor" id="front"></span><code class="ddoc_psymbol">front</code>();
+<br></div></dt>
+<dd><div class="summary">Returns the current random value.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".MersenneTwisterEngine.save"></span><div class="quickindex" id="quickindex.MersenneTwisterEngine.save"></div>pure nothrow @nogc @property @safe typeof(this) <span class="def-anchor" id="save"></span><code class="ddoc_psymbol">save</code>();
+<br></div></dt>
+<dd>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".MersenneTwisterEngine.empty"></span><div class="quickindex" id="quickindex.MersenneTwisterEngine.empty"></div>enum bool <span class="def-anchor" id="empty"></span><code class="ddoc_psymbol">empty</code>;
+<br></div></dt>
+<dd><div class="summary">Always <span class="d_inlinecode donthyphenate notranslate">false</span>.</div>
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Mt19937"></span><div class="quickindex" id="quickindex.Mt19937"></div>alias <span class="def-anchor" id="Mt19937"></span><code class="ddoc_psymbol">Mt19937</code> = MersenneTwisterEngine!(uint, 32LU, 624LU, 397LU, 31LU, 2567483615u, 11LU, 4294967295u, 7LU, 2636928640u, 15LU, 4022730752u, 18LU, 1812433253u).MersenneTwisterEngine;
+<br></div></dt>
+<dd><div class="summary">A <span class="d_inlinecode donthyphenate notranslate">MersenneTwisterEngine</span> instantiated with the parameters of the
+original engine <a href="http://math.sci.hiroshima-u.ac.jp/~m-mat/MT/emt.html">MT19937</a>, generating uniformly-distributed 32-bit numbers with a
+period of 2 to the power of 19937. Recommended for random number
+generation unless memory is severely restricted, in which case a <a href="#LinearCongruentialEngine"><span class="d_inlinecode donthyphenate notranslate">LinearCongruentialEngine</span></a> would be the generator of choice.</div><span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_comment">// seed with a constant
+</span><span class="d_psymbol">Mt19937</span> gen;
+<span class="d_keyword">auto</span> n = gen.front; <span class="d_comment">// same for each run
+</span>writeln(n); <span class="d_comment">// 3499211612
+</span>
+<span class="d_comment">// Seed with an unpredictable value
+</span>gen.seed(unpredictableSeed);
+n = gen.front; <span class="d_comment">// different across runs
+</span></pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Mt19937_64"></span><div class="quickindex" id="quickindex.Mt19937_64"></div>alias <span class="def-anchor" id="Mt19937_64"></span><code class="ddoc_psymbol">Mt19937_64</code> = MersenneTwisterEngine!(ulong, 64LU, 312LU, 156LU, 31LU, 13043109905998158313LU, 29LU, 6148914691236517205LU, 17LU, 8202884508482404352LU, 37LU, 18444473444759240704LU, 43LU, 6364136223846793005LU).MersenneTwisterEngine;
+<br></div></dt>
+<dd><div class="summary">A <span class="d_inlinecode donthyphenate notranslate">MersenneTwisterEngine</span> instantiated with the parameters of the
+original engine <a href="http://en.wikipedia.org/wiki/Mersenne_Twister">MT19937-64</a>, generating uniformly-distributed 64-bit numbers with a
+period of 2 to the power of 19937.</div><span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_comment">// Seed with a constant
+</span><span class="d_keyword">auto</span> gen = <span class="d_psymbol">Mt19937_64</span>(12345);
+<span class="d_keyword">auto</span> n = gen.front; <span class="d_comment">// same for each run
+</span>writeln(n); <span class="d_comment">// 6597103971274460346
+</span>
+<span class="d_comment">// Seed with an unpredictable value
+</span>gen.seed(unpredictableSeed!<span class="d_keyword">ulong</span>);
+n = gen.front; <span class="d_comment">// different across runs
+</span></pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".XorshiftEngine"></span><div class="quickindex" id="quickindex.XorshiftEngine"></div>struct <span class="def-anchor" id="XorshiftEngine"></span><code class="ddoc_psymbol">XorshiftEngine</code>(UIntType, uint nbits, int sa, int sb, int sc) if (isUnsigned!UIntType &amp;&amp; !(sa &gt; 0 &amp;&amp; (sb &gt; 0) &amp;&amp; (sc &gt; 0)));
+<br><br>template <span class="def-anchor" id="XorshiftEngine"></span><code class="ddoc_psymbol">XorshiftEngine</code>(UIntType, int bits, int a, int b, int c) if (isUnsigned!UIntType &amp;&amp; (a &gt; 0) &amp;&amp; (b &gt; 0) &amp;&amp; (c &gt; 0))<br></div></dt>
+<dd><div class="summary">Xorshift generator.
+Implemented according to <a href="http://www.jstatsoft.org/v08/i14/paper">Xorshift RNGs</a>
+(Marsaglia, 2003) when the size is small. For larger sizes the generator
+uses Sebastino Vigna's optimization of using an index to avoid needing
+to rotate the internal array.
+</div><div class="description">Period is <span class="d_inlinecode donthyphenate notranslate">2 ^^ nbits - 1</span> except for a legacy 192-bit uint version (see
+note below).
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">UIntType</td>
+<td class="param_desc">Word size of this xorshift generator and the return type
+               of <span class="d_inlinecode donthyphenate notranslate">opCall</span>.</td></tr>
+<tr class="param"><td class="param_id">nbits</td>
+<td class="param_desc">The number of bits of state of this generator. This must be
+           a positive multiple of the size in bits of UIntType. If
+           nbits is large this struct may occupy slightly more memory
+           than this so it can use a circular counter instead of
+           shifting the entire array.</td></tr>
+<tr class="param"><td class="param_id">sa</td>
+<td class="param_desc">The direction and magnitude of the 1st shift. Positive
+         means left, negative means right.</td></tr>
+<tr class="param"><td class="param_id">sb</td>
+<td class="param_desc">The direction and magnitude of the 2nd shift. Positive
+         means left, negative means right.</td></tr>
+<tr class="param"><td class="param_id">sc</td>
+<td class="param_desc">The direction and magnitude of the 3rd shift. Positive
+         means left, negative means right.</td></tr>
+</table></div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Note</span>
+For historical compatibility when <span class="d_inlinecode donthyphenate notranslate">nbits == 192</span> and <span class="d_inlinecode donthyphenate notranslate">UIntType</span> is <span class="d_inlinecode donthyphenate notranslate">uint</span>
+a legacy hybrid PRNG is used consisting of a 160-bit xorshift combined
+with a 32-bit counter. This combined generator has period equal to the
+least common multiple of <span class="d_inlinecode donthyphenate notranslate">2^^160 - 1</span> and <span class="d_inlinecode donthyphenate notranslate">2^^32</span>.
+<div class="blankline"></div>
+
+Previous versions of <span class="d_inlinecode donthyphenate notranslate"><span class="def-anchor" id="XorshiftEngine"></span><code class="ddoc_psymbol">XorshiftEngine</code></span> did not provide any mechanism to specify
+the directions of the shifts, taking each shift as an unsigned magnitude.
+For backwards compatibility, because three shifts in the same direction
+cannot result in a full-period XorshiftEngine, when all three of <span class="d_inlinecode donthyphenate notranslate">sa</span>, <span class="d_inlinecode donthyphenate notranslate">sb</span>,
+<span class="d_inlinecode donthyphenate notranslate">sc, are positive </span>XorshiftEngine` treats them as unsigned magnitudes and
+uses shift directions to match the old behavior of <span class="d_inlinecode donthyphenate notranslate"><span class="def-anchor" id="XorshiftEngine"></span><code class="ddoc_psymbol">XorshiftEngine</code></span>.
+<div class="blankline"></div>
+
+Not every set of shifts results in a full-period xorshift generator.
+The template does not currently at compile-time perform a full check
+for maximum period but in a future version might reject parameters
+resulting in shorter periods.</p></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">alias</span> Xorshift96  = <span class="d_psymbol">XorshiftEngine</span>!(<span class="d_keyword">uint</span>, 96,  10, 5,  26);
+<span class="d_keyword">auto</span> rnd = Xorshift96(42);
+<span class="d_keyword">auto</span> num = rnd.front;  <span class="d_comment">// same for each run
+</span>writeln(num); <span class="d_comment">// 2704588748
+</span></pre>
+</div></div>
+
+<dl><dt class="d_decl"><div ><span class="def-anchor" id=".XorshiftEngine.isUniformRandom"></span><div class="quickindex" id="quickindex.XorshiftEngine.isUniformRandom"></div>enum bool <span class="def-anchor" id="isUniformRandom"></span><code class="ddoc_psymbol">isUniformRandom</code>;
+<br></div></dt>
+<dd><div class="summary">Mark this as a Rng</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".XorshiftEngine.empty"></span><div class="quickindex" id="quickindex.XorshiftEngine.empty"></div>enum auto <span class="def-anchor" id="empty"></span><code class="ddoc_psymbol">empty</code>;
+<br></div></dt>
+<dd><div class="summary">Always <span class="d_inlinecode donthyphenate notranslate">false</span> (random generators are infinite ranges).</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".XorshiftEngine.min"></span><div class="quickindex" id="quickindex.XorshiftEngine.min"></div>enum UIntType <span class="def-anchor" id="min"></span><code class="ddoc_psymbol">min</code>;
+<br></div></dt>
+<dd><div class="summary">Smallest generated value.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".XorshiftEngine.max"></span><div class="quickindex" id="quickindex.XorshiftEngine.max"></div>enum UIntType <span class="def-anchor" id="max"></span><code class="ddoc_psymbol">max</code>;
+<br></div></dt>
+<dd><div class="summary">Largest generated value.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".XorshiftEngine.this"></span><div class="quickindex" id="quickindex.XorshiftEngine.this"></div>pure nothrow @nogc @safe this<span class="template_param_list" title="Template parameter list">()</span>(UIntType <code class="ddoc_param">x0</code>);
+<br></div></dt>
+<dd><div class="summary">Constructs a <span class="d_inlinecode donthyphenate notranslate">XorshiftEngine</span> generator seeded with <span class="d_param">x0</span>.
+</div><div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">UIntType <code class="ddoc_param">x0</code></td>
+<td class="param_desc">value used to deterministically initialize internal state</td></tr>
+</table></div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".XorshiftEngine.seed"></span><div class="quickindex" id="quickindex.XorshiftEngine.seed"></div>pure nothrow @nogc @safe void <span class="def-anchor" id="seed"></span><code class="ddoc_psymbol">seed</code><span class="template_param_list" title="Template parameter list">()</span>(UIntType <code class="ddoc_param">x0</code>);
+<br></div></dt>
+<dd><div class="summary">(Re)seeds the generator.
+</div><div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">UIntType <code class="ddoc_param">x0</code></td>
+<td class="param_desc">value used to deterministically initialize internal state</td></tr>
+</table></div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".XorshiftEngine.front"></span><div class="quickindex" id="quickindex.XorshiftEngine.front"></div>const pure nothrow @nogc @property @safe UIntType <span class="def-anchor" id="front"></span><code class="ddoc_psymbol">front</code>();
+<br></div></dt>
+<dd><div class="summary">Returns the current number in the random sequence.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".XorshiftEngine.popFront"></span><div class="quickindex" id="quickindex.XorshiftEngine.popFront"></div>pure nothrow @nogc @safe void <span class="def-anchor" id="popFront"></span><code class="ddoc_psymbol">popFront</code>();
+<br></div></dt>
+<dd><div class="summary">Advances the random sequence.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".XorshiftEngine.save"></span><div class="quickindex" id="quickindex.XorshiftEngine.save"></div>pure nothrow @nogc @property @safe typeof(this) <span class="def-anchor" id="save"></span><code class="ddoc_psymbol">save</code>();
+<br></div></dt>
+<dd><div class="summary">Captures a range state.</div>
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Xorshift32"></span><div class="quickindex" id="quickindex.Xorshift32"></div>alias <span class="def-anchor" id="Xorshift32"></span><code class="ddoc_psymbol">Xorshift32</code> = XorshiftEngine!(uint, 32u, 13, -17, 15).XorshiftEngine;
+<br><br><span class="def-anchor" id=".Xorshift64"></span><div class="quickindex" id="quickindex.Xorshift64"></div>alias <span class="def-anchor" id="Xorshift64"></span><code class="ddoc_psymbol">Xorshift64</code> = XorshiftEngine!(uint, 64u, 10, -13, -10).XorshiftEngine;
+<br><br><span class="def-anchor" id=".Xorshift96"></span><div class="quickindex" id="quickindex.Xorshift96"></div>alias <span class="def-anchor" id="Xorshift96"></span><code class="ddoc_psymbol">Xorshift96</code> = XorshiftEngine!(uint, 96u, 10, -5, -26).XorshiftEngine;
+<br><br><span class="def-anchor" id=".Xorshift128"></span><div class="quickindex" id="quickindex.Xorshift128"></div>alias <span class="def-anchor" id="Xorshift128"></span><code class="ddoc_psymbol">Xorshift128</code> = XorshiftEngine!(uint, 128u, 11, -8, -19).XorshiftEngine;
+<br><br><span class="def-anchor" id=".Xorshift160"></span><div class="quickindex" id="quickindex.Xorshift160"></div>alias <span class="def-anchor" id="Xorshift160"></span><code class="ddoc_psymbol">Xorshift160</code> = XorshiftEngine!(uint, 160u, 2, -1, -4).XorshiftEngine;
+<br><br><span class="def-anchor" id=".Xorshift192"></span><div class="quickindex" id="quickindex.Xorshift192"></div>alias <span class="def-anchor" id="Xorshift192"></span><code class="ddoc_psymbol">Xorshift192</code> = XorshiftEngine!(uint, 192u, -2, 1, 4).XorshiftEngine;
+<br><br><span class="def-anchor" id=".Xorshift"></span><div class="quickindex" id="quickindex.Xorshift"></div>alias <span class="def-anchor" id="Xorshift"></span><code class="ddoc_psymbol">Xorshift</code> = XorshiftEngine!(uint, 128u, 11, -8, -19).XorshiftEngine;
+<br></div></dt>
+<dd><div class="summary">Define <span class="d_inlinecode donthyphenate notranslate">XorshiftEngine</span> generators with well-chosen parameters. See each bits examples of "Xorshift RNGs".
+ <span class="d_inlinecode donthyphenate notranslate"><span class="def-anchor" id="Xorshift"></span><code class="ddoc_psymbol">Xorshift</code></span> is a Xorshift128's alias because 128bits implementation is mostly used.</div><span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_comment">// Seed with a constant
+</span><span class="d_keyword">auto</span> rnd = <span class="d_psymbol">Xorshift</span>(1);
+<span class="d_keyword">auto</span> num = rnd.front;  <span class="d_comment">// same for each run
+</span>writeln(num); <span class="d_comment">// 1405313047
+</span>
+<span class="d_comment">// Seed with an unpredictable value
+</span>rnd.seed(unpredictableSeed);
+num = rnd.front; <span class="d_comment">// different across rnd
+</span></pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".unpredictableSeed"></span><div class="quickindex" id="quickindex.unpredictableSeed"></div>nothrow @nogc @property @trusted uint <span class="def-anchor" id="unpredictableSeed"></span><code class="ddoc_psymbol">unpredictableSeed</code>();
+<br><br>template <span class="def-anchor" id="unpredictableSeed"></span><code class="ddoc_psymbol">unpredictableSeed</code>(UIntType) if (isUnsigned!UIntType)<br></div></dt>
+<dd><div class="summary">A "good" seed for initializing random number engines. Initializing
+with <span class="d_param">unpredictableSeed</span> makes engines generate different
+random number sequences every run.
+</div><div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">A single unsigned integer seed value, different on each successive call
+</div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Note</span>
+In general periodically 'reseeding' a PRNG does not improve its quality
+and in some cases may harm it. For an extreme example the Mersenne
+Twister has <span class="d_inlinecode donthyphenate notranslate">2 ^^ 19937 - 1</span> distinct states but after <span class="d_inlinecode donthyphenate notranslate">seed(uint)</span> is
+called it can only be in one of <span class="d_inlinecode donthyphenate notranslate">2 ^^ 32</span> distinct states regardless of
+how excellent the source of entropy is.</p></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">auto</span> rnd = Random(<span class="d_psymbol">unpredictableSeed</span>);
+<span class="d_keyword">auto</span> n = rnd.front;
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">is</span>(<span class="d_keyword">typeof</span>(n) == <span class="d_keyword">uint</span>));
+</pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Random"></span><div class="quickindex" id="quickindex.Random"></div>alias <span class="def-anchor" id="Random"></span><code class="ddoc_psymbol">Random</code> = MersenneTwisterEngine!(uint, 32LU, 624LU, 397LU, 31LU, 2567483615u, 11LU, 4294967295u, 7LU, 2636928640u, 15LU, 4022730752u, 18LU, 1812433253u).MersenneTwisterEngine;
+<br></div></dt>
+<dd><div class="summary">The "default", "favorite", "suggested" random number generator type on
+the current platform. It is an alias for one of the previously-defined
+generators. You may want to use it if (1) you need to generate some
+nice random numbers, and (2) you don't care for the minutiae of the
+method being used.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".rndGen"></span><div class="quickindex" id="quickindex.rndGen"></div>nothrow @nogc @property ref @safe Random <span class="def-anchor" id="rndGen"></span><code class="ddoc_psymbol">rndGen</code>();
+<br></div></dt>
+<dd><div class="summary">Global random number generator used by various functions in this
+module whenever no generator is specified. It is allocated per-thread
+and initialized to an unpredictable value for each thread.
+</div><div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">A singleton instance of the default random number generator</div></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">import</span> std.algorithm.iteration : sum;
+<span class="d_keyword">import</span> std.range : take;
+<span class="d_keyword">auto</span> rnd = <span class="d_psymbol">rndGen</span>;
+<span class="d_keyword">assert</span>(rnd.take(3).sum &gt; 0);
+</pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".uniform"></span><div class="quickindex" id="quickindex.uniform"></div>auto <span class="def-anchor" id="uniform"></span><code class="ddoc_psymbol">uniform</code>(string boundaries = "[)", T1, T2)(T1 <code class="ddoc_param">a</code>, T2 <code class="ddoc_param">b</code>)<br><span class="constraint">if (!is(CommonType!(T1, T2) == void))</span>;
+<br><br>auto <span class="def-anchor" id="uniform"></span><code class="ddoc_psymbol">uniform</code>(string boundaries = "[)", T1, T2, UniformRandomNumberGenerator)(T1 <code class="ddoc_param">a</code>, T2 <code class="ddoc_param">b</code>, ref UniformRandomNumberGenerator <code class="ddoc_param">urng</code>)<br><span class="constraint">if (isFloatingPoint!(CommonType!(T1, T2)) &amp;&amp; isUniformRNG!UniformRandomNumberGenerator)</span>;
+<br></div></dt>
+<dd><div class="summary">Generates a number between <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">a</code></span> and <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">b</code></span>. The <span class="d_inlinecode donthyphenate notranslate">boundaries</span>
+parameter controls the shape of the interval (open vs. closed on
+either side). Valid values for <span class="d_inlinecode donthyphenate notranslate">boundaries</span> are <span class="d_inlinecode donthyphenate notranslate">"[]"</span>, <span class="d_inlinecode donthyphenate notranslate">"(]"</span>, <span class="d_inlinecode donthyphenate notranslate">"[)"</span>, and <span class="d_inlinecode donthyphenate notranslate">"()"</span>. The default interval
+is closed to the left and open to the right. The version that does not
+take <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">urng</code></span> uses the default generator <span class="d_inlinecode donthyphenate notranslate">rndGen</span>.
+</div><div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">T1 <code class="ddoc_param">a</code></td>
+<td class="param_desc">lower bound of the uniform distribution</td></tr>
+<tr class="param"><td class="param_id">T2 <code class="ddoc_param">b</code></td>
+<td class="param_desc">upper bound of the uniform distribution</td></tr>
+<tr class="param"><td class="param_id">UniformRandomNumberGenerator <code class="ddoc_param">urng</code></td>
+<td class="param_desc">(optional) random number generator to use;
+           if not specified, defaults to <span class="d_inlinecode donthyphenate notranslate">rndGen</span></td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">A single random variate drawn from the uniform distribution
+    between <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">a</code></span> and <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">b</code></span>, whose type is the common type of
+    these parameters</div></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">auto</span> rnd = Random(unpredictableSeed);
+
+<span class="d_comment">// Generate an integer in [0, 1023]
+</span><span class="d_keyword">auto</span> <span class="d_param">a</span> = <span class="d_psymbol">uniform</span>(0, 1024, rnd);
+<span class="d_keyword">assert</span>(0 &lt;= <span class="d_param">a</span> &amp;&amp; <span class="d_param">a</span> &lt; 1024);
+
+<span class="d_comment">// Generate a float in [0, 1)
+</span><span class="d_keyword">auto</span> <span class="d_param">b</span> = <span class="d_psymbol">uniform</span>(0.0f, 1.0f, rnd);
+<span class="d_keyword">assert</span>(0 &lt;= <span class="d_param">b</span> &amp;&amp; <span class="d_param">b</span> &lt; 1);
+
+<span class="d_comment">// Generate a float in [0, 1]
+</span><span class="d_param">b</span> = <span class="d_psymbol">uniform</span>!<span class="d_string">"[]"</span>(0.0f, 1.0f, rnd);
+<span class="d_keyword">assert</span>(0 &lt;= <span class="d_param">b</span> &amp;&amp; <span class="d_param">b</span> &lt;= 1);
+
+<span class="d_comment">// Generate a float in (0, 1)
+</span><span class="d_param">b</span> = <span class="d_psymbol">uniform</span>!<span class="d_string">"()"</span>(0.0f, 1.0f, rnd);
+<span class="d_keyword">assert</span>(0 &lt; <span class="d_param">b</span> &amp;&amp; <span class="d_param">b</span> &lt; 1);
+</pre>
+</div></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples">Create an array of random numbers using range functions and UFCS
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.array : array;
+<span class="d_keyword">import</span> std.range : generate, takeExactly;
+
+<span class="d_keyword">int</span>[] arr = generate!(() =&gt; <span class="d_psymbol">uniform</span>(0, 100)).takeExactly(10).array;
+writeln(arr.length); <span class="d_comment">// 10
+</span><span class="d_keyword">assert</span>(arr[0] &gt;= 0 &amp;&amp; arr[0] &lt; 100);
+</pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".uniform.2"></span><div class="quickindex" id="quickindex.uniform.2"></div>auto <span class="def-anchor" id="uniform"></span><code class="ddoc_psymbol">uniform</code><span class="template_param_list" title="Template parameter list">(T, UniformRandomNumberGenerator)</span>(ref UniformRandomNumberGenerator <code class="ddoc_param">urng</code>)<br><span class="constraint">if (!is(T == enum) &amp;&amp; (isIntegral!T || isSomeChar!T) &amp;&amp; isUniformRNG!UniformRandomNumberGenerator)</span>;
+<br><br>auto <span class="def-anchor" id="uniform"></span><code class="ddoc_psymbol">uniform</code><span class="template_param_list" title="Template parameter list">(T)</span>()<br><span class="constraint">if (!is(T == enum) &amp;&amp; (isIntegral!T || isSomeChar!T))</span>;
+<br><br>auto <span class="def-anchor" id="uniform"></span><code class="ddoc_psymbol">uniform</code><span class="template_param_list" title="Template parameter list">(E, UniformRandomNumberGenerator)</span>(ref UniformRandomNumberGenerator <code class="ddoc_param">urng</code>)<br><span class="constraint">if (is(E == enum) &amp;&amp; isUniformRNG!UniformRandomNumberGenerator)</span>;
+<br><br>auto <span class="def-anchor" id="uniform"></span><code class="ddoc_psymbol">uniform</code><span class="template_param_list" title="Template parameter list">(E)</span>()<br><span class="constraint">if (is(E == enum))</span>;
+<br></div></dt>
+<dd><div class="summary">Generates a uniformly-distributed number in the range <span class="d_inlinecode donthyphenate notranslate">[T.min,
+T.max]</span> for any integral or character type <span class="d_inlinecode donthyphenate notranslate">T</span>. If no random
+number generator is passed, uses the default <span class="d_inlinecode donthyphenate notranslate">rndGen</span>.
+</div><div class="description">If an <span class="d_inlinecode donthyphenate notranslate">enum</span> is used as type, the random variate is drawn with
+equal probability from any of the possible values of the enum <span class="d_inlinecode donthyphenate notranslate">E</span>.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">UniformRandomNumberGenerator <code class="ddoc_param">urng</code></td>
+<td class="param_desc">(optional) random number generator to use;
+           if not specified, defaults to <span class="d_inlinecode donthyphenate notranslate">rndGen</span></td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">Random variate drawn from the uniform distribution across all
+    possible values of the integral, character or enum type <span class="d_inlinecode donthyphenate notranslate">T</span>.</div></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">auto</span> rnd = MinstdRand0(42);
+
+writeln(rnd.<span class="d_psymbol">uniform</span>!<span class="d_keyword">ubyte</span>); <span class="d_comment">// 102
+</span>writeln(rnd.<span class="d_psymbol">uniform</span>!<span class="d_keyword">ulong</span>); <span class="d_comment">// 4838462006927449017
+</span>
+<span class="d_keyword">enum</span> Fruit { apple, mango, pear }
+<span class="d_keyword">version</span> (X86_64) <span class="d_comment">// Issue 15147
+</span>writeln(rnd.<span class="d_psymbol">uniform</span>!Fruit); <span class="d_comment">// Fruit.mango
+</span></pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".uniform01"></span><div class="quickindex" id="quickindex.uniform01"></div>T <span class="def-anchor" id="uniform01"></span><code class="ddoc_psymbol">uniform01</code><span class="template_param_list" title="Template parameter list">(T = double)</span>()<br><span class="constraint">if (isFloatingPoint!T)</span>;
+<br><br>T <span class="def-anchor" id="uniform01"></span><code class="ddoc_psymbol">uniform01</code><span class="template_param_list" title="Template parameter list">(T = double, UniformRNG)</span>(ref UniformRNG <code class="ddoc_param">rng</code>)<br><span class="constraint">if (isFloatingPoint!T &amp;&amp; isUniformRNG!UniformRNG)</span>;
+<br></div></dt>
+<dd><div class="summary">Generates a uniformly-distributed floating point number of type
+ <span class="d_inlinecode donthyphenate notranslate">T</span> in the range [0, 1).  If no random number generator is
+ specified, the default RNG <span class="d_inlinecode donthyphenate notranslate">rndGen</span> will be used as the source
+ of randomness.
+</div><div class="description"><span class="d_inlinecode donthyphenate notranslate"><span class="def-anchor" id="uniform01"></span><code class="ddoc_psymbol">uniform01</code></span> offers a faster generation of random variates than
+ the equivalent <span class="d_inlinecode donthyphenate notranslate">uniform!"[)"(0.0, 1.0)</span> and so may be preferred
+ for some applications.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">UniformRNG <code class="ddoc_param">rng</code></td>
+<td class="param_desc">(optional) random number generator to use;
+           if not specified, defaults to <span class="d_inlinecode donthyphenate notranslate">rndGen</span></td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">Floating-point random variate of type <span class="d_inlinecode donthyphenate notranslate">T</span> drawn from the uniform
+     distribution across the half-open interval [0, 1).</div></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">import</span> std.math : feqrel;
+
+<span class="d_keyword">auto</span> rnd = MinstdRand0(42);
+
+<span class="d_keyword">assert</span>(rnd.<span class="d_psymbol">uniform01</span>.feqrel(0.000328707) &gt; 20);
+<span class="d_keyword">assert</span>(rnd.<span class="d_psymbol">uniform01</span>!<span class="d_keyword">float</span>.feqrel(0.524587) &gt; 20);
+</pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".uniformDistribution"></span><div class="quickindex" id="quickindex.uniformDistribution"></div>F[] <span class="def-anchor" id="uniformDistribution"></span><code class="ddoc_psymbol">uniformDistribution</code><span class="template_param_list" title="Template parameter list">(F = double)</span>(size_t <code class="ddoc_param">n</code>, F[] <code class="ddoc_param">useThis</code> = null)<br><span class="constraint">if (isFloatingPoint!F)</span>;
+<br></div></dt>
+<dd><div class="summary">Generates a uniform probability distribution of size <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">n</code></span>, i.e., an
+array of size <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">n</code></span> of positive numbers of type <span class="d_inlinecode donthyphenate notranslate">F</span> that sum to
+<span class="d_inlinecode donthyphenate notranslate">1</span>. If <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">useThis</code></span> is provided, it is used as storage.</div><span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">import</span> std.algorithm.iteration : reduce;
+<span class="d_keyword">import</span> std.math : approxEqual;
+
+<span class="d_keyword">auto</span> a = <span class="d_psymbol">uniformDistribution</span>(5);
+writeln(a.length); <span class="d_comment">// 5
+</span><span class="d_keyword">assert</span>(approxEqual(reduce!<span class="d_string">"a + b"</span>(a), 1));
+
+a = <span class="d_psymbol">uniformDistribution</span>(10, a);
+writeln(a.length); <span class="d_comment">// 10
+</span><span class="d_keyword">assert</span>(approxEqual(reduce!<span class="d_string">"a + b"</span>(a), 1));
+</pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".choice"></span><div class="quickindex" id="quickindex.choice"></div>ref auto <span class="def-anchor" id="choice"></span><code class="ddoc_psymbol">choice</code><span class="template_param_list" title="Template parameter list">(Range, RandomGen = Random)</span>(auto ref Range <code class="ddoc_param">range</code>, ref RandomGen <code class="ddoc_param">urng</code>)<br><span class="constraint">if (isRandomAccessRange!Range &amp;&amp; hasLength!Range &amp;&amp; isUniformRNG!RandomGen)</span>;
+<br><br>ref auto <span class="def-anchor" id="choice"></span><code class="ddoc_psymbol">choice</code><span class="template_param_list" title="Template parameter list">(Range)</span>(auto ref Range <code class="ddoc_param">range</code>);
+<br></div></dt>
+<dd><div class="summary">Returns a random, uniformly chosen, element <span class="d_inlinecode donthyphenate notranslate">e</span> from the supplied
+<span class="d_inlinecode donthyphenate notranslate">Range range</span>. If no random number generator is passed, the default
+<span class="d_inlinecode donthyphenate notranslate">rndGen</span> is used.
+</div><div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">Range <code class="ddoc_param">range</code></td>
+<td class="param_desc">a random access range that has the <span class="d_inlinecode donthyphenate notranslate">length</span> property defined</td></tr>
+<tr class="param"><td class="param_id">RandomGen <code class="ddoc_param">urng</code></td>
+<td class="param_desc">(optional) random number generator to use;
+           if not specified, defaults to <span class="d_inlinecode donthyphenate notranslate">rndGen</span></td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">A single random element drawn from the <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">range</code></span>. If it can, it will
+    return a <span class="d_inlinecode donthyphenate notranslate">ref</span> to the <span class="d_inlinecode donthyphenate notranslate">range element</span>, otherwise it will return
+    a copy.</div></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">auto</span> rnd = MinstdRand0(42);
+
+<span class="d_keyword">auto</span> elem  = [1, 2, 3, 4, 5].<span class="d_psymbol">choice</span>(rnd);
+<span class="d_keyword">version</span> (X86_64) <span class="d_comment">// Issue 15147
+</span>writeln(elem); <span class="d_comment">// 3
+</span></pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".randomShuffle"></span><div class="quickindex" id="quickindex.randomShuffle"></div>Range <span class="def-anchor" id="randomShuffle"></span><code class="ddoc_psymbol">randomShuffle</code><span class="template_param_list" title="Template parameter list">(Range, RandomGen)</span>(Range <code class="ddoc_param">r</code>, ref RandomGen <code class="ddoc_param">gen</code>)<br><span class="constraint">if (isRandomAccessRange!Range &amp;&amp; isUniformRNG!RandomGen)</span>;
+<br><br>Range <span class="def-anchor" id="randomShuffle"></span><code class="ddoc_psymbol">randomShuffle</code><span class="template_param_list" title="Template parameter list">(Range)</span>(Range <code class="ddoc_param">r</code>)<br><span class="constraint">if (isRandomAccessRange!Range)</span>;
+<br></div></dt>
+<dd><div class="summary">Shuffles elements of <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">r</code></span> using <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">gen</code></span> as a shuffler. <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">r</code></span> must be
+a random-access range with length.  If no RNG is specified, <span class="d_inlinecode donthyphenate notranslate">rndGen</span>
+will be used.
+</div><div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">Range <code class="ddoc_param">r</code></td>
+<td class="param_desc">random-access range whose elements are to be shuffled</td></tr>
+<tr class="param"><td class="param_id">RandomGen <code class="ddoc_param">gen</code></td>
+<td class="param_desc">(optional) random number generator to use; if not
+          specified, defaults to <span class="d_inlinecode donthyphenate notranslate">rndGen</span></td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">The shuffled random-access range.</div></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">auto</span> rnd = MinstdRand0(42);
+
+<span class="d_keyword">auto</span> arr = [1, 2, 3, 4, 5].<span class="d_psymbol">randomShuffle</span>(rnd);
+<span class="d_keyword">version</span> (X86_64) <span class="d_comment">// Issue 15147
+</span>writeln(arr); <span class="d_comment">// [3, 5, 2, 4, 1]
+</span></pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".partialShuffle"></span><div class="quickindex" id="quickindex.partialShuffle"></div>Range <span class="def-anchor" id="partialShuffle"></span><code class="ddoc_psymbol">partialShuffle</code><span class="template_param_list" title="Template parameter list">(Range, RandomGen)</span>(Range <code class="ddoc_param">r</code>, in size_t <code class="ddoc_param">n</code>, ref RandomGen <code class="ddoc_param">gen</code>)<br><span class="constraint">if (isRandomAccessRange!Range &amp;&amp; isUniformRNG!RandomGen)</span>;
+<br><br>Range <span class="def-anchor" id="partialShuffle"></span><code class="ddoc_psymbol">partialShuffle</code><span class="template_param_list" title="Template parameter list">(Range)</span>(Range <code class="ddoc_param">r</code>, in size_t <code class="ddoc_param">n</code>)<br><span class="constraint">if (isRandomAccessRange!Range)</span>;
+<br></div></dt>
+<dd><div class="summary">Partially shuffles the elements of <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">r</code></span> such that upon returning <span class="d_inlinecode donthyphenate notranslate">r[0 .. n]</span>
+is a random subset of <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">r</code></span> and is randomly ordered.  <span class="d_inlinecode donthyphenate notranslate">r[n .. r.length]</span>
+will contain the elements not in <span class="d_inlinecode donthyphenate notranslate">r[0 .. n]</span>.  These will be in an undefined
+order, but will not be random in the sense that their order after
+<span class="d_inlinecode donthyphenate notranslate"><span class="def-anchor" id="partialShuffle"></span><code class="ddoc_psymbol">partialShuffle</code></span> returns will not be independent of their order before
+<span class="d_inlinecode donthyphenate notranslate"><span class="def-anchor" id="partialShuffle"></span><code class="ddoc_psymbol">partialShuffle</code></span> was called.
+</div><div class="description"><span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">r</code></span> must be a random-access range with length.  <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">n</code></span> must be less than
+or equal to <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">r</code>.length</span>.  If no RNG is specified, <span class="d_inlinecode donthyphenate notranslate">rndGen</span> will be used.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">Range <code class="ddoc_param">r</code></td>
+<td class="param_desc">random-access range whose elements are to be shuffled</td></tr>
+<tr class="param"><td class="param_id">size_t <code class="ddoc_param">n</code></td>
+<td class="param_desc">number of elements of <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">r</code></span> to shuffle (counting from the beginning);
+        must be less than <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">r</code>.length</span></td></tr>
+<tr class="param"><td class="param_id">RandomGen <code class="ddoc_param">gen</code></td>
+<td class="param_desc">(optional) random number generator to use; if not
+          specified, defaults to <span class="d_inlinecode donthyphenate notranslate">rndGen</span></td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">The shuffled random-access range.</div></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">auto</span> rnd = MinstdRand0(42);
+
+<span class="d_keyword">auto</span> arr = [1, 2, 3, 4, 5, 6];
+arr = arr.dup.<span class="d_psymbol">partialShuffle</span>(1, rnd);
+
+<span class="d_keyword">version</span> (X86_64) <span class="d_comment">// Issue 15147
+</span><span class="d_keyword">assert</span>(arr == [2, 1, 3, 4, 5, 6]); <span class="d_comment">// 1&lt;-&gt;2
+</span>
+arr = arr.dup.<span class="d_psymbol">partialShuffle</span>(2, rnd);
+<span class="d_keyword">version</span> (X86_64) <span class="d_comment">// Issue 15147
+</span><span class="d_keyword">assert</span>(arr == [1, 4, 3, 2, 5, 6]); <span class="d_comment">// 1&lt;-&gt;2, 2&lt;-&gt;4
+</span>
+arr = arr.dup.<span class="d_psymbol">partialShuffle</span>(3, rnd);
+<span class="d_keyword">version</span> (X86_64) <span class="d_comment">// Issue 15147
+</span><span class="d_keyword">assert</span>(arr == [5, 4, 6, 2, 1, 3]); <span class="d_comment">// 1&lt;-&gt;5, 2&lt;-&gt;4, 3&lt;-&gt;6
+</span></pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".dice"></span><div class="quickindex" id="quickindex.dice"></div>size_t <span class="def-anchor" id="dice"></span><code class="ddoc_psymbol">dice</code><span class="template_param_list" title="Template parameter list">(Rng, Num)</span>(ref Rng <code class="ddoc_param">rnd</code>, Num[] <code class="ddoc_param">proportions</code>...)<br><span class="constraint">if (isNumeric!Num &amp;&amp; isForwardRange!Rng)</span>;
+<br><br>size_t <span class="def-anchor" id="dice"></span><code class="ddoc_psymbol">dice</code><span class="template_param_list" title="Template parameter list">(R, Range)</span>(ref R <code class="ddoc_param">rnd</code>, Range <code class="ddoc_param">proportions</code>)<br><span class="constraint">if (isForwardRange!Range &amp;&amp; isNumeric!(ElementType!Range) &amp;&amp; !isArray!Range)</span>;
+<br><br>size_t <span class="def-anchor" id="dice"></span><code class="ddoc_psymbol">dice</code><span class="template_param_list" title="Template parameter list">(Range)</span>(Range <code class="ddoc_param">proportions</code>)<br><span class="constraint">if (isForwardRange!Range &amp;&amp; isNumeric!(ElementType!Range) &amp;&amp; !isArray!Range)</span>;
+<br><br>size_t <span class="def-anchor" id="dice"></span><code class="ddoc_psymbol">dice</code><span class="template_param_list" title="Template parameter list">(Num)</span>(Num[] <code class="ddoc_param">proportions</code>...)<br><span class="constraint">if (isNumeric!Num)</span>;
+<br></div></dt>
+<dd><div class="summary">Rolls a dice with relative probabilities stored in <span class="d_inlinecode donthyphenate notranslate">proportions</span>. Returns the index in <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">proportions</code></span> that was chosen.
+</div><div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">Rng <code class="ddoc_param">rnd</code></td>
+<td class="param_desc">(optional) random number generator to use; if not
+          specified, defaults to <span class="d_inlinecode donthyphenate notranslate">rndGen</span></td></tr>
+<tr class="param"><td class="param_id">Num[] <code class="ddoc_param">proportions</code></td>
+<td class="param_desc">forward range or list of individual values
+                  whose elements correspond to the probabilities
+                  with which to choose the corresponding index
+                  value</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">Random variate drawn from the index values
+    [0, ... <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">proportions</code>.length</span> - 1], with the probability
+    of getting an individual index value <span class="d_inlinecode donthyphenate notranslate">i</span> being proportional to
+    <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">proportions</code>[i]</span>.</div></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">auto</span> x = <span class="d_psymbol">dice</span>(0.5, 0.5);   <span class="d_comment">// x is 0 or 1 in equal proportions
+</span><span class="d_keyword">auto</span> y = <span class="d_psymbol">dice</span>(50, 50);     <span class="d_comment">// y is 0 or 1 in equal proportions
+</span><span class="d_keyword">auto</span> z = <span class="d_psymbol">dice</span>(70, 20, 10); <span class="d_comment">// z is 0 70% of the time, 1 20% of the time,
+</span>                           <span class="d_comment">// and 2 10% of the time
+</span></pre>
+</div></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">auto</span> <span class="d_param">rnd</span> = MinstdRand0(42);
+<span class="d_keyword">auto</span> z = <span class="d_param">rnd</span>.<span class="d_psymbol">dice</span>(70, 20, 10);
+writeln(z); <span class="d_comment">// 0
+</span>z = <span class="d_param">rnd</span>.<span class="d_psymbol">dice</span>(30, 20, 40, 10);
+writeln(z); <span class="d_comment">// 2
+</span></pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".RandomCover"></span><div class="quickindex" id="quickindex.RandomCover"></div>struct <span class="def-anchor" id="RandomCover"></span><code class="ddoc_psymbol">RandomCover</code>(Range, UniformRNG = void) if (isRandomAccessRange!Range &amp;&amp; (isUniformRNG!UniformRNG || is(UniformRNG == void)));
+<br><br><span class="def-anchor" id=".randomCover"></span><div class="quickindex" id="quickindex.randomCover"></div>auto <span class="def-anchor" id="randomCover"></span><code class="ddoc_psymbol">randomCover</code><span class="template_param_list" title="Template parameter list">(Range, UniformRNG)</span>(Range <code class="ddoc_param">r</code>, auto ref UniformRNG <code class="ddoc_param">rng</code>)<br><span class="constraint">if (isRandomAccessRange!Range &amp;&amp; isUniformRNG!UniformRNG)</span>;
+<br><br>auto <span class="def-anchor" id="randomCover"></span><code class="ddoc_psymbol">randomCover</code><span class="template_param_list" title="Template parameter list">(Range)</span>(Range <code class="ddoc_param">r</code>)<br><span class="constraint">if (isRandomAccessRange!Range)</span>;
+<br></div></dt>
+<dd><div class="summary">Covers a given range <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">r</code></span> in a random manner, i.e. goes through each
+element of <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">r</code></span> once and only once, just in a random order. <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">r</code></span>
+must be a random-access range with length.
+</div><div class="description">If no random number generator is passed to <span class="d_inlinecode donthyphenate notranslate"><span class="def-anchor" id="randomCover"></span><code class="ddoc_psymbol">randomCover</code></span>, the
+thread-global RNG rndGen will be used internally.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">Range <code class="ddoc_param">r</code></td>
+<td class="param_desc">random-access range to cover</td></tr>
+<tr class="param"><td class="param_id">UniformRNG <code class="ddoc_param">rng</code></td>
+<td class="param_desc">(optional) random number generator to use;
+          if not specified, defaults to <span class="d_inlinecode donthyphenate notranslate">rndGen</span></td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">Range whose elements consist of the elements of <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">r</code></span>,
+    in random order.  Will be a forward range if both <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">r</code></span> and
+    <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">rng</code></span> are forward ranges, an
+    <a href="std_range_primitives.html#.isInputRange">input range</a> otherwise.</div></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">import</span> std.algorithm.comparison : equal;
+<span class="d_keyword">import</span> std.range : iota;
+<span class="d_keyword">auto</span> rnd = MinstdRand0(42);
+
+<span class="d_keyword">version</span> (X86_64) <span class="d_comment">// Issue 15147
+</span><span class="d_keyword">assert</span>(10.iota.<span class="d_psymbol">randomCover</span>(rnd).equal([7, 4, 2, 0, 1, 6, 8, 3, 9, 5]));
+</pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".RandomSample"></span><div class="quickindex" id="quickindex.RandomSample"></div>struct <span class="def-anchor" id="RandomSample"></span><code class="ddoc_psymbol">RandomSample</code>(Range, UniformRNG = void) if (isInputRange!Range &amp;&amp; (isUniformRNG!UniformRNG || is(UniformRNG == void)));
+<br><br><span class="def-anchor" id=".randomSample"></span><div class="quickindex" id="quickindex.randomSample"></div>auto <span class="def-anchor" id="randomSample"></span><code class="ddoc_psymbol">randomSample</code><span class="template_param_list" title="Template parameter list">(Range)</span>(Range <code class="ddoc_param">r</code>, size_t <code class="ddoc_param">n</code>, size_t <code class="ddoc_param">total</code>)<br><span class="constraint">if (isInputRange!Range)</span>;
+<br><br>auto <span class="def-anchor" id="randomSample"></span><code class="ddoc_psymbol">randomSample</code><span class="template_param_list" title="Template parameter list">(Range)</span>(Range <code class="ddoc_param">r</code>, size_t <code class="ddoc_param">n</code>)<br><span class="constraint">if (isInputRange!Range &amp;&amp; hasLength!Range)</span>;
+<br><br>auto <span class="def-anchor" id="randomSample"></span><code class="ddoc_psymbol">randomSample</code><span class="template_param_list" title="Template parameter list">(Range, UniformRNG)</span>(Range <code class="ddoc_param">r</code>, size_t <code class="ddoc_param">n</code>, size_t <code class="ddoc_param">total</code>, auto ref UniformRNG <code class="ddoc_param">rng</code>)<br><span class="constraint">if (isInputRange!Range &amp;&amp; isUniformRNG!UniformRNG)</span>;
+<br><br>auto <span class="def-anchor" id="randomSample"></span><code class="ddoc_psymbol">randomSample</code><span class="template_param_list" title="Template parameter list">(Range, UniformRNG)</span>(Range <code class="ddoc_param">r</code>, size_t <code class="ddoc_param">n</code>, auto ref UniformRNG <code class="ddoc_param">rng</code>)<br><span class="constraint">if (isInputRange!Range &amp;&amp; hasLength!Range &amp;&amp; isUniformRNG!UniformRNG)</span>;
+<br></div></dt>
+<dd><div class="summary">Selects a random subsample out of <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">r</code></span>, containing exactly <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">n</code></span>
+elements. The order of elements is the same as in the original
+range. The total length of <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">r</code></span> must be known. If <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">total</code></span> is
+passed in, the total number of sample is considered to be <span class="d_inlinecode donthyphenate notranslate">total</span>. Otherwise, <span class="d_inlinecode donthyphenate notranslate"><span class="def-anchor" id="RandomSample"></span><code class="ddoc_psymbol">RandomSample</code></span> uses <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">r</code>.length</span>.
+</div><div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">Range <code class="ddoc_param">r</code></td>
+<td class="param_desc">range to sample from</td></tr>
+<tr class="param"><td class="param_id">size_t <code class="ddoc_param">n</code></td>
+<td class="param_desc">number of elements to include in the sample;
+        must be less than or equal to the total number
+        of elements in <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">r</code></span> and/or the parameter
+        <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">total</code></span> (if provided)</td></tr>
+<tr class="param"><td class="param_id">size_t <code class="ddoc_param">total</code></td>
+<td class="param_desc">(semi-optional) number of elements of <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">r</code></span>
+            from which to select the sample (counting from
+            the beginning); must be less than or equal to
+            the total number of elements in <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">r</code></span> itself.
+            May be omitted if <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">r</code></span> has the <span class="d_inlinecode donthyphenate notranslate">.length</span>
+            property and the sample is to be drawn from
+            all elements of <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">r</code></span>.</td></tr>
+<tr class="param"><td class="param_id">UniformRNG <code class="ddoc_param">rng</code></td>
+<td class="param_desc">(optional) random number generator to use;
+          if not specified, defaults to <span class="d_inlinecode donthyphenate notranslate">rndGen</span></td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">Range whose elements consist of a randomly selected subset of
+    the elements of <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">r</code></span>, in the same order as these elements
+    appear in <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">r</code></span> itself.  Will be a forward range if both <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">r</code></span>
+    and <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">rng</code></span> are forward ranges, an input range otherwise.
+<div class="blankline"></div>
+
+<span class="d_inlinecode donthyphenate notranslate"><span class="def-anchor" id="RandomSample"></span><code class="ddoc_psymbol">RandomSample</code></span> implements Jeffrey Scott Vitter's Algorithm D
+(see Vitter <a href="http://dx.doi.org/10.1145/358105.893">1984</a>, <a href="http://dx.doi.org/10.1145/23002.23003">1987</a>), which selects a sample
+of size <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">n</code></span> in O(n) steps and requiring O(n) random variates,
+regardless of the size of the data being sampled.  The exception
+to this is if traversing k elements on the input range is itself
+an O(k) operation (e.g. when sampling lines from an input file),
+in which case the sampling calculation will inevitably be of
+O(total).
+<div class="blankline"></div>
+
+RandomSample will throw an exception if <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">total</code></span> is verifiably
+less than the total number of elements available in the input,
+or if <span class="d_inlinecode donthyphenate notranslate">n &gt; total</span>.
+<div class="blankline"></div>
+
+If no random number generator is passed to <span class="d_inlinecode donthyphenate notranslate"><span class="def-anchor" id="randomSample"></span><code class="ddoc_psymbol">randomSample</code></span>, the
+thread-global RNG rndGen will be used internally.</div></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">import</span> std.algorithm.comparison : equal;
+<span class="d_keyword">import</span> std.range : iota;
+<span class="d_keyword">auto</span> rnd = MinstdRand0(42);
+<span class="d_keyword">assert</span>(10.iota.<span class="d_psymbol">randomSample</span>(3, rnd).equal([7, 8, 9]));
+</pre>
+</div></div>
+
+<dl><dt class="d_decl"><div ><span class="def-anchor" id=".RandomSample.empty"></span><div class="quickindex" id="quickindex.RandomSample.empty"></div>const @property bool <span class="def-anchor" id="empty"></span><code class="ddoc_psymbol">empty</code>();
+<br><br><span class="def-anchor" id=".RandomSample.front"></span><div class="quickindex" id="quickindex.RandomSample.front"></div>@property ref auto <span class="def-anchor" id="front"></span><code class="ddoc_psymbol">front</code>();
+<br><br><span class="def-anchor" id=".RandomSample.popFront"></span><div class="quickindex" id="quickindex.RandomSample.popFront"></div>void <span class="def-anchor" id="popFront"></span><code class="ddoc_psymbol">popFront</code>();
+<br><br><span class="def-anchor" id=".RandomSample.save"></span><div class="quickindex" id="quickindex.RandomSample.save"></div>@property typeof(this) <span class="def-anchor" id="save"></span><code class="ddoc_psymbol">save</code>();
+<br><br><span class="def-anchor" id=".RandomSample.length"></span><div class="quickindex" id="quickindex.RandomSample.length"></div>@property size_t <span class="def-anchor" id="length"></span><code class="ddoc_psymbol">length</code>();
+<br></div></dt>
+<dd><div class="summary">Range primitives.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".RandomSample.index"></span><div class="quickindex" id="quickindex.RandomSample.index"></div>@property size_t <span class="def-anchor" id="index"></span><code class="ddoc_psymbol">index</code>();
+<br></div></dt>
+<dd><div class="summary">Returns the index of the visited record.</div>
+</dd>
+</dl>
+</dd>
+</dl>
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2022 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on (no date time)</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+<script type="text/javascript" src="../js/run_examples.js"></script>
+
+<script type="text/javascript" src="../js/listanchors.js"></script>
+<script type="text/javascript" src="../js/show_contributors.js"></script>
+<script type="text/javascript">jQuery(document).ready(listanchors);</script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

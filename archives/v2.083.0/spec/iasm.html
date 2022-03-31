@@ -1,0 +1,1267 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2022 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Inline Assembler - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Inline Assembler' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href=".."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.freenode.net/d'>IRC</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option selected value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+<div class="subnav-helper"></div> <div class="subnav">    <div class="head"><h5>Language Reference</h5> <p class="subnav-duplicate"><a href="../spec/spec.html">table of contents</a></p></div>
+    <ul>        <li><a href='            ../spec/intro.html'>Introduction</a></li><li><a href='            ../spec/lex.html'>Lexical</a></li><li><a href='            ../spec/grammar.html'>Grammar</a></li><li><a href='            ../spec/module.html'>Modules</a></li><li><a href='            ../spec/declaration.html'>Declarations</a></li><li><a href='            ../spec/type.html'>Types</a></li><li><a href='            ../spec/property.html'>Properties</a></li><li><a href='            ../spec/attribute.html'>Attributes</a></li><li><a href='            ../spec/pragma.html'>Pragmas</a></li><li><a href='            ../spec/expression.html'>Expressions</a></li><li><a href='            ../spec/statement.html'>Statements</a></li><li><a href='            ../spec/arrays.html'>Arrays</a></li><li><a href='            ../spec/hash-map.html'>Associative Arrays</a></li><li><a href='            ../spec/struct.html'>Structs and Unions</a></li><li><a href='            ../spec/class.html'>Classes</a></li><li><a href='            ../spec/interface.html'>Interfaces</a></li><li><a href='            ../spec/enum.html'>Enums</a></li><li><a href='            ../spec/const3.html'>Type Qualifiers</a></li><li><a href='            ../spec/function.html'>Functions</a></li><li><a href='            ../spec/operatoroverloading.html'>Operator Overloading</a></li><li><a href='            ../spec/template.html'>Templates</a></li><li><a href='            ../spec/template-mixin.html'>Template Mixins</a></li><li><a href='            ../spec/contracts.html'>Contract Programming</a></li><li><a href='            ../spec/version.html'>Conditional Compilation</a></li><li><a href='            ../spec/traits.html'>Traits</a></li><li><a href='            ../spec/errors.html'>Error Handling</a></li><li><a href='            ../spec/unittest.html'>Unit Tests</a></li><li><a href='            ../spec/garbage.html'>Garbage Collection</a></li><li><a href='            ../spec/float.html'>Floating Point</a></li><li><a href='            ../spec/iasm.html'>D x86 Inline Assembler</a></li><li><a href='            ../spec/ddoc.html'>Embedded Documentation</a></li><li><a href='            ../spec/interfaceToC.html'>Interfacing to C</a></li><li><a href='            ../spec/cpp_interface.html'>Interfacing to C++</a></li><li><a href='            ../spec/objc_interface.html'>Interfacing to Objective-C</a></li><li><a href='            ../spec/portability.html'>Portability Guide</a></li><li><a href='            ../spec/entity.html'>Named Character Entities</a></li><li><a href='            ../spec/memory-safe-d.html'>Memory Safety</a></li><li><a href='            ../spec/abi.html'>Application Binary Interface</a></li><li><a href='            ../spec/simd.html'>Vector Extensions</a></li><li><a href='            ../spec/betterc.html'>Better C
+        </a></li>
+    </ul>
+</div>
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BInline Assembler%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/spec/iasm.dd">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Inline Assembler</h1>
+        
+<style>    body { counter-reset: h1 30; counter-increment: h1 -1; }
+    h1 { counter-reset: h2 h3 p; }
+    h2 { counter-reset: h3 h4 p; }
+    h3 { counter-reset: h4 p; }
+    h4 { counter-reset: p; }
+    h1::before {
+        counter-increment: h1;
+        content: counter(h1) ". ";
+    }
+    h2::before {
+        counter-increment: h2;
+        content: counter(h1) "." counter(h2) " ";
+    }
+    h3::before {
+        counter-increment: h3;
+        content: counter(h1) "." counter(h2) "." counter(h3) " ";
+    }
+    h4::before {
+        counter-increment: h4;
+        content: counter(h1) "." counter(h2) "." counter(h3) "." counter(h4) " ";
+    }
+    p::before, .spec-boxes::before {
+        counter-increment: p;
+        content: counter(p) ". ";
+    }
+    h1::before, h2::before, h3::before, h4::before, p::before, .spec-boxes::before
+    {
+        color: #999;
+        font-size: 80%;
+        margin-right: 0.25em;
+    }
+</style>
+        <div class="blankline"></div>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<div class="page-contents quickindex">    <div class="page-contents-header">        <b>Contents</b>
+    </div>
+    <ol>    <li><a href="#asmstatements">Asm statement</a></li>
+    <li><a href="#asminstruction">Asm instruction</a></li>
+    <li><a href="#labels">Labels</a></li>
+    <li><a href="#align">align <i>IntegerExpression</i></a></li>
+    <li><a href="#even">even</a></li>
+    <li><a href="#naked">naked</a></li>
+    <li><a href="#raw_data">db, ds, di, dl, df, dd, de</a></li>
+    <li><a href="#opcodes">Opcodes</a><ol>        <li><a href="#special_cases">Special Cases</a></li>
+    </ol></li>
+    <li><a href="#operands">Operands</a><ol>        <li><a href="#operand_types">Operand Types</a></li>
+        <li><a href="#agregate_member_offsets">Struct/Union/Class Member Offsets</a></li>
+        <li><a href="#stack_variables">Stack Variables</a></li>
+        <li><a href="#special_symbols">Special Symbols</a></li>
+    </ol></li>
+    <li><a href="#supported_opcodes">Opcodes Supported</a><ol>        <li><a href="#P4_opcode_support">Pentium 4 (Prescott) Opcodes Supported</a></li>
+        <li><a href="#amd_opcode_support">AMD Opcodes Supported</a></li>
+        <li><a href="#simd">SIMD</a></li>
+        <li><a href="#other">Other</a></li>
+    </ol></li>
+</ol>
+</div>
+<div class="blankline"></div>
+    <a       href="http://digitalmars.com/gift/index.html" title="Gift Shop" target="_top">      <img src="../images/d5.gif" border="0" align="right" alt="Some Assembly Required" width="284" height="186">
+    </a>
+<div class="blankline"></div>
+    <p>D, being a systems programming language, provides an inline
+        assembler.
+        The inline assembler is standardized for D implementations across
+        the same CPU family, for example, the Intel Pentium inline assembler
+        for a Win32 D compiler will be syntax compatible with the inline
+        assembler for Linux running on an Intel Pentium.
+    </p>
+<div class="blankline"></div>
+    <p>Implementations of D on different architectures, however, are
+        free to innovate upon the memory model, function call/return conventions,
+        argument passing conventions, etc.
+    </p>
+<div class="blankline"></div>
+    <p>This document describes the <span class="d_inlinecode donthyphenate notranslate">x86</span> and <span class="d_inlinecode donthyphenate notranslate">x86_64</span> implementations of
+        the inline assembler. The inline assembler platform support that a compiler
+        provides is indicated by the <span class="d_inlinecode donthyphenate notranslate">D_InlineAsm_X86</span> and
+        <span class="d_inlinecode donthyphenate notranslate">D_InlineAsm_X86_64</span> version identifiers, respectively.
+    </p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="asmstatements" href="#asmstatements">Asm statement</a></h2>
+<div class="blankline"></div>
+<pre class="bnf notranslate"><a id="AsmStatement"><span class="gname">AsmStatement</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">asm</span> <a href="#FunctionAttributes"><i>FunctionAttributes</i></a><sub>opt</sub> <span class="d_inlinecode donthyphenate notranslate">{</span> <a href="#AsmInstructionList"><i>AsmInstructionList</i></a><sub>opt</sub> <span class="d_inlinecode donthyphenate notranslate">}</span>
+<div class="blankline"></div>
+    <a id="AsmInstructionList"><span class="gname">AsmInstructionList</span></a>:
+        <a href="#AsmInstruction"><i>AsmInstruction</i></a> <span class="d_inlinecode donthyphenate notranslate">;</span>
+        <a href="#AsmInstruction"><i>AsmInstruction</i></a> <span class="d_inlinecode donthyphenate notranslate">;</span> <i>AsmInstructionList</i>
+    </pre>
+<div class="blankline"></div>
+    <p>Assembler instructions must be located inside an <span class="d_inlinecode donthyphenate notranslate">asm</span> block.
+        Like functions, <span class="d_inlinecode donthyphenate notranslate">asm</span> statements must be anotated with adequate function attributes to be compatible with the caller.
+        Asm statements attributes must be explicitly defined, they are not infered.
+    </p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">void</span> func1() <span class="d_keyword">pure</span> <span class="d_keyword">nothrow</span> @safe @nogc
+{
+    <span class="d_keyword">asm</span> <span class="d_keyword">pure</span> <span class="d_keyword">nothrow</span> @trusted @nogc
+    {}
+}
+
+<span class="d_keyword">void</span> func2() @safe @nogc
+{
+    <span class="d_keyword">asm</span> @nogc <span class="d_comment">// Error: asm statement is assumed to be @system - mark it with '@trusted' if it is not
+</span>    {}
+}
+</pre>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="asminstruction" href="#asminstruction">Asm instruction</a></h2>
+<div class="blankline"></div>
+<pre class="bnf notranslate"><a id="AsmInstruction"><span class="gname">AsmInstruction</span></a>:
+    <i>Identifier</i> <span class="d_inlinecode donthyphenate notranslate">:</span> <i>AsmInstruction</i>
+    <span class="d_inlinecode donthyphenate notranslate">align</span> <a href="#IntegerExpression"><i>IntegerExpression</i></a>
+    <span class="d_inlinecode donthyphenate notranslate">even</span>
+    <span class="d_inlinecode donthyphenate notranslate">naked</span>
+    <span class="d_inlinecode donthyphenate notranslate">db</span> <i>Operands</i>
+    <span class="d_inlinecode donthyphenate notranslate">ds</span> <i>Operands</i>
+    <span class="d_inlinecode donthyphenate notranslate">di</span> <i>Operands</i>
+    <span class="d_inlinecode donthyphenate notranslate">dl</span> <i>Operands</i>
+    <span class="d_inlinecode donthyphenate notranslate">df</span> <i>Operands</i>
+    <span class="d_inlinecode donthyphenate notranslate">dd</span> <i>Operands</i>
+    <span class="d_inlinecode donthyphenate notranslate">de</span> <i>Operands</i>
+    <span class="d_inlinecode donthyphenate notranslate">db</span> <a href="../spec/lex.html#StringLiteral"><i>StringLiteral</i></a>
+    <span class="d_inlinecode donthyphenate notranslate">ds</span> <a href="../spec/lex.html#StringLiteral"><i>StringLiteral</i></a>
+    <span class="d_inlinecode donthyphenate notranslate">di</span> <a href="../spec/lex.html#StringLiteral"><i>StringLiteral</i></a>
+    <span class="d_inlinecode donthyphenate notranslate">dl</span> <a href="../spec/lex.html#StringLiteral"><i>StringLiteral</i></a>
+    <span class="d_inlinecode donthyphenate notranslate">dw</span> <a href="../spec/lex.html#StringLiteral"><i>StringLiteral</i></a>
+    <span class="d_inlinecode donthyphenate notranslate">dq</span> <a href="../spec/lex.html#StringLiteral"><i>StringLiteral</i></a>
+    <i>Opcode</i>
+    <i>Opcode Operands</i>
+<div class="blankline"></div>
+<a id="Operands"><span class="gname">Operands</span></a>:
+    <i>Operand</i>
+    <i>Operand</i> <span class="d_inlinecode donthyphenate notranslate">,</span> <i>Operands</i>
+</pre>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="labels" href="#labels">Labels</a></h2>
+<div class="blankline"></div>
+    <p>Assembler instructions can be labeled just like other statements.
+        They can be the target of goto statements.
+        For example:
+    </p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">void</span> *pc;
+<span class="d_keyword">asm</span>
+{
+    call L1          ;
+  L1:                ;
+    pop  EBX         ;
+    mov  pc[EBP],EBX ; <span class="d_comment">// pc now points to code at L1
+</span>}
+</pre>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="align" href="#align">align <i>IntegerExpression</i></a></h2>
+<div class="blankline"></div>
+<pre class="bnf notranslate"><a id="IntegerExpression"><span class="gname">IntegerExpression</span></a>:
+    <a href="../spec/lex.html#IntegerLiteral"><i>IntegerLiteral</i></a>
+    <i>Identifier</i>
+</pre>
+<div class="blankline"></div>
+    <p>Causes the assembler to emit NOP instructions to align the next
+        assembler instruction on an <i>IntegerExpression</i> boundary.
+        <i>IntegerExpression</i> must evaluate at compile time to an integer that is
+        a power of 2.
+    </p>
+<div class="blankline"></div>
+    <p>Aligning the start of a loop body can sometimes have a dramatic
+        effect on the execution speed.
+    </p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="even" href="#even">even</a></h2>
+<div class="blankline"></div>
+    <p>Causes the assembler to emit NOP instructions to align the next
+        assembler instruction on an even boundary.
+    </p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="naked" href="#naked">naked</a></h2>
+<div class="blankline"></div>
+    <p>Causes the compiler to not generate the function prolog and epilog
+        sequences. This means such is the responsibility of inline
+        assembly programmer, and is normally used when the entire function
+        is to be written in assembler.
+    </p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="raw_data" href="#raw_data">db, ds, di, dl, df, dd, de</a></h2>
+<div class="blankline"></div>
+    <p>These pseudo ops are for inserting raw data directly into
+        the code.
+        <span class="d_inlinecode donthyphenate notranslate">db</span> is for bytes,
+        <span class="d_inlinecode donthyphenate notranslate">ds</span> is for 16 bit words,
+        <span class="d_inlinecode donthyphenate notranslate">di</span> is for 32 bit words,
+        <span class="d_inlinecode donthyphenate notranslate">dl</span> is for 64 bit words,
+        <span class="d_inlinecode donthyphenate notranslate">df</span> is for 32 bit floats,
+        <span class="d_inlinecode donthyphenate notranslate">dd</span> is for 64 bit doubles,
+        and <span class="d_inlinecode donthyphenate notranslate">de</span> is for 80 bit extended reals.
+        Each can have multiple operands.
+        If an operand is a string literal, it is as if there were <i>length</i>
+        operands, where <i>length</i> is the number of characters in the string.
+        One character is used per operand.
+        For example:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">asm</span>
+{
+    db 5,6,0x83;   <span class="d_comment">// insert bytes 0x05, 0x06, and 0x83 into code
+</span>    ds 0x1234;     <span class="d_comment">// insert bytes 0x34, 0x12
+</span>    di 0x1234;     <span class="d_comment">// insert bytes 0x34, 0x12, 0x00, 0x00
+</span>    dl 0x1234;     <span class="d_comment">// insert bytes 0x34, 0x12, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+</span>    df 1.234;      <span class="d_comment">// insert float 1.234
+</span>    dd 1.234;      <span class="d_comment">// insert double 1.234
+</span>    de 1.234;      <span class="d_comment">// insert real 1.234
+</span>    db <span class="d_string">"abc"</span>;      <span class="d_comment">// insert bytes 0x61, 0x62, and 0x63
+</span>    ds <span class="d_string">"abc"</span>;      <span class="d_comment">// insert bytes 0x61, 0x00, 0x62, 0x00, 0x63, 0x00
+</span>}
+</pre>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="opcodes" href="#opcodes">Opcodes</a></h2>
+<div class="blankline"></div>
+    <p>A list of supported opcodes is at the end.
+    </p>
+<div class="blankline"></div>
+    <p>The following registers are supported. Register names
+        are always in upper case.
+    </p>
+<div class="blankline"></div>
+<pre class="bnf notranslate"><a id="Register"><span class="gname">Register</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">AL</span> <span class="d_inlinecode donthyphenate notranslate">AH</span> <span class="d_inlinecode donthyphenate notranslate">AX</span> <span class="d_inlinecode donthyphenate notranslate">EAX</span>
+    <span class="d_inlinecode donthyphenate notranslate">BL</span> <span class="d_inlinecode donthyphenate notranslate">BH</span> <span class="d_inlinecode donthyphenate notranslate">BX</span> <span class="d_inlinecode donthyphenate notranslate">EBX</span>
+    <span class="d_inlinecode donthyphenate notranslate">CL</span> <span class="d_inlinecode donthyphenate notranslate">CH</span> <span class="d_inlinecode donthyphenate notranslate">CX</span> <span class="d_inlinecode donthyphenate notranslate">ECX</span>
+    <span class="d_inlinecode donthyphenate notranslate">DL</span> <span class="d_inlinecode donthyphenate notranslate">DH</span> <span class="d_inlinecode donthyphenate notranslate">DX</span> <span class="d_inlinecode donthyphenate notranslate">EDX</span>
+    <span class="d_inlinecode donthyphenate notranslate">BP</span> <span class="d_inlinecode donthyphenate notranslate">EBP</span>
+    <span class="d_inlinecode donthyphenate notranslate">SP</span> <span class="d_inlinecode donthyphenate notranslate">ESP</span>
+    <span class="d_inlinecode donthyphenate notranslate">DI</span> <span class="d_inlinecode donthyphenate notranslate">EDI</span>
+    <span class="d_inlinecode donthyphenate notranslate">SI</span> <span class="d_inlinecode donthyphenate notranslate">ESI</span>
+    <span class="d_inlinecode donthyphenate notranslate">ES</span> <span class="d_inlinecode donthyphenate notranslate">CS</span> <span class="d_inlinecode donthyphenate notranslate">SS</span> <span class="d_inlinecode donthyphenate notranslate">DS</span> <span class="d_inlinecode donthyphenate notranslate">GS</span> <span class="d_inlinecode donthyphenate notranslate">FS</span>
+    <span class="d_inlinecode donthyphenate notranslate">CR0</span> <span class="d_inlinecode donthyphenate notranslate">CR2</span> <span class="d_inlinecode donthyphenate notranslate">CR3</span> <span class="d_inlinecode donthyphenate notranslate">CR4</span>
+    <span class="d_inlinecode donthyphenate notranslate">DR0</span> <span class="d_inlinecode donthyphenate notranslate">DR1</span> <span class="d_inlinecode donthyphenate notranslate">DR2</span> <span class="d_inlinecode donthyphenate notranslate">DR3</span> <span class="d_inlinecode donthyphenate notranslate">DR6</span> <span class="d_inlinecode donthyphenate notranslate">DR7</span>
+    <span class="d_inlinecode donthyphenate notranslate">TR3</span> <span class="d_inlinecode donthyphenate notranslate">TR4</span> <span class="d_inlinecode donthyphenate notranslate">TR5</span> <span class="d_inlinecode donthyphenate notranslate">TR6</span> <span class="d_inlinecode donthyphenate notranslate">TR7</span>
+    <span class="d_inlinecode donthyphenate notranslate">ST</span>
+    <span class="d_inlinecode donthyphenate notranslate">ST(0)</span> <span class="d_inlinecode donthyphenate notranslate">ST(1)</span> <span class="d_inlinecode donthyphenate notranslate">ST(2)</span> <span class="d_inlinecode donthyphenate notranslate">ST(3)</span> <span class="d_inlinecode donthyphenate notranslate">ST(4)</span> <span class="d_inlinecode donthyphenate notranslate">ST(5)</span> <span class="d_inlinecode donthyphenate notranslate">ST(6)</span> <span class="d_inlinecode donthyphenate notranslate">ST(7)</span>
+    <span class="d_inlinecode donthyphenate notranslate">MM0</span>  <span class="d_inlinecode donthyphenate notranslate">MM1</span>  <span class="d_inlinecode donthyphenate notranslate">MM2</span>  <span class="d_inlinecode donthyphenate notranslate">MM3</span>  <span class="d_inlinecode donthyphenate notranslate">MM4</span>  <span class="d_inlinecode donthyphenate notranslate">MM5</span>  <span class="d_inlinecode donthyphenate notranslate">MM6</span>  <span class="d_inlinecode donthyphenate notranslate">MM7</span>
+    <span class="d_inlinecode donthyphenate notranslate">XMM0</span> <span class="d_inlinecode donthyphenate notranslate">XMM1</span> <span class="d_inlinecode donthyphenate notranslate">XMM2</span> <span class="d_inlinecode donthyphenate notranslate">XMM3</span> <span class="d_inlinecode donthyphenate notranslate">XMM4</span> <span class="d_inlinecode donthyphenate notranslate">XMM5</span> <span class="d_inlinecode donthyphenate notranslate">XMM6</span> <span class="d_inlinecode donthyphenate notranslate">XMM7</span>
+</pre>
+<div class="blankline"></div>
+    <p><span class="d_inlinecode donthyphenate notranslate">x86_64</span> adds these additional registers.</p>
+<div class="blankline"></div>
+<pre class="bnf notranslate"><a id="Register64"><span class="gname">Register64</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">RAX</span>  <span class="d_inlinecode donthyphenate notranslate">RBX</span>  <span class="d_inlinecode donthyphenate notranslate">RCX</span>  <span class="d_inlinecode donthyphenate notranslate">RDX</span>
+    <span class="d_inlinecode donthyphenate notranslate">BPL</span>  <span class="d_inlinecode donthyphenate notranslate">RBP</span>
+    <span class="d_inlinecode donthyphenate notranslate">SPL</span>  <span class="d_inlinecode donthyphenate notranslate">RSP</span>
+    <span class="d_inlinecode donthyphenate notranslate">DIL</span>  <span class="d_inlinecode donthyphenate notranslate">RDI</span>
+    <span class="d_inlinecode donthyphenate notranslate">SIL</span>  <span class="d_inlinecode donthyphenate notranslate">RSI</span>
+    <span class="d_inlinecode donthyphenate notranslate">R8B</span>  <span class="d_inlinecode donthyphenate notranslate">R8W</span>  <span class="d_inlinecode donthyphenate notranslate">R8D</span>  <span class="d_inlinecode donthyphenate notranslate">R8</span>
+    <span class="d_inlinecode donthyphenate notranslate">R9B</span>  <span class="d_inlinecode donthyphenate notranslate">R9W</span>  <span class="d_inlinecode donthyphenate notranslate">R9D</span>  <span class="d_inlinecode donthyphenate notranslate">R9</span>
+    <span class="d_inlinecode donthyphenate notranslate">R10B</span> <span class="d_inlinecode donthyphenate notranslate">R10W</span> <span class="d_inlinecode donthyphenate notranslate">R10D</span> <span class="d_inlinecode donthyphenate notranslate">R10</span>
+    <span class="d_inlinecode donthyphenate notranslate">R11B</span> <span class="d_inlinecode donthyphenate notranslate">R11W</span> <span class="d_inlinecode donthyphenate notranslate">R11D</span> <span class="d_inlinecode donthyphenate notranslate">R11</span>
+    <span class="d_inlinecode donthyphenate notranslate">R12B</span> <span class="d_inlinecode donthyphenate notranslate">R12W</span> <span class="d_inlinecode donthyphenate notranslate">R12D</span> <span class="d_inlinecode donthyphenate notranslate">R12</span>
+    <span class="d_inlinecode donthyphenate notranslate">R13B</span> <span class="d_inlinecode donthyphenate notranslate">R13W</span> <span class="d_inlinecode donthyphenate notranslate">R13D</span> <span class="d_inlinecode donthyphenate notranslate">R13</span>
+    <span class="d_inlinecode donthyphenate notranslate">R14B</span> <span class="d_inlinecode donthyphenate notranslate">R14W</span> <span class="d_inlinecode donthyphenate notranslate">R14D</span> <span class="d_inlinecode donthyphenate notranslate">R14</span>
+    <span class="d_inlinecode donthyphenate notranslate">R15B</span> <span class="d_inlinecode donthyphenate notranslate">R15W</span> <span class="d_inlinecode donthyphenate notranslate">R15D</span> <span class="d_inlinecode donthyphenate notranslate">R15</span>
+    <span class="d_inlinecode donthyphenate notranslate">XMM8</span> <span class="d_inlinecode donthyphenate notranslate">XMM9</span> <span class="d_inlinecode donthyphenate notranslate">XMM10</span> <span class="d_inlinecode donthyphenate notranslate">XMM11</span> <span class="d_inlinecode donthyphenate notranslate">XMM12</span> <span class="d_inlinecode donthyphenate notranslate">XMM13</span> <span class="d_inlinecode donthyphenate notranslate">XMM14</span> <span class="d_inlinecode donthyphenate notranslate">XMM15</span>
+    <span class="d_inlinecode donthyphenate notranslate">YMM0</span> <span class="d_inlinecode donthyphenate notranslate">YMM1</span> <span class="d_inlinecode donthyphenate notranslate">YMM2</span>  <span class="d_inlinecode donthyphenate notranslate">YMM3</span>  <span class="d_inlinecode donthyphenate notranslate">YMM4</span>  <span class="d_inlinecode donthyphenate notranslate">YMM5</span>  <span class="d_inlinecode donthyphenate notranslate">YMM6</span>  <span class="d_inlinecode donthyphenate notranslate">YMM7</span>
+    <span class="d_inlinecode donthyphenate notranslate">YMM8</span> <span class="d_inlinecode donthyphenate notranslate">YMM9</span> <span class="d_inlinecode donthyphenate notranslate">YMM10</span> <span class="d_inlinecode donthyphenate notranslate">YMM11</span> <span class="d_inlinecode donthyphenate notranslate">YMM12</span> <span class="d_inlinecode donthyphenate notranslate">YMM13</span> <span class="d_inlinecode donthyphenate notranslate">YMM14</span> <span class="d_inlinecode donthyphenate notranslate">YMM15</span>
+</pre>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="special_cases" href="#special_cases">Special Cases</a></h3>
+<div class="blankline"></div>
+<dl>    <dt><span class="d_inlinecode donthyphenate notranslate">lock</span>, <span class="d_inlinecode donthyphenate notranslate">rep</span>, <span class="d_inlinecode donthyphenate notranslate">repe</span>, <span class="d_inlinecode donthyphenate notranslate">repne</span>, <span class="d_inlinecode donthyphenate notranslate">repnz</span>, <span class="d_inlinecode donthyphenate notranslate">repz</span></dt>
+    <dd>These prefix instructions do not appear in the same statement
+        as the instructions they prefix; they appear in their own statement.
+        For example:</dd>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">asm</span>
+{
+    rep   ;
+    movsb ;
+}
+</pre>
+<div class="blankline"></div>
+    <dt><span class="d_inlinecode donthyphenate notranslate">pause</span></dt>
+    <dd>This opcode is not supported by the assembler, instead use
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">asm</span>
+{
+    rep  ;
+    nop  ;
+}
+</pre>
+<div class="blankline"></div>
+        which produces the same result.
+    </dd>
+<div class="blankline"></div>
+    <dt><span class="d_inlinecode donthyphenate notranslate">floating point ops</span></dt>
+    <dd>Use the two operand form of the instruction format;
+<div class="blankline"></div>
+<pre class="d_code notranslate">fdiv ST(1);     <span class="d_comment">// wrong
+</span>fmul ST;        <span class="d_comment">// wrong
+</span>fdiv ST,ST(1);  <span class="d_comment">// right
+</span>fmul ST,ST(0);  <span class="d_comment">// right
+</span></pre>
+    </dd>
+</dl>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="operands" href="#operands">Operands</a></h2>
+<div class="blankline"></div>
+<pre class="bnf notranslate"><a id="Operand"><span class="gname">Operand</span></a>:
+    <i>AsmExp</i>
+<div class="blankline"></div>
+<a id="AsmExp"><span class="gname">AsmExp</span></a>:
+    <i>AsmLogOrExp</i>
+    <i>AsmLogOrExp</i> <span class="d_inlinecode donthyphenate notranslate">?</span> <i>AsmExp</i> <span class="d_inlinecode donthyphenate notranslate">:</span> <i>AsmExp</i>
+<div class="blankline"></div>
+<a id="AsmLogOrExp"><span class="gname">AsmLogOrExp</span></a>:
+    <i>AsmLogAndExp</i>
+    <i>AsmLogOrExp</i> <span class="d_inlinecode donthyphenate notranslate">||</span> <i>AsmLogAndExp</i>
+<div class="blankline"></div>
+<a id="AsmLogAndExp"><span class="gname">AsmLogAndExp</span></a>:
+    <i>AsmOrExp</i>
+    <i>AsmLogAndExp</i> <span class="d_inlinecode donthyphenate notranslate">&amp;&amp;</span> <i>AsmOrExp</i>
+<div class="blankline"></div>
+<a id="AsmOrExp"><span class="gname">AsmOrExp</span></a>:
+    <i>AsmXorExp</i>
+    <i>AsmOrExp</i> <span class="d_inlinecode donthyphenate notranslate">|</span> <i>AsmXorExp</i>
+<div class="blankline"></div>
+<a id="AsmXorExp"><span class="gname">AsmXorExp</span></a>:
+    <i>AsmAndExp</i>
+    <i>AsmXorExp</i> <span class="d_inlinecode donthyphenate notranslate">^</span> <i>AsmAndExp</i>
+<div class="blankline"></div>
+<a id="AsmAndExp"><span class="gname">AsmAndExp</span></a>:
+    <i>AsmEqualExp</i>
+    <i>AsmAndExp</i> <span class="d_inlinecode donthyphenate notranslate">&amp;</span> <i>AsmEqualExp</i>
+<div class="blankline"></div>
+<a id="AsmEqualExp"><span class="gname">AsmEqualExp</span></a>:
+    <i>AsmRelExp</i>
+    <i>AsmEqualExp</i> <span class="d_inlinecode donthyphenate notranslate">==</span> <i>AsmRelExp</i>
+    <i>AsmEqualExp</i> <span class="d_inlinecode donthyphenate notranslate">!=</span> <i>AsmRelExp</i>
+<div class="blankline"></div>
+<a id="AsmRelExp"><span class="gname">AsmRelExp</span></a>:
+    <i>AsmShiftExp</i>
+    <i>AsmRelExp</i> <span class="d_inlinecode donthyphenate notranslate">&lt;</span> <i>AsmShiftExp</i>
+    <i>AsmRelExp</i> <span class="d_inlinecode donthyphenate notranslate">&lt;</span><span class="d_inlinecode donthyphenate notranslate">=</span> <i>AsmShiftExp</i>
+    <i>AsmRelExp</i> <span class="d_inlinecode donthyphenate notranslate">&gt;</span> <i>AsmShiftExp</i>
+    <i>AsmRelExp</i> <span class="d_inlinecode donthyphenate notranslate">&gt;=</span> <i>AsmShiftExp</i>
+<div class="blankline"></div>
+<a id="AsmShiftExp"><span class="gname">AsmShiftExp</span></a>:
+    <i>AsmAddExp</i>
+    <i>AsmShiftExp</i> <span class="d_inlinecode donthyphenate notranslate">&lt;</span><span class="d_inlinecode donthyphenate notranslate">&lt;</span> <i>AsmAddExp</i>
+    <i>AsmShiftExp</i> <span class="d_inlinecode donthyphenate notranslate">&gt;&gt;</span> <i>AsmAddExp</i>
+    <i>AsmShiftExp</i> <span class="d_inlinecode donthyphenate notranslate">&gt;&gt;&gt;</span> <i>AsmAddExp</i>
+<div class="blankline"></div>
+<a id="AsmAddExp"><span class="gname">AsmAddExp</span></a>:
+    <i>AsmMulExp</i>
+    <i>AsmAddExp</i> <span class="d_inlinecode donthyphenate notranslate">+</span> <i>AsmMulExp</i>
+    <i>AsmAddExp</i> <span class="d_inlinecode donthyphenate notranslate">-</span> <i>AsmMulExp</i>
+<div class="blankline"></div>
+<a id="AsmMulExp"><span class="gname">AsmMulExp</span></a>:
+    <i>AsmBrExp</i>
+    <i>AsmMulExp</i> <span class="d_inlinecode donthyphenate notranslate">*</span> <i>AsmBrExp</i>
+    <i>AsmMulExp</i> <span class="d_inlinecode donthyphenate notranslate">/</span> <i>AsmBrExp</i>
+    <i>AsmMulExp</i> <span class="d_inlinecode donthyphenate notranslate">%</span> <i>AsmBrExp</i>
+<div class="blankline"></div>
+<a id="AsmBrExp"><span class="gname">AsmBrExp</span></a>:
+    <i>AsmUnaExp</i>
+    <i>AsmBrExp</i> <span class="d_inlinecode donthyphenate notranslate">[</span> <i>AsmExp</i> <span class="d_inlinecode donthyphenate notranslate">]</span>
+<div class="blankline"></div>
+<a id="AsmUnaExp"><span class="gname">AsmUnaExp</span></a>:
+    <i>AsmTypePrefix</i> <i>AsmExp</i>
+    <span class="d_inlinecode donthyphenate notranslate">offsetof</span> <i>AsmExp</i>
+    <span class="d_inlinecode donthyphenate notranslate">seg</span> <i>AsmExp</i>
+    <span class="d_inlinecode donthyphenate notranslate">+</span> <i>AsmUnaExp</i>
+    <span class="d_inlinecode donthyphenate notranslate">-</span> <i>AsmUnaExp</i>
+    <span class="d_inlinecode donthyphenate notranslate">!</span> <i>AsmUnaExp</i>
+    <span class="d_inlinecode donthyphenate notranslate">~</span> <i>AsmUnaExp</i>
+    <i>AsmPrimaryExp</i>
+<div class="blankline"></div>
+<a id="AsmPrimaryExp"><span class="gname">AsmPrimaryExp</span></a>:
+    <a href="../spec/lex.html#IntegerLiteral"><i>IntegerLiteral</i></a>
+    <a href="../spec/lex.html#FloatLiteral"><i>FloatLiteral</i></a>
+    <span class="d_inlinecode donthyphenate notranslate">__LOCAL_SIZE</span>
+    <span class="d_inlinecode donthyphenate notranslate">$</span>
+    <a href="#Register"><i>Register</i></a>
+    <a href="#Register"><i>Register</i></a> <span class="d_inlinecode donthyphenate notranslate">:</span> <i>AsmExp</i>
+    <a href="#Register64"><i>Register64</i></a>
+    <a href="#Register64"><i>Register64</i></a> <span class="d_inlinecode donthyphenate notranslate">:</span> <i>AsmExp</i>
+    <i>DotIdentifier</i>
+    <span class="d_inlinecode donthyphenate notranslate">this</span>
+<div class="blankline"></div>
+<a id="DotIdentifier"><span class="gname">DotIdentifier</span></a>:
+    <i>Identifier</i>
+    <i>Identifier</i> <span class="d_inlinecode donthyphenate notranslate">.</span> <i>DotIdentifier</i>
+</pre>
+<div class="blankline"></div>
+    <p>The operand syntax more or less follows the Intel CPU documentation
+        conventions.
+        In particular, the convention is that for two operand instructions
+        the source is the right operand and the destination is the left
+        operand.
+        The syntax differs from that of Intel's in order to be compatible
+        with the D language tokenizer and to simplify parsing.
+    </p>
+<div class="blankline"></div>
+    <p>The <span class="d_inlinecode donthyphenate notranslate">seg</span> means load the segment number that the symbol is
+        in. This is not relevant for flat model code.
+        Instead, do a move from the relevant segment register.
+    </p>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="operand_types" href="#operand_types">Operand Types</a></h3>
+<div class="blankline"></div>
+<pre class="bnf notranslate"><a id="AsmTypePrefix"><span class="gname">AsmTypePrefix</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">near ptr</span>
+    <span class="d_inlinecode donthyphenate notranslate">far ptr</span>
+    <span class="d_inlinecode donthyphenate notranslate">byte ptr</span>
+    <span class="d_inlinecode donthyphenate notranslate">short ptr</span>
+    <span class="d_inlinecode donthyphenate notranslate">int ptr</span>
+    <span class="d_inlinecode donthyphenate notranslate">word ptr</span>
+    <span class="d_inlinecode donthyphenate notranslate">dword ptr</span>
+    <span class="d_inlinecode donthyphenate notranslate">qword ptr</span>
+    <span class="d_inlinecode donthyphenate notranslate">float ptr</span>
+    <span class="d_inlinecode donthyphenate notranslate">double ptr</span>
+    <span class="d_inlinecode donthyphenate notranslate">real ptr</span>
+</pre>
+<div class="blankline"></div>
+    <p>In cases where the operand size is ambiguous, as in:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate">add [EAX],3     ;
+</pre>
+<div class="blankline"></div>
+    it can be disambiguated by using an <i>AsmTypePrefix</i>:
+<div class="blankline"></div>
+<pre class="d_code notranslate">add  <span class="d_keyword">byte</span> ptr [EAX],3 ;
+add  <span class="d_keyword">int</span> ptr [EAX],7  ;
+</pre>
+<div class="blankline"></div>
+    <p><span class="d_inlinecode donthyphenate notranslate">far ptr</span> is not relevant for flat model code.
+    </p>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="agregate_member_offsets" href="#agregate_member_offsets">Struct/Union/Class Member Offsets</a></h3>
+<div class="blankline"></div>
+    <p>To access members of an aggregate, given a pointer to the aggregate
+        is in a register, use the <span class="d_inlinecode donthyphenate notranslate">.offsetof</span> property of the qualified name
+        of the member:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> Foo { <span class="d_keyword">int</span> a,b,c; }
+<span class="d_keyword">int</span> bar(Foo *f)
+{
+    <span class="d_keyword">asm</span>
+    {
+        mov EBX,f                   ;
+        mov EAX,Foo.b.offsetof[EBX] ;
+    }
+}
+<span class="d_keyword">void</span> main()
+{
+    Foo f = Foo(0, 2, 0);
+    <span class="d_keyword">assert</span>(bar(&amp;f) == 2);
+}
+</pre>
+<div class="blankline"></div>
+    <p>Alternatively, inside the scope of an aggregate, only the member name is needed:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> Foo   <span class="d_comment">// or class
+</span>{
+    <span class="d_keyword">int</span> a,b,c;
+    <span class="d_keyword">int</span> bar()
+    {
+        <span class="d_keyword">asm</span>
+        {
+            mov EBX, <span class="d_keyword">this</span>   ;
+            mov EAX, b[EBX] ;
+        }
+    }
+}
+<span class="d_keyword">void</span> main()
+{
+    Foo f = Foo(0, 2, 0);
+    <span class="d_keyword">assert</span>(f.bar() == 2);
+}
+</pre>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="stack_variables" href="#stack_variables">Stack Variables</a></h3>
+<div class="blankline"></div>
+    <p>Stack variables (variables local to a function and allocated
+        on the stack) are accessed via the name of the variable indexed
+        by EBP:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">int</span> foo(<span class="d_keyword">int</span> x)
+{
+    <span class="d_keyword">asm</span>
+    {
+        mov EAX,x[EBP] ; <span class="d_comment">// loads value of parameter x into EAX
+</span>        mov EAX,x      ; <span class="d_comment">// does the same thing
+</span>    }
+}
+</pre>
+<div class="blankline"></div>
+    <p>If the [EBP] is omitted, it is assumed for local variables.
+        If <span class="d_inlinecode donthyphenate notranslate">naked</span> is used, this no longer holds.
+    </p>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="special_symbols" href="#special_symbols">Special Symbols</a></h3>
+<div class="blankline"></div>
+<dl>    <dt>&dollar;</dt>
+    <dd>Represents the program counter of the start of the next instruction. So,
+<div class="blankline"></div>
+<pre class="d_code notranslate">jmp  $  ;
+</pre>
+<div class="blankline"></div>
+        branches to the instruction following the jmp instruction.
+        The &dollar; can only appear as the target of a jmp or call
+        instruction.
+    </dd>
+<div class="blankline"></div>
+    <dt><span class="d_inlinecode donthyphenate notranslate">__LOCAL_SIZE</span></dt>
+    <dd>This gets replaced by the number of local bytes in the local
+        stack frame. It is most handy when the <span class="d_inlinecode donthyphenate notranslate">naked</span> is invoked
+        and a custom stack frame is programmed.
+    </dd>
+</dl>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="supported_opcodes" href="#supported_opcodes">Opcodes Supported</a></h2>
+<div class="blankline"></div>
+    <center><table><caption>Opcodes</caption>        <tr><td><em class="tt">aaa</em>
+        </td><td><em class="tt">aad</em>
+        </td><td><em class="tt">aam</em>
+        </td><td><em class="tt">aas</em>
+        </td><td><em class="tt">adc</em></td></tr>
+        <tr><td><em class="tt">add</em>
+        </td><td><em class="tt">addpd</em>
+        </td><td><em class="tt">addps</em>
+        </td><td><em class="tt">addsd</em>
+        </td><td><em class="tt">addss</em>
+        </td></tr><tr><td><em class="tt">and</em>
+        </td><td><em class="tt">andnpd</em>
+        </td><td><em class="tt">andnps</em>
+        </td><td><em class="tt">andpd</em>
+        </td><td><em class="tt">andps</em>
+        </td></tr><tr><td><em class="tt">arpl</em>
+        </td><td><em class="tt">bound</em>
+        </td><td><em class="tt">bsf</em>
+        </td><td><em class="tt">bsr</em>
+        </td><td><em class="tt">bswap</em>
+        </td></tr><tr><td><em class="tt">bt</em>
+        </td><td><em class="tt">btc</em>
+        </td><td><em class="tt">btr</em>
+        </td><td><em class="tt">bts</em>
+        </td><td><em class="tt">call</em>
+        </td></tr><tr><td><em class="tt">cbw</em>
+        </td><td><em class="tt">cdq</em>
+        </td><td><em class="tt">clc</em>
+        </td><td><em class="tt">cld</em>
+        </td><td><em class="tt">clflush</em>
+        </td></tr><tr><td><em class="tt">cli</em>
+        </td><td><em class="tt">clts</em>
+        </td><td><em class="tt">cmc</em>
+        </td><td><em class="tt">cmova</em>
+        </td><td><em class="tt">cmovae</em>
+        </td></tr><tr><td><em class="tt">cmovb</em>
+        </td><td><em class="tt">cmovbe</em>
+        </td><td><em class="tt">cmovc</em>
+        </td><td><em class="tt">cmove</em>
+        </td><td><em class="tt">cmovg</em>
+        </td></tr><tr><td><em class="tt">cmovge</em>
+        </td><td><em class="tt">cmovl</em>
+        </td><td><em class="tt">cmovle</em>
+        </td><td><em class="tt">cmovna</em>
+        </td><td><em class="tt">cmovnae</em>
+        </td></tr><tr><td><em class="tt">cmovnb</em>
+        </td><td><em class="tt">cmovnbe</em>
+        </td><td><em class="tt">cmovnc</em>
+        </td><td><em class="tt">cmovne</em>
+        </td><td><em class="tt">cmovng</em>
+        </td></tr><tr><td><em class="tt">cmovnge</em>
+        </td><td><em class="tt">cmovnl</em>
+        </td><td><em class="tt">cmovnle</em>
+        </td><td><em class="tt">cmovno</em>
+        </td><td><em class="tt">cmovnp</em>
+        </td></tr><tr><td><em class="tt">cmovns</em>
+        </td><td><em class="tt">cmovnz</em>
+        </td><td><em class="tt">cmovo</em>
+        </td><td><em class="tt">cmovp</em>
+        </td><td><em class="tt">cmovpe</em>
+        </td></tr><tr><td><em class="tt">cmovpo</em>
+        </td><td><em class="tt">cmovs</em>
+        </td><td><em class="tt">cmovz</em>
+        </td><td><em class="tt">cmp</em>
+        </td><td><em class="tt">cmppd</em>
+        </td></tr><tr><td><em class="tt">cmpps</em>
+        </td><td><em class="tt">cmps</em>
+        </td><td><em class="tt">cmpsb</em>
+        </td><td><em class="tt">cmpsd</em>
+        </td><td><em class="tt">cmpss</em>
+        </td></tr><tr><td><em class="tt">cmpsw</em>
+        </td><td><em class="tt">cmpxchg</em>
+        </td><td><em class="tt">cmpxchg8b</em>
+        </td><td><em class="tt">cmpxchg16b</em>
+        </td><td><em class="tt"></em>
+        </td></tr><tr><td><em class="tt">comisd</em>
+        </td><td><em class="tt">comiss</em>
+        </td><td><em class="tt"></em>
+        </td><td><em class="tt"></em>
+        </td><td><em class="tt"></em>
+        </td></tr><tr><td><em class="tt">cpuid</em>
+        </td><td><em class="tt">cvtdq2pd</em>
+        </td><td><em class="tt">cvtdq2ps</em>
+        </td><td><em class="tt">cvtpd2dq</em>
+        </td><td><em class="tt">cvtpd2pi</em>
+        </td></tr><tr><td><em class="tt">cvtpd2ps</em>
+        </td><td><em class="tt">cvtpi2pd</em>
+        </td><td><em class="tt">cvtpi2ps</em>
+        </td><td><em class="tt">cvtps2dq</em>
+        </td><td><em class="tt">cvtps2pd</em>
+        </td></tr><tr><td><em class="tt">cvtps2pi</em>
+        </td><td><em class="tt">cvtsd2si</em>
+        </td><td><em class="tt">cvtsd2ss</em>
+        </td><td><em class="tt">cvtsi2sd</em>
+        </td><td><em class="tt">cvtsi2ss</em>
+        </td></tr><tr><td><em class="tt">cvtss2sd</em>
+        </td><td><em class="tt">cvtss2si</em>
+        </td><td><em class="tt">cvttpd2dq</em>
+        </td><td><em class="tt">cvttpd2pi</em>
+        </td><td><em class="tt">cvttps2dq</em>
+        </td></tr><tr><td><em class="tt">cvttps2pi</em>
+        </td><td><em class="tt">cvttsd2si</em>
+        </td><td><em class="tt">cvttss2si</em>
+        </td><td><em class="tt">cwd</em>
+        </td><td><em class="tt">cwde</em>
+        </td></tr><tr><td><em class="tt">da</em>
+        </td><td><em class="tt">daa</em>
+        </td><td><em class="tt">das</em>
+        </td><td><em class="tt">db</em>
+        </td><td><em class="tt">dd</em>
+        </td></tr><tr><td><em class="tt">de</em>
+        </td><td><em class="tt">dec</em>
+        </td><td><em class="tt">df</em>
+        </td><td><em class="tt">di</em>
+        </td><td><em class="tt">div</em>
+        </td></tr><tr><td><em class="tt">divpd</em>
+        </td><td><em class="tt">divps</em>
+        </td><td><em class="tt">divsd</em>
+        </td><td><em class="tt">divss</em>
+        </td><td><em class="tt">dl</em>
+        </td></tr><tr><td><em class="tt">dq</em>
+        </td><td><em class="tt">ds</em>
+        </td><td><em class="tt">dt</em>
+        </td><td><em class="tt">dw</em>
+        </td><td><em class="tt">emms</em>
+        </td></tr><tr><td><em class="tt">enter</em>
+        </td><td><em class="tt">f2xm1</em>
+        </td><td><em class="tt">fabs</em>
+        </td><td><em class="tt">fadd</em>
+        </td><td><em class="tt">faddp</em>
+        </td></tr><tr><td><em class="tt">fbld</em>
+        </td><td><em class="tt">fbstp</em>
+        </td><td><em class="tt">fchs</em>
+        </td><td><em class="tt">fclex</em>
+        </td><td><em class="tt">fcmovb</em>
+        </td></tr><tr><td><em class="tt">fcmovbe</em>
+        </td><td><em class="tt">fcmove</em>
+        </td><td><em class="tt">fcmovnb</em>
+        </td><td><em class="tt">fcmovnbe</em>
+        </td><td><em class="tt">fcmovne</em>
+        </td></tr><tr><td><em class="tt">fcmovnu</em>
+        </td><td><em class="tt">fcmovu</em>
+        </td><td><em class="tt">fcom</em>
+        </td><td><em class="tt">fcomi</em>
+        </td><td><em class="tt">fcomip</em>
+        </td></tr><tr><td><em class="tt">fcomp</em>
+        </td><td><em class="tt">fcompp</em>
+        </td><td><em class="tt">fcos</em>
+        </td><td><em class="tt">fdecstp</em>
+        </td><td><em class="tt">fdisi</em>
+        </td></tr><tr><td><em class="tt">fdiv</em>
+        </td><td><em class="tt">fdivp</em>
+        </td><td><em class="tt">fdivr</em>
+        </td><td><em class="tt">fdivrp</em>
+        </td><td><em class="tt">feni</em>
+        </td></tr><tr><td><em class="tt">ffree</em>
+        </td><td><em class="tt">fiadd</em>
+        </td><td><em class="tt">ficom</em>
+        </td><td><em class="tt">ficomp</em>
+        </td><td><em class="tt">fidiv</em>
+        </td></tr><tr><td><em class="tt">fidivr</em>
+        </td><td><em class="tt">fild</em>
+        </td><td><em class="tt">fimul</em>
+        </td><td><em class="tt">fincstp</em>
+        </td><td><em class="tt">finit</em>
+        </td></tr><tr><td><em class="tt">fist</em>
+        </td><td><em class="tt">fistp</em>
+        </td><td><em class="tt">fisub</em>
+        </td><td><em class="tt">fisubr</em>
+        </td><td><em class="tt">fld</em>
+        </td></tr><tr><td><em class="tt">fld1</em>
+        </td><td><em class="tt">fldcw</em>
+        </td><td><em class="tt">fldenv</em>
+        </td><td><em class="tt">fldl2e</em>
+        </td><td><em class="tt">fldl2t</em>
+        </td></tr><tr><td><em class="tt">fldlg2</em>
+        </td><td><em class="tt">fldln2</em>
+        </td><td><em class="tt">fldpi</em>
+        </td><td><em class="tt">fldz</em>
+        </td><td><em class="tt">fmul</em>
+        </td></tr><tr><td><em class="tt">fmulp</em>
+        </td><td><em class="tt">fnclex</em>
+        </td><td><em class="tt">fndisi</em>
+        </td><td><em class="tt">fneni</em>
+        </td><td><em class="tt">fninit</em>
+        </td></tr><tr><td><em class="tt">fnop</em>
+        </td><td><em class="tt">fnsave</em>
+        </td><td><em class="tt">fnstcw</em>
+        </td><td><em class="tt">fnstenv</em>
+        </td><td><em class="tt">fnstsw</em>
+        </td></tr><tr><td><em class="tt">fpatan</em>
+        </td><td><em class="tt">fprem</em>
+        </td><td><em class="tt">fprem1</em>
+        </td><td><em class="tt">fptan</em>
+        </td><td><em class="tt">frndint</em>
+        </td></tr><tr><td><em class="tt">frstor</em>
+        </td><td><em class="tt">fsave</em>
+        </td><td><em class="tt">fscale</em>
+        </td><td><em class="tt">fsetpm</em>
+        </td><td><em class="tt">fsin</em>
+        </td></tr><tr><td><em class="tt">fsincos</em>
+        </td><td><em class="tt">fsqrt</em>
+        </td><td><em class="tt">fst</em>
+        </td><td><em class="tt">fstcw</em>
+        </td><td><em class="tt">fstenv</em>
+        </td></tr><tr><td><em class="tt">fstp</em>
+        </td><td><em class="tt">fstsw</em>
+        </td><td><em class="tt">fsub</em>
+        </td><td><em class="tt">fsubp</em>
+        </td><td><em class="tt">fsubr</em>
+        </td></tr><tr><td><em class="tt">fsubrp</em>
+        </td><td><em class="tt">ftst</em>
+        </td><td><em class="tt">fucom</em>
+        </td><td><em class="tt">fucomi</em>
+        </td><td><em class="tt">fucomip</em>
+        </td></tr><tr><td><em class="tt">fucomp</em>
+        </td><td><em class="tt">fucompp</em>
+        </td><td><em class="tt">fwait</em>
+        </td><td><em class="tt">fxam</em>
+        </td><td><em class="tt">fxch</em>
+        </td></tr><tr><td><em class="tt">fxrstor</em>
+        </td><td><em class="tt">fxsave</em>
+        </td><td><em class="tt">fxtract</em>
+        </td><td><em class="tt">fyl2x</em>
+        </td><td><em class="tt">fyl2xp1</em>
+        </td></tr><tr><td><em class="tt">hlt</em>
+        </td><td><em class="tt">idiv</em>
+        </td><td><em class="tt">imul</em>
+        </td><td><em class="tt">in</em>
+        </td><td><em class="tt">inc</em>
+        </td></tr><tr><td><em class="tt">ins</em>
+        </td><td><em class="tt">insb</em>
+        </td><td><em class="tt">insd</em>
+        </td><td><em class="tt">insw</em>
+        </td><td><em class="tt">int</em>
+        </td></tr><tr><td><em class="tt">into</em>
+        </td><td><em class="tt">invd</em>
+        </td><td><em class="tt">invlpg</em>
+        </td><td><em class="tt">iret</em>
+        </td><td><em class="tt">iretd</em>
+        </td></tr><tr><td><em class="tt">iretq</em>
+        </td><td><em class="tt">ja</em>
+        </td><td><em class="tt">jae</em>
+        </td><td><em class="tt">jb</em>
+        </td><td><em class="tt">jbe</em>
+        </td></tr><tr><td><em class="tt">jc</em>
+        </td><td><em class="tt">jcxz</em>
+        </td><td><em class="tt">je</em>
+        </td><td><em class="tt">jecxz</em>
+        </td><td><em class="tt">jg</em>
+        </td></tr><tr><td><em class="tt">jge</em>
+        </td><td><em class="tt">jl</em>
+        </td><td><em class="tt">jle</em>
+        </td><td><em class="tt">jmp</em>
+        </td><td><em class="tt">jna</em>
+        </td></tr><tr><td><em class="tt">jnae</em>
+        </td><td><em class="tt">jnb</em>
+        </td><td><em class="tt">jnbe</em>
+        </td><td><em class="tt">jnc</em>
+        </td><td><em class="tt">jne</em>
+        </td></tr><tr><td><em class="tt">jng</em>
+        </td><td><em class="tt">jnge</em>
+        </td><td><em class="tt">jnl</em>
+        </td><td><em class="tt">jnle</em>
+        </td><td><em class="tt">jno</em>
+        </td></tr><tr><td><em class="tt">jnp</em>
+        </td><td><em class="tt">jns</em>
+        </td><td><em class="tt">jnz</em>
+        </td><td><em class="tt">jo</em>
+        </td><td><em class="tt">jp</em>
+        </td></tr><tr><td><em class="tt">jpe</em>
+        </td><td><em class="tt">jpo</em>
+        </td><td><em class="tt">js</em>
+        </td><td><em class="tt">jz</em>
+        </td><td><em class="tt">lahf</em>
+        </td></tr><tr><td><em class="tt">lar</em>
+        </td><td><em class="tt">ldmxcsr</em>
+        </td><td><em class="tt">lds</em>
+        </td><td><em class="tt">lea</em>
+        </td><td><em class="tt">leave</em>
+        </td></tr><tr><td><em class="tt">les</em>
+        </td><td><em class="tt">lfence</em>
+        </td><td><em class="tt">lfs</em>
+        </td><td><em class="tt">lgdt</em>
+        </td><td><em class="tt">lgs</em>
+        </td></tr><tr><td><em class="tt">lidt</em>
+        </td><td><em class="tt">lldt</em>
+        </td><td><em class="tt">lmsw</em>
+        </td><td><em class="tt">lock</em>
+        </td><td><em class="tt">lods</em>
+        </td></tr><tr><td><em class="tt">lodsb</em>
+        </td><td><em class="tt">lodsd</em>
+        </td><td><em class="tt">lodsw</em>
+        </td><td><em class="tt">loop</em>
+        </td><td><em class="tt">loope</em>
+        </td></tr><tr><td><em class="tt">loopne</em>
+        </td><td><em class="tt">loopnz</em>
+        </td><td><em class="tt">loopz</em>
+        </td><td><em class="tt">lsl</em>
+        </td><td><em class="tt">lss</em>
+        </td></tr><tr><td><em class="tt">ltr</em>
+        </td><td><em class="tt">maskmovdqu</em>
+        </td><td><em class="tt">maskmovq</em>
+        </td><td><em class="tt">maxpd</em>
+        </td><td><em class="tt">maxps</em>
+        </td></tr><tr><td><em class="tt">maxsd</em>
+        </td><td><em class="tt">maxss</em>
+        </td><td><em class="tt">mfence</em>
+        </td><td><em class="tt">minpd</em>
+        </td><td><em class="tt">minps</em>
+        </td></tr><tr><td><em class="tt">minsd</em>
+        </td><td><em class="tt">minss</em>
+        </td><td><em class="tt">mov</em>
+        </td><td><em class="tt">movapd</em>
+        </td><td><em class="tt">movaps</em>
+        </td></tr><tr><td><em class="tt">movd</em>
+        </td><td><em class="tt">movdq2q</em>
+        </td><td><em class="tt">movdqa</em>
+        </td><td><em class="tt">movdqu</em>
+        </td><td><em class="tt">movhlps</em>
+        </td></tr><tr><td><em class="tt">movhpd</em>
+        </td><td><em class="tt">movhps</em>
+        </td><td><em class="tt">movlhps</em>
+        </td><td><em class="tt">movlpd</em>
+        </td><td><em class="tt">movlps</em>
+        </td></tr><tr><td><em class="tt">movmskpd</em>
+        </td><td><em class="tt">movmskps</em>
+        </td><td><em class="tt">movntdq</em>
+        </td><td><em class="tt">movnti</em>
+        </td><td><em class="tt">movntpd</em>
+        </td></tr><tr><td><em class="tt">movntps</em>
+        </td><td><em class="tt">movntq</em>
+        </td><td><em class="tt">movq</em>
+        </td><td><em class="tt">movq2dq</em>
+        </td><td><em class="tt">movs</em>
+        </td></tr><tr><td><em class="tt">movsb</em>
+        </td><td><em class="tt">movsd</em>
+        </td><td><em class="tt">movss</em>
+        </td><td><em class="tt">movsw</em>
+        </td><td><em class="tt">movsx</em>
+        </td></tr><tr><td><em class="tt">movupd</em>
+        </td><td><em class="tt">movups</em>
+        </td><td><em class="tt">movzx</em>
+        </td><td><em class="tt">mul</em>
+        </td><td><em class="tt">mulpd</em>
+        </td></tr><tr><td><em class="tt">mulps</em>
+        </td><td><em class="tt">mulsd</em>
+        </td><td><em class="tt">mulss</em>
+        </td><td><em class="tt">neg</em>
+        </td><td><em class="tt">nop</em>
+        </td></tr><tr><td><em class="tt">not</em>
+        </td><td><em class="tt">or</em>
+        </td><td><em class="tt">orpd</em>
+        </td><td><em class="tt">orps</em>
+        </td><td><em class="tt">out</em>
+        </td></tr><tr><td><em class="tt">outs</em>
+        </td><td><em class="tt">outsb</em>
+        </td><td><em class="tt">outsd</em>
+        </td><td><em class="tt">outsw</em>
+        </td><td><em class="tt">packssdw</em>
+        </td></tr><tr><td><em class="tt">packsswb</em>
+        </td><td><em class="tt">packuswb</em>
+        </td><td><em class="tt">paddb</em>
+        </td><td><em class="tt">paddd</em>
+        </td><td><em class="tt">paddq</em>
+        </td></tr><tr><td><em class="tt">paddsb</em>
+        </td><td><em class="tt">paddsw</em>
+        </td><td><em class="tt">paddusb</em>
+        </td><td><em class="tt">paddusw</em>
+        </td><td><em class="tt">paddw</em>
+        </td></tr><tr><td><em class="tt">pand</em>
+        </td><td><em class="tt">pandn</em>
+        </td><td><em class="tt">pavgb</em>
+        </td><td><em class="tt">pavgw</em>
+        </td><td><em class="tt">pcmpeqb</em>
+        </td></tr><tr><td><em class="tt">pcmpeqd</em>
+        </td><td><em class="tt">pcmpeqw</em>
+        </td><td><em class="tt">pcmpgtb</em>
+        </td><td><em class="tt">pcmpgtd</em>
+        </td><td><em class="tt">pcmpgtw</em>
+        </td></tr><tr><td><em class="tt">pextrw</em>
+        </td><td><em class="tt">pinsrw</em>
+        </td><td><em class="tt">pmaddwd</em>
+        </td><td><em class="tt">pmaxsw</em>
+        </td><td><em class="tt">pmaxub</em>
+        </td></tr><tr><td><em class="tt">pminsw</em>
+        </td><td><em class="tt">pminub</em>
+        </td><td><em class="tt">pmovmskb</em>
+        </td><td><em class="tt">pmulhuw</em>
+        </td><td><em class="tt">pmulhw</em>
+        </td></tr><tr><td><em class="tt">pmullw</em>
+        </td><td><em class="tt">pmuludq</em>
+        </td><td><em class="tt">pop</em>
+        </td><td><em class="tt">popa</em>
+        </td><td><em class="tt">popad</em>
+        </td></tr><tr><td><em class="tt">popf</em>
+        </td><td><em class="tt">popfd</em>
+        </td><td><em class="tt">por</em>
+        </td><td><em class="tt">prefetchnta</em>
+        </td><td><em class="tt">prefetcht0</em>
+        </td></tr><tr><td><em class="tt">prefetcht1</em>
+        </td><td><em class="tt">prefetcht2</em>
+        </td><td><em class="tt">psadbw</em>
+        </td><td><em class="tt">pshufd</em>
+        </td><td><em class="tt">pshufhw</em>
+        </td></tr><tr><td><em class="tt">pshuflw</em>
+        </td><td><em class="tt">pshufw</em>
+        </td><td><em class="tt">pslld</em>
+        </td><td><em class="tt">pslldq</em>
+        </td><td><em class="tt">psllq</em>
+        </td></tr><tr><td><em class="tt">psllw</em>
+        </td><td><em class="tt">psrad</em>
+        </td><td><em class="tt">psraw</em>
+        </td><td><em class="tt">psrld</em>
+        </td><td><em class="tt">psrldq</em>
+        </td></tr><tr><td><em class="tt">psrlq</em>
+        </td><td><em class="tt">psrlw</em>
+        </td><td><em class="tt">psubb</em>
+        </td><td><em class="tt">psubd</em>
+        </td><td><em class="tt">psubq</em>
+        </td></tr><tr><td><em class="tt">psubsb</em>
+        </td><td><em class="tt">psubsw</em>
+        </td><td><em class="tt">psubusb</em>
+        </td><td><em class="tt">psubusw</em>
+        </td><td><em class="tt">psubw</em>
+        </td></tr><tr><td><em class="tt">punpckhbw</em>
+        </td><td><em class="tt">punpckhdq</em>
+        </td><td><em class="tt">punpckhqdq</em>
+        </td><td><em class="tt">punpckhwd</em>
+        </td><td><em class="tt">punpcklbw</em>
+        </td></tr><tr><td><em class="tt">punpckldq</em>
+        </td><td><em class="tt">punpcklqdq</em>
+        </td><td><em class="tt">punpcklwd</em>
+        </td><td><em class="tt">push</em>
+        </td><td><em class="tt">pusha</em>
+        </td></tr><tr><td><em class="tt">pushad</em>
+        </td><td><em class="tt">pushf</em>
+        </td><td><em class="tt">pushfd</em>
+        </td><td><em class="tt">pxor</em>
+        </td><td><em class="tt">rcl</em>
+        </td></tr><tr><td><em class="tt">rcpps</em>
+        </td><td><em class="tt">rcpss</em>
+        </td><td><em class="tt">rcr</em>
+        </td><td><em class="tt">rdmsr</em>
+        </td><td><em class="tt">rdpmc</em>
+        </td></tr><tr><td><em class="tt">rdtsc</em>
+        </td><td><em class="tt">rep</em>
+        </td><td><em class="tt">repe</em>
+        </td><td><em class="tt">repne</em>
+        </td><td><em class="tt">repnz</em>
+        </td></tr><tr><td><em class="tt">repz</em>
+        </td><td><em class="tt">ret</em>
+        </td><td><em class="tt">retf</em>
+        </td><td><em class="tt">rol</em>
+        </td><td><em class="tt">ror</em>
+        </td></tr><tr><td><em class="tt">rsm</em>
+        </td><td><em class="tt">rsqrtps</em>
+        </td><td><em class="tt">rsqrtss</em>
+        </td><td><em class="tt">sahf</em>
+        </td><td><em class="tt">sal</em>
+        </td></tr><tr><td><em class="tt">sar</em>
+        </td><td><em class="tt">sbb</em>
+        </td><td><em class="tt">scas</em>
+        </td><td><em class="tt">scasb</em>
+        </td><td><em class="tt">scasd</em>
+        </td></tr><tr><td><em class="tt">scasw</em>
+        </td><td><em class="tt">seta</em>
+        </td><td><em class="tt">setae</em>
+        </td><td><em class="tt">setb</em>
+        </td><td><em class="tt">setbe</em>
+        </td></tr><tr><td><em class="tt">setc</em>
+        </td><td><em class="tt">sete</em>
+        </td><td><em class="tt">setg</em>
+        </td><td><em class="tt">setge</em>
+        </td><td><em class="tt">setl</em>
+        </td></tr><tr><td><em class="tt">setle</em>
+        </td><td><em class="tt">setna</em>
+        </td><td><em class="tt">setnae</em>
+        </td><td><em class="tt">setnb</em>
+        </td><td><em class="tt">setnbe</em>
+        </td></tr><tr><td><em class="tt">setnc</em>
+        </td><td><em class="tt">setne</em>
+        </td><td><em class="tt">setng</em>
+        </td><td><em class="tt">setnge</em>
+        </td><td><em class="tt">setnl</em>
+        </td></tr><tr><td><em class="tt">setnle</em>
+        </td><td><em class="tt">setno</em>
+        </td><td><em class="tt">setnp</em>
+        </td><td><em class="tt">setns</em>
+        </td><td><em class="tt">setnz</em>
+        </td></tr><tr><td><em class="tt">seto</em>
+        </td><td><em class="tt">setp</em>
+        </td><td><em class="tt">setpe</em>
+        </td><td><em class="tt">setpo</em>
+        </td><td><em class="tt">sets</em>
+        </td></tr><tr><td><em class="tt">setz</em>
+        </td><td><em class="tt">sfence</em>
+        </td><td><em class="tt">sgdt</em>
+        </td><td><em class="tt">shl</em>
+        </td><td><em class="tt">shld</em>
+        </td></tr><tr><td><em class="tt">shr</em>
+        </td><td><em class="tt">shrd</em>
+        </td><td><em class="tt">shufpd</em>
+        </td><td><em class="tt">shufps</em>
+        </td><td><em class="tt">sidt</em>
+        </td></tr><tr><td><em class="tt">sldt</em>
+        </td><td><em class="tt">smsw</em>
+        </td><td><em class="tt">sqrtpd</em>
+        </td><td><em class="tt">sqrtps</em>
+        </td><td><em class="tt">sqrtsd</em>
+        </td></tr><tr><td><em class="tt">sqrtss</em>
+        </td><td><em class="tt">stc</em>
+        </td><td><em class="tt">std</em>
+        </td><td><em class="tt">sti</em>
+        </td><td><em class="tt">stmxcsr</em>
+        </td></tr><tr><td><em class="tt">stos</em>
+        </td><td><em class="tt">stosb</em>
+        </td><td><em class="tt">stosd</em>
+        </td><td><em class="tt">stosw</em>
+        </td><td><em class="tt">str</em>
+        </td></tr><tr><td><em class="tt">sub</em>
+        </td><td><em class="tt">subpd</em>
+        </td><td><em class="tt">subps</em>
+        </td><td><em class="tt">subsd</em>
+        </td><td><em class="tt">subss</em>
+        </td></tr><tr><td><em class="tt">syscall</em>
+        </td><td><em class="tt">sysenter</em>
+        </td><td><em class="tt">sysexit</em>
+        </td><td><em class="tt">sysret</em>
+        </td><td><em class="tt">test</em>
+        </td></tr><tr><td><em class="tt">ucomisd</em>
+        </td><td><em class="tt">ucomiss</em>
+        </td><td><em class="tt">ud2</em>
+        </td><td><em class="tt">unpckhpd</em>
+        </td><td><em class="tt">unpckhps</em>
+        </td></tr><tr><td><em class="tt">unpcklpd</em>
+        </td><td><em class="tt">unpcklps</em>
+        </td><td><em class="tt">verr</em>
+        </td><td><em class="tt">verw</em>
+        </td><td><em class="tt">wait</em>
+        </td></tr><tr><td><em class="tt">wbinvd</em>
+        </td><td><em class="tt">wrmsr</em>
+        </td><td><em class="tt">xadd</em>
+        </td><td><em class="tt">xchg</em>
+        </td><td><em class="tt">xlat</em>
+        </td></tr><tr><td><em class="tt">xlatb</em>
+        </td><td><em class="tt">xor</em>
+        </td><td><em class="tt">xorpd</em>
+        </td><td><em class="tt">xorps</em>
+        </td><td><em class="tt"> </em>
+        </td></tr>
+    </table></center>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="P4_opcode_support" href="#P4_opcode_support">Pentium 4 (Prescott) Opcodes Supported</a></h3>
+<div class="blankline"></div>
+    <center><table><caption>Pentium 4 Opcodes</caption>        <tr><td><em class="tt">addsubpd</em>
+        </td><td><em class="tt">addsubps</em>
+        </td><td><em class="tt">fisttp</em>
+        </td><td><em class="tt">haddpd</em>
+        </td><td><em class="tt">haddps</em>
+        </td></tr><tr><td><em class="tt">hsubpd</em>
+        </td><td><em class="tt">hsubps</em>
+        </td><td><em class="tt">lddqu</em>
+        </td><td><em class="tt">monitor</em>
+        </td><td><em class="tt">movddup</em>
+        </td></tr><tr><td><em class="tt">movshdup</em>
+        </td><td><em class="tt">movsldup</em>
+        </td><td><em class="tt">mwait</em>
+        </td><td><em class="tt"> </em>
+        </td><td><em class="tt"> </em>
+        </td></tr>
+    </table></center>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="amd_opcode_support" href="#amd_opcode_support">AMD Opcodes Supported</a></h3>
+<div class="blankline"></div>
+    <center><table><caption>AMD Opcodes</caption>        <tr><td><em class="tt">pavgusb</em>
+        </td><td><em class="tt">pf2id</em>
+        </td><td><em class="tt">pfacc</em>
+        </td><td><em class="tt">pfadd</em>
+        </td><td><em class="tt">pfcmpeq</em>
+        </td></tr><tr><td><em class="tt">pfcmpge</em>
+        </td><td><em class="tt">pfcmpgt</em>
+        </td><td><em class="tt">pfmax</em>
+        </td><td><em class="tt">pfmin</em>
+        </td><td><em class="tt">pfmul</em>
+        </td></tr><tr><td><em class="tt">pfnacc</em>
+        </td><td><em class="tt">pfpnacc</em>
+        </td><td><em class="tt">pfrcp</em>
+        </td><td><em class="tt">pfrcpit1</em>
+        </td><td><em class="tt">pfrcpit2</em>
+        </td></tr><tr><td><em class="tt">pfrsqit1</em>
+        </td><td><em class="tt">pfrsqrt</em>
+        </td><td><em class="tt">pfsub</em>
+        </td><td><em class="tt">pfsubr</em>
+        </td><td><em class="tt">pi2fd</em>
+        </td></tr><tr><td><em class="tt">pmulhrw</em>
+        </td><td><em class="tt">pswapd</em>
+        </td><td><em class="tt"> </em>
+        </td><td><em class="tt"> </em>
+        </td><td><em class="tt"> </em>
+        </td></tr>
+    </table></center>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="simd" href="#simd">SIMD</a></h3>
+<div class="blankline"></div>
+    <p>SSE, SSE2, SSE3, SSSE3, SSE4.1, SSE4.2 and AVX are supported.</p>
+<div class="blankline"></div>
+
+<div class="blankline"></div>
+
+<div class="blankline"></div>
+
+<div style="float: left"><i class="fa fa-angle-left" aria-hidden="true"></i> <a href="../spec/float.html">Floating Point</a></div>
+<div style="float: right"><a href="../spec/ddoc.html">Embedded Documentation</a> <i class="fa fa-angle-right" aria-hidden="true"></i></div>
+<div style="clear:both"></div>
+
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2022 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on (no date time)</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<script type="text/javascript" src="../js/listanchors.js"></script>
+<script type="text/javascript">jQuery(document).ready(addVersionSelector);</script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

@@ -1,0 +1,775 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2022 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>std.base64 - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='std.base64' class='std'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href=".."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.freenode.net/d'>IRC</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option selected value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+<div class="subnav-helper"></div> <div class="subnav">    <div class="head">        <h2>Library Reference</h2>
+        <p><span class="smallprint">version 2.088.0 <span class="separator"><br></span>
+            </span>
+        </p>
+        <p><a href="index.html">overview</a></p>
+    </div>
+    <ul>
+<li><a href='object.html'><span><em class="tt">object</em></span></a></li>
+
+<li class='expand-container modlist-submenu-std'><a class='expand-toggle' href='#'><span><em class="tt">std</em></span></a>
+<ul><li>  <a href="std_algorithm.html" title="std.algorithm"><span class="d_inlinecode donthyphenate notranslate">algorithm</span></a><ul><li>    <a href="std_algorithm_comparison.html" title="std.algorithm.comparison"><span class="d_inlinecode donthyphenate notranslate">comparison</span></a></li><li>    <a href="std_algorithm_iteration.html" title="std.algorithm.iteration"><span class="d_inlinecode donthyphenate notranslate">iteration</span></a></li><li>    <a href="std_algorithm_mutation.html" title="std.algorithm.mutation"><span class="d_inlinecode donthyphenate notranslate">mutation</span></a></li><li>    <a href="std_algorithm_searching.html" title="std.algorithm.searching"><span class="d_inlinecode donthyphenate notranslate">searching</span></a></li><li>    <a href="std_algorithm_setops.html" title="std.algorithm.setops"><span class="d_inlinecode donthyphenate notranslate">setops</span></a></li><li>    <a href="std_algorithm_sorting.html" title="std.algorithm.sorting"><span class="d_inlinecode donthyphenate notranslate">sorting</span></a>
+  </li></ul></li><li>  <a href="std_array.html" title="std.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>  <a href="std_ascii.html" title="std.ascii"><span class="d_inlinecode donthyphenate notranslate">ascii</span></a></li><li>  <a href="std_base64.html" title="std.base64"><span class="d_inlinecode donthyphenate notranslate">base64</span></a></li><li>  <a href="std_bigint.html" title="std.bigint"><span class="d_inlinecode donthyphenate notranslate">bigint</span></a></li><li>  <a href="std_bitmanip.html" title="std.bitmanip"><span class="d_inlinecode donthyphenate notranslate">bitmanip</span></a></li><li>  <a href="std_compiler.html" title="std.compiler"><span class="d_inlinecode donthyphenate notranslate">compiler</span></a></li><li>  <a href="std_complex.html" title="std.complex"><span class="d_inlinecode donthyphenate notranslate">complex</span></a></li><li>  <a href="std_concurrency.html" title="std.concurrency"><span class="d_inlinecode donthyphenate notranslate">concurrency</span></a></li><li>  <a href="std_container.html" title="std.container"><span class="d_inlinecode donthyphenate notranslate">container</span></a><ul><li>    <a href="std_container_array.html" title="std.container.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>    <a href="std_container_binaryheap.html" title="std.container.binaryheap"><span class="d_inlinecode donthyphenate notranslate">binaryheap</span></a></li><li>    <a href="std_container_dlist.html" title="std.container.dlist"><span class="d_inlinecode donthyphenate notranslate">dlist</span></a></li><li>    <a href="std_container_rbtree.html" title="std.container.rbtree"><span class="d_inlinecode donthyphenate notranslate">rbtree</span></a></li><li>    <a href="std_container_slist.html" title="std.container.slist"><span class="d_inlinecode donthyphenate notranslate">slist</span></a></li><li>    <a href="std_container_util.html" title="std.container.util"><span class="d_inlinecode donthyphenate notranslate">util</span></a>
+  </li></ul></li><li>  <a href="std_conv.html" title="std.conv"><span class="d_inlinecode donthyphenate notranslate">conv</span></a></li><li>  <a href="std_csv.html" title="std.csv"><span class="d_inlinecode donthyphenate notranslate">csv</span></a></li><li>  <a href="std_datetime.html" title="std.datetime"><span class="d_inlinecode donthyphenate notranslate">datetime</span></a><ul><li>    <a href="std_datetime_date.html" title="std.datetime.date"><span class="d_inlinecode donthyphenate notranslate">date</span></a></li><li>    <a href="std_datetime_interval.html" title="std.datetime.interval"><span class="d_inlinecode donthyphenate notranslate">interval</span></a></li><li>    <a href="std_datetime_stopwatch.html" title="std.datetime.stopwatch"><span class="d_inlinecode donthyphenate notranslate">stopwatch</span></a></li><li>    <a href="std_datetime_systime.html" title="std.datetime.systime"><span class="d_inlinecode donthyphenate notranslate">systime</span></a></li><li>    <a href="std_datetime_timezone.html" title="std.datetime.timezone"><span class="d_inlinecode donthyphenate notranslate">timezone</span></a>
+  </li></ul></li><li>  <a href="std_demangle.html" title="std.demangle"><span class="d_inlinecode donthyphenate notranslate">demangle</span></a></li><li>  <a href="std_digest.html" title="std.digest"><span class="d_inlinecode donthyphenate notranslate">digest</span></a><ul><li>    <a href="std_digest_crc.html" title="std.digest.crc"><span class="d_inlinecode donthyphenate notranslate">crc</span></a></li><li>    <a href="std_digest_hmac.html" title="std.digest.hmac"><span class="d_inlinecode donthyphenate notranslate">hmac</span></a></li><li>    <a href="std_digest_md.html" title="std.digest.md"><span class="d_inlinecode donthyphenate notranslate">md</span></a></li><li>    <a href="std_digest_murmurhash.html" title="std.digest.murmurhash"><span class="d_inlinecode donthyphenate notranslate">murmurhash</span></a></li><li>    <a href="std_digest_ripemd.html" title="std.digest.ripemd"><span class="d_inlinecode donthyphenate notranslate">ripemd</span></a></li><li>    <a href="std_digest_sha.html" title="std.digest.sha"><span class="d_inlinecode donthyphenate notranslate">sha</span></a>
+  </li></ul></li><li>  <a href="std_encoding.html" title="std.encoding"><span class="d_inlinecode donthyphenate notranslate">encoding</span></a></li><li>  <a href="std_exception.html" title="std.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">experimental</span></h7><ul><li>    <a href="std_experimental_all.html" title="std.experimental.all"><span class="d_inlinecode donthyphenate notranslate">all</span></a></li><li>    <a href="std_experimental_allocator.html" title="std.experimental.allocator"><span class="d_inlinecode donthyphenate notranslate">allocator</span></a><ul><li>      <a href="std_experimental_allocator_building_blocks.html" title="std.experimental.allocator.building_blocks"><span class="d_inlinecode donthyphenate notranslate">building_blocks</span></a><ul><li>        <a href="std_experimental_allocator_building_blocks_affix_allocator.html" title="std.experimental.allocator.building_blocks.affix_allocator"><span class="d_inlinecode donthyphenate notranslate">affix_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_aligned_block_list.html" title="std.experimental.allocator.building_blocks.aligned_block_list"><span class="d_inlinecode donthyphenate notranslate">aligned_block_list</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_allocator_list.html" title="std.experimental.allocator.building_blocks.allocator_list"><span class="d_inlinecode donthyphenate notranslate">allocator_list</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_ascending_page_allocator.html" title="std.experimental.allocator.building_blocks.ascending_page_allocator"><span class="d_inlinecode donthyphenate notranslate">ascending_page_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_bitmapped_block.html" title="std.experimental.allocator.building_blocks.bitmapped_block"><span class="d_inlinecode donthyphenate notranslate">bitmapped_block</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_bucketizer.html" title="std.experimental.allocator.building_blocks.bucketizer"><span class="d_inlinecode donthyphenate notranslate">bucketizer</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_fallback_allocator.html" title="std.experimental.allocator.building_blocks.fallback_allocator"><span class="d_inlinecode donthyphenate notranslate">fallback_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_free_list.html" title="std.experimental.allocator.building_blocks.free_list"><span class="d_inlinecode donthyphenate notranslate">free_list</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_free_tree.html" title="std.experimental.allocator.building_blocks.free_tree"><span class="d_inlinecode donthyphenate notranslate">free_tree</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_kernighan_ritchie.html" title="std.experimental.allocator.building_blocks.kernighan_ritchie"><span class="d_inlinecode donthyphenate notranslate">kernighan_ritchie</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_null_allocator.html" title="std.experimental.allocator.building_blocks.null_allocator"><span class="d_inlinecode donthyphenate notranslate">null_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_quantizer.html" title="std.experimental.allocator.building_blocks.quantizer"><span class="d_inlinecode donthyphenate notranslate">quantizer</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_region.html" title="std.experimental.allocator.building_blocks.region"><span class="d_inlinecode donthyphenate notranslate">region</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_scoped_allocator.html" title="std.experimental.allocator.building_blocks.scoped_allocator"><span class="d_inlinecode donthyphenate notranslate">scoped_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_segregator.html" title="std.experimental.allocator.building_blocks.segregator"><span class="d_inlinecode donthyphenate notranslate">segregator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_stats_collector.html" title="std.experimental.allocator.building_blocks.stats_collector"><span class="d_inlinecode donthyphenate notranslate">stats_collector</span></a>
+      </li></ul></li><li>      <a href="std_experimental_allocator_common.html" title="std.experimental.allocator.common"><span class="d_inlinecode donthyphenate notranslate">common</span></a></li><li>      <a href="std_experimental_allocator_gc_allocator.html" title="std.experimental.allocator.gc_allocator"><span class="d_inlinecode donthyphenate notranslate">gc_allocator</span></a></li><li>      <a href="std_experimental_allocator_mallocator.html" title="std.experimental.allocator.mallocator"><span class="d_inlinecode donthyphenate notranslate">mallocator</span></a></li><li>      <a href="std_experimental_allocator_mmap_allocator.html" title="std.experimental.allocator.mmap_allocator"><span class="d_inlinecode donthyphenate notranslate">mmap_allocator</span></a></li><li>      <a href="std_experimental_allocator_showcase.html" title="std.experimental.allocator.showcase"><span class="d_inlinecode donthyphenate notranslate">showcase</span></a></li><li>      <a href="std_experimental_allocator_typed.html" title="std.experimental.allocator.typed"><span class="d_inlinecode donthyphenate notranslate">typed</span></a>
+    </li></ul></li><li>    <a href="std_experimental_checkedint.html" title="std.experimental.checkedint"><span class="d_inlinecode donthyphenate notranslate">checkedint</span></a></li><li>    <a href="std_experimental_logger.html" title="std.experimental.logger"><span class="d_inlinecode donthyphenate notranslate">logger</span></a><ul><li>      <a href="std_experimental_logger_core.html" title="std.experimental.logger.core"><span class="d_inlinecode donthyphenate notranslate">core</span></a></li><li>      <a href="std_experimental_logger_filelogger.html" title="std.experimental.logger.filelogger"><span class="d_inlinecode donthyphenate notranslate">filelogger</span></a></li><li>      <a href="std_experimental_logger_multilogger.html" title="std.experimental.logger.multilogger"><span class="d_inlinecode donthyphenate notranslate">multilogger</span></a></li><li>      <a href="std_experimental_logger_nulllogger.html" title="std.experimental.logger.nulllogger"><span class="d_inlinecode donthyphenate notranslate">nulllogger</span></a>
+    </li></ul></li><li>    <a href="std_experimental_typecons.html" title="std.experimental.typecons"><span class="d_inlinecode donthyphenate notranslate">typecons</span></a>
+  </li></ul></li><li>  <a href="std_file.html" title="std.file"><span class="d_inlinecode donthyphenate notranslate">file</span></a></li><li>  <a href="std_format.html" title="std.format"><span class="d_inlinecode donthyphenate notranslate">format</span></a></li><li>  <a href="std_functional.html" title="std.functional"><span class="d_inlinecode donthyphenate notranslate">functional</span></a></li><li>  <a href="std_getopt.html" title="std.getopt"><span class="d_inlinecode donthyphenate notranslate">getopt</span></a></li><li>  <a href="std_json.html" title="std.json"><span class="d_inlinecode donthyphenate notranslate">json</span></a></li><li>  <a href="std_math.html" title="std.math"><span class="d_inlinecode donthyphenate notranslate">math</span></a></li><li>  <a href="std_mathspecial.html" title="std.mathspecial"><span class="d_inlinecode donthyphenate notranslate">mathspecial</span></a></li><li>  <a href="std_meta.html" title="std.meta"><span class="d_inlinecode donthyphenate notranslate">meta</span></a></li><li>  <a href="std_mmfile.html" title="std.mmfile"><span class="d_inlinecode donthyphenate notranslate">mmfile</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">net</span></h7><ul><li>    <a href="std_net_curl.html" title="std.net.curl"><span class="d_inlinecode donthyphenate notranslate">curl</span></a></li><li>    <a href="std_net_isemail.html" title="std.net.isemail"><span class="d_inlinecode donthyphenate notranslate">isemail</span></a>
+  </li></ul></li><li>  <a href="std_numeric.html" title="std.numeric"><span class="d_inlinecode donthyphenate notranslate">numeric</span></a></li><li>  <a href="std_outbuffer.html" title="std.outbuffer"><span class="d_inlinecode donthyphenate notranslate">outbuffer</span></a></li><li>  <a href="std_parallelism.html" title="std.parallelism"><span class="d_inlinecode donthyphenate notranslate">parallelism</span></a></li><li>  <a href="std_path.html" title="std.path"><span class="d_inlinecode donthyphenate notranslate">path</span></a></li><li>  <a href="std_process.html" title="std.process"><span class="d_inlinecode donthyphenate notranslate">process</span></a></li><li>  <a href="std_random.html" title="std.random"><span class="d_inlinecode donthyphenate notranslate">random</span></a></li><li>  <a href="std_range.html" title="std.range"><span class="d_inlinecode donthyphenate notranslate">range</span></a><ul><li>    <a href="std_range_interfaces.html" title="std.range.interfaces"><span class="d_inlinecode donthyphenate notranslate">interfaces</span></a></li><li>    <a href="std_range_primitives.html" title="std.range.primitives"><span class="d_inlinecode donthyphenate notranslate">primitives</span></a>
+  </li></ul></li><li>  <a href="std_regex.html" title="std.regex"><span class="d_inlinecode donthyphenate notranslate">regex</span></a></li><li>  <a href="std_signals.html" title="std.signals"><span class="d_inlinecode donthyphenate notranslate">signals</span></a></li><li>  <a href="std_socket.html" title="std.socket"><span class="d_inlinecode donthyphenate notranslate">socket</span></a></li><li>  <a href="std_stdint.html" title="std.stdint"><span class="d_inlinecode donthyphenate notranslate">stdint</span></a></li><li>  <a href="std_stdio.html" title="std.stdio"><span class="d_inlinecode donthyphenate notranslate">stdio</span></a></li><li>  <a href="std_string.html" title="std.string"><span class="d_inlinecode donthyphenate notranslate">string</span></a></li><li>  <a href="std_system.html" title="std.system"><span class="d_inlinecode donthyphenate notranslate">system</span></a></li><li>  <a href="std_traits.html" title="std.traits"><span class="d_inlinecode donthyphenate notranslate">traits</span></a></li><li>  <a href="std_typecons.html" title="std.typecons"><span class="d_inlinecode donthyphenate notranslate">typecons</span></a></li><li>  <a href="std_uni.html" title="std.uni"><span class="d_inlinecode donthyphenate notranslate">uni</span></a></li><li>  <a href="std_uri.html" title="std.uri"><span class="d_inlinecode donthyphenate notranslate">uri</span></a></li><li>  <a href="std_utf.html" title="std.utf"><span class="d_inlinecode donthyphenate notranslate">utf</span></a></li><li>  <a href="std_uuid.html" title="std.uuid"><span class="d_inlinecode donthyphenate notranslate">uuid</span></a></li><li>  <a href="std_variant.html" title="std.variant"><span class="d_inlinecode donthyphenate notranslate">variant</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">windows</span></h7><ul><li>    <a href="std_windows_charset.html" title="std.windows.charset"><span class="d_inlinecode donthyphenate notranslate">charset</span></a></li><li>    <a href="std_windows_syserror.html" title="std.windows.syserror"><span class="d_inlinecode donthyphenate notranslate">syserror</span></a>
+  </li></ul></li><li>  <a href="std_xml.html" title="std.xml"><span class="d_inlinecode donthyphenate notranslate">xml</span></a></li><li>  <a href="std_zip.html" title="std.zip"><span class="d_inlinecode donthyphenate notranslate">zip</span></a></li><li>  <a href="std_zlib.html" title="std.zlib"><span class="d_inlinecode donthyphenate notranslate">zlib</span></a>
+</li></ul>
+</li>
+
+<li class='expand-container modlist-submenu-etc'><a class='expand-toggle' href='#'><span><em class="tt">etc</em></span></a>
+<ul><li>  <h7><span class="d_inlinecode donthyphenate notranslate">c</span></h7><ul><li>    <a href="etc_c_curl.html" title="etc.c.curl"><span class="d_inlinecode donthyphenate notranslate">curl</span></a></li><li>    <h7><span class="d_inlinecode donthyphenate notranslate">odbc</span></h7><ul><li>      <a href="etc_c_odbc_sql.html" title="etc.c.odbc.sql"><span class="d_inlinecode donthyphenate notranslate">sql</span></a></li><li>      <a href="etc_c_odbc_sqlext.html" title="etc.c.odbc.sqlext"><span class="d_inlinecode donthyphenate notranslate">sqlext</span></a></li><li>      <a href="etc_c_odbc_sqltypes.html" title="etc.c.odbc.sqltypes"><span class="d_inlinecode donthyphenate notranslate">sqltypes</span></a></li><li>      <a href="etc_c_odbc_sqlucode.html" title="etc.c.odbc.sqlucode"><span class="d_inlinecode donthyphenate notranslate">sqlucode</span></a>
+    </li></ul></li><li>    <a href="etc_c_sqlite3.html" title="etc.c.sqlite3"><span class="d_inlinecode donthyphenate notranslate">sqlite3</span></a></li><li>    <a href="etc_c_zlib.html" title="etc.c.zlib"><span class="d_inlinecode donthyphenate notranslate">zlib</span></a>
+  </li></ul>
+</li></ul>
+</li>
+
+<li class='expand-container modlist-submenu-core'><a class='expand-toggle' href='#'><span><em class="tt">core</em></span></a>
+<ul><li>  <a href="core_atomic.html" title="core.atomic"><span class="d_inlinecode donthyphenate notranslate">atomic</span></a></li><li>  <a href="core_attribute.html" title="core.attribute"><span class="d_inlinecode donthyphenate notranslate">attribute</span></a></li><li>  <a href="core_bitop.html" title="core.bitop"><span class="d_inlinecode donthyphenate notranslate">bitop</span></a></li><li>  <a href="core_checkedint.html" title="core.checkedint"><span class="d_inlinecode donthyphenate notranslate">checkedint</span></a></li><li>  <a href="core_cpuid.html" title="core.cpuid"><span class="d_inlinecode donthyphenate notranslate">cpuid</span></a></li><li>  <a href="core_demangle.html" title="core.demangle"><span class="d_inlinecode donthyphenate notranslate">demangle</span></a></li><li>  <a href="core_exception.html" title="core.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">gc</span></h7><ul><li>    <a href="core_gc_config.html" title="core.gc.config"><span class="d_inlinecode donthyphenate notranslate">config</span></a></li><li>    <a href="core_gc_gcinterface.html" title="core.gc.gcinterface"><span class="d_inlinecode donthyphenate notranslate">gcinterface</span></a></li><li>    <a href="core_gc_registry.html" title="core.gc.registry"><span class="d_inlinecode donthyphenate notranslate">registry</span></a>
+  </li></ul></li><li>  <a href="core_lifetime.html" title="core.lifetime"><span class="d_inlinecode donthyphenate notranslate">lifetime</span></a></li><li>  <a href="core_math.html" title="core.math"><span class="d_inlinecode donthyphenate notranslate">math</span></a></li><li>  <a href="core_memory.html" title="core.memory"><span class="d_inlinecode donthyphenate notranslate">memory</span></a></li><li>  <a href="core_runtime.html" title="core.runtime"><span class="d_inlinecode donthyphenate notranslate">runtime</span></a></li><li>  <a href="core_simd.html" title="core.simd"><span class="d_inlinecode donthyphenate notranslate">simd</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">stdc</span></h7><ul><li>    <a href="core_stdc_assert_.html" title="core.stdc.assert_"><span class="d_inlinecode donthyphenate notranslate">assert_</span></a></li><li>    <a href="core_stdc_complex.html" title="core.stdc.complex"><span class="d_inlinecode donthyphenate notranslate">complex</span></a></li><li>    <a href="core_stdc_ctype.html" title="core.stdc.ctype"><span class="d_inlinecode donthyphenate notranslate">ctype</span></a></li><li>    <a href="core_stdc_errno.html" title="core.stdc.errno"><span class="d_inlinecode donthyphenate notranslate">errno</span></a></li><li>    <a href="core_stdc_fenv.html" title="core.stdc.fenv"><span class="d_inlinecode donthyphenate notranslate">fenv</span></a></li><li>    <a href="core_stdc_float_.html" title="core.stdc.float_"><span class="d_inlinecode donthyphenate notranslate">float_</span></a></li><li>    <a href="core_stdc_inttypes.html" title="core.stdc.inttypes"><span class="d_inlinecode donthyphenate notranslate">inttypes</span></a></li><li>    <a href="core_stdc_limits.html" title="core.stdc.limits"><span class="d_inlinecode donthyphenate notranslate">limits</span></a></li><li>    <a href="core_stdc_locale.html" title="core.stdc.locale"><span class="d_inlinecode donthyphenate notranslate">locale</span></a></li><li>    <a href="core_stdc_math.html" title="core.stdc.math"><span class="d_inlinecode donthyphenate notranslate">math</span></a></li><li>    <a href="core_stdc_signal.html" title="core.stdc.signal"><span class="d_inlinecode donthyphenate notranslate">signal</span></a></li><li>    <a href="core_stdc_stdarg.html" title="core.stdc.stdarg"><span class="d_inlinecode donthyphenate notranslate">stdarg</span></a></li><li>    <a href="core_stdc_stddef.html" title="core.stdc.stddef"><span class="d_inlinecode donthyphenate notranslate">stddef</span></a></li><li>    <a href="core_stdc_stdint.html" title="core.stdc.stdint"><span class="d_inlinecode donthyphenate notranslate">stdint</span></a></li><li>    <a href="core_stdc_stdio.html" title="core.stdc.stdio"><span class="d_inlinecode donthyphenate notranslate">stdio</span></a></li><li>    <a href="core_stdc_stdlib.html" title="core.stdc.stdlib"><span class="d_inlinecode donthyphenate notranslate">stdlib</span></a></li><li>    <a href="core_stdc_string.html" title="core.stdc.string"><span class="d_inlinecode donthyphenate notranslate">string</span></a></li><li>    <a href="core_stdc_tgmath.html" title="core.stdc.tgmath"><span class="d_inlinecode donthyphenate notranslate">tgmath</span></a></li><li>    <a href="core_stdc_time.html" title="core.stdc.time"><span class="d_inlinecode donthyphenate notranslate">time</span></a></li><li>    <a href="core_stdc_wchar_.html" title="core.stdc.wchar_"><span class="d_inlinecode donthyphenate notranslate">wchar_</span></a></li><li>    <a href="core_stdc_wctype.html" title="core.stdc.wctype"><span class="d_inlinecode donthyphenate notranslate">wctype</span></a>
+  </li></ul></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">stdcpp</span></h7><ul><li>    <a href="core_stdcpp_allocator.html" title="core.stdcpp.allocator"><span class="d_inlinecode donthyphenate notranslate">allocator</span></a></li><li>    <a href="core_stdcpp_array.html" title="core.stdcpp.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>    <a href="core_stdcpp_exception.html" title="core.stdcpp.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>    <a href="core_stdcpp_new_.html" title="core.stdcpp.new_"><span class="d_inlinecode donthyphenate notranslate">new_</span></a></li><li>    <a href="core_stdcpp_string.html" title="core.stdcpp.string"><span class="d_inlinecode donthyphenate notranslate">string</span></a></li><li>    <a href="core_stdcpp_string_view.html" title="core.stdcpp.string_view"><span class="d_inlinecode donthyphenate notranslate">string_view</span></a></li><li>    <a href="core_stdcpp_type_traits.html" title="core.stdcpp.type_traits"><span class="d_inlinecode donthyphenate notranslate">type_traits</span></a></li><li>    <a href="core_stdcpp_typeinfo.html" title="core.stdcpp.typeinfo"><span class="d_inlinecode donthyphenate notranslate">typeinfo</span></a></li><li>    <a href="core_stdcpp_vector.html" title="core.stdcpp.vector"><span class="d_inlinecode donthyphenate notranslate">vector</span></a></li><li>    <a href="core_stdcpp_xutility.html" title="core.stdcpp.xutility"><span class="d_inlinecode donthyphenate notranslate">xutility</span></a>
+  </li></ul></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">sync</span></h7><ul><li>    <a href="core_sync_barrier.html" title="core.sync.barrier"><span class="d_inlinecode donthyphenate notranslate">barrier</span></a></li><li>    <a href="core_sync_condition.html" title="core.sync.condition"><span class="d_inlinecode donthyphenate notranslate">condition</span></a></li><li>    <a href="core_sync_config.html" title="core.sync.config"><span class="d_inlinecode donthyphenate notranslate">config</span></a></li><li>    <a href="core_sync_event.html" title="core.sync.event"><span class="d_inlinecode donthyphenate notranslate">event</span></a></li><li>    <a href="core_sync_exception.html" title="core.sync.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>    <a href="core_sync_mutex.html" title="core.sync.mutex"><span class="d_inlinecode donthyphenate notranslate">mutex</span></a></li><li>    <a href="core_sync_rwmutex.html" title="core.sync.rwmutex"><span class="d_inlinecode donthyphenate notranslate">rwmutex</span></a></li><li>    <a href="core_sync_semaphore.html" title="core.sync.semaphore"><span class="d_inlinecode donthyphenate notranslate">semaphore</span></a>
+  </li></ul></li><li>  <a href="core_thread.html" title="core.thread"><span class="d_inlinecode donthyphenate notranslate">thread</span></a></li><li>  <a href="core_time.html" title="core.time"><span class="d_inlinecode donthyphenate notranslate">time</span></a></li><li>  <a href="core_vararg.html" title="core.vararg"><span class="d_inlinecode donthyphenate notranslate">vararg</span></a>
+</li></ul>
+</li>
+
+<li class='expand-container modlist-submenu-dmd'><a class='expand-toggle' href='#'><span><em class="tt">dmd</em></span></a>
+<ul><li>  <a href="dmd_access.html" title="dmd.access"><span class="d_inlinecode donthyphenate notranslate">access</span></a></li><li>  <a href="dmd_aggregate.html" title="dmd.aggregate"><span class="d_inlinecode donthyphenate notranslate">aggregate</span></a></li><li>  <a href="dmd_aliasthis.html" title="dmd.aliasthis"><span class="d_inlinecode donthyphenate notranslate">aliasthis</span></a></li><li>  <a href="dmd_apply.html" title="dmd.apply"><span class="d_inlinecode donthyphenate notranslate">apply</span></a></li><li>  <a href="dmd_argtypes.html" title="dmd.argtypes"><span class="d_inlinecode donthyphenate notranslate">argtypes</span></a></li><li>  <a href="dmd_argtypes_sysv_x64.html" title="dmd.argtypes_sysv_x64"><span class="d_inlinecode donthyphenate notranslate">argtypes_sysv_x64</span></a></li><li>  <a href="dmd_arrayop.html" title="dmd.arrayop"><span class="d_inlinecode donthyphenate notranslate">arrayop</span></a></li><li>  <a href="dmd_arraytypes.html" title="dmd.arraytypes"><span class="d_inlinecode donthyphenate notranslate">arraytypes</span></a></li><li>  <a href="dmd_ast_node.html" title="dmd.ast_node"><span class="d_inlinecode donthyphenate notranslate">ast_node</span></a></li><li>  <a href="dmd_astbase.html" title="dmd.astbase"><span class="d_inlinecode donthyphenate notranslate">astbase</span></a></li><li>  <a href="dmd_astcodegen.html" title="dmd.astcodegen"><span class="d_inlinecode donthyphenate notranslate">astcodegen</span></a></li><li>  <a href="dmd_asttypename.html" title="dmd.asttypename"><span class="d_inlinecode donthyphenate notranslate">asttypename</span></a></li><li>  <a href="dmd_attrib.html" title="dmd.attrib"><span class="d_inlinecode donthyphenate notranslate">attrib</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">backend</span></h7><ul><li>    <a href="dmd_backend_aarray.html" title="dmd.backend.aarray"><span class="d_inlinecode donthyphenate notranslate">aarray</span></a></li><li>    <a href="dmd_backend_backconfig.html" title="dmd.backend.backconfig"><span class="d_inlinecode donthyphenate notranslate">backconfig</span></a></li><li>    <a href="dmd_backend_barray.html" title="dmd.backend.barray"><span class="d_inlinecode donthyphenate notranslate">barray</span></a></li><li>    <a href="dmd_backend_bcomplex.html" title="dmd.backend.bcomplex"><span class="d_inlinecode donthyphenate notranslate">bcomplex</span></a></li><li>    <a href="dmd_backend_blockopt.html" title="dmd.backend.blockopt"><span class="d_inlinecode donthyphenate notranslate">blockopt</span></a></li><li>    <a href="dmd_backend_cc.html" title="dmd.backend.cc"><span class="d_inlinecode donthyphenate notranslate">cc</span></a></li><li>    <a href="dmd_backend_cdef.html" title="dmd.backend.cdef"><span class="d_inlinecode donthyphenate notranslate">cdef</span></a></li><li>    <a href="dmd_backend_cg.html" title="dmd.backend.cg"><span class="d_inlinecode donthyphenate notranslate">cg</span></a></li><li>    <a href="dmd_backend_cg87.html" title="dmd.backend.cg87"><span class="d_inlinecode donthyphenate notranslate">cg87</span></a></li><li>    <a href="dmd_backend_cgcod.html" title="dmd.backend.cgcod"><span class="d_inlinecode donthyphenate notranslate">cgcod</span></a></li><li>    <a href="dmd_backend_cgcs.html" title="dmd.backend.cgcs"><span class="d_inlinecode donthyphenate notranslate">cgcs</span></a></li><li>    <a href="dmd_backend_cgcse.html" title="dmd.backend.cgcse"><span class="d_inlinecode donthyphenate notranslate">cgcse</span></a></li><li>    <a href="dmd_backend_cgcv.html" title="dmd.backend.cgcv"><span class="d_inlinecode donthyphenate notranslate">cgcv</span></a></li><li>    <a href="dmd_backend_cgelem.html" title="dmd.backend.cgelem"><span class="d_inlinecode donthyphenate notranslate">cgelem</span></a></li><li>    <a href="dmd_backend_cgen.html" title="dmd.backend.cgen"><span class="d_inlinecode donthyphenate notranslate">cgen</span></a></li><li>    <a href="dmd_backend_cgobj.html" title="dmd.backend.cgobj"><span class="d_inlinecode donthyphenate notranslate">cgobj</span></a></li><li>    <a href="dmd_backend_cgreg.html" title="dmd.backend.cgreg"><span class="d_inlinecode donthyphenate notranslate">cgreg</span></a></li><li>    <a href="dmd_backend_cgsched.html" title="dmd.backend.cgsched"><span class="d_inlinecode donthyphenate notranslate">cgsched</span></a></li><li>    <a href="dmd_backend_cgxmm.html" title="dmd.backend.cgxmm"><span class="d_inlinecode donthyphenate notranslate">cgxmm</span></a></li><li>    <a href="dmd_backend_cod1.html" title="dmd.backend.cod1"><span class="d_inlinecode donthyphenate notranslate">cod1</span></a></li><li>    <a href="dmd_backend_cod2.html" title="dmd.backend.cod2"><span class="d_inlinecode donthyphenate notranslate">cod2</span></a></li><li>    <a href="dmd_backend_cod3.html" title="dmd.backend.cod3"><span class="d_inlinecode donthyphenate notranslate">cod3</span></a></li><li>    <a href="dmd_backend_cod4.html" title="dmd.backend.cod4"><span class="d_inlinecode donthyphenate notranslate">cod4</span></a></li><li>    <a href="dmd_backend_cod5.html" title="dmd.backend.cod5"><span class="d_inlinecode donthyphenate notranslate">cod5</span></a></li><li>    <a href="dmd_backend_code.html" title="dmd.backend.code"><span class="d_inlinecode donthyphenate notranslate">code</span></a></li><li>    <a href="dmd_backend_code_x86.html" title="dmd.backend.code_x86"><span class="d_inlinecode donthyphenate notranslate">code_x86</span></a></li><li>    <a href="dmd_backend_codebuilder.html" title="dmd.backend.codebuilder"><span class="d_inlinecode donthyphenate notranslate">codebuilder</span></a></li><li>    <a href="dmd_backend_compress.html" title="dmd.backend.compress"><span class="d_inlinecode donthyphenate notranslate">compress</span></a></li><li>    <a href="dmd_backend_cv4.html" title="dmd.backend.cv4"><span class="d_inlinecode donthyphenate notranslate">cv4</span></a></li><li>    <a href="dmd_backend_cv8.html" title="dmd.backend.cv8"><span class="d_inlinecode donthyphenate notranslate">cv8</span></a></li><li>    <a href="dmd_backend_dcgcv.html" title="dmd.backend.dcgcv"><span class="d_inlinecode donthyphenate notranslate">dcgcv</span></a></li><li>    <a href="dmd_backend_dcode.html" title="dmd.backend.dcode"><span class="d_inlinecode donthyphenate notranslate">dcode</span></a></li><li>    <a href="dmd_backend_debugprint.html" title="dmd.backend.debugprint"><span class="d_inlinecode donthyphenate notranslate">debugprint</span></a></li><li>    <a href="dmd_backend_divcoeff.html" title="dmd.backend.divcoeff"><span class="d_inlinecode donthyphenate notranslate">divcoeff</span></a></li><li>    <a href="dmd_backend_dlist.html" title="dmd.backend.dlist"><span class="d_inlinecode donthyphenate notranslate">dlist</span></a></li><li>    <a href="dmd_backend_drtlsym.html" title="dmd.backend.drtlsym"><span class="d_inlinecode donthyphenate notranslate">drtlsym</span></a></li><li>    <a href="dmd_backend_dt.html" title="dmd.backend.dt"><span class="d_inlinecode donthyphenate notranslate">dt</span></a></li><li>    <a href="dmd_backend_dtype.html" title="dmd.backend.dtype"><span class="d_inlinecode donthyphenate notranslate">dtype</span></a></li><li>    <a href="dmd_backend_dvarstats.html" title="dmd.backend.dvarstats"><span class="d_inlinecode donthyphenate notranslate">dvarstats</span></a></li><li>    <a href="dmd_backend_dvec.html" title="dmd.backend.dvec"><span class="d_inlinecode donthyphenate notranslate">dvec</span></a></li><li>    <a href="dmd_backend_dwarf.html" title="dmd.backend.dwarf"><span class="d_inlinecode donthyphenate notranslate">dwarf</span></a></li><li>    <a href="dmd_backend_dwarf2.html" title="dmd.backend.dwarf2"><span class="d_inlinecode donthyphenate notranslate">dwarf2</span></a></li><li>    <a href="dmd_backend_dwarfdbginf.html" title="dmd.backend.dwarfdbginf"><span class="d_inlinecode donthyphenate notranslate">dwarfdbginf</span></a></li><li>    <a href="dmd_backend_dwarfeh.html" title="dmd.backend.dwarfeh"><span class="d_inlinecode donthyphenate notranslate">dwarfeh</span></a></li><li>    <a href="dmd_backend_ee.html" title="dmd.backend.ee"><span class="d_inlinecode donthyphenate notranslate">ee</span></a></li><li>    <a href="dmd_backend_el.html" title="dmd.backend.el"><span class="d_inlinecode donthyphenate notranslate">el</span></a></li><li>    <a href="dmd_backend_elem.html" title="dmd.backend.elem"><span class="d_inlinecode donthyphenate notranslate">elem</span></a></li><li>    <a href="dmd_backend_elfobj.html" title="dmd.backend.elfobj"><span class="d_inlinecode donthyphenate notranslate">elfobj</span></a></li><li>    <a href="dmd_backend_elpicpie.html" title="dmd.backend.elpicpie"><span class="d_inlinecode donthyphenate notranslate">elpicpie</span></a></li><li>    <a href="dmd_backend_evalu8.html" title="dmd.backend.evalu8"><span class="d_inlinecode donthyphenate notranslate">evalu8</span></a></li><li>    <a href="dmd_backend_exh.html" title="dmd.backend.exh"><span class="d_inlinecode donthyphenate notranslate">exh</span></a></li><li>    <a href="dmd_backend_filespec.html" title="dmd.backend.filespec"><span class="d_inlinecode donthyphenate notranslate">filespec</span></a></li><li>    <a href="dmd_backend_fp.html" title="dmd.backend.fp"><span class="d_inlinecode donthyphenate notranslate">fp</span></a></li><li>    <a href="dmd_backend_gdag.html" title="dmd.backend.gdag"><span class="d_inlinecode donthyphenate notranslate">gdag</span></a></li><li>    <a href="dmd_backend_gflow.html" title="dmd.backend.gflow"><span class="d_inlinecode donthyphenate notranslate">gflow</span></a></li><li>    <a href="dmd_backend_global.html" title="dmd.backend.global"><span class="d_inlinecode donthyphenate notranslate">global</span></a></li><li>    <a href="dmd_backend_glocal.html" title="dmd.backend.glocal"><span class="d_inlinecode donthyphenate notranslate">glocal</span></a></li><li>    <a href="dmd_backend_gloop.html" title="dmd.backend.gloop"><span class="d_inlinecode donthyphenate notranslate">gloop</span></a></li><li>    <a href="dmd_backend_go.html" title="dmd.backend.go"><span class="d_inlinecode donthyphenate notranslate">go</span></a></li><li>    <a href="dmd_backend_goh.html" title="dmd.backend.goh"><span class="d_inlinecode donthyphenate notranslate">goh</span></a></li><li>    <a href="dmd_backend_gother.html" title="dmd.backend.gother"><span class="d_inlinecode donthyphenate notranslate">gother</span></a></li><li>    <a href="dmd_backend_gsroa.html" title="dmd.backend.gsroa"><span class="d_inlinecode donthyphenate notranslate">gsroa</span></a></li><li>    <a href="dmd_backend_iasm.html" title="dmd.backend.iasm"><span class="d_inlinecode donthyphenate notranslate">iasm</span></a></li><li>    <a href="dmd_backend_mach.html" title="dmd.backend.mach"><span class="d_inlinecode donthyphenate notranslate">mach</span></a></li><li>    <a href="dmd_backend_machobj.html" title="dmd.backend.machobj"><span class="d_inlinecode donthyphenate notranslate">machobj</span></a></li><li>    <a href="dmd_backend_md5.html" title="dmd.backend.md5"><span class="d_inlinecode donthyphenate notranslate">md5</span></a></li><li>    <a href="dmd_backend_melf.html" title="dmd.backend.melf"><span class="d_inlinecode donthyphenate notranslate">melf</span></a></li><li>    <a href="dmd_backend_mem.html" title="dmd.backend.mem"><span class="d_inlinecode donthyphenate notranslate">mem</span></a></li><li>    <a href="dmd_backend_mscoff.html" title="dmd.backend.mscoff"><span class="d_inlinecode donthyphenate notranslate">mscoff</span></a></li><li>    <a href="dmd_backend_mscoffobj.html" title="dmd.backend.mscoffobj"><span class="d_inlinecode donthyphenate notranslate">mscoffobj</span></a></li><li>    <a href="dmd_backend_newman.html" title="dmd.backend.newman"><span class="d_inlinecode donthyphenate notranslate">newman</span></a></li><li>    <a href="dmd_backend_nteh.html" title="dmd.backend.nteh"><span class="d_inlinecode donthyphenate notranslate">nteh</span></a></li><li>    <a href="dmd_backend_obj.html" title="dmd.backend.obj"><span class="d_inlinecode donthyphenate notranslate">obj</span></a></li><li>    <a href="dmd_backend_oper.html" title="dmd.backend.oper"><span class="d_inlinecode donthyphenate notranslate">oper</span></a></li><li>    <a href="dmd_backend_os.html" title="dmd.backend.os"><span class="d_inlinecode donthyphenate notranslate">os</span></a></li><li>    <a href="dmd_backend_out.html" title="dmd.backend.out"><span class="d_inlinecode donthyphenate notranslate">out</span></a></li><li>    <a href="dmd_backend_outbuf.html" title="dmd.backend.outbuf"><span class="d_inlinecode donthyphenate notranslate">outbuf</span></a></li><li>    <a href="dmd_backend_pdata.html" title="dmd.backend.pdata"><span class="d_inlinecode donthyphenate notranslate">pdata</span></a></li><li>    <a href="dmd_backend_ph2.html" title="dmd.backend.ph2"><span class="d_inlinecode donthyphenate notranslate">ph2</span></a></li><li>    <a href="dmd_backend_ptrntab.html" title="dmd.backend.ptrntab"><span class="d_inlinecode donthyphenate notranslate">ptrntab</span></a></li><li>    <a href="dmd_backend_rtlsym.html" title="dmd.backend.rtlsym"><span class="d_inlinecode donthyphenate notranslate">rtlsym</span></a></li><li>    <a href="dmd_backend_symbol.html" title="dmd.backend.symbol"><span class="d_inlinecode donthyphenate notranslate">symbol</span></a></li><li>    <a href="dmd_backend_ty.html" title="dmd.backend.ty"><span class="d_inlinecode donthyphenate notranslate">ty</span></a></li><li>    <a href="dmd_backend_type.html" title="dmd.backend.type"><span class="d_inlinecode donthyphenate notranslate">type</span></a></li><li>    <a href="dmd_backend_util2.html" title="dmd.backend.util2"><span class="d_inlinecode donthyphenate notranslate">util2</span></a></li><li>    <a href="dmd_backend_var.html" title="dmd.backend.var"><span class="d_inlinecode donthyphenate notranslate">var</span></a></li><li>    <a href="dmd_backend_xmm.html" title="dmd.backend.xmm"><span class="d_inlinecode donthyphenate notranslate">xmm</span></a>
+  </li></ul></li><li>  <a href="dmd_blockexit.html" title="dmd.blockexit"><span class="d_inlinecode donthyphenate notranslate">blockexit</span></a></li><li>  <a href="dmd_builtin.html" title="dmd.builtin"><span class="d_inlinecode donthyphenate notranslate">builtin</span></a></li><li>  <a href="dmd_canthrow.html" title="dmd.canthrow"><span class="d_inlinecode donthyphenate notranslate">canthrow</span></a></li><li>  <a href="dmd_cli.html" title="dmd.cli"><span class="d_inlinecode donthyphenate notranslate">cli</span></a></li><li>  <a href="dmd_clone.html" title="dmd.clone"><span class="d_inlinecode donthyphenate notranslate">clone</span></a></li><li>  <a href="dmd_compiler.html" title="dmd.compiler"><span class="d_inlinecode donthyphenate notranslate">compiler</span></a></li><li>  <a href="dmd_complex.html" title="dmd.complex"><span class="d_inlinecode donthyphenate notranslate">complex</span></a></li><li>  <a href="dmd_cond.html" title="dmd.cond"><span class="d_inlinecode donthyphenate notranslate">cond</span></a></li><li>  <a href="dmd_console.html" title="dmd.console"><span class="d_inlinecode donthyphenate notranslate">console</span></a></li><li>  <a href="dmd_constfold.html" title="dmd.constfold"><span class="d_inlinecode donthyphenate notranslate">constfold</span></a></li><li>  <a href="dmd_cppmangle.html" title="dmd.cppmangle"><span class="d_inlinecode donthyphenate notranslate">cppmangle</span></a></li><li>  <a href="dmd_cppmanglewin.html" title="dmd.cppmanglewin"><span class="d_inlinecode donthyphenate notranslate">cppmanglewin</span></a></li><li>  <a href="dmd_ctfeexpr.html" title="dmd.ctfeexpr"><span class="d_inlinecode donthyphenate notranslate">ctfeexpr</span></a></li><li>  <a href="dmd_ctorflow.html" title="dmd.ctorflow"><span class="d_inlinecode donthyphenate notranslate">ctorflow</span></a></li><li>  <a href="dmd_dcast.html" title="dmd.dcast"><span class="d_inlinecode donthyphenate notranslate">dcast</span></a></li><li>  <a href="dmd_dclass.html" title="dmd.dclass"><span class="d_inlinecode donthyphenate notranslate">dclass</span></a></li><li>  <a href="dmd_declaration.html" title="dmd.declaration"><span class="d_inlinecode donthyphenate notranslate">declaration</span></a></li><li>  <a href="dmd_delegatize.html" title="dmd.delegatize"><span class="d_inlinecode donthyphenate notranslate">delegatize</span></a></li><li>  <a href="dmd_denum.html" title="dmd.denum"><span class="d_inlinecode donthyphenate notranslate">denum</span></a></li><li>  <a href="dmd_dimport.html" title="dmd.dimport"><span class="d_inlinecode donthyphenate notranslate">dimport</span></a></li><li>  <a href="dmd_dinifile.html" title="dmd.dinifile"><span class="d_inlinecode donthyphenate notranslate">dinifile</span></a></li><li>  <a href="dmd_dinterpret.html" title="dmd.dinterpret"><span class="d_inlinecode donthyphenate notranslate">dinterpret</span></a></li><li>  <a href="dmd_dmacro.html" title="dmd.dmacro"><span class="d_inlinecode donthyphenate notranslate">dmacro</span></a></li><li>  <a href="dmd_dmangle.html" title="dmd.dmangle"><span class="d_inlinecode donthyphenate notranslate">dmangle</span></a></li><li>  <a href="dmd_dmodule.html" title="dmd.dmodule"><span class="d_inlinecode donthyphenate notranslate">dmodule</span></a></li><li>  <a href="dmd_dmsc.html" title="dmd.dmsc"><span class="d_inlinecode donthyphenate notranslate">dmsc</span></a></li><li>  <a href="dmd_doc.html" title="dmd.doc"><span class="d_inlinecode donthyphenate notranslate">doc</span></a></li><li>  <a href="dmd_dscope.html" title="dmd.dscope"><span class="d_inlinecode donthyphenate notranslate">dscope</span></a></li><li>  <a href="dmd_dstruct.html" title="dmd.dstruct"><span class="d_inlinecode donthyphenate notranslate">dstruct</span></a></li><li>  <a href="dmd_dsymbol.html" title="dmd.dsymbol"><span class="d_inlinecode donthyphenate notranslate">dsymbol</span></a></li><li>  <a href="dmd_dsymbolsem.html" title="dmd.dsymbolsem"><span class="d_inlinecode donthyphenate notranslate">dsymbolsem</span></a></li><li>  <a href="dmd_dtemplate.html" title="dmd.dtemplate"><span class="d_inlinecode donthyphenate notranslate">dtemplate</span></a></li><li>  <a href="dmd_dversion.html" title="dmd.dversion"><span class="d_inlinecode donthyphenate notranslate">dversion</span></a></li><li>  <a href="dmd_e2ir.html" title="dmd.e2ir"><span class="d_inlinecode donthyphenate notranslate">e2ir</span></a></li><li>  <a href="dmd_eh.html" title="dmd.eh"><span class="d_inlinecode donthyphenate notranslate">eh</span></a></li><li>  <a href="dmd_entity.html" title="dmd.entity"><span class="d_inlinecode donthyphenate notranslate">entity</span></a></li><li>  <a href="dmd_env.html" title="dmd.env"><span class="d_inlinecode donthyphenate notranslate">env</span></a></li><li>  <a href="dmd_errors.html" title="dmd.errors"><span class="d_inlinecode donthyphenate notranslate">errors</span></a></li><li>  <a href="dmd_escape.html" title="dmd.escape"><span class="d_inlinecode donthyphenate notranslate">escape</span></a></li><li>  <a href="dmd_expression.html" title="dmd.expression"><span class="d_inlinecode donthyphenate notranslate">expression</span></a></li><li>  <a href="dmd_expressionsem.html" title="dmd.expressionsem"><span class="d_inlinecode donthyphenate notranslate">expressionsem</span></a></li><li>  <a href="dmd_filecache.html" title="dmd.filecache"><span class="d_inlinecode donthyphenate notranslate">filecache</span></a></li><li>  <a href="dmd_frontend.html" title="dmd.frontend"><span class="d_inlinecode donthyphenate notranslate">frontend</span></a></li><li>  <a href="dmd_func.html" title="dmd.func"><span class="d_inlinecode donthyphenate notranslate">func</span></a></li><li>  <a href="dmd_globals.html" title="dmd.globals"><span class="d_inlinecode donthyphenate notranslate">globals</span></a></li><li>  <a href="dmd_glue.html" title="dmd.glue"><span class="d_inlinecode donthyphenate notranslate">glue</span></a></li><li>  <a href="dmd_gluelayer.html" title="dmd.gluelayer"><span class="d_inlinecode donthyphenate notranslate">gluelayer</span></a></li><li>  <a href="dmd_hdrgen.html" title="dmd.hdrgen"><span class="d_inlinecode donthyphenate notranslate">hdrgen</span></a></li><li>  <a href="dmd_iasm.html" title="dmd.iasm"><span class="d_inlinecode donthyphenate notranslate">iasm</span></a></li><li>  <a href="dmd_iasmdmd.html" title="dmd.iasmdmd"><span class="d_inlinecode donthyphenate notranslate">iasmdmd</span></a></li><li>  <a href="dmd_iasmgcc.html" title="dmd.iasmgcc"><span class="d_inlinecode donthyphenate notranslate">iasmgcc</span></a></li><li>  <a href="dmd_id.html" title="dmd.id"><span class="d_inlinecode donthyphenate notranslate">id</span></a></li><li>  <a href="dmd_identifier.html" title="dmd.identifier"><span class="d_inlinecode donthyphenate notranslate">identifier</span></a></li><li>  <a href="dmd_impcnvtab.html" title="dmd.impcnvtab"><span class="d_inlinecode donthyphenate notranslate">impcnvtab</span></a></li><li>  <a href="dmd_imphint.html" title="dmd.imphint"><span class="d_inlinecode donthyphenate notranslate">imphint</span></a></li><li>  <a href="dmd_init.html" title="dmd.init"><span class="d_inlinecode donthyphenate notranslate">init</span></a></li><li>  <a href="dmd_initsem.html" title="dmd.initsem"><span class="d_inlinecode donthyphenate notranslate">initsem</span></a></li><li>  <a href="dmd_inline.html" title="dmd.inline"><span class="d_inlinecode donthyphenate notranslate">inline</span></a></li><li>  <a href="dmd_inlinecost.html" title="dmd.inlinecost"><span class="d_inlinecode donthyphenate notranslate">inlinecost</span></a></li><li>  <a href="dmd_intrange.html" title="dmd.intrange"><span class="d_inlinecode donthyphenate notranslate">intrange</span></a></li><li>  <a href="dmd_irstate.html" title="dmd.irstate"><span class="d_inlinecode donthyphenate notranslate">irstate</span></a></li><li>  <a href="dmd_json.html" title="dmd.json"><span class="d_inlinecode donthyphenate notranslate">json</span></a></li><li>  <a href="dmd_lambdacomp.html" title="dmd.lambdacomp"><span class="d_inlinecode donthyphenate notranslate">lambdacomp</span></a></li><li>  <a href="dmd_lexer.html" title="dmd.lexer"><span class="d_inlinecode donthyphenate notranslate">lexer</span></a></li><li>  <a href="dmd_lib.html" title="dmd.lib"><span class="d_inlinecode donthyphenate notranslate">lib</span></a></li><li>  <a href="dmd_libelf.html" title="dmd.libelf"><span class="d_inlinecode donthyphenate notranslate">libelf</span></a></li><li>  <a href="dmd_libomf.html" title="dmd.libomf"><span class="d_inlinecode donthyphenate notranslate">libomf</span></a></li><li>  <a href="dmd_link.html" title="dmd.link"><span class="d_inlinecode donthyphenate notranslate">link</span></a></li><li>  <a href="dmd_mars.html" title="dmd.mars"><span class="d_inlinecode donthyphenate notranslate">mars</span></a></li><li>  <a href="dmd_mtype.html" title="dmd.mtype"><span class="d_inlinecode donthyphenate notranslate">mtype</span></a></li><li>  <a href="dmd_nogc.html" title="dmd.nogc"><span class="d_inlinecode donthyphenate notranslate">nogc</span></a></li><li>  <a href="dmd_nspace.html" title="dmd.nspace"><span class="d_inlinecode donthyphenate notranslate">nspace</span></a></li><li>  <a href="dmd_objc.html" title="dmd.objc"><span class="d_inlinecode donthyphenate notranslate">objc</span></a></li><li>  <a href="dmd_objc_glue.html" title="dmd.objc_glue"><span class="d_inlinecode donthyphenate notranslate">objc_glue</span></a></li><li>  <a href="dmd_opover.html" title="dmd.opover"><span class="d_inlinecode donthyphenate notranslate">opover</span></a></li><li>  <a href="dmd_optimize.html" title="dmd.optimize"><span class="d_inlinecode donthyphenate notranslate">optimize</span></a></li><li>  <a href="dmd_parse.html" title="dmd.parse"><span class="d_inlinecode donthyphenate notranslate">parse</span></a></li><li>  <a href="dmd_parsetimevisitor.html" title="dmd.parsetimevisitor"><span class="d_inlinecode donthyphenate notranslate">parsetimevisitor</span></a></li><li>  <a href="dmd_permissivevisitor.html" title="dmd.permissivevisitor"><span class="d_inlinecode donthyphenate notranslate">permissivevisitor</span></a></li><li>  <a href="dmd_printast.html" title="dmd.printast"><span class="d_inlinecode donthyphenate notranslate">printast</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">root</span></h7><ul><li>    <a href="dmd_root_aav.html" title="dmd.root.aav"><span class="d_inlinecode donthyphenate notranslate">aav</span></a></li><li>    <a href="dmd_root_array.html" title="dmd.root.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>    <a href="dmd_root_ctfloat.html" title="dmd.root.ctfloat"><span class="d_inlinecode donthyphenate notranslate">ctfloat</span></a></li><li>    <a href="dmd_root_file.html" title="dmd.root.file"><span class="d_inlinecode donthyphenate notranslate">file</span></a></li><li>    <a href="dmd_root_filename.html" title="dmd.root.filename"><span class="d_inlinecode donthyphenate notranslate">filename</span></a></li><li>    <a href="dmd_root_hash.html" title="dmd.root.hash"><span class="d_inlinecode donthyphenate notranslate">hash</span></a></li><li>    <a href="dmd_root_longdouble.html" title="dmd.root.longdouble"><span class="d_inlinecode donthyphenate notranslate">longdouble</span></a></li><li>    <a href="dmd_root_man.html" title="dmd.root.man"><span class="d_inlinecode donthyphenate notranslate">man</span></a></li><li>    <a href="dmd_root_outbuffer.html" title="dmd.root.outbuffer"><span class="d_inlinecode donthyphenate notranslate">outbuffer</span></a></li><li>    <a href="dmd_root_port.html" title="dmd.root.port"><span class="d_inlinecode donthyphenate notranslate">port</span></a></li><li>    <a href="dmd_root_response.html" title="dmd.root.response"><span class="d_inlinecode donthyphenate notranslate">response</span></a></li><li>    <a href="dmd_root_rmem.html" title="dmd.root.rmem"><span class="d_inlinecode donthyphenate notranslate">rmem</span></a></li><li>    <a href="dmd_root_rootobject.html" title="dmd.root.rootobject"><span class="d_inlinecode donthyphenate notranslate">rootobject</span></a></li><li>    <a href="dmd_root_speller.html" title="dmd.root.speller"><span class="d_inlinecode donthyphenate notranslate">speller</span></a></li><li>    <a href="dmd_root_string.html" title="dmd.root.string"><span class="d_inlinecode donthyphenate notranslate">string</span></a></li><li>    <a href="dmd_root_stringtable.html" title="dmd.root.stringtable"><span class="d_inlinecode donthyphenate notranslate">stringtable</span></a></li><li>    <a href="dmd_root_strtold.html" title="dmd.root.strtold"><span class="d_inlinecode donthyphenate notranslate">strtold</span></a>
+  </li></ul></li><li>  <a href="dmd_s2ir.html" title="dmd.s2ir"><span class="d_inlinecode donthyphenate notranslate">s2ir</span></a></li><li>  <a href="dmd_safe.html" title="dmd.safe"><span class="d_inlinecode donthyphenate notranslate">safe</span></a></li><li>  <a href="dmd_sapply.html" title="dmd.sapply"><span class="d_inlinecode donthyphenate notranslate">sapply</span></a></li><li>  <a href="dmd_scanelf.html" title="dmd.scanelf"><span class="d_inlinecode donthyphenate notranslate">scanelf</span></a></li><li>  <a href="dmd_scanomf.html" title="dmd.scanomf"><span class="d_inlinecode donthyphenate notranslate">scanomf</span></a></li><li>  <a href="dmd_semantic2.html" title="dmd.semantic2"><span class="d_inlinecode donthyphenate notranslate">semantic2</span></a></li><li>  <a href="dmd_semantic3.html" title="dmd.semantic3"><span class="d_inlinecode donthyphenate notranslate">semantic3</span></a></li><li>  <a href="dmd_sideeffect.html" title="dmd.sideeffect"><span class="d_inlinecode donthyphenate notranslate">sideeffect</span></a></li><li>  <a href="dmd_statement.html" title="dmd.statement"><span class="d_inlinecode donthyphenate notranslate">statement</span></a></li><li>  <a href="dmd_statement_rewrite_walker.html" title="dmd.statement_rewrite_walker"><span class="d_inlinecode donthyphenate notranslate">statement_rewrite_walker</span></a></li><li>  <a href="dmd_statementsem.html" title="dmd.statementsem"><span class="d_inlinecode donthyphenate notranslate">statementsem</span></a></li><li>  <a href="dmd_staticassert.html" title="dmd.staticassert"><span class="d_inlinecode donthyphenate notranslate">staticassert</span></a></li><li>  <a href="dmd_staticcond.html" title="dmd.staticcond"><span class="d_inlinecode donthyphenate notranslate">staticcond</span></a></li><li>  <a href="dmd_strictvisitor.html" title="dmd.strictvisitor"><span class="d_inlinecode donthyphenate notranslate">strictvisitor</span></a></li><li>  <a href="dmd_target.html" title="dmd.target"><span class="d_inlinecode donthyphenate notranslate">target</span></a></li><li>  <a href="dmd_templateparamsem.html" title="dmd.templateparamsem"><span class="d_inlinecode donthyphenate notranslate">templateparamsem</span></a></li><li>  <a href="dmd_tocsym.html" title="dmd.tocsym"><span class="d_inlinecode donthyphenate notranslate">tocsym</span></a></li><li>  <a href="dmd_toctype.html" title="dmd.toctype"><span class="d_inlinecode donthyphenate notranslate">toctype</span></a></li><li>  <a href="dmd_tocvdebug.html" title="dmd.tocvdebug"><span class="d_inlinecode donthyphenate notranslate">tocvdebug</span></a></li><li>  <a href="dmd_todt.html" title="dmd.todt"><span class="d_inlinecode donthyphenate notranslate">todt</span></a></li><li>  <a href="dmd_toir.html" title="dmd.toir"><span class="d_inlinecode donthyphenate notranslate">toir</span></a></li><li>  <a href="dmd_tokens.html" title="dmd.tokens"><span class="d_inlinecode donthyphenate notranslate">tokens</span></a></li><li>  <a href="dmd_toobj.html" title="dmd.toobj"><span class="d_inlinecode donthyphenate notranslate">toobj</span></a></li><li>  <a href="dmd_traits.html" title="dmd.traits"><span class="d_inlinecode donthyphenate notranslate">traits</span></a></li><li>  <a href="dmd_transitivevisitor.html" title="dmd.transitivevisitor"><span class="d_inlinecode donthyphenate notranslate">transitivevisitor</span></a></li><li>  <a href="dmd_typesem.html" title="dmd.typesem"><span class="d_inlinecode donthyphenate notranslate">typesem</span></a></li><li>  <a href="dmd_typinf.html" title="dmd.typinf"><span class="d_inlinecode donthyphenate notranslate">typinf</span></a></li><li>  <a href="dmd_utf.html" title="dmd.utf"><span class="d_inlinecode donthyphenate notranslate">utf</span></a></li><li>  <a href="dmd_utils.html" title="dmd.utils"><span class="d_inlinecode donthyphenate notranslate">utils</span></a></li><li>  <a href="dmd_visitor.html" title="dmd.visitor"><span class="d_inlinecode donthyphenate notranslate">visitor</span></a>
+</li></ul>
+</li>
+
+<li class='expand-container modlist-submenu-rt'><a class='expand-toggle' href='#'><span><em class="tt">rt</em></span></a>
+<ul><li>  <a href="rt_aApply.html" title="rt.aApply"><span class="d_inlinecode donthyphenate notranslate">aApply</span></a></li><li>  <a href="rt_aApplyR.html" title="rt.aApplyR"><span class="d_inlinecode donthyphenate notranslate">aApplyR</span></a></li><li>  <a href="rt_aaA.html" title="rt.aaA"><span class="d_inlinecode donthyphenate notranslate">aaA</span></a></li><li>  <a href="rt_adi.html" title="rt.adi"><span class="d_inlinecode donthyphenate notranslate">adi</span></a></li><li>  <a href="rt_alloca.html" title="rt.alloca"><span class="d_inlinecode donthyphenate notranslate">alloca</span></a></li><li>  <a href="rt_arrayassign.html" title="rt.arrayassign"><span class="d_inlinecode donthyphenate notranslate">arrayassign</span></a></li><li>  <a href="rt_arraycat.html" title="rt.arraycat"><span class="d_inlinecode donthyphenate notranslate">arraycat</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">backtrace</span></h7><ul><li>    <a href="rt_backtrace_dwarf.html" title="rt.backtrace.dwarf"><span class="d_inlinecode donthyphenate notranslate">dwarf</span></a></li><li>    <a href="rt_backtrace_elf.html" title="rt.backtrace.elf"><span class="d_inlinecode donthyphenate notranslate">elf</span></a></li><li>    <a href="rt_backtrace_macho.html" title="rt.backtrace.macho"><span class="d_inlinecode donthyphenate notranslate">macho</span></a>
+  </li></ul></li><li>  <a href="rt_cast_.html" title="rt.cast_"><span class="d_inlinecode donthyphenate notranslate">cast_</span></a></li><li>  <a href="rt_cmath2.html" title="rt.cmath2"><span class="d_inlinecode donthyphenate notranslate">cmath2</span></a></li><li>  <a href="rt_config.html" title="rt.config"><span class="d_inlinecode donthyphenate notranslate">config</span></a></li><li>  <a href="rt_cover.html" title="rt.cover"><span class="d_inlinecode donthyphenate notranslate">cover</span></a></li><li>  <a href="rt_critical_.html" title="rt.critical_"><span class="d_inlinecode donthyphenate notranslate">critical_</span></a></li><li>  <a href="rt_deh.html" title="rt.deh"><span class="d_inlinecode donthyphenate notranslate">deh</span></a></li><li>  <a href="rt_deh_win32.html" title="rt.deh_win32"><span class="d_inlinecode donthyphenate notranslate">deh_win32</span></a></li><li>  <a href="rt_deh_win64_posix.html" title="rt.deh_win64_posix"><span class="d_inlinecode donthyphenate notranslate">deh_win64_posix</span></a></li><li>  <a href="rt_dmain2.html" title="rt.dmain2"><span class="d_inlinecode donthyphenate notranslate">dmain2</span></a></li><li>  <a href="rt_dwarfeh.html" title="rt.dwarfeh"><span class="d_inlinecode donthyphenate notranslate">dwarfeh</span></a></li><li>  <a href="rt_ehalloc.html" title="rt.ehalloc"><span class="d_inlinecode donthyphenate notranslate">ehalloc</span></a></li><li>  <a href="rt_invariant.html" title="rt.invariant"><span class="d_inlinecode donthyphenate notranslate">invariant</span></a></li><li>  <a href="rt_lifetime.html" title="rt.lifetime"><span class="d_inlinecode donthyphenate notranslate">lifetime</span></a></li><li>  <a href="rt_llmath.html" title="rt.llmath"><span class="d_inlinecode donthyphenate notranslate">llmath</span></a></li><li>  <a href="rt_memory.html" title="rt.memory"><span class="d_inlinecode donthyphenate notranslate">memory</span></a></li><li>  <a href="rt_memset.html" title="rt.memset"><span class="d_inlinecode donthyphenate notranslate">memset</span></a></li><li>  <a href="rt_minfo.html" title="rt.minfo"><span class="d_inlinecode donthyphenate notranslate">minfo</span></a></li><li>  <a href="rt_monitor_.html" title="rt.monitor_"><span class="d_inlinecode donthyphenate notranslate">monitor_</span></a></li><li>  <a href="rt_profilegc.html" title="rt.profilegc"><span class="d_inlinecode donthyphenate notranslate">profilegc</span></a></li><li>  <a href="rt_qsort.html" title="rt.qsort"><span class="d_inlinecode donthyphenate notranslate">qsort</span></a></li><li>  <a href="rt_sections.html" title="rt.sections"><span class="d_inlinecode donthyphenate notranslate">sections</span></a></li><li>  <a href="rt_sections_android.html" title="rt.sections_android"><span class="d_inlinecode donthyphenate notranslate">sections_android</span></a></li><li>  <a href="rt_sections_elf_shared.html" title="rt.sections_elf_shared"><span class="d_inlinecode donthyphenate notranslate">sections_elf_shared</span></a></li><li>  <a href="rt_sections_osx_x86.html" title="rt.sections_osx_x86"><span class="d_inlinecode donthyphenate notranslate">sections_osx_x86</span></a></li><li>  <a href="rt_sections_osx_x86_64.html" title="rt.sections_osx_x86_64"><span class="d_inlinecode donthyphenate notranslate">sections_osx_x86_64</span></a></li><li>  <a href="rt_sections_solaris.html" title="rt.sections_solaris"><span class="d_inlinecode donthyphenate notranslate">sections_solaris</span></a></li><li>  <a href="rt_sections_win32.html" title="rt.sections_win32"><span class="d_inlinecode donthyphenate notranslate">sections_win32</span></a></li><li>  <a href="rt_sections_win64.html" title="rt.sections_win64"><span class="d_inlinecode donthyphenate notranslate">sections_win64</span></a></li><li>  <a href="rt_tlsgc.html" title="rt.tlsgc"><span class="d_inlinecode donthyphenate notranslate">tlsgc</span></a></li><li>  <a href="rt_trace.html" title="rt.trace"><span class="d_inlinecode donthyphenate notranslate">trace</span></a></li><li>  <a href="rt_tracegc.html" title="rt.tracegc"><span class="d_inlinecode donthyphenate notranslate">tracegc</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">typeinfo</span></h7><ul><li>    <a href="rt_typeinfo_ti_Acdouble.html" title="rt.typeinfo.ti_Acdouble"><span class="d_inlinecode donthyphenate notranslate">ti_Acdouble</span></a></li><li>    <a href="rt_typeinfo_ti_Acfloat.html" title="rt.typeinfo.ti_Acfloat"><span class="d_inlinecode donthyphenate notranslate">ti_Acfloat</span></a></li><li>    <a href="rt_typeinfo_ti_Acreal.html" title="rt.typeinfo.ti_Acreal"><span class="d_inlinecode donthyphenate notranslate">ti_Acreal</span></a></li><li>    <a href="rt_typeinfo_ti_Adouble.html" title="rt.typeinfo.ti_Adouble"><span class="d_inlinecode donthyphenate notranslate">ti_Adouble</span></a></li><li>    <a href="rt_typeinfo_ti_Afloat.html" title="rt.typeinfo.ti_Afloat"><span class="d_inlinecode donthyphenate notranslate">ti_Afloat</span></a></li><li>    <a href="rt_typeinfo_ti_Ag.html" title="rt.typeinfo.ti_Ag"><span class="d_inlinecode donthyphenate notranslate">ti_Ag</span></a></li><li>    <a href="rt_typeinfo_ti_Aint.html" title="rt.typeinfo.ti_Aint"><span class="d_inlinecode donthyphenate notranslate">ti_Aint</span></a></li><li>    <a href="rt_typeinfo_ti_Along.html" title="rt.typeinfo.ti_Along"><span class="d_inlinecode donthyphenate notranslate">ti_Along</span></a></li><li>    <a href="rt_typeinfo_ti_Areal.html" title="rt.typeinfo.ti_Areal"><span class="d_inlinecode donthyphenate notranslate">ti_Areal</span></a></li><li>    <a href="rt_typeinfo_ti_Ashort.html" title="rt.typeinfo.ti_Ashort"><span class="d_inlinecode donthyphenate notranslate">ti_Ashort</span></a></li><li>    <a href="rt_typeinfo_ti_C.html" title="rt.typeinfo.ti_C"><span class="d_inlinecode donthyphenate notranslate">ti_C</span></a></li><li>    <a href="rt_typeinfo_ti_byte.html" title="rt.typeinfo.ti_byte"><span class="d_inlinecode donthyphenate notranslate">ti_byte</span></a></li><li>    <a href="rt_typeinfo_ti_cdouble.html" title="rt.typeinfo.ti_cdouble"><span class="d_inlinecode donthyphenate notranslate">ti_cdouble</span></a></li><li>    <a href="rt_typeinfo_ti_cent.html" title="rt.typeinfo.ti_cent"><span class="d_inlinecode donthyphenate notranslate">ti_cent</span></a></li><li>    <a href="rt_typeinfo_ti_cfloat.html" title="rt.typeinfo.ti_cfloat"><span class="d_inlinecode donthyphenate notranslate">ti_cfloat</span></a></li><li>    <a href="rt_typeinfo_ti_char.html" title="rt.typeinfo.ti_char"><span class="d_inlinecode donthyphenate notranslate">ti_char</span></a></li><li>    <a href="rt_typeinfo_ti_creal.html" title="rt.typeinfo.ti_creal"><span class="d_inlinecode donthyphenate notranslate">ti_creal</span></a></li><li>    <a href="rt_typeinfo_ti_dchar.html" title="rt.typeinfo.ti_dchar"><span class="d_inlinecode donthyphenate notranslate">ti_dchar</span></a></li><li>    <a href="rt_typeinfo_ti_delegate.html" title="rt.typeinfo.ti_delegate"><span class="d_inlinecode donthyphenate notranslate">ti_delegate</span></a></li><li>    <a href="rt_typeinfo_ti_double.html" title="rt.typeinfo.ti_double"><span class="d_inlinecode donthyphenate notranslate">ti_double</span></a></li><li>    <a href="rt_typeinfo_ti_float.html" title="rt.typeinfo.ti_float"><span class="d_inlinecode donthyphenate notranslate">ti_float</span></a></li><li>    <a href="rt_typeinfo_ti_idouble.html" title="rt.typeinfo.ti_idouble"><span class="d_inlinecode donthyphenate notranslate">ti_idouble</span></a></li><li>    <a href="rt_typeinfo_ti_ifloat.html" title="rt.typeinfo.ti_ifloat"><span class="d_inlinecode donthyphenate notranslate">ti_ifloat</span></a></li><li>    <a href="rt_typeinfo_ti_int.html" title="rt.typeinfo.ti_int"><span class="d_inlinecode donthyphenate notranslate">ti_int</span></a></li><li>    <a href="rt_typeinfo_ti_ireal.html" title="rt.typeinfo.ti_ireal"><span class="d_inlinecode donthyphenate notranslate">ti_ireal</span></a></li><li>    <a href="rt_typeinfo_ti_long.html" title="rt.typeinfo.ti_long"><span class="d_inlinecode donthyphenate notranslate">ti_long</span></a></li><li>    <a href="rt_typeinfo_ti_n.html" title="rt.typeinfo.ti_n"><span class="d_inlinecode donthyphenate notranslate">ti_n</span></a></li><li>    <a href="rt_typeinfo_ti_ptr.html" title="rt.typeinfo.ti_ptr"><span class="d_inlinecode donthyphenate notranslate">ti_ptr</span></a></li><li>    <a href="rt_typeinfo_ti_real.html" title="rt.typeinfo.ti_real"><span class="d_inlinecode donthyphenate notranslate">ti_real</span></a></li><li>    <a href="rt_typeinfo_ti_short.html" title="rt.typeinfo.ti_short"><span class="d_inlinecode donthyphenate notranslate">ti_short</span></a></li><li>    <a href="rt_typeinfo_ti_ubyte.html" title="rt.typeinfo.ti_ubyte"><span class="d_inlinecode donthyphenate notranslate">ti_ubyte</span></a></li><li>    <a href="rt_typeinfo_ti_ucent.html" title="rt.typeinfo.ti_ucent"><span class="d_inlinecode donthyphenate notranslate">ti_ucent</span></a></li><li>    <a href="rt_typeinfo_ti_uint.html" title="rt.typeinfo.ti_uint"><span class="d_inlinecode donthyphenate notranslate">ti_uint</span></a></li><li>    <a href="rt_typeinfo_ti_ulong.html" title="rt.typeinfo.ti_ulong"><span class="d_inlinecode donthyphenate notranslate">ti_ulong</span></a></li><li>    <a href="rt_typeinfo_ti_ushort.html" title="rt.typeinfo.ti_ushort"><span class="d_inlinecode donthyphenate notranslate">ti_ushort</span></a></li><li>    <a href="rt_typeinfo_ti_void.html" title="rt.typeinfo.ti_void"><span class="d_inlinecode donthyphenate notranslate">ti_void</span></a></li><li>    <a href="rt_typeinfo_ti_wchar.html" title="rt.typeinfo.ti_wchar"><span class="d_inlinecode donthyphenate notranslate">ti_wchar</span></a>
+  </li></ul></li><li>  <a href="rt_unwind.html" title="rt.unwind"><span class="d_inlinecode donthyphenate notranslate">unwind</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">util</span></h7><ul><li>    <h7><span class="d_inlinecode donthyphenate notranslate">container</span></h7><ul><li>      <a href="rt_util_container_array.html" title="rt.util.container.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>      <a href="rt_util_container_common.html" title="rt.util.container.common"><span class="d_inlinecode donthyphenate notranslate">common</span></a></li><li>      <a href="rt_util_container_hashtab.html" title="rt.util.container.hashtab"><span class="d_inlinecode donthyphenate notranslate">hashtab</span></a></li><li>      <a href="rt_util_container_treap.html" title="rt.util.container.treap"><span class="d_inlinecode donthyphenate notranslate">treap</span></a>
+    </li></ul></li><li>    <a href="rt_util_random.html" title="rt.util.random"><span class="d_inlinecode donthyphenate notranslate">random</span></a></li><li>    <a href="rt_util_typeinfo.html" title="rt.util.typeinfo"><span class="d_inlinecode donthyphenate notranslate">typeinfo</span></a></li><li>    <a href="rt_util_utility.html" title="rt.util.utility"><span class="d_inlinecode donthyphenate notranslate">utility</span></a>
+  </li></ul>
+</li></ul>
+</li></ul>
+</div>
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/phobos/&amp;component=phobos&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5Bstd.base64%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/phobos/edit/master/std/base64.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1><span class="d_title">std.base64</span></h1>
+        <div class="quickindex" id="quickindex"></div>
+        <div class="summary">Support for Base64 encoding and decoding.
+</div><div class="description">This module provides two default implementations of Base64 encoding,
+ <a href="#Base64"><span class="d_inlinecode donthyphenate notranslate">Base64</span></a> with a standard encoding alphabet, and a variant
+ <a href="#Base64URL"><span class="d_inlinecode donthyphenate notranslate">Base64URL</span></a> that has a modified encoding alphabet designed to be
+ safe for embedding in URLs and filenames.
+<div class="blankline"></div>
+
+ Both variants are implemented as instantiations of the template
+ <a href="#Base64Impl"><span class="d_inlinecode donthyphenate notranslate">Base64Impl</span></a>. Most users will not need to use this template
+ directly; however, it can be used to create customized Base64 encodings,
+ such as one that omits padding characters, or one that is safe to embed
+ inside a regular expression.
+
+</div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example</span>
+<pre class="d_code notranslate"><span class="d_keyword">ubyte</span>[] data = [0x14, 0xfb, 0x9c, 0x03, 0xd9, 0x7e];
+
+<span class="d_keyword">const</span>(<span class="d_keyword">char</span>)[] encoded = Base64.encode(data);
+<span class="d_keyword">assert</span>(encoded == <span class="d_string">"FPucA9l+"</span>);
+
+<span class="d_keyword">ubyte</span>[] decoded = Base64.decode(<span class="d_string">"FPucA9l+"</span>);
+<span class="d_keyword">assert</span>(decoded == [0x14, 0xfb, 0x9c, 0x03, 0xd9, 0x7e]);
+</pre>
+<div class="blankline"></div>
+
+ The range API is supported for both encoding and decoding:
+
+</p></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example</span>
+<pre class="d_code notranslate"><span class="d_comment">// Create MIME Base64 with CRLF, per line 76.
+</span>File f = File(<span class="d_string">"./text.txt"</span>, <span class="d_string">"r"</span>);
+<span class="d_keyword">scope</span>(exit) f.close();
+
+Appender!string mime64 = appender!string;
+
+<span class="d_keyword">foreach</span> (encoded; Base64.encoder(f.byChunk(57)))
+{
+    mime64.put(encoded);
+    mime64.put(<span class="d_string">"\r\n"</span>);
+}
+
+writeln(mime64.data);
+</pre>
+
+</p></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">References</span>
+<a href="https://tools.ietf.org/html/rfc4648">RFC 4648 - The Base16, Base32, and Base64
+ Data Encodings</a>
+
+</p></div>
+<div class="keyval License"><span class="key keyLicense">License:</span> <div class="val valLicense"><a href="http://boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
+</div></div>
+<div class="keyval Authors"><span class="key keyAuthors">Authors:</span> <div class="val valAuthors">Masahiro Nakagawa, Daniel Murphy (Single value Encoder and Decoder)
+</div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Source</span>
+<span class="phobos_src"><a class="https" href="https://github.com/dlang/phobos/blob/master/std/base64.d">std/base64.d</a></span>
+</p></div>
+
+<dl><dt class="d_decl"><div ><span class="def-anchor" id=".Base64"></span><div class="quickindex" id="quickindex.Base64"></div>alias <span class="def-anchor" id="Base64"></span><code class="ddoc_psymbol">Base64</code> = Base64Impl!('+', '/', '=');
+<br></div></dt>
+<dd><div class="summary">Implementation of standard Base64 encoding.
+</div><div class="description">See <a href="#Base64Impl"><span class="d_inlinecode donthyphenate notranslate">Base64Impl</span></a> for a description of available methods.</div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">ubyte</span>[] data = [0x83, 0xd7, 0x30, 0x7a, 0x01, 0x3f];
+writeln(<span class="d_psymbol">Base64</span>.encode(data)); <span class="d_comment">// "g9cwegE/"
+</span>writeln(<span class="d_psymbol">Base64</span>.decode(<span class="d_string">"g9cwegE/"</span>)); <span class="d_comment">// data
+</span></pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Base64URL"></span><div class="quickindex" id="quickindex.Base64URL"></div>alias <span class="def-anchor" id="Base64URL"></span><code class="ddoc_psymbol">Base64URL</code> = Base64Impl!('-', '_', '=');
+<br></div></dt>
+<dd><div class="summary">Variation of Base64 encoding that is safe for use in URLs and filenames.
+</div><div class="description">See <a href="#Base64Impl"><span class="d_inlinecode donthyphenate notranslate">Base64Impl</span></a> for a description of available methods.</div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">ubyte</span>[] data = [0x83, 0xd7, 0x30, 0x7a, 0x01, 0x3f];
+writeln(<span class="d_psymbol">Base64URL</span>.encode(data)); <span class="d_comment">// "g9cwegE_"
+</span>writeln(<span class="d_psymbol">Base64URL</span>.decode(<span class="d_string">"g9cwegE_"</span>)); <span class="d_comment">// data
+</span></pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Base64URLNoPadding"></span><div class="quickindex" id="quickindex.Base64URLNoPadding"></div>alias <span class="def-anchor" id="Base64URLNoPadding"></span><code class="ddoc_psymbol">Base64URLNoPadding</code> = Base64Impl!('-', '_', '\x00');
+<br></div></dt>
+<dd><div class="summary">Unpadded variation of Base64 encoding that is safe for use in URLs and
+ filenames, as used in RFCs 4648 and 7515 (JWS/JWT/JWE).
+</div><div class="description">See <a href="#Base64Impl"><span class="d_inlinecode donthyphenate notranslate">Base64Impl</span></a> for a description of available methods.</div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">ubyte</span>[] data = [0x83, 0xd7, 0x30, 0x7b, 0xef];
+writeln(<span class="d_psymbol">Base64URLNoPadding</span>.encode(data)); <span class="d_comment">// "g9cwe-8"
+</span>writeln(<span class="d_psymbol">Base64URLNoPadding</span>.decode(<span class="d_string">"g9cwe-8"</span>)); <span class="d_comment">// data
+</span></pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Base64Impl"></span><div class="quickindex" id="quickindex.Base64Impl"></div>template <span class="def-anchor" id="Base64Impl"></span><code class="ddoc_psymbol">Base64Impl</code>(char Map62th, char Map63th, char Padding = '=')<br></div></dt>
+<dd><div class="summary">Template for implementing Base64 encoding and decoding.
+</div><div class="description"> For most purposes, direct usage of this template is not necessary; instead,
+ this module provides default implementations: <a href="#Base64"><span class="d_inlinecode donthyphenate notranslate">Base64</span></a>, implementing
+ basic Base64 encoding, and <a href="#Base64URL"><span class="d_inlinecode donthyphenate notranslate">Base64URL</span></a> and <a href="#Base64URLNoPadding"><span class="d_inlinecode donthyphenate notranslate">Base64URLNoPadding</span></a>,
+ that implement the Base64 variant for use in URLs and filenames, with
+ and without padding, respectively.
+<div class="blankline"></div>
+
+ Customized Base64 encoding schemes can be implemented by instantiating this
+ template with the appropriate arguments. For example:
+<div class="blankline"></div>
+
+<pre class="d_code notranslate"><span class="d_comment">// Non-standard Base64 format for embedding in regular expressions.
+</span><span class="d_keyword">alias</span> Base64Re = <span class="d_psymbol">Base64Impl</span>!('!', '=', Base64.NoPadding);
+</pre>
+
+</div>
+<div class="val"><p class="keyval Section"><span class="key keySection">NOTE</span>
+Encoded strings will not have any padding if the <span class="d_inlinecode donthyphenate notranslate">Padding</span> parameter is
+ set to <span class="d_inlinecode donthyphenate notranslate">NoPadding</span>.</p></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">import</span> std.string : representation;
+
+<span class="d_comment">// pre-defined: alias Base64 = Base64Impl!('+', '/');
+</span><span class="d_keyword">ubyte</span>[] emptyArr;
+writeln(Base64.encode(emptyArr)); <span class="d_comment">// ""
+</span>writeln(Base64.encode(<span class="d_string">"f"</span>.representation)); <span class="d_comment">// "Zg=="
+</span>writeln(Base64.encode(<span class="d_string">"foo"</span>.representation)); <span class="d_comment">// "Zm9v"
+</span>
+<span class="d_keyword">alias</span> Base64Re = <span class="d_psymbol">Base64Impl</span>!('!', '=', Base64.NoPadding);
+writeln(Base64Re.encode(<span class="d_string">"f"</span>.representation)); <span class="d_comment">// "Zg"
+</span>writeln(Base64Re.encode(<span class="d_string">"foo"</span>.representation)); <span class="d_comment">// "Zm9v"
+</span></pre>
+</div></div>
+
+<dl><dt class="d_decl"><div ><span class="def-anchor" id=".Base64Impl.NoPadding"></span><div class="quickindex" id="quickindex.Base64Impl.NoPadding"></div>enum auto <span class="def-anchor" id="NoPadding"></span><code class="ddoc_psymbol">NoPadding</code>;
+<br></div></dt>
+<dd><div class="summary">represents no-padding encoding</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Base64Impl.encodeLength"></span><div class="quickindex" id="quickindex.Base64Impl.encodeLength"></div>pure nothrow @safe size_t <span class="def-anchor" id="encodeLength"></span><code class="ddoc_psymbol">encodeLength</code>(in size_t <code class="ddoc_param">sourceLength</code>);
+<br></div></dt>
+<dd><div class="summary">Calculates the length needed to store the encoded string corresponding
+ to an input of the given length.
+</div><div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">size_t <code class="ddoc_param">sourceLength</code></td>
+<td class="param_desc">Length of the source array.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">The length of a Base64 encoding of an array of the given length.</div></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">ubyte</span>[] data = [0x1a, 0x2b, 0x3c, 0x4d, 0x5d, 0x6e];
+
+<span class="d_comment">// Allocate a buffer large enough to hold the encoded string.
+</span><span class="d_keyword">auto</span> buf = <span class="d_keyword">new</span> <span class="d_keyword">char</span>[Base64.<span class="d_psymbol">encodeLength</span>(data.length)];
+
+Base64.encode(data, buf);
+writeln(buf); <span class="d_comment">// "Gis8TV1u"
+</span></pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Base64Impl.encode"></span><div class="quickindex" id="quickindex.Base64Impl.encode"></div>pure @trusted char[] <span class="def-anchor" id="encode"></span><code class="ddoc_psymbol">encode</code><span class="template_param_list" title="Template parameter list">(R1, R2)</span>(in R1 <code class="ddoc_param">source</code>, R2 <code class="ddoc_param">buffer</code>)<br><span class="constraint">if (isArray!R1 &amp;&amp; is(ElementType!R1 : ubyte) &amp;&amp; is(R2 == char[]))</span>;
+<br><br>char[] <span class="def-anchor" id="encode"></span><code class="ddoc_psymbol">encode</code><span class="template_param_list" title="Template parameter list">(R1, R2)</span>(R1 <code class="ddoc_param">source</code>, R2 <code class="ddoc_param">buffer</code>)<br><span class="constraint">if (!isArray!R1 &amp;&amp; isInputRange!R1 &amp;&amp; is(ElementType!R1 : ubyte) &amp;&amp; hasLength!R1 &amp;&amp; is(R2 == char[]))</span>;
+<br></div></dt>
+<dd><div class="summary">Encode <span class="d_param">source</span> into a <span class="d_inlinecode donthyphenate notranslate">char[]</span> buffer using Base64
+ encoding.
+</div><div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">R1 <code class="ddoc_param">source</code></td>
+<td class="param_desc">The <a href="std_range_primitives.html#.isInputRange">input range</a>
+           to encode.</td></tr>
+<tr class="param"><td class="param_id">R2 <code class="ddoc_param">buffer</code></td>
+<td class="param_desc">The <span class="d_inlinecode donthyphenate notranslate">char[]</span> buffer to store the encoded result.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">The slice of <span class="d_param">buffer</span> that contains the encoded string.</div></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">ubyte</span>[] data = [0x83, 0xd7, 0x30, 0x7a, 0x01, 0x3f];
+<span class="d_keyword">char</span>[32] <span class="d_param">buffer</span>;    <span class="d_comment">// much bigger than necessary
+</span>
+<span class="d_comment">// Just to be sure...
+</span><span class="d_keyword">auto</span> encodedLength = Base64.encodeLength(data.length);
+<span class="d_keyword">assert</span>(<span class="d_param">buffer</span>.length &gt;= encodedLength);
+
+<span class="d_comment">// encode() returns a slice to the provided buffer.
+</span><span class="d_keyword">auto</span> encoded = Base64.<span class="d_psymbol">encode</span>(data, <span class="d_param">buffer</span>[]);
+<span class="d_keyword">assert</span>(encoded <span class="d_keyword">is</span> <span class="d_param">buffer</span>[0 .. encodedLength]);
+writeln(encoded); <span class="d_comment">// "g9cwegE/"
+</span></pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Base64Impl.encode.2"></span><div class="quickindex" id="quickindex.Base64Impl.encode.2"></div>size_t <span class="def-anchor" id="encode"></span><code class="ddoc_psymbol">encode</code><span class="template_param_list" title="Template parameter list">(E, R)</span>(scope const(E)[] <code class="ddoc_param">source</code>, auto ref R <code class="ddoc_param">range</code>)<br><span class="constraint">if (is(E : ubyte) &amp;&amp; isOutputRange!(R, char) &amp;&amp; !is(R == char[]))</span>;
+<br><br>size_t <span class="def-anchor" id="encode"></span><code class="ddoc_psymbol">encode</code><span class="template_param_list" title="Template parameter list">(R1, R2)</span>(R1 <code class="ddoc_param">source</code>, auto ref R2 <code class="ddoc_param">range</code>)<br><span class="constraint">if (!isArray!R1 &amp;&amp; isInputRange!R1 &amp;&amp; is(ElementType!R1 : ubyte) &amp;&amp; hasLength!R1 &amp;&amp; !is(R2 == char[]) &amp;&amp; isOutputRange!(R2, char))</span>;
+<br></div></dt>
+<dd><div class="summary">Encodes <span class="d_param">source</span> into an
+ <a href="std_range_primitives.html#.isOutputRange">output range</a> using
+ Base64 encoding.
+</div><div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">const(E)[] <code class="ddoc_param">source</code></td>
+<td class="param_desc">The <a href="std_range_primitives.html#.isInputRange">input range</a>
+           to encode.</td></tr>
+<tr class="param"><td class="param_id">R <code class="ddoc_param">range</code></td>
+<td class="param_desc">The <a href="std_range_primitives.html#.isOutputRange">output range</a>
+           to store the encoded result.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">The number of times the output range's <span class="d_inlinecode donthyphenate notranslate">put</span> method was invoked.</div></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">import</span> std.array : appender;
+
+<span class="d_keyword">auto</span> output = appender!string();
+<span class="d_keyword">ubyte</span>[] data = [0x1a, 0x2b, 0x3c, 0x4d, 0x5d, 0x6e];
+
+<span class="d_comment">// This overload of encode() returns the number of calls to the output
+</span><span class="d_comment">// range's put method.
+</span>writeln(Base64.<span class="d_psymbol">encode</span>(data, output)); <span class="d_comment">// 8
+</span>writeln(output.data); <span class="d_comment">// "Gis8TV1u"
+</span></pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Base64Impl.encode.3"></span><div class="quickindex" id="quickindex.Base64Impl.encode.3"></div>pure @safe char[] <span class="def-anchor" id="encode"></span><code class="ddoc_psymbol">encode</code><span class="template_param_list" title="Template parameter list">(Range)</span>(Range <code class="ddoc_param">source</code>)<br><span class="constraint">if (isArray!Range &amp;&amp; is(ElementType!Range : ubyte))</span>;
+<br><br>char[] <span class="def-anchor" id="encode"></span><code class="ddoc_psymbol">encode</code><span class="template_param_list" title="Template parameter list">(Range)</span>(Range <code class="ddoc_param">source</code>)<br><span class="constraint">if (!isArray!Range &amp;&amp; isInputRange!Range &amp;&amp; is(ElementType!Range : ubyte) &amp;&amp; hasLength!Range)</span>;
+<br></div></dt>
+<dd><div class="summary">Encodes <span class="d_param">source</span> to newly-allocated buffer.
+</div><div class="description">This convenience method alleviates the need to manually manage output
+ buffers.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">Range <code class="ddoc_param">source</code></td>
+<td class="param_desc">The <a href="std_range_primitives.html#.isInputRange">input range</a>
+           to encode.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">A newly-allocated <span class="d_inlinecode donthyphenate notranslate">char[]</span> buffer containing the encoded string.</div></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">ubyte</span>[] data = [0x1a, 0x2b, 0x3c, 0x4d, 0x5d, 0x6e];
+writeln(Base64.<span class="d_psymbol">encode</span>(data)); <span class="d_comment">// "Gis8TV1u"
+</span></pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Base64Impl.Encoder"></span><div class="quickindex" id="quickindex.Base64Impl.Encoder"></div>struct <span class="def-anchor" id="Encoder"></span><code class="ddoc_psymbol">Encoder</code>(Range) if (isInputRange!Range &amp;&amp; (is(ElementType!Range : const(ubyte)[]) || is(ElementType!Range : const(char)[])));
+<br></div></dt>
+<dd><div class="summary">An <a href="std_range_primitives.html#.isInputRange">input range</a> that
+ iterates over the respective Base64 encodings of a range of data items.
+</div><div class="description">This range will be a <a href="std_range_primitives.html#.isForwardRange">forward range</a>
+ if the underlying data source is at least a forward range.
+
+</div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Note</span>
+This struct is not intended to be created in user code directly;
+ use the <a href="#encoder"><span class="d_inlinecode donthyphenate notranslate">encoder</span></a> function instead.</p></div>
+
+<dl><dt class="d_decl"><div ><span class="def-anchor" id=".Base64Impl.Encoder.empty"></span><div class="quickindex" id="quickindex.Base64Impl.Encoder.empty"></div>@property @trusted bool <span class="def-anchor" id="empty"></span><code class="ddoc_psymbol">empty</code>();
+<br></div></dt>
+<dd><div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">true if there is no more encoded data left.</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Base64Impl.Encoder.front"></span><div class="quickindex" id="quickindex.Base64Impl.Encoder.front"></div>nothrow @property @safe char[] <span class="def-anchor" id="front"></span><code class="ddoc_psymbol">front</code>();
+<br></div></dt>
+<dd><div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">The current chunk of encoded data.</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Base64Impl.Encoder.popFront"></span><div class="quickindex" id="quickindex.Base64Impl.Encoder.popFront"></div>void <span class="def-anchor" id="popFront"></span><code class="ddoc_psymbol">popFront</code>();
+<br></div></dt>
+<dd><div class="summary">Advance the range to the next chunk of encoded data.
+</div><div class="keyval Throws"><span class="key keyThrows">Throws:</span> <div class="val valThrows"><span class="d_inlinecode donthyphenate notranslate">Base64Exception</span> If invoked when
+  <a href="#.Base64Impl.Encoder.empty">`empty`</a> returns <span class="d_inlinecode donthyphenate notranslate">true</span>.</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Base64Impl.Encoder.save"></span><div class="quickindex" id="quickindex.Base64Impl.Encoder.save"></div>@property typeof(this) <span class="def-anchor" id="save"></span><code class="ddoc_psymbol">save</code>();
+<br></div></dt>
+<dd><div class="summary">Save the current iteration state of the range.
+</div><div class="description">This method is only available if the underlying range is a
+ <a href="std_range_primitives.html#.isForwardRange">forward range</a>.
+
+</div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">A copy of <span class="d_inlinecode donthyphenate notranslate">this</span>.</div></div>
+
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Base64Impl.Encoder.2"></span><div class="quickindex" id="quickindex.Base64Impl.Encoder.2"></div>struct <span class="def-anchor" id="Encoder"></span><code class="ddoc_psymbol">Encoder</code>(Range) if (isInputRange!Range &amp;&amp; is(ElementType!Range : ubyte));
+<br></div></dt>
+<dd><div class="summary">An <a href="std_range_primitives.html#.isInputRange">input range</a> that
+ iterates over the encoded bytes of the given source data.
+</div><div class="description">It will be a <a href="std_range_primitives.html#.isForwardRange">forward range</a>
+ if the underlying data source is at least a forward range.
+
+</div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Note</span>
+This struct is not intended to be created in user code directly;
+ use the <a href="#encoder"><span class="d_inlinecode donthyphenate notranslate">encoder</span></a> function instead.</p></div>
+
+<dl><dt class="d_decl"><div ><span class="def-anchor" id=".Base64Impl.Encoder.empty.2"></span><div class="quickindex" id="quickindex.Base64Impl.Encoder.empty.2"></div>const nothrow @property @safe bool <span class="def-anchor" id="empty"></span><code class="ddoc_psymbol">empty</code>();
+<br></div></dt>
+<dd><div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">true if there are no more encoded characters to be iterated.</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Base64Impl.Encoder.front.2"></span><div class="quickindex" id="quickindex.Base64Impl.Encoder.front.2"></div>nothrow @property @safe ubyte <span class="def-anchor" id="front"></span><code class="ddoc_psymbol">front</code>();
+<br></div></dt>
+<dd><div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">The current encoded character.</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Base64Impl.Encoder.popFront.2"></span><div class="quickindex" id="quickindex.Base64Impl.Encoder.popFront.2"></div>void <span class="def-anchor" id="popFront"></span><code class="ddoc_psymbol">popFront</code>();
+<br></div></dt>
+<dd><div class="summary">Advance to the next encoded character.
+</div><div class="keyval Throws"><span class="key keyThrows">Throws:</span> <div class="val valThrows"><span class="d_inlinecode donthyphenate notranslate">Base64Exception</span> If invoked when <a href="#.Base64Impl.Encoder.empty.2">`  empty`</a> returns <span class="d_inlinecode donthyphenate notranslate">true</span>.</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Base64Impl.Encoder.save.2"></span><div class="quickindex" id="quickindex.Base64Impl.Encoder.save.2"></div>@property typeof(this) <span class="def-anchor" id="save"></span><code class="ddoc_psymbol">save</code>();
+<br></div></dt>
+<dd><div class="summary">Save the current iteration state of the range.
+</div><div class="description">This method is only available if the underlying range is a
+ <a href="std_range_primitives.html#.isForwardRange">forward range</a>.
+
+</div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">A copy of <span class="d_inlinecode donthyphenate notranslate">this</span>.</div></div>
+
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Base64Impl.encoder"></span><div class="quickindex" id="quickindex.Base64Impl.encoder"></div>Encoder!Range <span class="def-anchor" id="encoder"></span><code class="ddoc_psymbol">encoder</code><span class="template_param_list" title="Template parameter list">(Range)</span>(Range <code class="ddoc_param">range</code>)<br><span class="constraint">if (isInputRange!Range)</span>;
+<br></div></dt>
+<dd><div class="summary">Construct an <span class="d_inlinecode donthyphenate notranslate">Encoder</span> that iterates over the Base64 encoding of the
+ given <a href="std_range_primitives.html#.isInputRange">input range</a>.
+</div><div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">Range <code class="ddoc_param">range</code></td>
+<td class="param_desc">An <a href="std_range_primitives.html#.isInputRange">input range</a>
+          over the data to be encoded.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">If <span class="d_param">range</span> is a range of bytes, an <span class="d_inlinecode donthyphenate notranslate">Encoder</span> that iterates
+  over the bytes of the corresponding Base64 encoding.
+<div class="blankline"></div>
+
+  If <span class="d_param">range</span> is a range of ranges of bytes, an <span class="d_inlinecode donthyphenate notranslate">Encoder</span> that
+  iterates over the Base64 encoded strings of each element of the range.
+<div class="blankline"></div>
+
+  In both cases, the returned <span class="d_inlinecode donthyphenate notranslate">Encoder</span> will be a
+  <a href="std_range_primitives.html#.isForwardRange">forward range</a> if the
+  given <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">range</code></span> is at least a forward range, otherwise it will be only
+  an input range.
+
+</div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example</span>
+ This example encodes the input one line at a time.
+<pre class="d_code notranslate">File f = File(<span class="d_string">"text.txt"</span>, <span class="d_string">"r"</span>);
+<span class="d_keyword">scope</span>(exit) f.close();
+
+<span class="d_keyword">uint</span> line = 0;
+<span class="d_keyword">foreach</span> (encoded; Base64.<span class="d_psymbol">encoder</span>(f.byLine()))
+{
+    writeln(++line, <span class="d_string">". "</span>, encoded);
+}
+</pre>
+
+</p></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example</span>
+ This example encodes the input data one byte at a time.
+<pre class="d_code notranslate"><span class="d_keyword">ubyte</span>[] data = <span class="d_keyword">cast</span>(<span class="d_keyword">ubyte</span>[]) <span class="d_string">"0123456789"</span>;
+
+<span class="d_comment">// The ElementType of data is not aggregation type
+</span><span class="d_keyword">foreach</span> (encoded; Base64.<span class="d_psymbol">encoder</span>(data))
+{
+    writeln(encoded);
+}
+</pre>
+</p></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Base64Impl.decodeLength"></span><div class="quickindex" id="quickindex.Base64Impl.decodeLength"></div>pure nothrow @safe size_t <span class="def-anchor" id="decodeLength"></span><code class="ddoc_psymbol">decodeLength</code>(in size_t <code class="ddoc_param">sourceLength</code>);
+<br></div></dt>
+<dd><div class="summary">Given a Base64 encoded string, calculates the length of the decoded
+ string.
+</div><div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">size_t <code class="ddoc_param">sourceLength</code></td>
+<td class="param_desc">The length of the Base64 encoding.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">The length of the decoded string corresponding to a Base64 encoding of
+  length <span class="d_param">sourceLength</span>.</div></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">auto</span> encoded = <span class="d_string">"Gis8TV1u"</span>;
+
+<span class="d_comment">// Allocate a sufficiently large buffer to hold to decoded result.
+</span><span class="d_keyword">auto</span> buffer = <span class="d_keyword">new</span> <span class="d_keyword">ubyte</span>[Base64.<span class="d_psymbol">decodeLength</span>(encoded.length)];
+
+Base64.decode(encoded, buffer);
+writeln(buffer); <span class="d_comment">// [0x1a, 0x2b, 0x3c, 0x4d, 0x5d, 0x6e]
+</span></pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Base64Impl.decode"></span><div class="quickindex" id="quickindex.Base64Impl.decode"></div>pure @trusted ubyte[] <span class="def-anchor" id="decode"></span><code class="ddoc_psymbol">decode</code><span class="template_param_list" title="Template parameter list">(R1, R2)</span>(in R1 <code class="ddoc_param">source</code>, R2 <code class="ddoc_param">buffer</code>)<br><span class="constraint">if (isArray!R1 &amp;&amp; is(ElementType!R1 : dchar) &amp;&amp; is(R2 == ubyte[]) &amp;&amp; isOutputRange!(R2, ubyte))</span>;
+<br><br>ubyte[] <span class="def-anchor" id="decode"></span><code class="ddoc_psymbol">decode</code><span class="template_param_list" title="Template parameter list">(R1, R2)</span>(R1 <code class="ddoc_param">source</code>, R2 <code class="ddoc_param">buffer</code>)<br><span class="constraint">if (!isArray!R1 &amp;&amp; isInputRange!R1 &amp;&amp; is(ElementType!R1 : dchar) &amp;&amp; hasLength!R1 &amp;&amp; is(R2 == ubyte[]) &amp;&amp; isOutputRange!(R2, ubyte))</span>;
+<br></div></dt>
+<dd><div class="summary">Decodes <span class="d_param">source</span> into the given buffer.
+</div><div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">R1 <code class="ddoc_param">source</code></td>
+<td class="param_desc">The <a href="std_range_primitives.html#.isInputRange">input range</a>
+           to decode.</td></tr>
+<tr class="param"><td class="param_id">R2 <code class="ddoc_param">buffer</code></td>
+<td class="param_desc">The buffer to store decoded result.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">The slice of <span class="d_param">buffer</span> containing the decoded result.
+
+</div></div>
+<div class="keyval Throws"><span class="key keyThrows">Throws:</span> <div class="val valThrows"><span class="d_inlinecode donthyphenate notranslate">Base64Exception</span> if <span class="d_param">source</span> contains characters outside the
+  base alphabet of the current Base64 encoding scheme.</div></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">auto</span> encoded = <span class="d_string">"Gis8TV1u"</span>;
+<span class="d_keyword">ubyte</span>[32] <span class="d_param">buffer</span>;   <span class="d_comment">// much bigger than necessary
+</span>
+<span class="d_comment">// Just to be sure...
+</span><span class="d_keyword">auto</span> decodedLength = Base64.decodeLength(encoded.length);
+<span class="d_keyword">assert</span>(<span class="d_param">buffer</span>.length &gt;= decodedLength);
+
+<span class="d_comment">// decode() returns a slice of the given buffer.
+</span><span class="d_keyword">auto</span> decoded = Base64.<span class="d_psymbol">decode</span>(encoded, <span class="d_param">buffer</span>[]);
+<span class="d_keyword">assert</span>(decoded <span class="d_keyword">is</span> <span class="d_param">buffer</span>[0 .. decodedLength]);
+writeln(decoded); <span class="d_comment">// [0x1a, 0x2b, 0x3c, 0x4d, 0x5d, 0x6e]
+</span></pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Base64Impl.decode.2"></span><div class="quickindex" id="quickindex.Base64Impl.decode.2"></div>size_t <span class="def-anchor" id="decode"></span><code class="ddoc_psymbol">decode</code><span class="template_param_list" title="Template parameter list">(R1, R2)</span>(in R1 <code class="ddoc_param">source</code>, auto ref R2 <code class="ddoc_param">range</code>)<br><span class="constraint">if (isArray!R1 &amp;&amp; is(ElementType!R1 : dchar) &amp;&amp; !is(R2 == ubyte[]) &amp;&amp; isOutputRange!(R2, ubyte))</span>;
+<br><br>size_t <span class="def-anchor" id="decode"></span><code class="ddoc_psymbol">decode</code><span class="template_param_list" title="Template parameter list">(R1, R2)</span>(R1 <code class="ddoc_param">source</code>, auto ref R2 <code class="ddoc_param">range</code>)<br><span class="constraint">if (!isArray!R1 &amp;&amp; isInputRange!R1 &amp;&amp; is(ElementType!R1 : dchar) &amp;&amp; hasLength!R1 &amp;&amp; !is(R2 == ubyte[]) &amp;&amp; isOutputRange!(R2, ubyte))</span>;
+<br></div></dt>
+<dd><div class="summary">Decodes <span class="d_param">source</span> into a given
+ <a href="std_range_primitives.html#.isOutputRange">output range</a>.
+</div><div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">R1 <code class="ddoc_param">source</code></td>
+<td class="param_desc">The <a href="std_range_primitives.html#.isInputRange">input range</a>
+           to decode.</td></tr>
+<tr class="param"><td class="param_id">R2 <code class="ddoc_param">range</code></td>
+<td class="param_desc">The <a href="std_range_primitives.html#.isOutputRange">output range</a>
+           to store the decoded result.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">The number of times the output range's <span class="d_inlinecode donthyphenate notranslate">put</span> method was invoked.
+
+</div></div>
+<div class="keyval Throws"><span class="key keyThrows">Throws:</span> <div class="val valThrows"><span class="d_inlinecode donthyphenate notranslate">Base64Exception</span> if <span class="d_param">source</span> contains characters outside the
+  base alphabet of the current Base64 encoding scheme.</div></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">struct</span> OutputRange
+{
+    <span class="d_keyword">ubyte</span>[] result;
+    <span class="d_keyword">void</span> put(<span class="d_keyword">ubyte</span> b) { result ~= b; }
+}
+OutputRange output;
+
+<span class="d_comment">// This overload of decode() returns the number of calls to put().
+</span>writeln(Base64.<span class="d_psymbol">decode</span>(<span class="d_string">"Gis8TV1u"</span>, output)); <span class="d_comment">// 6
+</span>writeln(output.result); <span class="d_comment">// [0x1a, 0x2b, 0x3c, 0x4d, 0x5d, 0x6e]
+</span></pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Base64Impl.decode.3"></span><div class="quickindex" id="quickindex.Base64Impl.decode.3"></div>pure @safe ubyte[] <span class="def-anchor" id="decode"></span><code class="ddoc_psymbol">decode</code><span class="template_param_list" title="Template parameter list">(Range)</span>(Range <code class="ddoc_param">source</code>)<br><span class="constraint">if (isArray!Range &amp;&amp; is(ElementType!Range : dchar))</span>;
+<br><br>ubyte[] <span class="def-anchor" id="decode"></span><code class="ddoc_psymbol">decode</code><span class="template_param_list" title="Template parameter list">(Range)</span>(Range <code class="ddoc_param">source</code>)<br><span class="constraint">if (!isArray!Range &amp;&amp; isInputRange!Range &amp;&amp; is(ElementType!Range : dchar) &amp;&amp; hasLength!Range)</span>;
+<br></div></dt>
+<dd><div class="summary">Decodes <span class="d_param">source</span> into newly-allocated buffer.
+</div><div class="description">This convenience method alleviates the need to manually manage decoding
+ buffers.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">Range <code class="ddoc_param">source</code></td>
+<td class="param_desc">The <a href="std_range_primitives.html#.isInputRange">input range</a>
+           to decode.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">A newly-allocated <span class="d_inlinecode donthyphenate notranslate">ubyte[]</span> buffer containing the decoded string.</div></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">auto</span> data = <span class="d_string">"Gis8TV1u"</span>;
+writeln(Base64.<span class="d_psymbol">decode</span>(data)); <span class="d_comment">// [0x1a, 0x2b, 0x3c, 0x4d, 0x5d, 0x6e]
+</span></pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Base64Impl.Decoder"></span><div class="quickindex" id="quickindex.Base64Impl.Decoder"></div>struct <span class="def-anchor" id="Decoder"></span><code class="ddoc_psymbol">Decoder</code>(Range) if (isInputRange!Range &amp;&amp; (is(ElementType!Range : const(char)[]) || is(ElementType!Range : const(ubyte)[])));
+<br></div></dt>
+<dd><div class="summary">An <a href="std_range_primitives.html#.isInputRange">input range</a> that
+ iterates over the decoded data of a range of Base64 encodings.
+</div><div class="description">This range will be a <a href="std_range_primitives.html#.isForwardRange">forward range</a>
+ if the underlying data source is at least a forward range.
+
+</div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Note</span>
+This struct is not intended to be created in user code directly;
+ use the <a href="#decoder"><span class="d_inlinecode donthyphenate notranslate">decoder</span></a> function instead.</p></div>
+
+<dl><dt class="d_decl"><div ><span class="def-anchor" id=".Base64Impl.Decoder.empty"></span><div class="quickindex" id="quickindex.Base64Impl.Decoder.empty"></div>@property @trusted bool <span class="def-anchor" id="empty"></span><code class="ddoc_psymbol">empty</code>();
+<br></div></dt>
+<dd><div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">true if there are no more elements to be iterated.</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Base64Impl.Decoder.front"></span><div class="quickindex" id="quickindex.Base64Impl.Decoder.front"></div>nothrow @property @safe ubyte[] <span class="def-anchor" id="front"></span><code class="ddoc_psymbol">front</code>();
+<br></div></dt>
+<dd><div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">The decoding of the current element in the input.</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Base64Impl.Decoder.popFront"></span><div class="quickindex" id="quickindex.Base64Impl.Decoder.popFront"></div>void <span class="def-anchor" id="popFront"></span><code class="ddoc_psymbol">popFront</code>();
+<br></div></dt>
+<dd><div class="summary">Advance to the next element in the input to be decoded.
+</div><div class="keyval Throws"><span class="key keyThrows">Throws:</span> <div class="val valThrows"><span class="d_inlinecode donthyphenate notranslate">Base64Exception</span> if invoked when <a href="#.Base64Impl.Decoder.empty">`  empty`</a> returns <span class="d_inlinecode donthyphenate notranslate">true</span>.</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Base64Impl.Decoder.save"></span><div class="quickindex" id="quickindex.Base64Impl.Decoder.save"></div>@property typeof(this) <span class="def-anchor" id="save"></span><code class="ddoc_psymbol">save</code>();
+<br></div></dt>
+<dd><div class="summary">Saves the current iteration state.
+</div><div class="description">This method is only available if the underlying range is a
+ <a href="std_range_primitives.html#.isForwardRange">forward range</a>
+
+</div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">A copy of <span class="d_inlinecode donthyphenate notranslate">this</span>.</div></div>
+
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Base64Impl.Decoder.2"></span><div class="quickindex" id="quickindex.Base64Impl.Decoder.2"></div>struct <span class="def-anchor" id="Decoder"></span><code class="ddoc_psymbol">Decoder</code>(Range) if (isInputRange!Range &amp;&amp; is(ElementType!Range : char));
+<br></div></dt>
+<dd><div class="summary">An <a href="std_range_primitives.html#.isInputRange">input range</a> that
+ iterates over the bytes of data decoded from a Base64 encoded string.
+</div><div class="description">This range will be a <a href="std_range_primitives.html#.isForwardRange">forward range</a>
+ if the underlying data source is at least a forward range.
+
+</div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Note</span>
+This struct is not intended to be created in user code directly;
+ use the <a href="#decoder"><span class="d_inlinecode donthyphenate notranslate">decoder</span></a> function instead.</p></div>
+
+<dl><dt class="d_decl"><div ><span class="def-anchor" id=".Base64Impl.Decoder.empty.2"></span><div class="quickindex" id="quickindex.Base64Impl.Decoder.empty.2"></div>const nothrow @property @safe bool <span class="def-anchor" id="empty"></span><code class="ddoc_psymbol">empty</code>();
+<br></div></dt>
+<dd><div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">true if there are no more elements to be iterated.</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Base64Impl.Decoder.front.2"></span><div class="quickindex" id="quickindex.Base64Impl.Decoder.front.2"></div>nothrow @property @safe ubyte <span class="def-anchor" id="front"></span><code class="ddoc_psymbol">front</code>();
+<br></div></dt>
+<dd><div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">The current decoded byte.</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Base64Impl.Decoder.popFront.2"></span><div class="quickindex" id="quickindex.Base64Impl.Decoder.popFront.2"></div>void <span class="def-anchor" id="popFront"></span><code class="ddoc_psymbol">popFront</code>();
+<br></div></dt>
+<dd><div class="summary">Advance to the next decoded byte.
+</div><div class="keyval Throws"><span class="key keyThrows">Throws:</span> <div class="val valThrows"><span class="d_inlinecode donthyphenate notranslate">Base64Exception</span> if invoked when <a href="#.Base64Impl.Decoder.empty">`  empty`</a> returns <span class="d_inlinecode donthyphenate notranslate">true</span>.</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Base64Impl.Decoder.save.2"></span><div class="quickindex" id="quickindex.Base64Impl.Decoder.save.2"></div>@property typeof(this) <span class="def-anchor" id="save"></span><code class="ddoc_psymbol">save</code>();
+<br></div></dt>
+<dd><div class="summary">Saves the current iteration state.
+</div><div class="description">This method is only available if the underlying range is a
+ <a href="std_range_primitives.html#.isForwardRange">forward range</a>
+
+</div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">A copy of <span class="d_inlinecode donthyphenate notranslate">this</span>.</div></div>
+
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Base64Impl.decoder"></span><div class="quickindex" id="quickindex.Base64Impl.decoder"></div>Decoder!Range <span class="def-anchor" id="decoder"></span><code class="ddoc_psymbol">decoder</code><span class="template_param_list" title="Template parameter list">(Range)</span>(Range <code class="ddoc_param">range</code>)<br><span class="constraint">if (isInputRange!Range)</span>;
+<br></div></dt>
+<dd><div class="summary">Construct a <span class="d_inlinecode donthyphenate notranslate">Decoder</span> that iterates over the decoding of the given
+ Base64 encoded data.
+</div><div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">Range <code class="ddoc_param">range</code></td>
+<td class="param_desc">An <a href="std_range_primitives.html#.isInputRange">input range</a>
+      over the data to be decoded.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">If <span class="d_param">range</span> is a range of characters, a <span class="d_inlinecode donthyphenate notranslate">Decoder</span> that
+  iterates over the bytes of the corresponding Base64 decoding.
+<div class="blankline"></div>
+
+  If <span class="d_param">range</span> is a range of ranges of characters, a <span class="d_inlinecode donthyphenate notranslate">Decoder</span>
+  that iterates over the decoded strings corresponding to each element of
+  the range. In this case, the length of each subrange must be a multiple
+  of 4; the returned decoder does not keep track of Base64 decoding
+  state across subrange boundaries.
+<div class="blankline"></div>
+
+  In both cases, the returned <span class="d_inlinecode donthyphenate notranslate">Decoder</span> will be a
+ <a href="std_range_primitives.html#.isForwardRange">forward range</a> if the
+  given <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">range</code></span> is at least a forward range, otherwise it will be only
+  an input range.
+<div class="blankline"></div>
+
+ If the input data contains characters not found in the base alphabet of
+ the current Base64 encoding scheme, the returned range may throw a
+ <span class="d_inlinecode donthyphenate notranslate">Base64Exception</span>.
+
+</div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example</span>
+ This example shows decoding over a range of input data lines.
+<pre class="d_code notranslate"><span class="d_keyword">foreach</span> (decoded; Base64.<span class="d_psymbol">decoder</span>(stdin.byLine()))
+{
+    writeln(decoded);
+}
+</pre>
+
+</p></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example</span>
+ This example shows decoding one byte at a time.
+<pre class="d_code notranslate"><span class="d_keyword">auto</span> encoded = Base64.encoder(<span class="d_keyword">cast</span>(<span class="d_keyword">ubyte</span>[])<span class="d_string">"0123456789"</span>);
+<span class="d_keyword">foreach</span> (n; map!<span class="d_string">q{a - '0'}</span>(Base64.<span class="d_psymbol">decoder</span>(encoded)))
+{
+    writeln(n);
+}
+</pre>
+</p></div>
+
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Base64Exception"></span><div class="quickindex" id="quickindex.Base64Exception"></div>class <span class="def-anchor" id="Base64Exception"></span><code class="ddoc_psymbol">Base64Exception</code>: <span class="ddoc_psuper_symbol">object.Exception</span>;
+<br></div></dt>
+<dd><div class="summary">Exception thrown upon encountering Base64 encoding or decoding errors.</div><span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">import</span> std.exception : assertThrown;
+assertThrown!<span class="d_psymbol">Base64Exception</span>(Base64.decode(<span class="d_string">"ab|c"</span>));
+</pre>
+</div></div>
+
+</dd>
+</dl>
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2022 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on (no date time)</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+<script type="text/javascript" src="../js/run_examples.js"></script>
+
+<script type="text/javascript" src="../js/listanchors.js"></script>
+<script type="text/javascript" src="../js/show_contributors.js"></script>
+<script type="text/javascript">jQuery(document).ready(listanchors);</script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

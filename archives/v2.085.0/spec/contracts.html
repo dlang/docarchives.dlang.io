@@ -1,0 +1,462 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2022 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Contract Programming - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Contract Programming' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href=".."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.freenode.net/d'>IRC</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option selected value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+<div class="subnav-helper"></div> <div class="subnav">    <div class="head"><h5>Language Reference</h5> <p class="subnav-duplicate"><a href="../spec/spec.html">table of contents</a></p></div>
+    <ul>        <li><a href='            ../spec/intro.html'>Introduction</a></li><li><a href='            ../spec/lex.html'>Lexical</a></li><li><a href='            ../spec/grammar.html'>Grammar</a></li><li><a href='            ../spec/module.html'>Modules</a></li><li><a href='            ../spec/declaration.html'>Declarations</a></li><li><a href='            ../spec/type.html'>Types</a></li><li><a href='            ../spec/property.html'>Properties</a></li><li><a href='            ../spec/attribute.html'>Attributes</a></li><li><a href='            ../spec/pragma.html'>Pragmas</a></li><li><a href='            ../spec/expression.html'>Expressions</a></li><li><a href='            ../spec/statement.html'>Statements</a></li><li><a href='            ../spec/arrays.html'>Arrays</a></li><li><a href='            ../spec/hash-map.html'>Associative Arrays</a></li><li><a href='            ../spec/struct.html'>Structs and Unions</a></li><li><a href='            ../spec/class.html'>Classes</a></li><li><a href='            ../spec/interface.html'>Interfaces</a></li><li><a href='            ../spec/enum.html'>Enums</a></li><li><a href='            ../spec/const3.html'>Type Qualifiers</a></li><li><a href='            ../spec/function.html'>Functions</a></li><li><a href='            ../spec/operatoroverloading.html'>Operator Overloading</a></li><li><a href='            ../spec/template.html'>Templates</a></li><li><a href='            ../spec/template-mixin.html'>Template Mixins</a></li><li><a href='            ../spec/contracts.html'>Contract Programming</a></li><li><a href='            ../spec/version.html'>Conditional Compilation</a></li><li><a href='            ../spec/traits.html'>Traits</a></li><li><a href='            ../spec/errors.html'>Error Handling</a></li><li><a href='            ../spec/unittest.html'>Unit Tests</a></li><li><a href='            ../spec/garbage.html'>Garbage Collection</a></li><li><a href='            ../spec/float.html'>Floating Point</a></li><li><a href='            ../spec/iasm.html'>D x86 Inline Assembler</a></li><li><a href='            ../spec/ddoc.html'>Embedded Documentation</a></li><li><a href='            ../spec/interfaceToC.html'>Interfacing to C</a></li><li><a href='            ../spec/cpp_interface.html'>Interfacing to C++</a></li><li><a href='            ../spec/objc_interface.html'>Interfacing to Objective-C</a></li><li><a href='            ../spec/portability.html'>Portability Guide</a></li><li><a href='            ../spec/entity.html'>Named Character Entities</a></li><li><a href='            ../spec/memory-safe-d.html'>Memory Safety</a></li><li><a href='            ../spec/abi.html'>Application Binary Interface</a></li><li><a href='            ../spec/simd.html'>Vector Extensions</a></li><li><a href='            ../spec/betterc.html'>Better C
+        </a></li>
+    </ul>
+</div>
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BContract Programming%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/spec/contracts.dd">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Contract Programming</h1>
+        
+<style>    body { counter-reset: h1 23; counter-increment: h1 -1; }
+    h1 { counter-reset: h2 h3 p; }
+    h2 { counter-reset: h3 h4 p; }
+    h3 { counter-reset: h4 p; }
+    h4 { counter-reset: p; }
+    h1::before {
+        counter-increment: h1;
+        content: counter(h1) ". ";
+    }
+    h2::before {
+        counter-increment: h2;
+        content: counter(h1) "." counter(h2) " ";
+    }
+    h3::before {
+        counter-increment: h3;
+        content: counter(h1) "." counter(h2) "." counter(h3) " ";
+    }
+    h4::before {
+        counter-increment: h4;
+        content: counter(h1) "." counter(h2) "." counter(h3) "." counter(h4) " ";
+    }
+    p::before, .spec-boxes::before {
+        counter-increment: p;
+        content: counter(p) ". ";
+    }
+    h1::before, h2::before, h3::before, h4::before, p::before, .spec-boxes::before
+    {
+        color: #999;
+        font-size: 80%;
+        margin-right: 0.25em;
+    }
+</style>
+        <div class="blankline"></div>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<div class="page-contents quickindex">    <div class="page-contents-header">        <b>Contents</b>
+    </div>
+    <ol>    <li><a href="#assert_contracts">Assert Contract</a></li>
+    <li><a href="#pre_post_contracts">Pre and Post Contracts</a></li>
+    <li><a href="#in_out_inheritance">In, Out and Inheritance</a></li>
+    <li><a href="#Invariants">Invariants</a></li>
+    <li><a href="#references">References</a></li>
+</ol>
+</div>
+<div class="blankline"></div>
+        <p>Contracts are a breakthrough technique to reduce the programming effort
+        for large projects. Contracts are the concept of preconditions, postconditions,
+        errors, and invariants.
+        </p>
+<div class="blankline"></div>
+        <p>Building contract support into the language makes for:</p>
+<div class="blankline"></div>
+        <ol>        <li>a consistent look and feel for the contracts</li>
+        <li>tool support</li>
+        <li>it's possible the compiler can generate better code using information gathered
+        from the contracts</li>
+        <li>easier management and enforcement of contracts</li>
+        <li>handling of contract inheritance</li>
+        </ol>
+<div class="blankline"></div>
+<img src="../images/d4.gif" style="max-width:100%" alt="Contracts make D bug resistant" border="0">
+<div class="blankline"></div>
+        <p>The idea of a contract is simple - it's just an expression that must evaluate to true.
+        If it does not, the contract is broken, and by definition, the program has a bug in it.
+        Contracts form part of the specification for a program, moving it from the documentation
+        to the code itself. And as every programmer knows, documentation tends to be incomplete,
+        out of date, wrong, or non-existent. Moving the contracts into the code makes them
+        verifiable against the program.</p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="assert_contracts" href="#assert_contracts">Assert Contract</a></h2>
+<div class="blankline"></div>
+        <p>The most basic contract is the
+        <a href="../spec/expression.html#AssertExpression"><i>AssertExpression</i></a>.
+        An <b>assert</b> declares an expression that must evaluate to true, with an
+        optional failure string as a second argument:</p>
+<pre class="d_code notranslate"><span class="d_keyword">assert</span>(expression);
+<span class="d_keyword">assert</span>(expression, <span class="d_string">"message to display on failure"</span>);
+</pre>
+        <p>As a contract, an <span class="d_inlinecode donthyphenate notranslate">assert</span> represents a guarantee that the code
+        <i>must</i> uphold. Any failure of this expression represents a logic
+        error in the code that must be fixed in the source code.  A program for
+        which the assert contract is false is, by definition, invalid.</p>
+<div class="blankline"></div>
+        <p>As a debugging aid, the compiler may insert a runtime check to
+        verify that the expression is indeed true.  If it is false, an
+        <span class="d_inlinecode donthyphenate notranslate">AssertError</span> is thrown.  When compiling for release, this check is not
+        generated.  The special <span class="d_inlinecode donthyphenate notranslate">assert(0)</span> expression, however, is
+        generated even in release mode. See the <a href="../spec/expression.html#        AssertExpression"><i>        AssertExpression</i></a> documentation for more information.</p>
+<div class="blankline"></div>
+        <p>The compiler is free to assume the assert expression is true and
+        optimize subsequent code accordingly.</p>
+<div class="blankline"></div>
+        <div class="spec-boxes undefined-behavior"><b>Undefined Behavior</b>: The subsequent execution of the program after an
+        assert contract is false.</div>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="pre_post_contracts" href="#pre_post_contracts">Pre and Post Contracts</a></h2>
+<div class="blankline"></div>
+        <p>The pre contracts specify the preconditions before a statement is executed. The most
+        typical use of this would be in validating the parameters to a function. The post
+        contracts validate the result of the statement. The most typical use of this
+        would be in validating the return value of a function and of any side effects it has.
+        In D, pre contracts begin with <span class="d_inlinecode donthyphenate notranslate">in</span>, and post contracts begin with <span class="d_inlinecode donthyphenate notranslate">out</span>. They
+        come at the end of the function signature and before the opening brace of the function body.</p>
+<div class="blankline"></div>
+        <p>Pre and post contracts can be written either in expression form (feature introduced in DMD
+        2.081.0), with a syntax similar to <b>assert</b>, or as block statements
+        containing arbitrary code.</p>
+<div class="blankline"></div>
+        <p>The expression form is:</p>
+<pre class="d_code notranslate"><span class="d_keyword">in</span> (expression)
+<span class="d_keyword">in</span> (expression, <span class="d_string">"failure string"</span>)
+<span class="d_keyword">out</span> (identifier; expression)
+<span class="d_keyword">out</span> (identifier; expression, <span class="d_string">"failure string"</span>)
+<span class="d_keyword">out</span> (; expression)
+<span class="d_keyword">out</span> (; expression, <span class="d_string">"failure string"</span>)
+{
+    ...<span class="d_keyword">function</span> body...
+}
+</pre>
+        <p>The block statement form is:</p>
+<pre class="d_code notranslate"><span class="d_keyword">in</span>
+{
+    ...contract preconditions...
+}
+<span class="d_keyword">out</span>
+{
+    ...contract postconditions...
+}
+<span class="d_keyword">out</span> (identifier)
+{
+    ...contract postconditions...
+}
+<span class="d_keyword">do</span>
+{
+    ...<span class="d_keyword">function</span> body...
+}
+</pre>
+<div class="blankline"></div>
+        <p>The optional identifier in either type of <span class="d_inlinecode donthyphenate notranslate">out</span> contract is set to the return value
+        of the function.</p>
+<div class="blankline"></div>
+        <p>By definition, if a pre contract fails, then the function received bad
+        parameters. If a post contract fails, then there is a bug in the function. In either case,
+        an <span class="d_inlinecode donthyphenate notranslate">assert</span> statement within the corresponding <span class="d_inlinecode donthyphenate notranslate">in</span> or <span class="d_inlinecode donthyphenate notranslate">out</span> block will throw an
+        <span class="d_inlinecode donthyphenate notranslate">AssertError</span>.</p>
+<div class="blankline"></div>
+        <p>The keyword <span class="d_inlinecode donthyphenate notranslate">do</span> can be used to announce the function body. Although any number
+        of pre or post contracts of any form may follow each other, <span class="d_inlinecode donthyphenate notranslate">do</span> is
+        required only when the last contract before the body is a block statement.
+        (Before the acceptance of
+        <a href="https://github.com/dlang/DIPs/blob/master/DIPs/accepted/DIP1003.md">DIP1003</a>,
+        the keyword <span class="d_inlinecode donthyphenate notranslate">body</span> was required instead of <span class="d_inlinecode donthyphenate notranslate">do</span>, and may still be encountered in
+        old code bases. In the long term, <span class="d_inlinecode donthyphenate notranslate">body</span> may be deprecated, but for now it's allowed both
+        as a keyword in this context and as an identifier elsewhere, although <span class="d_inlinecode donthyphenate notranslate">do</span> is preferred.) </p>
+<div class="blankline"></div>
+        <p>Though any arbitrary D code is allowed in the <span class="d_inlinecode donthyphenate notranslate">in</span> and <span class="d_inlinecode donthyphenate notranslate">out</span> contract blocks,
+        their only function should be to verify incoming and outgoing data. It is important
+        to ensure that the
+        code has no side effects, and that the release version of the code
+        will not depend on any  effects of the code.
+        For a release build of the code, <span class="d_inlinecode donthyphenate notranslate">in</span> and <span class="d_inlinecode donthyphenate notranslate">out</span> contracts are not
+        inserted.</p>
+<div class="blankline"></div>
+        <p>Here is an example function in both forms:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">int</span> fun(<span class="d_keyword">ref</span> <span class="d_keyword">int</span> a, <span class="d_keyword">int</span> b)
+<span class="d_keyword">in</span> (a &gt; 0)
+<span class="d_keyword">in</span> (b &gt;= 0, <span class="d_string">"b cannot be negative!"</span>)
+<span class="d_keyword">out</span> (r; r &gt; 0, <span class="d_string">"return must be positive"</span>)
+<span class="d_keyword">out</span> (; a != 0)
+{
+    <span class="d_comment">// function body
+</span>}
+
+<span class="d_keyword">int</span> fun(<span class="d_keyword">ref</span> <span class="d_keyword">int</span> a, <span class="d_keyword">int</span> b)
+<span class="d_keyword">in</span>
+{
+    <span class="d_keyword">assert</span>(a &gt; 0);
+    <span class="d_keyword">assert</span>(b &gt;= 0, <span class="d_string">"b cannot be negative!"</span>);
+}
+<span class="d_keyword">out</span> (r)
+{
+    <span class="d_keyword">assert</span>(r &gt; 0, <span class="d_string">"return must be positive"</span>);
+    <span class="d_keyword">assert</span>(a != 0);
+}
+<span class="d_keyword">do</span>
+{
+    <span class="d_comment">// function body
+</span>}
+</pre>
+<div class="blankline"></div>
+        <p>The two functions are almost identical semantically. The expressions in the
+        first are lowered to contract blocks that look almost exactly like the second,
+        except that a separate block is created for each expression in the first, thus
+        avoiding shadowing variable names.</p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="in_out_inheritance" href="#in_out_inheritance">In, Out and Inheritance</a></h2>
+<div class="blankline"></div>
+        <p>If a function in a derived class overrides a function from its
+        super class, then only one of
+        the <span class="d_inlinecode donthyphenate notranslate">in</span> contracts of the function and its base functions
+        must be satisfied.
+        Overriding
+        functions then becomes a process of <i>loosening</i> the <span class="d_inlinecode donthyphenate notranslate">in</span>
+        contracts.
+        </p>
+<div class="blankline"></div>
+        <p>A function without an <span class="d_inlinecode donthyphenate notranslate">in</span> contract means that any values
+        of the function parameters are allowed. This implies that if any
+        function in an inheritance hierarchy has no <span class="d_inlinecode donthyphenate notranslate">in</span> contract,
+        then any <span class="d_inlinecode donthyphenate notranslate">in</span> contracts on functions overriding it have no useful
+        effect.
+        </p>
+<div class="blankline"></div>
+        <p>Conversely, all of the <span class="d_inlinecode donthyphenate notranslate">out</span> contracts need to be satisfied,
+        so overriding functions becomes a processes of <i>tightening</i> the
+        <span class="d_inlinecode donthyphenate notranslate">out</span>
+        contracts.
+        </p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="Invariants" href="#Invariants">Invariants</a></h2>
+<div class="blankline"></div>
+        <p>Invariants are used to specify characteristics of a class or struct that
+        must always be true (except while executing a member function).
+        For example, a class representing a date might have an invariant that the
+        day must be 1..31 and the hour must be 0..23:
+        </p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">class</span> Date
+{
+    <span class="d_keyword">int</span> day;
+    <span class="d_keyword">int</span> hour;
+
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> d, <span class="d_keyword">int</span> h)
+    {
+        day = d;
+        hour = h;
+    }
+
+    <span class="d_keyword">invariant</span>
+    {
+        <span class="d_keyword">assert</span>(1 &lt;= day &amp;&amp; day &lt;= 31);
+        <span class="d_keyword">assert</span>(0 &lt;= hour &amp;&amp; hour &lt; 24, <span class="d_string">"hour out of bounds"</span>);
+    }
+}
+</pre>
+<div class="blankline"></div>
+        <p>Invariant blocks should contain <span class="d_inlinecode donthyphenate notranslate">assert</span> expressions, and should throw
+        <span class="d_inlinecode donthyphenate notranslate">AssertError</span>s when they fail. Since DMD version 2.081.0,
+        invariants can also be written as expression statements, with <span class="d_inlinecode donthyphenate notranslate">assert</span> implied:
+        </p>
+<div class="blankline"></div>
+<pre class="d_code notranslate">    <span class="d_keyword">invariant</span> (1 &lt;= day &amp;&amp; day &lt;= 31);
+    <span class="d_keyword">invariant</span> (0 &lt;= hour &amp;&amp; hour &lt; 24, <span class="d_string">"hour out of bounds"</span>);
+</pre>
+<div class="blankline"></div>
+        <p>The invariant is a contract saying that the <span class="d_inlinecode donthyphenate notranslate">assert</span>s must hold true.
+        The invariant is checked when a class or struct constructor completes,
+        and at the start of the class or struct destructor. For public or exported
+        functions, the order of execution is:
+        </p>
+<div class="blankline"></div>
+        <ol>        <li>preconditions</li>
+        <li>invariant</li>
+        <li>function body</li>
+        <li>invariant</li>
+        <li>postconditions</li>
+        </ol>
+<div class="blankline"></div>
+        <p>The invariant is not checked if the class or struct is implicitly constructed using
+        the default <span class="d_inlinecode donthyphenate notranslate">.init</span> value.
+        </p>
+<div class="blankline"></div>
+        <p>The code in the invariant may not call any public non-static members
+        of the class or struct, either directly or indirectly.
+        Doing so will result in a stack overflow, as the invariant will wind
+        up being called in an infinitely recursive manner.
+        </p>
+<div class="blankline"></div>
+        <p>Invariants are implicitly <span class="d_inlinecode donthyphenate notranslate">const</span>.</p>
+<div class="blankline"></div>
+        <p>Since the invariant is called at the start of public or
+        exported members, such members should not be called from
+        constructors.
+        </p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">class</span> Foo
+{
+    <span class="d_keyword">public</span> <span class="d_keyword">void</span> f() { }
+    <span class="d_keyword">private</span> <span class="d_keyword">void</span> g() { }
+
+    <span class="d_keyword">invariant</span>
+    {
+        f();  <span class="d_comment">// error, cannot call public member function from invariant
+</span>        g();  <span class="d_comment">// ok, g() is not public
+</span>    }
+}
+</pre>
+<div class="blankline"></div>
+        <p>The invariant can be checked with an <span class="d_inlinecode donthyphenate notranslate">assert()</span> expression:</p>
+<div class="blankline"></div>
+        <ol>        <li>classes need to pass a class object</li>
+        <li>structs need to pass the address of an instance</li>
+        </ol>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">auto</span> mydate = <span class="d_keyword">new</span> Date(); <span class="d_comment">//class
+</span><span class="d_keyword">auto</span> s = S();             <span class="d_comment">//struct
+</span>...
+<span class="d_keyword">assert</span>(mydate);           <span class="d_comment">// check that class Date invariant holds
+</span><span class="d_keyword">assert</span>(&amp;s);               <span class="d_comment">// check that struct S invariant holds
+</span></pre>
+<div class="blankline"></div>
+        <p>Class invariants are inherited, that is,
+        any class invariant is implicitly in addition to the invariants of its base
+        classes.</p>
+<div class="blankline"></div>
+        <p>There can be more than one invariant declared per class or struct.</p>
+<div class="blankline"></div>
+        <p>When compiling for release, the invariant code is not generated, and the compiled program runs at maximum speed.
+        The compiler is free to assume the invariant holds true, regardless of whether code is generated for it or not, and
+        may optimize code accordingly.</p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="references" href="#references">References</a></h2>
+<div class="blankline"></div>
+        <ul><li>        <a href="https://web.archive.org/web/20080919174640/http://people.cs.uchicago.edu/~robby/contract-reading-list/">Contracts Reading List</a></li><li>        <a href="http://jan.newmarch.name/java/contracts/paper-long.html">Adding Contracts to Java</a>
+        </li></ul>
+<div class="blankline"></div>
+
+<div style="float: left"><i class="fa fa-angle-left" aria-hidden="true"></i> <a href="../spec/template-mixin.html">Template Mixins</a></div>
+<div style="float: right"><a href="../spec/version.html">Conditional Compilation</a> <i class="fa fa-angle-right" aria-hidden="true"></i></div>
+<div style="clear:both"></div>
+
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2022 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on (no date time)</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<script type="text/javascript" src="../js/listanchors.js"></script>
+<script type="text/javascript">jQuery(document).ready(addVersionSelector);</script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>
