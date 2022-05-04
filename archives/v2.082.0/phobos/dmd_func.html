@@ -1,0 +1,831 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2022 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>dmd.func - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='dmd.func' class='std'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href=".."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.freenode.net/d'>IRC</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option selected value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+<div class="subnav-helper"></div> <div class="subnav">    <div class="head">        <h2>Library Reference</h2>
+        <p><span class="smallprint">version 2.082.0 <span class="separator"><br></span>
+            </span>
+        </p>
+        <p><a href="index.html">overview</a></p>
+    </div>
+    <ul>
+<li><a href='object.html'><span><em class="tt">object</em></span></a></li>
+
+<li class='expand-container modlist-submenu-std'><a class='expand-toggle' href='#'><span><em class="tt">std</em></span></a>
+<ul><li>  <a href="std_algorithm.html" title="std.algorithm"><span class="d_inlinecode donthyphenate notranslate">algorithm</span></a><ul><li>    <a href="std_algorithm_comparison.html" title="std.algorithm.comparison"><span class="d_inlinecode donthyphenate notranslate">comparison</span></a></li><li>    <a href="std_algorithm_iteration.html" title="std.algorithm.iteration"><span class="d_inlinecode donthyphenate notranslate">iteration</span></a></li><li>    <a href="std_algorithm_mutation.html" title="std.algorithm.mutation"><span class="d_inlinecode donthyphenate notranslate">mutation</span></a></li><li>    <a href="std_algorithm_searching.html" title="std.algorithm.searching"><span class="d_inlinecode donthyphenate notranslate">searching</span></a></li><li>    <a href="std_algorithm_setops.html" title="std.algorithm.setops"><span class="d_inlinecode donthyphenate notranslate">setops</span></a></li><li>    <a href="std_algorithm_sorting.html" title="std.algorithm.sorting"><span class="d_inlinecode donthyphenate notranslate">sorting</span></a>
+  </li></ul></li><li>  <a href="std_array.html" title="std.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>  <a href="std_ascii.html" title="std.ascii"><span class="d_inlinecode donthyphenate notranslate">ascii</span></a></li><li>  <a href="std_base64.html" title="std.base64"><span class="d_inlinecode donthyphenate notranslate">base64</span></a></li><li>  <a href="std_bigint.html" title="std.bigint"><span class="d_inlinecode donthyphenate notranslate">bigint</span></a></li><li>  <a href="std_bitmanip.html" title="std.bitmanip"><span class="d_inlinecode donthyphenate notranslate">bitmanip</span></a></li><li>  <a href="std_compiler.html" title="std.compiler"><span class="d_inlinecode donthyphenate notranslate">compiler</span></a></li><li>  <a href="std_complex.html" title="std.complex"><span class="d_inlinecode donthyphenate notranslate">complex</span></a></li><li>  <a href="std_concurrency.html" title="std.concurrency"><span class="d_inlinecode donthyphenate notranslate">concurrency</span></a></li><li>  <a href="std_container.html" title="std.container"><span class="d_inlinecode donthyphenate notranslate">container</span></a><ul><li>    <a href="std_container_array.html" title="std.container.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>    <a href="std_container_binaryheap.html" title="std.container.binaryheap"><span class="d_inlinecode donthyphenate notranslate">binaryheap</span></a></li><li>    <a href="std_container_dlist.html" title="std.container.dlist"><span class="d_inlinecode donthyphenate notranslate">dlist</span></a></li><li>    <a href="std_container_rbtree.html" title="std.container.rbtree"><span class="d_inlinecode donthyphenate notranslate">rbtree</span></a></li><li>    <a href="std_container_slist.html" title="std.container.slist"><span class="d_inlinecode donthyphenate notranslate">slist</span></a></li><li>    <a href="std_container_util.html" title="std.container.util"><span class="d_inlinecode donthyphenate notranslate">util</span></a>
+  </li></ul></li><li>  <a href="std_conv.html" title="std.conv"><span class="d_inlinecode donthyphenate notranslate">conv</span></a></li><li>  <a href="std_csv.html" title="std.csv"><span class="d_inlinecode donthyphenate notranslate">csv</span></a></li><li>  <a href="std_datetime.html" title="std.datetime"><span class="d_inlinecode donthyphenate notranslate">datetime</span></a><ul><li>    <a href="std_datetime_date.html" title="std.datetime.date"><span class="d_inlinecode donthyphenate notranslate">date</span></a></li><li>    <a href="std_datetime_interval.html" title="std.datetime.interval"><span class="d_inlinecode donthyphenate notranslate">interval</span></a></li><li>    <a href="std_datetime_stopwatch.html" title="std.datetime.stopwatch"><span class="d_inlinecode donthyphenate notranslate">stopwatch</span></a></li><li>    <a href="std_datetime_systime.html" title="std.datetime.systime"><span class="d_inlinecode donthyphenate notranslate">systime</span></a></li><li>    <a href="std_datetime_timezone.html" title="std.datetime.timezone"><span class="d_inlinecode donthyphenate notranslate">timezone</span></a>
+  </li></ul></li><li>  <a href="std_demangle.html" title="std.demangle"><span class="d_inlinecode donthyphenate notranslate">demangle</span></a></li><li>  <a href="std_digest.html" title="std.digest"><span class="d_inlinecode donthyphenate notranslate">digest</span></a><ul><li>    <a href="std_digest_crc.html" title="std.digest.crc"><span class="d_inlinecode donthyphenate notranslate">crc</span></a></li><li>    <a href="std_digest_hmac.html" title="std.digest.hmac"><span class="d_inlinecode donthyphenate notranslate">hmac</span></a></li><li>    <a href="std_digest_md.html" title="std.digest.md"><span class="d_inlinecode donthyphenate notranslate">md</span></a></li><li>    <a href="std_digest_murmurhash.html" title="std.digest.murmurhash"><span class="d_inlinecode donthyphenate notranslate">murmurhash</span></a></li><li>    <a href="std_digest_ripemd.html" title="std.digest.ripemd"><span class="d_inlinecode donthyphenate notranslate">ripemd</span></a></li><li>    <a href="std_digest_sha.html" title="std.digest.sha"><span class="d_inlinecode donthyphenate notranslate">sha</span></a>
+  </li></ul></li><li>  <a href="std_encoding.html" title="std.encoding"><span class="d_inlinecode donthyphenate notranslate">encoding</span></a></li><li>  <a href="std_exception.html" title="std.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">experimental</span></h7><ul><li>    <a href="std_experimental_all.html" title="std.experimental.all"><span class="d_inlinecode donthyphenate notranslate">all</span></a></li><li>    <a href="std_experimental_allocator.html" title="std.experimental.allocator"><span class="d_inlinecode donthyphenate notranslate">allocator</span></a><ul><li>      <a href="std_experimental_allocator_building_blocks.html" title="std.experimental.allocator.building_blocks"><span class="d_inlinecode donthyphenate notranslate">building_blocks</span></a><ul><li>        <a href="std_experimental_allocator_building_blocks_affix_allocator.html" title="std.experimental.allocator.building_blocks.affix_allocator"><span class="d_inlinecode donthyphenate notranslate">affix_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_aligned_block_list.html" title="std.experimental.allocator.building_blocks.aligned_block_list"><span class="d_inlinecode donthyphenate notranslate">aligned_block_list</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_allocator_list.html" title="std.experimental.allocator.building_blocks.allocator_list"><span class="d_inlinecode donthyphenate notranslate">allocator_list</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_ascending_page_allocator.html" title="std.experimental.allocator.building_blocks.ascending_page_allocator"><span class="d_inlinecode donthyphenate notranslate">ascending_page_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_bitmapped_block.html" title="std.experimental.allocator.building_blocks.bitmapped_block"><span class="d_inlinecode donthyphenate notranslate">bitmapped_block</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_bucketizer.html" title="std.experimental.allocator.building_blocks.bucketizer"><span class="d_inlinecode donthyphenate notranslate">bucketizer</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_fallback_allocator.html" title="std.experimental.allocator.building_blocks.fallback_allocator"><span class="d_inlinecode donthyphenate notranslate">fallback_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_free_list.html" title="std.experimental.allocator.building_blocks.free_list"><span class="d_inlinecode donthyphenate notranslate">free_list</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_free_tree.html" title="std.experimental.allocator.building_blocks.free_tree"><span class="d_inlinecode donthyphenate notranslate">free_tree</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_kernighan_ritchie.html" title="std.experimental.allocator.building_blocks.kernighan_ritchie"><span class="d_inlinecode donthyphenate notranslate">kernighan_ritchie</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_null_allocator.html" title="std.experimental.allocator.building_blocks.null_allocator"><span class="d_inlinecode donthyphenate notranslate">null_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_quantizer.html" title="std.experimental.allocator.building_blocks.quantizer"><span class="d_inlinecode donthyphenate notranslate">quantizer</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_region.html" title="std.experimental.allocator.building_blocks.region"><span class="d_inlinecode donthyphenate notranslate">region</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_scoped_allocator.html" title="std.experimental.allocator.building_blocks.scoped_allocator"><span class="d_inlinecode donthyphenate notranslate">scoped_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_segregator.html" title="std.experimental.allocator.building_blocks.segregator"><span class="d_inlinecode donthyphenate notranslate">segregator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_stats_collector.html" title="std.experimental.allocator.building_blocks.stats_collector"><span class="d_inlinecode donthyphenate notranslate">stats_collector</span></a>
+      </li></ul></li><li>      <a href="std_experimental_allocator_common.html" title="std.experimental.allocator.common"><span class="d_inlinecode donthyphenate notranslate">common</span></a></li><li>      <a href="std_experimental_allocator_gc_allocator.html" title="std.experimental.allocator.gc_allocator"><span class="d_inlinecode donthyphenate notranslate">gc_allocator</span></a></li><li>      <a href="std_experimental_allocator_mallocator.html" title="std.experimental.allocator.mallocator"><span class="d_inlinecode donthyphenate notranslate">mallocator</span></a></li><li>      <a href="std_experimental_allocator_mmap_allocator.html" title="std.experimental.allocator.mmap_allocator"><span class="d_inlinecode donthyphenate notranslate">mmap_allocator</span></a></li><li>      <a href="std_experimental_allocator_showcase.html" title="std.experimental.allocator.showcase"><span class="d_inlinecode donthyphenate notranslate">showcase</span></a></li><li>      <a href="std_experimental_allocator_typed.html" title="std.experimental.allocator.typed"><span class="d_inlinecode donthyphenate notranslate">typed</span></a>
+    </li></ul></li><li>    <a href="std_experimental_checkedint.html" title="std.experimental.checkedint"><span class="d_inlinecode donthyphenate notranslate">checkedint</span></a></li><li>    <a href="std_experimental_logger.html" title="std.experimental.logger"><span class="d_inlinecode donthyphenate notranslate">logger</span></a><ul><li>      <a href="std_experimental_logger_core.html" title="std.experimental.logger.core"><span class="d_inlinecode donthyphenate notranslate">core</span></a></li><li>      <a href="std_experimental_logger_filelogger.html" title="std.experimental.logger.filelogger"><span class="d_inlinecode donthyphenate notranslate">filelogger</span></a></li><li>      <a href="std_experimental_logger_multilogger.html" title="std.experimental.logger.multilogger"><span class="d_inlinecode donthyphenate notranslate">multilogger</span></a></li><li>      <a href="std_experimental_logger_nulllogger.html" title="std.experimental.logger.nulllogger"><span class="d_inlinecode donthyphenate notranslate">nulllogger</span></a>
+    </li></ul></li><li>    <a href="std_experimental_typecons.html" title="std.experimental.typecons"><span class="d_inlinecode donthyphenate notranslate">typecons</span></a>
+  </li></ul></li><li>  <a href="std_file.html" title="std.file"><span class="d_inlinecode donthyphenate notranslate">file</span></a></li><li>  <a href="std_format.html" title="std.format"><span class="d_inlinecode donthyphenate notranslate">format</span></a></li><li>  <a href="std_functional.html" title="std.functional"><span class="d_inlinecode donthyphenate notranslate">functional</span></a></li><li>  <a href="std_getopt.html" title="std.getopt"><span class="d_inlinecode donthyphenate notranslate">getopt</span></a></li><li>  <a href="std_json.html" title="std.json"><span class="d_inlinecode donthyphenate notranslate">json</span></a></li><li>  <a href="std_math.html" title="std.math"><span class="d_inlinecode donthyphenate notranslate">math</span></a></li><li>  <a href="std_mathspecial.html" title="std.mathspecial"><span class="d_inlinecode donthyphenate notranslate">mathspecial</span></a></li><li>  <a href="std_meta.html" title="std.meta"><span class="d_inlinecode donthyphenate notranslate">meta</span></a></li><li>  <a href="std_mmfile.html" title="std.mmfile"><span class="d_inlinecode donthyphenate notranslate">mmfile</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">net</span></h7><ul><li>    <a href="std_net_curl.html" title="std.net.curl"><span class="d_inlinecode donthyphenate notranslate">curl</span></a></li><li>    <a href="std_net_isemail.html" title="std.net.isemail"><span class="d_inlinecode donthyphenate notranslate">isemail</span></a>
+  </li></ul></li><li>  <a href="std_numeric.html" title="std.numeric"><span class="d_inlinecode donthyphenate notranslate">numeric</span></a></li><li>  <a href="std_outbuffer.html" title="std.outbuffer"><span class="d_inlinecode donthyphenate notranslate">outbuffer</span></a></li><li>  <a href="std_parallelism.html" title="std.parallelism"><span class="d_inlinecode donthyphenate notranslate">parallelism</span></a></li><li>  <a href="std_path.html" title="std.path"><span class="d_inlinecode donthyphenate notranslate">path</span></a></li><li>  <a href="std_process.html" title="std.process"><span class="d_inlinecode donthyphenate notranslate">process</span></a></li><li>  <a href="std_random.html" title="std.random"><span class="d_inlinecode donthyphenate notranslate">random</span></a></li><li>  <a href="std_range.html" title="std.range"><span class="d_inlinecode donthyphenate notranslate">range</span></a><ul><li>    <a href="std_range_interfaces.html" title="std.range.interfaces"><span class="d_inlinecode donthyphenate notranslate">interfaces</span></a></li><li>    <a href="std_range_primitives.html" title="std.range.primitives"><span class="d_inlinecode donthyphenate notranslate">primitives</span></a>
+  </li></ul></li><li>  <a href="std_regex.html" title="std.regex"><span class="d_inlinecode donthyphenate notranslate">regex</span></a></li><li>  <a href="std_signals.html" title="std.signals"><span class="d_inlinecode donthyphenate notranslate">signals</span></a></li><li>  <a href="std_socket.html" title="std.socket"><span class="d_inlinecode donthyphenate notranslate">socket</span></a></li><li>  <a href="std_stdint.html" title="std.stdint"><span class="d_inlinecode donthyphenate notranslate">stdint</span></a></li><li>  <a href="std_stdio.html" title="std.stdio"><span class="d_inlinecode donthyphenate notranslate">stdio</span></a></li><li>  <a href="std_string.html" title="std.string"><span class="d_inlinecode donthyphenate notranslate">string</span></a></li><li>  <a href="std_system.html" title="std.system"><span class="d_inlinecode donthyphenate notranslate">system</span></a></li><li>  <a href="std_traits.html" title="std.traits"><span class="d_inlinecode donthyphenate notranslate">traits</span></a></li><li>  <a href="std_typecons.html" title="std.typecons"><span class="d_inlinecode donthyphenate notranslate">typecons</span></a></li><li>  <a href="std_uni.html" title="std.uni"><span class="d_inlinecode donthyphenate notranslate">uni</span></a></li><li>  <a href="std_uri.html" title="std.uri"><span class="d_inlinecode donthyphenate notranslate">uri</span></a></li><li>  <a href="std_utf.html" title="std.utf"><span class="d_inlinecode donthyphenate notranslate">utf</span></a></li><li>  <a href="std_uuid.html" title="std.uuid"><span class="d_inlinecode donthyphenate notranslate">uuid</span></a></li><li>  <a href="std_variant.html" title="std.variant"><span class="d_inlinecode donthyphenate notranslate">variant</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">windows</span></h7><ul><li>    <a href="std_windows_charset.html" title="std.windows.charset"><span class="d_inlinecode donthyphenate notranslate">charset</span></a></li><li>    <a href="std_windows_syserror.html" title="std.windows.syserror"><span class="d_inlinecode donthyphenate notranslate">syserror</span></a>
+  </li></ul></li><li>  <a href="std_xml.html" title="std.xml"><span class="d_inlinecode donthyphenate notranslate">xml</span></a></li><li>  <a href="std_zip.html" title="std.zip"><span class="d_inlinecode donthyphenate notranslate">zip</span></a></li><li>  <a href="std_zlib.html" title="std.zlib"><span class="d_inlinecode donthyphenate notranslate">zlib</span></a>
+</li></ul>
+</li>
+
+<li class='expand-container modlist-submenu-etc'><a class='expand-toggle' href='#'><span><em class="tt">etc</em></span></a>
+<ul><li>  <h7><span class="d_inlinecode donthyphenate notranslate">c</span></h7><ul><li>    <a href="etc_c_curl.html" title="etc.c.curl"><span class="d_inlinecode donthyphenate notranslate">curl</span></a></li><li>    <h7><span class="d_inlinecode donthyphenate notranslate">odbc</span></h7><ul><li>      <a href="etc_c_odbc_sql.html" title="etc.c.odbc.sql"><span class="d_inlinecode donthyphenate notranslate">sql</span></a></li><li>      <a href="etc_c_odbc_sqlext.html" title="etc.c.odbc.sqlext"><span class="d_inlinecode donthyphenate notranslate">sqlext</span></a></li><li>      <a href="etc_c_odbc_sqltypes.html" title="etc.c.odbc.sqltypes"><span class="d_inlinecode donthyphenate notranslate">sqltypes</span></a></li><li>      <a href="etc_c_odbc_sqlucode.html" title="etc.c.odbc.sqlucode"><span class="d_inlinecode donthyphenate notranslate">sqlucode</span></a>
+    </li></ul></li><li>    <a href="etc_c_sqlite3.html" title="etc.c.sqlite3"><span class="d_inlinecode donthyphenate notranslate">sqlite3</span></a></li><li>    <a href="etc_c_zlib.html" title="etc.c.zlib"><span class="d_inlinecode donthyphenate notranslate">zlib</span></a>
+  </li></ul>
+</li></ul>
+</li>
+
+<li class='expand-container modlist-submenu-core'><a class='expand-toggle' href='#'><span><em class="tt">core</em></span></a>
+<ul><li>  <a href="core_atomic.html" title="core.atomic"><span class="d_inlinecode donthyphenate notranslate">atomic</span></a></li><li>  <a href="core_attribute.html" title="core.attribute"><span class="d_inlinecode donthyphenate notranslate">attribute</span></a></li><li>  <a href="core_bitop.html" title="core.bitop"><span class="d_inlinecode donthyphenate notranslate">bitop</span></a></li><li>  <a href="core_checkedint.html" title="core.checkedint"><span class="d_inlinecode donthyphenate notranslate">checkedint</span></a></li><li>  <a href="core_cpuid.html" title="core.cpuid"><span class="d_inlinecode donthyphenate notranslate">cpuid</span></a></li><li>  <a href="core_demangle.html" title="core.demangle"><span class="d_inlinecode donthyphenate notranslate">demangle</span></a></li><li>  <a href="core_exception.html" title="core.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>  <a href="core_math.html" title="core.math"><span class="d_inlinecode donthyphenate notranslate">math</span></a></li><li>  <a href="core_memory.html" title="core.memory"><span class="d_inlinecode donthyphenate notranslate">memory</span></a></li><li>  <a href="core_runtime.html" title="core.runtime"><span class="d_inlinecode donthyphenate notranslate">runtime</span></a></li><li>  <a href="core_simd.html" title="core.simd"><span class="d_inlinecode donthyphenate notranslate">simd</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">stdc</span></h7><ul><li>    <a href="core_stdc_assert_.html" title="core.stdc.assert_"><span class="d_inlinecode donthyphenate notranslate">assert_</span></a></li><li>    <a href="core_stdc_complex.html" title="core.stdc.complex"><span class="d_inlinecode donthyphenate notranslate">complex</span></a></li><li>    <a href="core_stdc_ctype.html" title="core.stdc.ctype"><span class="d_inlinecode donthyphenate notranslate">ctype</span></a></li><li>    <a href="core_stdc_errno.html" title="core.stdc.errno"><span class="d_inlinecode donthyphenate notranslate">errno</span></a></li><li>    <a href="core_stdc_fenv.html" title="core.stdc.fenv"><span class="d_inlinecode donthyphenate notranslate">fenv</span></a></li><li>    <a href="core_stdc_float_.html" title="core.stdc.float_"><span class="d_inlinecode donthyphenate notranslate">float_</span></a></li><li>    <a href="core_stdc_inttypes.html" title="core.stdc.inttypes"><span class="d_inlinecode donthyphenate notranslate">inttypes</span></a></li><li>    <a href="core_stdc_limits.html" title="core.stdc.limits"><span class="d_inlinecode donthyphenate notranslate">limits</span></a></li><li>    <a href="core_stdc_locale.html" title="core.stdc.locale"><span class="d_inlinecode donthyphenate notranslate">locale</span></a></li><li>    <a href="core_stdc_math.html" title="core.stdc.math"><span class="d_inlinecode donthyphenate notranslate">math</span></a></li><li>    <a href="core_stdc_signal.html" title="core.stdc.signal"><span class="d_inlinecode donthyphenate notranslate">signal</span></a></li><li>    <a href="core_stdc_stdarg.html" title="core.stdc.stdarg"><span class="d_inlinecode donthyphenate notranslate">stdarg</span></a></li><li>    <a href="core_stdc_stddef.html" title="core.stdc.stddef"><span class="d_inlinecode donthyphenate notranslate">stddef</span></a></li><li>    <a href="core_stdc_stdint.html" title="core.stdc.stdint"><span class="d_inlinecode donthyphenate notranslate">stdint</span></a></li><li>    <a href="core_stdc_stdio.html" title="core.stdc.stdio"><span class="d_inlinecode donthyphenate notranslate">stdio</span></a></li><li>    <a href="core_stdc_stdlib.html" title="core.stdc.stdlib"><span class="d_inlinecode donthyphenate notranslate">stdlib</span></a></li><li>    <a href="core_stdc_string.html" title="core.stdc.string"><span class="d_inlinecode donthyphenate notranslate">string</span></a></li><li>    <a href="core_stdc_tgmath.html" title="core.stdc.tgmath"><span class="d_inlinecode donthyphenate notranslate">tgmath</span></a></li><li>    <a href="core_stdc_time.html" title="core.stdc.time"><span class="d_inlinecode donthyphenate notranslate">time</span></a></li><li>    <a href="core_stdc_wchar_.html" title="core.stdc.wchar_"><span class="d_inlinecode donthyphenate notranslate">wchar_</span></a></li><li>    <a href="core_stdc_wctype.html" title="core.stdc.wctype"><span class="d_inlinecode donthyphenate notranslate">wctype</span></a>
+  </li></ul></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">stdcpp</span></h7><ul><li>    <a href="core_stdcpp_exception.html" title="core.stdcpp.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>    <a href="core_stdcpp_typeinfo.html" title="core.stdcpp.typeinfo"><span class="d_inlinecode donthyphenate notranslate">typeinfo</span></a>
+  </li></ul></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">sync</span></h7><ul><li>    <a href="core_sync_barrier.html" title="core.sync.barrier"><span class="d_inlinecode donthyphenate notranslate">barrier</span></a></li><li>    <a href="core_sync_condition.html" title="core.sync.condition"><span class="d_inlinecode donthyphenate notranslate">condition</span></a></li><li>    <a href="core_sync_config.html" title="core.sync.config"><span class="d_inlinecode donthyphenate notranslate">config</span></a></li><li>    <a href="core_sync_exception.html" title="core.sync.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>    <a href="core_sync_mutex.html" title="core.sync.mutex"><span class="d_inlinecode donthyphenate notranslate">mutex</span></a></li><li>    <a href="core_sync_rwmutex.html" title="core.sync.rwmutex"><span class="d_inlinecode donthyphenate notranslate">rwmutex</span></a></li><li>    <a href="core_sync_semaphore.html" title="core.sync.semaphore"><span class="d_inlinecode donthyphenate notranslate">semaphore</span></a>
+  </li></ul></li><li>  <a href="core_thread.html" title="core.thread"><span class="d_inlinecode donthyphenate notranslate">thread</span></a></li><li>  <a href="core_time.html" title="core.time"><span class="d_inlinecode donthyphenate notranslate">time</span></a></li><li>  <a href="core_vararg.html" title="core.vararg"><span class="d_inlinecode donthyphenate notranslate">vararg</span></a>
+</li></ul>
+</li>
+
+<li class='expand-container modlist-submenu-dmd'><a class='expand-toggle' href='#'><span><em class="tt">dmd</em></span></a>
+<ul><li>  <a href="dmd_access.html" title="dmd.access"><span class="d_inlinecode donthyphenate notranslate">access</span></a></li><li>  <a href="dmd_aggregate.html" title="dmd.aggregate"><span class="d_inlinecode donthyphenate notranslate">aggregate</span></a></li><li>  <a href="dmd_aliasthis.html" title="dmd.aliasthis"><span class="d_inlinecode donthyphenate notranslate">aliasthis</span></a></li><li>  <a href="dmd_apply.html" title="dmd.apply"><span class="d_inlinecode donthyphenate notranslate">apply</span></a></li><li>  <a href="dmd_argtypes.html" title="dmd.argtypes"><span class="d_inlinecode donthyphenate notranslate">argtypes</span></a></li><li>  <a href="dmd_arrayop.html" title="dmd.arrayop"><span class="d_inlinecode donthyphenate notranslate">arrayop</span></a></li><li>  <a href="dmd_arraytypes.html" title="dmd.arraytypes"><span class="d_inlinecode donthyphenate notranslate">arraytypes</span></a></li><li>  <a href="dmd_astbase.html" title="dmd.astbase"><span class="d_inlinecode donthyphenate notranslate">astbase</span></a></li><li>  <a href="dmd_astcodegen.html" title="dmd.astcodegen"><span class="d_inlinecode donthyphenate notranslate">astcodegen</span></a></li><li>  <a href="dmd_asttypename.html" title="dmd.asttypename"><span class="d_inlinecode donthyphenate notranslate">asttypename</span></a></li><li>  <a href="dmd_attrib.html" title="dmd.attrib"><span class="d_inlinecode donthyphenate notranslate">attrib</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">backend</span></h7><ul><li>    <a href="dmd_backend_bcomplex.html" title="dmd.backend.bcomplex"><span class="d_inlinecode donthyphenate notranslate">bcomplex</span></a></li><li>    <a href="dmd_backend_blockopt.html" title="dmd.backend.blockopt"><span class="d_inlinecode donthyphenate notranslate">blockopt</span></a></li><li>    <a href="dmd_backend_cc.html" title="dmd.backend.cc"><span class="d_inlinecode donthyphenate notranslate">cc</span></a></li><li>    <a href="dmd_backend_cdef.html" title="dmd.backend.cdef"><span class="d_inlinecode donthyphenate notranslate">cdef</span></a></li><li>    <a href="dmd_backend_cg.html" title="dmd.backend.cg"><span class="d_inlinecode donthyphenate notranslate">cg</span></a></li><li>    <a href="dmd_backend_cgcs.html" title="dmd.backend.cgcs"><span class="d_inlinecode donthyphenate notranslate">cgcs</span></a></li><li>    <a href="dmd_backend_cgcv.html" title="dmd.backend.cgcv"><span class="d_inlinecode donthyphenate notranslate">cgcv</span></a></li><li>    <a href="dmd_backend_cgelem.html" title="dmd.backend.cgelem"><span class="d_inlinecode donthyphenate notranslate">cgelem</span></a></li><li>    <a href="dmd_backend_cgreg.html" title="dmd.backend.cgreg"><span class="d_inlinecode donthyphenate notranslate">cgreg</span></a></li><li>    <a href="dmd_backend_cgsched.html" title="dmd.backend.cgsched"><span class="d_inlinecode donthyphenate notranslate">cgsched</span></a></li><li>    <a href="dmd_backend_cod5.html" title="dmd.backend.cod5"><span class="d_inlinecode donthyphenate notranslate">cod5</span></a></li><li>    <a href="dmd_backend_code.html" title="dmd.backend.code"><span class="d_inlinecode donthyphenate notranslate">code</span></a></li><li>    <a href="dmd_backend_code_x86.html" title="dmd.backend.code_x86"><span class="d_inlinecode donthyphenate notranslate">code_x86</span></a></li><li>    <a href="dmd_backend_compress.html" title="dmd.backend.compress"><span class="d_inlinecode donthyphenate notranslate">compress</span></a></li><li>    <a href="dmd_backend_cv4.html" title="dmd.backend.cv4"><span class="d_inlinecode donthyphenate notranslate">cv4</span></a></li><li>    <a href="dmd_backend_dcode.html" title="dmd.backend.dcode"><span class="d_inlinecode donthyphenate notranslate">dcode</span></a></li><li>    <a href="dmd_backend_debugprint.html" title="dmd.backend.debugprint"><span class="d_inlinecode donthyphenate notranslate">debugprint</span></a></li><li>    <a href="dmd_backend_divcoeff.html" title="dmd.backend.divcoeff"><span class="d_inlinecode donthyphenate notranslate">divcoeff</span></a></li><li>    <a href="dmd_backend_dlist.html" title="dmd.backend.dlist"><span class="d_inlinecode donthyphenate notranslate">dlist</span></a></li><li>    <a href="dmd_backend_dt.html" title="dmd.backend.dt"><span class="d_inlinecode donthyphenate notranslate">dt</span></a></li><li>    <a href="dmd_backend_dtype.html" title="dmd.backend.dtype"><span class="d_inlinecode donthyphenate notranslate">dtype</span></a></li><li>    <a href="dmd_backend_dvec.html" title="dmd.backend.dvec"><span class="d_inlinecode donthyphenate notranslate">dvec</span></a></li><li>    <a href="dmd_backend_dwarf.html" title="dmd.backend.dwarf"><span class="d_inlinecode donthyphenate notranslate">dwarf</span></a></li><li>    <a href="dmd_backend_dwarf2.html" title="dmd.backend.dwarf2"><span class="d_inlinecode donthyphenate notranslate">dwarf2</span></a></li><li>    <a href="dmd_backend_ee.html" title="dmd.backend.ee"><span class="d_inlinecode donthyphenate notranslate">ee</span></a></li><li>    <a href="dmd_backend_el.html" title="dmd.backend.el"><span class="d_inlinecode donthyphenate notranslate">el</span></a></li><li>    <a href="dmd_backend_elem.html" title="dmd.backend.elem"><span class="d_inlinecode donthyphenate notranslate">elem</span></a></li><li>    <a href="dmd_backend_evalu8.html" title="dmd.backend.evalu8"><span class="d_inlinecode donthyphenate notranslate">evalu8</span></a></li><li>    <a href="dmd_backend_exh.html" title="dmd.backend.exh"><span class="d_inlinecode donthyphenate notranslate">exh</span></a></li><li>    <a href="dmd_backend_gdag.html" title="dmd.backend.gdag"><span class="d_inlinecode donthyphenate notranslate">gdag</span></a></li><li>    <a href="dmd_backend_gflow.html" title="dmd.backend.gflow"><span class="d_inlinecode donthyphenate notranslate">gflow</span></a></li><li>    <a href="dmd_backend_global.html" title="dmd.backend.global"><span class="d_inlinecode donthyphenate notranslate">global</span></a></li><li>    <a href="dmd_backend_glocal.html" title="dmd.backend.glocal"><span class="d_inlinecode donthyphenate notranslate">glocal</span></a></li><li>    <a href="dmd_backend_gloop.html" title="dmd.backend.gloop"><span class="d_inlinecode donthyphenate notranslate">gloop</span></a></li><li>    <a href="dmd_backend_go.html" title="dmd.backend.go"><span class="d_inlinecode donthyphenate notranslate">go</span></a></li><li>    <a href="dmd_backend_goh.html" title="dmd.backend.goh"><span class="d_inlinecode donthyphenate notranslate">goh</span></a></li><li>    <a href="dmd_backend_gother.html" title="dmd.backend.gother"><span class="d_inlinecode donthyphenate notranslate">gother</span></a></li><li>    <a href="dmd_backend_gsroa.html" title="dmd.backend.gsroa"><span class="d_inlinecode donthyphenate notranslate">gsroa</span></a></li><li>    <a href="dmd_backend_iasm.html" title="dmd.backend.iasm"><span class="d_inlinecode donthyphenate notranslate">iasm</span></a></li><li>    <a href="dmd_backend_mach.html" title="dmd.backend.mach"><span class="d_inlinecode donthyphenate notranslate">mach</span></a></li><li>    <a href="dmd_backend_memh.html" title="dmd.backend.memh"><span class="d_inlinecode donthyphenate notranslate">memh</span></a></li><li>    <a href="dmd_backend_mscoff.html" title="dmd.backend.mscoff"><span class="d_inlinecode donthyphenate notranslate">mscoff</span></a></li><li>    <a href="dmd_backend_nteh.html" title="dmd.backend.nteh"><span class="d_inlinecode donthyphenate notranslate">nteh</span></a></li><li>    <a href="dmd_backend_obj.html" title="dmd.backend.obj"><span class="d_inlinecode donthyphenate notranslate">obj</span></a></li><li>    <a href="dmd_backend_oper.html" title="dmd.backend.oper"><span class="d_inlinecode donthyphenate notranslate">oper</span></a></li><li>    <a href="dmd_backend_outbuf.html" title="dmd.backend.outbuf"><span class="d_inlinecode donthyphenate notranslate">outbuf</span></a></li><li>    <a href="dmd_backend_rtlsym.html" title="dmd.backend.rtlsym"><span class="d_inlinecode donthyphenate notranslate">rtlsym</span></a></li><li>    <a href="dmd_backend_symbol.html" title="dmd.backend.symbol"><span class="d_inlinecode donthyphenate notranslate">symbol</span></a></li><li>    <a href="dmd_backend_ty.html" title="dmd.backend.ty"><span class="d_inlinecode donthyphenate notranslate">ty</span></a></li><li>    <a href="dmd_backend_type.html" title="dmd.backend.type"><span class="d_inlinecode donthyphenate notranslate">type</span></a></li><li>    <a href="dmd_backend_xmm.html" title="dmd.backend.xmm"><span class="d_inlinecode donthyphenate notranslate">xmm</span></a>
+  </li></ul></li><li>  <a href="dmd_blockexit.html" title="dmd.blockexit"><span class="d_inlinecode donthyphenate notranslate">blockexit</span></a></li><li>  <a href="dmd_builtin.html" title="dmd.builtin"><span class="d_inlinecode donthyphenate notranslate">builtin</span></a></li><li>  <a href="dmd_canthrow.html" title="dmd.canthrow"><span class="d_inlinecode donthyphenate notranslate">canthrow</span></a></li><li>  <a href="dmd_cli.html" title="dmd.cli"><span class="d_inlinecode donthyphenate notranslate">cli</span></a></li><li>  <a href="dmd_clone.html" title="dmd.clone"><span class="d_inlinecode donthyphenate notranslate">clone</span></a></li><li>  <a href="dmd_compiler.html" title="dmd.compiler"><span class="d_inlinecode donthyphenate notranslate">compiler</span></a></li><li>  <a href="dmd_complex.html" title="dmd.complex"><span class="d_inlinecode donthyphenate notranslate">complex</span></a></li><li>  <a href="dmd_cond.html" title="dmd.cond"><span class="d_inlinecode donthyphenate notranslate">cond</span></a></li><li>  <a href="dmd_console.html" title="dmd.console"><span class="d_inlinecode donthyphenate notranslate">console</span></a></li><li>  <a href="dmd_constfold.html" title="dmd.constfold"><span class="d_inlinecode donthyphenate notranslate">constfold</span></a></li><li>  <a href="dmd_cppmangle.html" title="dmd.cppmangle"><span class="d_inlinecode donthyphenate notranslate">cppmangle</span></a></li><li>  <a href="dmd_cppmanglewin.html" title="dmd.cppmanglewin"><span class="d_inlinecode donthyphenate notranslate">cppmanglewin</span></a></li><li>  <a href="dmd_ctfeexpr.html" title="dmd.ctfeexpr"><span class="d_inlinecode donthyphenate notranslate">ctfeexpr</span></a></li><li>  <a href="dmd_ctorflow.html" title="dmd.ctorflow"><span class="d_inlinecode donthyphenate notranslate">ctorflow</span></a></li><li>  <a href="dmd_dcast.html" title="dmd.dcast"><span class="d_inlinecode donthyphenate notranslate">dcast</span></a></li><li>  <a href="dmd_dclass.html" title="dmd.dclass"><span class="d_inlinecode donthyphenate notranslate">dclass</span></a></li><li>  <a href="dmd_declaration.html" title="dmd.declaration"><span class="d_inlinecode donthyphenate notranslate">declaration</span></a></li><li>  <a href="dmd_delegatize.html" title="dmd.delegatize"><span class="d_inlinecode donthyphenate notranslate">delegatize</span></a></li><li>  <a href="dmd_denum.html" title="dmd.denum"><span class="d_inlinecode donthyphenate notranslate">denum</span></a></li><li>  <a href="dmd_dimport.html" title="dmd.dimport"><span class="d_inlinecode donthyphenate notranslate">dimport</span></a></li><li>  <a href="dmd_dinifile.html" title="dmd.dinifile"><span class="d_inlinecode donthyphenate notranslate">dinifile</span></a></li><li>  <a href="dmd_dinterpret.html" title="dmd.dinterpret"><span class="d_inlinecode donthyphenate notranslate">dinterpret</span></a></li><li>  <a href="dmd_dmacro.html" title="dmd.dmacro"><span class="d_inlinecode donthyphenate notranslate">dmacro</span></a></li><li>  <a href="dmd_dmangle.html" title="dmd.dmangle"><span class="d_inlinecode donthyphenate notranslate">dmangle</span></a></li><li>  <a href="dmd_dmodule.html" title="dmd.dmodule"><span class="d_inlinecode donthyphenate notranslate">dmodule</span></a></li><li>  <a href="dmd_dmsc.html" title="dmd.dmsc"><span class="d_inlinecode donthyphenate notranslate">dmsc</span></a></li><li>  <a href="dmd_doc.html" title="dmd.doc"><span class="d_inlinecode donthyphenate notranslate">doc</span></a></li><li>  <a href="dmd_dscope.html" title="dmd.dscope"><span class="d_inlinecode donthyphenate notranslate">dscope</span></a></li><li>  <a href="dmd_dstruct.html" title="dmd.dstruct"><span class="d_inlinecode donthyphenate notranslate">dstruct</span></a></li><li>  <a href="dmd_dsymbol.html" title="dmd.dsymbol"><span class="d_inlinecode donthyphenate notranslate">dsymbol</span></a></li><li>  <a href="dmd_dsymbolsem.html" title="dmd.dsymbolsem"><span class="d_inlinecode donthyphenate notranslate">dsymbolsem</span></a></li><li>  <a href="dmd_dtemplate.html" title="dmd.dtemplate"><span class="d_inlinecode donthyphenate notranslate">dtemplate</span></a></li><li>  <a href="dmd_dversion.html" title="dmd.dversion"><span class="d_inlinecode donthyphenate notranslate">dversion</span></a></li><li>  <a href="dmd_e2ir.html" title="dmd.e2ir"><span class="d_inlinecode donthyphenate notranslate">e2ir</span></a></li><li>  <a href="dmd_eh.html" title="dmd.eh"><span class="d_inlinecode donthyphenate notranslate">eh</span></a></li><li>  <a href="dmd_entity.html" title="dmd.entity"><span class="d_inlinecode donthyphenate notranslate">entity</span></a></li><li>  <a href="dmd_errors.html" title="dmd.errors"><span class="d_inlinecode donthyphenate notranslate">errors</span></a></li><li>  <a href="dmd_escape.html" title="dmd.escape"><span class="d_inlinecode donthyphenate notranslate">escape</span></a></li><li>  <a href="dmd_expression.html" title="dmd.expression"><span class="d_inlinecode donthyphenate notranslate">expression</span></a></li><li>  <a href="dmd_expressionsem.html" title="dmd.expressionsem"><span class="d_inlinecode donthyphenate notranslate">expressionsem</span></a></li><li>  <a href="dmd_frontend.html" title="dmd.frontend"><span class="d_inlinecode donthyphenate notranslate">frontend</span></a></li><li>  <a href="dmd_func.html" title="dmd.func"><span class="d_inlinecode donthyphenate notranslate">func</span></a></li><li>  <a href="dmd_globals.html" title="dmd.globals"><span class="d_inlinecode donthyphenate notranslate">globals</span></a></li><li>  <a href="dmd_glue.html" title="dmd.glue"><span class="d_inlinecode donthyphenate notranslate">glue</span></a></li><li>  <a href="dmd_gluelayer.html" title="dmd.gluelayer"><span class="d_inlinecode donthyphenate notranslate">gluelayer</span></a></li><li>  <a href="dmd_hdrgen.html" title="dmd.hdrgen"><span class="d_inlinecode donthyphenate notranslate">hdrgen</span></a></li><li>  <a href="dmd_iasm.html" title="dmd.iasm"><span class="d_inlinecode donthyphenate notranslate">iasm</span></a></li><li>  <a href="dmd_iasmdmd.html" title="dmd.iasmdmd"><span class="d_inlinecode donthyphenate notranslate">iasmdmd</span></a></li><li>  <a href="dmd_iasmgcc.html" title="dmd.iasmgcc"><span class="d_inlinecode donthyphenate notranslate">iasmgcc</span></a></li><li>  <a href="dmd_id.html" title="dmd.id"><span class="d_inlinecode donthyphenate notranslate">id</span></a></li><li>  <a href="dmd_identifier.html" title="dmd.identifier"><span class="d_inlinecode donthyphenate notranslate">identifier</span></a></li><li>  <a href="dmd_impcnvtab.html" title="dmd.impcnvtab"><span class="d_inlinecode donthyphenate notranslate">impcnvtab</span></a></li><li>  <a href="dmd_imphint.html" title="dmd.imphint"><span class="d_inlinecode donthyphenate notranslate">imphint</span></a></li><li>  <a href="dmd_init.html" title="dmd.init"><span class="d_inlinecode donthyphenate notranslate">init</span></a></li><li>  <a href="dmd_initsem.html" title="dmd.initsem"><span class="d_inlinecode donthyphenate notranslate">initsem</span></a></li><li>  <a href="dmd_inline.html" title="dmd.inline"><span class="d_inlinecode donthyphenate notranslate">inline</span></a></li><li>  <a href="dmd_inlinecost.html" title="dmd.inlinecost"><span class="d_inlinecode donthyphenate notranslate">inlinecost</span></a></li><li>  <a href="dmd_intrange.html" title="dmd.intrange"><span class="d_inlinecode donthyphenate notranslate">intrange</span></a></li><li>  <a href="dmd_irstate.html" title="dmd.irstate"><span class="d_inlinecode donthyphenate notranslate">irstate</span></a></li><li>  <a href="dmd_json.html" title="dmd.json"><span class="d_inlinecode donthyphenate notranslate">json</span></a></li><li>  <a href="dmd_lambdacomp.html" title="dmd.lambdacomp"><span class="d_inlinecode donthyphenate notranslate">lambdacomp</span></a></li><li>  <a href="dmd_lexer.html" title="dmd.lexer"><span class="d_inlinecode donthyphenate notranslate">lexer</span></a></li><li>  <a href="dmd_lib.html" title="dmd.lib"><span class="d_inlinecode donthyphenate notranslate">lib</span></a></li><li>  <a href="dmd_libelf.html" title="dmd.libelf"><span class="d_inlinecode donthyphenate notranslate">libelf</span></a></li><li>  <a href="dmd_libomf.html" title="dmd.libomf"><span class="d_inlinecode donthyphenate notranslate">libomf</span></a></li><li>  <a href="dmd_link.html" title="dmd.link"><span class="d_inlinecode donthyphenate notranslate">link</span></a></li><li>  <a href="dmd_mars.html" title="dmd.mars"><span class="d_inlinecode donthyphenate notranslate">mars</span></a></li><li>  <a href="dmd_mtype.html" title="dmd.mtype"><span class="d_inlinecode donthyphenate notranslate">mtype</span></a></li><li>  <a href="dmd_nogc.html" title="dmd.nogc"><span class="d_inlinecode donthyphenate notranslate">nogc</span></a></li><li>  <a href="dmd_nspace.html" title="dmd.nspace"><span class="d_inlinecode donthyphenate notranslate">nspace</span></a></li><li>  <a href="dmd_objc.html" title="dmd.objc"><span class="d_inlinecode donthyphenate notranslate">objc</span></a></li><li>  <a href="dmd_objc_glue.html" title="dmd.objc_glue"><span class="d_inlinecode donthyphenate notranslate">objc_glue</span></a></li><li>  <a href="dmd_opover.html" title="dmd.opover"><span class="d_inlinecode donthyphenate notranslate">opover</span></a></li><li>  <a href="dmd_optimize.html" title="dmd.optimize"><span class="d_inlinecode donthyphenate notranslate">optimize</span></a></li><li>  <a href="dmd_parse.html" title="dmd.parse"><span class="d_inlinecode donthyphenate notranslate">parse</span></a></li><li>  <a href="dmd_parsetimevisitor.html" title="dmd.parsetimevisitor"><span class="d_inlinecode donthyphenate notranslate">parsetimevisitor</span></a></li><li>  <a href="dmd_permissivevisitor.html" title="dmd.permissivevisitor"><span class="d_inlinecode donthyphenate notranslate">permissivevisitor</span></a></li><li>  <a href="dmd_printast.html" title="dmd.printast"><span class="d_inlinecode donthyphenate notranslate">printast</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">root</span></h7><ul><li>    <a href="dmd_root_aav.html" title="dmd.root.aav"><span class="d_inlinecode donthyphenate notranslate">aav</span></a></li><li>    <a href="dmd_root_array.html" title="dmd.root.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>    <a href="dmd_root_ctfloat.html" title="dmd.root.ctfloat"><span class="d_inlinecode donthyphenate notranslate">ctfloat</span></a></li><li>    <a href="dmd_root_file.html" title="dmd.root.file"><span class="d_inlinecode donthyphenate notranslate">file</span></a></li><li>    <a href="dmd_root_filename.html" title="dmd.root.filename"><span class="d_inlinecode donthyphenate notranslate">filename</span></a></li><li>    <a href="dmd_root_hash.html" title="dmd.root.hash"><span class="d_inlinecode donthyphenate notranslate">hash</span></a></li><li>    <a href="dmd_root_longdouble.html" title="dmd.root.longdouble"><span class="d_inlinecode donthyphenate notranslate">longdouble</span></a></li><li>    <a href="dmd_root_man.html" title="dmd.root.man"><span class="d_inlinecode donthyphenate notranslate">man</span></a></li><li>    <a href="dmd_root_outbuffer.html" title="dmd.root.outbuffer"><span class="d_inlinecode donthyphenate notranslate">outbuffer</span></a></li><li>    <a href="dmd_root_port.html" title="dmd.root.port"><span class="d_inlinecode donthyphenate notranslate">port</span></a></li><li>    <a href="dmd_root_response.html" title="dmd.root.response"><span class="d_inlinecode donthyphenate notranslate">response</span></a></li><li>    <a href="dmd_root_rmem.html" title="dmd.root.rmem"><span class="d_inlinecode donthyphenate notranslate">rmem</span></a></li><li>    <a href="dmd_root_rootobject.html" title="dmd.root.rootobject"><span class="d_inlinecode donthyphenate notranslate">rootobject</span></a></li><li>    <a href="dmd_root_speller.html" title="dmd.root.speller"><span class="d_inlinecode donthyphenate notranslate">speller</span></a></li><li>    <a href="dmd_root_stringtable.html" title="dmd.root.stringtable"><span class="d_inlinecode donthyphenate notranslate">stringtable</span></a>
+  </li></ul></li><li>  <a href="dmd_s2ir.html" title="dmd.s2ir"><span class="d_inlinecode donthyphenate notranslate">s2ir</span></a></li><li>  <a href="dmd_safe.html" title="dmd.safe"><span class="d_inlinecode donthyphenate notranslate">safe</span></a></li><li>  <a href="dmd_sapply.html" title="dmd.sapply"><span class="d_inlinecode donthyphenate notranslate">sapply</span></a></li><li>  <a href="dmd_scanelf.html" title="dmd.scanelf"><span class="d_inlinecode donthyphenate notranslate">scanelf</span></a></li><li>  <a href="dmd_scanomf.html" title="dmd.scanomf"><span class="d_inlinecode donthyphenate notranslate">scanomf</span></a></li><li>  <a href="dmd_semantic2.html" title="dmd.semantic2"><span class="d_inlinecode donthyphenate notranslate">semantic2</span></a></li><li>  <a href="dmd_semantic3.html" title="dmd.semantic3"><span class="d_inlinecode donthyphenate notranslate">semantic3</span></a></li><li>  <a href="dmd_sideeffect.html" title="dmd.sideeffect"><span class="d_inlinecode donthyphenate notranslate">sideeffect</span></a></li><li>  <a href="dmd_statement.html" title="dmd.statement"><span class="d_inlinecode donthyphenate notranslate">statement</span></a></li><li>  <a href="dmd_statement_rewrite_walker.html" title="dmd.statement_rewrite_walker"><span class="d_inlinecode donthyphenate notranslate">statement_rewrite_walker</span></a></li><li>  <a href="dmd_statementsem.html" title="dmd.statementsem"><span class="d_inlinecode donthyphenate notranslate">statementsem</span></a></li><li>  <a href="dmd_staticassert.html" title="dmd.staticassert"><span class="d_inlinecode donthyphenate notranslate">staticassert</span></a></li><li>  <a href="dmd_staticcond.html" title="dmd.staticcond"><span class="d_inlinecode donthyphenate notranslate">staticcond</span></a></li><li>  <a href="dmd_strictvisitor.html" title="dmd.strictvisitor"><span class="d_inlinecode donthyphenate notranslate">strictvisitor</span></a></li><li>  <a href="dmd_target.html" title="dmd.target"><span class="d_inlinecode donthyphenate notranslate">target</span></a></li><li>  <a href="dmd_templateparamsem.html" title="dmd.templateparamsem"><span class="d_inlinecode donthyphenate notranslate">templateparamsem</span></a></li><li>  <a href="dmd_tocsym.html" title="dmd.tocsym"><span class="d_inlinecode donthyphenate notranslate">tocsym</span></a></li><li>  <a href="dmd_toctype.html" title="dmd.toctype"><span class="d_inlinecode donthyphenate notranslate">toctype</span></a></li><li>  <a href="dmd_tocvdebug.html" title="dmd.tocvdebug"><span class="d_inlinecode donthyphenate notranslate">tocvdebug</span></a></li><li>  <a href="dmd_todt.html" title="dmd.todt"><span class="d_inlinecode donthyphenate notranslate">todt</span></a></li><li>  <a href="dmd_toir.html" title="dmd.toir"><span class="d_inlinecode donthyphenate notranslate">toir</span></a></li><li>  <a href="dmd_tokens.html" title="dmd.tokens"><span class="d_inlinecode donthyphenate notranslate">tokens</span></a></li><li>  <a href="dmd_toobj.html" title="dmd.toobj"><span class="d_inlinecode donthyphenate notranslate">toobj</span></a></li><li>  <a href="dmd_traits.html" title="dmd.traits"><span class="d_inlinecode donthyphenate notranslate">traits</span></a></li><li>  <a href="dmd_transitivevisitor.html" title="dmd.transitivevisitor"><span class="d_inlinecode donthyphenate notranslate">transitivevisitor</span></a></li><li>  <a href="dmd_typesem.html" title="dmd.typesem"><span class="d_inlinecode donthyphenate notranslate">typesem</span></a></li><li>  <a href="dmd_typinf.html" title="dmd.typinf"><span class="d_inlinecode donthyphenate notranslate">typinf</span></a></li><li>  <a href="dmd_utf.html" title="dmd.utf"><span class="d_inlinecode donthyphenate notranslate">utf</span></a></li><li>  <a href="dmd_utils.html" title="dmd.utils"><span class="d_inlinecode donthyphenate notranslate">utils</span></a></li><li>  <a href="dmd_visitor.html" title="dmd.visitor"><span class="d_inlinecode donthyphenate notranslate">visitor</span></a>
+</li></ul>
+</li>
+
+<li class='expand-container modlist-submenu-rt'><a class='expand-toggle' href='#'><span><em class="tt">rt</em></span></a>
+<ul><li>  <a href="rt_aApply.html" title="rt.aApply"><span class="d_inlinecode donthyphenate notranslate">aApply</span></a></li><li>  <a href="rt_aApplyR.html" title="rt.aApplyR"><span class="d_inlinecode donthyphenate notranslate">aApplyR</span></a></li><li>  <a href="rt_aaA.html" title="rt.aaA"><span class="d_inlinecode donthyphenate notranslate">aaA</span></a></li><li>  <a href="rt_adi.html" title="rt.adi"><span class="d_inlinecode donthyphenate notranslate">adi</span></a></li><li>  <a href="rt_alloca.html" title="rt.alloca"><span class="d_inlinecode donthyphenate notranslate">alloca</span></a></li><li>  <a href="rt_arrayassign.html" title="rt.arrayassign"><span class="d_inlinecode donthyphenate notranslate">arrayassign</span></a></li><li>  <a href="rt_arraycast.html" title="rt.arraycast"><span class="d_inlinecode donthyphenate notranslate">arraycast</span></a></li><li>  <a href="rt_arraycat.html" title="rt.arraycat"><span class="d_inlinecode donthyphenate notranslate">arraycat</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">backtrace</span></h7><ul><li>    <a href="rt_backtrace_dwarf.html" title="rt.backtrace.dwarf"><span class="d_inlinecode donthyphenate notranslate">dwarf</span></a></li><li>    <a href="rt_backtrace_elf.html" title="rt.backtrace.elf"><span class="d_inlinecode donthyphenate notranslate">elf</span></a></li><li>    <a href="rt_backtrace_macho.html" title="rt.backtrace.macho"><span class="d_inlinecode donthyphenate notranslate">macho</span></a>
+  </li></ul></li><li>  <a href="rt_cast_.html" title="rt.cast_"><span class="d_inlinecode donthyphenate notranslate">cast_</span></a></li><li>  <a href="rt_cmath2.html" title="rt.cmath2"><span class="d_inlinecode donthyphenate notranslate">cmath2</span></a></li><li>  <a href="rt_config.html" title="rt.config"><span class="d_inlinecode donthyphenate notranslate">config</span></a></li><li>  <a href="rt_cover.html" title="rt.cover"><span class="d_inlinecode donthyphenate notranslate">cover</span></a></li><li>  <a href="rt_critical_.html" title="rt.critical_"><span class="d_inlinecode donthyphenate notranslate">critical_</span></a></li><li>  <a href="rt_deh.html" title="rt.deh"><span class="d_inlinecode donthyphenate notranslate">deh</span></a></li><li>  <a href="rt_deh_win32.html" title="rt.deh_win32"><span class="d_inlinecode donthyphenate notranslate">deh_win32</span></a></li><li>  <a href="rt_deh_win64_posix.html" title="rt.deh_win64_posix"><span class="d_inlinecode donthyphenate notranslate">deh_win64_posix</span></a></li><li>  <a href="rt_dmain2.html" title="rt.dmain2"><span class="d_inlinecode donthyphenate notranslate">dmain2</span></a></li><li>  <a href="rt_dwarfeh.html" title="rt.dwarfeh"><span class="d_inlinecode donthyphenate notranslate">dwarfeh</span></a></li><li>  <a href="rt_ehalloc.html" title="rt.ehalloc"><span class="d_inlinecode donthyphenate notranslate">ehalloc</span></a></li><li>  <a href="rt_invariant.html" title="rt.invariant"><span class="d_inlinecode donthyphenate notranslate">invariant</span></a></li><li>  <a href="rt_lifetime.html" title="rt.lifetime"><span class="d_inlinecode donthyphenate notranslate">lifetime</span></a></li><li>  <a href="rt_llmath.html" title="rt.llmath"><span class="d_inlinecode donthyphenate notranslate">llmath</span></a></li><li>  <a href="rt_memory.html" title="rt.memory"><span class="d_inlinecode donthyphenate notranslate">memory</span></a></li><li>  <a href="rt_memset.html" title="rt.memset"><span class="d_inlinecode donthyphenate notranslate">memset</span></a></li><li>  <a href="rt_minfo.html" title="rt.minfo"><span class="d_inlinecode donthyphenate notranslate">minfo</span></a></li><li>  <a href="rt_monitor_.html" title="rt.monitor_"><span class="d_inlinecode donthyphenate notranslate">monitor_</span></a></li><li>  <a href="rt_obj.html" title="rt.obj"><span class="d_inlinecode donthyphenate notranslate">obj</span></a></li><li>  <a href="rt_profilegc.html" title="rt.profilegc"><span class="d_inlinecode donthyphenate notranslate">profilegc</span></a></li><li>  <a href="rt_qsort.html" title="rt.qsort"><span class="d_inlinecode donthyphenate notranslate">qsort</span></a></li><li>  <a href="rt_sections.html" title="rt.sections"><span class="d_inlinecode donthyphenate notranslate">sections</span></a></li><li>  <a href="rt_sections_android.html" title="rt.sections_android"><span class="d_inlinecode donthyphenate notranslate">sections_android</span></a></li><li>  <a href="rt_sections_elf_shared.html" title="rt.sections_elf_shared"><span class="d_inlinecode donthyphenate notranslate">sections_elf_shared</span></a></li><li>  <a href="rt_sections_osx_x86.html" title="rt.sections_osx_x86"><span class="d_inlinecode donthyphenate notranslate">sections_osx_x86</span></a></li><li>  <a href="rt_sections_osx_x86_64.html" title="rt.sections_osx_x86_64"><span class="d_inlinecode donthyphenate notranslate">sections_osx_x86_64</span></a></li><li>  <a href="rt_sections_solaris.html" title="rt.sections_solaris"><span class="d_inlinecode donthyphenate notranslate">sections_solaris</span></a></li><li>  <a href="rt_sections_win32.html" title="rt.sections_win32"><span class="d_inlinecode donthyphenate notranslate">sections_win32</span></a></li><li>  <a href="rt_sections_win64.html" title="rt.sections_win64"><span class="d_inlinecode donthyphenate notranslate">sections_win64</span></a></li><li>  <a href="rt_tlsgc.html" title="rt.tlsgc"><span class="d_inlinecode donthyphenate notranslate">tlsgc</span></a></li><li>  <a href="rt_trace.html" title="rt.trace"><span class="d_inlinecode donthyphenate notranslate">trace</span></a></li><li>  <a href="rt_tracegc.html" title="rt.tracegc"><span class="d_inlinecode donthyphenate notranslate">tracegc</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">typeinfo</span></h7><ul><li>    <a href="rt_typeinfo_ti_Acdouble.html" title="rt.typeinfo.ti_Acdouble"><span class="d_inlinecode donthyphenate notranslate">ti_Acdouble</span></a></li><li>    <a href="rt_typeinfo_ti_Acfloat.html" title="rt.typeinfo.ti_Acfloat"><span class="d_inlinecode donthyphenate notranslate">ti_Acfloat</span></a></li><li>    <a href="rt_typeinfo_ti_Acreal.html" title="rt.typeinfo.ti_Acreal"><span class="d_inlinecode donthyphenate notranslate">ti_Acreal</span></a></li><li>    <a href="rt_typeinfo_ti_Adouble.html" title="rt.typeinfo.ti_Adouble"><span class="d_inlinecode donthyphenate notranslate">ti_Adouble</span></a></li><li>    <a href="rt_typeinfo_ti_Afloat.html" title="rt.typeinfo.ti_Afloat"><span class="d_inlinecode donthyphenate notranslate">ti_Afloat</span></a></li><li>    <a href="rt_typeinfo_ti_Ag.html" title="rt.typeinfo.ti_Ag"><span class="d_inlinecode donthyphenate notranslate">ti_Ag</span></a></li><li>    <a href="rt_typeinfo_ti_Aint.html" title="rt.typeinfo.ti_Aint"><span class="d_inlinecode donthyphenate notranslate">ti_Aint</span></a></li><li>    <a href="rt_typeinfo_ti_Along.html" title="rt.typeinfo.ti_Along"><span class="d_inlinecode donthyphenate notranslate">ti_Along</span></a></li><li>    <a href="rt_typeinfo_ti_Areal.html" title="rt.typeinfo.ti_Areal"><span class="d_inlinecode donthyphenate notranslate">ti_Areal</span></a></li><li>    <a href="rt_typeinfo_ti_Ashort.html" title="rt.typeinfo.ti_Ashort"><span class="d_inlinecode donthyphenate notranslate">ti_Ashort</span></a></li><li>    <a href="rt_typeinfo_ti_C.html" title="rt.typeinfo.ti_C"><span class="d_inlinecode donthyphenate notranslate">ti_C</span></a></li><li>    <a href="rt_typeinfo_ti_byte.html" title="rt.typeinfo.ti_byte"><span class="d_inlinecode donthyphenate notranslate">ti_byte</span></a></li><li>    <a href="rt_typeinfo_ti_cdouble.html" title="rt.typeinfo.ti_cdouble"><span class="d_inlinecode donthyphenate notranslate">ti_cdouble</span></a></li><li>    <a href="rt_typeinfo_ti_cent.html" title="rt.typeinfo.ti_cent"><span class="d_inlinecode donthyphenate notranslate">ti_cent</span></a></li><li>    <a href="rt_typeinfo_ti_cfloat.html" title="rt.typeinfo.ti_cfloat"><span class="d_inlinecode donthyphenate notranslate">ti_cfloat</span></a></li><li>    <a href="rt_typeinfo_ti_char.html" title="rt.typeinfo.ti_char"><span class="d_inlinecode donthyphenate notranslate">ti_char</span></a></li><li>    <a href="rt_typeinfo_ti_creal.html" title="rt.typeinfo.ti_creal"><span class="d_inlinecode donthyphenate notranslate">ti_creal</span></a></li><li>    <a href="rt_typeinfo_ti_dchar.html" title="rt.typeinfo.ti_dchar"><span class="d_inlinecode donthyphenate notranslate">ti_dchar</span></a></li><li>    <a href="rt_typeinfo_ti_delegate.html" title="rt.typeinfo.ti_delegate"><span class="d_inlinecode donthyphenate notranslate">ti_delegate</span></a></li><li>    <a href="rt_typeinfo_ti_double.html" title="rt.typeinfo.ti_double"><span class="d_inlinecode donthyphenate notranslate">ti_double</span></a></li><li>    <a href="rt_typeinfo_ti_float.html" title="rt.typeinfo.ti_float"><span class="d_inlinecode donthyphenate notranslate">ti_float</span></a></li><li>    <a href="rt_typeinfo_ti_idouble.html" title="rt.typeinfo.ti_idouble"><span class="d_inlinecode donthyphenate notranslate">ti_idouble</span></a></li><li>    <a href="rt_typeinfo_ti_ifloat.html" title="rt.typeinfo.ti_ifloat"><span class="d_inlinecode donthyphenate notranslate">ti_ifloat</span></a></li><li>    <a href="rt_typeinfo_ti_int.html" title="rt.typeinfo.ti_int"><span class="d_inlinecode donthyphenate notranslate">ti_int</span></a></li><li>    <a href="rt_typeinfo_ti_ireal.html" title="rt.typeinfo.ti_ireal"><span class="d_inlinecode donthyphenate notranslate">ti_ireal</span></a></li><li>    <a href="rt_typeinfo_ti_long.html" title="rt.typeinfo.ti_long"><span class="d_inlinecode donthyphenate notranslate">ti_long</span></a></li><li>    <a href="rt_typeinfo_ti_n.html" title="rt.typeinfo.ti_n"><span class="d_inlinecode donthyphenate notranslate">ti_n</span></a></li><li>    <a href="rt_typeinfo_ti_ptr.html" title="rt.typeinfo.ti_ptr"><span class="d_inlinecode donthyphenate notranslate">ti_ptr</span></a></li><li>    <a href="rt_typeinfo_ti_real.html" title="rt.typeinfo.ti_real"><span class="d_inlinecode donthyphenate notranslate">ti_real</span></a></li><li>    <a href="rt_typeinfo_ti_short.html" title="rt.typeinfo.ti_short"><span class="d_inlinecode donthyphenate notranslate">ti_short</span></a></li><li>    <a href="rt_typeinfo_ti_ubyte.html" title="rt.typeinfo.ti_ubyte"><span class="d_inlinecode donthyphenate notranslate">ti_ubyte</span></a></li><li>    <a href="rt_typeinfo_ti_ucent.html" title="rt.typeinfo.ti_ucent"><span class="d_inlinecode donthyphenate notranslate">ti_ucent</span></a></li><li>    <a href="rt_typeinfo_ti_uint.html" title="rt.typeinfo.ti_uint"><span class="d_inlinecode donthyphenate notranslate">ti_uint</span></a></li><li>    <a href="rt_typeinfo_ti_ulong.html" title="rt.typeinfo.ti_ulong"><span class="d_inlinecode donthyphenate notranslate">ti_ulong</span></a></li><li>    <a href="rt_typeinfo_ti_ushort.html" title="rt.typeinfo.ti_ushort"><span class="d_inlinecode donthyphenate notranslate">ti_ushort</span></a></li><li>    <a href="rt_typeinfo_ti_void.html" title="rt.typeinfo.ti_void"><span class="d_inlinecode donthyphenate notranslate">ti_void</span></a></li><li>    <a href="rt_typeinfo_ti_wchar.html" title="rt.typeinfo.ti_wchar"><span class="d_inlinecode donthyphenate notranslate">ti_wchar</span></a>
+  </li></ul></li><li>  <a href="rt_unwind.html" title="rt.unwind"><span class="d_inlinecode donthyphenate notranslate">unwind</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">util</span></h7><ul><li>    <a href="rt_util_array.html" title="rt.util.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>    <h7><span class="d_inlinecode donthyphenate notranslate">container</span></h7><ul><li>      <a href="rt_util_container_array.html" title="rt.util.container.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>      <a href="rt_util_container_common.html" title="rt.util.container.common"><span class="d_inlinecode donthyphenate notranslate">common</span></a></li><li>      <a href="rt_util_container_hashtab.html" title="rt.util.container.hashtab"><span class="d_inlinecode donthyphenate notranslate">hashtab</span></a></li><li>      <a href="rt_util_container_treap.html" title="rt.util.container.treap"><span class="d_inlinecode donthyphenate notranslate">treap</span></a>
+    </li></ul></li><li>    <a href="rt_util_random.html" title="rt.util.random"><span class="d_inlinecode donthyphenate notranslate">random</span></a></li><li>    <a href="rt_util_typeinfo.html" title="rt.util.typeinfo"><span class="d_inlinecode donthyphenate notranslate">typeinfo</span></a></li><li>    <a href="rt_util_utf.html" title="rt.util.utf"><span class="d_inlinecode donthyphenate notranslate">utf</span></a>
+  </li></ul>
+</li></ul>
+</li></ul>
+</div>
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/phobos/&amp;component=dmd&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5Bdmd.func%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dmd/edit/master/dmd/func.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1><span class="d_title">dmd.func</span></h1>
+        <div class="quickindex" id="quickindex"></div>
+        <div class="summary">Compiler implementation of the
+ <a href="http://www.dlang.org">D programming language</a>.
+</div><div class="keyval Authors"><span class="key keyAuthors">Authors:</span> <div class="val valAuthors"><a href="http://www.digitalmars.com">Walter Bright</a>
+</div></div>
+<div class="keyval License"><span class="key keyLicense">License:</span> <div class="val valLicense"><a href="http://www.boost.org/LICENSE_1_0.txt">Boost License 1.0</a>
+</div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Source</span>
+<a href="https://github.com/dlang/dmd/blob/master/src/dmd/func.d">func.d</a>
+</p></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Documentation</span>
+<a href="https://dlang.org/phobos/dmd_func.html">https://dlang.org/phobos/dmd_func.html</a>
+</p></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Coverage</span>
+<a href="https://codecov.io/gh/dlang/dmd/src/master/src/dmd/func.d">https://codecov.io/gh/dlang/dmd/src/master/src/dmd/func.d</a></p></div>
+
+<dl><dt class="d_decl"><div ><span class="def-anchor" id=".ILS"></span><div class="quickindex" id="quickindex.ILS"></div>enum <span class="def-anchor" id="ILS"></span><code class="ddoc_psymbol">ILS</code>: int;
+<br></div></dt>
+<dd><div class="summary">Inline Status</div>
+<dl><dt class="d_decl"><div ><span class="def-anchor" id=".ILS.uninitialized"></span><div class="quickindex" id="quickindex.ILS.uninitialized"></div><span class="def-anchor" id="uninitialized"></span><code class="ddoc_psymbol">uninitialized</code><br></div></dt>
+<dd><div class="summary">not computed yet</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".ILS.no"></span><div class="quickindex" id="quickindex.ILS.no"></div><span class="def-anchor" id="no"></span><code class="ddoc_psymbol">no</code><br></div></dt>
+<dd><div class="summary">cannot inline</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".ILS.yes"></span><div class="quickindex" id="quickindex.ILS.yes"></div><span class="def-anchor" id="yes"></span><code class="ddoc_psymbol">yes</code><br></div></dt>
+<dd><div class="summary">can inline</div>
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Ensure"></span><div class="quickindex" id="quickindex.Ensure"></div>struct <span class="def-anchor" id="Ensure"></span><code class="ddoc_psymbol">Ensure</code>;
+<br></div></dt>
+<dd><div class="summary">Tuple of result identifier (possibly null) and statement.
+ This is used to store out contracts: out(id){ ensure }</div>
+<dl><dt class="d_decl"><div ><span class="def-anchor" id=".Ensure.arraySyntaxCopy"></span><div class="quickindex" id="quickindex.Ensure.arraySyntaxCopy"></div>static Ensures* <span class="def-anchor" id="arraySyntaxCopy"></span><code class="ddoc_psymbol">arraySyntaxCopy</code>(Ensures* <code class="ddoc_param">a</code>);
+<br></div></dt>
+<dd><div class="summary">Do syntax copy of an array of Ensure's.</div>
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration"></span><div class="quickindex" id="quickindex.FuncDeclaration"></div>class <span class="def-anchor" id="FuncDeclaration"></span><code class="ddoc_psymbol">FuncDeclaration</code>: <span class="ddoc_psuper_symbol">dmd.declaration.Declaration</span>;
+<br></div></dt>
+<dd>
+<dl><dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.fthrows"></span><div class="quickindex" id="quickindex.FuncDeclaration.fthrows"></div>Types* <span class="def-anchor" id="fthrows"></span><code class="ddoc_psymbol">fthrows</code>;
+<br></div></dt>
+<dd><div class="summary">Array of Type's of exceptions (not used)</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.frequires"></span><div class="quickindex" id="quickindex.FuncDeclaration.frequires"></div>Statements* <span class="def-anchor" id="frequires"></span><code class="ddoc_psymbol">frequires</code>;
+<br></div></dt>
+<dd><div class="summary">in contracts</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.fensures"></span><div class="quickindex" id="quickindex.FuncDeclaration.fensures"></div>Ensures* <span class="def-anchor" id="fensures"></span><code class="ddoc_psymbol">fensures</code>;
+<br></div></dt>
+<dd><div class="summary">out contracts</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.frequire"></span><div class="quickindex" id="quickindex.FuncDeclaration.frequire"></div>Statement <span class="def-anchor" id="frequire"></span><code class="ddoc_psymbol">frequire</code>;
+<br></div></dt>
+<dd><div class="summary">lowered in contract</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.fensure"></span><div class="quickindex" id="quickindex.FuncDeclaration.fensure"></div>Statement <span class="def-anchor" id="fensure"></span><code class="ddoc_psymbol">fensure</code>;
+<br></div></dt>
+<dd><div class="summary">lowered out contract</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.fbody"></span><div class="quickindex" id="quickindex.FuncDeclaration.fbody"></div>Statement <span class="def-anchor" id="fbody"></span><code class="ddoc_psymbol">fbody</code>;
+<br></div></dt>
+<dd><div class="summary">function body</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.foverrides"></span><div class="quickindex" id="quickindex.FuncDeclaration.foverrides"></div>FuncDeclarations <span class="def-anchor" id="foverrides"></span><code class="ddoc_psymbol">foverrides</code>;
+<br></div></dt>
+<dd><div class="summary">functions this function overrides</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.fdrequire"></span><div class="quickindex" id="quickindex.FuncDeclaration.fdrequire"></div>FuncDeclaration <span class="def-anchor" id="fdrequire"></span><code class="ddoc_psymbol">fdrequire</code>;
+<br></div></dt>
+<dd><div class="summary">function that does the in contract</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.fdensure"></span><div class="quickindex" id="quickindex.FuncDeclaration.fdensure"></div>FuncDeclaration <span class="def-anchor" id="fdensure"></span><code class="ddoc_psymbol">fdensure</code>;
+<br></div></dt>
+<dd><div class="summary">function that does the out contract</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.mangleString"></span><div class="quickindex" id="quickindex.FuncDeclaration.mangleString"></div>const(char)* <span class="def-anchor" id="mangleString"></span><code class="ddoc_psymbol">mangleString</code>;
+<br></div></dt>
+<dd><div class="summary">mangled symbol created from mangleExact()</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.vresult"></span><div class="quickindex" id="quickindex.FuncDeclaration.vresult"></div>VarDeclaration <span class="def-anchor" id="vresult"></span><code class="ddoc_psymbol">vresult</code>;
+<br></div></dt>
+<dd><div class="summary">result variable for out contracts</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.returnLabel"></span><div class="quickindex" id="quickindex.FuncDeclaration.returnLabel"></div>LabelDsymbol <span class="def-anchor" id="returnLabel"></span><code class="ddoc_psymbol">returnLabel</code>;
+<br></div></dt>
+<dd><div class="summary">where the return goes</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.vthis"></span><div class="quickindex" id="quickindex.FuncDeclaration.vthis"></div>VarDeclaration <span class="def-anchor" id="vthis"></span><code class="ddoc_psymbol">vthis</code>;
+<br></div></dt>
+<dd><div class="summary">'this' parameter (member and nested)</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.v_arguments"></span><div class="quickindex" id="quickindex.FuncDeclaration.v_arguments"></div>VarDeclaration <span class="def-anchor" id="v_arguments"></span><code class="ddoc_psymbol">v_arguments</code>;
+<br></div></dt>
+<dd><div class="summary">'arguments' parameter</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.selector"></span><div class="quickindex" id="quickindex.FuncDeclaration.selector"></div>ObjcSelector* <span class="def-anchor" id="selector"></span><code class="ddoc_psymbol">selector</code>;
+<br></div></dt>
+<dd><div class="summary">Objective-C method selector (member function only)</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.v_argptr"></span><div class="quickindex" id="quickindex.FuncDeclaration.v_argptr"></div>VarDeclaration <span class="def-anchor" id="v_argptr"></span><code class="ddoc_psymbol">v_argptr</code>;
+<br></div></dt>
+<dd><div class="summary">'argptr' variable</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.parameters"></span><div class="quickindex" id="quickindex.FuncDeclaration.parameters"></div>VarDeclarations* <span class="def-anchor" id="parameters"></span><code class="ddoc_psymbol">parameters</code>;
+<br></div></dt>
+<dd><div class="summary">Array of VarDeclaration's for parameters</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.labtab"></span><div class="quickindex" id="quickindex.FuncDeclaration.labtab"></div>DsymbolTable <span class="def-anchor" id="labtab"></span><code class="ddoc_psymbol">labtab</code>;
+<br></div></dt>
+<dd><div class="summary">statement label symbol table</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.overnext"></span><div class="quickindex" id="quickindex.FuncDeclaration.overnext"></div>Dsymbol <span class="def-anchor" id="overnext"></span><code class="ddoc_psymbol">overnext</code>;
+<br></div></dt>
+<dd><div class="summary">next in overload list</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.overnext0"></span><div class="quickindex" id="quickindex.FuncDeclaration.overnext0"></div>FuncDeclaration <span class="def-anchor" id="overnext0"></span><code class="ddoc_psymbol">overnext0</code>;
+<br></div></dt>
+<dd><div class="summary">next in overload list (only used during IFTI)</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.endloc"></span><div class="quickindex" id="quickindex.FuncDeclaration.endloc"></div>Loc <span class="def-anchor" id="endloc"></span><code class="ddoc_psymbol">endloc</code>;
+<br></div></dt>
+<dd><div class="summary">location of closing curly bracket</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.vtblIndex"></span><div class="quickindex" id="quickindex.FuncDeclaration.vtblIndex"></div>int <span class="def-anchor" id="vtblIndex"></span><code class="ddoc_psymbol">vtblIndex</code>;
+<br></div></dt>
+<dd><div class="summary">for member functions, index into vtbl[]</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.naked"></span><div class="quickindex" id="quickindex.FuncDeclaration.naked"></div>bool <span class="def-anchor" id="naked"></span><code class="ddoc_psymbol">naked</code>;
+<br></div></dt>
+<dd><div class="summary">true if naked</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.generated"></span><div class="quickindex" id="quickindex.FuncDeclaration.generated"></div>bool <span class="def-anchor" id="generated"></span><code class="ddoc_psymbol">generated</code>;
+<br></div></dt>
+<dd><div class="summary">true if function was generated by the compiler rather than</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.inlineStatusStmt"></span><div class="quickindex" id="quickindex.FuncDeclaration.inlineStatusStmt"></div>ILS <span class="def-anchor" id="inlineStatusStmt"></span><code class="ddoc_psymbol">inlineStatusStmt</code>;
+<br></div></dt>
+<dd><div class="summary">supplied by the user</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.ctfeCode"></span><div class="quickindex" id="quickindex.FuncDeclaration.ctfeCode"></div>CompiledCtfeFunctionPimpl <span class="def-anchor" id="ctfeCode"></span><code class="ddoc_psymbol">ctfeCode</code>;
+<br></div></dt>
+<dd><div class="summary">Local data (i.e. CompileCtfeFunction*) for module dinterpret</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.inlineNest"></span><div class="quickindex" id="quickindex.FuncDeclaration.inlineNest"></div>int <span class="def-anchor" id="inlineNest"></span><code class="ddoc_psymbol">inlineNest</code>;
+<br></div></dt>
+<dd><div class="summary">!=0 if nested inline</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.isArrayOp"></span><div class="quickindex" id="quickindex.FuncDeclaration.isArrayOp"></div>bool <span class="def-anchor" id="isArrayOp"></span><code class="ddoc_psymbol">isArrayOp</code>;
+<br></div></dt>
+<dd><div class="summary">true if array operation</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.eh_none"></span><div class="quickindex" id="quickindex.FuncDeclaration.eh_none"></div>bool <span class="def-anchor" id="eh_none"></span><code class="ddoc_psymbol">eh_none</code>;
+<br></div></dt>
+<dd><div class="summary">true if no exception unwinding is needed</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.semantic3Errors"></span><div class="quickindex" id="quickindex.FuncDeclaration.semantic3Errors"></div>bool <span class="def-anchor" id="semantic3Errors"></span><code class="ddoc_psymbol">semantic3Errors</code>;
+<br></div></dt>
+<dd><div class="summary">true if errors in semantic3 this function's frame ptr</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.fes"></span><div class="quickindex" id="quickindex.FuncDeclaration.fes"></div>ForeachStatement <span class="def-anchor" id="fes"></span><code class="ddoc_psymbol">fes</code>;
+<br></div></dt>
+<dd><div class="summary">if foreach body, this is the foreach</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.interfaceVirtual"></span><div class="quickindex" id="quickindex.FuncDeclaration.interfaceVirtual"></div>BaseClass* <span class="def-anchor" id="interfaceVirtual"></span><code class="ddoc_psymbol">interfaceVirtual</code>;
+<br></div></dt>
+<dd><div class="summary">if virtual, but only appears in base interface vtbl[]</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.introducing"></span><div class="quickindex" id="quickindex.FuncDeclaration.introducing"></div>bool <span class="def-anchor" id="introducing"></span><code class="ddoc_psymbol">introducing</code>;
+<br></div></dt>
+<dd><div class="summary">true if 'introducing' function</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.tintro"></span><div class="quickindex" id="quickindex.FuncDeclaration.tintro"></div>Type <span class="def-anchor" id="tintro"></span><code class="ddoc_psymbol">tintro</code>;
+<br></div></dt>
+<dd><div class="summary">if !=NULL, then this is the type
+    of the 'introducing' function
+    this one is overriding</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.inferRetType"></span><div class="quickindex" id="quickindex.FuncDeclaration.inferRetType"></div>bool <span class="def-anchor" id="inferRetType"></span><code class="ddoc_psymbol">inferRetType</code>;
+<br></div></dt>
+<dd><div class="summary">true if return type is to be inferred</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.storage_class2"></span><div class="quickindex" id="quickindex.FuncDeclaration.storage_class2"></div>StorageClass <span class="def-anchor" id="storage_class2"></span><code class="ddoc_psymbol">storage_class2</code>;
+<br></div></dt>
+<dd><div class="summary">storage class for template onemember's</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.hasReturnExp"></span><div class="quickindex" id="quickindex.FuncDeclaration.hasReturnExp"></div>int <span class="def-anchor" id="hasReturnExp"></span><code class="ddoc_psymbol">hasReturnExp</code>;
+<br></div></dt>
+<dd><div class="summary">1 if there's a return exp; statement
+2 if there's a throw statement
+4 if there's an assert(0)
+8 if there's inline asm
+16 if there are multiple return statements</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.nrvo_can"></span><div class="quickindex" id="quickindex.FuncDeclaration.nrvo_can"></div>bool <span class="def-anchor" id="nrvo_can"></span><code class="ddoc_psymbol">nrvo_can</code>;
+<br></div></dt>
+<dd><div class="summary">true means we can do NRVO</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.nrvo_var"></span><div class="quickindex" id="quickindex.FuncDeclaration.nrvo_var"></div>VarDeclaration <span class="def-anchor" id="nrvo_var"></span><code class="ddoc_psymbol">nrvo_var</code>;
+<br></div></dt>
+<dd><div class="summary">variable to replace with shidden</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.shidden"></span><div class="quickindex" id="quickindex.FuncDeclaration.shidden"></div>Symbol* <span class="def-anchor" id="shidden"></span><code class="ddoc_psymbol">shidden</code>;
+<br></div></dt>
+<dd><div class="summary">hidden pointer passed to function</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.gotos"></span><div class="quickindex" id="quickindex.FuncDeclaration.gotos"></div>GotoStatements* <span class="def-anchor" id="gotos"></span><code class="ddoc_psymbol">gotos</code>;
+<br></div></dt>
+<dd><div class="summary">Gotos with forward references</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.builtin"></span><div class="quickindex" id="quickindex.FuncDeclaration.builtin"></div>BUILTIN <span class="def-anchor" id="builtin"></span><code class="ddoc_psymbol">builtin</code>;
+<br></div></dt>
+<dd><div class="summary">set if this is a known, builtin function we can evaluate at compile time</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.tookAddressOf"></span><div class="quickindex" id="quickindex.FuncDeclaration.tookAddressOf"></div>int <span class="def-anchor" id="tookAddressOf"></span><code class="ddoc_psymbol">tookAddressOf</code>;
+<br></div></dt>
+<dd><div class="summary">set if someone took the address of this function</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.closureVars"></span><div class="quickindex" id="quickindex.FuncDeclaration.closureVars"></div>VarDeclarations <span class="def-anchor" id="closureVars"></span><code class="ddoc_psymbol">closureVars</code>;
+<br></div></dt>
+<dd><div class="summary">local variables in this function which are referenced by nested functions</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.siblingCallers"></span><div class="quickindex" id="quickindex.FuncDeclaration.siblingCallers"></div>FuncDeclarations <span class="def-anchor" id="siblingCallers"></span><code class="ddoc_psymbol">siblingCallers</code>;
+<br></div></dt>
+<dd><div class="summary">Sibling nested functions which called this one</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.flags"></span><div class="quickindex" id="quickindex.FuncDeclaration.flags"></div>uint <span class="def-anchor" id="flags"></span><code class="ddoc_psymbol">flags</code>;
+<br></div></dt>
+<dd><div class="summary">FUNCFLAG.xxxxx</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.functionSemantic"></span><div class="quickindex" id="quickindex.FuncDeclaration.functionSemantic"></div>final bool <span class="def-anchor" id="functionSemantic"></span><code class="ddoc_psymbol">functionSemantic</code>();
+<br></div></dt>
+<dd><div class="summary">Resolve forward reference of function signature -
+ parameter types, return type, and attributes.
+ Returns false if any errors exist in the signature.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.functionSemantic3"></span><div class="quickindex" id="quickindex.FuncDeclaration.functionSemantic3"></div>final bool <span class="def-anchor" id="functionSemantic3"></span><code class="ddoc_psymbol">functionSemantic3</code>();
+<br></div></dt>
+<dd><div class="summary">Resolve forward reference of function body.
+ Returns false if any errors exist in the body.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.checkForwardRef"></span><div class="quickindex" id="quickindex.FuncDeclaration.checkForwardRef"></div>final bool <span class="def-anchor" id="checkForwardRef"></span><code class="ddoc_psymbol">checkForwardRef</code>(ref const Loc <code class="ddoc_param">loc</code>);
+<br></div></dt>
+<dd><div class="summary">Check that this function type is properly resolved.
+ If not, report "forward reference error" and return true.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.overrides"></span><div class="quickindex" id="quickindex.FuncDeclaration.overrides"></div>final int <span class="def-anchor" id="overrides"></span><code class="ddoc_psymbol">overrides</code>(FuncDeclaration <code class="ddoc_param">fd</code>);
+<br></div></dt>
+<dd><div class="summary">Determine if 'this' overrides fd.
+ Return !=0 if it does.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.findVtblIndex"></span><div class="quickindex" id="quickindex.FuncDeclaration.findVtblIndex"></div>final int <span class="def-anchor" id="findVtblIndex"></span><code class="ddoc_psymbol">findVtblIndex</code>(Dsymbols* <code class="ddoc_param">vtbl</code>, int <code class="ddoc_param">dim</code>, bool <code class="ddoc_param">fix17349</code> = true);
+<br></div></dt>
+<dd><div class="summary">Find index of function in vtbl[0..dim] that
+ this function overrides.
+ Prefer an exact match to a covariant one.
+</div><div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">Dsymbols* <code class="ddoc_param">vtbl</code></td>
+<td class="param_desc">vtable to use</td></tr>
+<tr class="param"><td class="param_id">int <code class="ddoc_param">dim</code></td>
+<td class="param_desc">maximal vtable dimension</td></tr>
+<tr class="param"><td class="param_id">bool <code class="ddoc_param">fix17349</code></td>
+<td class="param_desc">enable fix <a href="https://issues.dlang.org/show_bug.cgi?id=17349">https://issues.dlang.org/show_bug.cgi?id=17349</a></td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">      -1      didn't find one
+      -2      can't determine because of forward references</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.overrideInterface"></span><div class="quickindex" id="quickindex.FuncDeclaration.overrideInterface"></div>final BaseClass* <span class="def-anchor" id="overrideInterface"></span><code class="ddoc_psymbol">overrideInterface</code>();
+<br></div></dt>
+<dd><div class="summary">If function a function in a base class,
+ return that base class.
+</div><div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">base class if overriding, null if not</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.overloadInsert"></span><div class="quickindex" id="quickindex.FuncDeclaration.overloadInsert"></div>bool <span class="def-anchor" id="overloadInsert"></span><code class="ddoc_psymbol">overloadInsert</code>(Dsymbol <code class="ddoc_param">s</code>);
+<br></div></dt>
+<dd><div class="summary">Overload this FuncDeclaration with the new one f.
+ Return true if successful; i.e. no conflict.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.overloadExactMatch"></span><div class="quickindex" id="quickindex.FuncDeclaration.overloadExactMatch"></div>final FuncDeclaration <span class="def-anchor" id="overloadExactMatch"></span><code class="ddoc_psymbol">overloadExactMatch</code>(Type <code class="ddoc_param">t</code>);
+<br></div></dt>
+<dd><div class="summary">Find function in overload list that exactly matches t.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.overloadModMatch"></span><div class="quickindex" id="quickindex.FuncDeclaration.overloadModMatch"></div>final FuncDeclaration <span class="def-anchor" id="overloadModMatch"></span><code class="ddoc_psymbol">overloadModMatch</code>(ref const Loc <code class="ddoc_param">loc</code>, Type <code class="ddoc_param">tthis</code>, ref bool <code class="ddoc_param">hasOverloads</code>);
+<br></div></dt>
+<dd><div class="summary">Find function in overload list that matches to the 'this' modifier.
+ There's four result types.
+</div><div class="description">1. If the 'tthis' matches only one candidate, it's an "exact match".
+    Returns the function and 'hasOverloads' is set to false.
+      eg. If 'tthis" is mutable and there's only one mutable method.
+ 2. If there's two or more match candidates, but a candidate function will be
+    a "better match".
+    Returns the better match function but 'hasOverloads' is set to true.
+      eg. If 'tthis' is mutable, and there's both mutable and const methods,
+          the mutable method will be a better match.
+ 3. If there's two or more match candidates, but there's no better match,
+    Returns null and 'hasOverloads' is set to true to represent "ambiguous match".
+      eg. If 'tthis' is mutable, and there's two or more mutable methods.
+ 4. If there's no candidates, it's "no match" and returns null with error report.
+      e.g. If 'tthis' is const but there's no const methods.</div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.findTemplateDeclRoot"></span><div class="quickindex" id="quickindex.FuncDeclaration.findTemplateDeclRoot"></div>final TemplateDeclaration <span class="def-anchor" id="findTemplateDeclRoot"></span><code class="ddoc_psymbol">findTemplateDeclRoot</code>();
+<br></div></dt>
+<dd><div class="summary">find function template root in overload list</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.inUnittest"></span><div class="quickindex" id="quickindex.FuncDeclaration.inUnittest"></div>final bool <span class="def-anchor" id="inUnittest"></span><code class="ddoc_psymbol">inUnittest</code>();
+<br></div></dt>
+<dd><div class="summary">Returns true if function was declared
+ directly or indirectly in a unittest block</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.leastAsSpecialized"></span><div class="quickindex" id="quickindex.FuncDeclaration.leastAsSpecialized"></div>final MATCH <span class="def-anchor" id="leastAsSpecialized"></span><code class="ddoc_psymbol">leastAsSpecialized</code>(FuncDeclaration <code class="ddoc_param">g</code>);
+<br></div></dt>
+<dd><div class="summary">Determine partial specialization order of 'this' vs g.
+ This is very similar to TemplateDeclaration::leastAsSpecialized().
+</div><div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">match   'this' is at least as specialized as g
+      0       g is more specialized than 'this'</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.searchLabel"></span><div class="quickindex" id="quickindex.FuncDeclaration.searchLabel"></div>final LabelDsymbol <span class="def-anchor" id="searchLabel"></span><code class="ddoc_psymbol">searchLabel</code>(Identifier <code class="ddoc_param">ident</code>);
+<br></div></dt>
+<dd><div class="summary">Labels are in a separate scope, one per function.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.getLevel"></span><div class="quickindex" id="quickindex.FuncDeclaration.getLevel"></div>final int <span class="def-anchor" id="getLevel"></span><code class="ddoc_psymbol">getLevel</code>(ref const Loc <code class="ddoc_param">loc</code>, Scope* <code class="ddoc_param">sc</code>, FuncDeclaration <code class="ddoc_param">fd</code>);
+<br></div></dt>
+<dd><div class="summary">Determine lexical level difference from 'this' to nested function 'fd'.
+ Error if this cannot call fd.
+</div><div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">      0       same level
+      &gt;0      decrease nesting by number
+      -1      increase nesting by 1 (fd is nested within 'this')
+      -2      error</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.toFullSignature"></span><div class="quickindex" id="quickindex.FuncDeclaration.toFullSignature"></div>final const(char)* <span class="def-anchor" id="toFullSignature"></span><code class="ddoc_psymbol">toFullSignature</code>();
+<br></div></dt>
+<dd><div class="summary">for diagnostics, e.g. 'int foo(int x, int y) pure'</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.isAbstract"></span><div class="quickindex" id="quickindex.FuncDeclaration.isAbstract"></div>final bool <span class="def-anchor" id="isAbstract"></span><code class="ddoc_psymbol">isAbstract</code>();
+<br></div></dt>
+<dd><div class="summary">Override so it can work even if semantic() hasn't yet
+ been run.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.canInferAttributes"></span><div class="quickindex" id="quickindex.FuncDeclaration.canInferAttributes"></div>final bool <span class="def-anchor" id="canInferAttributes"></span><code class="ddoc_psymbol">canInferAttributes</code>(Scope* <code class="ddoc_param">sc</code>);
+<br></div></dt>
+<dd><div class="summary">Decide if attributes for this function can be inferred from examining
+ the function body.
+</div><div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">true if can</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.initInferAttributes"></span><div class="quickindex" id="quickindex.FuncDeclaration.initInferAttributes"></div>final void <span class="def-anchor" id="initInferAttributes"></span><code class="ddoc_psymbol">initInferAttributes</code>();
+<br></div></dt>
+<dd><div class="summary">Initialize for inferring the attributes of this function.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.setImpure"></span><div class="quickindex" id="quickindex.FuncDeclaration.setImpure"></div>final bool <span class="def-anchor" id="setImpure"></span><code class="ddoc_psymbol">setImpure</code>();
+<br></div></dt>
+<dd><div class="summary">The function is doing something impure,
+ so mark it as impure.
+ If there's a purity error, return true.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.setUnsafe"></span><div class="quickindex" id="quickindex.FuncDeclaration.setUnsafe"></div>final bool <span class="def-anchor" id="setUnsafe"></span><code class="ddoc_psymbol">setUnsafe</code>();
+<br></div></dt>
+<dd><div class="summary">The function is doing something unsave,
+ so mark it as unsafe.
+ If there's a safe error, return true.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.setGC"></span><div class="quickindex" id="quickindex.FuncDeclaration.setGC"></div>final bool <span class="def-anchor" id="setGC"></span><code class="ddoc_psymbol">setGC</code>();
+<br></div></dt>
+<dd><div class="summary">The function is doing something that may allocate with the GC,
+ so mark it as not nogc (not no-how).
+</div><div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">true if function is marked as @nogc, meaning a user error occurred</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.isReturnIsolated"></span><div class="quickindex" id="quickindex.FuncDeclaration.isReturnIsolated"></div>final bool <span class="def-anchor" id="isReturnIsolated"></span><code class="ddoc_psymbol">isReturnIsolated</code>();
+<br></div></dt>
+<dd><div class="summary">See if pointers from function parameters, mutable globals, or uplevel functions
+ could leak into return value.
+</div><div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">true if the function return value is isolated from
+   any inputs to the function</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.isTypeIsolated"></span><div class="quickindex" id="quickindex.FuncDeclaration.isTypeIsolated"></div>final bool <span class="def-anchor" id="isTypeIsolated"></span><code class="ddoc_psymbol">isTypeIsolated</code>(Type <code class="ddoc_param">t</code>);
+<br></div></dt>
+<dd><div class="summary">See if pointers from function parameters, mutable globals, or uplevel functions
+ could leak into type <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">t</code></span>.
+</div><div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">Type <code class="ddoc_param">t</code></td>
+<td class="param_desc">type to check if it is isolated</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">true if <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">t</code></span> is isolated from
+   any inputs to the function</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.isNested"></span><div class="quickindex" id="quickindex.FuncDeclaration.isNested"></div>const bool <span class="def-anchor" id="isNested"></span><code class="ddoc_psymbol">isNested</code>();
+<br></div></dt>
+<dd><div class="summary">Determine if function needs a static frame pointer.
+</div><div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns"><span class="d_inlinecode donthyphenate notranslate">true</span> if function is really nested within other function.
+</div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Contracts</span>
+If isNested() returns true, isThis() should return false.</p></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.isThis"></span><div class="quickindex" id="quickindex.FuncDeclaration.isThis"></div>inout inout(AggregateDeclaration) <span class="def-anchor" id="isThis"></span><code class="ddoc_psymbol">isThis</code>();
+<br></div></dt>
+<dd><div class="summary">Determine if function is a non-static member function
+ that has an implicit 'this' expression.
+</div><div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">The aggregate it is a member of, or null.
+</div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Contracts</span>
+If isThis() returns true, isNested() should return false.</p></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.isUnique"></span><div class="quickindex" id="quickindex.FuncDeclaration.isUnique"></div>final FuncDeclaration <span class="def-anchor" id="isUnique"></span><code class="ddoc_psymbol">isUnique</code>();
+<br></div></dt>
+<dd><div class="summary">If there are no overloads of function f, return that function,
+ otherwise return NULL.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.checkNestedReference"></span><div class="quickindex" id="quickindex.FuncDeclaration.checkNestedReference"></div>final bool <span class="def-anchor" id="checkNestedReference"></span><code class="ddoc_psymbol">checkNestedReference</code>(Scope* <code class="ddoc_param">sc</code>, ref const Loc <code class="ddoc_param">loc</code>);
+<br></div></dt>
+<dd><div class="summary">In the current function, we are calling 'this' function.
+ 1. Check to see if the current function can call 'this' function, issue error if not.
+ 2. If the current function is not the parent of 'this' function, then add
+    the current function to the list of siblings of 'this' function.
+ 3. If the current function is a literal, and it's accessing an uplevel scope,
+    then mark it as a delegate.
+ Returns true if error occurs.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.needsClosure"></span><div class="quickindex" id="quickindex.FuncDeclaration.needsClosure"></div>final bool <span class="def-anchor" id="needsClosure"></span><code class="ddoc_psymbol">needsClosure</code>();
+<br></div></dt>
+<dd><div class="summary">Look at all the variables in this function that are referenced
+ by nested functions, and determine if a closure needs to be
+ created for them.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.checkClosure"></span><div class="quickindex" id="quickindex.FuncDeclaration.checkClosure"></div>final bool <span class="def-anchor" id="checkClosure"></span><code class="ddoc_psymbol">checkClosure</code>();
+<br></div></dt>
+<dd><div class="summary">Check that the function contains any closure.
+ If it's @nogc, report suitable errors.
+ This is mostly consistent with FuncDeclaration::needsClosure().
+</div><div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">true if any errors occur.</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.hasNestedFrameRefs"></span><div class="quickindex" id="quickindex.FuncDeclaration.hasNestedFrameRefs"></div>final bool <span class="def-anchor" id="hasNestedFrameRefs"></span><code class="ddoc_psymbol">hasNestedFrameRefs</code>();
+<br></div></dt>
+<dd><div class="summary">Determine if function's variables are referenced by a function
+ nested within it.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.buildResultVar"></span><div class="quickindex" id="quickindex.FuncDeclaration.buildResultVar"></div>final void <span class="def-anchor" id="buildResultVar"></span><code class="ddoc_psymbol">buildResultVar</code>(Scope* <code class="ddoc_param">sc</code>, Type <code class="ddoc_param">tret</code>);
+<br></div></dt>
+<dd><div class="summary">Declare result variable lazily.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.mergeFrequire"></span><div class="quickindex" id="quickindex.FuncDeclaration.mergeFrequire"></div>final Statement <span class="def-anchor" id="mergeFrequire"></span><code class="ddoc_psymbol">mergeFrequire</code>(Statement <code class="ddoc_param">sf</code>);
+<br></div></dt>
+<dd><div class="summary">Merge into this function the 'in' contracts of all it overrides.
+ 'in's are OR'd together, i.e. only one of them needs to pass.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.needsFensure"></span><div class="quickindex" id="quickindex.FuncDeclaration.needsFensure"></div>static bool <span class="def-anchor" id="needsFensure"></span><code class="ddoc_psymbol">needsFensure</code>(FuncDeclaration <code class="ddoc_param">fd</code>);
+<br></div></dt>
+<dd><div class="summary">Determine whether an 'out' contract is declared inside
+ the given function or any of its overrides.
+</div><div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">FuncDeclaration <code class="ddoc_param">fd</code></td>
+<td class="param_desc">the function to search</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">true    found an 'out' contract</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.buildEnsureRequire"></span><div class="quickindex" id="quickindex.FuncDeclaration.buildEnsureRequire"></div>final void <span class="def-anchor" id="buildEnsureRequire"></span><code class="ddoc_psymbol">buildEnsureRequire</code>();
+<br></div></dt>
+<dd><div class="summary">Rewrite contracts as statements.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.mergeFensure"></span><div class="quickindex" id="quickindex.FuncDeclaration.mergeFensure"></div>final Statement <span class="def-anchor" id="mergeFensure"></span><code class="ddoc_psymbol">mergeFensure</code>(Statement <code class="ddoc_param">sf</code>, Identifier <code class="ddoc_param">oid</code>);
+<br></div></dt>
+<dd><div class="summary">Merge into this function the 'out' contracts of all it overrides.
+ 'out's are AND'd together, i.e. all of them need to pass.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.getParameters"></span><div class="quickindex" id="quickindex.FuncDeclaration.getParameters"></div>final Parameters* <span class="def-anchor" id="getParameters"></span><code class="ddoc_psymbol">getParameters</code>(int* <code class="ddoc_param">pvarargs</code>);
+<br></div></dt>
+<dd><div class="summary">Return the function's parameter list, and whether
+ it is variadic or not.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.genCfunc"></span><div class="quickindex" id="quickindex.FuncDeclaration.genCfunc"></div>static FuncDeclaration <span class="def-anchor" id="genCfunc"></span><code class="ddoc_psymbol">genCfunc</code>(Parameters* <code class="ddoc_param">fparams</code>, Type <code class="ddoc_param">treturn</code>, const(char)* <code class="ddoc_param">name</code>, StorageClass <code class="ddoc_param">stc</code> = 0);
+<br></div></dt>
+<dd><div class="summary">Generate a FuncDeclaration for a runtime library function.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncDeclaration.checkDmain"></span><div class="quickindex" id="quickindex.FuncDeclaration.checkDmain"></div>final void <span class="def-anchor" id="checkDmain"></span><code class="ddoc_psymbol">checkDmain</code>();
+<br></div></dt>
+<dd><div class="summary">Check parameters and return type of D main() function.
+ Issue error messages.</div>
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".addInvariant"></span><div class="quickindex" id="quickindex.addInvariant"></div>Expression <span class="def-anchor" id="addInvariant"></span><code class="ddoc_psymbol">addInvariant</code>(ref const Loc <code class="ddoc_param">loc</code>, Scope* <code class="ddoc_param">sc</code>, AggregateDeclaration <code class="ddoc_param">ad</code>, VarDeclaration <code class="ddoc_param">vthis</code>);
+<br></div></dt>
+<dd><div class="summary">Generate Expression to call the invariant.
+</div><div class="val"><p class="keyval Section"><span class="key keySection">Input</span>
+ad      aggregate with the invariant
+      vthis   variable with 'this'
+</p></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">void expression that calls the invariant</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".overloadApply"></span><div class="quickindex" id="quickindex.overloadApply"></div>int <span class="def-anchor" id="overloadApply"></span><code class="ddoc_psymbol">overloadApply</code>(Dsymbol <code class="ddoc_param">fstart</code>, scope int delegate(Dsymbol) <code class="ddoc_param">dg</code>, Scope* <code class="ddoc_param">sc</code> = null);
+<br></div></dt>
+<dd><div class="summary">Visit each overloaded function/template in turn, and call dg(s) on it.
+ Exit when no more, or dg(s) returns nonzero.
+</div><div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">Dsymbol <code class="ddoc_param">fstart</code></td>
+<td class="param_desc">symbol to start from</td></tr>
+<tr class="param"><td class="param_id">int delegate(Dsymbol) <code class="ddoc_param">dg</code></td>
+<td class="param_desc">the delegate to be called on the overload</td></tr>
+<tr class="param"><td class="param_id">Scope* <code class="ddoc_param">sc</code></td>
+<td class="param_desc">the initial scope from the calling context</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">==0     continue
+      !=0     done</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".MODMatchToBuffer"></span><div class="quickindex" id="quickindex.MODMatchToBuffer"></div>auto <span class="def-anchor" id="MODMatchToBuffer"></span><code class="ddoc_psymbol">MODMatchToBuffer</code>(OutBuffer* <code class="ddoc_param">buf</code>, ubyte <code class="ddoc_param">lhsMod</code>, ubyte <code class="ddoc_param">rhsMod</code>);
+<br></div></dt>
+<dd><div class="summary">Checks for mismatching modifiers between <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">lhsMod</code></span> and <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">rhsMod</code></span> and prints the
+mismatching modifiers to <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">buf</code></span>.
+</div><div class="description">The modifiers of the <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">lhsMod</code></span> mismatching the ones with the <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">rhsMod</code></span> are printed, i.e.
+lhs(shared) vs. rhs() prints "<span class="d_inlinecode donthyphenate notranslate">shared</span>", wheras lhs() vs rhs(shared) prints "non-shared".
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">OutBuffer* <code class="ddoc_param">buf</code></td>
+<td class="param_desc">output buffer to write to</td></tr>
+<tr class="param"><td class="param_id">ubyte <code class="ddoc_param">lhsMod</code></td>
+<td class="param_desc">modifier on the left-hand side</td></tr>
+<tr class="param"><td class="param_id">ubyte <code class="ddoc_param">lhsMod</code></td>
+<td class="param_desc">modifier on the right-hand side</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">A tuple with <span class="d_inlinecode donthyphenate notranslate">isMutable</span> and <span class="d_inlinecode donthyphenate notranslate">isNotShared</span> set
+if the <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">lhsMod</code></span> is missing those modifiers (compared to rhs).</div></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">OutBuffer <span class="d_param">buf</span>;
+<span class="d_keyword">auto</span> mismatches = <span class="d_psymbol">MODMatchToBuffer</span>(&amp;<span class="d_param">buf</span>, MODFlags.shared_, 0);
+<span class="d_keyword">assert</span>(<span class="d_param">buf</span>.peekSlice == <span class="d_string">"`shared` "</span>);
+<span class="d_keyword">assert</span>(!mismatches.isNotShared);
+
+<span class="d_param">buf</span>.reset;
+mismatches = <span class="d_psymbol">MODMatchToBuffer</span>(&amp;<span class="d_param">buf</span>, 0, MODFlags.shared_);
+<span class="d_keyword">assert</span>(<span class="d_param">buf</span>.peekSlice == <span class="d_string">"non-shared "</span>);
+<span class="d_keyword">assert</span>(mismatches.isNotShared);
+
+<span class="d_param">buf</span>.reset;
+mismatches = <span class="d_psymbol">MODMatchToBuffer</span>(&amp;<span class="d_param">buf</span>, MODFlags.const_, 0);
+<span class="d_keyword">assert</span>(<span class="d_param">buf</span>.peekSlice == <span class="d_string">"`const` "</span>);
+<span class="d_keyword">assert</span>(!mismatches.isMutable);
+
+<span class="d_param">buf</span>.reset;
+mismatches = <span class="d_psymbol">MODMatchToBuffer</span>(&amp;<span class="d_param">buf</span>, 0, MODFlags.const_);
+<span class="d_keyword">assert</span>(<span class="d_param">buf</span>.peekSlice == <span class="d_string">"mutable "</span>);
+<span class="d_keyword">assert</span>(mismatches.isMutable);
+</pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".resolveFuncCall"></span><div class="quickindex" id="quickindex.resolveFuncCall"></div>FuncDeclaration <span class="def-anchor" id="resolveFuncCall"></span><code class="ddoc_psymbol">resolveFuncCall</code>(ref const Loc <code class="ddoc_param">loc</code>, Scope* <code class="ddoc_param">sc</code>, Dsymbol <code class="ddoc_param">s</code>, Objects* <code class="ddoc_param">tiargs</code>, Type <code class="ddoc_param">tthis</code>, Expressions* <code class="ddoc_param">fargs</code>, int <code class="ddoc_param">flags</code> = 0);
+<br></div></dt>
+<dd><div class="summary">Given a symbol that could be either a FuncDeclaration or
+ a function template, resolve it to a function symbol.
+</div><div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">Loc <code class="ddoc_param">loc</code></td>
+<td class="param_desc">instantiation location</td></tr>
+<tr class="param"><td class="param_id">Scope* <code class="ddoc_param">sc</code></td>
+<td class="param_desc">instantiation scope</td></tr>
+<tr class="param"><td class="param_id">Dsymbol <code class="ddoc_param">s</code></td>
+<td class="param_desc">instantiation symbol</td></tr>
+<tr class="param"><td class="param_id">Objects* <code class="ddoc_param">tiargs</code></td>
+<td class="param_desc">initial list of template arguments</td></tr>
+<tr class="param"><td class="param_id">Type <code class="ddoc_param">tthis</code></td>
+<td class="param_desc">if !NULL, the <span class="d_inlinecode donthyphenate notranslate">this</span> argument type</td></tr>
+<tr class="param"><td class="param_id">Expressions* <code class="ddoc_param">fargs</code></td>
+<td class="param_desc">arguments to function</td></tr>
+<tr class="param"><td class="param_id">int <code class="ddoc_param">flags</code></td>
+<td class="param_desc">1: do not issue error message on no match, just return NULL
+                      2: overloadResolve only</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">if match is found, then function symbol, else null</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".getIndirection"></span><div class="quickindex" id="quickindex.getIndirection"></div>Type <span class="def-anchor" id="getIndirection"></span><code class="ddoc_psymbol">getIndirection</code>(Type <code class="ddoc_param">t</code>);
+<br></div></dt>
+<dd><div class="summary">Returns an indirect type one step from t.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncAliasDeclaration"></span><div class="quickindex" id="quickindex.FuncAliasDeclaration"></div>class <span class="def-anchor" id="FuncAliasDeclaration"></span><code class="ddoc_psymbol">FuncAliasDeclaration</code>: <span class="ddoc_psuper_symbol">dmd.func.FuncDeclaration</span>;
+<br></div></dt>
+<dd><div class="summary">Used as a way to import a set of functions from another scope into this one.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".FuncLiteralDeclaration"></span><div class="quickindex" id="quickindex.FuncLiteralDeclaration"></div>class <span class="def-anchor" id="FuncLiteralDeclaration"></span><code class="ddoc_psymbol">FuncLiteralDeclaration</code>: <span class="ddoc_psuper_symbol">dmd.func.FuncDeclaration</span>;
+<br></div></dt>
+<dd>
+<dl><dt class="d_decl"><div ><span class="def-anchor" id=".FuncLiteralDeclaration.modifyReturns"></span><div class="quickindex" id="quickindex.FuncLiteralDeclaration.modifyReturns"></div>void <span class="def-anchor" id="modifyReturns"></span><code class="ddoc_psymbol">modifyReturns</code>(Scope* <code class="ddoc_param">sc</code>, Type <code class="ddoc_param">tret</code>);
+<br></div></dt>
+<dd><div class="summary">Modify all expression type of return statements to tret.
+</div><div class="description">On function literals, return type may be modified based on the context type
+ after its semantic3 is done, in FuncExp::implicitCastTo.
+<div class="blankline"></div>
+
+  A function() dg = (){ return new B(); } // OK if is(B : A) == true
+<div class="blankline"></div>
+
+ If B to A conversion is convariant that requires offseet adjusting,
+ all return statements should be adjusted to return expressions typed A.</div>
+
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".CtorDeclaration"></span><div class="quickindex" id="quickindex.CtorDeclaration"></div>class <span class="def-anchor" id="CtorDeclaration"></span><code class="ddoc_psymbol">CtorDeclaration</code>: <span class="ddoc_psuper_symbol">dmd.func.FuncDeclaration</span>;
+<br></div></dt>
+<dd>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".PostBlitDeclaration"></span><div class="quickindex" id="quickindex.PostBlitDeclaration"></div>class <span class="def-anchor" id="PostBlitDeclaration"></span><code class="ddoc_psymbol">PostBlitDeclaration</code>: <span class="ddoc_psuper_symbol">dmd.func.FuncDeclaration</span>;
+<br></div></dt>
+<dd>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".DtorDeclaration"></span><div class="quickindex" id="quickindex.DtorDeclaration"></div>class <span class="def-anchor" id="DtorDeclaration"></span><code class="ddoc_psymbol">DtorDeclaration</code>: <span class="ddoc_psuper_symbol">dmd.func.FuncDeclaration</span>;
+<br></div></dt>
+<dd>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".StaticCtorDeclaration"></span><div class="quickindex" id="quickindex.StaticCtorDeclaration"></div>class <span class="def-anchor" id="StaticCtorDeclaration"></span><code class="ddoc_psymbol">StaticCtorDeclaration</code>: <span class="ddoc_psuper_symbol">dmd.func.FuncDeclaration</span>;
+<br></div></dt>
+<dd>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".SharedStaticCtorDeclaration"></span><div class="quickindex" id="quickindex.SharedStaticCtorDeclaration"></div>class <span class="def-anchor" id="SharedStaticCtorDeclaration"></span><code class="ddoc_psymbol">SharedStaticCtorDeclaration</code>: <span class="ddoc_psuper_symbol">dmd.func.StaticCtorDeclaration</span>;
+<br></div></dt>
+<dd>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".StaticDtorDeclaration"></span><div class="quickindex" id="quickindex.StaticDtorDeclaration"></div>class <span class="def-anchor" id="StaticDtorDeclaration"></span><code class="ddoc_psymbol">StaticDtorDeclaration</code>: <span class="ddoc_psuper_symbol">dmd.func.FuncDeclaration</span>;
+<br></div></dt>
+<dd>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".SharedStaticDtorDeclaration"></span><div class="quickindex" id="quickindex.SharedStaticDtorDeclaration"></div>class <span class="def-anchor" id="SharedStaticDtorDeclaration"></span><code class="ddoc_psymbol">SharedStaticDtorDeclaration</code>: <span class="ddoc_psuper_symbol">dmd.func.StaticDtorDeclaration</span>;
+<br></div></dt>
+<dd>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".InvariantDeclaration"></span><div class="quickindex" id="quickindex.InvariantDeclaration"></div>class <span class="def-anchor" id="InvariantDeclaration"></span><code class="ddoc_psymbol">InvariantDeclaration</code>: <span class="ddoc_psuper_symbol">dmd.func.FuncDeclaration</span>;
+<br></div></dt>
+<dd>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".UnitTestDeclaration"></span><div class="quickindex" id="quickindex.UnitTestDeclaration"></div>class <span class="def-anchor" id="UnitTestDeclaration"></span><code class="ddoc_psymbol">UnitTestDeclaration</code>: <span class="ddoc_psuper_symbol">dmd.func.FuncDeclaration</span>;
+<br></div></dt>
+<dd>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".NewDeclaration"></span><div class="quickindex" id="quickindex.NewDeclaration"></div>class <span class="def-anchor" id="NewDeclaration"></span><code class="ddoc_psymbol">NewDeclaration</code>: <span class="ddoc_psuper_symbol">dmd.func.FuncDeclaration</span>;
+<br></div></dt>
+<dd>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".DeleteDeclaration"></span><div class="quickindex" id="quickindex.DeleteDeclaration"></div>class <span class="def-anchor" id="DeleteDeclaration"></span><code class="ddoc_psymbol">DeleteDeclaration</code>: <span class="ddoc_psuper_symbol">dmd.func.FuncDeclaration</span>;
+<br></div></dt>
+<dd>
+</dd>
+</dl>
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2022 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on (no date time)</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+<script type="text/javascript" src="../js/run_examples.js"></script>
+
+<script type="text/javascript" src="../js/listanchors.js"></script>
+<script type="text/javascript" src="../js/show_contributors.js"></script>
+<script type="text/javascript">jQuery(document).ready(listanchors);</script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

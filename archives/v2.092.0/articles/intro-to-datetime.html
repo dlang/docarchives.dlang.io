@@ -1,0 +1,876 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2022 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Introduction to std.datetime - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Introduction to std.datetime' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.freenode.net/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+<div class="subnav-helper"></div> <div class="subnav">    
+    <div class="head">        <h2>Articles</h2>
+        <p class="Articles, ../articles/index.html, overview">            <a href="../articles/index.html">overview</a></p>
+    </div>
+    <ul><li><a href='        ../articles/faq.html'>FAQ</a></li><li><a href='        ../articles/const-faq.html'>const(FAQ)</a></li><li><a href='        ../articles/d-floating-point.html'>Floating Point</a></li><li><a href='        ../articles/warnings.html'>Warnings</a></li><li><a href='        ../articles/rationale.html'>Rationale</a></li><li><a href='        ../articles/builtin.html'>Builtin Rationale</a></li><li><a href='        ../articles/ctod.html'>C to D</a></li><li><a href='        ../articles/cpptod.html'>C++ to D</a></li><li><a href='        ../articles/pretod.html'>C Preprocessor vs D</a></li><li><a href='        ../articles/code_coverage.html'>Code coverage analysis</a></li><li><a href='        ../articles/exception-safe.html'>Exception Safety</a></li><li><a href='        ../articles/hijack.html'>Hijacking</a></li><li><a href='        ../articles/intro-to-datetime.html'>Introduction to std.datetime</a></li><li><a href='        ../articles/lazy-evaluation.html'>Lazy Evaluation</a></li><li><a href='        ../articles/migrate-to-shared.html'>Migrating to Shared</a></li><li><a href='        ../articles/mixin.html'>Mixins</a></li><li><a href='        ../articles/regular-expression.html'>Regular Expressions</a></li><li><a href='        ../articles/safed.html'>SafeD</a></li><li><a href='        ../articles/templates-revisited.html'>Templates Revisited</a></li><li><a href='        ../articles/ctarguments.html'>Compile-time Sequences</a></li><li><a href='        ../articles/variadic-function-templates.html'>Variadic Templates</a></li><li><a href='        ../articles/d-array-article.html'>D Slices</a></li><li><a href='        ../articles/cppcontracts.html'>D's Contract Programming</a></li><li><a href='        ../articles/template-comparison.html'>Template Comparison</a></li><li><a href='        ../articles/dll-linux.html'>Writing Shared Libraries
+    </a></li></ul>
+</div>
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BIntroduction to std.datetime%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/articles/intro-to-datetime.dd">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Introduction to std.datetime</h1>
+        
+        
+
+
+<img src="../images/dman-time.jpg" border=0 align=right alt="Clock within D Man" height=200>
+
+    <p><i>by Jonathan M Davis</i></p>
+
+    <h2>Introduction</h2>
+
+    <p>In dmd 2.052, the module <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a> was introduced. It will be
+        replacing <span class="d_inlinecode donthyphenate notranslate">std.date</span> entirely. As such, <span class="d_inlinecode donthyphenate notranslate">std.date</span> is currently
+        scheduled for deprecation. At a later date it will be deprecated
+        (at which point, you'll have to compile with -d for it to work rather
+        than simply having the compiler complain when you use it), and
+        eventually it will be fully removed from Phobos. What this means is that
+        all new code should be written to use <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a> and that any code
+        which currently uses <span class="d_inlinecode donthyphenate notranslate">std.date</span> is going to need to be refactored to
+        use <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a> (unless you want to copy <span class="d_inlinecode donthyphenate notranslate">std.date</span> to your own
+        code and continue to use it as a non-Phobos module). This article
+        attempts to familiarize you with <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a> as well as give some
+        advice on how to migrate code from <span class="d_inlinecode donthyphenate notranslate">std.date</span> to <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a> for
+        those who have been using <span class="d_inlinecode donthyphenate notranslate">std.date</span>.</p>
+
+    <p><span class="d_inlinecode donthyphenate notranslate">std.date</span> is essentially a C-based solution for dates and times. It
+        uses <span class="d_inlinecode donthyphenate notranslate">d_time</span> to hold time where <span class="d_inlinecode donthyphenate notranslate">d_time</span> is a 64-bit integral
+        value holding the number of milliseconds which have passed since
+        midnight, January 1st, 1970 A.D. in UTC. C, on the other hand, uses
+        <span class="d_inlinecode donthyphenate notranslate">time_t</span> to hold time where <span class="d_inlinecode donthyphenate notranslate">time_t</span> is an integral value holding
+        the number of seconds which have passed since midnight, January 1st,
+        1970 A.D. in UTC. Its size varies from architecture to architecture
+        (typically 32 bits on a 32-bit machine and 64 bits on a 64-bit machine,
+        but it varies with the OS and compiler). The exact set of functions that
+        <span class="d_inlinecode donthyphenate notranslate">std.date</span> provides for using with <span class="d_inlinecode donthyphenate notranslate">d_time</span> aren't the same as what
+        C provides for using with <span class="d_inlinecode donthyphenate notranslate">time_t</span>, but their representation of time
+        is virtually the same.</p>
+
+    <p><a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a>, on the other hand, is very much an object-oriented
+        solution, and it's not C-based at all. Rather, its API is based on
+        <a href="http://www.boost.org/doc/libs/release/doc/html/date_time.html">Boost</a>'s
+        types for handling dates and times (though they're far from identical).
+        So, it's a bit of a paradigm shift to move from <span class="d_inlinecode donthyphenate notranslate">std.date</span> to
+        <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a>. Don't expect much to be the same between the two.
+        However, <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a> is not plagued with the same bugs that
+        <span class="d_inlinecode donthyphenate notranslate">std.date</span> is plagued with (<span class="d_inlinecode donthyphenate notranslate">std.date</span> being quite buggy in general),
+        and it provides much more functionality than <span class="d_inlinecode donthyphenate notranslate">std.date</span> does. So, in
+        the long run at least, dealing with <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a> should be much more
+        pleasant - though migration is likely to present a bit of a hurdle in
+        the short term.</p>
+
+    <h2>Basic Concepts of std.datetime</h2>
+
+    <p>Most things in <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a> are based on and/or use three concepts:</p>
+
+    <ul>        <li><b>Duration</b>: A duration of time with units. e.g. 4 days or 72
+             seconds.</li>
+        <li><b>Time Point</b>: A specific point in time. e.g. 21:00 or May 7th,
+             2013.</li>
+        <li><b>Time Interval</b>: A fixed period of time. e.g. [02:44 -
+             12:22) or [February 4th, 1922 - January 17th,
+             1955).</li>
+     </ul>
+
+    <h3>Durations</h3>
+
+    <p>The duration types can actually be found in <a href="../phobos/core_time.html"><span class="d_inlinecode donthyphenate notranslate">core.time</span></a>. They are
+        <a href="../phobos/core_time.html#.Duration"><span class="d_inlinecode donthyphenate notranslate">Duration</span></a> and <a href="../phobos/core_time.html#.TickDuration"><span class="d_inlinecode donthyphenate notranslate">TickDuration</span></a>. <a href="../phobos/core_time.html#.TickDuration"><span class="d_inlinecode donthyphenate notranslate">TickDuration</span></a> is intended for
+        precision timing and is used primarily with <a href="../phobos/std_datetime.html#.StopWatch"><span class="d_inlinecode donthyphenate notranslate">StopWatch</span></a>
+        and the benchmarking functions found in <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a> - such as
+        <a href="../phobos/std_datetime.html#.benchmark"><span class="d_inlinecode donthyphenate notranslate">benchmark</span></a> - and you're unlikely to use it outside of
+        using them. <a href="../phobos/core_time.html#.Duration"><span class="d_inlinecode donthyphenate notranslate">Duration</span></a>, on the other hand, you're likely to use quite a
+        bit.</p>
+
+    <p><a href="../phobos/core_time.html#.Duration"><span class="d_inlinecode donthyphenate notranslate">Duration</span></a> holds its time internally as hecto-nanoseconds (100 ns), so
+        that's its maximum precision. It has property functions for both
+        returning the duration of time truncated to a particular unit (such as
+        the <span class="d_inlinecode donthyphenate notranslate">days</span> and <span class="d_inlinecode donthyphenate notranslate">seconds</span> property functions) as well as a function
+        for returning the total number of a particular unit in that <a href="../phobos/core_time.html#.Duration"><span class="d_inlinecode donthyphenate notranslate">Duration</span></a>
+        (the <span class="d_inlinecode donthyphenate notranslate">total</span> function).</p>
+
+    <p>Generally, a <a href="../phobos/core_time.html#.Duration"><span class="d_inlinecode donthyphenate notranslate">Duration</span></a> is created in one of two ways: by subtracting
+        two time points or with the <a href="../phobos/core_time.html#.dur"><span class="d_inlinecode donthyphenate notranslate">core.time.dur</span></a> function. So, for
+        instance, if you subtracted a time point which represented 17:02 from
+        a time point which represented 6:07, you'd get a <a href="../phobos/core_time.html#.Duration"><span class="d_inlinecode donthyphenate notranslate">Duration</span></a> which
+        represented 10 hours and 55 minutes. Or, if you wanted to create a
+        <a href="../phobos/core_time.html#.Duration"><span class="d_inlinecode donthyphenate notranslate">Duration</span></a> directly, then you'd use the <span class="d_inlinecode donthyphenate notranslate">dur</span> function and make
+        a call like <span class="d_inlinecode donthyphenate notranslate">dur!"hours"(17)</span> or <span class="d_inlinecode donthyphenate notranslate">dur!"seconds"(234)</span>.</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">auto</span> duration = TimeOfDay(17, 2) - TimeOfDay(6, 7);
+<span class="d_keyword">assert</span>(duration == dur!<span class="d_string">"hours"</span>(10) + dur!<span class="d_string">"minutes"</span>(55));
+<span class="d_keyword">assert</span>(duration.hours == 10);
+<span class="d_keyword">assert</span>(duration.minutes == 55);
+<span class="d_keyword">assert</span>(duration.total!<span class="d_string">"hours"</span>() == 10);
+<span class="d_keyword">assert</span>(duration.total!<span class="d_string">"minutes"</span>() == 655);
+<span class="d_keyword">assert</span>(duration.total!<span class="d_string">"hnsecs"</span>() == 393_000_000_000);
+</pre>
+
+    <p>Like any number, <a href="../phobos/core_time.html#.Duration"><span class="d_inlinecode donthyphenate notranslate">Duration</span></a>s can be added together or
+        subtracted from. However, unlike a naked number, they have units
+        associated with them and will handle the appropriate conversions.
+        Also, it should be noted that the various functions in druntime and
+        Phobos which take a duration of time take an actual <a href="../phobos/core_time.html#.Duration"><span class="d_inlinecode donthyphenate notranslate">Duration</span></a> rather
+        than a naked number (most currently take both, though the versions which
+        take a naked number are going to be deprecated). For instance,
+        <a href="../phobos/core_thread.html#.sleep"><span class="d_inlinecode donthyphenate notranslate">core.thread.sleep</span></a> takes a <a href="../phobos/core_time.html#.Duration"><span class="d_inlinecode donthyphenate notranslate">Duration</span></a>, as does
+        <a href="../phobos/std_concurrency.html#.receiveTimeout"><span class="d_inlinecode donthyphenate notranslate">std.concurrency.receiveTimeout</span></a>. So, durations are used outside
+        of just interacting with <a href="../phobos/core_time.html"><span class="d_inlinecode donthyphenate notranslate">core.time</span></a> and <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a>.</p>
+
+    <p>One particular thing to note here is how both <span class="d_inlinecode donthyphenate notranslate">dur</span> and <span class="d_inlinecode donthyphenate notranslate">total</span>
+        take a string representing the units of time to be used. This is an
+        idiom used throughout <a href="../phobos/core_time.html"><span class="d_inlinecode donthyphenate notranslate">core.time</span></a> and <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a>. The possible
+        units are <span class="d_inlinecode donthyphenate notranslate">"years"</span>, <span class="d_inlinecode donthyphenate notranslate">"months"</span>, <span class="d_inlinecode donthyphenate notranslate">"weeks"</span>, <span class="d_inlinecode donthyphenate notranslate">"days"</span>,
+        <span class="d_inlinecode donthyphenate notranslate">"hours"</span>, <span class="d_inlinecode donthyphenate notranslate">"minutes"</span>, <span class="d_inlinecode donthyphenate notranslate">"seconds"</span>, <span class="d_inlinecode donthyphenate notranslate">"msecs"</span>,
+        <span class="d_inlinecode donthyphenate notranslate">"usecs"</span>, <span class="d_inlinecode donthyphenate notranslate">"hnsecs"</span>, and <span class="d_inlinecode donthyphenate notranslate">"nsecs"</span>. It should be noted
+        however that very few functions take <span class="d_inlinecode donthyphenate notranslate">"nsecs"</span>, because nothing in
+        <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a>, and very little in <a href="../phobos/core_time.html"><span class="d_inlinecode donthyphenate notranslate">core.time</span></a>, has precision
+        greater than hnsecs (100 ns). Also, a number of functions (such as
+        <a href="../phobos/core_time.html#.dur"><span class="d_inlinecode donthyphenate notranslate">core.time.dur</span></a>) do not take <span class="d_inlinecode donthyphenate notranslate">"years"</span> or <span class="d_inlinecode donthyphenate notranslate">"months"</span>,
+        because it is not possible to convert between years or months and
+        smaller units without a specific date. So, while you can add a
+        <a href="../phobos/core_time.html#.Duration"><span class="d_inlinecode donthyphenate notranslate">Duration</span></a> to a time point, if you want to add years or months to one,
+        you must use a separate function (such as <span class="d_inlinecode donthyphenate notranslate">add</span>) to do that - and
+        those <i>will</i> take <span class="d_inlinecode donthyphenate notranslate">"years"</span> and <span class="d_inlinecode donthyphenate notranslate">"months"</span>.</p>
+
+    <h3>Time Points</h3>
+
+    <p><a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a> has 4 types which represent time points.</p>
+
+    <ul>        <li><a href="../phobos/std_datetime.html#.Date"><span class="d_inlinecode donthyphenate notranslate">Date</span></a></li>
+        <li><a href="../phobos/std_datetime.html#.TimeOfDay"><span class="d_inlinecode donthyphenate notranslate">TimeOfDay</span></a></li>
+        <li><a href="../phobos/std_datetime.html#.DateTime"><span class="d_inlinecode donthyphenate notranslate">DateTime</span></a></li>
+        <li><a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a></li>
+     </ul>
+
+    <p>A <a href="../phobos/std_datetime.html#.Date"><span class="d_inlinecode donthyphenate notranslate">Date</span></a> represents a date and holds its year, month, and day as
+        separate values internally. A <a href="../phobos/std_datetime.html#.TimeOfDay"><span class="d_inlinecode donthyphenate notranslate">TimeOfDay</span></a> represents a time of day,
+        00:00:00 - 23:59:59, and holds its hour, minute, and second as separate
+        values internally. A <a href="../phobos/std_datetime.html#.DateTime"><span class="d_inlinecode donthyphenate notranslate">DateTime</span></a> represents a date and time and holds
+        its values as a <a href="../phobos/std_datetime.html#.Date"><span class="d_inlinecode donthyphenate notranslate">Date</span></a> and <a href="../phobos/std_datetime.html#.TimeOfDay"><span class="d_inlinecode donthyphenate notranslate">TimeOfDay</span></a> internally. None of these types
+        have any concept of time zone. They represent generic dates and/or times
+        and are best-suited for cases where you need a date and/or time but
+        don't care about time zone. Also, because they hold their values
+        separated internally, those values don't have to be calculated every
+        time that you ask for them.</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">auto</span> date = Date(1992, 12, 27);
+<span class="d_keyword">auto</span> tod = TimeOfDay(7, 0, 22);
+<span class="d_keyword">auto</span> dateTime = DateTime(1992, 12, 27, 7, 0, 22);
+<span class="d_keyword">assert</span>(date == dateTime.date);
+<span class="d_keyword">assert</span>(tod == dateTime.timeOfDay);
+</pre>
+
+    <p>A <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>, however, is an entirely different beast. It represents
+        a date and time - similar to <a href="../phobos/std_datetime.html#.DateTime"><span class="d_inlinecode donthyphenate notranslate">DateTime</span></a> - but it goes to hnsec
+        precision instead of only second precision, and it incorporates the
+        concept of time zone. Its time is held internally as a 64-bit integral
+        value which holds the number of hnsecs which have passed since midnight,
+        January 1st, 1 A.D. in UTC. It also has a <a href="../phobos/std_datetime.html#.TimeZone"><span class="d_inlinecode donthyphenate notranslate">TimeZone</span></a> object which it
+        uses to polymorphically adjust its UTC value to the appropriate time
+        zone when querying for values such as its year or hour.</p>
+
+    <p><a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a> is the type which is used to interface with the system's
+        clock. When you ask for the current time, you get a <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>. And
+        because it always holds its internal value in UTC, it never has problems
+        with DST or time zone changes. It has most of the functions that
+        <a href="../phobos/std_datetime.html#.DateTime"><span class="d_inlinecode donthyphenate notranslate">DateTime</span></a> has as well as a number of functions specific to it. It can
+        be cast to the other 3 time point types as well as be constructed from
+        them, but you do risk problems with DST when creating a <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a> from
+        the other 3 time points unless you specifically create the <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>
+        with a <a href="../phobos/std_datetime.html#.TimeZone"><span class="d_inlinecode donthyphenate notranslate">TimeZone</span></a> which doesn't have DST (such as
+        <a href="../phobos/std_datetime.html#.UTC"><span class="d_inlinecode donthyphenate notranslate">std.datetime.UTC</span></a>), since when a time zone has DST, one hour of
+        the year does not exist, and another exists twice. You can also convert
+        to and from unix time, which is what you're dealing with in C with
+        <span class="d_inlinecode donthyphenate notranslate">time_t</span>.</p>
+
+    <p>The one other related type which I should mention at this point is
+        <a href="../phobos/core_time.html#.FracSec"><span class="d_inlinecode donthyphenate notranslate">core.time.FracSec</span></a>. It holds fractional seconds, and it is
+        what you get from a <a href="../phobos/core_time.html#.Duration"><span class="d_inlinecode donthyphenate notranslate">Duration</span></a> or <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a> when you specifically
+        ask for the fractional portion of the time.</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">auto</span> st1 = Clock.currTime(); <span class="d_comment">//Current time in local time.
+</span><span class="d_keyword">auto</span> st2 = Clock.currTime(UTC()); <span class="d_comment">//Current time in UTC.
+</span><span class="d_keyword">auto</span> st3 = SysTime(DateTime(1992, 12, 27, 7, 0, 22), FracSec.from!<span class="d_string">"usecs"</span>(5));
+<span class="d_keyword">assert</span>((<span class="d_keyword">cast</span>(Date)st3) == Date(1992, 12, 27));
+<span class="d_keyword">assert</span>((<span class="d_keyword">cast</span>(TimeOfDay)st3) == TimeOfDay(7, 0, 22));
+<span class="d_keyword">assert</span>((<span class="d_keyword">cast</span>(DateTime)st3) == DateTime(1992, 12, 27, 7, 0, 22));
+<span class="d_keyword">assert</span>(st3.fracSec == FracSec.from!<span class="d_string">"hnsecs"</span>(50));
+</pre>
+
+    <h3>Time Intervals</h3>
+
+    <p><span class="d_inlinecode donthyphenate notranslate">std.date</span> has nothing to correspond to time intervals, so I won't
+        go over them in great detail. Essentially, they're constructed from
+        either two time points or a time point and a duration. <a href="../phobos/std_datetime.html#.Interval"><span class="d_inlinecode donthyphenate notranslate">Interval</span></a>
+        is a finite time interval with two end points, whereas
+        <a href="../phobos/std_datetime.html#.PosInfInterval"><span class="d_inlinecode donthyphenate notranslate">PosInfInterval</span></a> is an infinite time interval starting at a specific
+        time point and going to positive infinity, and <a href="../phobos/std_datetime.html#.NegInfInterval"><span class="d_inlinecode donthyphenate notranslate">NegInfInterval</span></a>
+        is an infinite time interval starting at negative infinity and going
+        to a specific time point. They have various operations for dealing
+        with intersections and the like. It is also possible to create ranges
+        over them if you want to operate on a range of time points. Take a
+        look at the documentation for more details.</p>
+
+    <h2>Interfacing with C</h2>
+
+    <p>Hopefully, you can do everything that you need to do using the types in
+        <a href="../phobos/core_time.html"><span class="d_inlinecode donthyphenate notranslate">core.time</span></a> and <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a>, but if you do need to interface with C
+        code, then you can. C's <span class="d_inlinecode donthyphenate notranslate">time_t</span> uses "unix time" (seconds since
+        midnight, January 1st, 1970 A.D. in UTC), whereas <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a> uses what
+        it calls "std time" (hnsecs since midnight January 1st, 1 A.D. in UTC).
+        Translating between the two is fairly straightforward. To get a
+        <span class="d_inlinecode donthyphenate notranslate">time_t</span> from a <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>, simply call <span class="d_inlinecode donthyphenate notranslate">toUnixTime</span> on the
+        <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>. To convert the other way around, you first need to convert
+        a <span class="d_inlinecode donthyphenate notranslate">time_t</span> to std time, then pass that value to <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>'s
+        constructor. And if you ever simply need a <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>'s std time for
+        any reason, then use its <span class="d_inlinecode donthyphenate notranslate">stdTime</span> property.</p>
+
+<pre class="d_code notranslate">time_t unixTime = core.stdc.time.time(<span class="d_keyword">null</span>);
+<span class="d_keyword">auto</span> stdTime = unixTimeToStdTime(unixTime);
+<span class="d_keyword">auto</span> st = SysTime(stdTime);
+<span class="d_keyword">assert</span>(unixTime == st.toUnixTime());
+<span class="d_keyword">assert</span>(stdTime == st.stdTime);
+</pre>
+
+    <p>Hecto-nanoseconds were chosen as the internal representation of
+        <a href="../phobos/core_time.html#.Duration"><span class="d_inlinecode donthyphenate notranslate">Duration</span></a> and <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>, because that is the highest precision that
+        you can use with a 64-bit integer and still cover a reasonable amount
+        of time (<a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a> covers from around 29,000 B.C. to around 29,000
+        A.D.). It also happens to be the same internal representation that
+        C# uses, so if you need to interface with C# for any reason, converting
+        between its representation of time and <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a>'s representation
+        is extremely easy, since no conversion is necessary.
+        <a href="http://msdn.microsoft.com/en-us/library/system.datetime.aspx">        C#'s <span class="d_inlinecode donthyphenate notranslate">DateTime</span></a> uses both the same units and epoch for its internal
+        representation (which it calls <span class="d_inlinecode donthyphenate notranslate">Ticks</span>) as <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>, though unlike
+        <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>, it doesn't work with negative values (which would be B.C.)
+        and doesn't go past the end of 9,999 A.D. Most programs are unlikely to
+        care about values outside that range however. Regardless, hnsecs make
+        the most sense for <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a>, which tries to have the highest
+        precision that it reasonably can, so that's why they were picked.</p>
+
+    <h2>Recommendations on Using std.datetime</h2>
+
+    <p>Whether <a href="../phobos/std_datetime.html#.Date"><span class="d_inlinecode donthyphenate notranslate">Date</span></a>, <a href="../phobos/std_datetime.html#.TimeOfDay"><span class="d_inlinecode donthyphenate notranslate">TimeOfDay</span></a>, <a href="../phobos/std_datetime.html#.DateTime"><span class="d_inlinecode donthyphenate notranslate">DateTime</span></a>, or <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a> is more
+        appropriate in a particular situation depends very much on that
+        situation. <a href="../phobos/std_datetime.html#.Date"><span class="d_inlinecode donthyphenate notranslate">Date</span></a>, <a href="../phobos/std_datetime.html#.TimeOfDay"><span class="d_inlinecode donthyphenate notranslate">TimeOfDay</span></a>, and <a href="../phobos/std_datetime.html#.DateTime"><span class="d_inlinecode donthyphenate notranslate">DateTime</span></a> generally make the
+        most sense when you're dealing with generic dates and times that have
+        nothing to do with time zones, but if you're dealing with time zones
+        at all or are dealing with anything which needs to worry about DST,
+        you should use <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>. Because it keeps its time internally in UTC,
+        it avoids problems with DST. And while it does have a time zone
+        component, it defaults to <a href="../phobos/std_datetime.html#.LocalTime"><span class="d_inlinecode donthyphenate notranslate">std.datetime.LocalTime</span></a> (which
+        is the time zone type for the local time of the system), so you don't
+        generally have to deal directly with time zones if you don't want to.</p>
+
+    <p>If you <i>do</i> want to deal with time zones, then the time zone types
+        in <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a> are <a href="../phobos/std_datetime.html#.LocalTime"><span class="d_inlinecode donthyphenate notranslate">LocalTime</span></a>, <a href="../phobos/std_datetime.html#.UTC"><span class="d_inlinecode donthyphenate notranslate">UTC</span></a>, <a href="../phobos/std_datetime.html#.SimpleTimeZone"><span class="d_inlinecode donthyphenate notranslate">SimpleTimeZone</span></a>, <a href="../phobos/std_datetime.html#.PosixTimeZone"><span class="d_inlinecode donthyphenate notranslate">PosixTimeZone</span></a>,
+        and <a href="../phobos/std_datetime.html#.WindowsTimeZone"><span class="d_inlinecode donthyphenate notranslate">WindowsTimeZone</span></a> - or if for some reason, they don't do what you need,
+        you can always create your own time zone class derived from <a href="../phobos/std_datetime.html#.TimeZone"><span class="d_inlinecode donthyphenate notranslate">TimeZone</span></a>.
+        That's unlikely to be necessary, however (and if you think that you
+        have come up with such a class which would be generally useful, please
+        bring it up in the
+        <a href="http://www.digitalmars.com/NewsGroup.html">digitalmars.D newsgroup</a>,
+        since if it's truly generally useful, we may want some version of it in
+        <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a>). Read their documentation for more details. Most
+        applications shouldn't have to worry about time zones though, beyond
+        perhaps using <a href="../phobos/std_datetime.html#.UTC"><span class="d_inlinecode donthyphenate notranslate">UTC</span></a> instead of <a href="../phobos/std_datetime.html#.LocalTime"><span class="d_inlinecode donthyphenate notranslate">LocalTime</span></a> in some cases.</p>
+
+    <p>When it comes to saving a time point to disk or a database or something
+        similar, I would generally recommend using the <span class="d_inlinecode donthyphenate notranslate">toISOString</span> or
+        <span class="d_inlinecode donthyphenate notranslate">toISOExtString</span> functions, since both are standard ISO formats
+        for date-time strings (<span class="d_inlinecode donthyphenate notranslate">toISOExtString</span> is likely better in the
+        general case, since it's more humanly readable, but they're both
+        standard). You can then use <span class="d_inlinecode donthyphenate notranslate">fromISOString</span> or <span class="d_inlinecode donthyphenate notranslate">fromISOExtString</span>
+        to recreate the appropriate time type later. <span class="d_inlinecode donthyphenate notranslate">toString</span> uses the
+        <span class="d_inlinecode donthyphenate notranslate">toSimpleString</span> function, which is an invention of Boost and is
+        somewhat more humanly readable, but it isn't standard, so you probably
+        shouldn't use it for saving time point values.</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">auto</span> dateTime = DateTime(1997, 5, 4, 12, 22, 3);
+<span class="d_keyword">assert</span>(dateTime.toISOString() == <span class="d_string">"19970504T122203"</span>);
+<span class="d_keyword">assert</span>(dateTime.toISOExtString() == <span class="d_string">"1997-05-04T12:22:03"</span>);
+<span class="d_keyword">assert</span>(dateTime.toSimpleString() == <span class="d_string">"1997-May-04 12:22:03"</span>);
+<span class="d_keyword">auto</span> restored = DateTime.fromISOExtString(dateTime.toISOExtString());
+<span class="d_keyword">assert</span>(dateTime == restored);
+</pre>
+
+    <p>One area with saving times as strings which gets a bit awkward is time
+        zones. The time zone is included in the string as part of the ISO
+        standard, but all it contains is the total offset from UTC at that
+        particular date and time, so you can't generally use an ISO string
+        (extended or otherwise) to get the exact time zone which the <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>
+        originally had. Rather, it will be restored with a <a href="../phobos/std_datetime.html#.SimpleTimeZone"><span class="d_inlinecode donthyphenate notranslate">SimpleTimeZone</span></a> with the
+        given offset from UTC (except in the case of UTC, where it can restore
+        <a href="../phobos/std_datetime.html#.UTC"><span class="d_inlinecode donthyphenate notranslate">UTC</span></a>). On the other hand, if you're using <a href="../phobos/std_datetime.html#.LocalTime"><span class="d_inlinecode donthyphenate notranslate">LocalTime</span></a>, then the time
+        zone is not part of the string (per the ISO standard), and restoring the
+        <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a> will restore it to whatever the current time zone is on the
+        box, regardless of what the original time zone was. However, because in
+        all cases, except for <a href="../phobos/std_datetime.html#.LocalTime"><span class="d_inlinecode donthyphenate notranslate">LocalTime</span></a>, the UTC offset is included in the
+        string, it is generally possible to get the exact UTC time that the
+        <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a> was for. But you can't usually restore the original time zone
+        from just the ISO string.</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">auto</span> local = SysTime(629_983_705_230_000_035);
+<span class="d_keyword">auto</span> utc = local.toUTC();
+<span class="d_keyword">auto</span> other = local.toOtherTZ(TimeZone.getTimeZone(<span class="d_string">"America/New_York"</span>));
+
+<span class="d_comment">//This assumes that you're in "America/Los_Angeles". You'd get a different
+</span><span class="d_comment">//time if you're in a different time zone.
+</span><span class="d_keyword">assert</span>(local.toISOExtString() == <span class="d_string">"1997-05-04T12:22:03.0000035"</span>);
+
+<span class="d_keyword">assert</span>(utc.toISOExtString() == <span class="d_string">"1997-05-04T19:22:03.0000035Z"</span>);
+<span class="d_keyword">assert</span>(other.toISOExtString() == <span class="d_string">"1997-05-04T15:22:03.0000035-04:00"</span>);
+
+<span class="d_keyword">auto</span> restLocal = SysTime.fromISOExtString(local.toISOExtString());
+<span class="d_keyword">auto</span> restUTC = SysTime.fromISOExtString(utc.toISOExtString());
+<span class="d_keyword">auto</span> restOther = SysTime.fromISOExtString(other.toISOExtString());
+
+<span class="d_comment">//Only guaranteed because it's on the same machine.
+</span><span class="d_keyword">assert</span>(restLocal == local);
+
+<span class="d_comment">//Guaranteed regardless of machine. Their internal values could differ however.
+</span><span class="d_keyword">assert</span>(<span class="d_keyword">cast</span>(DateTime)restLocal == <span class="d_keyword">cast</span>(DateTime)local);
+
+<span class="d_comment">//Time zone is UTC for both.
+</span><span class="d_keyword">assert</span>(restUTC == utc);
+
+<span class="d_comment">//Time zone for restOther is SimpleTimeZone(-4 * 60), not "America/New_York".
+</span><span class="d_keyword">assert</span>(restOther == other);
+</pre>
+
+    <p>To summarize, <a href="../phobos/std_datetime.html#.UTC"><span class="d_inlinecode donthyphenate notranslate">UTC</span></a> and <a href="../phobos/std_datetime.html#.SimpleTimeZone"><span class="d_inlinecode donthyphenate notranslate">SimpleTimeZone</span></a> can be restored exactly using an
+        ISO or ISO extended string. However, none of the other <a href="../phobos/std_datetime.html#.TimeZone"><span class="d_inlinecode donthyphenate notranslate">TimeZone</span></a>s can
+        be. <a href="../phobos/std_datetime.html#.LocalTime"><span class="d_inlinecode donthyphenate notranslate">LocalTime</span></a> is restored with the same date and time but in the
+        local time zone of the computer it's restored on, so its std time may
+        differ. Other time zones end up with the restored <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a> having the
+        same std time as the original, but the new time zone is a <a href="../phobos/std_datetime.html#.SimpleTimeZone"><span class="d_inlinecode donthyphenate notranslate">SimpleTimeZone</span></a>
+        with the same total UTC offset which the original time zone had at the
+        given std time, but you don't get the original time zone back. That
+        works just fine if you don't ever need to change the value of that
+        <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a> or need to know the name of the original time zone, but it is
+        inadequate if you need to do either of those, since the rules for
+        the new time zone won't match those of the original.</p>
+
+    <p>So, if you don't care about the time zone or if the restored <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>
+        has the same std time as the original, then <a href="../phobos/std_datetime.html#.LocalTime"><span class="d_inlinecode donthyphenate notranslate">LocalTime</span></a> is fine.
+        However, if you want the std time to be consistent, then avoid
+        <a href="../phobos/std_datetime.html#.LocalTime"><span class="d_inlinecode donthyphenate notranslate">LocalTime</span></a>. In most cases, I'd advise simply using <a href="../phobos/std_datetime.html#.UTC"><span class="d_inlinecode donthyphenate notranslate">UTC</span></a> as the
+        time zone when saving the time. And if you want to restore the time zone
+        such that it's the same time zone with the same rules as it was prior to
+        saving the time, then you're going to need to save that information
+        yourself. With a <a href="../phobos/std_datetime.html#.PosixTimeZone"><span class="d_inlinecode donthyphenate notranslate">PosixTimeZone</span></a> or a <a href="../phobos/std_datetime.html#.WindowsTimeZone"><span class="d_inlinecode donthyphenate notranslate">WindowsTimeZone</span></a>, all you have to do is
+        save the time zone's <span class="d_inlinecode donthyphenate notranslate">name</span> (which for them is the TZ database name
+        and the Windows time zone name of that time zone respectively). That can
+        be used to restore the time zone. If it's a <a href="../phobos/std_datetime.html#.SimpleTimeZone"><span class="d_inlinecode donthyphenate notranslate">SimpleTimeZone</span></a> or <a href="../phobos/std_datetime.html#.UTC"><span class="d_inlinecode donthyphenate notranslate">UTC</span></a>, then
+        you don't have to do anything, because the ISO string will be enough. If
+        you're using <a href="../phobos/std_datetime.html#.LocalTime"><span class="d_inlinecode donthyphenate notranslate">LocalTime</span></a>, however, you're in a bit of a bind.</p>
+
+    <p>The restored time zone will be <a href="../phobos/std_datetime.html#.LocalTime"><span class="d_inlinecode donthyphenate notranslate">LocalTime</span></a>, so if you want it to be
+        whatever the local time of the computer you're doing the restoring on
+        is, then you're fine. But if you want to be able to have the same actual
+        time zone restored regardless of the local time of the computer
+        restoring the time, you'll need to figure out what the time zone's TZ
+        database name or Windows time zone name is on the original computer so
+        that you can use it to get its corresponding <a href="../phobos/std_datetime.html#.PosixTimeZone"><span class="d_inlinecode donthyphenate notranslate">PosixTimeZone</span></a> or <a href="../phobos/std_datetime.html#.WindowsTimeZone"><span class="d_inlinecode donthyphenate notranslate">WindowsTimeZone</span></a>
+        on the computer that's doing the restoring. But it's actually
+        <i>really</i> hard to accurately determine the TZ database name or Windows
+        time zone name of the local time zone on any OS other than on Windows,
+        so <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a> doesn't currently provide a way to do that. I expect
+        that such a requirement would be quite rare however. In most cases,
+        you'll care about <a href="../phobos/std_datetime.html#.LocalTime"><span class="d_inlinecode donthyphenate notranslate">LocalTime</span></a> and/or <a href="../phobos/std_datetime.html#.UTC"><span class="d_inlinecode donthyphenate notranslate">UTC</span></a>, and even if you're using
+        <a href="../phobos/std_datetime.html#.PosixTimeZone"><span class="d_inlinecode donthyphenate notranslate">PosixTimeZone</span></a> or <a href="../phobos/std_datetime.html#.WindowsTimeZone"><span class="d_inlinecode donthyphenate notranslate">WindowsTimeZone</span></a>, odds are that restoring the time with the
+        correct std time value and correct UTC offset will be enough (and if
+        it's not, you can always save the time zone's name to restore the
+        correct <a href="../phobos/std_datetime.html#.PosixTimeZone"><span class="d_inlinecode donthyphenate notranslate">PosixTimeZone</span></a> or <a href="../phobos/std_datetime.html#.WindowsTimeZone"><span class="d_inlinecode donthyphenate notranslate">WindowsTimeZone</span></a>). It's just <a href="../phobos/std_datetime.html#.LocalTime"><span class="d_inlinecode donthyphenate notranslate">LocalTime</span></a> that has
+        the problem. However, if a function to accurately determine the TZ
+        database name of the local time zone on Posix systems is ever devised,
+        then it will be added to <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a>.</p>
+
+    <p>The other, more compact, option for saving a <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a> is to just save
+        its std time as a 64-bit integer. It's not really humanly readable
+        like an ISO or ISO extended string would be, but it takes up less space
+        if saved as an actual number rather than a string. However, you do then
+        have to worry about the time zone yourself entirely if you wish to be
+        able to restore it. But if you save the current UTC offset (meaning
+        the UTC offset with the DST offset applied - such as an ISO string would
+        include), that would be enough to correctly give what the time would
+        have been in the original time zone even if you can't restore that time
+        zone.</p>
+
+    <p>Well, that's probably more than enough on time zones. In most cases, you
+        shouldn't need to care about them (<a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a> is designed to make it
+        so that you shouldn't have to worry about them if you don't want to),
+        but <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a> strives to give the best tools possible for handling
+        time zones when you actually want to. Regardless, by far the biggest
+        gain that <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a> gives you is that its internal time is always in
+        UTC, so regardless of whether you try and do anything with time zones
+        explicitly, you won't have any problems with DST changes when dealing
+        with <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>.</p>
+
+    <p>One last suggestion on using <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a> would be that if you need to
+        query it for more than one of its properties (e.g. <span class="d_inlinecode donthyphenate notranslate">day</span> or
+        <span class="d_inlinecode donthyphenate notranslate">hour</span>), or if you need to do it many times in a row, and the
+        <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a> isn't going to change, then you should probably cast it to
+        another time point type (probably <a href="../phobos/std_datetime.html#.DateTime"><span class="d_inlinecode donthyphenate notranslate">DateTime</span></a>) and query <i>it</i> for
+        those values. The reason for this is that every time that you call a
+        property function on a <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>, it has to convert its internal std
+        time to the value of the property that you're asking for, whereas if you
+        convert it to a <a href="../phobos/std_datetime.html#.DateTime"><span class="d_inlinecode donthyphenate notranslate">DateTime</span></a>, the <a href="../phobos/std_datetime.html#.DateTime"><span class="d_inlinecode donthyphenate notranslate">DateTime</span></a> holds those values
+        separately, and you only have to do the calculations once - when you
+        do the conversion from the <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a> to a <a href="../phobos/std_datetime.html#.DateTime"><span class="d_inlinecode donthyphenate notranslate">DateTime</span></a>. If what you're
+        doing doesn't need that extra boost of efficiency, then you might as
+        well not bother, but it is good to be aware that it's less efficient to
+        query each of <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>'s properties individually rather than
+        converting it to a <a href="../phobos/std_datetime.html#.DateTime"><span class="d_inlinecode donthyphenate notranslate">DateTime</span></a> and then querying it.</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">auto</span> st = Clock.currTime();
+
+<span class="d_comment">//Each value must be individually calculated.
+</span>{
+    <span class="d_keyword">auto</span> year = st.year;
+    <span class="d_keyword">auto</span> month = st.month;
+    <span class="d_keyword">auto</span> day = st.day;
+    <span class="d_keyword">auto</span> hour = st.hour;
+    <span class="d_keyword">auto</span> minute = st.minute;
+    <span class="d_keyword">auto</span> second = st.second;
+    <span class="d_keyword">auto</span> fracSec = st.fracSec;
+}
+
+<span class="d_comment">/+
+    You do the calculations only twice if you convert to a DateTime
+    (twice instead of once, because you're still asking for FracSec
+    separately, though that particular calculation is fairly cheap).
+ +/</span>
+<span class="d_keyword">auto</span> dateTime = <span class="d_keyword">cast</span>(DateTime)st;
+{
+    <span class="d_keyword">auto</span> year = dateTime.year;
+    <span class="d_keyword">auto</span> month = dateTime.month;
+    <span class="d_keyword">auto</span> day = dateTime.day;
+    <span class="d_keyword">auto</span> hour = dateTime.hour;
+    <span class="d_keyword">auto</span> minute = dateTime.minute;
+    <span class="d_keyword">auto</span> second = dateTime.second;
+    <span class="d_keyword">auto</span> fracSec = st.fracSec;
+}
+</pre>
+
+    <h2>Migrating to std.datetime</h2>
+
+    <p>Okay, hopefully you have a fair idea of the basics of <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a>
+        at this point (though there's plenty more which is covered in the
+        documentation), but the big question for many is how best to handle
+        converting your code from using <span class="d_inlinecode donthyphenate notranslate">std.date</span> to using <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a>.
+        When using <span class="d_inlinecode donthyphenate notranslate">std.date</span>, you would have been using <span class="d_inlinecode donthyphenate notranslate">d_time</span>, and if
+        you had to worry about time zones, you were probably either using C
+        functions to deal with conversions or just doing them yourself, since
+        the functionality in <span class="d_inlinecode donthyphenate notranslate">std.date</span> which relates to time zones is rather
+        broken. As a result, most of what you would have done would likely be in
+        UTC.</p>
+
+    <p><a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a> holds its time internally in UTC in a manner similar to
+        <span class="d_inlinecode donthyphenate notranslate">d_time</span> (albeit with different units and a different epoch), and it
+        is the type intended for dealing with the time from the system's clock,
+        so <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a> is generally what <span class="d_inlinecode donthyphenate notranslate">d_time</span> should be replaced with.
+        Functions in Phobos which previously took or returned a <span class="d_inlinecode donthyphenate notranslate">d_time</span> now
+        take or return a <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a> or are scheduled to be deprecated and have
+        replacement functions which take or return a <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>. Generally, in
+        the case where a function took a <span class="d_inlinecode donthyphenate notranslate">d_time</span>, that function is now
+        overloaded with a version which takes a <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>, but in cases where a
+        function could not be overloaded (such as when it simply returned a
+        <span class="d_inlinecode donthyphenate notranslate">d_time</span>), a new function has been added to replace the old one (so
+        as to avoid breaking existing code). The module that this impacts the
+        most is <a href="../phobos/std_file.html"><span class="d_inlinecode donthyphenate notranslate">std.file</span></a>. For example,</p>
+
+<pre class="d_code notranslate">d_time dTime = <span class="d_string">"myfile.txt"</span>.lastModified();
+SysTime sysTime = <span class="d_string">"myfile.txt"</span>.timeLastModified();
+
+setTimes(<span class="d_string">"yourfile.txt"</span>, dTime, dTime + 5);
+setTimes(<span class="d_string">"yourfile.txt"</span>, sysTime, sysTime + dur!<span class="d_string">"msecs"</span>(5));
+</pre>
+
+    <p>With all such functions, it's simply a matter of changing the type of
+        the argument that you're passing to the function or assigning its
+        return value to and possibly changing the function name that you're
+        calling so that it's the version that returns a <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>. Those
+        changes are quite straightforward and not particularly disruptive. Of
+        greater concern are the formats that times are printed or saved in
+        and how time zones are dealt with.</p>
+
+    <p>If you were saving the integral <span class="d_inlinecode donthyphenate notranslate">d_time</span> value anywhere, then you're
+        either going to have to switch to saving a value that <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a> would
+        use as discussed previously (such as its std time or its ISO string),
+        or you're going to have be converting between <span class="d_inlinecode donthyphenate notranslate">d_time</span> and
+        <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>. At present, the functions
+        <a href="../phobos/std_datetime.html#.sysTimeToDTime"><span class="d_inlinecode donthyphenate notranslate">std.datetime.sysTimeToDTime</span></a> and
+        <a href="../phobos/std_datetime.html#.dTimeToSysTime"><span class="d_inlinecode donthyphenate notranslate">std.datetime.dTimeToSysTime</span></a> will do those conversions for you.
+        So, converting between the two formats is easy. However, because
+        <span class="d_inlinecode donthyphenate notranslate">d_time</span> is going away, those functions will be going away. That
+        means that you either need to refactor your code so that those functions
+        aren't necessary, or you need to copy them to your own code to continue
+        to use them.</p>
+
+     <p>As for formatted strings, <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a> currently only supports
+         ISO strings, ISO extended strings, and Boost's simple string.
+         Eventually, it should have functions for custom strings, but a
+         well-designed function for creating custom strings based on format
+         strings is not easy to design, and it hasn't been done for
+         <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a> yet (it's on my todo list, but it could be a while
+         before I get to it). So, in general, you're either going to have to
+         switch to using one of the string formats that <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a>
+         supports, or you're going to have to generate and parse the string
+         format that you want yourself. In some cases, you should be able to
+         adjust the string that <span class="d_inlinecode donthyphenate notranslate">core.stdc.time.ctime</span> gives you, and in
+         others, you may be able to use <span class="d_inlinecode donthyphenate notranslate">toISOExtString</span> and adjust what
+         <i>it</i> gives you, but there's a decent chance that you're going to
+         have to just create and parse the strings yourself using the various
+         properties on <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>. One major difference between the string
+         functions in <span class="d_inlinecode donthyphenate notranslate">std.date</span> and those in <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a> to note is that
+         unlike <span class="d_inlinecode donthyphenate notranslate">std.date</span>, aside from Boost's simple strings, nothing in
+         <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a> prints the names of months or weekdays, because that
+         poses a localization issue. So, unless you're using
+         <span class="d_inlinecode donthyphenate notranslate">core.stdc.time.ctime</span> to get those values, you're going to have
+         to create the names yourself.</p>
+
+     <p>Now, if you were doing anything with time zones with <span class="d_inlinecode donthyphenate notranslate">std.date</span>, odds
+         are that you were doing all of those conversions yourself (since that's
+         one of the areas where <span class="d_inlinecode donthyphenate notranslate">std.date</span> is buggy). That being the case,
+         you probably have the offset from UTC and the offset adjustment for
+         DST for whatever time zone you're dealing with. What is likely the
+         best way to handle that is to create a <a href="../phobos/std_datetime.html#.SimpleTimeZone"><span class="d_inlinecode donthyphenate notranslate">SimpleTimeZone</span></a> using those values.
+         Simply calculate the total UTC offset (so add in the DST offset if
+         it applies for the date in question) in minutes and create a <a href="../phobos/std_datetime.html#.SimpleTimeZone"><span class="d_inlinecode donthyphenate notranslate">SimpleTimeZone</span></a>
+         with that. Note that <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a> treats west of UTC as
+         <i>negative</i> (for some reason, some systems - particularly Posix stuff -
+         use a positive offset from UTC when west of UTC, in spite of the fact
+         that when talking about time zones, negative is always used for west of
+         UTC, and that's what the ISO standard strings do). So, you may have to
+         adjust your values accordingly. Regardless, be very careful to make
+         sure that you understand what the values you've been using represent
+         in units of time and whether you need to be adding or subtracting them
+         to convert them to what <a href="../phobos/std_datetime.html#.SimpleTimeZone"><span class="d_inlinecode donthyphenate notranslate">SimpleTimeZone</span></a> expects for its offset from UTC:
+         the minutes to <i>add</i> to the time in UTC to get the time in the
+         target time zone.</p>
+
+<pre class="d_code notranslate"><span class="d_comment">//These are the same offsets as America/Los_Angeles.
+</span><span class="d_keyword">auto</span> utcOffset = -8 * 60;
+<span class="d_keyword">auto</span> dstOffset = 60;
+
+<span class="d_keyword">immutable</span> tzWithDST = <span class="d_keyword">new</span> SimpleTimeZone(utcOffset + dstOffset);
+<span class="d_keyword">immutable</span> tzWithoutDST = <span class="d_keyword">new</span> SimpleTimeZone(utcOffset);
+</pre>
+
+     <p>The last thing that I have to note is some differences in numerical
+         values between <span class="d_inlinecode donthyphenate notranslate">std.date</span> and <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a>.
+         <span class="d_inlinecode donthyphenate notranslate">std.date.Date</span>'s <span class="d_inlinecode donthyphenate notranslate">weekday</span> property gives Sunday a value of
+         1, but <span class="d_inlinecode donthyphenate notranslate">std.date.weekDay</span> gives Sunday a value of 0.
+         <a href="../phobos/std_datetime.html#.DayOfWeek"><span class="d_inlinecode donthyphenate notranslate">std.datetime.DayOfWeek</span></a> gives Sunday a value of 0. So,
+         depending on which part of <span class="d_inlinecode donthyphenate notranslate">std.date</span> you're dealing with it, it
+         may or may not match what <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a> is doing for the numerical
+         values of weekdays. Months have a similar problem.
+         <span class="d_inlinecode donthyphenate notranslate">std.date.Date</span>'s <span class="d_inlinecode donthyphenate notranslate">month</span> property gives January a value of
+         1 - which matches what <a href="../phobos/std_datetime.html#.Month"><span class="d_inlinecode donthyphenate notranslate">std.datetime.Month</span></a> does - but
+         <span class="d_inlinecode donthyphenate notranslate">std.date.monthFromTime</span> gives January a value of 0. So,
+         just as with the days of the week, you have to be careful with the
+         numerical values of the months. Whether <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a> matches what
+         <span class="d_inlinecode donthyphenate notranslate">std.date</span> is doing depends on which part of <span class="d_inlinecode donthyphenate notranslate">std.date</span> you're using.
+         And as you'll notice, it's not even consistent as to whether
+         <span class="d_inlinecode donthyphenate notranslate">std.date.Date</span> or the free function in <span class="d_inlinecode donthyphenate notranslate">std.date</span> is the one
+         which matches <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a>. So, you should be very careful when
+         converting code which uses numerical values for either the days of the
+         week or the months of the year.</p>
+
+    <center><table cellspacing="0" cellpadding="5" class="book"><caption><h3>std.date symbols and their std.datetime counterparts</h3></caption>        <tr><td><b><span class="d_inlinecode donthyphenate notranslate">std.date</span></b></td>
+             <td><b><a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a> Equivalent</b></td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">d_time</span></td>
+             <td>The closest would be <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>.</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">d_time_nan</span></td>
+             <td>There is no equivalent. <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>.<span class="d_inlinecode donthyphenate notranslate">init</span>, which has a
+                  <span class="d_inlinecode donthyphenate notranslate">null</span> <a href="../phobos/std_datetime.html#.TimeZone"><span class="d_inlinecode donthyphenate notranslate">TimeZone</span></a> object, would be the closest, but once
+                  CTFE advances to the point that you can new up class objects
+                  with it, <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>.<span class="d_inlinecode donthyphenate notranslate">init</span>'s <span class="d_inlinecode donthyphenate notranslate">timezone</span> will be
+                  <a href="../phobos/std_datetime.html#.LocalTime"><span class="d_inlinecode donthyphenate notranslate">LocalTime</span></a>, so don't rely on <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>.<span class="d_inlinecode donthyphenate notranslate">init</span> being
+                  invalid. <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a> in general tries to avoid having any
+                  invalid states for any of its types. It's intended that
+                  creating such values be impossible.</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">Date</span></td>
+             <td><a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a></td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">Date</span>.<span class="d_inlinecode donthyphenate notranslate">year</span></td>
+             <td><a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>.<span class="d_inlinecode donthyphenate notranslate">year</span></td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">Date</span>.<span class="d_inlinecode donthyphenate notranslate">month</span></td>
+             <td><a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>.<span class="d_inlinecode donthyphenate notranslate">month</span></td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">Date</span>.<span class="d_inlinecode donthyphenate notranslate">day</span></td>
+             <td><a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>.<span class="d_inlinecode donthyphenate notranslate">day</span></td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">Date</span>.<span class="d_inlinecode donthyphenate notranslate">hour</span></td>
+             <td><a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>.<span class="d_inlinecode donthyphenate notranslate">hour</span></td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">Date</span>.<span class="d_inlinecode donthyphenate notranslate">minute</span></td>
+             <td><a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>.<span class="d_inlinecode donthyphenate notranslate">minute</span></td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">Date</span>.<span class="d_inlinecode donthyphenate notranslate">second</span></td>
+             <td><a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>.<span class="d_inlinecode donthyphenate notranslate">second</span></td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">Date</span>.<span class="d_inlinecode donthyphenate notranslate">ms</span></td>
+             <td><a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>.<span class="d_inlinecode donthyphenate notranslate">fracSec.msecs</span></td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">Date</span>.<span class="d_inlinecode donthyphenate notranslate">weekday</span></td>
+             <td><a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>.<span class="d_inlinecode donthyphenate notranslate">dayOfWeek</span> - but note that the values are off
+                  by 1.</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">Date</span>.<span class="d_inlinecode donthyphenate notranslate">tzcorrection</span></td>
+             <td><pre class="d_code notranslate"><span class="d_keyword">immutable</span> tz = sysTime.timezone;
+<span class="d_keyword">auto</span> diff = tz.utcToTZ(sysTime.stdTime) - sysTime.stdTime;
+<span class="d_keyword">auto</span> tzcorrection = convert!(<span class="d_string">"hnsecs"</span>, <span class="d_string">"minutes"</span>)(diff);
+</pre>
+However, it looks like <span class="d_inlinecode donthyphenate notranslate">tzcorrection</span> is broken, so you're probably not using
+it in your code anyway.
+              </td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">Date</span>.<span class="d_inlinecode donthyphenate notranslate">parse</span></td>
+             <td><a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>.<span class="d_inlinecode donthyphenate notranslate">fromISOString</span>,
+                  <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>.<span class="d_inlinecode donthyphenate notranslate">fromISOExtString</span>, and
+                  <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>.<span class="d_inlinecode donthyphenate notranslate">fromSimpleString</span>, but the formats of the
+                  strings differ from what <span class="d_inlinecode donthyphenate notranslate">std.date.Date</span>.<span class="d_inlinecode donthyphenate notranslate">parse</span>
+                  accepts.</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">ticksPerSecond</span></td>
+             <td>There is no equivalent. It's only relevant to <span class="d_inlinecode donthyphenate notranslate">d_time</span>.</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">toISO8601YearWeek</span></td>
+             <td><a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>.<span class="d_inlinecode donthyphenate notranslate">isoWeek</span></td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">hourFromTime</span></td>
+             <td><a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>.<span class="d_inlinecode donthyphenate notranslate">hour</span></td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">minFromTime</span></td>
+             <td><a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>.<span class="d_inlinecode donthyphenate notranslate">minute</span></td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">secFromTime</span></td>
+             <td><a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>.<span class="d_inlinecode donthyphenate notranslate">second</span></td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">daysInYear</span></td>
+             <td><span class="d_inlinecode donthyphenate notranslate">sysTime.isLeapYear ? 366 : 365</span></td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">dayFromYear</span></td>
+             <td><span class="d_inlinecode donthyphenate notranslate">(sysTime - SysTime(Date(1970, 1, 1), UTC())).total!"days"()</span></td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">yearFromTime</span></td>
+             <td><a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>.<span class="d_inlinecode donthyphenate notranslate">year</span></td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">inLeapYear</span></td>
+             <td><a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>.<span class="d_inlinecode donthyphenate notranslate">isLeapYear</span></td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">monthFromTime</span></td>
+             <td><a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>.<span class="d_inlinecode donthyphenate notranslate">month</span> - but note that the values are off by
+                  1.</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">dateFromTime</span></td>
+             <td><a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>.<span class="d_inlinecode donthyphenate notranslate">day</span></td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">weekDay</span></td>
+             <td><a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>.<span class="d_inlinecode donthyphenate notranslate">dayOfWeek</span></td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">UTCtoLocalTime</span></td>
+             <td><a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>.<span class="d_inlinecode donthyphenate notranslate">toUTC</span></td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">dateFromNthWeekdayOfMonth</span></td>
+             <td><pre class="d_code notranslate"><span class="d_comment">//There is no equivalent. This is a possible implementation.
+</span><span class="d_keyword">int</span> dateFromNthWeekdayOfMonth(<span class="d_keyword">int</span> year, Month month,
+                              DayOfWeek dow, <span class="d_keyword">int</span> n)
+{
+    <span class="d_keyword">auto</span> first = Date(year, month, 1);
+    <span class="d_keyword">auto</span> target = first;
+    <span class="d_keyword">immutable</span> targetDOTW = target.dayOfWeek;
+
+    <span class="d_keyword">if</span> (targetDOTW != dow)
+    {
+        <span class="d_keyword">if</span> (targetDOTW &lt; dow)
+            target += dur!<span class="d_string">"days"</span>(dow - targetDOTW);
+        <span class="d_keyword">else</span>
+        {
+            target += dur!<span class="d_string">"days"</span>((DayOfWeek.sat - targetDOTW) +
+                                 dow + 1);
+        }
+    }
+
+    target += dur!<span class="d_string">"weeks"</span>(n - 1);
+
+    <span class="d_keyword">if</span> (target.month != first.month)
+        target -= dur!<span class="d_string">"weeks"</span>(1);
+
+    <span class="d_keyword">return</span> <span class="d_keyword">cast</span>(<span class="d_keyword">int</span>)((target - first).total!<span class="d_string">"days"</span>()) + 1;
+}
+</pre>
+              </td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">daysInMonth</span></td>
+             <td><a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>.<span class="d_inlinecode donthyphenate notranslate">endOfMonthDay</span>; Actually, this name is overly
+                  easy to confuse with <span class="d_inlinecode donthyphenate notranslate">endOfMonth</span> - which returns a
+                  <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a> of the last day of the month. I will probably
+                  rename this to <span class="d_inlinecode donthyphenate notranslate">daysInMonth</span>. But if I do, it won't be
+                  until the next release (2.054), and this name will be around
+                  until it's gone through the full deprecation cycle.</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">UTCtoString</span></td>
+             <td>There is no equivalent. You could probably parse and recombine
+                  <span class="d_inlinecode donthyphenate notranslate">core.stdc.time.ctime</span> and
+                  <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>.<span class="d_inlinecode donthyphenate notranslate">toISOExtString</span> to create it though. However,
+                  this function appears to be fairly buggy in the first place,
+                  so odds are that your code isn't using it anyway.</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">toUTCString</span></td>
+             <td>There is no equivalent. You could probably parse and recombine
+                  <span class="d_inlinecode donthyphenate notranslate">core.stdc.time.ctime</span> and
+                  <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>.<span class="d_inlinecode donthyphenate notranslate">toISOExtString</span> to create it though.</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">toDateString</span></td>
+             <td>There is no equivalent. You could probably parse and recombine
+                  <span class="d_inlinecode donthyphenate notranslate">core.stdc.time.ctime</span> and
+                  <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>.<span class="d_inlinecode donthyphenate notranslate">toISOExtString</span> to create it though. However,
+                  this function appears to be fairly buggy in the first place,
+                  so odds are that your code isn't using it anyway.</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">toTimeString</span></td>
+             <td>There is no equivalent. You could probably parse and recombine
+                  <span class="d_inlinecode donthyphenate notranslate">core.stdc.time.ctime</span> and
+                  <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>.<span class="d_inlinecode donthyphenate notranslate">toISOExtString</span> to create it though. However,
+                  this function appears to be fairly buggy in the first place,
+                  so odds are that your code isn't using it anyway.</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">parse</span>.<span class="d_inlinecode donthyphenate notranslate">parse</span></td>
+             <td><a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>.<span class="d_inlinecode donthyphenate notranslate">fromISOString</span>,
+                  <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>.<span class="d_inlinecode donthyphenate notranslate">fromISOExtString</span>, and
+                  <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a>.<span class="d_inlinecode donthyphenate notranslate">fromSimpleString</span>, but the formats of the
+                  strings differ from what <span class="d_inlinecode donthyphenate notranslate">std.date.parse</span> accepts.</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">getUTCtime</span></td>
+             <td><span class="d_inlinecode donthyphenate notranslate">Clock.currTime(UTC())</span> if you want the <a href="../phobos/std_datetime.html#.SysTime"><span class="d_inlinecode donthyphenate notranslate">SysTime</span></a> to have
+                  its time zone be <a href="../phobos/std_datetime.html#.UTC"><span class="d_inlinecode donthyphenate notranslate">UTC</span></a>. More likely though, you'll just use
+                  <span class="d_inlinecode donthyphenate notranslate">Clock.currTime()</span>. Its internal time is in UTC
+                  regardless.</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">DosFileTime</span></td>
+             <td><a href="../phobos/std_datetime.html#.DosFileTime"><span class="d_inlinecode donthyphenate notranslate">DosFileTime</span></a></td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">toDtime</span></td>
+             <td><a href="../phobos/std_datetime.html#.DosFileTimeToSysTime"><span class="d_inlinecode donthyphenate notranslate">DosFileTimeToSysTime</span></a></td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">toDosFileTime</span></td>
+             <td><a href="../phobos/std_datetime.html#.SysTimeToDosFileTime"><span class="d_inlinecode donthyphenate notranslate">SysTimeToDosFileTime</span></a></td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">benchmark</span></td>
+             <td><a href="../phobos/std_datetime.html#.benchmark"><span class="d_inlinecode donthyphenate notranslate">benchmark</span></a></td></tr>
+    </table></center>
+
+    <p>Note that I'm not an expert on what does and doesn't work in
+        <span class="d_inlinecode donthyphenate notranslate">std.date</span>, so while I have noted some of the functions that I know to
+        be broken, just because a function isn't labeled as broken in the above
+        table does not mean that it works correctly. And any function which
+        doesn't work correctly is obviously not going to give the same results
+        as the <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a> equivalent, since it's almost certain that the
+        <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a> version isn't buggy, let alone buggy in the same way (if
+        it is buggy, the bug is almost certainly going to be far more subtle
+        than any bug in <span class="d_inlinecode donthyphenate notranslate">std.date</span>, since <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a> is quite thoroughly
+        unit tested).</p>
+
+    <h2>Conclusion</h2>
+
+    <p>Hopefully this article has improved your understanding of
+        <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a> and will get you well on your way to being able to
+        migrate your code from <span class="d_inlinecode donthyphenate notranslate">std.date</span> to <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a>. If you have any
+        further questions, please ask them on the
+        <a href="http://www.digitalmars.com/NewsGroup.html">digitalmars.D.learn newsgroup</a>.
+        And if there's a major use case of <span class="d_inlinecode donthyphenate notranslate">std.date</span> which is not easy to
+        convert over to <a href="../phobos/std_datetime.html"><span class="d_inlinecode donthyphenate notranslate">std.datetime</span></a> which I missed in this
+        article and you think should be in it, please feel free to bring it up
+        on the
+        <a href="http://www.digitalmars.com/NewsGroup.html">digitalmars.D newsgroup</a>,
+        and if need be, I'll update this article with the relevant information.</p>
+ 
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2022 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on (no date time)</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

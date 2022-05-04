@@ -1,0 +1,734 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2022 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Associative Arrays - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Associative Arrays' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href=".."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.freenode.net/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option selected value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+<div class="subnav-helper"></div> <div class="subnav">    <div class="head"><h5>Language Reference</h5> <p class="subnav-duplicate"><a href="../spec/spec.html">table of contents</a></p></div>
+    <ul>        <li><a href='            ../spec/intro.html'>Introduction</a></li><li><a href='            ../spec/lex.html'>Lexical</a></li><li><a href='            ../spec/grammar.html'>Grammar</a></li><li><a href='            ../spec/module.html'>Modules</a></li><li><a href='            ../spec/declaration.html'>Declarations</a></li><li><a href='            ../spec/type.html'>Types</a></li><li><a href='            ../spec/property.html'>Properties</a></li><li><a href='            ../spec/attribute.html'>Attributes</a></li><li><a href='            ../spec/pragma.html'>Pragmas</a></li><li><a href='            ../spec/expression.html'>Expressions</a></li><li><a href='            ../spec/statement.html'>Statements</a></li><li><a href='            ../spec/arrays.html'>Arrays</a></li><li><a href='            ../spec/hash-map.html'>Associative Arrays</a></li><li><a href='            ../spec/struct.html'>Structs and Unions</a></li><li><a href='            ../spec/class.html'>Classes</a></li><li><a href='            ../spec/interface.html'>Interfaces</a></li><li><a href='            ../spec/enum.html'>Enums</a></li><li><a href='            ../spec/const3.html'>Type Qualifiers</a></li><li><a href='            ../spec/function.html'>Functions</a></li><li><a href='            ../spec/operatoroverloading.html'>Operator Overloading</a></li><li><a href='            ../spec/template.html'>Templates</a></li><li><a href='            ../spec/template-mixin.html'>Template Mixins</a></li><li><a href='            ../spec/contracts.html'>Contract Programming</a></li><li><a href='            ../spec/version.html'>Conditional Compilation</a></li><li><a href='            ../spec/traits.html'>Traits</a></li><li><a href='            ../spec/errors.html'>Error Handling</a></li><li><a href='            ../spec/unittest.html'>Unit Tests</a></li><li><a href='            ../spec/garbage.html'>Garbage Collection</a></li><li><a href='            ../spec/float.html'>Floating Point</a></li><li><a href='            ../spec/iasm.html'>D x86 Inline Assembler</a></li><li><a href='            ../spec/ddoc.html'>Embedded Documentation</a></li><li><a href='            ../spec/interfaceToC.html'>Interfacing to C</a></li><li><a href='            ../spec/cpp_interface.html'>Interfacing to C++</a></li><li><a href='            ../spec/objc_interface.html'>Interfacing to Objective-C</a></li><li><a href='            ../spec/portability.html'>Portability Guide</a></li><li><a href='            ../spec/entity.html'>Named Character Entities</a></li><li><a href='            ../spec/memory-safe-d.html'>Memory Safety</a></li><li><a href='            ../spec/abi.html'>Application Binary Interface</a></li><li><a href='            ../spec/simd.html'>Vector Extensions</a></li><li><a href='            ../spec/betterc.html'>Better C
+        </a></li>
+    </ul>
+</div>
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BAssociative Arrays%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/spec/hash-map.dd">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Associative Arrays</h1>
+        
+<style>    body { counter-reset: h1 13; counter-increment: h1 -1; }
+    h1 { counter-reset: h2 h3 p; }
+    h2 { counter-reset: h3 h4 p; }
+    h3 { counter-reset: h4 p; }
+    h4 { counter-reset: p; }
+    h1::before {
+        counter-increment: h1;
+        content: counter(h1) ". ";
+    }
+    h2::before {
+        counter-increment: h2;
+        content: counter(h1) "." counter(h2) " ";
+    }
+    h3::before {
+        counter-increment: h3;
+        content: counter(h1) "." counter(h2) "." counter(h3) " ";
+    }
+    h4::before {
+        counter-increment: h4;
+        content: counter(h1) "." counter(h2) "." counter(h3) "." counter(h4) " ";
+    }
+    p::before, .spec-boxes::before {
+        counter-increment: p;
+        content: counter(p) ". ";
+    }
+    h1::before, h2::before, h3::before, h4::before, p::before, .spec-boxes::before
+    {
+        color: #999;
+        font-size: 80%;
+        margin-right: 0.25em;
+    }
+</style>
+        <div class="blankline"></div>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<div class="page-contents quickindex">    <div class="page-contents-header">        <b>Contents</b>
+    </div>
+    <ol>    <li><a href="#removing_keys">Removing Keys</a></li>
+    <li><a href="#testing_membership">Testing Membership</a></li>
+    <li><a href="#using_classes_as_key">Using Classes as the KeyType</a></li>
+    <li><a href="#using_struct_as_key">Using Structs or Unions as the KeyType</a></li>
+    <li><a href="#construction_assignment_entries">Construction or Assignment on Setting AA Entries</a></li>
+    <li><a href="#inserting_if_not_present">Inserting if not present</a></li>
+    <li><a href="#advanced_updating">Advanced updating</a></li>
+    <li><a href="#static_initialization">Static Initialization of AAs</a></li>
+    <li><a href="#runtime_initialization">Runtime Initialization of Immutable AAs</a></li>
+    <li><a href="#construction_and_ref_semantic">Construction and Reference Semantics</a></li>
+    <li><a href="#properties">Properties</a><ol>        <li><a href="#aa_example">Associative Array Example: word count</a></li>
+        <li><a href="#aa_example_iteration">Associative Array Example: counting Tuples</a></li>
+    </ol></li>
+</ol>
+</div>
+<div class="blankline"></div>
+        <p>Associative arrays have an index that is not necessarily an integer,
+        and can be sparsely populated. The index for an associative array
+        is called the <i>key</i>, and its type is called the <i>KeyType</i>.</p>
+<div class="blankline"></div>
+        <p>Associative arrays are declared by placing the <i>KeyType</i>
+        within the <span class="d_inlinecode donthyphenate notranslate">[ ]</span> of an array declaration:
+        </p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">int</span>[string] aa;   <span class="d_comment">// Associative array of ints that are
+</span>                  <span class="d_comment">// indexed by string keys.
+</span>                  <span class="d_comment">// The KeyType is string.
+</span>aa[<span class="d_string">"hello"</span>] = 3;  <span class="d_comment">// set value associated with key "hello" to 3
+</span><span class="d_keyword">int</span> value = aa[<span class="d_string">"hello"</span>];  <span class="d_comment">// lookup value from a key
+</span><span class="d_keyword">assert</span>(value == 3);
+</pre>
+<div class="blankline"></div>
+        <p>Neither the <i>KeyType</i>s nor the element types of an associative
+        array can be function types or <span class="d_inlinecode donthyphenate notranslate">void</span>.
+        </p>
+<div class="blankline"></div>
+        <div class="spec-boxes implementation-defined"><b>Implementation Defined</b>: The built-in associative arrays do not preserve the order
+        of the keys inserted into the array. In particular, in a <span class="d_inlinecode donthyphenate notranslate">foreach</span> loop the
+        order in which the elements are iterated is typically unspecified.</div>
+
+
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="removing_keys" href="#removing_keys">Removing Keys</a></h2>
+<div class="blankline"></div>
+        <p>Particular keys in an associative array can be removed with the
+        <span class="d_inlinecode donthyphenate notranslate">remove</span> function:
+        </p>
+<div class="blankline"></div>
+<pre class="d_code notranslate">aa.<b><i>remove</i></b>(<span class="d_string">"hello"</span>);
+</pre>
+<div class="blankline"></div>
+        <p><span class="d_inlinecode donthyphenate notranslate">remove(key)</span> does nothing if the given <i>key</i> does not exist and
+        returns <span class="d_inlinecode donthyphenate notranslate">false</span>.  If the given <i>key</i> does exist, it removes it
+        from the AA and returns <span class="d_inlinecode donthyphenate notranslate">true</span>.
+        </p>
+<div class="blankline"></div>
+        <p>All keys can be removed by using the method <span class="d_inlinecode donthyphenate notranslate">clear</span>.</p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="testing_membership" href="#testing_membership">Testing Membership</a></h2>
+<div class="blankline"></div>
+        <p>The <a href="../spec/expression.html#InExpression"><i>InExpression</i></a> yields a pointer to the value
+        if the key is in the associative array, or <span class="d_inlinecode donthyphenate notranslate">null</span> if not:
+        </p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">int</span>* p;
+
+p = (<span class="d_string">"hello"</span> <b><i><span class="d_keyword">in</span></i></b> aa);
+<span class="d_keyword">if</span> (p !<span class="d_keyword">is</span> <span class="d_keyword">null</span>)
+{
+    *p = 4;  <span class="d_comment">// update value associated with key
+</span>    <span class="d_keyword">assert</span>(aa[<span class="d_string">"hello"</span>] == 4);
+}
+</pre>
+<div class="blankline"></div>
+        <div class="spec-boxes undefined-behavior"><b>Undefined Behavior</b>: Adjusting the pointer to point before or after
+        the element whose address is returned, and then dereferencing it.</div>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="using_classes_as_key" href="#using_classes_as_key">Using Classes as the KeyType</a></h2>
+<div class="blankline"></div>
+        <p>Classes can be used as the <i>KeyType</i>. For this to work,
+        the class definition must override the following member functions
+        of class <span class="d_inlinecode donthyphenate notranslate">Object</span>:</p>
+<div class="blankline"></div>
+        <ul>        <li><span class="d_inlinecode donthyphenate notranslate">size_t toHash() @trusted nothrow</span></li>
+        <li><span class="d_inlinecode donthyphenate notranslate">bool opEquals(Object)</span></li>
+        </ul>
+<div class="blankline"></div>
+        <p>Note that the parameter to <span class="d_inlinecode donthyphenate notranslate">opEquals</span> is of type
+        <span class="d_inlinecode donthyphenate notranslate">Object</span>, not the type of the class in which it is defined.</p>
+<div class="blankline"></div>
+        <p>For example:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">class</span> Foo
+{
+    <span class="d_keyword">int</span> a, b;
+
+    <span class="d_keyword">override</span> size_t <b><i>toHash</i></b>() { <span class="d_keyword">return</span> a + b; }
+
+    <span class="d_keyword">override</span> <span class="d_keyword">bool</span> <b><i>opEquals</i></b>(Object o)
+    {
+        Foo foo = <span class="d_keyword">cast</span>(Foo) o;
+        <span class="d_keyword">return</span> foo &amp;&amp; a == foo.a &amp;&amp; b == foo.b;
+    }
+}
+</pre>
+<div class="blankline"></div>
+        <div class="spec-boxes implementation-defined"><b>Implementation Defined</b>:         <span class="d_inlinecode donthyphenate notranslate">opCmp</span> is not used to check for equality by the
+        associative array. However, since the actual <span class="d_inlinecode donthyphenate notranslate">opEquals</span> or
+        <span class="d_inlinecode donthyphenate notranslate">opCmp</span> called is not decided until runtime, the compiler cannot always
+        detect mismatched functions. Because of legacy issues, the compiler may
+        reject an associative array key type that overrides <span class="d_inlinecode donthyphenate notranslate">opCmp</span> but not
+        <span class="d_inlinecode donthyphenate notranslate">opEquals</span>. This restriction may be removed in future versions.</div>
+
+
+<div class="blankline"></div>
+        <div class="spec-boxes undefined-behavior"><b>Undefined Behavior</b>:         <ol>        <li>If <span class="d_inlinecode donthyphenate notranslate">toHash</span> must consistently be the
+        same value when <span class="d_inlinecode donthyphenate notranslate">opEquals</span> returns true. In other words, two objects
+        that are considered equal should always have the same hash value.
+        Otherwise, undefined behavior will result.</li>
+        </ol></div>
+<div class="blankline"></div>
+        <div class="spec-boxes best-practice"><b>Best Practices:</b>         <ol>        <li>Use the attributes <span class="d_inlinecode donthyphenate notranslate">@safe</span>, <span class="d_inlinecode donthyphenate notranslate">@nogc</span>, <span class="d_inlinecode donthyphenate notranslate">pure</span>, <span class="d_inlinecode donthyphenate notranslate">const</span>, and <span class="d_inlinecode donthyphenate notranslate">scope</span> as much as possible
+        on the <span class="d_inlinecode donthyphenate notranslate">toHash</span> and <span class="d_inlinecode donthyphenate notranslate">opEquals</span> overrides.</li>
+        </ol></div>
+
+
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="using_struct_as_key" href="#using_struct_as_key">Using Structs or Unions as the KeyType</a></h2>
+<div class="blankline"></div>
+        <p>If the <i>KeyType</i> is a struct or union type,
+        a default mechanism is used
+        to compute the hash and comparisons of it based on the binary
+        data within the struct value. A custom mechanism can be used
+        by providing the following functions as struct members:
+        </p>
+<div class="blankline"></div>
+<pre class="d_code notranslate">size_t <b><i>toHash</i></b>() <span class="d_keyword">const</span> @safe <span class="d_keyword">pure</span> <span class="d_keyword">nothrow</span>;
+<span class="d_keyword">bool</span> <b><i>opEquals</i></b>(<span class="d_keyword">ref</span> <span class="d_keyword">const</span> <span class="d_keyword">typeof</span>(<span class="d_keyword">this</span>) s) <span class="d_keyword">const</span> @safe <span class="d_keyword">pure</span> <span class="d_keyword">nothrow</span>;
+</pre>
+<div class="blankline"></div>
+        <p>For example:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.string;
+
+<span class="d_keyword">struct</span> MyString
+{
+    string str;
+
+    size_t <b><i>toHash</i></b>() <span class="d_keyword">const</span> @safe <span class="d_keyword">pure</span> <span class="d_keyword">nothrow</span>
+    {
+        size_t hash;
+        <span class="d_keyword">foreach</span> (<span class="d_keyword">char</span> c; str)
+            hash = (hash * 9) + c;
+        <span class="d_keyword">return</span> hash;
+    }
+
+    <span class="d_keyword">bool</span> <b><i>opEquals</i></b>(<span class="d_keyword">ref</span> <span class="d_keyword">const</span> MyString s) <span class="d_keyword">const</span> @safe <span class="d_keyword">pure</span> <span class="d_keyword">nothrow</span>
+    {
+        <span class="d_keyword">return</span> std.string.cmp(<span class="d_keyword">this</span>.str, s.str) == 0;
+    }
+}
+</pre>
+<div class="blankline"></div>
+        <p>The functions can use <span class="d_inlinecode donthyphenate notranslate">@trusted</span> instead of <span class="d_inlinecode donthyphenate notranslate">@safe</span>.</p>
+<div class="blankline"></div>
+        <div class="spec-boxes implementation-defined"><b>Implementation Defined</b>: <span class="d_inlinecode donthyphenate notranslate">opCmp</span> is not used to check for equality by the
+        associative array.  For this reason, and for legacy reasons, an
+        associative array key is not allowed to define a specialized <span class="d_inlinecode donthyphenate notranslate">opCmp</span>,
+        but omit a specialized <span class="d_inlinecode donthyphenate notranslate">opEquals</span>. This restriction may be
+        removed in future versions of D.</div>
+
+
+<div class="blankline"></div>
+        <div class="spec-boxes undefined-behavior"><b>Undefined Behavior</b>:         <ol>        <li>If <span class="d_inlinecode donthyphenate notranslate">toHash</span> must consistently be the
+        same value when <span class="d_inlinecode donthyphenate notranslate">opEquals</span> returns true. In other words, two structs
+        that are considered equal should always have the same hash value.
+        Otherwise, undefined behavior will result.</li>
+        </ol></div>
+<div class="blankline"></div>
+        <div class="spec-boxes best-practice"><b>Best Practices:</b>         <ol>        <li>Use the attributes <span class="d_inlinecode donthyphenate notranslate">@nogc</span> as much as possible
+        on the <span class="d_inlinecode donthyphenate notranslate">toHash</span> and <span class="d_inlinecode donthyphenate notranslate">opEquals</span> overrides.</li>
+        </ol></div>
+
+
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="construction_assignment_entries" href="#construction_assignment_entries">Construction or Assignment on Setting AA Entries</a></h2>
+<div class="blankline"></div>
+    <p>When an AA indexing access appears on the left side of an assignment
+    operator, it is specially handled for setting an AA entry associated with
+    the key.</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate">string[<span class="d_keyword">int</span>] aa;
+string s;
+s = aa[1];          <span class="d_comment">// throws RangeError in runtime
+</span>aa[1] = <span class="d_string">"hello"</span>;    <span class="d_comment">// handled for setting AA entry
+</span>s = aa[1];          <span class="d_comment">// succeeds to lookup
+</span><span class="d_keyword">assert</span>(s == <span class="d_string">"hello"</span>);
+</pre>
+<div class="blankline"></div>
+    <p>If the assigned value type is equivalent with the AA element type:</p>
+<div class="blankline"></div>
+      <ol>        <li>If the indexing key does not yet exist in AA, a new AA entry will be
+        allocated, and it will be initialized with the assigned value.</li>
+        <li>If the indexing key already exists in the AA, the setting runs normal
+        assignment.</li>
+      </ol>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span> val;
+    <span class="d_keyword">void</span> opAssign(S rhs) { <span class="d_keyword">this</span>.val = rhs.val * 2; }
+}
+S[<span class="d_keyword">int</span>] aa;
+aa[1] = S(10);  <span class="d_comment">// first setting initializes the entry aa[1]
+</span><span class="d_keyword">assert</span>(aa[1].val == 10);
+aa[1] = S(10);  <span class="d_comment">// second setting invokes normal assignment, and
+</span>                <span class="d_comment">// operator-overloading rewrites it to member opAssign function.
+</span><span class="d_keyword">assert</span>(aa[1].val == 20);
+</pre>
+<div class="blankline"></div>
+    <p>If the assigned value type is <b>not</b> equivalent with the AA element
+    type, the expression could invoke operator overloading with normal indexing
+    access:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span> val;
+    <span class="d_keyword">void</span> opAssign(<span class="d_keyword">int</span> v) { <span class="d_keyword">this</span>.val = v * 2; }
+}
+S[<span class="d_keyword">int</span>] aa;
+aa[1] = 10;     <span class="d_comment">// is rewritten to: aa[1].opAssign(10), and
+</span>                <span class="d_comment">// throws RangeError before opAssign is called
+</span></pre>
+<div class="blankline"></div>
+        <p>However, if the AA element type is a struct which supports an
+        implicit constructor call from the assigned value, implicit construction
+        is used for setting the AA entry:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span> val;
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> v) { <span class="d_keyword">this</span>.val = v; }
+    <span class="d_keyword">void</span> opAssign(<span class="d_keyword">int</span> v) { <span class="d_keyword">this</span>.val = v * 2; }
+}
+S s = 1;    <span class="d_comment">// OK, rewritten to: S s = S(1);
+</span>  s = 1;    <span class="d_comment">// OK, rewritten to: s.opAssign(1);
+</span>
+S[<span class="d_keyword">int</span>] aa;
+aa[1] = 10; <span class="d_comment">// first setting is rewritten to: aa[1] = S(10);
+</span><span class="d_keyword">assert</span>(aa[1].val == 10);
+aa[1] = 10; <span class="d_comment">// second setting is rewritten to: aa[1].opAssign(10);
+</span><span class="d_keyword">assert</span>(aa[1].val == 20);
+</pre>
+<div class="blankline"></div>
+        This is designed for efficient memory reuse with some value-semantics
+        structs, eg. <a href="../phobos/std_bigint.html#.BigInt"><span class="d_inlinecode donthyphenate notranslate">std.bigint.BigInt</span></a>.
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.bigint;
+BigInt[string] aa;
+aa[<span class="d_string">"a"</span>] = 10;   <span class="d_comment">// construct BigInt(10) and move it in AA
+</span>aa[<span class="d_string">"a"</span>] = 20;   <span class="d_comment">// call aa["a"].opAssign(20)
+</span></pre>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="inserting_if_not_present" href="#inserting_if_not_present">Inserting if not present</a></h2>
+<div class="blankline"></div>
+    <p>When AA access requires that there must be a value corresponding to the
+        key, a value must be constructed and inserted if not present. The
+        <span class="d_inlinecode donthyphenate notranslate">require</span> function provides a means to construct a new value via a
+        lazy argument. The lazy argument is evaluated when the key is not
+        present. The <span class="d_inlinecode donthyphenate notranslate">require</span> operation avoids the need to perform multiple
+        key lookups.</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">class</span> C{}
+C[string] aa;
+
+<span class="d_keyword">auto</span> a = aa.require(<span class="d_string">"a"</span>, <span class="d_keyword">new</span> C);   <span class="d_comment">// lookup "a", construct if not present
+</span></pre>
+<div class="blankline"></div>
+    <p>Sometimes it is necessary to know whether the value was constructed or
+        already exists. The <span class="d_inlinecode donthyphenate notranslate">require</span> function doesn't provide a boolean
+        parameter to indicate whether the value was constructed but instead
+        allows the construction via a function or delegate. This allows the use
+        of any mechanism as demonstrated below.</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">class</span> C{}
+C[string] aa;
+
+<span class="d_keyword">bool</span> constructed;
+<span class="d_keyword">auto</span> a = aa.require(<span class="d_string">"a"</span>, { constructed=<span class="d_keyword">true</span>; <span class="d_keyword">return</span> <span class="d_keyword">new</span> C;}());
+<span class="d_keyword">assert</span>(constructed == <span class="d_keyword">true</span>);
+
+C newc;
+<span class="d_keyword">auto</span> b = aa.require(<span class="d_string">"b"</span>, { newc = <span class="d_keyword">new</span> C; <span class="d_keyword">return</span> newc;}());
+<span class="d_keyword">assert</span>(b <span class="d_keyword">is</span> newc);
+</pre>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="advanced_updating" href="#advanced_updating">Advanced updating</a></h2>
+<div class="blankline"></div>
+    <p>Typically updating a value in an associative array is simply done with
+        an assign statement.</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">int</span>[string] aa;
+
+aa[<span class="d_string">"a"</span>] = 3;  <span class="d_comment">// set value associated with key "a" to 3
+</span></pre>
+<div class="blankline"></div>
+    <p>Sometimes it is necessary to perform different operations depending on
+        whether a value already exists or needs to be constructed. The
+        <span class="d_inlinecode donthyphenate notranslate">update</span> function provides a means to construct a new value via the
+        <span class="d_inlinecode donthyphenate notranslate">create</span> delegate or update an existing value via the <span class="d_inlinecode donthyphenate notranslate">update</span>
+        delegate. The <span class="d_inlinecode donthyphenate notranslate">update</span> operation avoids the need to perform multiple
+        key lookups.</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">class</span> C{}
+C[string] aa;
+
+C older;
+C newer;
+aa.update(<span class="d_string">"a"</span>,
+{
+    newer = <span class="d_keyword">new</span> C;
+    <span class="d_keyword">return</span> newer;
+},
+(<span class="d_keyword">ref</span> C c)
+{
+    older = c;
+    newer = <span class="d_keyword">new</span> C;
+    <span class="d_keyword">return</span> newer;
+});
+</pre>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="static_initialization" href="#static_initialization">Static Initialization of AAs</a></h2>
+<div class="blankline"></div>
+        NOTE: Not yet implemented.
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">immutable</span> <span class="d_keyword">long</span>[string] aa = [
+  <span class="d_string">"foo"</span>: 5,
+  <span class="d_string">"bar"</span>: 10,
+  <span class="d_string">"baz"</span>: 2000
+];
+
+<span class="d_keyword">unittest</span>
+{
+    <span class="d_keyword">assert</span>(aa[<span class="d_string">"foo"</span>] == 5);
+    <span class="d_keyword">assert</span>(aa[<span class="d_string">"bar"</span>] == 10);
+    <span class="d_keyword">assert</span>(aa[<span class="d_string">"baz"</span>] == 2000);
+}
+</pre>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="runtime_initialization" href="#runtime_initialization">Runtime Initialization of Immutable AAs</a></h2>
+<div class="blankline"></div>
+    <p>Immutable associative arrays are often desirable, but sometimes
+        initialization must be done at runtime. This can be achieved with
+        a constructor (static constructor depending on scope),
+        a buffer associative array and <span class="d_inlinecode donthyphenate notranslate">assumeUnique</span>:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">immutable</span> <span class="d_keyword">long</span>[string] aa;
+
+<span class="d_keyword">shared</span> <span class="d_keyword">static</span> <span class="d_keyword">this</span>()
+{
+    <span class="d_keyword">import</span> std.exception : assumeUnique;
+    <span class="d_keyword">import</span> std.conv : to;
+
+    <span class="d_keyword">long</span>[string] temp; <span class="d_comment">// mutable buffer
+</span>    <span class="d_keyword">foreach</span>(i; 0 .. 10)
+    {
+        temp[to!string(i)] = i;
+    }
+    temp.rehash; <span class="d_comment">// for faster lookups
+</span>
+    aa = assumeUnique(temp);
+}
+
+<span class="d_keyword">unittest</span>
+{
+    <span class="d_keyword">assert</span>(aa[<span class="d_string">"1"</span>] == 1);
+    <span class="d_keyword">assert</span>(aa[<span class="d_string">"5"</span>] == 5);
+    <span class="d_keyword">assert</span>(aa[<span class="d_string">"9"</span>] == 9);
+}
+</pre>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="construction_and_ref_semantic" href="#construction_and_ref_semantic">Construction and Reference Semantics</a></h2>
+<div class="blankline"></div>
+    <p>An Associative Array defaults to <span class="d_inlinecode donthyphenate notranslate">null</span>, and is constructed upon assigning the first key/value
+        pair. However, once constructed, an associative array has <i>reference semantics</i>, meaning that
+        assigning one array to another does not copy the data. This is especially important when attempting
+        to create multiple references to the same array.</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">int</span>[<span class="d_keyword">int</span>] aa;             <span class="d_comment">// defaults to null
+</span><span class="d_keyword">int</span>[<span class="d_keyword">int</span>] aa2 = aa;       <span class="d_comment">// copies the null reference
+</span>aa[1] = 1;
+<span class="d_keyword">assert</span>(aa2.length == 0); <span class="d_comment">// aa2 still is null
+</span>aa2 = aa;
+aa2[2] = 2;
+<span class="d_keyword">assert</span>(aa[2] == 2);      <span class="d_comment">// now both refer to the same instance
+</span></pre>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="properties" href="#properties">Properties</a></h2>
+<div class="blankline"></div>
+<p>Properties for associative arrays are:</p>
+<div class="blankline"></div>
+    <center><table><caption>Associative Array Properties</caption>        <tr><th class="donthyphenate"><b>Property</b></th><th class="donthyphenate"><b>Description</b></th></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">.sizeof</span></td><td>Returns the size of the reference to the associative
+        array; it is 4 in 32-bit builds and 8 on 64-bit builds.</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">.length</span></td><td>Returns number of values in the
+        associative array. Unlike for dynamic arrays, it is read-only.</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">.dup</span></td><td>Create a new associative array of the same size
+        and copy the contents of the associative array into it.</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">.keys</span></td><td>Returns dynamic array, the elements of which are the keys in
+        the associative array.</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">.values</span></td><td>Returns dynamic array, the elements of which are the values in
+        the associative array.</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">.rehash</span></td><td>Reorganizes the associative array in place so that lookups
+        are more efficient. <span class="d_inlinecode donthyphenate notranslate">rehash</span> is effective when, for example,
+        the program is done loading up a symbol table and now needs
+        fast lookups in it. Returns a reference to the reorganized array.</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">.clear</span></td><td>Removes all remaining keys and values from an associative array.
+        The array is not rehashed after removal, to allow for the existing storage to be reused.
+        This will affect all references to the same instance and is not equivalent to <span class="d_inlinecode donthyphenate notranslate">destroy(aa)</span>
+        which only sets the current reference to <span class="d_inlinecode donthyphenate notranslate">null</span></td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">.byKey()</span></td><td>Returns a forward range suitable for use
+        as a <i>ForeachAggregate</i> to a <a href="../spec/statement.html#ForeachStatement"><i>ForeachStatement</i></a>
+        which will iterate over the keys of the associative array.</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">.byValue()</span></td><td>Returns a forward range suitable for use
+        as a <i>ForeachAggregate</i> to a <a href="../spec/statement.html#ForeachStatement"><i>ForeachStatement</i></a>
+        which will iterate over the values of the associative array.</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">.byKeyValue()</span></td><td>Returns a forward range suitable for
+        use as a <i>ForeachAggregate</i> to a <a href="../spec/statement.html#        ForeachStatement"><i>        ForeachStatement</i></a> which will iterate over key-value pairs of the
+        associative array. The returned pairs are represented by an opaque type
+        with <span class="d_inlinecode donthyphenate notranslate">.key</span> and <span class="d_inlinecode donthyphenate notranslate">.value</span> properties for accessing the key and
+        value of the pair, respectively.  Note that this is a low-level
+        interface to iterating over the associative array and is not compatible
+        with the <a href="../phobos/std_typecons.html#.Tuple"><span class="d_inlinecode donthyphenate notranslate">Tuple</span></a>
+        type in Phobos.  For compatibility with <span class="d_inlinecode donthyphenate notranslate">Tuple</span>, use
+        <a href="../phobos/std_array.html#.byPair">std.array.byPair</a> instead.</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">.get(Key key, lazy Value defVal)</span></td><td>        Looks up <span class="d_inlinecode donthyphenate notranslate">key</span>; if it exists returns corresponding value
+        else evaluates and returns <span class="d_inlinecode donthyphenate notranslate">defVal</span>.</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">.require(Key key, lazy Value value)</span></td><td>        Looks up <span class="d_inlinecode donthyphenate notranslate">key</span>; if it exists returns corresponding value
+        else evaluates <span class="d_inlinecode donthyphenate notranslate">value</span>, adds it to the associative array and returns it.</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">.update(Key key, Value delegate() create, Value delegate(Value) update)</span></td><td>        Looks up <span class="d_inlinecode donthyphenate notranslate">key</span>; if it exists applies the <span class="d_inlinecode donthyphenate notranslate">update</span> delegate
+        else evaluates the <span class="d_inlinecode donthyphenate notranslate">create</span> delegate and adds it to the associative array</td></tr>
+    </table></center>
+<div class="blankline"></div>
+<hr>
+<h3><a class="anchor" title="Permalink to this section" id="aa_example" href="#aa_example">Associative Array Example: word count</a></h3>
+<div class="blankline"></div>
+        <p>Let's consider the file is ASCII encoded with LF EOL.
+        In general case we should use <i>dchar c</i> for iteration
+        over code points and functions from <a href="../phobos/std_uni.html">std.uni</a>.
+        </p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.file;         <span class="d_comment">// D file I/O
+</span><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.ascii;
+
+<span class="d_keyword">void</span> main (string[] args)
+{
+    <span class="d_keyword">ulong</span> totalWords, totalLines, totalChars;
+    <span class="d_keyword">ulong</span>[string] dictionary;
+
+    writeln(<span class="d_string">"   lines   words   bytes file"</span>);
+    <span class="d_keyword">foreach</span> (arg; args[1 .. $]) <span class="d_comment">// for each argument except the first one
+</span>    {
+        <span class="d_keyword">ulong</span> wordCount, lineCount, charCount;
+
+        <span class="d_keyword">foreach</span>(line; File(arg).byLine())
+        {
+            <span class="d_keyword">bool</span> inWord;
+            size_t wordStart;
+
+            <span class="d_keyword">void</span> tryFinishWord(size_t wordEnd)
+            {
+                <span class="d_keyword">if</span> (inWord)
+                {
+                    <span class="d_keyword">auto</span> word = line[wordStart .. wordEnd];
+                    ++dictionary[word.idup];   <span class="d_comment">// increment count for word
+</span>                    inWord = <span class="d_keyword">false</span>;
+                }
+            }
+
+            <span class="d_keyword">foreach</span> (i, <span class="d_keyword">char</span> c; line)
+            {
+                <span class="d_keyword">if</span> (std.ascii.isDigit(c))
+                {
+                    <span class="d_comment">// c is a digit (0..9)
+</span>                }
+                <span class="d_keyword">else</span> <span class="d_keyword">if</span> (std.ascii.isAlpha(c))
+                {
+                    <span class="d_comment">// c is an ASCII letter (A..Z, a..z)
+</span>                    <span class="d_keyword">if</span> (!inWord)
+                    {
+                        wordStart = i;
+                        inWord = <span class="d_keyword">true</span>;
+                        ++wordCount;
+                    }
+                }
+                <span class="d_keyword">else</span>
+                    tryFinishWord(i);
+                ++charCount;
+            }
+            tryFinishWord(line.length);
+            ++lineCount;
+        }
+
+        writefln(<span class="d_string">"%8s%8s%8s %s"</span>, lineCount, wordCount, charCount, arg);
+        totalWords += wordCount;
+        totalLines += lineCount;
+        totalChars += charCount;
+    }
+
+    <span class="d_keyword">if</span> (args.length &gt; 2)
+    {
+        writefln(<span class="d_string">"-------------------------------------\n%8s%8s%8s total"</span>,
+                 totalLines, totalWords, totalChars);
+    }
+
+    writeln(<span class="d_string">"-------------------------------------"</span>);
+    <span class="d_keyword">foreach</span> (word; dictionary.keys.sort)
+    {
+        writefln(<span class="d_string">"%3s %s"</span>, dictionary[word], word);
+    }
+}
+</pre>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="aa_example_iteration" href="#aa_example_iteration">Associative Array Example: counting Tuples</a></h3>
+<div class="blankline"></div>
+    <p>An Associative Array can be iterated in key/value fashion using a
+        <a href="../spec/statement.html#ForeachStatement">foreach statement</a>. As
+        an example, the number of occurrences of all possible substrings of
+        length 2 (aka 2-mers) in a string will be counted:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.range : dropOne, only, save, zip;
+<span class="d_keyword">import</span> std.stdio : writefln;
+<span class="d_keyword">import</span> std.typecons : Tuple;
+<span class="d_keyword">import</span> std.utf : byCodeUnit; <span class="d_comment">// avoids UTF-8 auto-decoding
+</span>
+<span class="d_keyword">int</span>[Tuple!(<span class="d_keyword">immutable</span> <span class="d_keyword">char</span>, <span class="d_keyword">immutable</span> <span class="d_keyword">char</span>)] aa;
+
+<span class="d_comment">// The string `arr` has a limited alphabet: {A, C, G, T}
+</span><span class="d_comment">// Thus, for better performance, iteration can be done _without_ decoding
+</span><span class="d_keyword">auto</span> arr = <span class="d_string">"AGATAGA"</span>.byCodeUnit;
+
+<span class="d_comment">// iterate over all pairs in the string and observe each pair
+</span><span class="d_comment">// ('A', 'G'), ('G', 'A'), ('A', 'T'), ...
+</span><span class="d_keyword">foreach</span> (window; arr.zip(arr.save.dropOne))
+    aa[window]++;
+
+<span class="d_comment">// iterate over all key/value pairs of the Associative Array
+</span><span class="d_keyword">foreach</span> (key, value; aa)
+{
+    <span class="d_comment">// the second parameter uses tuple-expansion
+</span>    writefln(<span class="d_string">"key: %s [%s], value: %d"</span>, key, key.expand.only, value);
+}
+</pre>
+<pre class="console notranslate">% rdmd count.d
+key: Tuple!(immutable(char), immutable(char))('A', 'G') [AG], value: 2
+key: Tuple!(immutable(char), immutable(char))('G', 'A') [GA], value: 2
+key: Tuple!(immutable(char), immutable(char))('A', 'T') [AT], value: 1
+key: Tuple!(immutable(char), immutable(char))('T', 'A') [TA], value: 1
+</pre>
+
+<div class="blankline"></div>
+
+<div style="float: left"><i class="fa fa-angle-left" aria-hidden="true"></i> <a href="../spec/arrays.html">Arrays</a></div>
+<div style="float: right"><a href="../spec/struct.html">Structs and Unions</a> <i class="fa fa-angle-right" aria-hidden="true"></i></div>
+<div style="clear:both"></div>
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2022 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on (no date time)</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<script type="text/javascript" src="../js/listanchors.js"></script>
+<script type="text/javascript">jQuery(document).ready(addVersionSelector);</script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

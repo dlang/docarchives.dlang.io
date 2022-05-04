@@ -1,0 +1,379 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2022 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Variadic Templates - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Variadic Templates' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.freenode.net/d'>IRC</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+<div class="subnav-helper"></div> <div class="subnav">    
+    <div class="head">        <h2>Articles</h2>
+        <p class="Articles, ../articles/index.html, overview">            <a href="../articles/index.html">overview</a></p>
+    </div>
+    <ul><li><a href='        ../articles/faq.html'>FAQ</a></li><li><a href='        ../articles/const-faq.html'>const(FAQ)</a></li><li><a href='        ../articles/d-floating-point.html'>Floating Point</a></li><li><a href='        ../articles/warnings.html'>Warnings</a></li><li><a href='        ../articles/rationale.html'>Rationale</a></li><li><a href='        ../articles/builtin.html'>Builtin Rationale</a></li><li><a href='        ../articles/ctod.html'>C to D</a></li><li><a href='        ../articles/cpptod.html'>C++ to D</a></li><li><a href='        ../articles/pretod.html'>C Preprocessor vs D</a></li><li><a href='        ../articles/code_coverage.html'>Code coverage analysis</a></li><li><a href='        ../articles/exception-safe.html'>Exception Safety</a></li><li><a href='        ../articles/hijack.html'>Hijacking</a></li><li><a href='        ../articles/intro-to-datetime.html'>Introduction to std.datetime</a></li><li><a href='        ../articles/lazy-evaluation.html'>Lazy Evaluation</a></li><li><a href='        ../articles/migrate-to-shared.html'>Migrating to Shared</a></li><li><a href='        ../articles/mixin.html'>Mixins</a></li><li><a href='        ../articles/regular-expression.html'>Regular Expressions</a></li><li><a href='        ../articles/safed.html'>SafeD</a></li><li><a href='        ../articles/templates-revisited.html'>Templates Revisited</a></li><li><a href='        ../articles/ctarguments.html'>Compile-time Sequences</a></li><li><a href='        ../articles/variadic-function-templates.html'>Variadic Templates</a></li><li><a href='        ../articles/d-array-article.html'>D Slices</a></li><li><a href='        ../articles/cppcontracts.html'>D's Contract Programming</a></li><li><a href='        ../articles/template-comparison.html'>Template Comparison</a></li><li><a href='        ../articles/dll-linux.html'>Writing Shared Libraries
+    </a></li></ul>
+</div>
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BVariadic Templates%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/articles/variadic-function-templates.dd">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Variadic Templates</h1>
+        
+        
+
+
+<div class="page-contents quickindex">    <div class="page-contents-header">        <b>Contents</b>
+    </div>
+    <ol>    <li><a href="#cpp-solutions">C++ Solutions</a></li>
+    <li><a href="#d-solutions">D Programming Language Solutions</a></li>
+</ol>
+</div>
+
+        <p>The problem statement is simple: write a function that
+        takes an arbitrary number of values of arbitrary types,
+        and print those values out one per line in a manner
+        appropriate to the type. For example, the code:
+        </p>
+
+<pre class="d_code notranslate">print(7, 'a', 6.8);
+</pre>
+
+        <p>should output:
+        </p>
+
+<pre class="console notranslate">7
+'a'
+6.8
+</pre>
+
+        <p>We'll explore how this can
+        be done in C++.
+        Then, we'll do it the various ways the D programming
+        language makes possible.
+        </p>
+
+<h2><a class="anchor" title="Permalink to this section" id="cpp-solutions" href="#cpp-solutions">C++ Solutions</a></h2>
+
+<h3>The Overload Solution</h3>
+
+        <p>The straightforward way to do this in standard C++
+        is to use a series of function templates, one for
+        each number of arguments:
+        </p>
+
+<pre class="ccode notranslate">#include &lt;iostream&gt;
+using namespace::std;
+
+void print()
+{
+}
+
+template&lt;class T1&gt; void print(T1 a1)
+{
+    cout &lt;&lt; a1 &lt;&lt; endl;
+}
+
+template&lt;class T1, class T2&gt; void print(T1 a1, T2 a2)
+{
+    cout &lt;&lt; a1 &lt;&lt; endl;
+    cout &lt;&lt; a2 &lt;&lt; endl;
+}
+
+template&lt;class T1, class T2, class T3&gt; void print(T1 a1, T2 a2, T3 a3)
+{
+    cout &lt;&lt; a1 &lt;&lt; endl;
+    cout &lt;&lt; a2 &lt;&lt; endl;
+    cout &lt;&lt; a3 &lt;&lt; endl;
+}
+
+... etc ...
+</pre>
+
+        <p>This poses significant problems:
+        </p>
+
+        <p>One, the function
+        implementor must decide in advance what the maximum number
+        of arguments the function will have. The implementor will
+        usually err on the side of excess, and ten, or even twenty
+        overloads of print() will be written. Yet inevitably, some
+        user somewhere will require just one more argument.
+        So this solution is never quite thoroughly right.
+        </p>
+
+        <p>Two, the logic of the function template body must be
+        cut and paste duplicated, then carefully modified,
+        for every one of those function templates. If the logic
+        needs to be adjusted, all of those function templates must
+        receive the same adjustment, which is tedious and error
+        prone.
+        </p>
+
+        <p>Three, as is typical for function overloads, there is no
+        obvious visual connection between them, they stand independently.
+        This makes it more difficult to understand the code,
+        especially if the implementor isn't careful to place them
+        and format them in a consistent style.
+        </p>
+
+        <p>Four, it leads to source code bloat which slows down
+        compilation.
+        </p>
+
+<h3>C++ Variadic Templates</h3>
+
+        <p>C++11 supports variadic templates:
+        </p>
+
+<pre class="ccode notranslate">void print()
+{
+}
+
+template&lt;class T, class... U&gt; void print(T a1, U... an)
+{
+    cout &lt;&lt; a1 &lt;&lt; newline;
+    print(an...);
+}
+</pre>
+
+        <p>It uses recursive function template instantiation
+        to pick off the arguments one by one.
+        A specialization with no arguments ends the recursion.
+        </p>
+
+<h2><a class="anchor" title="Permalink to this section" id="d-solutions" href="#d-solutions">D Programming Language Solutions</a></h2>
+
+<h3>The D Look Ma No Templates Solution</h3>
+
+        <p>It is not practical to solve this problem in C++ without
+        using templates. In D, one can because D supports typesafe
+        variadic function parameters.
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">import</span> core.vararg;
+<span class="d_keyword">import</span> core.stdc.stdio;
+<span class="d_keyword">import</span> std.format;
+
+<span class="d_keyword">void</span> print(...)
+{
+    <span class="d_keyword">void</span> putc(<span class="d_keyword">dchar</span> c)
+    {
+        fputc(c, stdout);
+    }
+
+    std.format.doFormat(&amp;putc, _arguments, _argptr);
+}
+</pre>
+
+        <p>It isn't elegant or the most efficient,
+        but it does work. However it is not the recommended way to write variadic functions.
+        (It relies on the parameters <span class="d_inlinecode donthyphenate notranslate">_argptr</span> and <span class="d_inlinecode donthyphenate notranslate">_arguments</span> imported from <span class="d_inlinecode donthyphenate notranslate">core.vararg</span>
+        which give a pointer to the values and their types, respectively.)
+        </p>
+
+<h3>Translating the Variadic C++ Solution into D</h3>
+
+        <p>Variadic templates in D enable a straightforward translation
+        of the C++11 variadic solution:
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span> print()
+{
+}
+
+<span class="d_keyword">void</span> print(T, A...)(T t, A a)
+{
+    <span class="d_keyword">import</span> std.stdio;
+    writeln(t);
+    print(a);
+}
+</pre>
+
+        <p>There are two overloads. The first provides the
+        degenerate case of no arguments, and a terminus for the
+        recursion of the second. The second has two arguments:
+        <span class="d_inlinecode donthyphenate notranslate">t</span> for the first value and <span class="d_inlinecode donthyphenate notranslate">a</span> for any remaining values.
+        <span class="d_inlinecode donthyphenate notranslate">A...</span> says the parameter is a sequence, and
+        <a href="http://dlang.org/glossary.html#ifti">Implicit Function Template Instantiation</a>
+        will fill in <span class="d_inlinecode donthyphenate notranslate">A</span> with all the types of any
+        arguments supplied following <span class="d_inlinecode donthyphenate notranslate">t</span>. So, <span class="d_inlinecode donthyphenate notranslate">print(7, 'a', 6.8)</span> will
+        fill in <span class="d_inlinecode donthyphenate notranslate">int</span> for <span class="d_inlinecode donthyphenate notranslate">T</span>, and a type sequence <span class="d_inlinecode donthyphenate notranslate">(char, double)</span> for <span class="d_inlinecode donthyphenate notranslate">A</span>.
+        The parameter <span class="d_inlinecode donthyphenate notranslate">a</span> is an lvalue sequence of any
+        arguments supplied after <span class="d_inlinecode donthyphenate notranslate">t</span>. See
+        <a href="../articles/ctarguments.html">Compile-time Sequences</a>
+        for more information.
+        </p>
+
+        <p>The function works by printing the first parameter <span class="d_inlinecode donthyphenate notranslate">t</span>,
+        and then recursively calling itself with the remaining arguments
+        <span class="d_inlinecode donthyphenate notranslate">a</span>. The recursion terminates when there are no longer any
+        arguments by calling <span class="d_inlinecode donthyphenate notranslate">print()</span>.
+        </p>
+
+<h3>The Static If Solution</h3>
+
+        <p>It would be nice to encapsulate all the logic into a
+        single function. One way to do that is by using
+        static if's, which provide for conditional compilation:
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span> print(A...)(A a)
+{
+    <span class="d_keyword">static</span> <span class="d_keyword">if</span> (a.length)
+    {
+        writeln(a[0]);
+        <span class="d_keyword">static</span> <span class="d_keyword">if</span> (a.length &gt; 1)
+            print(a[1 .. $]);
+    }
+}
+</pre>
+
+        <p>Sequences can be manipulated much like arrays.
+        So <span class="d_inlinecode donthyphenate notranslate">a.length</span> resolves to the number of elements
+        in the sequence <span class="d_inlinecode donthyphenate notranslate">a</span>. <span class="d_inlinecode donthyphenate notranslate">a[0]</span> gives the first element
+        in the sequence. <span class="d_inlinecode donthyphenate notranslate">a[1 .. $]</span> creates a new sequence
+        from any remaining elements in the original sequence.
+        </p>
+
+<h3>The Foreach Solution</h3>
+
+        <p>But since sequences can be manipulated like arrays,
+        we can use a <span class="d_inlinecode donthyphenate notranslate">foreach</span> statement to iterate over
+        the sequence's elements:
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span> print(A...)(A a)
+{
+    <span class="d_keyword">foreach</span>(t; a)
+        writeln(t);
+}
+</pre>
+
+        <p>The end result is remarkably simple, self-contained, compact
+        and efficient.
+        </p>
+
+<h3>Acknowledgments</h3>
+
+        <ol>
+        <li>Thanks to Andrei Alexandrescu for explaining to me how
+        variadic templates need to work and why they are so important.
+        </li>
+
+        <li>Thanks to Douglas Gregor, Jaakko Jaervi, and Gary Powell
+        for their inspirational work
+        on C++ variadic templates.
+        </li>
+
+        </ol>
+
+
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2022 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on (no date time)</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

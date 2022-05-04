@@ -1,0 +1,1000 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2022 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>std.regex - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='std.regex' class='std'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href=".."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.freenode.net/d'>IRC</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option selected value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+<div class="subnav-helper"></div> <div class="subnav">    <div class="head">        <h2>Library Reference</h2>
+        <p><span class="smallprint">version 2.084.0 <span class="separator"><br></span>
+            </span>
+        </p>
+        <p><a href="index.html">overview</a></p>
+    </div>
+    <ul>
+<li><a href='object.html'><span><em class="tt">object</em></span></a></li>
+
+<li class='expand-container modlist-submenu-std'><a class='expand-toggle' href='#'><span><em class="tt">std</em></span></a>
+<ul><li>  <a href="std_algorithm.html" title="std.algorithm"><span class="d_inlinecode donthyphenate notranslate">algorithm</span></a><ul><li>    <a href="std_algorithm_comparison.html" title="std.algorithm.comparison"><span class="d_inlinecode donthyphenate notranslate">comparison</span></a></li><li>    <a href="std_algorithm_iteration.html" title="std.algorithm.iteration"><span class="d_inlinecode donthyphenate notranslate">iteration</span></a></li><li>    <a href="std_algorithm_mutation.html" title="std.algorithm.mutation"><span class="d_inlinecode donthyphenate notranslate">mutation</span></a></li><li>    <a href="std_algorithm_searching.html" title="std.algorithm.searching"><span class="d_inlinecode donthyphenate notranslate">searching</span></a></li><li>    <a href="std_algorithm_setops.html" title="std.algorithm.setops"><span class="d_inlinecode donthyphenate notranslate">setops</span></a></li><li>    <a href="std_algorithm_sorting.html" title="std.algorithm.sorting"><span class="d_inlinecode donthyphenate notranslate">sorting</span></a>
+  </li></ul></li><li>  <a href="std_array.html" title="std.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>  <a href="std_ascii.html" title="std.ascii"><span class="d_inlinecode donthyphenate notranslate">ascii</span></a></li><li>  <a href="std_base64.html" title="std.base64"><span class="d_inlinecode donthyphenate notranslate">base64</span></a></li><li>  <a href="std_bigint.html" title="std.bigint"><span class="d_inlinecode donthyphenate notranslate">bigint</span></a></li><li>  <a href="std_bitmanip.html" title="std.bitmanip"><span class="d_inlinecode donthyphenate notranslate">bitmanip</span></a></li><li>  <a href="std_compiler.html" title="std.compiler"><span class="d_inlinecode donthyphenate notranslate">compiler</span></a></li><li>  <a href="std_complex.html" title="std.complex"><span class="d_inlinecode donthyphenate notranslate">complex</span></a></li><li>  <a href="std_concurrency.html" title="std.concurrency"><span class="d_inlinecode donthyphenate notranslate">concurrency</span></a></li><li>  <a href="std_container.html" title="std.container"><span class="d_inlinecode donthyphenate notranslate">container</span></a><ul><li>    <a href="std_container_array.html" title="std.container.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>    <a href="std_container_binaryheap.html" title="std.container.binaryheap"><span class="d_inlinecode donthyphenate notranslate">binaryheap</span></a></li><li>    <a href="std_container_dlist.html" title="std.container.dlist"><span class="d_inlinecode donthyphenate notranslate">dlist</span></a></li><li>    <a href="std_container_rbtree.html" title="std.container.rbtree"><span class="d_inlinecode donthyphenate notranslate">rbtree</span></a></li><li>    <a href="std_container_slist.html" title="std.container.slist"><span class="d_inlinecode donthyphenate notranslate">slist</span></a></li><li>    <a href="std_container_util.html" title="std.container.util"><span class="d_inlinecode donthyphenate notranslate">util</span></a>
+  </li></ul></li><li>  <a href="std_conv.html" title="std.conv"><span class="d_inlinecode donthyphenate notranslate">conv</span></a></li><li>  <a href="std_csv.html" title="std.csv"><span class="d_inlinecode donthyphenate notranslate">csv</span></a></li><li>  <a href="std_datetime.html" title="std.datetime"><span class="d_inlinecode donthyphenate notranslate">datetime</span></a><ul><li>    <a href="std_datetime_date.html" title="std.datetime.date"><span class="d_inlinecode donthyphenate notranslate">date</span></a></li><li>    <a href="std_datetime_interval.html" title="std.datetime.interval"><span class="d_inlinecode donthyphenate notranslate">interval</span></a></li><li>    <a href="std_datetime_stopwatch.html" title="std.datetime.stopwatch"><span class="d_inlinecode donthyphenate notranslate">stopwatch</span></a></li><li>    <a href="std_datetime_systime.html" title="std.datetime.systime"><span class="d_inlinecode donthyphenate notranslate">systime</span></a></li><li>    <a href="std_datetime_timezone.html" title="std.datetime.timezone"><span class="d_inlinecode donthyphenate notranslate">timezone</span></a>
+  </li></ul></li><li>  <a href="std_demangle.html" title="std.demangle"><span class="d_inlinecode donthyphenate notranslate">demangle</span></a></li><li>  <a href="std_digest.html" title="std.digest"><span class="d_inlinecode donthyphenate notranslate">digest</span></a><ul><li>    <a href="std_digest_crc.html" title="std.digest.crc"><span class="d_inlinecode donthyphenate notranslate">crc</span></a></li><li>    <a href="std_digest_hmac.html" title="std.digest.hmac"><span class="d_inlinecode donthyphenate notranslate">hmac</span></a></li><li>    <a href="std_digest_md.html" title="std.digest.md"><span class="d_inlinecode donthyphenate notranslate">md</span></a></li><li>    <a href="std_digest_murmurhash.html" title="std.digest.murmurhash"><span class="d_inlinecode donthyphenate notranslate">murmurhash</span></a></li><li>    <a href="std_digest_ripemd.html" title="std.digest.ripemd"><span class="d_inlinecode donthyphenate notranslate">ripemd</span></a></li><li>    <a href="std_digest_sha.html" title="std.digest.sha"><span class="d_inlinecode donthyphenate notranslate">sha</span></a>
+  </li></ul></li><li>  <a href="std_encoding.html" title="std.encoding"><span class="d_inlinecode donthyphenate notranslate">encoding</span></a></li><li>  <a href="std_exception.html" title="std.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">experimental</span></h7><ul><li>    <a href="std_experimental_all.html" title="std.experimental.all"><span class="d_inlinecode donthyphenate notranslate">all</span></a></li><li>    <a href="std_experimental_allocator.html" title="std.experimental.allocator"><span class="d_inlinecode donthyphenate notranslate">allocator</span></a><ul><li>      <a href="std_experimental_allocator_building_blocks.html" title="std.experimental.allocator.building_blocks"><span class="d_inlinecode donthyphenate notranslate">building_blocks</span></a><ul><li>        <a href="std_experimental_allocator_building_blocks_affix_allocator.html" title="std.experimental.allocator.building_blocks.affix_allocator"><span class="d_inlinecode donthyphenate notranslate">affix_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_aligned_block_list.html" title="std.experimental.allocator.building_blocks.aligned_block_list"><span class="d_inlinecode donthyphenate notranslate">aligned_block_list</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_allocator_list.html" title="std.experimental.allocator.building_blocks.allocator_list"><span class="d_inlinecode donthyphenate notranslate">allocator_list</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_ascending_page_allocator.html" title="std.experimental.allocator.building_blocks.ascending_page_allocator"><span class="d_inlinecode donthyphenate notranslate">ascending_page_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_bitmapped_block.html" title="std.experimental.allocator.building_blocks.bitmapped_block"><span class="d_inlinecode donthyphenate notranslate">bitmapped_block</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_bucketizer.html" title="std.experimental.allocator.building_blocks.bucketizer"><span class="d_inlinecode donthyphenate notranslate">bucketizer</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_fallback_allocator.html" title="std.experimental.allocator.building_blocks.fallback_allocator"><span class="d_inlinecode donthyphenate notranslate">fallback_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_free_list.html" title="std.experimental.allocator.building_blocks.free_list"><span class="d_inlinecode donthyphenate notranslate">free_list</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_free_tree.html" title="std.experimental.allocator.building_blocks.free_tree"><span class="d_inlinecode donthyphenate notranslate">free_tree</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_kernighan_ritchie.html" title="std.experimental.allocator.building_blocks.kernighan_ritchie"><span class="d_inlinecode donthyphenate notranslate">kernighan_ritchie</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_null_allocator.html" title="std.experimental.allocator.building_blocks.null_allocator"><span class="d_inlinecode donthyphenate notranslate">null_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_quantizer.html" title="std.experimental.allocator.building_blocks.quantizer"><span class="d_inlinecode donthyphenate notranslate">quantizer</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_region.html" title="std.experimental.allocator.building_blocks.region"><span class="d_inlinecode donthyphenate notranslate">region</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_scoped_allocator.html" title="std.experimental.allocator.building_blocks.scoped_allocator"><span class="d_inlinecode donthyphenate notranslate">scoped_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_segregator.html" title="std.experimental.allocator.building_blocks.segregator"><span class="d_inlinecode donthyphenate notranslate">segregator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_stats_collector.html" title="std.experimental.allocator.building_blocks.stats_collector"><span class="d_inlinecode donthyphenate notranslate">stats_collector</span></a>
+      </li></ul></li><li>      <a href="std_experimental_allocator_common.html" title="std.experimental.allocator.common"><span class="d_inlinecode donthyphenate notranslate">common</span></a></li><li>      <a href="std_experimental_allocator_gc_allocator.html" title="std.experimental.allocator.gc_allocator"><span class="d_inlinecode donthyphenate notranslate">gc_allocator</span></a></li><li>      <a href="std_experimental_allocator_mallocator.html" title="std.experimental.allocator.mallocator"><span class="d_inlinecode donthyphenate notranslate">mallocator</span></a></li><li>      <a href="std_experimental_allocator_mmap_allocator.html" title="std.experimental.allocator.mmap_allocator"><span class="d_inlinecode donthyphenate notranslate">mmap_allocator</span></a></li><li>      <a href="std_experimental_allocator_showcase.html" title="std.experimental.allocator.showcase"><span class="d_inlinecode donthyphenate notranslate">showcase</span></a></li><li>      <a href="std_experimental_allocator_typed.html" title="std.experimental.allocator.typed"><span class="d_inlinecode donthyphenate notranslate">typed</span></a>
+    </li></ul></li><li>    <a href="std_experimental_checkedint.html" title="std.experimental.checkedint"><span class="d_inlinecode donthyphenate notranslate">checkedint</span></a></li><li>    <a href="std_experimental_logger.html" title="std.experimental.logger"><span class="d_inlinecode donthyphenate notranslate">logger</span></a><ul><li>      <a href="std_experimental_logger_core.html" title="std.experimental.logger.core"><span class="d_inlinecode donthyphenate notranslate">core</span></a></li><li>      <a href="std_experimental_logger_filelogger.html" title="std.experimental.logger.filelogger"><span class="d_inlinecode donthyphenate notranslate">filelogger</span></a></li><li>      <a href="std_experimental_logger_multilogger.html" title="std.experimental.logger.multilogger"><span class="d_inlinecode donthyphenate notranslate">multilogger</span></a></li><li>      <a href="std_experimental_logger_nulllogger.html" title="std.experimental.logger.nulllogger"><span class="d_inlinecode donthyphenate notranslate">nulllogger</span></a>
+    </li></ul></li><li>    <a href="std_experimental_typecons.html" title="std.experimental.typecons"><span class="d_inlinecode donthyphenate notranslate">typecons</span></a>
+  </li></ul></li><li>  <a href="std_file.html" title="std.file"><span class="d_inlinecode donthyphenate notranslate">file</span></a></li><li>  <a href="std_format.html" title="std.format"><span class="d_inlinecode donthyphenate notranslate">format</span></a></li><li>  <a href="std_functional.html" title="std.functional"><span class="d_inlinecode donthyphenate notranslate">functional</span></a></li><li>  <a href="std_getopt.html" title="std.getopt"><span class="d_inlinecode donthyphenate notranslate">getopt</span></a></li><li>  <a href="std_json.html" title="std.json"><span class="d_inlinecode donthyphenate notranslate">json</span></a></li><li>  <a href="std_math.html" title="std.math"><span class="d_inlinecode donthyphenate notranslate">math</span></a></li><li>  <a href="std_mathspecial.html" title="std.mathspecial"><span class="d_inlinecode donthyphenate notranslate">mathspecial</span></a></li><li>  <a href="std_meta.html" title="std.meta"><span class="d_inlinecode donthyphenate notranslate">meta</span></a></li><li>  <a href="std_mmfile.html" title="std.mmfile"><span class="d_inlinecode donthyphenate notranslate">mmfile</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">net</span></h7><ul><li>    <a href="std_net_curl.html" title="std.net.curl"><span class="d_inlinecode donthyphenate notranslate">curl</span></a></li><li>    <a href="std_net_isemail.html" title="std.net.isemail"><span class="d_inlinecode donthyphenate notranslate">isemail</span></a>
+  </li></ul></li><li>  <a href="std_numeric.html" title="std.numeric"><span class="d_inlinecode donthyphenate notranslate">numeric</span></a></li><li>  <a href="std_outbuffer.html" title="std.outbuffer"><span class="d_inlinecode donthyphenate notranslate">outbuffer</span></a></li><li>  <a href="std_parallelism.html" title="std.parallelism"><span class="d_inlinecode donthyphenate notranslate">parallelism</span></a></li><li>  <a href="std_path.html" title="std.path"><span class="d_inlinecode donthyphenate notranslate">path</span></a></li><li>  <a href="std_process.html" title="std.process"><span class="d_inlinecode donthyphenate notranslate">process</span></a></li><li>  <a href="std_random.html" title="std.random"><span class="d_inlinecode donthyphenate notranslate">random</span></a></li><li>  <a href="std_range.html" title="std.range"><span class="d_inlinecode donthyphenate notranslate">range</span></a><ul><li>    <a href="std_range_interfaces.html" title="std.range.interfaces"><span class="d_inlinecode donthyphenate notranslate">interfaces</span></a></li><li>    <a href="std_range_primitives.html" title="std.range.primitives"><span class="d_inlinecode donthyphenate notranslate">primitives</span></a>
+  </li></ul></li><li>  <a href="std_regex.html" title="std.regex"><span class="d_inlinecode donthyphenate notranslate">regex</span></a></li><li>  <a href="std_signals.html" title="std.signals"><span class="d_inlinecode donthyphenate notranslate">signals</span></a></li><li>  <a href="std_socket.html" title="std.socket"><span class="d_inlinecode donthyphenate notranslate">socket</span></a></li><li>  <a href="std_stdint.html" title="std.stdint"><span class="d_inlinecode donthyphenate notranslate">stdint</span></a></li><li>  <a href="std_stdio.html" title="std.stdio"><span class="d_inlinecode donthyphenate notranslate">stdio</span></a></li><li>  <a href="std_string.html" title="std.string"><span class="d_inlinecode donthyphenate notranslate">string</span></a></li><li>  <a href="std_system.html" title="std.system"><span class="d_inlinecode donthyphenate notranslate">system</span></a></li><li>  <a href="std_traits.html" title="std.traits"><span class="d_inlinecode donthyphenate notranslate">traits</span></a></li><li>  <a href="std_typecons.html" title="std.typecons"><span class="d_inlinecode donthyphenate notranslate">typecons</span></a></li><li>  <a href="std_uni.html" title="std.uni"><span class="d_inlinecode donthyphenate notranslate">uni</span></a></li><li>  <a href="std_uri.html" title="std.uri"><span class="d_inlinecode donthyphenate notranslate">uri</span></a></li><li>  <a href="std_utf.html" title="std.utf"><span class="d_inlinecode donthyphenate notranslate">utf</span></a></li><li>  <a href="std_uuid.html" title="std.uuid"><span class="d_inlinecode donthyphenate notranslate">uuid</span></a></li><li>  <a href="std_variant.html" title="std.variant"><span class="d_inlinecode donthyphenate notranslate">variant</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">windows</span></h7><ul><li>    <a href="std_windows_charset.html" title="std.windows.charset"><span class="d_inlinecode donthyphenate notranslate">charset</span></a></li><li>    <a href="std_windows_syserror.html" title="std.windows.syserror"><span class="d_inlinecode donthyphenate notranslate">syserror</span></a>
+  </li></ul></li><li>  <a href="std_xml.html" title="std.xml"><span class="d_inlinecode donthyphenate notranslate">xml</span></a></li><li>  <a href="std_zip.html" title="std.zip"><span class="d_inlinecode donthyphenate notranslate">zip</span></a></li><li>  <a href="std_zlib.html" title="std.zlib"><span class="d_inlinecode donthyphenate notranslate">zlib</span></a>
+</li></ul>
+</li>
+
+<li class='expand-container modlist-submenu-etc'><a class='expand-toggle' href='#'><span><em class="tt">etc</em></span></a>
+<ul><li>  <h7><span class="d_inlinecode donthyphenate notranslate">c</span></h7><ul><li>    <a href="etc_c_curl.html" title="etc.c.curl"><span class="d_inlinecode donthyphenate notranslate">curl</span></a></li><li>    <h7><span class="d_inlinecode donthyphenate notranslate">odbc</span></h7><ul><li>      <a href="etc_c_odbc_sql.html" title="etc.c.odbc.sql"><span class="d_inlinecode donthyphenate notranslate">sql</span></a></li><li>      <a href="etc_c_odbc_sqlext.html" title="etc.c.odbc.sqlext"><span class="d_inlinecode donthyphenate notranslate">sqlext</span></a></li><li>      <a href="etc_c_odbc_sqltypes.html" title="etc.c.odbc.sqltypes"><span class="d_inlinecode donthyphenate notranslate">sqltypes</span></a></li><li>      <a href="etc_c_odbc_sqlucode.html" title="etc.c.odbc.sqlucode"><span class="d_inlinecode donthyphenate notranslate">sqlucode</span></a>
+    </li></ul></li><li>    <a href="etc_c_sqlite3.html" title="etc.c.sqlite3"><span class="d_inlinecode donthyphenate notranslate">sqlite3</span></a></li><li>    <a href="etc_c_zlib.html" title="etc.c.zlib"><span class="d_inlinecode donthyphenate notranslate">zlib</span></a>
+  </li></ul>
+</li></ul>
+</li>
+
+<li class='expand-container modlist-submenu-core'><a class='expand-toggle' href='#'><span><em class="tt">core</em></span></a>
+<ul><li>  <a href="core_atomic.html" title="core.atomic"><span class="d_inlinecode donthyphenate notranslate">atomic</span></a></li><li>  <a href="core_attribute.html" title="core.attribute"><span class="d_inlinecode donthyphenate notranslate">attribute</span></a></li><li>  <a href="core_bitop.html" title="core.bitop"><span class="d_inlinecode donthyphenate notranslate">bitop</span></a></li><li>  <a href="core_checkedint.html" title="core.checkedint"><span class="d_inlinecode donthyphenate notranslate">checkedint</span></a></li><li>  <a href="core_cpuid.html" title="core.cpuid"><span class="d_inlinecode donthyphenate notranslate">cpuid</span></a></li><li>  <a href="core_demangle.html" title="core.demangle"><span class="d_inlinecode donthyphenate notranslate">demangle</span></a></li><li>  <a href="core_exception.html" title="core.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>  <a href="core_math.html" title="core.math"><span class="d_inlinecode donthyphenate notranslate">math</span></a></li><li>  <a href="core_memory.html" title="core.memory"><span class="d_inlinecode donthyphenate notranslate">memory</span></a></li><li>  <a href="core_runtime.html" title="core.runtime"><span class="d_inlinecode donthyphenate notranslate">runtime</span></a></li><li>  <a href="core_simd.html" title="core.simd"><span class="d_inlinecode donthyphenate notranslate">simd</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">stdc</span></h7><ul><li>    <a href="core_stdc_assert_.html" title="core.stdc.assert_"><span class="d_inlinecode donthyphenate notranslate">assert_</span></a></li><li>    <a href="core_stdc_complex.html" title="core.stdc.complex"><span class="d_inlinecode donthyphenate notranslate">complex</span></a></li><li>    <a href="core_stdc_ctype.html" title="core.stdc.ctype"><span class="d_inlinecode donthyphenate notranslate">ctype</span></a></li><li>    <a href="core_stdc_errno.html" title="core.stdc.errno"><span class="d_inlinecode donthyphenate notranslate">errno</span></a></li><li>    <a href="core_stdc_fenv.html" title="core.stdc.fenv"><span class="d_inlinecode donthyphenate notranslate">fenv</span></a></li><li>    <a href="core_stdc_float_.html" title="core.stdc.float_"><span class="d_inlinecode donthyphenate notranslate">float_</span></a></li><li>    <a href="core_stdc_inttypes.html" title="core.stdc.inttypes"><span class="d_inlinecode donthyphenate notranslate">inttypes</span></a></li><li>    <a href="core_stdc_limits.html" title="core.stdc.limits"><span class="d_inlinecode donthyphenate notranslate">limits</span></a></li><li>    <a href="core_stdc_locale.html" title="core.stdc.locale"><span class="d_inlinecode donthyphenate notranslate">locale</span></a></li><li>    <a href="core_stdc_math.html" title="core.stdc.math"><span class="d_inlinecode donthyphenate notranslate">math</span></a></li><li>    <a href="core_stdc_signal.html" title="core.stdc.signal"><span class="d_inlinecode donthyphenate notranslate">signal</span></a></li><li>    <a href="core_stdc_stdarg.html" title="core.stdc.stdarg"><span class="d_inlinecode donthyphenate notranslate">stdarg</span></a></li><li>    <a href="core_stdc_stddef.html" title="core.stdc.stddef"><span class="d_inlinecode donthyphenate notranslate">stddef</span></a></li><li>    <a href="core_stdc_stdint.html" title="core.stdc.stdint"><span class="d_inlinecode donthyphenate notranslate">stdint</span></a></li><li>    <a href="core_stdc_stdio.html" title="core.stdc.stdio"><span class="d_inlinecode donthyphenate notranslate">stdio</span></a></li><li>    <a href="core_stdc_stdlib.html" title="core.stdc.stdlib"><span class="d_inlinecode donthyphenate notranslate">stdlib</span></a></li><li>    <a href="core_stdc_string.html" title="core.stdc.string"><span class="d_inlinecode donthyphenate notranslate">string</span></a></li><li>    <a href="core_stdc_tgmath.html" title="core.stdc.tgmath"><span class="d_inlinecode donthyphenate notranslate">tgmath</span></a></li><li>    <a href="core_stdc_time.html" title="core.stdc.time"><span class="d_inlinecode donthyphenate notranslate">time</span></a></li><li>    <a href="core_stdc_wchar_.html" title="core.stdc.wchar_"><span class="d_inlinecode donthyphenate notranslate">wchar_</span></a></li><li>    <a href="core_stdc_wctype.html" title="core.stdc.wctype"><span class="d_inlinecode donthyphenate notranslate">wctype</span></a>
+  </li></ul></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">stdcpp</span></h7><ul><li>    <a href="core_stdcpp_array.html" title="core.stdcpp.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>    <a href="core_stdcpp_exception.html" title="core.stdcpp.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>    <a href="core_stdcpp_string_view.html" title="core.stdcpp.string_view"><span class="d_inlinecode donthyphenate notranslate">string_view</span></a></li><li>    <a href="core_stdcpp_typeinfo.html" title="core.stdcpp.typeinfo"><span class="d_inlinecode donthyphenate notranslate">typeinfo</span></a></li><li>    <a href="core_stdcpp_xutility.html" title="core.stdcpp.xutility"><span class="d_inlinecode donthyphenate notranslate">xutility</span></a>
+  </li></ul></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">sync</span></h7><ul><li>    <a href="core_sync_barrier.html" title="core.sync.barrier"><span class="d_inlinecode donthyphenate notranslate">barrier</span></a></li><li>    <a href="core_sync_condition.html" title="core.sync.condition"><span class="d_inlinecode donthyphenate notranslate">condition</span></a></li><li>    <a href="core_sync_config.html" title="core.sync.config"><span class="d_inlinecode donthyphenate notranslate">config</span></a></li><li>    <a href="core_sync_exception.html" title="core.sync.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>    <a href="core_sync_mutex.html" title="core.sync.mutex"><span class="d_inlinecode donthyphenate notranslate">mutex</span></a></li><li>    <a href="core_sync_rwmutex.html" title="core.sync.rwmutex"><span class="d_inlinecode donthyphenate notranslate">rwmutex</span></a></li><li>    <a href="core_sync_semaphore.html" title="core.sync.semaphore"><span class="d_inlinecode donthyphenate notranslate">semaphore</span></a>
+  </li></ul></li><li>  <a href="core_thread.html" title="core.thread"><span class="d_inlinecode donthyphenate notranslate">thread</span></a></li><li>  <a href="core_time.html" title="core.time"><span class="d_inlinecode donthyphenate notranslate">time</span></a></li><li>  <a href="core_vararg.html" title="core.vararg"><span class="d_inlinecode donthyphenate notranslate">vararg</span></a>
+</li></ul>
+</li>
+
+<li class='expand-container modlist-submenu-dmd'><a class='expand-toggle' href='#'><span><em class="tt">dmd</em></span></a>
+<ul><li>  <a href="dmd_access.html" title="dmd.access"><span class="d_inlinecode donthyphenate notranslate">access</span></a></li><li>  <a href="dmd_aggregate.html" title="dmd.aggregate"><span class="d_inlinecode donthyphenate notranslate">aggregate</span></a></li><li>  <a href="dmd_aliasthis.html" title="dmd.aliasthis"><span class="d_inlinecode donthyphenate notranslate">aliasthis</span></a></li><li>  <a href="dmd_apply.html" title="dmd.apply"><span class="d_inlinecode donthyphenate notranslate">apply</span></a></li><li>  <a href="dmd_argtypes.html" title="dmd.argtypes"><span class="d_inlinecode donthyphenate notranslate">argtypes</span></a></li><li>  <a href="dmd_arrayop.html" title="dmd.arrayop"><span class="d_inlinecode donthyphenate notranslate">arrayop</span></a></li><li>  <a href="dmd_arraytypes.html" title="dmd.arraytypes"><span class="d_inlinecode donthyphenate notranslate">arraytypes</span></a></li><li>  <a href="dmd_astbase.html" title="dmd.astbase"><span class="d_inlinecode donthyphenate notranslate">astbase</span></a></li><li>  <a href="dmd_astcodegen.html" title="dmd.astcodegen"><span class="d_inlinecode donthyphenate notranslate">astcodegen</span></a></li><li>  <a href="dmd_asttypename.html" title="dmd.asttypename"><span class="d_inlinecode donthyphenate notranslate">asttypename</span></a></li><li>  <a href="dmd_attrib.html" title="dmd.attrib"><span class="d_inlinecode donthyphenate notranslate">attrib</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">backend</span></h7><ul><li>    <a href="dmd_backend_aarray.html" title="dmd.backend.aarray"><span class="d_inlinecode donthyphenate notranslate">aarray</span></a></li><li>    <a href="dmd_backend_backconfig.html" title="dmd.backend.backconfig"><span class="d_inlinecode donthyphenate notranslate">backconfig</span></a></li><li>    <a href="dmd_backend_barray.html" title="dmd.backend.barray"><span class="d_inlinecode donthyphenate notranslate">barray</span></a></li><li>    <a href="dmd_backend_bcomplex.html" title="dmd.backend.bcomplex"><span class="d_inlinecode donthyphenate notranslate">bcomplex</span></a></li><li>    <a href="dmd_backend_blockopt.html" title="dmd.backend.blockopt"><span class="d_inlinecode donthyphenate notranslate">blockopt</span></a></li><li>    <a href="dmd_backend_cc.html" title="dmd.backend.cc"><span class="d_inlinecode donthyphenate notranslate">cc</span></a></li><li>    <a href="dmd_backend_cdef.html" title="dmd.backend.cdef"><span class="d_inlinecode donthyphenate notranslate">cdef</span></a></li><li>    <a href="dmd_backend_cg.html" title="dmd.backend.cg"><span class="d_inlinecode donthyphenate notranslate">cg</span></a></li><li>    <a href="dmd_backend_cg87.html" title="dmd.backend.cg87"><span class="d_inlinecode donthyphenate notranslate">cg87</span></a></li><li>    <a href="dmd_backend_cgcod.html" title="dmd.backend.cgcod"><span class="d_inlinecode donthyphenate notranslate">cgcod</span></a></li><li>    <a href="dmd_backend_cgcs.html" title="dmd.backend.cgcs"><span class="d_inlinecode donthyphenate notranslate">cgcs</span></a></li><li>    <a href="dmd_backend_cgcv.html" title="dmd.backend.cgcv"><span class="d_inlinecode donthyphenate notranslate">cgcv</span></a></li><li>    <a href="dmd_backend_cgelem.html" title="dmd.backend.cgelem"><span class="d_inlinecode donthyphenate notranslate">cgelem</span></a></li><li>    <a href="dmd_backend_cgen.html" title="dmd.backend.cgen"><span class="d_inlinecode donthyphenate notranslate">cgen</span></a></li><li>    <a href="dmd_backend_cgobj.html" title="dmd.backend.cgobj"><span class="d_inlinecode donthyphenate notranslate">cgobj</span></a></li><li>    <a href="dmd_backend_cgreg.html" title="dmd.backend.cgreg"><span class="d_inlinecode donthyphenate notranslate">cgreg</span></a></li><li>    <a href="dmd_backend_cgsched.html" title="dmd.backend.cgsched"><span class="d_inlinecode donthyphenate notranslate">cgsched</span></a></li><li>    <a href="dmd_backend_cgxmm.html" title="dmd.backend.cgxmm"><span class="d_inlinecode donthyphenate notranslate">cgxmm</span></a></li><li>    <a href="dmd_backend_cod1.html" title="dmd.backend.cod1"><span class="d_inlinecode donthyphenate notranslate">cod1</span></a></li><li>    <a href="dmd_backend_cod2.html" title="dmd.backend.cod2"><span class="d_inlinecode donthyphenate notranslate">cod2</span></a></li><li>    <a href="dmd_backend_cod3.html" title="dmd.backend.cod3"><span class="d_inlinecode donthyphenate notranslate">cod3</span></a></li><li>    <a href="dmd_backend_cod4.html" title="dmd.backend.cod4"><span class="d_inlinecode donthyphenate notranslate">cod4</span></a></li><li>    <a href="dmd_backend_cod5.html" title="dmd.backend.cod5"><span class="d_inlinecode donthyphenate notranslate">cod5</span></a></li><li>    <a href="dmd_backend_code.html" title="dmd.backend.code"><span class="d_inlinecode donthyphenate notranslate">code</span></a></li><li>    <a href="dmd_backend_code_x86.html" title="dmd.backend.code_x86"><span class="d_inlinecode donthyphenate notranslate">code_x86</span></a></li><li>    <a href="dmd_backend_codebuilder.html" title="dmd.backend.codebuilder"><span class="d_inlinecode donthyphenate notranslate">codebuilder</span></a></li><li>    <a href="dmd_backend_compress.html" title="dmd.backend.compress"><span class="d_inlinecode donthyphenate notranslate">compress</span></a></li><li>    <a href="dmd_backend_cv4.html" title="dmd.backend.cv4"><span class="d_inlinecode donthyphenate notranslate">cv4</span></a></li><li>    <a href="dmd_backend_cv8.html" title="dmd.backend.cv8"><span class="d_inlinecode donthyphenate notranslate">cv8</span></a></li><li>    <a href="dmd_backend_dcgcv.html" title="dmd.backend.dcgcv"><span class="d_inlinecode donthyphenate notranslate">dcgcv</span></a></li><li>    <a href="dmd_backend_dcode.html" title="dmd.backend.dcode"><span class="d_inlinecode donthyphenate notranslate">dcode</span></a></li><li>    <a href="dmd_backend_debugprint.html" title="dmd.backend.debugprint"><span class="d_inlinecode donthyphenate notranslate">debugprint</span></a></li><li>    <a href="dmd_backend_divcoeff.html" title="dmd.backend.divcoeff"><span class="d_inlinecode donthyphenate notranslate">divcoeff</span></a></li><li>    <a href="dmd_backend_dlist.html" title="dmd.backend.dlist"><span class="d_inlinecode donthyphenate notranslate">dlist</span></a></li><li>    <a href="dmd_backend_drtlsym.html" title="dmd.backend.drtlsym"><span class="d_inlinecode donthyphenate notranslate">drtlsym</span></a></li><li>    <a href="dmd_backend_dt.html" title="dmd.backend.dt"><span class="d_inlinecode donthyphenate notranslate">dt</span></a></li><li>    <a href="dmd_backend_dtype.html" title="dmd.backend.dtype"><span class="d_inlinecode donthyphenate notranslate">dtype</span></a></li><li>    <a href="dmd_backend_dvarstats.html" title="dmd.backend.dvarstats"><span class="d_inlinecode donthyphenate notranslate">dvarstats</span></a></li><li>    <a href="dmd_backend_dvec.html" title="dmd.backend.dvec"><span class="d_inlinecode donthyphenate notranslate">dvec</span></a></li><li>    <a href="dmd_backend_dwarf.html" title="dmd.backend.dwarf"><span class="d_inlinecode donthyphenate notranslate">dwarf</span></a></li><li>    <a href="dmd_backend_dwarf2.html" title="dmd.backend.dwarf2"><span class="d_inlinecode donthyphenate notranslate">dwarf2</span></a></li><li>    <a href="dmd_backend_dwarfdbginf.html" title="dmd.backend.dwarfdbginf"><span class="d_inlinecode donthyphenate notranslate">dwarfdbginf</span></a></li><li>    <a href="dmd_backend_dwarfeh.html" title="dmd.backend.dwarfeh"><span class="d_inlinecode donthyphenate notranslate">dwarfeh</span></a></li><li>    <a href="dmd_backend_ee.html" title="dmd.backend.ee"><span class="d_inlinecode donthyphenate notranslate">ee</span></a></li><li>    <a href="dmd_backend_el.html" title="dmd.backend.el"><span class="d_inlinecode donthyphenate notranslate">el</span></a></li><li>    <a href="dmd_backend_elem.html" title="dmd.backend.elem"><span class="d_inlinecode donthyphenate notranslate">elem</span></a></li><li>    <a href="dmd_backend_elfobj.html" title="dmd.backend.elfobj"><span class="d_inlinecode donthyphenate notranslate">elfobj</span></a></li><li>    <a href="dmd_backend_evalu8.html" title="dmd.backend.evalu8"><span class="d_inlinecode donthyphenate notranslate">evalu8</span></a></li><li>    <a href="dmd_backend_exh.html" title="dmd.backend.exh"><span class="d_inlinecode donthyphenate notranslate">exh</span></a></li><li>    <a href="dmd_backend_filespec.html" title="dmd.backend.filespec"><span class="d_inlinecode donthyphenate notranslate">filespec</span></a></li><li>    <a href="dmd_backend_gdag.html" title="dmd.backend.gdag"><span class="d_inlinecode donthyphenate notranslate">gdag</span></a></li><li>    <a href="dmd_backend_gflow.html" title="dmd.backend.gflow"><span class="d_inlinecode donthyphenate notranslate">gflow</span></a></li><li>    <a href="dmd_backend_global.html" title="dmd.backend.global"><span class="d_inlinecode donthyphenate notranslate">global</span></a></li><li>    <a href="dmd_backend_glocal.html" title="dmd.backend.glocal"><span class="d_inlinecode donthyphenate notranslate">glocal</span></a></li><li>    <a href="dmd_backend_gloop.html" title="dmd.backend.gloop"><span class="d_inlinecode donthyphenate notranslate">gloop</span></a></li><li>    <a href="dmd_backend_go.html" title="dmd.backend.go"><span class="d_inlinecode donthyphenate notranslate">go</span></a></li><li>    <a href="dmd_backend_goh.html" title="dmd.backend.goh"><span class="d_inlinecode donthyphenate notranslate">goh</span></a></li><li>    <a href="dmd_backend_gother.html" title="dmd.backend.gother"><span class="d_inlinecode donthyphenate notranslate">gother</span></a></li><li>    <a href="dmd_backend_gsroa.html" title="dmd.backend.gsroa"><span class="d_inlinecode donthyphenate notranslate">gsroa</span></a></li><li>    <a href="dmd_backend_iasm.html" title="dmd.backend.iasm"><span class="d_inlinecode donthyphenate notranslate">iasm</span></a></li><li>    <a href="dmd_backend_mach.html" title="dmd.backend.mach"><span class="d_inlinecode donthyphenate notranslate">mach</span></a></li><li>    <a href="dmd_backend_machobj.html" title="dmd.backend.machobj"><span class="d_inlinecode donthyphenate notranslate">machobj</span></a></li><li>    <a href="dmd_backend_md5.html" title="dmd.backend.md5"><span class="d_inlinecode donthyphenate notranslate">md5</span></a></li><li>    <a href="dmd_backend_melf.html" title="dmd.backend.melf"><span class="d_inlinecode donthyphenate notranslate">melf</span></a></li><li>    <a href="dmd_backend_memh.html" title="dmd.backend.memh"><span class="d_inlinecode donthyphenate notranslate">memh</span></a></li><li>    <a href="dmd_backend_mscoff.html" title="dmd.backend.mscoff"><span class="d_inlinecode donthyphenate notranslate">mscoff</span></a></li><li>    <a href="dmd_backend_mscoffobj.html" title="dmd.backend.mscoffobj"><span class="d_inlinecode donthyphenate notranslate">mscoffobj</span></a></li><li>    <a href="dmd_backend_newman.html" title="dmd.backend.newman"><span class="d_inlinecode donthyphenate notranslate">newman</span></a></li><li>    <a href="dmd_backend_nteh.html" title="dmd.backend.nteh"><span class="d_inlinecode donthyphenate notranslate">nteh</span></a></li><li>    <a href="dmd_backend_obj.html" title="dmd.backend.obj"><span class="d_inlinecode donthyphenate notranslate">obj</span></a></li><li>    <a href="dmd_backend_oper.html" title="dmd.backend.oper"><span class="d_inlinecode donthyphenate notranslate">oper</span></a></li><li>    <a href="dmd_backend_optabgen.html" title="dmd.backend.optabgen"><span class="d_inlinecode donthyphenate notranslate">optabgen</span></a></li><li>    <a href="dmd_backend_os.html" title="dmd.backend.os"><span class="d_inlinecode donthyphenate notranslate">os</span></a></li><li>    <a href="dmd_backend_out.html" title="dmd.backend.out"><span class="d_inlinecode donthyphenate notranslate">out</span></a></li><li>    <a href="dmd_backend_outbuf.html" title="dmd.backend.outbuf"><span class="d_inlinecode donthyphenate notranslate">outbuf</span></a></li><li>    <a href="dmd_backend_pdata.html" title="dmd.backend.pdata"><span class="d_inlinecode donthyphenate notranslate">pdata</span></a></li><li>    <a href="dmd_backend_ph2.html" title="dmd.backend.ph2"><span class="d_inlinecode donthyphenate notranslate">ph2</span></a></li><li>    <a href="dmd_backend_ptrntab.html" title="dmd.backend.ptrntab"><span class="d_inlinecode donthyphenate notranslate">ptrntab</span></a></li><li>    <a href="dmd_backend_rtlsym.html" title="dmd.backend.rtlsym"><span class="d_inlinecode donthyphenate notranslate">rtlsym</span></a></li><li>    <a href="dmd_backend_symbol.html" title="dmd.backend.symbol"><span class="d_inlinecode donthyphenate notranslate">symbol</span></a></li><li>    <a href="dmd_backend_ty.html" title="dmd.backend.ty"><span class="d_inlinecode donthyphenate notranslate">ty</span></a></li><li>    <a href="dmd_backend_type.html" title="dmd.backend.type"><span class="d_inlinecode donthyphenate notranslate">type</span></a></li><li>    <a href="dmd_backend_util2.html" title="dmd.backend.util2"><span class="d_inlinecode donthyphenate notranslate">util2</span></a></li><li>    <a href="dmd_backend_var.html" title="dmd.backend.var"><span class="d_inlinecode donthyphenate notranslate">var</span></a></li><li>    <a href="dmd_backend_xmm.html" title="dmd.backend.xmm"><span class="d_inlinecode donthyphenate notranslate">xmm</span></a>
+  </li></ul></li><li>  <a href="dmd_blockexit.html" title="dmd.blockexit"><span class="d_inlinecode donthyphenate notranslate">blockexit</span></a></li><li>  <a href="dmd_builtin.html" title="dmd.builtin"><span class="d_inlinecode donthyphenate notranslate">builtin</span></a></li><li>  <a href="dmd_canthrow.html" title="dmd.canthrow"><span class="d_inlinecode donthyphenate notranslate">canthrow</span></a></li><li>  <a href="dmd_cli.html" title="dmd.cli"><span class="d_inlinecode donthyphenate notranslate">cli</span></a></li><li>  <a href="dmd_clone.html" title="dmd.clone"><span class="d_inlinecode donthyphenate notranslate">clone</span></a></li><li>  <a href="dmd_compiler.html" title="dmd.compiler"><span class="d_inlinecode donthyphenate notranslate">compiler</span></a></li><li>  <a href="dmd_complex.html" title="dmd.complex"><span class="d_inlinecode donthyphenate notranslate">complex</span></a></li><li>  <a href="dmd_cond.html" title="dmd.cond"><span class="d_inlinecode donthyphenate notranslate">cond</span></a></li><li>  <a href="dmd_console.html" title="dmd.console"><span class="d_inlinecode donthyphenate notranslate">console</span></a></li><li>  <a href="dmd_constfold.html" title="dmd.constfold"><span class="d_inlinecode donthyphenate notranslate">constfold</span></a></li><li>  <a href="dmd_cppmangle.html" title="dmd.cppmangle"><span class="d_inlinecode donthyphenate notranslate">cppmangle</span></a></li><li>  <a href="dmd_cppmanglewin.html" title="dmd.cppmanglewin"><span class="d_inlinecode donthyphenate notranslate">cppmanglewin</span></a></li><li>  <a href="dmd_ctfeexpr.html" title="dmd.ctfeexpr"><span class="d_inlinecode donthyphenate notranslate">ctfeexpr</span></a></li><li>  <a href="dmd_ctorflow.html" title="dmd.ctorflow"><span class="d_inlinecode donthyphenate notranslate">ctorflow</span></a></li><li>  <a href="dmd_dcast.html" title="dmd.dcast"><span class="d_inlinecode donthyphenate notranslate">dcast</span></a></li><li>  <a href="dmd_dclass.html" title="dmd.dclass"><span class="d_inlinecode donthyphenate notranslate">dclass</span></a></li><li>  <a href="dmd_declaration.html" title="dmd.declaration"><span class="d_inlinecode donthyphenate notranslate">declaration</span></a></li><li>  <a href="dmd_delegatize.html" title="dmd.delegatize"><span class="d_inlinecode donthyphenate notranslate">delegatize</span></a></li><li>  <a href="dmd_denum.html" title="dmd.denum"><span class="d_inlinecode donthyphenate notranslate">denum</span></a></li><li>  <a href="dmd_dimport.html" title="dmd.dimport"><span class="d_inlinecode donthyphenate notranslate">dimport</span></a></li><li>  <a href="dmd_dinifile.html" title="dmd.dinifile"><span class="d_inlinecode donthyphenate notranslate">dinifile</span></a></li><li>  <a href="dmd_dinterpret.html" title="dmd.dinterpret"><span class="d_inlinecode donthyphenate notranslate">dinterpret</span></a></li><li>  <a href="dmd_dmacro.html" title="dmd.dmacro"><span class="d_inlinecode donthyphenate notranslate">dmacro</span></a></li><li>  <a href="dmd_dmangle.html" title="dmd.dmangle"><span class="d_inlinecode donthyphenate notranslate">dmangle</span></a></li><li>  <a href="dmd_dmodule.html" title="dmd.dmodule"><span class="d_inlinecode donthyphenate notranslate">dmodule</span></a></li><li>  <a href="dmd_dmsc.html" title="dmd.dmsc"><span class="d_inlinecode donthyphenate notranslate">dmsc</span></a></li><li>  <a href="dmd_doc.html" title="dmd.doc"><span class="d_inlinecode donthyphenate notranslate">doc</span></a></li><li>  <a href="dmd_dscope.html" title="dmd.dscope"><span class="d_inlinecode donthyphenate notranslate">dscope</span></a></li><li>  <a href="dmd_dstruct.html" title="dmd.dstruct"><span class="d_inlinecode donthyphenate notranslate">dstruct</span></a></li><li>  <a href="dmd_dsymbol.html" title="dmd.dsymbol"><span class="d_inlinecode donthyphenate notranslate">dsymbol</span></a></li><li>  <a href="dmd_dsymbolsem.html" title="dmd.dsymbolsem"><span class="d_inlinecode donthyphenate notranslate">dsymbolsem</span></a></li><li>  <a href="dmd_dtemplate.html" title="dmd.dtemplate"><span class="d_inlinecode donthyphenate notranslate">dtemplate</span></a></li><li>  <a href="dmd_dversion.html" title="dmd.dversion"><span class="d_inlinecode donthyphenate notranslate">dversion</span></a></li><li>  <a href="dmd_e2ir.html" title="dmd.e2ir"><span class="d_inlinecode donthyphenate notranslate">e2ir</span></a></li><li>  <a href="dmd_eh.html" title="dmd.eh"><span class="d_inlinecode donthyphenate notranslate">eh</span></a></li><li>  <a href="dmd_entity.html" title="dmd.entity"><span class="d_inlinecode donthyphenate notranslate">entity</span></a></li><li>  <a href="dmd_errors.html" title="dmd.errors"><span class="d_inlinecode donthyphenate notranslate">errors</span></a></li><li>  <a href="dmd_escape.html" title="dmd.escape"><span class="d_inlinecode donthyphenate notranslate">escape</span></a></li><li>  <a href="dmd_expression.html" title="dmd.expression"><span class="d_inlinecode donthyphenate notranslate">expression</span></a></li><li>  <a href="dmd_expressionsem.html" title="dmd.expressionsem"><span class="d_inlinecode donthyphenate notranslate">expressionsem</span></a></li><li>  <a href="dmd_frontend.html" title="dmd.frontend"><span class="d_inlinecode donthyphenate notranslate">frontend</span></a></li><li>  <a href="dmd_func.html" title="dmd.func"><span class="d_inlinecode donthyphenate notranslate">func</span></a></li><li>  <a href="dmd_globals.html" title="dmd.globals"><span class="d_inlinecode donthyphenate notranslate">globals</span></a></li><li>  <a href="dmd_glue.html" title="dmd.glue"><span class="d_inlinecode donthyphenate notranslate">glue</span></a></li><li>  <a href="dmd_gluelayer.html" title="dmd.gluelayer"><span class="d_inlinecode donthyphenate notranslate">gluelayer</span></a></li><li>  <a href="dmd_hdrgen.html" title="dmd.hdrgen"><span class="d_inlinecode donthyphenate notranslate">hdrgen</span></a></li><li>  <a href="dmd_iasm.html" title="dmd.iasm"><span class="d_inlinecode donthyphenate notranslate">iasm</span></a></li><li>  <a href="dmd_iasmdmd.html" title="dmd.iasmdmd"><span class="d_inlinecode donthyphenate notranslate">iasmdmd</span></a></li><li>  <a href="dmd_iasmgcc.html" title="dmd.iasmgcc"><span class="d_inlinecode donthyphenate notranslate">iasmgcc</span></a></li><li>  <a href="dmd_id.html" title="dmd.id"><span class="d_inlinecode donthyphenate notranslate">id</span></a></li><li>  <a href="dmd_identifier.html" title="dmd.identifier"><span class="d_inlinecode donthyphenate notranslate">identifier</span></a></li><li>  <a href="dmd_impcnvtab.html" title="dmd.impcnvtab"><span class="d_inlinecode donthyphenate notranslate">impcnvtab</span></a></li><li>  <a href="dmd_imphint.html" title="dmd.imphint"><span class="d_inlinecode donthyphenate notranslate">imphint</span></a></li><li>  <a href="dmd_init.html" title="dmd.init"><span class="d_inlinecode donthyphenate notranslate">init</span></a></li><li>  <a href="dmd_initsem.html" title="dmd.initsem"><span class="d_inlinecode donthyphenate notranslate">initsem</span></a></li><li>  <a href="dmd_inline.html" title="dmd.inline"><span class="d_inlinecode donthyphenate notranslate">inline</span></a></li><li>  <a href="dmd_inlinecost.html" title="dmd.inlinecost"><span class="d_inlinecode donthyphenate notranslate">inlinecost</span></a></li><li>  <a href="dmd_intrange.html" title="dmd.intrange"><span class="d_inlinecode donthyphenate notranslate">intrange</span></a></li><li>  <a href="dmd_irstate.html" title="dmd.irstate"><span class="d_inlinecode donthyphenate notranslate">irstate</span></a></li><li>  <a href="dmd_json.html" title="dmd.json"><span class="d_inlinecode donthyphenate notranslate">json</span></a></li><li>  <a href="dmd_lambdacomp.html" title="dmd.lambdacomp"><span class="d_inlinecode donthyphenate notranslate">lambdacomp</span></a></li><li>  <a href="dmd_lexer.html" title="dmd.lexer"><span class="d_inlinecode donthyphenate notranslate">lexer</span></a></li><li>  <a href="dmd_lib.html" title="dmd.lib"><span class="d_inlinecode donthyphenate notranslate">lib</span></a></li><li>  <a href="dmd_libelf.html" title="dmd.libelf"><span class="d_inlinecode donthyphenate notranslate">libelf</span></a></li><li>  <a href="dmd_libomf.html" title="dmd.libomf"><span class="d_inlinecode donthyphenate notranslate">libomf</span></a></li><li>  <a href="dmd_link.html" title="dmd.link"><span class="d_inlinecode donthyphenate notranslate">link</span></a></li><li>  <a href="dmd_mars.html" title="dmd.mars"><span class="d_inlinecode donthyphenate notranslate">mars</span></a></li><li>  <a href="dmd_mtype.html" title="dmd.mtype"><span class="d_inlinecode donthyphenate notranslate">mtype</span></a></li><li>  <a href="dmd_nogc.html" title="dmd.nogc"><span class="d_inlinecode donthyphenate notranslate">nogc</span></a></li><li>  <a href="dmd_nspace.html" title="dmd.nspace"><span class="d_inlinecode donthyphenate notranslate">nspace</span></a></li><li>  <a href="dmd_objc.html" title="dmd.objc"><span class="d_inlinecode donthyphenate notranslate">objc</span></a></li><li>  <a href="dmd_objc_glue.html" title="dmd.objc_glue"><span class="d_inlinecode donthyphenate notranslate">objc_glue</span></a></li><li>  <a href="dmd_opover.html" title="dmd.opover"><span class="d_inlinecode donthyphenate notranslate">opover</span></a></li><li>  <a href="dmd_optimize.html" title="dmd.optimize"><span class="d_inlinecode donthyphenate notranslate">optimize</span></a></li><li>  <a href="dmd_parse.html" title="dmd.parse"><span class="d_inlinecode donthyphenate notranslate">parse</span></a></li><li>  <a href="dmd_parsetimevisitor.html" title="dmd.parsetimevisitor"><span class="d_inlinecode donthyphenate notranslate">parsetimevisitor</span></a></li><li>  <a href="dmd_permissivevisitor.html" title="dmd.permissivevisitor"><span class="d_inlinecode donthyphenate notranslate">permissivevisitor</span></a></li><li>  <a href="dmd_printast.html" title="dmd.printast"><span class="d_inlinecode donthyphenate notranslate">printast</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">root</span></h7><ul><li>    <a href="dmd_root_aav.html" title="dmd.root.aav"><span class="d_inlinecode donthyphenate notranslate">aav</span></a></li><li>    <a href="dmd_root_array.html" title="dmd.root.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>    <a href="dmd_root_ctfloat.html" title="dmd.root.ctfloat"><span class="d_inlinecode donthyphenate notranslate">ctfloat</span></a></li><li>    <a href="dmd_root_file.html" title="dmd.root.file"><span class="d_inlinecode donthyphenate notranslate">file</span></a></li><li>    <a href="dmd_root_filename.html" title="dmd.root.filename"><span class="d_inlinecode donthyphenate notranslate">filename</span></a></li><li>    <a href="dmd_root_hash.html" title="dmd.root.hash"><span class="d_inlinecode donthyphenate notranslate">hash</span></a></li><li>    <a href="dmd_root_longdouble.html" title="dmd.root.longdouble"><span class="d_inlinecode donthyphenate notranslate">longdouble</span></a></li><li>    <a href="dmd_root_man.html" title="dmd.root.man"><span class="d_inlinecode donthyphenate notranslate">man</span></a></li><li>    <a href="dmd_root_outbuffer.html" title="dmd.root.outbuffer"><span class="d_inlinecode donthyphenate notranslate">outbuffer</span></a></li><li>    <a href="dmd_root_port.html" title="dmd.root.port"><span class="d_inlinecode donthyphenate notranslate">port</span></a></li><li>    <a href="dmd_root_response.html" title="dmd.root.response"><span class="d_inlinecode donthyphenate notranslate">response</span></a></li><li>    <a href="dmd_root_rmem.html" title="dmd.root.rmem"><span class="d_inlinecode donthyphenate notranslate">rmem</span></a></li><li>    <a href="dmd_root_rootobject.html" title="dmd.root.rootobject"><span class="d_inlinecode donthyphenate notranslate">rootobject</span></a></li><li>    <a href="dmd_root_speller.html" title="dmd.root.speller"><span class="d_inlinecode donthyphenate notranslate">speller</span></a></li><li>    <a href="dmd_root_stringtable.html" title="dmd.root.stringtable"><span class="d_inlinecode donthyphenate notranslate">stringtable</span></a>
+  </li></ul></li><li>  <a href="dmd_s2ir.html" title="dmd.s2ir"><span class="d_inlinecode donthyphenate notranslate">s2ir</span></a></li><li>  <a href="dmd_safe.html" title="dmd.safe"><span class="d_inlinecode donthyphenate notranslate">safe</span></a></li><li>  <a href="dmd_sapply.html" title="dmd.sapply"><span class="d_inlinecode donthyphenate notranslate">sapply</span></a></li><li>  <a href="dmd_scanelf.html" title="dmd.scanelf"><span class="d_inlinecode donthyphenate notranslate">scanelf</span></a></li><li>  <a href="dmd_scanomf.html" title="dmd.scanomf"><span class="d_inlinecode donthyphenate notranslate">scanomf</span></a></li><li>  <a href="dmd_semantic2.html" title="dmd.semantic2"><span class="d_inlinecode donthyphenate notranslate">semantic2</span></a></li><li>  <a href="dmd_semantic3.html" title="dmd.semantic3"><span class="d_inlinecode donthyphenate notranslate">semantic3</span></a></li><li>  <a href="dmd_sideeffect.html" title="dmd.sideeffect"><span class="d_inlinecode donthyphenate notranslate">sideeffect</span></a></li><li>  <a href="dmd_statement.html" title="dmd.statement"><span class="d_inlinecode donthyphenate notranslate">statement</span></a></li><li>  <a href="dmd_statement_rewrite_walker.html" title="dmd.statement_rewrite_walker"><span class="d_inlinecode donthyphenate notranslate">statement_rewrite_walker</span></a></li><li>  <a href="dmd_statementsem.html" title="dmd.statementsem"><span class="d_inlinecode donthyphenate notranslate">statementsem</span></a></li><li>  <a href="dmd_staticassert.html" title="dmd.staticassert"><span class="d_inlinecode donthyphenate notranslate">staticassert</span></a></li><li>  <a href="dmd_staticcond.html" title="dmd.staticcond"><span class="d_inlinecode donthyphenate notranslate">staticcond</span></a></li><li>  <a href="dmd_strictvisitor.html" title="dmd.strictvisitor"><span class="d_inlinecode donthyphenate notranslate">strictvisitor</span></a></li><li>  <a href="dmd_target.html" title="dmd.target"><span class="d_inlinecode donthyphenate notranslate">target</span></a></li><li>  <a href="dmd_templateparamsem.html" title="dmd.templateparamsem"><span class="d_inlinecode donthyphenate notranslate">templateparamsem</span></a></li><li>  <a href="dmd_tocsym.html" title="dmd.tocsym"><span class="d_inlinecode donthyphenate notranslate">tocsym</span></a></li><li>  <a href="dmd_toctype.html" title="dmd.toctype"><span class="d_inlinecode donthyphenate notranslate">toctype</span></a></li><li>  <a href="dmd_tocvdebug.html" title="dmd.tocvdebug"><span class="d_inlinecode donthyphenate notranslate">tocvdebug</span></a></li><li>  <a href="dmd_todt.html" title="dmd.todt"><span class="d_inlinecode donthyphenate notranslate">todt</span></a></li><li>  <a href="dmd_toir.html" title="dmd.toir"><span class="d_inlinecode donthyphenate notranslate">toir</span></a></li><li>  <a href="dmd_tokens.html" title="dmd.tokens"><span class="d_inlinecode donthyphenate notranslate">tokens</span></a></li><li>  <a href="dmd_toobj.html" title="dmd.toobj"><span class="d_inlinecode donthyphenate notranslate">toobj</span></a></li><li>  <a href="dmd_traits.html" title="dmd.traits"><span class="d_inlinecode donthyphenate notranslate">traits</span></a></li><li>  <a href="dmd_transitivevisitor.html" title="dmd.transitivevisitor"><span class="d_inlinecode donthyphenate notranslate">transitivevisitor</span></a></li><li>  <a href="dmd_typesem.html" title="dmd.typesem"><span class="d_inlinecode donthyphenate notranslate">typesem</span></a></li><li>  <a href="dmd_typinf.html" title="dmd.typinf"><span class="d_inlinecode donthyphenate notranslate">typinf</span></a></li><li>  <a href="dmd_utf.html" title="dmd.utf"><span class="d_inlinecode donthyphenate notranslate">utf</span></a></li><li>  <a href="dmd_utils.html" title="dmd.utils"><span class="d_inlinecode donthyphenate notranslate">utils</span></a></li><li>  <a href="dmd_visitor.html" title="dmd.visitor"><span class="d_inlinecode donthyphenate notranslate">visitor</span></a>
+</li></ul>
+</li>
+
+<li class='expand-container modlist-submenu-rt'><a class='expand-toggle' href='#'><span><em class="tt">rt</em></span></a>
+<ul><li>  <a href="rt_aApply.html" title="rt.aApply"><span class="d_inlinecode donthyphenate notranslate">aApply</span></a></li><li>  <a href="rt_aApplyR.html" title="rt.aApplyR"><span class="d_inlinecode donthyphenate notranslate">aApplyR</span></a></li><li>  <a href="rt_aaA.html" title="rt.aaA"><span class="d_inlinecode donthyphenate notranslate">aaA</span></a></li><li>  <a href="rt_adi.html" title="rt.adi"><span class="d_inlinecode donthyphenate notranslate">adi</span></a></li><li>  <a href="rt_alloca.html" title="rt.alloca"><span class="d_inlinecode donthyphenate notranslate">alloca</span></a></li><li>  <a href="rt_arrayassign.html" title="rt.arrayassign"><span class="d_inlinecode donthyphenate notranslate">arrayassign</span></a></li><li>  <a href="rt_arraycast.html" title="rt.arraycast"><span class="d_inlinecode donthyphenate notranslate">arraycast</span></a></li><li>  <a href="rt_arraycat.html" title="rt.arraycat"><span class="d_inlinecode donthyphenate notranslate">arraycat</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">backtrace</span></h7><ul><li>    <a href="rt_backtrace_dwarf.html" title="rt.backtrace.dwarf"><span class="d_inlinecode donthyphenate notranslate">dwarf</span></a></li><li>    <a href="rt_backtrace_elf.html" title="rt.backtrace.elf"><span class="d_inlinecode donthyphenate notranslate">elf</span></a></li><li>    <a href="rt_backtrace_macho.html" title="rt.backtrace.macho"><span class="d_inlinecode donthyphenate notranslate">macho</span></a>
+  </li></ul></li><li>  <a href="rt_cast_.html" title="rt.cast_"><span class="d_inlinecode donthyphenate notranslate">cast_</span></a></li><li>  <a href="rt_cmath2.html" title="rt.cmath2"><span class="d_inlinecode donthyphenate notranslate">cmath2</span></a></li><li>  <a href="rt_config.html" title="rt.config"><span class="d_inlinecode donthyphenate notranslate">config</span></a></li><li>  <a href="rt_cover.html" title="rt.cover"><span class="d_inlinecode donthyphenate notranslate">cover</span></a></li><li>  <a href="rt_critical_.html" title="rt.critical_"><span class="d_inlinecode donthyphenate notranslate">critical_</span></a></li><li>  <a href="rt_deh.html" title="rt.deh"><span class="d_inlinecode donthyphenate notranslate">deh</span></a></li><li>  <a href="rt_deh_win32.html" title="rt.deh_win32"><span class="d_inlinecode donthyphenate notranslate">deh_win32</span></a></li><li>  <a href="rt_deh_win64_posix.html" title="rt.deh_win64_posix"><span class="d_inlinecode donthyphenate notranslate">deh_win64_posix</span></a></li><li>  <a href="rt_dmain2.html" title="rt.dmain2"><span class="d_inlinecode donthyphenate notranslate">dmain2</span></a></li><li>  <a href="rt_dwarfeh.html" title="rt.dwarfeh"><span class="d_inlinecode donthyphenate notranslate">dwarfeh</span></a></li><li>  <a href="rt_ehalloc.html" title="rt.ehalloc"><span class="d_inlinecode donthyphenate notranslate">ehalloc</span></a></li><li>  <a href="rt_invariant.html" title="rt.invariant"><span class="d_inlinecode donthyphenate notranslate">invariant</span></a></li><li>  <a href="rt_lifetime.html" title="rt.lifetime"><span class="d_inlinecode donthyphenate notranslate">lifetime</span></a></li><li>  <a href="rt_llmath.html" title="rt.llmath"><span class="d_inlinecode donthyphenate notranslate">llmath</span></a></li><li>  <a href="rt_memory.html" title="rt.memory"><span class="d_inlinecode donthyphenate notranslate">memory</span></a></li><li>  <a href="rt_memset.html" title="rt.memset"><span class="d_inlinecode donthyphenate notranslate">memset</span></a></li><li>  <a href="rt_minfo.html" title="rt.minfo"><span class="d_inlinecode donthyphenate notranslate">minfo</span></a></li><li>  <a href="rt_monitor_.html" title="rt.monitor_"><span class="d_inlinecode donthyphenate notranslate">monitor_</span></a></li><li>  <a href="rt_obj.html" title="rt.obj"><span class="d_inlinecode donthyphenate notranslate">obj</span></a></li><li>  <a href="rt_profilegc.html" title="rt.profilegc"><span class="d_inlinecode donthyphenate notranslate">profilegc</span></a></li><li>  <a href="rt_qsort.html" title="rt.qsort"><span class="d_inlinecode donthyphenate notranslate">qsort</span></a></li><li>  <a href="rt_sections.html" title="rt.sections"><span class="d_inlinecode donthyphenate notranslate">sections</span></a></li><li>  <a href="rt_sections_android.html" title="rt.sections_android"><span class="d_inlinecode donthyphenate notranslate">sections_android</span></a></li><li>  <a href="rt_sections_elf_shared.html" title="rt.sections_elf_shared"><span class="d_inlinecode donthyphenate notranslate">sections_elf_shared</span></a></li><li>  <a href="rt_sections_osx_x86.html" title="rt.sections_osx_x86"><span class="d_inlinecode donthyphenate notranslate">sections_osx_x86</span></a></li><li>  <a href="rt_sections_osx_x86_64.html" title="rt.sections_osx_x86_64"><span class="d_inlinecode donthyphenate notranslate">sections_osx_x86_64</span></a></li><li>  <a href="rt_sections_solaris.html" title="rt.sections_solaris"><span class="d_inlinecode donthyphenate notranslate">sections_solaris</span></a></li><li>  <a href="rt_sections_win32.html" title="rt.sections_win32"><span class="d_inlinecode donthyphenate notranslate">sections_win32</span></a></li><li>  <a href="rt_sections_win64.html" title="rt.sections_win64"><span class="d_inlinecode donthyphenate notranslate">sections_win64</span></a></li><li>  <a href="rt_tlsgc.html" title="rt.tlsgc"><span class="d_inlinecode donthyphenate notranslate">tlsgc</span></a></li><li>  <a href="rt_trace.html" title="rt.trace"><span class="d_inlinecode donthyphenate notranslate">trace</span></a></li><li>  <a href="rt_tracegc.html" title="rt.tracegc"><span class="d_inlinecode donthyphenate notranslate">tracegc</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">typeinfo</span></h7><ul><li>    <a href="rt_typeinfo_ti_Acdouble.html" title="rt.typeinfo.ti_Acdouble"><span class="d_inlinecode donthyphenate notranslate">ti_Acdouble</span></a></li><li>    <a href="rt_typeinfo_ti_Acfloat.html" title="rt.typeinfo.ti_Acfloat"><span class="d_inlinecode donthyphenate notranslate">ti_Acfloat</span></a></li><li>    <a href="rt_typeinfo_ti_Acreal.html" title="rt.typeinfo.ti_Acreal"><span class="d_inlinecode donthyphenate notranslate">ti_Acreal</span></a></li><li>    <a href="rt_typeinfo_ti_Adouble.html" title="rt.typeinfo.ti_Adouble"><span class="d_inlinecode donthyphenate notranslate">ti_Adouble</span></a></li><li>    <a href="rt_typeinfo_ti_Afloat.html" title="rt.typeinfo.ti_Afloat"><span class="d_inlinecode donthyphenate notranslate">ti_Afloat</span></a></li><li>    <a href="rt_typeinfo_ti_Ag.html" title="rt.typeinfo.ti_Ag"><span class="d_inlinecode donthyphenate notranslate">ti_Ag</span></a></li><li>    <a href="rt_typeinfo_ti_Aint.html" title="rt.typeinfo.ti_Aint"><span class="d_inlinecode donthyphenate notranslate">ti_Aint</span></a></li><li>    <a href="rt_typeinfo_ti_Along.html" title="rt.typeinfo.ti_Along"><span class="d_inlinecode donthyphenate notranslate">ti_Along</span></a></li><li>    <a href="rt_typeinfo_ti_Areal.html" title="rt.typeinfo.ti_Areal"><span class="d_inlinecode donthyphenate notranslate">ti_Areal</span></a></li><li>    <a href="rt_typeinfo_ti_Ashort.html" title="rt.typeinfo.ti_Ashort"><span class="d_inlinecode donthyphenate notranslate">ti_Ashort</span></a></li><li>    <a href="rt_typeinfo_ti_C.html" title="rt.typeinfo.ti_C"><span class="d_inlinecode donthyphenate notranslate">ti_C</span></a></li><li>    <a href="rt_typeinfo_ti_byte.html" title="rt.typeinfo.ti_byte"><span class="d_inlinecode donthyphenate notranslate">ti_byte</span></a></li><li>    <a href="rt_typeinfo_ti_cdouble.html" title="rt.typeinfo.ti_cdouble"><span class="d_inlinecode donthyphenate notranslate">ti_cdouble</span></a></li><li>    <a href="rt_typeinfo_ti_cent.html" title="rt.typeinfo.ti_cent"><span class="d_inlinecode donthyphenate notranslate">ti_cent</span></a></li><li>    <a href="rt_typeinfo_ti_cfloat.html" title="rt.typeinfo.ti_cfloat"><span class="d_inlinecode donthyphenate notranslate">ti_cfloat</span></a></li><li>    <a href="rt_typeinfo_ti_char.html" title="rt.typeinfo.ti_char"><span class="d_inlinecode donthyphenate notranslate">ti_char</span></a></li><li>    <a href="rt_typeinfo_ti_creal.html" title="rt.typeinfo.ti_creal"><span class="d_inlinecode donthyphenate notranslate">ti_creal</span></a></li><li>    <a href="rt_typeinfo_ti_dchar.html" title="rt.typeinfo.ti_dchar"><span class="d_inlinecode donthyphenate notranslate">ti_dchar</span></a></li><li>    <a href="rt_typeinfo_ti_delegate.html" title="rt.typeinfo.ti_delegate"><span class="d_inlinecode donthyphenate notranslate">ti_delegate</span></a></li><li>    <a href="rt_typeinfo_ti_double.html" title="rt.typeinfo.ti_double"><span class="d_inlinecode donthyphenate notranslate">ti_double</span></a></li><li>    <a href="rt_typeinfo_ti_float.html" title="rt.typeinfo.ti_float"><span class="d_inlinecode donthyphenate notranslate">ti_float</span></a></li><li>    <a href="rt_typeinfo_ti_idouble.html" title="rt.typeinfo.ti_idouble"><span class="d_inlinecode donthyphenate notranslate">ti_idouble</span></a></li><li>    <a href="rt_typeinfo_ti_ifloat.html" title="rt.typeinfo.ti_ifloat"><span class="d_inlinecode donthyphenate notranslate">ti_ifloat</span></a></li><li>    <a href="rt_typeinfo_ti_int.html" title="rt.typeinfo.ti_int"><span class="d_inlinecode donthyphenate notranslate">ti_int</span></a></li><li>    <a href="rt_typeinfo_ti_ireal.html" title="rt.typeinfo.ti_ireal"><span class="d_inlinecode donthyphenate notranslate">ti_ireal</span></a></li><li>    <a href="rt_typeinfo_ti_long.html" title="rt.typeinfo.ti_long"><span class="d_inlinecode donthyphenate notranslate">ti_long</span></a></li><li>    <a href="rt_typeinfo_ti_n.html" title="rt.typeinfo.ti_n"><span class="d_inlinecode donthyphenate notranslate">ti_n</span></a></li><li>    <a href="rt_typeinfo_ti_ptr.html" title="rt.typeinfo.ti_ptr"><span class="d_inlinecode donthyphenate notranslate">ti_ptr</span></a></li><li>    <a href="rt_typeinfo_ti_real.html" title="rt.typeinfo.ti_real"><span class="d_inlinecode donthyphenate notranslate">ti_real</span></a></li><li>    <a href="rt_typeinfo_ti_short.html" title="rt.typeinfo.ti_short"><span class="d_inlinecode donthyphenate notranslate">ti_short</span></a></li><li>    <a href="rt_typeinfo_ti_ubyte.html" title="rt.typeinfo.ti_ubyte"><span class="d_inlinecode donthyphenate notranslate">ti_ubyte</span></a></li><li>    <a href="rt_typeinfo_ti_ucent.html" title="rt.typeinfo.ti_ucent"><span class="d_inlinecode donthyphenate notranslate">ti_ucent</span></a></li><li>    <a href="rt_typeinfo_ti_uint.html" title="rt.typeinfo.ti_uint"><span class="d_inlinecode donthyphenate notranslate">ti_uint</span></a></li><li>    <a href="rt_typeinfo_ti_ulong.html" title="rt.typeinfo.ti_ulong"><span class="d_inlinecode donthyphenate notranslate">ti_ulong</span></a></li><li>    <a href="rt_typeinfo_ti_ushort.html" title="rt.typeinfo.ti_ushort"><span class="d_inlinecode donthyphenate notranslate">ti_ushort</span></a></li><li>    <a href="rt_typeinfo_ti_void.html" title="rt.typeinfo.ti_void"><span class="d_inlinecode donthyphenate notranslate">ti_void</span></a></li><li>    <a href="rt_typeinfo_ti_wchar.html" title="rt.typeinfo.ti_wchar"><span class="d_inlinecode donthyphenate notranslate">ti_wchar</span></a>
+  </li></ul></li><li>  <a href="rt_unwind.html" title="rt.unwind"><span class="d_inlinecode donthyphenate notranslate">unwind</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">util</span></h7><ul><li>    <a href="rt_util_array.html" title="rt.util.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>    <h7><span class="d_inlinecode donthyphenate notranslate">container</span></h7><ul><li>      <a href="rt_util_container_array.html" title="rt.util.container.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>      <a href="rt_util_container_common.html" title="rt.util.container.common"><span class="d_inlinecode donthyphenate notranslate">common</span></a></li><li>      <a href="rt_util_container_hashtab.html" title="rt.util.container.hashtab"><span class="d_inlinecode donthyphenate notranslate">hashtab</span></a></li><li>      <a href="rt_util_container_treap.html" title="rt.util.container.treap"><span class="d_inlinecode donthyphenate notranslate">treap</span></a>
+    </li></ul></li><li>    <a href="rt_util_random.html" title="rt.util.random"><span class="d_inlinecode donthyphenate notranslate">random</span></a></li><li>    <a href="rt_util_typeinfo.html" title="rt.util.typeinfo"><span class="d_inlinecode donthyphenate notranslate">typeinfo</span></a>
+  </li></ul>
+</li></ul>
+</li></ul>
+</div>
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/phobos/&amp;component=phobos&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5Bstd.regex%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/phobos/edit/master/std/regex/package.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1><span class="d_title">std.regex</span></h1>
+        <div class="quickindex" id="quickindex"></div>
+        <div class="summary"><a href="https://en.wikipedia.org/wiki/Regular_expression">Regular expressions</a>
+  are a commonly used method of pattern matching
+  on strings, with <i>regex</i> being a catchy word for a pattern in this domain
+  specific language. Typical problems usually solved by regular expressions
+  include validation of user input and the ubiquitous find &amp; replace
+  in text processing utilities.
+</div><div class="description"><script type="text/javascript">inhibitQuickIndex = 1;</script>
+<table class="book"><caption></caption><tr><th scope="col">Category</th> <th scope="col">Functions</th></tr>
+<tr><td>Matching</td> <td>        <a href="#bmatch"><span class="d_inlinecode donthyphenate notranslate">bmatch</span></a>
+        <a href="#match"><span class="d_inlinecode donthyphenate notranslate">match</span></a>
+        <a href="#matchAll"><span class="d_inlinecode donthyphenate notranslate">matchAll</span></a>
+        <a href="#matchFirst"><span class="d_inlinecode donthyphenate notranslate">matchFirst</span></a>
+</td></tr>
+<tr><td>Building</td> <td>        <a href="#ctRegex"><span class="d_inlinecode donthyphenate notranslate">ctRegex</span></a>
+        <a href="#escaper"><span class="d_inlinecode donthyphenate notranslate">escaper</span></a>
+        <a href="#regex"><span class="d_inlinecode donthyphenate notranslate">regex</span></a>
+</td></tr>
+<tr><td>Replace</td> <td>        <a href="#replace"><span class="d_inlinecode donthyphenate notranslate">replace</span></a>
+        <a href="#replaceAll"><span class="d_inlinecode donthyphenate notranslate">replaceAll</span></a>
+        <a href="#replaceAllInto"><span class="d_inlinecode donthyphenate notranslate">replaceAllInto</span></a>
+        <a href="#replaceFirst"><span class="d_inlinecode donthyphenate notranslate">replaceFirst</span></a>
+        <a href="#replaceFirstInto"><span class="d_inlinecode donthyphenate notranslate">replaceFirstInto</span></a>
+</td></tr>
+<tr><td>Split</td> <td>        <a href="#split"><span class="d_inlinecode donthyphenate notranslate">split</span></a>
+        <a href="#splitter"><span class="d_inlinecode donthyphenate notranslate">splitter</span></a>
+</td></tr>
+<tr><td>Objects</td> <td>        <a href="#Captures"><span class="d_inlinecode donthyphenate notranslate">Captures</span></a>
+        <a href="#Regex"><span class="d_inlinecode donthyphenate notranslate">Regex</span></a>
+        <a href="#RegexException"><span class="d_inlinecode donthyphenate notranslate">RegexException</span></a>
+        <a href="#RegexMatch"><span class="d_inlinecode donthyphenate notranslate">RegexMatch</span></a>
+        <a href="#Splitter"><span class="d_inlinecode donthyphenate notranslate">Splitter</span></a>
+        <a href="#StaticRegex"><span class="d_inlinecode donthyphenate notranslate">StaticRegex</span></a>
+</td></tr>
+</table>
+<div class="blankline"></div>
+
+  <h3><a id="Synopsis" href="#Synopsis" class="anchor">Synopsis</a></h3>
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.<span class="d_psymbol">regex</span>;
+<span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_comment">// Print out all possible dd/mm/yy(yy) dates found in user input.
+</span>    <span class="d_keyword">auto</span> r = <span class="d_psymbol">regex</span>(<span class="d_string">r"\b[0-9][0-9]?/[0-9][0-9]?/[0-9][0-9](?:[0-9][0-9])?\b"</span>);
+    <span class="d_keyword">foreach</span> (line; stdin.byLine)
+    {
+      <span class="d_comment">// matchAll() returns a range that can be iterated
+</span>      <span class="d_comment">// to get all subsequent matches.
+</span>      <span class="d_keyword">foreach</span> (c; matchAll(line, r))
+          writeln(c.hit);
+    }
+}
+...
+
+<span class="d_comment">// Create a static regex at compile-time, which contains fast native code.
+</span><span class="d_keyword">auto</span> ctr = ctRegex!(<span class="d_string">`^.*/([^/]+)/?&dollar;`</span>);
+
+<span class="d_comment">// It works just like a normal regex:
+</span><span class="d_keyword">auto</span> c2 = matchFirst(<span class="d_string">"foo/bar"</span>, ctr);   <span class="d_comment">// First match found here, if any
+</span><span class="d_keyword">assert</span>(!c2.empty);   <span class="d_comment">// Be sure to check if there is a match before examining contents!
+</span><span class="d_keyword">assert</span>(c2[1] == <span class="d_string">"bar"</span>);   <span class="d_comment">// Captures is a range of submatches: 0 = full match.
+</span>
+...
+<span class="d_comment">// multi-pattern regex
+</span><span class="d_keyword">auto</span> multi = <span class="d_psymbol">regex</span>([<span class="d_string">`\d+,\d+`</span>,<span class="d_string">`(a-z]+):(\d+)`</span>]);
+<span class="d_keyword">auto</span> m = <span class="d_string">"abc:43 12,34"</span>.matchAll(multi);
+<span class="d_keyword">assert</span>(m.front.whichPattern == 2);
+<span class="d_keyword">assert</span>(m.front[1] == <span class="d_string">"abc"</span>);
+<span class="d_keyword">assert</span>(m.front[2] == <span class="d_string">"43"</span>);
+m.popFront();
+<span class="d_keyword">assert</span>(m.front.whichPattern == 1);
+<span class="d_keyword">assert</span>(m.front[1] == <span class="d_string">"12"</span>);
+...
+
+<span class="d_comment">// The result of the `matchAll/matchFirst` is directly testable with if/assert/while.
+</span><span class="d_comment">// e.g. test if a string consists of letters:
+</span><span class="d_keyword">assert</span>(matchFirst(<span class="d_string">"Letter"</span>, <span class="d_string">`^\p{L}+&dollar;`</span>));
+</pre>
+<div class="blankline"></div>
+
+  <h3><a id="Syntax and general information" href="#Syntax and general information" class="anchor">Syntax and general information</a></h3>
+  The general usage guideline is to keep regex complexity on the side of simplicity,
+  as its capabilities reside in purely character-level manipulation.
+  As such it's ill-suited for tasks involving higher level invariants
+  like matching an integer number <em class="u">bounded</em> in an [a,b] interval.
+  Checks of this sort of are better addressed by additional post-processing.
+<div class="blankline"></div>
+
+  The basic syntax shouldn't surprise experienced users of regular expressions.
+  For an introduction to <span class="d_inlinecode donthyphenate notranslate">std.<span class="def-anchor" id="regex"></span><code class="ddoc_psymbol">regex</code></span> see a
+  <a href="http://dlang.org/regular-expression.html">short tour</a> of the module API
+  and its abilities.
+<div class="blankline"></div>
+
+  There are other web resources on regular expressions to help newcomers,
+  and a good <a href="http://www.regular-expressions.info">reference with tutorial</a>
+  can easily be found.
+<div class="blankline"></div>
+
+  This library uses a remarkably common ECMAScript syntax flavor
+  with the following extensions:
+  <ul>    <li>Named subexpressions, with Python syntax. </li>
+    <li>Unicode properties such as Scripts, Blocks and common binary properties e.g Alphabetic, White_Space, Hex_Digit etc.</li>
+    <li>Arbitrary length and complexity lookbehind, including lookahead in lookbehind and vise-versa.</li>
+  </ul>
+<div class="blankline"></div>
+
+  <h3><div align="center"> Pattern syntax  </div></h3>
+  <i>std.regex operates on codepoint level,
+    'character' in this table denotes a single Unicode codepoint.</i>
+  <table border="1" cellspacing="0" cellpadding="5" >     <tr><td><b>Pattern element</b></td> <td><b>Semantics </b></td> </tr>
+    <tr><td><b>Atoms</b></td> <td><b>Match single characters </b></td> </tr>
+    <tr><td><i>any character except [{|*+?()^$ </i></td> <td>Matches the character itself. </td> </tr>
+    <tr><td><i>. </i></td> <td>In single line mode matches any character.
+      Otherwise it matches any character except '\n' and '\r'. </td> </tr>
+    <tr><td><i>[class] </i></td> <td>Matches a single character
+      that belongs to this character class. </td> </tr>
+    <tr><td><i>[^class] </i></td> <td>Matches a single character that
+      does <em class="u">not</em> belong to this character class.</td> </tr>
+    <tr><td><i>\cC </i></td> <td>Matches the control character corresponding to letter C</td> </tr>
+    <tr><td><i>\xXX </i></td> <td>Matches a character with hexadecimal value of XX. </td> </tr>
+    <tr><td><i>\uXXXX </i></td> <td>Matches a character  with hexadecimal value of XXXX. </td> </tr>
+    <tr><td><i>\U00YYYYYY </i></td> <td>Matches a character with hexadecimal value of YYYYYY. </td> </tr>
+    <tr><td><i>\f </i></td> <td>Matches a formfeed character. </td> </tr>
+    <tr><td><i>\n </i></td> <td>Matches a linefeed character. </td> </tr>
+    <tr><td><i>\r </i></td> <td>Matches a carriage return character. </td> </tr>
+    <tr><td><i>\t </i></td> <td>Matches a tab character. </td> </tr>
+    <tr><td><i>\v </i></td> <td>Matches a vertical tab character. </td> </tr>
+    <tr><td><i>\d </i></td> <td>Matches any Unicode digit. </td> </tr>
+    <tr><td><i>\D </i></td> <td>Matches any character except Unicode digits. </td> </tr>
+    <tr><td><i>\w </i></td> <td>Matches any word character (note: this includes numbers).</td> </tr>
+    <tr><td><i>\W </i></td> <td>Matches any non-word character.</td> </tr>
+    <tr><td><i>\s </i></td> <td>Matches whitespace, same as \p{White_Space}.</td> </tr>
+    <tr><td><i>\S </i></td> <td>Matches any character except those recognized as <i>\s </i>. </td> </tr>
+    <tr><td><i>\\ </i></td> <td>Matches \ character. </td> </tr>
+    <tr><td><i>\c where c is one of [|*+?() </i></td> <td>Matches the character c itself. </td> </tr>
+    <tr><td><i>\p{PropertyName} </i></td> <td>Matches a character that belongs
+        to the Unicode PropertyName set.
+      Single letter abbreviations can be used without surrounding {,}. </td> </tr>
+    <tr><td><i> \P{PropertyName} </i></td> <td>Matches a character that does not belong
+        to the Unicode PropertyName set.
+      Single letter abbreviations can be used without surrounding {,}. </td> </tr>
+    <tr><td><i>\p{InBasicLatin} </i></td> <td>Matches any character that is part of
+          the BasicLatin Unicode <em class="u">block</em>.</td> </tr>
+    <tr><td><i>\P{InBasicLatin} </i></td> <td>Matches any character except ones in
+          the BasicLatin Unicode <em class="u">block</em>.</td> </tr>
+    <tr><td><i>\p{Cyrillic} </i></td> <td>Matches any character that is part of
+        Cyrillic <em class="u">script</em>.</td> </tr>
+    <tr><td><i>\P{Cyrillic} </i></td> <td>Matches any character except ones in
+        Cyrillic <em class="u">script</em>.</td> </tr>
+    <tr><td><b>Quantifiers</b></td> <td><b>Specify repetition of other elements</b></td> </tr>
+    <tr><td><i>* </i></td> <td>Matches previous character/subexpression 0 or more times.
+      Greedy version - tries as many times as possible.</td> </tr>
+    <tr><td><i>*? </i></td> <td>Matches previous character/subexpression 0 or more times.
+      Lazy version  - stops as early as possible.</td> </tr>
+    <tr><td><i>+ </i></td> <td>Matches previous character/subexpression 1 or more times.
+      Greedy version - tries as many times as possible.</td> </tr>
+    <tr><td><i>+? </i></td> <td>Matches previous character/subexpression 1 or more times.
+      Lazy version  - stops as early as possible.</td> </tr>
+    <tr><td><i>{n} </i></td> <td>Matches previous character/subexpression exactly n times. </td> </tr>
+    <tr><td><i>{n,} </i></td> <td>Matches previous character/subexpression n times or more.
+      Greedy version - tries as many times as possible. </td> </tr>
+    <tr><td><i>{n,}? </i></td> <td>Matches previous character/subexpression n times or more.
+      Lazy version - stops as early as possible.</td> </tr>
+    <tr><td><i>{n,m} </i></td> <td>Matches previous character/subexpression n to m times.
+      Greedy version - tries as many times as possible, but no more than m times. </td> </tr>
+    <tr><td><i>{n,m}? </i></td> <td>Matches previous character/subexpression n to m times.
+      Lazy version - stops as early as possible, but no less then n times.</td> </tr>
+    <tr><td><b>Other</b></td> <td><b>Subexpressions &amp; alternations </b></td> </tr>
+    <tr><td><i>(regex) </i></td> <td> Matches subexpression regex,
+      saving matched portion of text for later retrieval. </td> </tr>
+    <tr><td><i>(?#comment) </i></td> <td>An inline comment that is ignored while matching.</td> </tr>
+    <tr><td><i>(?:regex) </i></td> <td>Matches subexpression regex,
+      <em class="u">not</em> saving matched portion of text. Useful to speed up matching. </td> </tr>
+    <tr><td><i>A|B </i></td> <td>Matches subexpression A, or failing that, matches B. </td> </tr>
+    <tr><td><i>(?P&lt;name&gt;regex) </i></td> <td>Matches named subexpression
+        regex labeling it with name 'name'.
+        When referring to a matched portion of text,
+        names work like aliases in addition to direct numbers.
+     </td> </tr>
+    <tr><td><b>Assertions</b></td> <td><b>Match position rather than character </b></td> </tr>
+    <tr><td><i>^ </i></td> <td>Matches at the begining of input or line (in multiline mode).</td> </tr>
+    <tr><td><i>$ </i></td> <td>Matches at the end of input or line (in multiline mode). </td> </tr>
+    <tr><td><i>\b </i></td> <td>Matches at word boundary. </td> </tr>
+    <tr><td><i>\B </i></td> <td>Matches when <em class="u">not</em> at word boundary. </td> </tr>
+    <tr><td><i>(?=regex) </i></td> <td>Zero-width lookahead assertion.
+        Matches at a point where the subexpression
+        regex could be matched starting from the current position.
+      </td> </tr>
+    <tr><td><i>(?!regex) </i></td> <td>Zero-width negative lookahead assertion.
+        Matches at a point where the subexpression
+        regex could <em class="u">not</em> be matched starting from the current position.
+      </td> </tr>
+    <tr><td><i>(?&lt;=regex) </i></td> <td>Zero-width lookbehind assertion. Matches at a point
+        where the subexpression regex could be matched ending
+        at the current position (matching goes backwards).
+      </td> </tr>
+    <tr><td><i> (?&lt;!regex) </i></td> <td>Zero-width negative lookbehind assertion.
+      Matches at a point where the subexpression regex could <em class="u">not</em>
+      be matched ending at the current position (matching goes backwards).
+     </td> </tr>
+   </table>
+<div class="blankline"></div>
+
+  <h3><div align="center"> Character classes  </div></h3>
+  <table border="1" cellspacing="0" cellpadding="5" >     <tr><td><b>Pattern element</b></td> <td><b>Semantics </b></td> </tr>
+    <tr><td><i>Any atom </i></td> <td>Has the same meaning as outside of a character class.</td> </tr>
+    <tr><td><i>a-z </i></td> <td>Includes characters a, b, c, ..., z. </td> </tr>
+    <tr><td><i>[a||b], [a--b], [a~~b], [a&amp;&amp;b] </i></td> <td>     Where a, b are arbitrary classes, means union, set difference,
+     symmetric set difference, and intersection respectively.
+     <i>Any sequence of character class elements implicitly forms a union.</i> </td> </tr>
+   </table>
+<div class="blankline"></div>
+
+  <h3><div align="center"> Regex flags  </div></h3>
+  <table border="1" cellspacing="0" cellpadding="5" >     <tr><td><b>Flag</b></td> <td><b>Semantics </b></td> </tr>
+    <tr><td><i>g </i></td> <td>Global regex, repeat over the whole input. </td> </tr>
+    <tr><td><i>i </i></td> <td>Case insensitive matching. </td> </tr>
+    <tr><td><i>m </i></td> <td>Multi-line mode, match ^, $ on start and end line separators
+       as well as start and end of input.</td> </tr>
+    <tr><td><i>s </i></td> <td>Single-line mode, makes . match '\n' and '\r' as well. </td> </tr>
+    <tr><td><i>x </i></td> <td>Free-form syntax, ignores whitespace in pattern,
+      useful for formatting complex regular expressions. </td> </tr>
+   </table>
+<div class="blankline"></div>
+
+  <h3><a id="Unicode support" href="#Unicode support" class="anchor">Unicode support</a></h3>
+<div class="blankline"></div>
+
+  This library provides full Level 1 support* according to
+    <a href="http://unicode.org/reports/tr18/">UTS 18</a>. Specifically:
+  <ul>    <li>1.1 Hex notation via any of \uxxxx, \U00YYYYYY, \xZZ.</li>
+    <li>1.2 Unicode properties.</li>
+    <li>1.3 Character classes with set operations.</li>
+    <li>1.4 Word boundaries use the full set of "word" characters.</li>
+    <li>1.5 Using simple casefolding to match case
+        insensitively across the full range of codepoints.</li>
+    <li>1.6 Respecting line breaks as any of
+        \u000A | \u000B | \u000C | \u000D | \u0085 | \u2028 | \u2029 | \u000D\u000A.</li>
+    <li>1.7 Operating on codepoint level.</li>
+  </ul>
+  *With exception of point 1.1.1, as of yet, normalization of input
+    is expected to be enforced by user.
+<div class="blankline"></div>
+
+    <h3><a id="Replace format string" href="#Replace format string" class="anchor">Replace format string</a></h3>
+<div class="blankline"></div>
+
+    A set of functions in this module that do the substitution rely
+    on a simple format to guide the process. In particular the table below
+    applies to the <span class="d_inlinecode donthyphenate notranslate">format</span> argument of
+    <a href="#replaceFirst"><span class="d_inlinecode donthyphenate notranslate">replaceFirst</span></a> and <a href="#replaceAll"><span class="d_inlinecode donthyphenate notranslate">replaceAll</span></a>.
+<div class="blankline"></div>
+
+    The format string can reference parts of match using the following notation.
+    <table border="1" cellspacing="0" cellpadding="5" >         <tr><td><b>Format specifier</b></td> <td><b>Replaced by </b></td> </tr>
+        <tr><td><i>&dollar;&amp; </i></td> <td>the whole match. </td> </tr>
+        <tr><td><i>&dollar;` </i></td> <td>part of input <i>preceding</i> the match. </td> </tr>
+        <tr><td><i>$' </i></td> <td>part of input <i>following</i> the match. </td> </tr>
+        <tr><td><i>$$ </i></td> <td>'$' character. </td> </tr>
+        <tr><td><i>\c , where c is any character </i></td> <td>the character c itself. </td> </tr>
+        <tr><td><i>\\ </i></td> <td>'\' character. </td> </tr>
+        <tr><td><i>&dollar;1 .. &dollar;99 </i></td> <td>submatch number 1 to 99 respectively. </td> </tr>
+     </table>
+<div class="blankline"></div>
+
+  <h3><a id="Slicing and zero memory allocations orientation" href="#Slicing and zero memory allocations orientation" class="anchor">Slicing and zero memory allocations orientation</a></h3>
+<div class="blankline"></div>
+
+  All matches returned by pattern matching functionality in this library
+    are slices of the original input. The notable exception is the <span class="d_inlinecode donthyphenate notranslate">replace</span>
+    family of functions  that generate a new string from the input.
+<div class="blankline"></div>
+
+    In cases where producing the replacement is the ultimate goal
+    <a href="#replaceFirstInto"><span class="d_inlinecode donthyphenate notranslate">replaceFirstInto</span></a> and <a href="#replaceAllInto"><span class="d_inlinecode donthyphenate notranslate">replaceAllInto</span></a> could come in handy
+    as functions that  avoid allocations even for replacement.
+
+</div>
+<div class="keyval License"><span class="key keyLicense">License:</span> <div class="val valLicense"><a href="http://boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
+
+</div></div>
+<div class="keyval Authors"><span class="key keyAuthors">Authors:</span> <div class="val valAuthors">Dmitry Olshansky,
+<div class="blankline"></div>
+
+    API and utility constructs are modeled after the original <span class="d_inlinecode donthyphenate notranslate">std.<span class="def-anchor" id="regex"></span><code class="ddoc_psymbol">regex</code></span>
+  by Walter Bright and Andrei Alexandrescu.
+
+</div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Source</span>
+<span class="phobos_src"><a class="https" href="https://github.com/dlang/phobos/blob/master/std/regex/package.d">std/regex/package.d</a></span>
+
+</p></div>
+
+<dl><dt class="d_decl"><div ><span class="def-anchor" id=".Regex"></span><div class="quickindex" id="quickindex.Regex"></div>template <span class="def-anchor" id="Regex"></span><code class="ddoc_psymbol">Regex</code>(Char)<br></div></dt>
+<dd><div class="summary"><span class="d_inlinecode donthyphenate notranslate"><span class="def-anchor" id="Regex"></span><code class="ddoc_psymbol">Regex</code></span> object holds regular expression pattern in compiled form.
+</div><div class="description">Instances of this object are constructed via calls to <span class="d_inlinecode donthyphenate notranslate">regex</span>.
+    This is an intended form for caching and storage of frequently
+    used regular expressions.
+
+</div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example</span>
+    Test if this object doesn't contain any compiled pattern.
+<pre class="d_code notranslate"><span class="d_psymbol">Regex</span>!<span class="d_keyword">char</span> r;
+<span class="d_keyword">assert</span>(r.empty);
+r = regex(<span class="d_string">""</span>); <span class="d_comment">// Note: "" is a valid regex pattern.
+</span><span class="d_keyword">assert</span>(!r.empty);
+</pre>
+<div class="blankline"></div>
+
+    Getting a range of all the named captures in the regex.
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.range;
+<span class="d_keyword">import</span> std.algorithm;
+
+<span class="d_keyword">auto</span> re = regex(<span class="d_string">`(?P&lt;name&gt;\w+) = (?P&lt;var&gt;\d+)`</span>);
+<span class="d_keyword">auto</span> nc = re.namedCaptures;
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(isRandomAccessRange!(<span class="d_keyword">typeof</span>(nc)));
+<span class="d_keyword">assert</span>(!nc.empty);
+<span class="d_keyword">assert</span>(nc.length == 2);
+<span class="d_keyword">assert</span>(nc.equal([<span class="d_string">"name"</span>, <span class="d_string">"var"</span>]));
+<span class="d_keyword">assert</span>(nc[0] == <span class="d_string">"name"</span>);
+<span class="d_keyword">assert</span>(nc[1..$].equal([<span class="d_string">"var"</span>]));
+</pre>
+</p></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".StaticRegex"></span><div class="quickindex" id="quickindex.StaticRegex"></div>alias <span class="def-anchor" id="StaticRegex"></span><code class="ddoc_psymbol">StaticRegex</code> = Regex(Char);
+<br></div></dt>
+<dd><div class="summary">A <span class="d_inlinecode donthyphenate notranslate"><span class="def-anchor" id="StaticRegex"></span><code class="ddoc_psymbol">StaticRegex</code></span> is <span class="d_inlinecode donthyphenate notranslate">Regex</span> object that contains D code specially
+    generated at compile-time to speed up matching.
+</div><div class="description">No longer used, kept as alias to Regex for backwards compatibility.</div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".regex"></span><div class="quickindex" id="quickindex.regex"></div>@trusted auto <span class="def-anchor" id="regex"></span><code class="ddoc_psymbol">regex</code><span class="template_param_list" title="Template parameter list">(S)</span>(S[] <code class="ddoc_param">patterns</code>, const(char)[] <code class="ddoc_param">flags</code> = "")<br><span class="constraint">if (isSomeString!S)</span>;
+<br><br>@trusted auto <span class="def-anchor" id="regex"></span><code class="ddoc_psymbol">regex</code><span class="template_param_list" title="Template parameter list">(S)</span>(S <code class="ddoc_param">pattern</code>, const(char)[] <code class="ddoc_param">flags</code> = "")<br><span class="constraint">if (isSomeString!S)</span>;
+<br></div></dt>
+<dd><div class="summary">Compile regular expression pattern for the later execution.
+</div><div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns"><span class="d_inlinecode donthyphenate notranslate">Regex</span> object that works on inputs having
+    the same character width as <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">pattern</code></span>.
+
+</div></div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">S <code class="ddoc_param">pattern</code></td>
+<td class="param_desc">A single regular expression to match.</td></tr>
+<tr class="param"><td class="param_id">S[] <code class="ddoc_param">patterns</code></td>
+<td class="param_desc">An array of regular expression strings.
+        The resulting <span class="d_inlinecode donthyphenate notranslate">Regex</span> object will match any expression;
+        use <a href="#whichPattern"><span class="d_inlinecode donthyphenate notranslate">whichPattern</span></a> to know which.</td></tr>
+<tr class="param"><td class="param_id">const(char)[] <code class="ddoc_param">flags</code></td>
+<td class="param_desc">The attributes (g, i, m, s and x accepted)</td></tr>
+</table></div></div>
+<div class="keyval Throws"><span class="key keyThrows">Throws:</span> <div class="val valThrows"><span class="d_inlinecode donthyphenate notranslate">RegexException</span> if there were any errors during compilation.</div></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_comment">// multi-pattern regex example
+</span><span class="d_keyword">auto</span> multi = <span class="d_psymbol">regex</span>([<span class="d_string">`([a-z]+):(\d+)`</span>, <span class="d_string">`(\d+),\d+`</span>]); <span class="d_comment">// multi regex
+</span><span class="d_keyword">auto</span> m = <span class="d_string">"abc:43 12,34"</span>.matchAll(multi);
+writeln(m.front.whichPattern); <span class="d_comment">// 1
+</span>writeln(m.front[1]); <span class="d_comment">// "abc"
+</span>writeln(m.front[2]); <span class="d_comment">// "43"
+</span>m.popFront();
+writeln(m.front.whichPattern); <span class="d_comment">// 2
+</span>writeln(m.front[1]); <span class="d_comment">// "12"
+</span></pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".ctRegex"></span><div class="quickindex" id="quickindex.ctRegex"></div>enum auto <span class="def-anchor" id="ctRegex"></span><code class="ddoc_psymbol">ctRegex</code>(alias pattern, alias flags = []);
+<br></div></dt>
+<dd><div class="summary">Compile regular expression using CTFE
+    and generate optimized native machine code for matching it.
+</div><div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">StaticRegex object for faster matching.
+
+</div></div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">pattern</td>
+<td class="param_desc">Regular expression</td></tr>
+<tr class="param"><td class="param_id">flags</td>
+<td class="param_desc">The attributes (g, i, m, s and x accepted)</td></tr>
+</table></div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Captures"></span><div class="quickindex" id="quickindex.Captures"></div>struct <span class="def-anchor" id="Captures"></span><code class="ddoc_psymbol">Captures</code>(R) if (isSomeString!R);
+<br></div></dt>
+<dd><div class="summary"><span class="d_inlinecode donthyphenate notranslate"><span class="def-anchor" id="Captures"></span><code class="ddoc_psymbol">Captures</code></span> object contains submatches captured during a call
+    to <span class="d_inlinecode donthyphenate notranslate">match</span> or iteration over <span class="d_inlinecode donthyphenate notranslate">RegexMatch</span> range.
+</div><div class="description">First element of range is the whole match.</div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">import</span> std.range.primitives : popFrontN;
+
+<span class="d_keyword">auto</span> c = matchFirst(<span class="d_string">"@abc#"</span>, regex(<span class="d_string">`(\w)(\w)(\w)`</span>));
+<span class="d_keyword">assert</span>(c.pre == <span class="d_string">"@"</span>); <span class="d_comment">// Part of input preceding match
+</span><span class="d_keyword">assert</span>(c.post == <span class="d_string">"#"</span>); <span class="d_comment">// Immediately after match
+</span><span class="d_keyword">assert</span>(c.hit == c[0] &amp;&amp; c.hit == <span class="d_string">"abc"</span>); <span class="d_comment">// The whole match
+</span>writeln(c[2]); <span class="d_comment">// "b"
+</span>writeln(c.front); <span class="d_comment">// "abc"
+</span>c.popFront();
+writeln(c.front); <span class="d_comment">// "a"
+</span>writeln(c.back); <span class="d_comment">// "c"
+</span>c.popBack();
+writeln(c.back); <span class="d_comment">// "b"
+</span>popFrontN(c, 2);
+<span class="d_keyword">assert</span>(c.empty);
+
+<span class="d_keyword">assert</span>(!matchFirst(<span class="d_string">"nothing"</span>, <span class="d_string">"something"</span>));
+</pre>
+</div></div>
+
+<dl><dt class="d_decl"><div ><span class="def-anchor" id=".Captures.pre"></span><div class="quickindex" id="quickindex.Captures.pre"></div>@property R <span class="def-anchor" id="pre"></span><code class="ddoc_psymbol">pre</code>();
+<br></div></dt>
+<dd><div class="summary">Slice of input prior to the match.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Captures.post"></span><div class="quickindex" id="quickindex.Captures.post"></div>@property R <span class="def-anchor" id="post"></span><code class="ddoc_psymbol">post</code>();
+<br></div></dt>
+<dd><div class="summary">Slice of input immediately after the match.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Captures.hit"></span><div class="quickindex" id="quickindex.Captures.hit"></div>@property R <span class="def-anchor" id="hit"></span><code class="ddoc_psymbol">hit</code>();
+<br></div></dt>
+<dd><div class="summary">Slice of matched portion of input.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Captures.front"></span><div class="quickindex" id="quickindex.Captures.front"></div>@property R <span class="def-anchor" id="front"></span><code class="ddoc_psymbol">front</code>();
+<br><br><span class="def-anchor" id=".Captures.back"></span><div class="quickindex" id="quickindex.Captures.back"></div>@property R <span class="def-anchor" id="back"></span><code class="ddoc_psymbol">back</code>();
+<br><br><span class="def-anchor" id=".Captures.popFront"></span><div class="quickindex" id="quickindex.Captures.popFront"></div>void <span class="def-anchor" id="popFront"></span><code class="ddoc_psymbol">popFront</code>();
+<br><br><span class="def-anchor" id=".Captures.popBack"></span><div class="quickindex" id="quickindex.Captures.popBack"></div>void <span class="def-anchor" id="popBack"></span><code class="ddoc_psymbol">popBack</code>();
+<br><br><span class="def-anchor" id=".Captures.empty"></span><div class="quickindex" id="quickindex.Captures.empty"></div>const @property bool <span class="def-anchor" id="empty"></span><code class="ddoc_psymbol">empty</code>();
+<br><br><span class="def-anchor" id=".Captures.opIndex"></span><div class="quickindex" id="quickindex.Captures.opIndex"></div>inout inout(R) <span class="def-anchor" id="opIndex"></span><code class="ddoc_psymbol">opIndex</code><span class="template_param_list" title="Template parameter list">()</span>(size_t <code class="ddoc_param">i</code>);
+<br></div></dt>
+<dd><div class="summary">Range interface.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Captures.opCast"></span><div class="quickindex" id="quickindex.Captures.opCast"></div>const nothrow @safe bool <span class="def-anchor" id="opCast"></span><code class="ddoc_psymbol">opCast</code><span class="template_param_list" title="Template parameter list">(T : bool)</span>();
+<br></div></dt>
+<dd><div class="summary">Explicit cast to bool.
+        Useful as a shorthand for !(x.empty) in if and assert statements.
+</div><div class="description"><pre class="d_code notranslate"><span class="d_keyword">import</span> std.regex;
+
+<span class="d_keyword">assert</span>(!matchFirst(<span class="d_string">"nothing"</span>, <span class="d_string">"something"</span>));
+</pre>
+</div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Captures.whichPattern"></span><div class="quickindex" id="quickindex.Captures.whichPattern"></div>const nothrow @property @safe int <span class="def-anchor" id="whichPattern"></span><code class="ddoc_psymbol">whichPattern</code>();
+<br></div></dt>
+<dd><div class="summary">Number of pattern matched counting, where 1 - the first pattern.
+        Returns 0 on no match.</div><span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">import</span> std.regex;
+writeln(matchFirst(<span class="d_string">"abc"</span>, <span class="d_string">"[0-9]+"</span>, <span class="d_string">"[a-z]+"</span>).<span class="d_psymbol">whichPattern</span>); <span class="d_comment">// 2
+</span></pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Captures.opIndex.2"></span><div class="quickindex" id="quickindex.Captures.opIndex.2"></div>R <span class="def-anchor" id="opIndex"></span><code class="ddoc_psymbol">opIndex</code><span class="template_param_list" title="Template parameter list">(String)</span>(String <code class="ddoc_param">i</code>)<br><span class="constraint">if (isSomeString!String)</span>;
+<br></div></dt>
+<dd><div class="summary">Lookup named submatch.
+</div><div class="description"><pre class="d_code notranslate"><span class="d_keyword">import</span> std.regex;
+<span class="d_keyword">import</span> std.range;
+
+<span class="d_keyword">auto</span> c = matchFirst(<span class="d_string">"a = 42;"</span>, regex(<span class="d_string">`(?P&lt;var&gt;\w+)\s*=\s*(?P&lt;value&gt;\d+);`</span>));
+<span class="d_keyword">assert</span>(c[<span class="d_string">"var"</span>] == <span class="d_string">"a"</span>);
+<span class="d_keyword">assert</span>(c[<span class="d_string">"value"</span>] == <span class="d_string">"42"</span>);
+popFrontN(c, 2);
+<span class="d_comment">//named groups are unaffected by range primitives
+</span><span class="d_keyword">assert</span>(c[<span class="d_string">"var"</span>] ==<span class="d_string">"a"</span>);
+<span class="d_keyword">assert</span>(c.front == <span class="d_string">"42"</span>);
+</pre>
+</div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Captures.length"></span><div class="quickindex" id="quickindex.Captures.length"></div>const @property size_t <span class="def-anchor" id="length"></span><code class="ddoc_psymbol">length</code>();
+<br></div></dt>
+<dd><div class="summary">Number of matches in this object.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Captures.captures"></span><div class="quickindex" id="quickindex.Captures.captures"></div>@property ref auto <span class="def-anchor" id="captures"></span><code class="ddoc_psymbol">captures</code>();
+<br></div></dt>
+<dd><div class="summary">A hook for compatibility with original std.regex.</div>
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".RegexMatch"></span><div class="quickindex" id="quickindex.RegexMatch"></div>struct <span class="def-anchor" id="RegexMatch"></span><code class="ddoc_psymbol">RegexMatch</code>(R) if (isSomeString!R);
+<br></div></dt>
+<dd><div class="summary">A regex engine state, as returned by <span class="d_inlinecode donthyphenate notranslate">match</span> family of functions.
+</div><div class="description">Effectively it's a forward range of Captures!R, produced
+    by lazily searching for matches in a given input.</div>
+
+<dl><dt class="d_decl"><div ><span class="def-anchor" id=".RegexMatch.pre"></span><div class="quickindex" id="quickindex.RegexMatch.pre"></div>@property R <span class="def-anchor" id="pre"></span><code class="ddoc_psymbol">pre</code>();
+<br><br><span class="def-anchor" id=".RegexMatch.post"></span><div class="quickindex" id="quickindex.RegexMatch.post"></div>@property R <span class="def-anchor" id="post"></span><code class="ddoc_psymbol">post</code>();
+<br><br><span class="def-anchor" id=".RegexMatch.hit"></span><div class="quickindex" id="quickindex.RegexMatch.hit"></div>@property R <span class="def-anchor" id="hit"></span><code class="ddoc_psymbol">hit</code>();
+<br></div></dt>
+<dd><div class="summary">Shorthands for front.pre, front.post, front.hit.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".RegexMatch.front"></span><div class="quickindex" id="quickindex.RegexMatch.front"></div>inout @property inout(Captures!R) <span class="def-anchor" id="front"></span><code class="ddoc_psymbol">front</code>();
+<br><br><span class="def-anchor" id=".RegexMatch.popFront"></span><div class="quickindex" id="quickindex.RegexMatch.popFront"></div>void <span class="def-anchor" id="popFront"></span><code class="ddoc_psymbol">popFront</code>();
+<br><br><span class="def-anchor" id=".RegexMatch.save"></span><div class="quickindex" id="quickindex.RegexMatch.save"></div>auto <span class="def-anchor" id="save"></span><code class="ddoc_psymbol">save</code>();
+<br></div></dt>
+<dd><div class="summary">        Functionality for processing subsequent matches of global regexes via range interface:
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.regex;
+<span class="d_keyword">auto</span> m = matchAll(<span class="d_string">"Hello, world!"</span>, regex(<span class="d_string">`\w+`</span>));
+<span class="d_keyword">assert</span>(m.<span class="d_psymbol">front</span>.hit == <span class="d_string">"Hello"</span>);
+m.<span class="d_psymbol">popFront</span>();
+<span class="d_keyword">assert</span>(m.<span class="d_psymbol">front</span>.hit == <span class="d_string">"world"</span>);
+m.<span class="d_psymbol">popFront</span>();
+<span class="d_keyword">assert</span>(m.empty);
+</pre>
+</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".RegexMatch.empty"></span><div class="quickindex" id="quickindex.RegexMatch.empty"></div>const @property bool <span class="def-anchor" id="empty"></span><code class="ddoc_psymbol">empty</code>();
+<br></div></dt>
+<dd><div class="summary">Test if this match object is empty.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".RegexMatch.opCast"></span><div class="quickindex" id="quickindex.RegexMatch.opCast"></div>T <span class="def-anchor" id="opCast"></span><code class="ddoc_psymbol">opCast</code><span class="template_param_list" title="Template parameter list">(T : bool)</span>();
+<br></div></dt>
+<dd><div class="summary">Same as !(x.empty), provided for its convenience  in conditional statements.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".RegexMatch.captures"></span><div class="quickindex" id="quickindex.RegexMatch.captures"></div>inout @property inout(Captures!R) <span class="def-anchor" id="captures"></span><code class="ddoc_psymbol">captures</code>();
+<br></div></dt>
+<dd><div class="summary">Same as .front, provided for compatibility with original std.regex.</div>
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".match"></span><div class="quickindex" id="quickindex.match"></div>auto <span class="def-anchor" id="match"></span><code class="ddoc_psymbol">match</code><span class="template_param_list" title="Template parameter list">(R, RegEx)</span>(R <code class="ddoc_param">input</code>, RegEx <code class="ddoc_param">re</code>)<br><span class="constraint">if (isSomeString!R &amp;&amp; isRegexFor!(RegEx, R))</span>;
+<br><br>auto <span class="def-anchor" id="match"></span><code class="ddoc_psymbol">match</code><span class="template_param_list" title="Template parameter list">(R, String)</span>(R <code class="ddoc_param">input</code>, String <code class="ddoc_param">re</code>)<br><span class="constraint">if (isSomeString!R &amp;&amp; isSomeString!String)</span>;
+<br></div></dt>
+<dd><div class="summary">Start matching <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">input</code></span> to regex pattern <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">re</code></span>,
+    using Thompson NFA matching scheme.
+</div><div class="description">The use of this function is <span class="red">discouraged</span> - use either of
+    <a href="#matchAll"><span class="d_inlinecode donthyphenate notranslate">matchAll</span></a> or <a href="#matchFirst"><span class="d_inlinecode donthyphenate notranslate">matchFirst</span></a>.
+<div class="blankline"></div>
+
+    Delegating  the kind of operation
+    to "g" flag is soon to be phased out along with the
+    ability to choose the exact matching scheme. The choice of
+    matching scheme to use depends highly on the pattern kind and
+    can done automatically on case by case basis.
+
+</div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">a <span class="d_inlinecode donthyphenate notranslate">RegexMatch</span> object holding engine state after first match.</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".matchFirst"></span><div class="quickindex" id="quickindex.matchFirst"></div>auto <span class="def-anchor" id="matchFirst"></span><code class="ddoc_psymbol">matchFirst</code><span class="template_param_list" title="Template parameter list">(R, RegEx)</span>(R <code class="ddoc_param">input</code>, RegEx <code class="ddoc_param">re</code>)<br><span class="constraint">if (isSomeString!R &amp;&amp; isRegexFor!(RegEx, R))</span>;
+<br><br>auto <span class="def-anchor" id="matchFirst"></span><code class="ddoc_psymbol">matchFirst</code><span class="template_param_list" title="Template parameter list">(R, String)</span>(R <code class="ddoc_param">input</code>, String <code class="ddoc_param">re</code>)<br><span class="constraint">if (isSomeString!R &amp;&amp; isSomeString!String)</span>;
+<br><br>auto <span class="def-anchor" id="matchFirst"></span><code class="ddoc_psymbol">matchFirst</code><span class="template_param_list" title="Template parameter list">(R, String)</span>(R <code class="ddoc_param">input</code>, String[] <code class="ddoc_param">re</code>...)<br><span class="constraint">if (isSomeString!R &amp;&amp; isSomeString!String)</span>;
+<br></div></dt>
+<dd><div class="summary">Find the first (leftmost) slice of the <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">input</code></span> that
+    matches the pattern <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">re</code></span>. This function picks the most suitable
+    regular expression engine depending on the pattern properties.
+</div><div class="description"><span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">re</code></span> parameter can be one of three types:
+    <ul>      <li>Plain string(s), in which case it's compiled to bytecode before matching. </li>
+      <li>Regex!char (wchar/dchar) that contains a pattern in the form of
+        compiled  bytecode. </li>
+      <li>StaticRegex!char (wchar/dchar) that contains a pattern in the form of
+        compiled native machine code. </li>
+    </ul>
+
+</div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns"><a href="#Captures"><span class="d_inlinecode donthyphenate notranslate">Captures</span></a> containing the extent of a match together with all submatches
+    if there was a match, otherwise an empty <a href="#Captures"><span class="d_inlinecode donthyphenate notranslate">Captures</span></a> object.</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".matchAll"></span><div class="quickindex" id="quickindex.matchAll"></div>auto <span class="def-anchor" id="matchAll"></span><code class="ddoc_psymbol">matchAll</code><span class="template_param_list" title="Template parameter list">(R, RegEx)</span>(R <code class="ddoc_param">input</code>, RegEx <code class="ddoc_param">re</code>)<br><span class="constraint">if (isSomeString!R &amp;&amp; isRegexFor!(RegEx, R))</span>;
+<br><br>auto <span class="def-anchor" id="matchAll"></span><code class="ddoc_psymbol">matchAll</code><span class="template_param_list" title="Template parameter list">(R, String)</span>(R <code class="ddoc_param">input</code>, String <code class="ddoc_param">re</code>)<br><span class="constraint">if (isSomeString!R &amp;&amp; isSomeString!String)</span>;
+<br><br>auto <span class="def-anchor" id="matchAll"></span><code class="ddoc_psymbol">matchAll</code><span class="template_param_list" title="Template parameter list">(R, String)</span>(R <code class="ddoc_param">input</code>, String[] <code class="ddoc_param">re</code>...)<br><span class="constraint">if (isSomeString!R &amp;&amp; isSomeString!String)</span>;
+<br></div></dt>
+<dd><div class="summary">Initiate a search for all non-overlapping matches to the pattern <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">re</code></span>
+    in the given <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">input</code></span>. The result is a lazy range of matches generated
+    as they are encountered in the input going left to right.
+</div><div class="description">This function picks the most suitable regular expression engine
+    depending on the pattern properties.
+<div class="blankline"></div>
+
+    <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">re</code></span> parameter can be one of three types:
+    <ul>      <li>Plain string(s), in which case it's compiled to bytecode before matching. </li>
+      <li>Regex!char (wchar/dchar) that contains a pattern in the form of
+        compiled  bytecode. </li>
+      <li>StaticRegex!char (wchar/dchar) that contains a pattern in the form of
+        compiled native machine code. </li>
+    </ul>
+
+</div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns"><a href="#RegexMatch"><span class="d_inlinecode donthyphenate notranslate">RegexMatch</span></a> object that represents matcher state
+    after the first match was found or an empty one if not present.</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".bmatch"></span><div class="quickindex" id="quickindex.bmatch"></div>auto <span class="def-anchor" id="bmatch"></span><code class="ddoc_psymbol">bmatch</code><span class="template_param_list" title="Template parameter list">(R, RegEx)</span>(R <code class="ddoc_param">input</code>, RegEx <code class="ddoc_param">re</code>)<br><span class="constraint">if (isSomeString!R &amp;&amp; isRegexFor!(RegEx, R))</span>;
+<br><br>auto <span class="def-anchor" id="bmatch"></span><code class="ddoc_psymbol">bmatch</code><span class="template_param_list" title="Template parameter list">(R, String)</span>(R <code class="ddoc_param">input</code>, String <code class="ddoc_param">re</code>)<br><span class="constraint">if (isSomeString!R &amp;&amp; isSomeString!String)</span>;
+<br></div></dt>
+<dd><div class="summary">Start matching of <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">input</code></span> to regex pattern <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">re</code></span>,
+    using traditional <a href="https://en.wikipedia.org/wiki/Backtracking">    backtracking</a> matching scheme.
+</div><div class="description">The use of this function is <span class="red">discouraged</span> - use either of
+    <a href="#matchAll"><span class="d_inlinecode donthyphenate notranslate">matchAll</span></a> or <a href="#matchFirst"><span class="d_inlinecode donthyphenate notranslate">matchFirst</span></a>.
+<div class="blankline"></div>
+
+    Delegating  the kind of operation
+    to "g" flag is soon to be phased out along with the
+    ability to choose the exact matching scheme. The choice of
+    matching scheme to use depends highly on the pattern kind and
+    can done automatically on case by case basis.
+
+</div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">a <span class="d_inlinecode donthyphenate notranslate">RegexMatch</span> object holding engine
+    state after first match.</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".replaceFirst"></span><div class="quickindex" id="quickindex.replaceFirst"></div>R <span class="def-anchor" id="replaceFirst"></span><code class="ddoc_psymbol">replaceFirst</code><span class="template_param_list" title="Template parameter list">(R, C, RegEx)</span>(R <code class="ddoc_param">input</code>, RegEx <code class="ddoc_param">re</code>, const(C)[] <code class="ddoc_param">format</code>)<br><span class="constraint">if (isSomeString!R &amp;&amp; is(C : dchar) &amp;&amp; isRegexFor!(RegEx, R))</span>;
+<br></div></dt>
+<dd><div class="summary">Construct a new string from <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">input</code></span> by replacing the first match with
+    a string generated from it according to the <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">format</code></span> specifier.
+</div><div class="description">To replace all matches use <a href="#replaceAll"><span class="d_inlinecode donthyphenate notranslate">replaceAll</span></a>.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">R <code class="ddoc_param">input</code></td>
+<td class="param_desc">string to search</td></tr>
+<tr class="param"><td class="param_id">RegEx <code class="ddoc_param">re</code></td>
+<td class="param_desc">compiled regular expression to use</td></tr>
+<tr class="param"><td class="param_id">const(C)[] <code class="ddoc_param">format</code></td>
+<td class="param_desc">format string to generate replacements from,
+    see <a href="#Replace format string">the format string</a>.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">A string of the same type with the first match (if any) replaced.
+    If no match is found returns the input string itself.</div></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">writeln(<span class="d_psymbol">replaceFirst</span>(<span class="d_string">"noon"</span>, regex(<span class="d_string">"n"</span>), <span class="d_string">"[&dollar;&amp;]"</span>)); <span class="d_comment">// "[n]oon"
+</span></pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".replaceFirst"></span><div class="quickindex" id="quickindex.replaceFirst"></div>R <span class="def-anchor" id="replaceFirst"></span><code class="ddoc_psymbol">replaceFirst</code><span class="template_param_list" title="Template parameter list">(alias fun, R, RegEx)</span>(R <code class="ddoc_param">input</code>, RegEx <code class="ddoc_param">re</code>)<br><span class="constraint">if (isSomeString!R &amp;&amp; isRegexFor!(RegEx, R))</span>;
+<br></div></dt>
+<dd><div class="summary">This is a general replacement tool that construct a new string by replacing
+    matches of pattern <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">re</code></span> in the <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">input</code></span>. Unlike the other overload
+    there is no format string instead captures are passed to
+    to a user-defined functor <span class="d_inlinecode donthyphenate notranslate">fun</span> that returns a new string
+    to use as replacement.
+</div><div class="description">This version replaces the first match in <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">input</code></span>,
+    see <a href="#replaceAll"><span class="d_inlinecode donthyphenate notranslate">replaceAll</span></a> to replace the all of the matches.
+
+</div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">A new string of the same type as <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">input</code></span> with all matches
+    replaced by return values of <span class="d_inlinecode donthyphenate notranslate">fun</span>. If no matches found
+    returns the <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">input</code></span> itself.</div></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">import</span> std.conv : to;
+string list = <span class="d_string">"#21 out of 46"</span>;
+string newList = <span class="d_psymbol">replaceFirst</span>!(cap =&gt; to!string(to!<span class="d_keyword">int</span>(cap.hit)+1))
+    (list, regex(<span class="d_string">`[0-9]+`</span>));
+writeln(newList); <span class="d_comment">// "#22 out of 46"
+</span></pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".replaceFirstInto"></span><div class="quickindex" id="quickindex.replaceFirstInto"></div>@trusted void <span class="def-anchor" id="replaceFirstInto"></span><code class="ddoc_psymbol">replaceFirstInto</code><span class="template_param_list" title="Template parameter list">(Sink, R, C, RegEx)</span>(ref Sink <code class="ddoc_param">sink</code>, R <code class="ddoc_param">input</code>, RegEx <code class="ddoc_param">re</code>, const(C)[] <code class="ddoc_param">format</code>)<br><span class="constraint">if (isOutputRange!(Sink, dchar) &amp;&amp; isSomeString!R &amp;&amp; is(C : dchar) &amp;&amp; isRegexFor!(RegEx, R))</span>;
+<br><br>@trusted void <span class="def-anchor" id="replaceFirstInto"></span><code class="ddoc_psymbol">replaceFirstInto</code><span class="template_param_list" title="Template parameter list">(alias fun, Sink, R, RegEx)</span>(Sink <code class="ddoc_param">sink</code>, R <code class="ddoc_param">input</code>, RegEx <code class="ddoc_param">re</code>)<br><span class="constraint">if (isOutputRange!(Sink, dchar) &amp;&amp; isSomeString!R &amp;&amp; isRegexFor!(RegEx, R))</span>;
+<br></div></dt>
+<dd><div class="summary">A variation on <a href="#replaceFirst"><span class="d_inlinecode donthyphenate notranslate">replaceFirst</span></a> that instead of allocating a new string
+    on each call outputs the result piece-wise to the <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">sink</code></span>. In particular
+    this enables efficient construction of a final output incrementally.
+</div><div class="description">Like in <a href="#replaceFirst"><span class="d_inlinecode donthyphenate notranslate">replaceFirst</span></a> family of functions there is an overload
+    for the substitution guided by the <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">format</code></span> string
+    and the one with the user defined callback.</div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">import</span> std.array;
+string m1 = <span class="d_string">"first message\n"</span>;
+string m2 = <span class="d_string">"second message\n"</span>;
+<span class="d_keyword">auto</span> result = appender!string();
+<span class="d_psymbol">replaceFirstInto</span>(result, m1, regex(<span class="d_string">`([a-z]+) message`</span>), <span class="d_string">"&dollar;1"</span>);
+<span class="d_comment">//equivalent of the above with user-defined callback
+</span><span class="d_psymbol">replaceFirstInto</span>!(cap=&gt;cap[1])(result, m2, regex(<span class="d_string">`([a-z]+) message`</span>));
+writeln(result.data); <span class="d_comment">// "first\nsecond\n"
+</span></pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".replaceAll"></span><div class="quickindex" id="quickindex.replaceAll"></div>@trusted R <span class="def-anchor" id="replaceAll"></span><code class="ddoc_psymbol">replaceAll</code><span class="template_param_list" title="Template parameter list">(R, C, RegEx)</span>(R <code class="ddoc_param">input</code>, RegEx <code class="ddoc_param">re</code>, const(C)[] <code class="ddoc_param">format</code>)<br><span class="constraint">if (isSomeString!R &amp;&amp; is(C : dchar) &amp;&amp; isRegexFor!(RegEx, R))</span>;
+<br></div></dt>
+<dd><div class="summary">Construct a new string from <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">input</code></span> by replacing all of the
+    fragments that match a pattern <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">re</code></span> with a string generated
+    from the match according to the <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">format</code></span> specifier.
+</div><div class="description">To replace only the first match use <a href="#replaceFirst"><span class="d_inlinecode donthyphenate notranslate">replaceFirst</span></a>.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">R <code class="ddoc_param">input</code></td>
+<td class="param_desc">string to search</td></tr>
+<tr class="param"><td class="param_id">RegEx <code class="ddoc_param">re</code></td>
+<td class="param_desc">compiled regular expression to use</td></tr>
+<tr class="param"><td class="param_id">const(C)[] <code class="ddoc_param">format</code></td>
+<td class="param_desc">format string to generate replacements from,
+    see <a href="#Replace format string">the format string</a>.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">A string of the same type as <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">input</code></span> with the all
+    of the matches (if any) replaced.
+    If no match is found returns the input string itself.</div></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_comment">// insert comma as thousands delimiter
+</span><span class="d_keyword">auto</span> <span class="d_param">re</span> = regex(<span class="d_string">r"(?&lt;=\d)(?=(\d\d\d)+\b)"</span>,<span class="d_string">"g"</span>);
+writeln(<span class="d_psymbol">replaceAll</span>(<span class="d_string">"12000 + 42100 = 54100"</span>, <span class="d_param">re</span>, <span class="d_string">","</span>)); <span class="d_comment">// "12,000 + 42,100 = 54,100"
+</span></pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".replaceAll"></span><div class="quickindex" id="quickindex.replaceAll"></div>@trusted R <span class="def-anchor" id="replaceAll"></span><code class="ddoc_psymbol">replaceAll</code><span class="template_param_list" title="Template parameter list">(alias fun, R, RegEx)</span>(R <code class="ddoc_param">input</code>, RegEx <code class="ddoc_param">re</code>)<br><span class="constraint">if (isSomeString!R &amp;&amp; isRegexFor!(RegEx, R))</span>;
+<br></div></dt>
+<dd><div class="summary">This is a general replacement tool that construct a new string by replacing
+    matches of pattern <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">re</code></span> in the <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">input</code></span>. Unlike the other overload
+    there is no format string instead captures are passed to
+    to a user-defined functor <span class="d_inlinecode donthyphenate notranslate">fun</span> that returns a new string
+    to use as replacement.
+</div><div class="description">This version replaces all of the matches found in <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">input</code></span>,
+    see <a href="#replaceFirst"><span class="d_inlinecode donthyphenate notranslate">replaceFirst</span></a> to replace the first match only.
+
+</div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">A new string of the same type as <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">input</code></span> with all matches
+    replaced by return values of <span class="d_inlinecode donthyphenate notranslate">fun</span>. If no matches found
+    returns the <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">input</code></span> itself.
+
+</div></div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">R <code class="ddoc_param">input</code></td>
+<td class="param_desc">string to search</td></tr>
+<tr class="param"><td class="param_id">RegEx <code class="ddoc_param">re</code></td>
+<td class="param_desc">compiled regular expression</td></tr>
+<tr class="param"><td class="param_id">fun</td>
+<td class="param_desc">delegate to use</td></tr>
+</table></div></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate">string baz(Captures!(string) m)
+{
+    <span class="d_keyword">import</span> std.string : toUpper;
+    <span class="d_keyword">return</span> toUpper(m.hit);
+}
+<span class="d_comment">// Capitalize the letters 'a' and 'r':
+</span><span class="d_keyword">auto</span> s = <span class="d_psymbol">replaceAll</span>!(baz)(<span class="d_string">"Strap a rocket engine on a chicken."</span>,
+        regex(<span class="d_string">"[ar]"</span>));
+writeln(s); <span class="d_comment">// "StRAp A Rocket engine on A chicken."
+</span></pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".replaceAllInto"></span><div class="quickindex" id="quickindex.replaceAllInto"></div>@trusted void <span class="def-anchor" id="replaceAllInto"></span><code class="ddoc_psymbol">replaceAllInto</code><span class="template_param_list" title="Template parameter list">(Sink, R, C, RegEx)</span>(Sink <code class="ddoc_param">sink</code>, R <code class="ddoc_param">input</code>, RegEx <code class="ddoc_param">re</code>, const(C)[] <code class="ddoc_param">format</code>)<br><span class="constraint">if (isOutputRange!(Sink, dchar) &amp;&amp; isSomeString!R &amp;&amp; is(C : dchar) &amp;&amp; isRegexFor!(RegEx, R))</span>;
+<br><br>@trusted void <span class="def-anchor" id="replaceAllInto"></span><code class="ddoc_psymbol">replaceAllInto</code><span class="template_param_list" title="Template parameter list">(alias fun, Sink, R, RegEx)</span>(Sink <code class="ddoc_param">sink</code>, R <code class="ddoc_param">input</code>, RegEx <code class="ddoc_param">re</code>)<br><span class="constraint">if (isOutputRange!(Sink, dchar) &amp;&amp; isSomeString!R &amp;&amp; isRegexFor!(RegEx, R))</span>;
+<br></div></dt>
+<dd><div class="summary">A variation on <a href="#replaceAll"><span class="d_inlinecode donthyphenate notranslate">replaceAll</span></a> that instead of allocating a new string
+    on each call outputs the result piece-wise to the <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">sink</code></span>. In particular
+    this enables efficient construction of a final output incrementally.
+</div><div class="description">As with <a href="#replaceAll"><span class="d_inlinecode donthyphenate notranslate">replaceAll</span></a> there are 2 overloads - one with a format string,
+    the other one with a user defined functor.</div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_comment">// insert comma as thousands delimiter in fifty randomly produced big numbers
+</span><span class="d_keyword">import</span> std.array, std.conv, std.random, std.range;
+<span class="d_keyword">static</span> <span class="d_param">re</span> = regex(<span class="d_string">`(?&lt;=\d)(?=(\d\d\d)+\b)`</span>, <span class="d_string">"g"</span>);
+<span class="d_keyword">auto</span> <span class="d_param">sink</span> = appender!(<span class="d_keyword">char</span> [])();
+<span class="d_keyword">enum</span> <span class="d_keyword">ulong</span> min = 10UL ^^ 10, max = 10UL ^^ 19;
+<span class="d_keyword">foreach</span> (i; 0 .. 50)
+{
+    <span class="d_param">sink</span>.clear();
+    <span class="d_psymbol">replaceAllInto</span>(<span class="d_param">sink</span>, text(uniform(min, max)), <span class="d_param">re</span>, <span class="d_string">","</span>);
+    <span class="d_keyword">foreach</span> (pos; iota(<span class="d_param">sink</span>.data.length - 4, 0, -4))
+        writeln(<span class="d_param">sink</span>.data[pos]); <span class="d_comment">// ','
+</span>}
+</pre>
+</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".replace"></span><div class="quickindex" id="quickindex.replace"></div>R <span class="def-anchor" id="replace"></span><code class="ddoc_psymbol">replace</code><span class="template_param_list" title="Template parameter list">(alias scheme = match, R, C, RegEx)</span>(R <code class="ddoc_param">input</code>, RegEx <code class="ddoc_param">re</code>, const(C)[] <code class="ddoc_param">format</code>)<br><span class="constraint">if (isSomeString!R &amp;&amp; isRegexFor!(RegEx, R))</span>;
+<br><br>R <span class="def-anchor" id="replace"></span><code class="ddoc_psymbol">replace</code><span class="template_param_list" title="Template parameter list">(alias fun, R, RegEx)</span>(R <code class="ddoc_param">input</code>, RegEx <code class="ddoc_param">re</code>)<br><span class="constraint">if (isSomeString!R &amp;&amp; isRegexFor!(RegEx, R))</span>;
+<br></div></dt>
+<dd><div class="summary">Old API for replacement, operation depends on flags of pattern <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">re</code></span>.
+    With "g" flag it performs the equivalent of <a href="#replaceAll"><span class="d_inlinecode donthyphenate notranslate">replaceAll</span></a> otherwise it
+    works the same as <a href="#replaceFirst"><span class="d_inlinecode donthyphenate notranslate">replaceFirst</span></a>.
+</div><div class="description">The use of this function is <span class="red">discouraged</span>, please use <a href="#replaceAll"><span class="d_inlinecode donthyphenate notranslate">replaceAll</span></a>
+    or <a href="#replaceFirst"><span class="d_inlinecode donthyphenate notranslate">replaceFirst</span></a> explicitly.</div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Splitter"></span><div class="quickindex" id="quickindex.Splitter"></div>struct <span class="def-anchor" id="Splitter"></span><code class="ddoc_psymbol">Splitter</code>(Flag!"keepSeparators" keepSeparators = No.keepSeparators, Range, alias RegEx = Regex) if (isSomeString!Range &amp;&amp; isRegexFor!(RegEx, Range));
+<br><br><span class="def-anchor" id=".splitter"></span><div class="quickindex" id="quickindex.splitter"></div>Splitter!(keepSeparators, Range, RegEx) <span class="def-anchor" id="splitter"></span><code class="ddoc_psymbol">splitter</code>(Flag!"keepSeparators" keepSeparators = No.keepSeparators, Range, RegEx)(Range <code class="ddoc_param">r</code>, RegEx <code class="ddoc_param">pat</code>)<br><span class="constraint">if (is(BasicElementOf!Range : dchar) &amp;&amp; isRegexFor!(RegEx, Range))</span>;
+<br></div></dt>
+<dd><div class="summary">Splits a string <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">r</code></span> using a regular expression <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">pat</code></span> as a separator.
+</div><div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">keepSeparators</td>
+<td class="param_desc">flag to specify if the matches should be in the resulting range</td></tr>
+<tr class="param"><td class="param_id">Range <code class="ddoc_param">r</code></td>
+<td class="param_desc">the string to split</td></tr>
+<tr class="param"><td class="param_id">RegEx <code class="ddoc_param">pat</code></td>
+<td class="param_desc">the pattern to split on</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">A lazy range of strings</div></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">import</span> std.algorithm.comparison : equal;
+<span class="d_keyword">auto</span> s1 = <span class="d_string">", abc, de,  fg, hi, "</span>;
+<span class="d_keyword">assert</span>(equal(<span class="d_psymbol">splitter</span>(s1, regex(<span class="d_string">", *"</span>)),
+    [<span class="d_string">""</span>, <span class="d_string">"abc"</span>, <span class="d_string">"de"</span>, <span class="d_string">"fg"</span>, <span class="d_string">"hi"</span>, <span class="d_string">""</span>]));
+</pre>
+</div></div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples">Split on a pattern, but keep the matches in the resulting range
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.algorithm.comparison : equal;
+<span class="d_keyword">import</span> std.typecons : Yes;
+
+<span class="d_keyword">auto</span> pattern = regex(<span class="d_string">`([\.,])`</span>);
+
+<span class="d_keyword">assert</span>(<span class="d_string">"2003.04.05"</span>
+    .<span class="d_psymbol">splitter</span>!(Yes.keepSeparators)(pattern)
+    .equal([<span class="d_string">"2003"</span>, <span class="d_string">"."</span>, <span class="d_string">"04"</span>, <span class="d_string">"."</span>, <span class="d_string">"05"</span>]));
+
+<span class="d_keyword">assert</span>(<span class="d_string">",1,2,3"</span>
+    .<span class="d_psymbol">splitter</span>!(Yes.keepSeparators)(pattern)
+    .equal([<span class="d_string">","</span>, <span class="d_string">"1"</span>, <span class="d_string">","</span>, <span class="d_string">"2"</span>, <span class="d_string">","</span>, <span class="d_string">"3"</span>]));
+</pre>
+</div></div>
+
+<dl><dt class="d_decl"><div ><span class="def-anchor" id=".Splitter.front"></span><div class="quickindex" id="quickindex.Splitter.front"></div>@property Range <span class="def-anchor" id="front"></span><code class="ddoc_psymbol">front</code>();
+<br><br><span class="def-anchor" id=".Splitter.empty"></span><div class="quickindex" id="quickindex.Splitter.empty"></div>@property bool <span class="def-anchor" id="empty"></span><code class="ddoc_psymbol">empty</code>();
+<br><br><span class="def-anchor" id=".Splitter.popFront"></span><div class="quickindex" id="quickindex.Splitter.popFront"></div>void <span class="def-anchor" id="popFront"></span><code class="ddoc_psymbol">popFront</code>();
+<br><br><span class="def-anchor" id=".Splitter.save"></span><div class="quickindex" id="quickindex.Splitter.save"></div>@property auto <span class="def-anchor" id="save"></span><code class="ddoc_psymbol">save</code>();
+<br></div></dt>
+<dd><div class="summary">Forward range primitives.</div>
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".split"></span><div class="quickindex" id="quickindex.split"></div>@trusted String[] <span class="def-anchor" id="split"></span><code class="ddoc_psymbol">split</code><span class="template_param_list" title="Template parameter list">(String, RegEx)</span>(String <code class="ddoc_param">input</code>, RegEx <code class="ddoc_param">rx</code>)<br><span class="constraint">if (isSomeString!String &amp;&amp; isRegexFor!(RegEx, String))</span>;
+<br></div></dt>
+<dd><div class="summary">An eager version of <span class="d_inlinecode donthyphenate notranslate">splitter</span> that creates an array with splitted slices of <span class="d_inlinecode donthyphenate notranslate"><code class="ddoc_param">input</code></span>.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".RegexException"></span><div class="quickindex" id="quickindex.RegexException"></div>alias <span class="def-anchor" id="RegexException"></span><code class="ddoc_psymbol">RegexException</code> = std.regex.internal.ir.<span class="def-anchor" id="RegexException"></span><code class="ddoc_psymbol">RegexException</code>;
+<br></div></dt>
+<dd><div class="summary">Exception object thrown in case of errors during regex compilation.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".escaper"></span><div class="quickindex" id="quickindex.escaper"></div>auto <span class="def-anchor" id="escaper"></span><code class="ddoc_psymbol">escaper</code><span class="template_param_list" title="Template parameter list">(Range)</span>(Range <code class="ddoc_param">r</code>);
+<br></div></dt>
+<dd><div class="summary">A range that lazily produces a string output escaped
+  to be used inside of a regular expression.</div><span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">import</span> std.algorithm.comparison;
+<span class="d_keyword">import</span> std.regex;
+string s = <span class="d_string">`This is {unfriendly} to *regex*`</span>;
+<span class="d_keyword">assert</span>(s.<span class="d_psymbol">escaper</span>.equal(<span class="d_string">`This is \{unfriendly\} to \*regex\*`</span>));
+</pre>
+</div></div>
+
+</dd>
+</dl>
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2022 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on (no date time)</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+<script type="text/javascript" src="../js/run_examples.js"></script>
+
+<script type="text/javascript" src="../js/listanchors.js"></script>
+<script type="text/javascript" src="../js/show_contributors.js"></script>
+<script type="text/javascript">jQuery(document).ready(listanchors);</script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>
