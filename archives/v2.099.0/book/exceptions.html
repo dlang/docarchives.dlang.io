@@ -1,0 +1,990 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2022 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Exceptions - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Exceptions' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BExceptions%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/d.en/exceptions.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Exceptions</h1>
+        
+        
+
+
+
+<p>Unexpected situations are parts of programs: user mistakes, programming errors, changes in the program environment, etc. Programs must be written in ways to avoid producing incorrect results when faced with such <i>exceptional</i> conditions.
+</p>
+
+<p>Some of these conditions may be severe enough to stop the execution of the program. For example, a required piece of information may be missing or invalid, or a device may not be functioning correctly. The exception handling mechanism of D helps with stopping program execution when necessary, and to recover from the unexpected situations when possible.
+</p>
+
+<p>As an example of a severe condition, we can think of passing an unknown operator to a function that knows only the four arithmetic operators, as we have seen in the exercises of the previous chapter:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">switch</span> (operator) {
+
+    <span class="d_keyword">case</span> <span class="d_string">"+"</span>:
+        writeln(first + second);
+        <span class="d_keyword">break</span>;
+
+    <span class="d_keyword">case</span> <span class="d_string">"-"</span>:
+        writeln(first - second);
+        <span class="d_keyword">break</span>;
+
+    <span class="d_keyword">case</span> <span class="d_string">"x"</span>:
+        writeln(first * second);
+        <span class="d_keyword">break</span>;
+
+    <span class="d_keyword">case</span> <span class="d_string">"/"</span>:
+        writeln(first / second);
+        <span class="d_keyword">break</span>;
+
+    <span class="d_keyword">default</span>:
+        <span class="d_keyword">throw</span> <span class="d_keyword">new</span> Exception(format(<span class="d_string">"Invalid operator: %s"</span>, operator));
+    }
+</pre>
+
+<p>The <code class="d_inline">switch</code> statement above does not know what to do with operators that are not listed on the <code class="d_inline">case</code> statements; so throws an exception.
+</p>
+
+<p>There are many examples of thrown exceptions in Phobos. For example, <code class="d_inline">to!int</code>, which can be used to convert a string representation of an integer to an <code class="d_inline">int</code> value throws an exception when that representation is not valid:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.conv;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">const</span> <span class="d_keyword">int</span> value = to!<span class="d_keyword">int</span>(<span class="d_string">"hello"</span>);
+}
+</pre>
+
+<p>The program terminates with an exception that is thrown by <code class="d_inline">to!int</code>:
+</p>
+
+<pre class="shell">std.conv.ConvException@std/conv.d(38): std.conv(1157): <span class="hilite">Can't
+convert value</span> `hello' of type const(char)[] to type int
+</pre>
+
+<p><code class="d_inline">std.conv.ConvException</code> at the beginning of the message is the type of the thrown exception object. We can tell from the name that the type is <code class="d_inline">ConvException</code> that is defined in the <code class="d_inline">std.conv</code> module.
+</p>
+
+<h5 class="subsection"><a id="ix_Exceptions.throw" content="throw"></a> The <code class="d_inline">throw</code> statement to throw exceptions</h5>
+
+<p>We've seen the <code class="d_inline">throw</code> statement both in the examples above and in the previous chapters.
+</p>
+
+<p><code class="d_inline">throw</code> throws an <i>exception object</i> and this terminates the current operation of the program. The expressions and statements that are written after the <code class="d_inline">throw</code> statement are not executed. This behavior is according to the nature of exceptions: they must be thrown when the program cannot continue with its current task.
+</p>
+
+<p>Conversely, if the program could continue then the situation would not warrant throwing an exception. In such cases the function would find a way and continue.
+</p>
+
+<h6><a id="ix_Exceptions.Exception" content="Exception"></a> <a id="ix_Exceptions.Error" content="Error"></a> <a id="ix_Exceptions.Throwable" content="Throwable"></a> The exception types <code class="d_inline">Exception</code> and <code class="d_inline">Error</code></h6>
+
+<p>Only the types that are inherited from the <code class="d_inline">Throwable</code> class can be thrown. <code class="d_inline">Throwable</code> is almost never used directly in programs. The types that are actually thrown are types that are inherited from <code class="d_inline">Exception</code> or <code class="d_inline">Error</code>, which themselves are the types that are inherited from <code class="d_inline">Throwable</code>. For example, all of the exceptions that Phobos throws are inherited from either <code class="d_inline">Exception</code> or <code class="d_inline">Error</code>.
+</p>
+
+<p><code class="d_inline">Error</code> represents unrecoverable conditions and is not recommended to be <i>caught</i>. For that reason, most of the exceptions that a program throws are the types that are inherited from <code class="d_inline">Exception</code>. (<i><b>Note:</b> Inheritance is a topic related to classes. We will see classes in a later chapter.</i>)
+</p>
+
+<p><code class="d_inline">Exception</code> objects are constructed with a <code class="d_inline">string</code> value that represents an error message. You may find it easy to create this message with the <code class="d_inline">format()</code> function from the <code class="d_inline">std.string</code> module:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.random;
+<span class="d_keyword">import</span> std.string;
+
+<span class="d_keyword">int</span>[] randomDiceValues(<span class="d_keyword">int</span> count) {
+    <span class="d_keyword">if</span> (count &lt; 0) {
+        <span class="hilite"><span class="d_keyword">throw</span> <span class="d_keyword">new</span> Exception</span>(
+            format(<span class="d_string">"Invalid dice count: %s"</span>, count));
+    }
+
+    <span class="d_keyword">int</span>[] values;
+
+    <span class="d_keyword">foreach</span> (i; 0 .. count) {
+        values ~= uniform(1, 7);
+    }
+
+    <span class="d_keyword">return</span> values;
+}
+
+<span class="d_keyword">void</span> main() {
+    writeln(randomDiceValues(-5));
+}
+</pre>
+
+<pre class="shell">object.Exception...: Invalid dice count: -5
+</pre>
+
+<p>In most cases, instead of creating an exception object explicitly by <code class="d_inline">new</code> and throwing it explicitly by <code class="d_inline">throw</code>, the <code class="d_inline">enforce()</code> function is called. For example, the equivalent of the error check above is the following <code class="d_inline">enforce()</code> call:
+</p>
+
+<pre class="d_code">    enforce(count &gt;= 0, format(<span class="d_string">"Invalid dice count: %s"</span>, count));
+</pre>
+
+<p>We will see the differences between <code class="d_inline">enforce()</code> and <code class="d_inline">assert()</code> in a later chapter.
+</p>
+
+<h6>Thrown exception terminates all scopes</h6>
+
+<p>We have seen that the program execution starts from the <code class="d_inline">main</code> function and branches into other functions from there. This layered execution of going deeper into functions and eventually returning from them can be seen as the branches of a tree.
+</p>
+
+<p>For example, <code class="d_inline">main()</code> may call a function named <code class="d_inline">makeOmelet</code>, which in turn may call another function named <code class="d_inline">prepareAll</code>, which in turn may call another function named <code class="d_inline">prepareEggs</code>, etc. Assuming that the arrows indicate function calls, the branching of such a program can be shown as in the following function call tree:
+</p>
+
+<pre class="mono">main
+  │
+  ├──▶ makeOmelet
+  │      │
+  │      ├──▶ prepareAll
+  │      │          │
+  │      │          ├─▶ prepareEggs
+  │      │          ├─▶ prepareButter
+  │      │          └─▶ preparePan
+  │      │
+  │      ├──▶ cookEggs
+  │      └──▶ cleanAll
+  │
+  └──▶ eatOmelet
+</pre>
+
+<p>The following program demonstrates the branching above by using different levels of indentation in its output. The program doesn't do anything useful other than producing an output suitable to our purposes:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> indent(<span class="d_keyword">int</span> level) {
+    <span class="d_keyword">foreach</span> (i; 0 .. level * 2) {
+        write(' ');
+    }
+}
+
+<span class="d_keyword">void</span> entering(string functionName, <span class="d_keyword">int</span> level) {
+    indent(level);
+    writeln(<span class="d_string">"▶ "</span>, functionName, <span class="d_string">"'s first line"</span>);
+}
+
+<span class="d_keyword">void</span> exiting(string functionName, <span class="d_keyword">int</span> level) {
+    indent(level);
+    writeln(<span class="d_string">"◁ "</span>, functionName, <span class="d_string">"'s last line"</span>);
+}
+
+<span class="d_keyword">void</span> main() {
+    entering(<span class="d_string">"main"</span>, 0);
+    makeOmelet();
+    eatOmelet();
+    exiting(<span class="d_string">"main"</span>, 0);
+}
+
+<span class="d_keyword">void</span> makeOmelet() {
+    entering(<span class="d_string">"makeOmelet"</span>, 1);
+    prepareAll();
+    cookEggs();
+    cleanAll();
+    exiting(<span class="d_string">"makeOmelet"</span>, 1);
+}
+
+<span class="d_keyword">void</span> eatOmelet() {
+    entering(<span class="d_string">"eatOmelet"</span>, 1);
+    exiting(<span class="d_string">"eatOmelet"</span>, 1);
+}
+
+<span class="d_keyword">void</span> prepareAll() {
+    entering(<span class="d_string">"prepareAll"</span>, 2);
+    prepareEggs();
+    prepareButter();
+    preparePan();
+    exiting(<span class="d_string">"prepareAll"</span>, 2);
+}
+
+<span class="d_keyword">void</span> cookEggs() {
+    entering(<span class="d_string">"cookEggs"</span>, 2);
+    exiting(<span class="d_string">"cookEggs"</span>, 2);
+}
+
+<span class="d_keyword">void</span> cleanAll() {
+    entering(<span class="d_string">"cleanAll"</span>, 2);
+    exiting(<span class="d_string">"cleanAll"</span>, 2);
+}
+
+<span class="d_keyword">void</span> prepareEggs() {
+    entering(<span class="d_string">"prepareEggs"</span>, 3);
+    exiting(<span class="d_string">"prepareEggs"</span>, 3);
+}
+
+<span class="d_keyword">void</span> prepareButter() {
+    entering(<span class="d_string">"prepareButter"</span>, 3);
+    exiting(<span class="d_string">"prepareButter"</span>, 3);
+}
+
+<span class="d_keyword">void</span> preparePan() {
+    entering(<span class="d_string">"preparePan"</span>, 3);
+    exiting(<span class="d_string">"preparePan"</span>, 3);
+}
+</pre>
+
+<p>The program produces the following output:
+</p>
+
+<pre class="shell">▶ main, first line
+  ▶ makeOmelet, first line
+    ▶ prepareAll, first line
+      ▶ prepareEggs, first line
+      ◁ prepareEggs, last line
+      ▶ prepareButter, first line
+      ◁ prepareButter, last line
+      ▶ preparePan, first line
+      ◁ preparePan, last line
+    ◁ prepareAll, last line
+    ▶ cookEggs, first line
+    ◁ cookEggs, last line
+    ▶ cleanAll, first line
+    ◁ cleanAll, last line
+  ◁ makeOmelet, last line
+  ▶ eatOmelet, first line
+  ◁ eatOmelet, last line
+◁ main, last line
+</pre>
+
+<p>The functions <code class="d_inline">entering</code> and <code class="d_inline">exiting</code> are used to indicate the first and last lines of functions with the help of the <code class="d_inline">▶</code> and <code class="d_inline">◁</code> characters. The program starts with the first line of <code class="d_inline">main()</code>, branches down to other functions, and finally ends with the last line of <code class="d_inline">main</code>.
+</p>
+
+<p>Let's modify the <code class="d_inline">prepareEggs</code> function to take the number of eggs as a parameter. Since certain values of this parameter would be an error, let's have this function throw an exception when the number of eggs is less than one:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.string;
+
+<span class="d_comment">// ...
+</span>
+<span class="d_keyword">void</span> prepareEggs(<span class="hilite"><span class="d_keyword">int</span> count</span>) {
+    entering(<span class="d_string">"prepareEggs"</span>, 3);
+
+    <span class="d_keyword">if</span> (count &lt; 1) {
+        <span class="d_keyword">throw</span> <span class="d_keyword">new</span> Exception(
+            format(<span class="d_string">"Cannot take %s eggs from the fridge"</span>, count));
+    }
+
+    exiting(<span class="d_string">"prepareEggs"</span>, 3);
+}
+</pre>
+
+<p>In order to be able to compile the program, we must modify other lines of the program to be compatible with this change. The number of eggs to take out of the fridge can be handed down from function to function, starting with <code class="d_inline">main()</code>. The parts of the program that need to change are the following. The invalid value of -8 is intentional to show how the output of the program will be different from the previous output when an exception is thrown:
+</p>
+
+<pre class="d_code"><span class="d_comment">// ...
+</span>
+<span class="d_keyword">void</span> main() {
+    entering(<span class="d_string">"main"</span>, 0);
+    makeOmelet(<span class="hilite">-8</span>);
+    eatOmelet();
+    exiting(<span class="d_string">"main"</span>, 0);
+}
+
+<span class="d_keyword">void</span> makeOmelet(<span class="hilite"><span class="d_keyword">int</span> eggCount</span>) {
+    entering(<span class="d_string">"makeOmelet"</span>, 1);
+    prepareAll(<span class="hilite">eggCount</span>);
+    cookEggs();
+    cleanAll();
+    exiting(<span class="d_string">"makeOmelet"</span>, 1);
+}
+
+<span class="d_comment">// ...
+</span>
+<span class="d_keyword">void</span> prepareAll(<span class="hilite"><span class="d_keyword">int</span> eggCount</span>) {
+    entering(<span class="d_string">"prepareAll"</span>, 2);
+    prepareEggs(<span class="hilite">eggCount</span>);
+    prepareButter();
+    preparePan();
+    exiting(<span class="d_string">"prepareAll"</span>, 2);
+}
+
+<span class="d_comment">// ...
+</span></pre>
+
+<p>When we start the program now, we see that the lines that used to be printed after the point where the exception is thrown are missing:
+</p>
+
+<pre class="shell">▶ main, first line
+  ▶ makeOmelet, first line
+    ▶ prepareAll, first line
+      ▶ prepareEggs, first line
+object.Exception: Cannot take -8 eggs from the fridge
+</pre>
+
+<p>When the exception is thrown, the program execution exits the <code class="d_inline">prepareEggs</code>, <code class="d_inline">prepareAll</code>, <code class="d_inline">makeOmelet</code> and <code class="d_inline">main()</code> functions in that order, from the bottom level to the top level. No additional steps are executed as the program exits these functions.
+</p>
+
+<p>The rationale for such a drastic termination is that a failure in a lower level function would mean that the higher level functions that needed its successful completion should also be considered as failed.
+</p>
+
+<p>The exception object that is thrown from a lower level function is transferred to the higher level functions one level at a time and causes the program to finally exit the <code class="d_inline">main()</code> function. The path that the exception takes can be shown as the highlighted path in the following tree:
+</p>
+
+<pre class="mono">     <span class="hilite">▲</span>
+     <span class="hilite">│</span>
+     <span class="hilite">│</span>
+main <span class="hilite">&nbsp;◀───────────┐</span>
+  │               <span class="hilite">│</span>
+  │               <span class="hilite">│</span>
+  ├──▶ makeOmelet <span class="hilite">&nbsp;◀─────┐</span>
+  │      │               <span class="hilite">│</span>
+  │      │               <span class="hilite">│</span>
+  │      ├──▶ prepareAll <span class="hilite">&nbsp;◀──────────┐</span>
+  │      │          │                <span class="hilite">│</span>
+  │      │          │                <span class="hilite">│</span>
+  │      │          ├─▶ prepareEggs  <span class="hilite">X</span> <i>thrown exception</i>
+  │      │          ├─▶ prepareButter
+  │      │          └─▶ preparePan
+  │      │
+  │      ├──▶ cookEggs
+  │      └──▶ cleanAll
+  │
+  └──▶ eatOmelet
+</pre>
+
+<p>The point of the exception mechanism is precisely this behavior of exiting all of the layers of function calls right away.
+</p>
+
+<p>Sometimes it makes sense to <i>catch</i> the thrown exception to find a way to continue the execution of the program. I will introduce the <code class="d_inline">catch</code> keyword below.
+</p>
+
+<h6>When to use <code class="d_inline">throw</code></h6>
+
+<p>Use <code class="d_inline">throw</code> in situations when it is not possible to continue. For example, a function that reads the number of students from a file may throw an exception if this information is not available or incorrect.
+</p>
+
+<p>On the other hand, if the problem is caused by some user action like entering invalid data, it may make more sense to validate the data instead of throwing an exception. Displaying an error message and asking the user to re-enter the data is more appropriate in many cases.
+</p>
+
+<h5 class="subsection"><a id="ix_Exceptions.try" content="try"></a> <a id="ix_Exceptions.catch" content="catch"></a> The <code class="d_inline">try-catch</code> statement to catch exceptions</h5>
+
+<p>As we've seen above, a thrown exception causes the program execution to exit all functions and this finally terminates the whole program.
+</p>
+
+<p>The exception object can be caught by a <code class="d_inline">try-catch</code> statement at any point on its path as it exits the functions. The <code class="d_inline">try-catch</code> statement models the phrase "<i>try</i> to do something, and <i>catch</i> exceptions that may be thrown." Here is the syntax of <code class="d_inline">try-catch</code>:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">try</span> {
+        <span class="d_comment">// the code block that is being executed, where an
+</span>        <span class="d_comment">// exception may be thrown
+</span>
+    } <span class="d_keyword">catch</span> (<i>an_exception_type</i>) {
+        <span class="d_comment">// expressions to execute if an exception of this
+</span>        <span class="d_comment">// type is caught
+</span>
+    } <span class="d_keyword">catch</span> (<i>another_exception_type</i>) {
+        <span class="d_comment">// expressions to execute if an exception of this
+</span>        <span class="d_comment">// other type is caught
+</span>
+    <span class="d_comment">// ... more catch blocks as appropriate ...
+</span>
+    } <span class="d_keyword">finally</span> {
+        <span class="d_comment">// expressions to execute regardless of whether an
+</span>        <span class="d_comment">// exception is thrown
+</span>    }
+</pre>
+
+<p>Let's start with the following program that does not use a <code class="d_inline">try-catch</code> statement at this state. The program reads the value of a die from a file and prints it to the standard output:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">int</span> readDieFromFile() {
+    <span class="d_keyword">auto</span> file = File(<span class="d_string">"the_file_that_contains_the_value"</span>, <span class="d_string">"r"</span>);
+
+    <span class="d_keyword">int</span> die;
+    file.readf(<span class="d_string">" %s"</span>, &amp;die);
+
+    <span class="d_keyword">return</span> die;
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">const</span> <span class="d_keyword">int</span> die = readDieFromFile();
+
+    writeln(<span class="d_string">"Die value: "</span>, die);
+}
+</pre>
+
+<p>Note that the <code class="d_inline">readDieFromFile</code> function is written in a way that ignores error conditions, expecting that the file and the value that it contains are available. In other words, the function is dealing only with its own task instead of paying attention to error conditions. This is a benefit of exceptions: many functions can be written in ways that focus on their actual tasks, rather than focusing on error conditions.
+</p>
+
+<p>Let's start the program when <code class="d_inline">the_file_that_contains_the_value</code> is missing:
+</p>
+
+<pre class="shell">std.exception.ErrnoException@std/stdio.d(286): Cannot open
+file &#96;the_file_that_contains_the_value' in mode &#96;r' (No such
+file or directory)
+</pre>
+
+<p>An exception of type <code class="d_inline">ErrnoException</code> is thrown and the program terminates without printing "Die&nbsp;value:&nbsp;".
+</p>
+
+<p>Let's add an intermediate function to the program that calls <code class="d_inline">readDieFromFile</code> from within a <code class="d_inline">try</code> block and let's have <code class="d_inline">main()</code> call this new function:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">int</span> readDieFromFile() {
+    <span class="d_keyword">auto</span> file = File(<span class="d_string">"the_file_that_contains_the_value"</span>, <span class="d_string">"r"</span>);
+
+    <span class="d_keyword">int</span> die;
+    file.readf(<span class="d_string">" %s"</span>, &amp;die);
+
+    <span class="d_keyword">return</span> die;
+}
+
+<span class="d_keyword">int</span> <span class="hilite">tryReadingFromFile</span>() {
+    <span class="d_keyword">int</span> die;
+
+    <span class="hilite"><span class="d_keyword">try</span></span> {
+        die = readDieFromFile();
+
+    } <span class="hilite"><span class="d_keyword">catch</span></span> (std.exception.ErrnoException exc) {
+        writeln(<span class="d_string">"(Could not read from file; assuming 1)"</span>);
+        die = 1;
+    }
+
+    <span class="d_keyword">return</span> die;
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">const</span> <span class="d_keyword">int</span> die = <span class="hilite">tryReadingFromFile</span>();
+
+    writeln(<span class="d_string">"Die value: "</span>, die);
+}
+</pre>
+
+<p>When we start the program again when <code class="d_inline">the_file_that_contains_the_value</code> is still missing, this time the program does not terminate with an exception:
+</p>
+
+<pre class="shell">(Could not read from file; assuming 1)
+Die value: 1
+</pre>
+
+<p>The new program <i>tries</i> executing <code class="d_inline">readDieFromFile</code> in a <code class="d_inline">try</code> block. If that block executes successfully, the function ends normally with the <code class="d_inline">return die;</code> statement. If the execution of the <code class="d_inline">try</code> block ends with the specified <code class="d_inline">std.exception.ErrnoException</code>, then the program execution enters the <code class="d_inline">catch</code> block.
+</p>
+
+<p>The following is a summary of events when the program is started when the file is missing:
+</p>
+
+<ul><li>like in the previous program, a <code class="d_inline">std.exception.ErrnoException</code> object is thrown (by <code class="d_inline">File()</code>, not by our code),</li>
+<li>this exception is caught by <code class="d_inline">catch</code>,</li>
+<li>the value of 1 is assumed during the normal execution of the <code class="d_inline">catch</code> block,</li>
+<li>and the program continues its normal operations.</li>
+</ul>
+
+<p><code class="d_inline">catch</code> is to catch thrown exceptions to find a way to continue executing the program.
+</p>
+
+<p>As another example, let's go back to the omelet program and add a <code class="d_inline">try-catch</code> statement to its <code class="d_inline">main()</code> function:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> main() {
+    entering(<span class="d_string">"main"</span>, 0);
+
+    <span class="d_keyword">try</span> {
+        makeOmelet(-8);
+        eatOmelet();
+
+    } <span class="d_keyword">catch</span> (Exception exc) {
+        write(<span class="d_string">"Failed to eat omelet: "</span>);
+        writeln('"', exc.msg, '"');
+        writeln(<span class="d_string">"Will eat at neighbor's..."</span>);
+    }
+
+    exiting(<span class="d_string">"main"</span>, 0);
+}
+</pre>
+
+<p>(<i><b>Note:</b> The <code class="d_inline">.msg</code> property will be explained below.</i>)
+</p>
+
+<p>That <code class="d_inline">try</code> block contains two lines of code. Any exception thrown from either of those lines would be caught by the <code class="d_inline">catch</code> block.
+</p>
+
+<pre class="shell">▶ main, first line
+  ▶ makeOmelet, first line
+    ▶ prepareAll, first line
+      ▶ prepareEggs, first line
+Failed to eat omelet: "Cannot take -8 eggs from the fridge"
+Will eat at neighbor's...
+◁ main, last line
+</pre>
+
+<p>As can be seen from the output, the program doesn't terminate because of the thrown exception anymore. It recovers from the error condition and continues executing normally till the end of the <code class="d_inline">main()</code> function.
+</p>
+
+<h6><code class="d_inline">catch</code> blocks are considered sequentially</h6>
+
+<p>The type <code class="d_inline">Exception</code>, which we have used so far in the examples is a general exception type. This type merely specifies that an error occurred in the program. It also contains a message that can explain the error further, but it does not contain information about the <i>type</i> of the error.
+</p>
+
+<p><code class="d_inline">ConvException</code> and <code class="d_inline">ErrnoException</code> that we have seen earlier in this chapter are more specific exception types: the former is about a conversion error, and the latter is about a system error. Like many other exception types in Phobos and as their names suggest, <code class="d_inline">ConvException</code> and <code class="d_inline">ErrnoException</code> are both inherited from the <code class="d_inline">Exception</code> class.
+</p>
+
+<p><code class="d_inline">Exception</code> and its sibling <code class="d_inline">Error</code> are further inherited from <code class="d_inline">Throwable</code>, the most general exception type.
+</p>
+
+<p>Although possible, it is not recommended to catch objects of type <code class="d_inline">Error</code> and objects of types that are inherited from <code class="d_inline">Error</code>. Since it is more general than <code class="d_inline">Error</code>, it is not recommended to catch <code class="d_inline">Throwable</code> either. What should normally be caught are the types that are under the <code class="d_inline">Exception</code> hierarchy, including <code class="d_inline">Exception</code> itself.
+</p>
+
+<pre class="mono">           Throwable <i>(not recommended to catch)</i>
+             ↗   ↖
+    Exception     Error <i>(not recommended to catch)</i>
+     ↗    ↖        ↗    ↖
+   ...    ...    ...    ...
+</pre>
+
+<p><i><b>Note:</b> I will explain the hierarchy representations later in <a href="inheritance.html">the Inheritance chapter</a>. The tree above indicates that <code class="d_inline">Throwable</code> is the most general and <code class="d_inline">Exception</code> and <code class="d_inline">Error</code> are more specific.</i>
+</p>
+
+<p>It is possible to catch exception objects of a particular type. For example, it is possible to catch an <code class="d_inline">ErrnoException</code> object specifically to detect and handle a system error.
+</p>
+
+<p>Exceptions are caught only if they match a type that is specified in a <code class="d_inline">catch</code> block. For example, a catch block that is trying to catch a <code class="d_inline">SpecialExceptionType</code> would not catch an <code class="d_inline">ErrnoException</code>.
+</p>
+
+<p>The type of the exception object that is thrown during the execution of a <code class="d_inline">try</code> block is matched to the types that are specified by the <code class="d_inline">catch</code> blocks, in the order in which the <code class="d_inline">catch</code> blocks are written. If the type of the object matches the type of the <code class="d_inline">catch</code> block, then the exception is considered to be caught by that <code class="d_inline">catch</code> block, and the code that is within that block is executed. Once a match is found, the remaining <code class="d_inline">catch</code> blocks are ignored.
+</p>
+
+<p>Because the <code class="d_inline">catch</code> blocks are matched in order from the first to the last, the <code class="d_inline">catch</code> blocks must be ordered from the most specific exception types to the most general exception types. Accordingly, and if it makes sense to catch that type of exceptions, the <code class="d_inline">Exception</code> type must be specified at the last <code class="d_inline">catch</code> block.
+</p>
+
+<p>For example, a <code class="d_inline">try-catch</code> statement that is trying to catch several specific types of exceptions about student records must order the <code class="d_inline">catch</code> blocks from the most specific to the most general as in the following code:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">try</span> {
+        <span class="d_comment">// operations about student records that may throw ...
+</span>
+    } <span class="d_keyword">catch</span> (StudentIdDigitException exc) {
+
+        <span class="d_comment">// an exception that is specifically about errors with
+</span>        <span class="d_comment">// the digits of student ids
+</span>
+    } <span class="d_keyword">catch</span> (StudentIdException exc) {
+
+        <span class="d_comment">// a more general exception about student ids but not
+</span>        <span class="d_comment">// necessarily about their digits
+</span>
+    } <span class="d_keyword">catch</span> (StudentRecordException exc) {
+
+        <span class="d_comment">// even more general exception about student records
+</span>
+    } <span class="d_keyword">catch</span> (Exception exc) {
+
+        <span class="d_comment">// the most general exception that may not be related
+</span>        <span class="d_comment">// to student records
+</span>
+    }
+</pre>
+
+<h6><a id="ix_Exceptions.finally" content="finally"></a> The <code class="d_inline">finally</code> block</h6>
+
+<p><code class="d_inline">finally</code> is an optional block of the <code class="d_inline">try-catch</code> statement. It includes expressions that should be executed regardless of whether an exception is thrown or not.
+</p>
+
+<p>To see how <code class="d_inline">finally</code> works, let's look at a program that throws an exception 50% of the time:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.random;
+
+<span class="d_keyword">void</span> throwsHalfTheTime() {
+    <span class="d_keyword">if</span> (uniform(0, 2) == 1) {
+        <span class="d_keyword">throw</span> <span class="d_keyword">new</span> Exception(<span class="d_string">"the error message"</span>);
+    }
+}
+
+<span class="d_keyword">void</span> foo() {
+    writeln(<span class="d_string">"the first line of foo()"</span>);
+
+    <span class="d_keyword">try</span> {
+        writeln(<span class="d_string">"the first line of the try block"</span>);
+        throwsHalfTheTime();
+        writeln(<span class="d_string">"the last line of the try block"</span>);
+
+    <span class="d_comment">// ... there may be one or more catch blocks here ...
+</span>
+    } <span class="hilite"><span class="d_keyword">finally</span></span> {
+        writeln(<span class="d_string">"the body of the finally block"</span>);
+    }
+
+    writeln(<span class="d_string">"the last line of foo()"</span>);
+}
+
+<span class="d_keyword">void</span> main() {
+    foo();
+}
+</pre>
+
+<p>The output of the program is the following when the function does not throw:
+</p>
+
+<pre class="shell">the first line of foo()
+the first line of the try block
+the last line of the try block
+<span class="hilite">the body of the finally block</span>
+the last line of foo()
+</pre>
+
+<p>The output of the program is the following when the function does throw:
+</p>
+
+<pre class="shell">the first line of foo()
+the first line of the try block
+<span class="hilite">the body of the finally block</span>
+object.Exception@deneme.d: the error message
+</pre>
+
+<p>As can be seen, although "the last line of the try block" and "the last line of foo()" are not printed, the content of the <code class="d_inline">finally</code> block is still executed when an exception is thrown.
+</p>
+
+<h6>When to use the <code class="d_inline">try-catch</code> statement</h6>
+
+<p>The <code class="d_inline">try-catch</code> statement is useful to catch exceptions to do something special about them.
+</p>
+
+<p>For that reason, the <code class="d_inline">try-catch</code> statement should be used only when there is something special to be done. Do not catch exceptions otherwise and leave them to higher level functions that may want to catch them.
+</p>
+
+<h5 class="subsection">Exception properties</h5>
+
+<p>The information that is automatically printed on the output when the program terminates due to an exception is available as properties of exception objects as well. These properties are provided by the <code class="d_inline">Throwable</code> interface:
+</p>
+
+<ul>
+<li><a id="ix_Exceptions..file" content=".file"></a> <code class="d_inline">.file</code>: The source file where the exception was thrown from</li>
+
+<li><a id="ix_Exceptions..line" content=".line"></a> <code class="d_inline">.line</code>: The line number where the exception was thrown from</li>
+
+<li><a id="ix_Exceptions..msg" content=".msg"></a> <code class="d_inline">.msg</code>: The error message</li>
+
+<li><a id="ix_Exceptions..info" content=".info"></a> <code class="d_inline">.info</code>: The state of the program stack when the exception was thrown</li>
+
+<li><a id="ix_Exceptions..next" content=".next"></a> <code class="d_inline">.next</code>: The next collateral exception</li>
+
+</ul>
+
+<p>We saw that <code class="d_inline">finally</code> blocks are executed when leaving scopes due to exceptions as well. (As we will see in later chapters, the same is true for <code class="d_inline">scope</code> statements and <i>destructors</i> as well.)
+</p>
+
+<p><a id="ix_Exceptions.collateral exception" content="collateral exception"></a> Naturally, such code blocks can throw exceptions as well. Exceptions that are thrown when leaving scopes due to an already thrown exception are called <i>collateral exceptions</i>. Both the main exception and the collateral exceptions are elements of a <i>linked list</i> data structure, where every exception object is accessible through the <code class="d_inline">.next</code> property of the previous exception object. The value of the <code class="d_inline">.next</code> property of the last exception is <code class="d_inline">null</code>. (We will see <code class="d_inline">null</code> in a later chapter.)
+</p>
+
+<p>There are three exceptions that are thrown in the example below: The main exception that is thrown in <code class="d_inline">foo()</code> and the two collateral exceptions that are thrown in the <code class="d_inline">finally</code> blocks of <code class="d_inline">foo()</code> and <code class="d_inline">bar()</code>. The program accesses the collateral exceptions through the <code class="d_inline">.next</code> properties.
+</p>
+
+<p>Some of the concepts that are used in this program will be explained in later chapters. For example, the continuation condition of the <code class="d_inline">for</code> loop that consists solely of <code class="d_inline">exc</code> means <i>as long as <code class="d_inline">exc</code> is not <code class="d_inline">null</code></i>.
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> foo() {
+    <span class="d_keyword">try</span> {
+        <span class="d_keyword">throw</span> <span class="d_keyword">new</span> Exception(<span class="d_string">"Exception thrown in foo"</span>);
+
+    } <span class="d_keyword">finally</span> {
+        <span class="d_keyword">throw</span> <span class="d_keyword">new</span> Exception(
+            <span class="d_string">"Exception thrown in foo's finally block"</span>);
+    }
+}
+
+<span class="d_keyword">void</span> bar() {
+    <span class="d_keyword">try</span> {
+        foo();
+
+    } <span class="d_keyword">finally</span> {
+        <span class="d_keyword">throw</span> <span class="d_keyword">new</span> Exception(
+            <span class="d_string">"Exception thrown in bar's finally block"</span>);
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">try</span> {
+        bar();
+
+    } <span class="d_keyword">catch</span> (Exception caughtException) {
+
+        <span class="d_keyword">for</span> (Throwable exc = caughtException;
+             exc;    <span class="d_comment">// ← Meaning: as long as exc is not 'null'
+</span>             exc = exc<span class="hilite">.next</span>) {
+
+            writefln(<span class="d_string">"error message: %s"</span>, exc<span class="hilite">.msg</span>);
+            writefln(<span class="d_string">"source file  : %s"</span>, exc<span class="hilite">.file</span>);
+            writefln(<span class="d_string">"source line  : %s"</span>, exc<span class="hilite">.line</span>);
+            writeln();
+        }
+    }
+}
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">error message: Exception thrown in foo
+source file  : deneme.d
+source line  : 6
+
+error message: Exception thrown in foo's finally block
+source file  : deneme.d
+source line  : 9
+
+error message: Exception thrown in bar's finally block
+source file  : deneme.d
+source line  : 20
+</pre>
+
+<h5 class="subsection"><a id="ix_Exceptions.error, kinds of" content="error, kinds of"></a> Kinds of errors</h5>
+
+<p>We have seen how useful the exception mechanism is. It enables both the lower and higher level operations to be aborted right away, instead of the program continuing with incorrect or missing data, or behaving in any other incorrect way.
+</p>
+
+<p>This does not mean that every error condition warrants throwing an exception. There may be better things to do depending on the kinds of errors.
+</p>
+
+<h6>User errors</h6>
+
+<p>Some of the errors are caused by the user. As we have seen above, the user may have entered a string like "hello" even though the program has been expecting a number. It may be more appropriate to display an error message and ask the user to enter appropriate data again.
+</p>
+
+<p>Even so, it may be fine to accept and use the data directly without validating the data up front; as long as the code that uses the data would throw anyway. What is important is to be able to notify the user why the data is not suitable.
+</p>
+
+<p>For example, let's look at a program that takes a file name from the user. There are at least two ways of dealing with potentially invalid file names:
+</p>
+
+<ul><li><b>Validating the data before use</b>: We can determine whether the file with the given name exists by calling <code class="d_inline">exists()</code> of the <code class="d_inline">std.file</code> module:
+
+<pre class="d_code">    <span class="d_keyword">if</span> (exists(fileName)) {
+        <span class="d_comment">// yes, the file exists
+</span>
+    } <span class="d_keyword">else</span> {
+        <span class="d_comment">// no, the file doesn't exist
+</span>    }
+</pre>
+
+<p>This gives us the chance to be able to open the data only if it exists. Unfortunately, it is still possible that the file cannot be opened even if <code class="d_inline">exists()</code> returns <code class="d_inline">true</code>, if for example another process on the system deletes or renames the file before this program actually opens it.
+</p>
+
+<p>For that reason, the following method may be more useful.
+</p>
+
+</li>
+
+<li><b>Using the data without first validating it</b>: We can assume that the data is valid and start using it right away, because <code class="d_inline">File</code> would throw an exception if the file cannot be opened anyway.
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.string;
+
+<span class="d_keyword">void</span> useTheFile(string fileName) {
+    <span class="d_keyword">auto</span> file = File(fileName, <span class="d_string">"r"</span>);
+    <span class="d_comment">// ...
+</span>}
+
+string read_string(string prompt) {
+    write(prompt, <span class="d_string">": "</span>);
+    <span class="d_keyword">return</span> strip(readln());
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">bool</span> is_fileUsed = <span class="d_keyword">false</span>;
+
+    <span class="d_keyword">while</span> (!is_fileUsed) {
+        <span class="d_keyword">try</span> {
+            useTheFile(
+                read_string(<span class="d_string">"Please enter a file name"</span>));
+
+            <span class="d_comment">/* If we are at this line, it means that
+             * useTheFile() function has been completed
+             * successfully. This indicates that the file
+             * name was valid.
+             *
+             * We can now set the value of the loop flag to
+             * terminate the while loop. */</span>
+            is_fileUsed = <span class="d_keyword">true</span>;
+            writeln(<span class="d_string">"The file has been used successfully"</span>);
+
+        } <span class="d_keyword">catch</span> (std.exception.ErrnoException exc) {
+            stderr.writeln(<span class="d_string">"This file could not be opened"</span>);
+        }
+    }
+}
+</pre>
+
+</li>
+
+</ul>
+
+<h6>Programmer errors</h6>
+
+<p>Some errors are caused by programmer mistakes. For example, the programmer may think that a function that has just been written will always be called with a value greater than or equal to zero, and this may be true according to the design of the program. The function having still been called with a value less than zero would indicate either a mistake in the design of the program or in the implementation of that design. Both of these can be thought of as programming errors.
+</p>
+
+<p>It is more appropriate to use <code class="d_inline">assert</code> instead of the exception mechanism for errors that are caused by programmer mistakes. (<i><b>Note:</b> We will cover <code class="d_inline">assert</code> in <a href="assert.html">a later chapter</a>.</i>)
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> processMenuSelection(<span class="d_keyword">int</span> selection) {
+    <span class="d_keyword">assert</span>(selection &gt;= 0);
+    <span class="d_comment">// ...
+</span>}
+
+<span class="d_keyword">void</span> main() {
+    processMenuSelection(-1);
+}
+</pre>
+
+<p>The program terminates with an <code class="d_inline">assert</code> failure:
+</p>
+
+<pre class="shell">core.exception.AssertError@<span class="hilite">deneme.d(2)</span>: Assertion failure
+</pre>
+
+<p><code class="d_inline">assert</code> validates program state and prints the file name and line number of the validation if it fails. The message above indicates that the assertion at line 2 of <code class="d_inline">deneme.d</code> has failed.
+</p>
+
+<h6>Unexpected situations</h6>
+
+<p>For unexpected situations that are outside of the two general cases above, it is still appropriate to throw exceptions. If the program cannot continue its execution, there is nothing else to do but to throw.
+</p>
+
+<p>It is up to the higher layer functions that call this function to decide what to do with thrown exceptions. They may catch the exceptions that we throw to remedy the situation.
+</p>
+
+<h5 class="subsection">Summary</h5>
+
+<ul>
+<li>When faced with a user error either warn the user right away or ensure that an exception is thrown; the exception may be thrown anyway by another function when using incorrect data, or you may throw directly.
+</li>
+
+<li>Use <code class="d_inline">assert</code> to validate program logic and implementation. (<i><b>Note:</b> <code class="d_inline">assert</code> will be explained in a later chapter.</i>)
+</li>
+
+<li>When in doubt, throw an exception with <code class="d_inline">throw</code> or <code class="d_inline">enforce()</code>. (<i><b>Note:</b> <code class="d_inline">enforce()</code> will be explained in a later chapter.</i>)
+</li>
+
+<li>Catch exceptions if and only if you can do something useful about that exception. Otherwise, do not encapsulate code with a <code class="d_inline">try-catch</code> statement; instead, leave the exceptions to higher layers of the code that may do something about them.
+</li>
+
+<li>Order the <code class="d_inline">catch</code> blocks from the most specific to the most general.
+</li>
+
+<li>Put the expressions that must always be executed when leaving a scope, in <code class="d_inline">finally</code> blocks.
+</li>
+
+</ul>
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2022 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on Sun May 15 14:08:35 2022
+</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

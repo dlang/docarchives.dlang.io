@@ -1,0 +1,1826 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2022 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>ranges - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='ranges' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5Branges%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/d.en/ranges.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>ranges</h1>
+        
+        
+
+
+
+<p>Ranges are an abstraction of element access. This abstraction enables the use of great number of algorithms over great number of container types. Ranges emphasize how container elements are accessed, as opposed to how the containers are implemented.
+</p>
+
+<p>Ranges are a very simple concept that is based on whether a type defines certain sets of member functions. We have already seen this concept in the <a href="foreach_opapply.html"><code class="d_inline">foreach</code> with Structs and Classes chapter</a>: any type that provides the member functions <code class="d_inline">empty</code>, <code class="d_inline">front</code>, and <code class="d_inline">popFront()</code> can be used with the <code class="d_inline">foreach</code> loop. The set of those three member functions is the requirement of the range type <code class="d_inline">InputRange</code>.
+</p>
+
+<p>I will start introducing ranges with <code class="d_inline">InputRange</code>, the simplest of all the range types. The other ranges require more member functions over <code class="d_inline">InputRange</code>.
+</p>
+
+<p>Before going further, I would like to provide the definitions of containers and algorithms.
+</p>
+
+<p><a id="ix_ranges.container" content="container"></a> <a id="ix_ranges.data structure" content="data structure"></a> <b>Container (data structure):</b> Container is a very useful concept that appears in almost every program. Variables are put together for a purpose and are used together as elements of a container. D's containers are its core features arrays and associative arrays, and special container types that are defined in the <code class="d_inline">std.container</code> module. Every container is implemented as a specific data structure. For example, associative arrays are a <i>hash table</i> implementation.
+</p>
+
+<p>Every data structure stores its elements and provides access to them in ways that are special to that data structure. For example, in the array data structure the elements are stored side by side and accessed by an element index; in the linked list data structure the elements are stored in nodes and are accessed by going through those nodes one by one; in a sorted binary tree data structure, the nodes provide access to the preceding and successive elements through separate branches; etc.
+</p>
+
+<p>In this chapter, I will use the terms <i>container</i> and <i>data structure</i> interchangeably.
+</p>
+
+<p><a id="ix_ranges.algorithm" content="algorithm"></a> <b>Algorithm (function):</b> Processing of data structures for specific purposes in specific ways is called an <i>algorithm</i>. For example, <i>linear search</i> is an algorithm that searches by iterating over a container from the beginning to the end; <i>binary search</i> is an algorithm that searches for an element by eliminating half of the candidates at every step; etc.
+</p>
+
+<p>In this chapter, I will use the terms <i>algorithm</i> and <i>function</i> interchangeably.
+</p>
+
+<p>For most of the samples below, I will use <code class="d_inline">int</code> as the element type and <code class="d_inline">int[]</code> as the container type. In reality, ranges are more powerful when used with templated containers and algorithms. In fact, most of the containers and algorithms that ranges tie together are all templates. I will leave examples of templated ranges to <a href="ranges_more.html">the next chapter</a>.
+</p>
+
+<h5 class="subsection">History</h5>
+
+<p>A very successful library that abstracts algorithms and data structures from each other is the Standard Template Library (STL), which also appears as a part of the C++ standard library. STL provides this abstraction with the <i>iterator</i> concept, which is implemented by C++'s templates.
+</p>
+
+<p>Although they are a very useful abstraction, iterators do have some weaknesses. D's ranges were designed to overcome these weaknesses.
+</p>
+
+<p>Andrei Alexandrescu introduces ranges in his paper <a href="http://www.informit.com/articles/printerfriendly.aspx?p=1407357">On Iteration</a> and demonstrates how they can be superior to iterators.
+</p>
+
+<h5 class="subsection">Ranges are an integral part of D</h5>
+
+<p>D's slices happen to be implementations of the most powerful range <code class="d_inline">RandomAccessRange</code>, and there are many range features in Phobos. It is essential to understand how ranges are used in Phobos.
+</p>
+
+<p>Many Phobos algorithms return temporary range objects. For example, <code class="d_inline">filter()</code>, which chooses elements that are greater than 10 in the following code, actually returns a range object, not an array:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.algorithm;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">int</span>[] values = [ 1, 20, 7, 11 ];
+    writeln(values.filter!(value =&gt; value &gt; 10));
+}
+</pre>
+
+<p><code class="d_inline">writeln</code> uses that range object lazily and accesses the elements as it needs them:
+</p>
+
+<pre class="shell">[20, 11]
+</pre>
+
+<p>That output may suggest that <code class="d_inline">filter()</code> returns an <code class="d_inline">int[]</code> but this is not the case. We can see this from the fact that the following assignment produces a compilation error:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span>[] chosen = values.filter!(value =&gt; value &gt; 10); <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+</pre>
+
+<p>The error message contains the type of the range object:
+</p>
+
+<pre class="shell">Error: cannot implicitly convert expression (filter(values))
+of type <span class="hilite">FilterResult!(__lambda2, int[])</span> to int[]
+</pre>
+
+<p><i><b>Note:</b> The type may be different in the version of Phobos that you are using.</i>
+</p>
+
+<p>It is possible to convert that temporary object to an actual array, as we will see later in the chapter.
+</p>
+
+<h5 class="subsection">Traditional implementations of algorithms</h5>
+
+<p>In traditional implementations of algorithms, the algorithms know how the data structures that they operate on are implemented. For example, the following function that prints the elements of a linked list must know that the nodes of the linked list have members named <code class="d_inline">element</code> and <code class="d_inline">next</code>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Node {
+    <span class="d_keyword">int</span> element;
+    Node * next;
+}
+
+<span class="d_keyword">void</span> print(<span class="d_keyword">const</span>(Node) * list) {
+    <span class="d_keyword">for</span> ( ; list; list = list.<span class="hilite">next</span>) {
+        write(' ', list.<span class="hilite">element</span>);
+    }
+}
+</pre>
+
+<p>Similarly, a function that prints the elements of an array must know that arrays have a <code class="d_inline">length</code> property and their elements are accessed by the <code class="d_inline">[]</code> operator:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> print(<span class="d_keyword">const</span> <span class="d_keyword">int</span>[] array) {
+    <span class="d_keyword">for</span> (<span class="d_keyword">int</span> i = 0; i != array.<span class="hilite">length</span>; ++i) {
+        write(' ', array<span class="hilite">[i]</span>);
+    }
+}
+</pre>
+
+<p><i><b>Note:</b> We know that <code class="d_inline">foreach</code> is more useful when iterating over arrays. As a demonstration of how traditional algorithms are tied to data structures, let's assume that the use of <code class="d_inline">for</code> is justified.</i>
+</p>
+
+<p>Having algorithms tied to data structures makes it necessary to write them specially for each type. For example, the functions find(), sort(), swap(), etc. must be written separately for array, linked list, associative array, binary tree, heap, etc. As a result, N algorithms that support M data structures must be written NxM times. (Note: In reality, the count is less than NxM because not every algorithm can be applied to every data structure; for example, associative arrays cannot be sorted.)
+</p>
+
+<p>Conversely, because ranges abstract algorithms away from data structures, implementing just N algorithms and M data structures would be sufficient. A newly implemented data structure can work with all of the existing algorithms that support the type of range that the new data structure provides, and a newly implemented algorithm can work with all of the existing data structures that support the range type that the new algorithm requires.
+</p>
+
+<h5 class="subsection">Phobos ranges</h5>
+
+<p>The ranges in this chapter are different from number ranges that are written in the form <code class="d_inline">begin..end</code>. We have seen how number ranges are used with the <code class="d_inline">foreach</code> loop and with slices:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">foreach</span> (value; <span class="hilite">3..7</span>) {       <span class="d_comment">// number range,
+</span>                                  <span class="d_comment">// NOT a Phobos range
+</span>
+    <span class="d_keyword">int</span>[] slice = array[<span class="hilite">5..10</span>];   <span class="d_comment">// number range,
+</span>                                  <span class="d_comment">// NOT a Phobos range
+</span></pre>
+
+<p>When I write <i>range</i> in this chapter, I mean a Phobos range .
+</p>
+
+<p>Ranges form a <i>range hierarchy</i>. At the bottom of this hierarchy is the simplest range <code class="d_inline">InputRange</code>. The other ranges bring more requirements on top of the range on which they are based. The following are all of the ranges with their requirements, sorted from the simplest to the more capable:
+</p>
+
+<ul>
+<li><code class="d_inline">InputRange</code>: requires the <code class="d_inline">empty</code>, <code class="d_inline">front</code> and <code class="d_inline">popFront()</code> member functions</li>
+
+<li><code class="d_inline">ForwardRange</code>: additionally requires the <code class="d_inline">save</code> member function</li>
+
+<li><code class="d_inline">BidirectionalRange</code>: additionally requires the <code class="d_inline">back</code> and <code class="d_inline">popBack()</code> member functions</li>
+
+<li><code class="d_inline">RandomAccessRange</code>: additionally requires the <code class="d_inline">[]</code> operator (and another property depending on whether the range is finite or infinite)</li>
+
+</ul>
+
+<p>This hierarchy can be shown as in the following graph. <code class="d_inline">RandomAccessRange</code> has finite and infinite versions:
+</p>
+
+<pre class="mono">                    InputRange
+                        ↑
+                   ForwardRange
+                   ↗         ↖
+     BidirectionalRange    RandomAccessRange (infinite)
+             ↑
+  RandomAccessRange (finite)
+</pre>
+
+<p>The graph above is in the style of class hierarchies where the lowest level type is at the top.
+</p>
+
+<p>Those ranges are about providing element access. There is one more range, which is about element <i>output</i>:
+</p>
+
+<ul><li><code class="d_inline">OutputRange</code>: requires support for the <code class="d_inline">put(range,&nbsp;element)</code> operation</li>
+</ul>
+
+<p>These five range types are sufficient to abstract algorithms from data structures.
+</p>
+
+<h6>Iterating by shortening the range</h6>
+
+<p>Normally, iterating over the elements of a container does not change the container itself. For example, iterating over a slice with <code class="d_inline">foreach</code> or <code class="d_inline">for</code> does not affect the slice:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span>[] slice = [ 10, 11, 12 ];
+
+    <span class="d_keyword">for</span> (<span class="d_keyword">int</span> i = 0; i != slice.length; ++i) {
+        write(' ', slice[i]);
+    }
+
+    <span class="d_keyword">assert</span>(slice.length == 3);  <span class="d_comment">// ← the length doesn't change
+</span></pre>
+
+<p>Another way of iteration requires a different way of thinking: iteration can be achieved by shortening the range from the beginning. In this method, it is always the first element that is used for element access and the first element is <i>popped</i> from the beginning in order to get to the next element:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">for</span> ( ; slice.length; slice = slice[1..$]) {
+        write(' ', <span class="hilite">slice[0]</span>);   <span class="d_comment">// ← always the first element
+</span>    }
+</pre>
+
+<p><i>Iteration</i> is achieved by removing the first element by the <code class="d_inline">slice&nbsp;=&nbsp;slice[1..$]</code> expression. The slice above is completely consumed by going through the following stages:
+</p>
+
+<pre class="mono">[ 10, 11, 12 ]
+    [ 11, 12 ]
+        [ 12 ]
+           [ ]
+</pre>
+
+<p>The iteration concept of Phobos ranges is based on this new thinking of shortening the range from the beginning. (<code class="d_inline">BidirectionalRange</code> and finite <code class="d_inline">RandomAccessRange</code> types can be shortened from the end as well.)
+</p>
+
+<p>Please note that the code above is just to demonstrate this type of iteration; it should not be considered normal to iterate as in that example.
+</p>
+
+<p>Since losing elements just to iterate over a range would not be desired in most cases, a surrogate range may be consumed instead. The following code uses a separate slice to preserve the elements of the original one:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span>[] slice = [ 10, 11, 12 ];
+    <span class="d_keyword">int</span>[] surrogate = slice;
+
+    <span class="d_keyword">for</span> ( ; surrogate.length; <span class="hilite">surrogate = surrogate[1..$]</span>) {
+        write(' ', surrogate[0]);
+    }
+
+    <span class="d_keyword">assert</span>(surrogate.length == 0); <span class="d_comment">// ← surrogate is consumed
+</span>    <span class="d_keyword">assert</span>(slice.length == 3);     <span class="d_comment">// ← slice remains the same
+</span></pre>
+
+<p>This is the method employed by most of the Phobos range functions: they return special range objects to be consumed in order to preserve the original containers.
+</p>
+
+<h5 class="subsection"><a id="ix_ranges.InputRange" content="InputRange"></a> <code class="d_inline">InputRange</code></h5>
+
+<p>This type of range models the type of iteration where elements are accessed in sequence as we have seen in the <code class="d_inline">print()</code> functions above. Most algorithms only require that elements are iterated in the forward direction without needing to look at elements that have already been iterated over. <code class="d_inline">InputRange</code> models the standard input streams of programs as well, where elements are removed from the stream as they are read.
+</p>
+
+<p>For completeness, here are the three functions that <code class="d_inline">InputRange</code> requires:
+</p>
+
+<ul>
+<li><a id="ix_ranges.empty" content="empty"></a> <code class="d_inline">empty</code>: specifies whether the range is empty; it must return <code class="d_inline">true</code> when the range is considered to be empty, and <code class="d_inline">false</code> otherwise</li>
+
+<li><a id="ix_ranges.front" content="front"></a> <code class="d_inline">front</code>: provides access to the element at the beginning of the range</li>
+
+<li><a id="ix_ranges.popFront" content="popFront"></a> <code class="d_inline">popFront()</code>: shortens the range from the beginning by removing the first element</li>
+
+</ul>
+
+<p><i><b>Note:</b> I write <code class="d_inline">empty</code> and <code class="d_inline">front</code> without parentheses, as they can be seen as properties of the range; and <code class="d_inline">popFront()</code> with parentheses as it is a function with side effects.</i>
+</p>
+
+<p>Here is how <code class="d_inline">print()</code> can be implemented by using these range functions:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> print(T)(T range) {
+    <span class="d_keyword">for</span> ( ; !range<span class="hilite">.empty</span>; range<span class="hilite">.popFront()</span>) {
+        write(' ', range<span class="hilite">.front</span>);
+    }
+
+    writeln();
+}
+</pre>
+
+<p>Please also note that <code class="d_inline">print()</code> is now a function template to avoid limiting the range type arbitrarily. <code class="d_inline">print()</code> can now work with any type that provides the three <code class="d_inline">InputRange</code> functions.
+</p>
+
+<h6><code class="d_inline">InputRange</code> example</h6>
+
+<p>Let's redesign the <code class="d_inline">School</code> type that we have seen before, this time as an <code class="d_inline">InputRange</code>. We can imagine <code class="d_inline">School</code> as a <code class="d_inline">Student</code> container so when designed as a range, it can be seen as a range of <code class="d_inline">Student</code>s.
+</p>
+
+<p>In order to keep the example short, let's disregard some important design aspects. Let's
+</p>
+
+<ul>
+<li>implement only the members that are related to this section</li>
+
+<li>design all types as structs</li>
+
+<li>ignore specifiers and qualifiers like <code class="d_inline">private</code>, <code class="d_inline">public</code>, and <code class="d_inline">const</code></li>
+
+<li>not take advantage of contract programming and unit testing</li>
+
+</ul>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.string;
+
+<span class="d_keyword">struct</span> Student {
+    string name;
+    <span class="d_keyword">int</span> number;
+
+    string toString() <span class="d_keyword">const</span> {
+        <span class="d_keyword">return</span> format(<span class="d_string">"%s(%s)"</span>, name, number);
+    }
+}
+
+<span class="d_keyword">struct</span> School {
+    Student[] students;
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> school = School( [ Student(<span class="d_string">"Ebru"</span>, 1),
+                            Student(<span class="d_string">"Derya"</span>, 2) ,
+                            Student(<span class="d_string">"Damla"</span>, 3) ] );
+}
+</pre>
+
+<p>To make <code class="d_inline">School</code> be accepted as an <code class="d_inline">InputRange</code>, we must define the three <code class="d_inline">InputRange</code> member functions.
+</p>
+
+<p>For <code class="d_inline">empty</code> to return <code class="d_inline">true</code> when the range is empty, we can use the length of the <code class="d_inline">students</code> array. When the length of that array is 0, the range is considered empty:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> School {
+    <span class="d_comment">// ...
+</span>
+    <span class="d_keyword">bool</span> empty() <span class="d_keyword">const</span> {
+        <span class="d_keyword">return</span> students.length == 0;
+    }
+}
+</pre>
+
+<p>For <code class="d_inline">front</code> to return the first element of the range, we can return the first element of the array:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> School {
+    <span class="d_comment">// ...
+</span>
+    <span class="d_keyword">ref</span> Student front() {
+        <span class="d_keyword">return</span> students[0];
+    }
+}
+</pre>
+
+<p><i><b>Note:</b> I have used the <code class="d_inline">ref</code> keyword to be able to provide access to the actual element instead of a copy of it. Otherwise the elements would be copied because <code class="d_inline">Student</code> is a struct.</i>
+</p>
+
+<p>For <code class="d_inline">popFront()</code> to shorten the range from the beginning, we can shorten the <code class="d_inline">students</code> array from the beginning:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> School {
+    <span class="d_comment">// ...
+</span>
+    <span class="d_keyword">void</span> popFront() {
+        students = students[1 .. $];
+    }
+}
+</pre>
+
+<p><i><b>Note:</b> As I have mentioned above, it is not normal to lose the original elements from the container just to iterate over them. We will address this issue below by introducing a special range type.</i>
+</p>
+
+<p>These three functions are sufficient to make <code class="d_inline">School</code> to be used as an <code class="d_inline">InputRange</code>. As an example, let's add the following line at the end of <code class="d_inline">main()</code> above to have our new <code class="d_inline">print()</code> function template to use <code class="d_inline">school</code> as a range:
+</p>
+
+<pre class="d_code">    print(school);
+</pre>
+
+<p><code class="d_inline">print()</code> uses that object as an <code class="d_inline">InputRange</code> and prints its elements to the output:
+</p>
+
+<pre class="shell"> Ebru(1) Derya(2) Damla(3)
+</pre>
+
+<p>We have achieved our goal of defining a user type as an <code class="d_inline">InputRange</code>; we have sent it to an algorithm that operates on <code class="d_inline">InputRange</code> types. <code class="d_inline">School</code> is actually ready to be used with algorithms of Phobos or any other library that work with <code class="d_inline">InputRange</code> types. We will see examples of this below.
+</p>
+
+<h6><a id="ix_ranges.slice, as InputRange" content="slice, as InputRange"></a> The <code class="d_inline">std.array</code> module to use slices as ranges</h6>
+
+<p>Merely importing the <code class="d_inline">std.array</code> module makes the most common container type conform to the most capable range type: slices can seamlessly be used as <code class="d_inline">RandomAccessRange</code> objects.
+</p>
+
+<p>The <code class="d_inline">std.array</code> module provides the functions <code class="d_inline">empty</code>, <code class="d_inline">front</code>, <code class="d_inline">popFront()</code> and other range functions for slices. As a result, slices are ready to be used with any range function, for example with <code class="d_inline">print()</code>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> <span class="hilite">std.array</span>;
+
+<span class="d_comment">// ...
+</span>
+    print([ 1, 2, 3, 4 ]);
+</pre>
+
+<p>It is not necessary to import <code class="d_inline">std.array</code> if the <code class="d_inline">std.range</code> module has already been imported.
+</p>
+
+<p>Since it is not possible to remove elements from fixed-length arrays, <code class="d_inline">popFront()</code> cannot be defined for them. For that reason, fixed-length arrays cannot be used as ranges themselves:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> print(T)(T range) {
+    <span class="d_keyword">for</span> ( ; !range.empty; range.popFront()) {  <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+        write(' ', range.front);
+    }
+
+    writeln();
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">int</span>[<span class="hilite">4</span>] array = [ 1, 2, 3, 4 ];
+    print(array);
+}
+</pre>
+
+<p>It would be better if the compilation error appeared on the line where <code class="d_inline">print()</code> is called. This is possible by adding a template constraint to <code class="d_inline">print()</code>. The following template constraint takes advantage of <code class="d_inline">isInputRange</code>, which we will see in the next chapter. By the help of the template constraint, now the compilation error is for the line where <code class="d_inline">print()</code> is called, not for a line where <code class="d_inline">print()</code> is defined:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> print(T)(T range)
+        <span class="d_keyword">if</span> (isInputRange!T) {    <span class="d_comment">// template constraint
+</span>    <span class="d_comment">// ...
+</span>}
+<span class="d_comment">// ...
+</span>    print(array);    <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+</pre>
+
+<p>The elements of a fixed-length array can still be accessed by range functions. What needs to be done is to use a slice of the whole array, not the array itself:
+</p>
+
+<pre class="d_code">    print(array<span class="hilite">[]</span>);    <span class="d_comment">// now compiles
+</span></pre>
+
+<p>Even though slices can be used as ranges, not every range type can be used as an array. When necessary, all of the elements can be copied one by one into an array. <code class="d_inline">std.array.array</code> is a helper function to simplify this task; <code class="d_inline">array()</code> iterates over <code class="d_inline">InputRange</code> ranges, copies the elements, and returns a new array:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.array;
+
+<span class="d_comment">// ...
+</span>
+    <span class="d_comment">// Note: Also taking advantage of UFCS
+</span>    <span class="d_keyword">auto</span> copiesOfStudents = school.<span class="hilite">array</span>;
+    writeln(copiesOfStudents);
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">[Ebru(1), Derya(2), Damla(3)]
+</pre>
+
+<p>Also note the use of <a href="ufcs.html">UFCS</a> in the code above. UFCS goes very well with range algorithms by making code naturally match the execution order of expressions.
+</p>
+
+<h6><a id="ix_ranges.string, as range" content="string, as range"></a> <a id="ix_ranges.dchar, string range" content="dchar, string range"></a> <a id="ix_ranges.decoding, automatic" content="decoding, automatic"></a> Automatic decoding of strings as ranges of <code class="d_inline">dchar</code></h6>
+
+<p>Being character arrays by definition, strings can also be used as ranges just by importing <code class="d_inline">std.array</code>. However, <code class="d_inline">char</code> and <code class="d_inline">wchar</code> strings cannot be used as <code class="d_inline">RandomAccessRange</code>.
+</p>
+
+<p><code class="d_inline">std.array</code> provides a special functionality with all types of strings: Iterating over strings becomes iterating over Unicode code points, not over UTF code units. As a result, strings appear as ranges of Unicode characters.
+</p>
+
+<p>The following strings contain ç and é, which cannot be represented by a single <code class="d_inline">char</code>, and 𝔸 (mathematical double-struck capital A), which cannot be represented by a single <code class="d_inline">wchar</code> (note that these characters may not be displayed correctly in the environment that you are reading this chapter):
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.array;
+
+<span class="d_comment">// ...
+</span>
+    print(<span class="d_string">"abcçdeé𝔸"c</span>);
+    print(<span class="d_string">"abcçdeé𝔸"w</span>);
+    print(<span class="d_string">"abcçdeé𝔸"d</span>);
+</pre>
+
+<p>The output of the program is what we would normally expect from a <i>range of letters</i>:
+</p>
+
+
+<pre class="mono_nobold"> a b c ç d e é 𝔸
+ a b c ç d e é 𝔸
+ a b c ç d e é 𝔸
+</pre>
+
+<p>As you can see, that output does not match what we saw in the <a href="characters.html">Characters</a> and <a href="strings.html">Strings</a> chapters. We have seen in those chapters that <code class="d_inline">string</code> is an alias to an array of <code class="d_inline">immutable(char)</code> and <code class="d_inline">wstring</code> is an alias to an array of <code class="d_inline">immutable(wchar)</code>. Accordingly, one might expect to see UTF code units in the previous output instead of the properly decoded Unicode characters.
+</p>
+
+<p>The reason why the characters are displayed correctly is because when used as ranges, string elements are automatically decoded. As we will see below, the decoded <code class="d_inline">dchar</code> values are not actual elements of the strings but <a href="lvalue_rvalue.html">rvalues</a>.
+</p>
+
+<p>As a reminder, let's consider the following function that treats the strings as arrays of code units:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> <span class="hilite">printElements</span>(T)(T str) {
+    <span class="d_keyword">for</span> (<span class="d_keyword">int</span> i = 0; i != str.length; ++i) {
+        write(' ', str<span class="hilite">[i]</span>);
+    }
+
+    writeln();
+}
+
+<span class="d_comment">// ...
+</span>
+    printElements(<span class="d_string">"abcçdeé𝔸"c</span>);
+    printElements(<span class="d_string">"abcçdeé𝔸"w</span>);
+    printElements(<span class="d_string">"abcçdeé𝔸"d</span>);
+</pre>
+
+<p>When the characters are accessed directly by indexing, the elements of the arrays are not decoded:
+</p>
+
+
+<pre class="mono_nobold"> a b c � � d e � � � � � �
+ a b c ç d e é ��� ���
+ a b c ç d e é 𝔸
+</pre>
+
+<p><a id="ix_ranges.representation, std.string" content="representation, std.string"></a> Automatic decoding is not always the desired behavior. For example, the following program that is trying to assign to the first element of a string cannot be compiled because the return value of <code class="d_inline">.front</code> is an rvalue:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.array;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">char</span>[] s = <span class="d_string">"hello"</span>.dup;
+    s.front = 'H';                   <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+}
+</pre>
+
+<pre class="shell">Error: front(s) is <span class="hilite">not an lvalue</span>
+</pre>
+
+<p>When a range algorithm needs to modify the actual code units of a string (and when doing so does not invalidate the UTF encoding), then the string can be used as a range of <code class="d_inline">ubyte</code> elements by <code class="d_inline">std.string.represention</code>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.array;
+<span class="d_keyword">import</span> std.string;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">char</span>[] s = <span class="d_string">"hello"</span>.dup;
+    s<span class="hilite">.representation</span>.front = 'H';    <span class="d_comment">// compiles
+</span>    <span class="d_keyword">assert</span>(s == <span class="d_string">"Hello"</span>);
+}
+</pre>
+
+<p><code class="d_inline">representation</code> presents the actual elements of <code class="d_inline">char</code>, <code class="d_inline">wchar</code>, and <code class="d_inline">dchar</code> strings as ranges of <code class="d_inline">ubyte</code>, <code class="d_inline">ushort</code>, and <code class="d_inline">uint</code>, respectively.
+</p>
+
+<h6>Ranges without actual elements</h6>
+
+<p>The elements of the <code class="d_inline">School</code> objects were actually stored in the <code class="d_inline">students</code> member slices. So, <code class="d_inline">School.front</code> returned a reference to an existing <code class="d_inline">Student</code> object.
+</p>
+
+<p>One of the powers of ranges is the flexibility of not actually owning elements. <code class="d_inline">front</code> need not return an actual element of an actual container. The returned <i>element</i> can be calculated each time when <code class="d_inline">popFront()</code> is called, and can be used as the value that is returned by <code class="d_inline">front</code>.
+</p>
+
+<p>We have already seen a range without actual elements above: Since <code class="d_inline">char</code> and <code class="d_inline">wchar</code> cannot represent all Unicode characters, the Unicode characters that appear as range elements cannot be actual elements of any <code class="d_inline">char</code> or <code class="d_inline">wchar</code> array. In the case of strings, <code class="d_inline">front</code> returns a <code class="d_inline">dchar</code> that is <i>constructed</i> from the corresponding UTF code units of arrays:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.array;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">dchar</span> letter = <span class="d_string">"é"</span>.front; <span class="d_comment">// The dchar that is returned by
+</span>                              <span class="d_comment">// front is constructed from the
+</span>                              <span class="d_comment">// two chars that represent é
+</span>}
+</pre>
+
+<p>Although the element type of the array is <code class="d_inline">char</code>, the return type of <code class="d_inline">front</code> above is <code class="d_inline">dchar</code>. That <code class="d_inline">dchar</code> is not an element of the array but is an <a href="lvalue_rvalue.html">rvalue</a> decoded as a Unicode character from the elements of the array.
+</p>
+
+<p>Similarly, some ranges do not own any elements but are used for providing access to elements of other ranges. This is a solution to the problem of losing elements while iterating over <code class="d_inline">School</code> objects above. In order to preserve the elements of the actual <code class="d_inline">School</code> objects, a special <code class="d_inline">InputRange</code> can be used.
+</p>
+
+<p>To see how this is done, let's define a new struct named <code class="d_inline">StudentRange</code> and move all of the range member functions from <code class="d_inline">School</code> to this new struct. Note that <code class="d_inline">School</code> itself is not a range anymore:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> School {
+    Student[] students;
+}
+
+<span class="d_keyword">struct</span> StudentRange {
+    Student[] students;
+
+    <span class="d_keyword">this</span>(School school) {
+        <span class="hilite"><span class="d_keyword">this</span>.students = school.students</span>;
+    }
+
+    <span class="d_keyword">bool</span> empty() <span class="d_keyword">const</span> {
+        <span class="d_keyword">return</span> students.length == 0;
+    }
+
+    <span class="d_keyword">ref</span> Student front() {
+        <span class="d_keyword">return</span> students[0];
+    }
+
+    <span class="d_keyword">void</span> popFront() {
+        students = students[1 .. $];
+    }
+}
+</pre>
+
+<p>The new range starts with a member slice that provides access to the students of <code class="d_inline">School</code> and consumes that member slice in <code class="d_inline">popFront()</code>. As a result, the actual slice in <code class="d_inline">School</code> is preserved:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> school = School( [ Student(<span class="d_string">"Ebru"</span>, 1),
+                            Student(<span class="d_string">"Derya"</span>, 2) ,
+                            Student(<span class="d_string">"Damla"</span>, 3) ] );
+
+    print(<span class="hilite">StudentRange</span>(school));
+
+    <span class="d_comment">// The actual array is now preserved:
+</span>    <span class="d_keyword">assert</span>(school.students.length == 3);
+</pre>
+
+<p><i><b>Note:</b> Since all its work is dispatched to its member slice, <code class="d_inline">StudentRange</code> may not be seen as a good example of a range. In fact, assuming that <code class="d_inline">students</code> is an accessible member of <code class="d_inline">School</code>, the user code could have created a slice of <code class="d_inline">School.students</code> directly and could have used that slice as a range.</i>
+</p>
+
+<h6><a id="ix_ranges.infinite range" content="infinite range"></a> Infinite ranges</h6>
+
+<p>Another benefit of not storing elements as actual members is the ability to create infinite ranges.
+</p>
+
+<p>Making an infinite range is as simple as having <code class="d_inline">empty</code> always return <code class="d_inline">false</code>. Since it is constant, <code class="d_inline">empty</code> need not even be a function and can be defined as an <code class="d_inline">enum</code> value:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">enum</span> empty = <span class="d_keyword">false</span>;                   <span class="d_comment">// ← infinite range
+</span></pre>
+
+<p>Another option is to use an immutable <code class="d_inline">static</code> member:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">static</span> <span class="d_keyword">immutable</span> empty = <span class="d_keyword">false</span>;       <span class="d_comment">// same as above
+</span></pre>
+
+<p>As an example of this, let's design a range that represents the Fibonacci series. Despite having only two <code class="d_inline">int</code> members, the following range can be used as the infinite Fibonacci series:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> FibonacciSeries
+{
+    <span class="d_keyword">int</span> current = 0;
+    <span class="d_keyword">int</span> next = 1;
+
+    <span class="d_keyword">enum</span> empty = <span class="d_keyword">false</span>;   <span class="d_comment">// ← infinite range
+</span>
+    <span class="d_keyword">int</span> front() <span class="d_keyword">const</span> {
+        <span class="d_keyword">return</span> current;
+    }
+
+    <span class="d_keyword">void</span> popFront() {
+        <span class="d_keyword">const</span> nextNext = current + next;
+        current = next;
+        next = nextNext;
+    }
+}
+</pre>
+
+<p><i><b>Note:</b> Although it is infinite, because the members are of type <code class="d_inline">int</code>, the elements of this Fibonacci series would be wrong beyond <code class="d_inline">int.max</code>.</i>
+</p>
+
+<p>Since <code class="d_inline">empty</code> is always <code class="d_inline">false</code> for <code class="d_inline">FibonacciSeries</code> objects, the <code class="d_inline">for</code> loop in <code class="d_inline">print()</code> never terminates for them:
+</p>
+
+<pre class="d_code">    print(FibonacciSeries());    <span class="d_comment">// never terminates
+</span></pre>
+
+<p>An infinite range is useful when the range need not be consumed completely right away. We will see how to use only some of the elements of a <code class="d_inline">FibonacciSeries</code> below.
+</p>
+
+<h6>Functions that return ranges</h6>
+
+<p>Earlier, we have created a <code class="d_inline">StudentRange</code> object by explicitly writing <code class="d_inline">StudentRange(school)</code>.
+</p>
+
+<p><a id="ix_ranges.convenience function" content="convenience function"></a> In most cases, a convenience function that returns the object of such a range is used instead. For example, a function with the whole purpose of returning a <code class="d_inline">StudentRange</code> would simplify the code:
+</p>
+
+<pre class="d_code">StudentRange studentsOf(<span class="d_keyword">ref</span> School school) {
+    <span class="d_keyword">return</span> StudentRange(school);
+}
+
+<span class="d_comment">// ...
+</span>
+    <span class="d_comment">// Note: Again, taking advantage of UFCS
+</span>    print(school.<span class="hilite">studentsOf</span>);
+</pre>
+
+<p>This is a convenience over having to remember and spell out the names of range types explicitly, which can get quite complicated in practice.
+</p>
+
+<p><a id="ix_ranges.take, std.range" content="take, std.range"></a> We can see an example of this with the simple <code class="d_inline">std.range.take</code> function. <code class="d_inline">take()</code> is a function that provides access to a specified number of elements of a range, from the beginning. In reality, this functionality is not achieved by the <code class="d_inline">take()</code> function itself, but by a special range object that it returns. This fact need not be explicit when using <code class="d_inline">take()</code>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.range;
+
+<span class="d_comment">// ...
+</span>
+    <span class="d_keyword">auto</span> school = School( [ Student(<span class="d_string">"Ebru"</span>, 1),
+                            Student(<span class="d_string">"Derya"</span>, 2) ,
+                            Student(<span class="d_string">"Damla"</span>, 3) ] );
+
+    print(school.studentsOf.<span class="hilite">take(2)</span>);
+</pre>
+
+<p><code class="d_inline">take()</code> returns a temporary range object above, which provides access to the first 2 elements of <code class="d_inline">school</code>. In turn, <code class="d_inline">print()</code> uses that object and produces the following output:
+</p>
+
+<pre class="shell"> Ebru(1) Derya(2)
+</pre>
+
+<p>The operations above still don't make any changes to <code class="d_inline">school</code>; it still has 3 elements:
+</p>
+
+<pre class="d_code">    print(school.studentsOf.take(2));
+    <span class="d_keyword">assert</span>(school.students.length == 3);
+</pre>
+
+<p>The specific types of the range objects that are returned by functions like <code class="d_inline">take()</code> are not important. These types may sometimes be exposed in error messages, or we can print them ourselves with the help of <code class="d_inline">typeof</code> and <code class="d_inline">stringof</code>:
+</p>
+
+<pre class="d_code">    writeln(<span class="d_keyword">typeof</span>(school.studentsOf.take(2)).stringof);
+</pre>
+
+<p>According to the output, <code class="d_inline">take()</code> returns an instance of a template named <code class="d_inline">Take</code>:
+</p>
+
+<pre class="shell">Take!(StudentRange)
+</pre>
+
+<h6><a id="ix_ranges.std.range" content="std.range"></a> <a id="ix_ranges.std.algorithm" content="std.algorithm"></a> <code class="d_inline">std.range</code> and <code class="d_inline">std.algorithm</code> modules</h6>
+
+<p>A great benefit of defining our types as ranges is being able to use them not only with our own functions, but with Phobos and other libraries as well.
+</p>
+
+<p><code class="d_inline">std.range</code> includes a large number of range functions, structs, and classes. <code class="d_inline">std.algorithm</code> includes many algorithms that are commonly found also in the standard libraries of other languages.
+</p>
+
+<p><a id="ix_ranges.swapFront, std.algorithm" content="swapFront, std.algorithm"></a> To see an example of how our types can be used with standard modules, let's use <code class="d_inline">School</code> with the <code class="d_inline">std.algorithm.swapFront</code> algorithm. <code class="d_inline">swapFront()</code> swaps the front elements of two <code class="d_inline">InputRange</code> ranges. (It requires that the front elements of the two ranges are swappable. Arrays satisfy that condition.)
+</p>
+
+<p>
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.algorithm;
+
+<span class="d_comment">// ...
+</span>
+    <span class="d_keyword">auto</span> turkishSchool = School( [ Student(<span class="d_string">"Ebru"</span>, 1),
+                                   Student(<span class="d_string">"Derya"</span>, 2) ,
+                                   Student(<span class="d_string">"Damla"</span>, 3) ] );
+
+    <span class="d_keyword">auto</span> americanSchool = School( [ Student(<span class="d_string">"Mary"</span>, 10),
+                                    Student(<span class="d_string">"Jane"</span>, 20) ] );
+
+    <span class="hilite">swapFront</span>(turkishSchool.studentsOf,
+              americanSchool.studentsOf);
+
+    print(turkishSchool.studentsOf);
+    print(americanSchool.studentsOf);
+</pre>
+
+<p>The first elements of the two schools are swapped:
+</p>
+
+<pre class="shell"> <span class="hilite">Mary(10)</span> Derya(2) Damla(3)
+ <span class="hilite">Ebru(1)</span> Jane(20)
+</pre>
+
+<p><a id="ix_ranges.filter, std.algorithm" content="filter, std.algorithm"></a> As another example, let's now look at the <code class="d_inline">std.algorithm.filter</code> algorithm. <code class="d_inline">filter()</code> returns a special range that filters out elements that do not satisfy a specific condition (a <i>predicate</i>). The operation of filtering out the elements only affects accessing the elements; the original range is preserved.
+</p>
+
+<p><a id="ix_ranges.predicate" content="predicate"></a> Predicates are expressions that must evaluate to <code class="d_inline">true</code> for the elements that are considered to satisfy a condition, and <code class="d_inline">false</code> for the elements that do not. There are a number of ways of specifying the predicate that <code class="d_inline">filter()</code> should use. As we have seen in earlier examples, one way is to use a lambda expression. The parameter <code class="d_inline">a</code> below represents each student:
+</p>
+
+<pre class="d_code">    school.studentsOf.filter!(a =&gt; a.number % 2)
+</pre>
+
+<p>The predicate above selects the elements of the range <code class="d_inline">school.studentsOf</code> that have odd numbers.
+</p>
+
+<p>Like <code class="d_inline">take()</code>, <code class="d_inline">filter()</code> returns a special range object as well. That range object in turn can be passed to other range functions. For example, it can be passed to <code class="d_inline">print()</code>:
+</p>
+
+<pre class="d_code">    print(school.studentsOf.filter!(a =&gt; a.number % 2));
+</pre>
+
+<p>That expression can be explained as <i>start with the range <code class="d_inline">school.studentsOf</code>, construct a range object that will filter out the elements of that initial range, and pass the new range object to <code class="d_inline">print()</code></i>.
+</p>
+
+<p>The output consists of students with odd numbers:
+</p>
+
+<pre class="shell"> Ebru(1) Damla(3)
+</pre>
+
+<p>As long as it returns <code class="d_inline">true</code> for the elements that satisfy the condition, the predicate can also be specified as a function:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.array;
+
+<span class="d_comment">// ...
+</span>
+    <span class="d_keyword">bool</span> startsWithD(Student student) {
+        <span class="d_keyword">return</span> student.name.front == 'D';
+    }
+
+    print(school.studentsOf.filter!startsWithD);
+</pre>
+
+<p>The predicate function above returns <code class="d_inline">true</code> for students having names starting with the letter D, and <code class="d_inline">false</code> for the others.
+</p>
+
+<p><i><b>Note:</b> Using <code class="d_inline">student.name[0]</code> would have meant the first UTF-8 code unit, not the first letter. As I have mentioned above, <code class="d_inline">front</code> uses <code class="d_inline">name</code> as a range and always returns the first Unicode character.</i>
+</p>
+
+<p>This time the students whose names start with D are selected and printed:
+</p>
+
+<pre class="shell"> Derya(2) Damla(3)
+</pre>
+
+<p><a id="ix_ranges.generate, std.range" content="generate, std.range"></a> <code class="d_inline">generate()</code>, a convenience function template of the <code class="d_inline">std.range</code> module, makes it easy to present values returned from a function as the elements of an <code class="d_inline">InputRange</code>. It takes any callable entity (function pointer, delegate, etc.) and returns an <code class="d_inline">InputRange</code> object conceptually consisting of the values that are returned from that callable entity.
+</p>
+
+<p>The returned range object is infinite. Every time the <code class="d_inline">front</code> property of that range object is accessed, the original callable entity is called to get a new <i>element</i> from it. The <code class="d_inline">popFront()</code> function of the range object does not perform any work.
+</p>
+
+<p>For example, the following range object <code class="d_inline">diceThrower</code> can be used as an infinite range:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.range;
+<span class="d_keyword">import</span> std.random;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> diceThrower = <span class="hilite">generate</span>!(() =&gt; uniform(0, 6));
+    writeln(diceThrower.take(10));
+}
+</pre>
+
+<pre class="shell">[1, 0, 3, 5, 5, 1, 5, 1, 0, 4]
+</pre>
+
+<h6><a id="ix_ranges.lazy range" content="lazy range"></a> Laziness</h6>
+
+<p>Another benefit of functions' returning range objects is that, those objects can be used lazily. Lazy ranges produce their elements one at a time and only when needed. This may be essential for execution speed and memory consumption. Indeed, the fact that infinite ranges can even exist is made possible by ranges being lazy.
+</p>
+
+<p>Lazy ranges produce their elements one at a time and only when needed. We see an example of this with the <code class="d_inline">FibonacciSeries</code> range: The elements are calculated by <code class="d_inline">popFront()</code> only as they are needed. If <code class="d_inline">FibonacciSeries</code> were an eager range and tried to produce all of the elements up front, it could never end or find room for the elements that it produced.
+</p>
+
+<p>Another problem of eager ranges is the fact that they would have to spend time and space for elements that would perhaps never going to be used.
+</p>
+
+<p>Like most of the algorithms in Phobos, <code class="d_inline">take()</code> and <code class="d_inline">filter()</code> benefit from laziness. For example, we can pass <code class="d_inline">FibonacciSeries</code> to <code class="d_inline">take()</code> and have it generate a finite number of elements:
+</p>
+
+<pre class="d_code">    print(FibonacciSeries().take(10));
+</pre>
+
+<p>Although <code class="d_inline">FibonacciSeries</code> is infinite, the output contains only the first 10 numbers:
+</p>
+
+<pre class="shell"> 0 1 1 2 3 5 8 13 21 34
+</pre>
+
+<h5 class="subsection"><a id="ix_ranges.ForwardRange" content="ForwardRange"></a> <code class="d_inline">ForwardRange</code></h5>
+
+<p><code class="d_inline">InputRange</code> models a range where elements are taken out of the range as they are iterated over.
+</p>
+
+<p>Some ranges are capable of saving their states, as well as operating as an <code class="d_inline">InputRange</code>. For example, <code class="d_inline">FibonacciSeries</code> objects can save their states because these objects can freely be copied and the two copies continue their lives independently from each other.
+</p>
+
+<p><a id="ix_ranges.save" content="save"></a> <code class="d_inline">ForwardRange</code> provides the <code class="d_inline">save</code> member function, which is expected to return a copy of the range. The copy that <code class="d_inline">save</code> returns must operate independently from the range object that it was copied from: iterating over one copy must not affect the other copy.
+</p>
+
+<p>Importing <code class="d_inline">std.array</code> automatically makes slices become <code class="d_inline">ForwardRange</code> ranges.
+</p>
+
+<p>In order to implement <code class="d_inline">save</code> for <code class="d_inline">FibonacciSeries</code>, we can simply return a copy of the object:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> FibonacciSeries {
+<span class="d_comment">// ...
+</span>
+    FibonacciSeries save() <span class="d_keyword">const</span> {
+        <span class="d_keyword">return</span> <span class="d_keyword">this</span>;
+    }
+}
+</pre>
+
+<p>The returned copy is a separate range that would continue from the point where it was copied from.
+</p>
+
+<p><a id="ix_ranges.popFrontN, std.range" content="popFrontN, std.range"></a> We can demonstrate that the copied object is independent from the actual range with the following program. The algorithm <code class="d_inline">std.range.popFrontN()</code> in the following code removes a specified number of elements from the specified range:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.range;
+
+<span class="d_comment">// ...
+</span>
+<span class="d_keyword">void</span> report(T)(<span class="d_keyword">const</span> <span class="d_keyword">dchar</span>[] title, <span class="d_keyword">const</span> <span class="d_keyword">ref</span> T range) {
+    writefln(<span class="d_string">"%40s: %s"</span>, title, range.take(5));
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> range = FibonacciSeries();
+    report(<span class="d_string">"Original range"</span>, range);
+
+    range.popFrontN(2);
+    report(<span class="d_string">"After removing two elements"</span>, range);
+
+    <span class="d_keyword">auto</span> theCopy = <span class="hilite">range.save</span>;
+    report(<span class="d_string">"The copy"</span>, theCopy);
+
+    range.popFrontN(3);
+    report(<span class="d_string">"After removing three more elements"</span>, range);
+    report(<span class="d_string">"The copy"</span>, theCopy);
+}
+</pre>
+
+<p>The output of the program shows that removing elements from the range does not affect its saved copy:
+</p>
+
+<pre class="shell">                          Original range: [0, 1, 1, 2, 3]
+             After removing two elements: [1, 2, 3, 5, 8]
+                                <span class="hilite">The copy: [1, 2, 3, 5, 8]</span>
+      After removing three more elements: [5, 8, 13, 21, 34]
+                                <span class="hilite">The copy: [1, 2, 3, 5, 8]</span>
+</pre>
+
+<p>Also note that the range is passed directly to <code class="d_inline">writefln</code> in <code class="d_inline">report()</code>. Like our <code class="d_inline">print()</code> function, the output functions of the <code class="d_inline">stdio</code> module can take <code class="d_inline">InputRange</code> objects. I will use <code class="d_inline">stdio</code>'s output functions from now on.
+</p>
+
+<p><a id="ix_ranges.cycle, std.range" content="cycle, std.range"></a> An algorithm that works with <code class="d_inline">ForwardRange</code> is <code class="d_inline">std.range.cycle</code>. <code class="d_inline">cycle()</code> iterates over the elements of a range repeatedly from the beginning to the end. In order to be able to start over from the beginning it must be able to save a copy of the initial state of the range, so it requires a <code class="d_inline">ForwardRange</code>.
+</p>
+
+<p>Since <code class="d_inline">FibonacciSeries</code> is now a <code class="d_inline">ForwardRange</code>, we can try <code class="d_inline">cycle()</code> with a <code class="d_inline">FibonacciSeries</code> object; but in order to avoid having <code class="d_inline">cycle()</code> iterate over an infinite range, and as a result never find the end of it, we must first make a finite range by passing <code class="d_inline">FibonacciSeries</code> through <code class="d_inline">take()</code>:
+</p>
+
+<pre class="d_code">    writeln(FibonacciSeries().take(5).cycle.take(20));
+</pre>
+
+<p>In order to make the resultant range finite as well, the range that is returned by <code class="d_inline">cycle</code> is also passed through <code class="d_inline">take()</code>. The output consists of <i>the first twenty elements of cycling through the first five elements of <code class="d_inline">FibonacciSeries</code></i>:
+</p>
+
+<pre class="shell">[0, 1, 1, 2, 3, 0, 1, 1, 2, 3, 0, 1, 1, 2, 3, 0, 1, 1, 2, 3]
+</pre>
+
+<p>We could have defined intermediate variables as well. The following is an equivalent of the single-line code above:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> series                   = FibonacciSeries();
+    <span class="d_keyword">auto</span> firstPart                = series.take(5);
+    <span class="d_keyword">auto</span> cycledThrough            = firstPart.cycle;
+    <span class="d_keyword">auto</span> firstPartOfCycledThrough = cycledThrough.take(20);
+
+    writeln(firstPartOfCycledThrough);
+</pre>
+
+<p>I would like to point out the importance of laziness one more time: The first four lines above merely construct range objects that will eventually produce the elements. The numbers that are part of the result are calculated by <code class="d_inline">FibonacciSeries.popFront()</code> as needed.
+</p>
+
+<p><i><b>Note:</b> Although we have started with <code class="d_inline">FibonacciSeries</code> as a <code class="d_inline">ForwardRange</code>, we have actually passed the result of <code class="d_inline">FibonacciSeries().take(5)</code> to <code class="d_inline">cycle()</code>. <code class="d_inline">take()</code> is adaptive: the range that it returns is a <code class="d_inline">ForwardRange</code> if its parameter is a <code class="d_inline">ForwardRange</code>. We will see how this is accomplished with <code class="d_inline">isForwardRange</code> in the next chapter.</i>
+</p>
+
+<h5 class="subsection"><a id="ix_ranges.BidirectionalRange" content="BidirectionalRange"></a> <code class="d_inline">BidirectionalRange</code></h5>
+
+<p><a id="ix_ranges.back" content="back"></a> <a id="ix_ranges.popBack" content="popBack"></a> <code class="d_inline">BidirectionalRange</code> provides two member functions over the member functions of <code class="d_inline">ForwardRange</code>. <code class="d_inline">back</code> is similar to <code class="d_inline">front</code>: it provides access to the last element of the range. <code class="d_inline">popBack()</code> is similar to <code class="d_inline">popFront()</code>: it removes the last element from the range.
+</p>
+
+<p>Importing <code class="d_inline">std.array</code> automatically makes slices become <code class="d_inline">BidirectionalRange</code> ranges.
+</p>
+
+<p><a id="ix_ranges.retro, std.range" content="retro, std.range"></a> A good <code class="d_inline">BidirectionalRange</code> example is the <code class="d_inline">std.range.retro</code> function. <code class="d_inline">retro()</code> takes a <code class="d_inline">BidirectionalRange</code> and ties its <code class="d_inline">front</code> to <code class="d_inline">back</code>, and <code class="d_inline">popFront()</code> to <code class="d_inline">popBack()</code>. As a result, the original range is iterated over in reverse order:
+</p>
+
+<pre class="d_code">    writeln([ 1, 2, 3 ].retro);
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">[3, 2, 1]
+</pre>
+
+<p>Let's define a range that behaves similarly to the special range that <code class="d_inline">retro()</code> returns. Although the following range has limited functionality, it shows how powerful ranges are:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.array;
+<span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">struct</span> Reversed {
+    <span class="d_keyword">int</span>[] range;
+
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span>[] range) {
+        <span class="d_keyword">this</span>.range = range;
+    }
+
+    <span class="d_keyword">bool</span> empty() <span class="d_keyword">const</span> {
+        <span class="d_keyword">return</span> range.empty;
+    }
+
+    <span class="d_keyword">int</span> <span class="hilite">front</span>() <span class="d_keyword">const</span> {
+        <span class="d_keyword">return</span> range.<span class="hilite">back</span>;  <span class="d_comment">// ← reverse
+</span>    }
+
+    <span class="d_keyword">int</span> back() <span class="d_keyword">const</span> {
+        <span class="d_keyword">return</span> range.front; <span class="d_comment">// ← reverse
+</span>    }
+
+    <span class="d_keyword">void</span> popFront() {
+        range.popBack();    <span class="d_comment">// ← reverse
+</span>    }
+
+    <span class="d_keyword">void</span> popBack() {
+        range.popFront();   <span class="d_comment">// ← reverse
+</span>    }
+}
+
+<span class="d_keyword">void</span> main() {
+    writeln(Reversed([ 1, 2, 3]));
+}
+</pre>
+
+<p>The output is the same as <code class="d_inline">retro()</code>:
+</p>
+
+<pre class="shell">[3, 2, 1]
+</pre>
+
+<h5 class="subsection"><a id="ix_ranges.RandomAccessRange" content="RandomAccessRange"></a> <code class="d_inline">RandomAccessRange</code></h5>
+
+<p><a id="ix_ranges.opIndex" content="opIndex"></a> <code class="d_inline">RandomAccessRange</code> represents ranges that allow accessing elements by the <code class="d_inline">[]</code> operator. As we have seen in the <a href="operator_overloading.html">Operator Overloading chapter</a>, <code class="d_inline">[]</code> operator is defined by the <code class="d_inline">opIndex()</code> member function.
+</p>
+
+<p>Importing <code class="d_inline">std.array</code> module makes slices become <code class="d_inline">RandomAccessRange</code> ranges only if possible. For example, since UTF-8 and UTF-16 encodings do not allow accessing Unicode characters by an index, <code class="d_inline">char</code> and <code class="d_inline">wchar</code> arrays cannot be used as <code class="d_inline">RandomAccessRange</code> ranges of Unicode characters. On the other hand, since the codes of the UTF-32 encoding correspond one-to-one to Unicode character codes, <code class="d_inline">dchar</code> arrays can be used as <code class="d_inline">RandomAccessRange</code> ranges of Unicode characters.
+</p>
+
+<p><a id="ix_ranges.constant time access" content="constant time access"></a> It is natural that every type would define the <code class="d_inline">opIndex()</code> member function according to its functionality. However, computer science has an expectation on its algorithmic complexity: random access must take <i>constant time</i>. Constant time access means that the time spent when accessing an element is independent of the number of elements in the container. Therefore, no matter how large the range is, element access should not depend on the length of the range.
+</p>
+
+<p>In order to be considered a <code class="d_inline">RandomAccessRange</code>, <i>one</i> of the following conditions must also be satisfied:
+</p>
+
+<ul><li>to be an infinite <code class="d_inline">ForwardRange</code></li>
+</ul>
+
+<p>or
+</p>
+
+<ul><li><a id="ix_ranges.length, BidirectionalRange" content="length, BidirectionalRange"></a> to be a <code class="d_inline">BidirectionalRange</code> that also provides the <code class="d_inline">length</code> property</li>
+</ul>
+
+<p>Depending on the condition that is satisfied, the range is either infinite or finite.
+</p>
+
+<h6>Infinite <code class="d_inline">RandomAccessRange</code></h6>
+
+<p>The following are all of the requirements of a <code class="d_inline">RandomAccessRange</code> that is based on an <i>infinite <code class="d_inline">ForwardRange</code></i>:
+</p>
+
+<ul><li><code class="d_inline">empty</code>, <code class="d_inline">front</code> and <code class="d_inline">popFront()</code> that <code class="d_inline">InputRange</code> requires</li>
+<li><code class="d_inline">save</code> that <code class="d_inline">ForwardRange</code> requires</li>
+<li><code class="d_inline">opIndex()</code> that <code class="d_inline">RandomAccessRange</code> requires</li>
+<li>the value of <code class="d_inline">empty</code> to be known at compile time as <code class="d_inline">false</code></li>
+</ul>
+
+<p>We were able to define <code class="d_inline">FibonacciSeries</code> as a <code class="d_inline">ForwardRange</code>. However, <code class="d_inline">opIndex()</code> cannot be implemented to operate at constant time for <code class="d_inline">FibonacciSeries</code> because accessing an element requires accessing all of the previous elements first.
+</p>
+
+<p>As an example where <code class="d_inline">opIndex()</code> can operate at constant time, let's define an infinite range that consists of squares of integers. Although the following range is infinite, accessing any one of its elements can happen at constant time:
+</p>
+
+<pre class="d_code"><span class="d_keyword">class</span> SquaresRange {
+    <span class="d_keyword">int</span> first;
+
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> first = 0) {
+        <span class="d_keyword">this</span>.first = first;
+    }
+
+    <span class="d_keyword">enum</span> empty = <span class="d_keyword">false</span>;
+
+    <span class="d_keyword">int</span> front() <span class="d_keyword">const</span> {
+        <span class="d_keyword">return</span> opIndex(0);
+    }
+
+    <span class="d_keyword">void</span> popFront() {
+        ++first;
+    }
+
+    SquaresRange save() <span class="d_keyword">const</span> {
+        <span class="d_keyword">return</span> <span class="d_keyword">new</span> SquaresRange(first);
+    }
+
+    <span class="d_keyword">int</span> opIndex(size_t index) <span class="d_keyword">const</span> {
+         <span class="d_comment">/* This function operates at constant time */</span>
+        <span class="d_keyword">immutable</span> integerValue = first + <span class="d_keyword">cast</span>(<span class="d_keyword">int</span>)index;
+        <span class="d_keyword">return</span> integerValue * integerValue;
+    }
+}
+</pre>
+
+<p><i><b>Note:</b> It would make more sense to define <code class="d_inline">SquaresRange</code> as a <code class="d_inline">struct</code>.</i>
+</p>
+
+<p>Although no space has been allocated for the elements of this range, the elements can be accessed by the <code class="d_inline">[]</code> operator:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> squares = <span class="d_keyword">new</span> SquaresRange();
+
+    writeln(squares<span class="hilite">[5]</span>);
+    writeln(squares<span class="hilite">[10]</span>);
+</pre>
+
+<p>The output contains the elements at indexes 5 and 10:
+</p>
+
+<pre class="shell">25
+100
+</pre>
+
+<p>The element with index 0 should always represent the first element of the range. We can take advantage of <code class="d_inline">popFrontN()</code> when testing whether this really is the case:
+</p>
+
+<pre class="d_code">    squares.popFrontN(5);
+    writeln(squares<span class="hilite">[0]</span>);
+</pre>
+
+<p>The first 5 elements of the range are 0, 1, 4, 9 and 16; the squares of 0, 1, 2, 3 and 4. After removing those, the square of the next value becomes the first element of the range:
+</p>
+
+<pre class="shell">25
+</pre>
+
+<p>Being a <code class="d_inline">RandomAccessRange</code> (the most functional range), <code class="d_inline">SquaresRange</code> can also be used as other types of ranges. For example, as an <code class="d_inline">InputRange</code> when passing to <code class="d_inline">filter()</code>:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">bool</span> are_lastTwoDigitsSame(<span class="d_keyword">int</span> value) {
+        <span class="d_comment">/* Must have at least two digits */</span>
+        <span class="d_keyword">if</span> (value &lt; 10) {
+            <span class="d_keyword">return</span> <span class="d_keyword">false</span>;
+        }
+
+        <span class="d_comment">/* Last two digits must be divisible by 11 */</span>
+        <span class="d_keyword">immutable</span> lastTwoDigits = value % 100;
+        <span class="d_keyword">return</span> (lastTwoDigits % 11) == 0;
+    }
+
+    writeln(squares.take(50).filter!are_lastTwoDigitsSame);
+</pre>
+
+<p>The output consists of elements among the first 50, where last two digits are the same:
+</p>
+
+<pre class="shell">[100, 144, 400, 900, 1444, 1600]
+</pre>
+
+<h6>Finite <code class="d_inline">RandomAccessRange</code></h6>
+
+<p>The following are all of the requirements of a <code class="d_inline">RandomAccessRange</code> that is based on a <i>finite <code class="d_inline">BidirectionalRange</code></i>:
+</p>
+
+<ul><li><code class="d_inline">empty</code>, <code class="d_inline">front</code> and <code class="d_inline">popFront()</code> that <code class="d_inline">InputRange</code> requires</li>
+<li><code class="d_inline">save</code> that <code class="d_inline">ForwardRange</code> requires</li>
+<li><code class="d_inline">back</code> and <code class="d_inline">popBack()</code> that <code class="d_inline">BidirectionalRange</code> requires</li>
+<li><code class="d_inline">opIndex()</code> that <code class="d_inline">RandomAccessRange</code> requires</li>
+<li><code class="d_inline">length</code>, which provides the length of the range</li>
+</ul>
+
+<p><a id="ix_ranges.chain, std.range" content="chain, std.range"></a> As an example of a finite <code class="d_inline">RandomAccessRange</code>, let's define a range that works similarly to <code class="d_inline">std.range.chain</code>. <code class="d_inline">chain()</code> presents the elements of a number of separate ranges as if they are elements of a single larger range. Although <code class="d_inline">chain()</code> works with any type of element and any type of range, to keep the example short, let's implement a range that works only with <code class="d_inline">int</code> slices.
+</p>
+
+<p>Let's name this range <code class="d_inline">Together</code> and expect the following behavior from it:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> range = Together([ 1, 2, 3 ], [ 101, 102, 103]);
+    writeln(range[4]);
+</pre>
+
+<p>When constructed with the two separate arrays above, <code class="d_inline">range</code> should present all of those elements as a single range. For example, although neither array has an element at index 4, the element 102 should be the element that corresponds to index 4 of the collective range:
+</p>
+
+<pre class="shell">102
+</pre>
+
+<p>As expected, printing the entire range should contain all of the elements:
+</p>
+
+<pre class="d_code">    writeln(range);
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">[1, 2, 3, 101, 102, 103]
+</pre>
+
+<p><code class="d_inline">Together</code> will operate lazily: the elements will not be copied to a new larger array; they will be accessed from the original slices.
+</p>
+
+<p>We can take advantage of <i>variadic functions</i>, which were introduced in the <a href="parameter_flexibility.html">Variable Number of Parameters chapter</a>, to initialize the range by any number of original slices:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Together {
+    <span class="d_keyword">const</span>(<span class="d_keyword">int</span>)[][] slices;
+
+    <span class="d_keyword">this</span>(<span class="d_keyword">const</span>(<span class="d_keyword">int</span>)[][] slices<span class="hilite">...</span>) {
+        <span class="d_keyword">this</span>.slices = slices.dup;
+
+        clearFront();
+        clearBack();
+    }
+
+<span class="d_comment">// ...
+</span>}
+</pre>
+
+<p>Note that the element type is <code class="d_inline">const(int)</code>, indicating that this <code class="d_inline">struct</code> will not modify the elements of the ranges. However, the slices will necessarily be modified by <code class="d_inline">popFront()</code> to implement iteration.
+</p>
+
+<p>The <code class="d_inline">clearFront()</code> and <code class="d_inline">clearBack()</code> calls that the constructor makes are to remove empty slices from the beginning and the end of the original slices. Such empty slices do not change the behavior of <code class="d_inline">Together</code> and removing them up front will simplify the implementation:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Together {
+<span class="d_comment">// ...
+</span>
+    <span class="d_keyword">private</span> <span class="d_keyword">void</span> clearFront() {
+        <span class="d_keyword">while</span> (!slices.empty &amp;&amp; slices.front.empty) {
+            slices.popFront();
+        }
+    }
+
+    <span class="d_keyword">private</span> <span class="d_keyword">void</span> clearBack() {
+        <span class="d_keyword">while</span> (!slices.empty &amp;&amp; slices.back.empty) {
+            slices.popBack();
+        }
+    }
+}
+</pre>
+
+<p>We will call those functions later from <code class="d_inline">popFront()</code> and <code class="d_inline">popBack()</code> as well.
+</p>
+
+<p>Since <code class="d_inline">clearFront()</code> and <code class="d_inline">clearBack()</code> remove all of the empty slices from the beginning and the end, still having a slice would mean that the collective range is not yet empty. In other words, the range should be considered empty only if there is no slice left:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Together {
+<span class="d_comment">// ...
+</span>
+    <span class="d_keyword">bool</span> empty() <span class="d_keyword">const</span> {
+        <span class="d_keyword">return</span> slices.empty;
+    }
+}
+</pre>
+
+<p>The first element of the first slice is the first element of this <code class="d_inline">Together</code> range:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Together {
+<span class="d_comment">// ...
+</span>
+    <span class="d_keyword">int</span> front() <span class="d_keyword">const</span> {
+        <span class="d_keyword">return</span> slices.front.front;
+    }
+}
+</pre>
+
+<p>Removing the first element of the first slice removes the first element of this range as well. Since this operation may leave the first slice empty, we must call <code class="d_inline">clearFront()</code> to remove that empty slice and the ones that are after that one:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Together {
+<span class="d_comment">// ...
+</span>
+    <span class="d_keyword">void</span> popFront() {
+        slices.front.popFront();
+        clearFront();
+    }
+}
+</pre>
+
+<p>A copy of this range can be constructed from a copy of the <code class="d_inline">slices</code> member:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Together {
+<span class="d_comment">// ...
+</span>
+    Together save() <span class="d_keyword">const</span> {
+        <span class="d_keyword">return</span> Together(slices.dup);
+    }
+}
+</pre>
+
+<p><i>Please note that <code class="d_inline">.dup</code> copies only <code class="d_inline">slices</code> in this case, not the slice elements that it contains.</i>
+</p>
+
+<p>The operations at the end of the range are similar to the ones at the beginning:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Together {
+<span class="d_comment">// ...
+</span>
+    <span class="d_keyword">int</span> back() <span class="d_keyword">const</span> {
+        <span class="d_keyword">return</span> slices.back.back;
+    }
+
+    <span class="d_keyword">void</span> popBack() {
+        slices.back.popBack();
+        clearBack();
+    }
+}
+</pre>
+
+<p>The length of the range can be calculated as the sum of the lengths of the slices:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Together {
+<span class="d_comment">// ...
+</span>
+    size_t length() <span class="d_keyword">const</span> {
+        size_t totalLength = 0;
+
+        <span class="d_keyword">foreach</span> (slice; slices) {
+            totalLength += slice.length;
+        }
+
+        <span class="d_keyword">return</span> totalLength;
+    }
+}
+</pre>
+
+<p><a id="ix_ranges.fold, std.algorithm" content="fold, std.algorithm"></a> Alternatively, the length may be calculated with less code by taking advantage of <code class="d_inline">std.algorithm.fold</code>. <code class="d_inline">fold()</code> takes an operation as its template parameter and applies that operation to all elements of a range:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.algorithm;
+
+<span class="d_comment">// ...
+</span>
+    size_t length() <span class="d_keyword">const</span> {
+        <span class="d_keyword">return</span> slices.fold!((a, b) =&gt; a + b.length)(size_t.init);
+    }
+</pre>
+
+<p>The <code class="d_inline">a</code> in the template parameter represents the current result (<i>the sum</i> in this case) and <code class="d_inline">b</code> represents the current element. The first function parameter is the range that contains the elements and the second function parameter is the initial value of the result (<code class="d_inline">size_t.init</code> is 0). (Note how <code class="d_inline">slices</code> is written before <code class="d_inline">fold</code> by taking advantage of <a href="ufcs.html">UFCS</a>.)
+</p>
+
+<p><i><b>Note:</b> Further, instead of calculating the length every time when <code class="d_inline">length</code> is called, it may be measurably faster to maintain a member variable perhaps named <code class="d_inline">length_</code>, which always equals the correct length of the collective range. That member may be calculated once in the constructor and adjusted accordingly as elements are removed by <code class="d_inline">popFront()</code> and <code class="d_inline">popBack()</code>.</i>
+</p>
+
+<p>One way of returning the element that corresponds to a specific index is to look at every slice to determine whether the element would be among the elements of that slice:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Together {
+<span class="d_comment">// ...
+</span>
+    <span class="d_keyword">int</span> opIndex(size_t index) <span class="d_keyword">const</span> {
+        <span class="d_comment">/* Save the index for the error message */</span>
+        <span class="d_keyword">immutable</span> originalIndex = index;
+
+        <span class="d_keyword">foreach</span> (slice; slices) {
+            <span class="d_keyword">if</span> (slice.length &gt; index) {
+                <span class="d_keyword">return</span> slice[index];
+
+            } <span class="d_keyword">else</span> {
+                index -= slice.length;
+            }
+        }
+
+        <span class="d_keyword">throw</span> <span class="d_keyword">new</span> Exception(
+            format(<span class="d_string">"Invalid index: %s (length: %s)"</span>,
+                   originalIndex, <span class="d_keyword">this</span>.length));
+    }
+}
+</pre>
+
+<p><i><b>Note:</b> This <code class="d_inline">opIndex()</code> does not satisfy the constant time requirement that has been mentioned above. For this implementation to be acceptably fast, the <code class="d_inline">slices</code> member must not be too long.</i>
+</p>
+
+<p>This new range is now ready to be used with any number of <code class="d_inline">int</code> slices. With the help of <code class="d_inline">take()</code> and <code class="d_inline">array()</code>, we can even include the range types that we have defined earlier in this chapter:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> range = Together(FibonacciSeries().take(10).array,
+                          [ 777, 888 ],
+                          (<span class="d_keyword">new</span> SquaresRange()).take(5).array);
+
+    writeln(range.save);
+</pre>
+
+<p>The elements of the three slices are accessed as if they were elements of a single large array:
+</p>
+
+<pre class="shell">[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 777, 888, 0, 1, 4, 9, 16]
+</pre>
+
+<p>We can pass this range to other range algorithms. For example, to <code class="d_inline">retro()</code>, which requires a <code class="d_inline">BidirectionalRange</code>:
+</p>
+
+<pre class="d_code">    writeln(range.save.retro);
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">[16, 9, 4, 1, 0, 888, 777, 34, 21, 13, 8, 5, 3, 2, 1, 1, 0]
+</pre>
+
+<p>Of course you should use the more functional <code class="d_inline">std.range.chain</code> instead of <code class="d_inline">Together</code> in your programs.
+</p>
+
+<h5 class="subsection"><a id="ix_ranges.OutputRange" content="OutputRange"></a> <code class="d_inline">OutputRange</code></h5>
+
+<p>All of the range types that we have seen so far are about element access. <code class="d_inline">OutputRange</code> represents streamed element output, similar to sending characters to <code class="d_inline">stdout</code>.
+</p>
+
+<p><a id="ix_ranges.put" content="put"></a> I have mentioned earlier that <code class="d_inline">OutputRange</code> requires support for the <code class="d_inline">put(range,&nbsp;element)</code> operation. <code class="d_inline">put()</code> is a function defined in the <code class="d_inline">std.range</code> module. It determines the capabilities of the range and the element at compile time and uses the most appropriate method to <i>output</i> the element.
+</p>
+
+<p><code class="d_inline">put()</code> considers the following cases in the order that they are listed below, and applies the method for the first matching case. <code class="d_inline">R</code> represents the type of the range; <code class="d_inline">range</code>, a range object; <code class="d_inline">E</code>, the type of the element; and <code class="d_inline">e</code> an element of the range:
+</p>
+
+<table class="full" border="1" cellpadding="4" cellspacing="0"><tr align="center"><th scope="col">Case Considered</th> <th scope="col">Method Applied</th></tr>
+<tr align="center"><td><code class="d_inline">R</code> has a member function named <code class="d_inline">put</code><br/>
+and <code class="d_inline">put</code> can take an <code class="d_inline">E</code> as argument</td> <td>
+<code class="d_inline">range.put(e);</code>
+
+</td></tr>
+<tr align="center"><td><code class="d_inline">R</code> has a member function named <code class="d_inline">put</code><br/>
+and <code class="d_inline">put</code> can take an <code class="d_inline">E[]</code> as argument</td> <td>
+<code class="d_inline">range.put([ e ]);</code>
+
+</td></tr>
+<tr align="center"><td><code class="d_inline">R</code> is an <code class="d_inline">InputRange</code><br/>
+and <code class="d_inline">e</code> can be assigned to <code class="d_inline">range.front</code></td> <td>
+<code class="d_inline">range.front = e;</code>
+<br/>
+<code class="d_inline">range.popFront();</code>
+
+</td></tr>
+<tr align="center"><td><code class="d_inline">E</code> is an <code class="d_inline">InputRange</code><br/>
+and can be copied to <code class="d_inline">R</code></td> <td>
+<code class="d_inline">for (; !e.empty; e.popFront())</code>
+<br/>
+<code class="d_inline">put(range, e.front);</code>
+
+</td></tr>
+<tr align="center"><td><code class="d_inline">R</code> can take <code class="d_inline">E</code> as argument<br/>
+(e.g. <code class="d_inline">R</code> could be a delegate)</td> <td>
+<code class="d_inline">range(e);</code>
+
+</td></tr>
+<tr align="center"><td><code class="d_inline">R</code> can take <code class="d_inline">E[]</code> as argument<br/>
+(e.g. <code class="d_inline">R</code> could be a delegate)</td> <td>
+<code class="d_inline">range([ e ]);</code>
+
+</td></tr>
+</table>
+
+<p>Let's define a range that matches the first case: The range will have a member function named <code class="d_inline">put()</code>, which takes a parameter that matches the type of the output range.
+</p>
+
+<p>This output range will be used for outputting elements to multiple files, including <code class="d_inline">stdout</code>. When elements are outputted with <code class="d_inline">put()</code>, they will all be written to all of those files. As an additional functionality, let's add the ability to specify a delimiter to be written after each element.
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> MultiFile {
+    string delimiter;
+    File[] files;
+
+    <span class="d_keyword">this</span>(string delimiter, string[] fileNames...) {
+        <span class="d_keyword">this</span>.delimiter = delimiter;
+
+        <span class="d_comment">/* stdout is always included */</span>
+        <span class="d_keyword">this</span>.files ~= stdout;
+
+        <span class="d_comment">/* A File object for each file name */</span>
+        <span class="d_keyword">foreach</span> (fileName; fileNames) {
+            <span class="d_keyword">this</span>.files ~= File(fileName, <span class="d_string">"w"</span>);
+        }
+    }
+
+    <span class="d_comment">// This is the version that takes arrays (but not strings)
+</span>    <span class="d_keyword">void</span> put(T)(T slice)
+            <span class="d_keyword">if</span> (isArray!T &amp;&amp; !isSomeString!T) {
+        <span class="d_keyword">foreach</span> (element; slice) {
+            <span class="d_comment">// Note that this is a call to the other version
+</span>            <span class="d_comment">// of put() below
+</span>            put(element);
+        }
+    }
+
+    <span class="d_comment">// This is the version that takes non-arrays and strings
+</span>    <span class="d_keyword">void</span> put(T)(T value)
+            <span class="d_keyword">if</span> (!isArray!T || isSomeString!T) {
+        <span class="d_keyword">foreach</span> (file; files) {
+            file.write(value, delimiter);
+        }
+    }
+}
+</pre>
+
+<p>In order to be used as an output range of any type of elements, <code class="d_inline">put()</code> is also templatized on the element type.
+</p>
+
+<p><a id="ix_ranges.copy, std.algorithm" content="copy, std.algorithm"></a> An algorithm in Phobos that uses <code class="d_inline">OutputRange</code> is <code class="d_inline">std.algorithm.copy</code>. <code class="d_inline">copy()</code> is a very simple algorithm, which copies the elements of an <code class="d_inline">InputRange</code> to an <code class="d_inline">OutputRange</code>.
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.traits;
+<span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.algorithm;
+
+<span class="d_comment">// ...
+</span>
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> output = MultiFile(<span class="d_string">"\n"</span>, <span class="d_string">"output_0"</span>, <span class="d_string">"output_1"</span>);
+    copy([ 1, 2, 3], output);
+    copy([ <span class="d_string">"red"</span>, <span class="d_string">"blue"</span>, <span class="d_string">"green"</span> ], output);
+}
+</pre>
+
+<p>That code outputs the elements of the input ranges both to <code class="d_inline">stdout</code> and to files named "output_0" and "output_1":
+</p>
+
+<pre class="shell">1
+2
+3
+red
+blue
+green
+</pre>
+
+<h6><a id="ix_ranges.slice, as OutputRange" content="slice, as OutputRange"></a> Using slices as <code class="d_inline">OutputRange</code></h6>
+
+<p>The <code class="d_inline">std.range</code> module makes slices <code class="d_inline">OutputRange</code> objects as well. (By contrast, <code class="d_inline">std.array</code> makes them only input ranges.) Unfortunately, using slices as <code class="d_inline">OutputRange</code> objects has a confusing effect: slices lose an element for each <code class="d_inline">put()</code> operation on them; and that element is the element that has just been outputted!
+</p>
+
+<p>The reason for this behavior is a consequence of slices' not having a <code class="d_inline">put()</code> member function. As a result, the third case of the previous table is matched for slices and the following method is applied:
+</p>
+
+<pre class="d_code">    range.front = e;
+    range.popFront();
+</pre>
+
+<p>As the code above is executed for each <code class="d_inline">put()</code>, the front element of the slice is assigned to the value of the <i>outputted</i> element, to be subsequently removed from the slice with <code class="d_inline">popFront()</code>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.range;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">int</span>[] slice = [ 1, 2, 3 ];
+    <span class="hilite">put(slice, 100)</span>;
+    writeln(slice);
+}
+</pre>
+
+<p>As a result, although the slice is used as an <code class="d_inline">OutputRange</code>, it surprisingly <i>loses</i> elements:
+</p>
+
+<pre class="shell">[2, 3]
+</pre>
+
+<p>To avoid this, a separate slice must be used as an <code class="d_inline">OutputRange</code> instead:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.range;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">int</span>[] slice = [ 1, 2, 3 ];
+    <span class="d_keyword">int</span>[] slice2 = slice;
+
+    put(<span class="hilite">slice2</span>, 100);
+
+    writeln(slice2);
+    writeln(slice);
+}
+</pre>
+
+<p>This time the second slice is consumed and the original slice has the expected elements:
+</p>
+
+<pre class="shell">[2, 3]
+[100, 2, 3]    <span class="shell_note">← expected result</span>
+</pre>
+
+<p>Another important fact is that the length of the slice does not grow when used as an <code class="d_inline">OutputRange</code>. It is the programmer's responsibility to ensure that there is enough room in the slice:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span>[] slice = [ 1, 2, 3 ];
+    <span class="d_keyword">int</span>[] slice2 = slice;
+
+    <span class="d_keyword">foreach</span> (i; 0 .. 4) {    <span class="d_comment">// ← no room for 4 elements
+</span>        put(slice2, i * 100);
+    }
+</pre>
+
+<p>When the slice becomes completely empty because of the indirect <code class="d_inline">popFront()</code> calls, the program terminates with an exception:
+</p>
+
+<pre class="shell">core.exception.AssertError@...: Attempting to fetch the <span class="hilite">front
+of an empty array of int</span>
+</pre>
+
+<p><a id="ix_ranges.appender, std.array" content="appender, std.array"></a> <code class="d_inline">std.array.Appender</code> and its convenience function <code class="d_inline">appender</code> allows using slices as <i>an <code class="d_inline">OutputRange</code> where the elements are appended</i>. The <code class="d_inline">put()</code> function of the special range object that <code class="d_inline">appender()</code> returns actually appends the elements to the original slice:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.array;
+
+<span class="d_comment">// ...
+</span>
+    <span class="d_keyword">auto</span> a = appender([ 1, 2, 3 ]);
+
+    <span class="d_keyword">foreach</span> (i; 0 .. 4) {
+        a.put(i * 100);
+    }
+</pre>
+
+<p>In the code above, <code class="d_inline">appender</code> is called with an array and returns a special range object. That range object is in turn used as an <code class="d_inline">OutputRange</code> by calling its <code class="d_inline">put()</code> member function. The resultant elements are accessed by its <code class="d_inline">.data</code> property:
+</p>
+
+<pre class="d_code">    writeln(a.data);
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">[1, 2, 3, 0, 100, 200, 300]
+</pre>
+
+<p><code class="d_inline">Appender</code> supports the <code class="d_inline">~=</code> operator as well:
+</p>
+
+<pre class="d_code">    a <span class="hilite">~=</span> 1000;
+    writeln(a.data);
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">[1, 2, 3, 0, 100, 200, 300, 1000]
+</pre>
+
+<h6><a id="ix_ranges.toString, OutputRange" content="toString, OutputRange"></a> <code class="d_inline">toString()</code> with an <code class="d_inline">OutputRange</code> parameter</h6>
+
+<p>Similar to how <code class="d_inline">toString</code> member functions can be defined as <a href="lambda.html">taking a <code class="d_inline">delegate</code> parameter</a>, it is possible to define one that takes an <code class="d_inline">OutputRange</code>. Functions like <code class="d_inline">format</code>, <code class="d_inline">writefln</code>, and <code class="d_inline">writeln</code> operate more efficiently by placing the output characters right inside the output buffer of the output range.
+</p>
+
+<p>To be able to work with any <code class="d_inline">OutputRange</code> type, such <code class="d_inline">toString</code> definitions need to be function templates, optionally with template constraints:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.range;
+
+<span class="d_keyword">struct</span> S {
+    <span class="d_keyword">void</span> toString(O)(<span class="d_keyword">ref</span> O o) <span class="d_keyword">const</span>
+            <span class="d_keyword">if</span> (isOutputRange!(O, <span class="d_keyword">char</span>)) {
+        <span class="hilite">put</span>(o, <span class="d_string">"hello"</span>);
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> s = S();
+    writeln(s);
+}
+</pre>
+
+<p>Note that the code inside <code class="d_inline">main()</code> does not define an <code class="d_inline">OutputRange</code> object. That object is defined by <code class="d_inline">writeln</code> to store the characters before printing them:
+</p>
+
+<pre class="shell">hello
+</pre>
+
+<h5 class="subsection">Range templates</h5>
+
+<p>Although we have used mostly <code class="d_inline">int</code> ranges in this chapter, ranges and range algorithms are much more useful when defined as templates.
+</p>
+
+<p>The <code class="d_inline">std.range</code> module includes many range templates. We will see these templates in the next chapter.
+</p>
+
+<h5 class="subsection">Summary</h5>
+
+<ul>
+<li>Ranges abstract data structures from algorithms and allow them to be used with algorithms seamlessly.</li>
+
+<li>Ranges are a D concept and are the basis for many features of Phobos.</li>
+
+<li>Many Phobos algorithms return lazy range objects to accomplish their special tasks.</li>
+
+<li>UFCS works well with range algorithms.</li>
+
+<li>When used as <code class="d_inline">InputRange</code> objects, the elements of strings are Unicode characters.</li>
+
+<li><code class="d_inline">InputRange</code> requires <code class="d_inline">empty</code>, <code class="d_inline">front</code> and <code class="d_inline">popFront()</code>.</li>
+
+<li><code class="d_inline">ForwardRange</code> additionally requires <code class="d_inline">save</code>.</li>
+
+<li><code class="d_inline">BidirectionalRange</code> additionally requires <code class="d_inline">back</code> and <code class="d_inline">popBack()</code>.</li>
+
+<li>Infinite <code class="d_inline">RandomAccessRange</code> requires <code class="d_inline">opIndex()</code> over <code class="d_inline">ForwardRange</code>.</li>
+
+<li>Finite <code class="d_inline">RandomAccessRange</code> requires <code class="d_inline">opIndex()</code> and <code class="d_inline">length</code> over <code class="d_inline">BidirectionalRange</code>.</li>
+
+<li><code class="d_inline">std.array.appender</code> returns an <code class="d_inline">OutputRange</code> that appends to slices.</li>
+
+<li>Slices are ranges of finite <code class="d_inline">RandomAccessRange</code></li>
+
+<li>Fixed-length arrays are not ranges.</li>
+
+</ul>
+
+macros:
+        TITLE=Ranges
+
+        DESCRIPTION=Phobos ranges that abstract data structures from algorithms and that enables them to be used seamlessly.
+
+        KEYWORDS=d programming language tutorial book range OutputRange InputRange ForwardRange BidirectionalRange RandomAccessRange
+
+MINI_SOZLUK=
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2022 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on Sun May 15 14:08:37 2022
+</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>
