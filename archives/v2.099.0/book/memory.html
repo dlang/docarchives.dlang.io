@@ -1,0 +1,1286 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2022 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>memory - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='memory' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5Bmemory%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/d.en/memory.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>memory</h1>
+        
+        
+
+
+
+<p>D is a language that does not require explicit memory management. However, it is important for a system programmer to know how to manage memory when needed for special cases.
+</p>
+
+<p>Memory management is a very broad topic. This chapter will introduce only the garbage collector (GC), allocating memory from it, and constructing objects at specific memory locations. I encourage you to research various memory management methods as well as the <code class="d_inline">std.allocator</code> module, which was still at experimental stage at the time of writing this book.
+</p>
+
+<p>As in some of the previous chapters, when I write <i>variable</i> below, I mean any type of variable including <code class="d_inline">struct</code> and <code class="d_inline">class</code> objects.
+</p>
+
+<h5 class="subsection"><a id="ix_memory.memory" content="memory"></a> Memory</h5>
+
+<p>Memory is a more significant resource than other system resources because both the running program and its data are located in the memory. The memory belongs ultimately to the operating system, which makes it available to programs to satisfy their needs. The amount of memory that a program uses may increase or decrease according to the immediate needs of a program. When a program terminates, the memory areas that it has been using are automatically returned back to the operating system.
+</p>
+
+<p>The memory can be imagined like a large sheet of paper where the values of variables are noted down. Each variable is kept at a specific location where its value is written to and read from as needed. Once the lifetime of a variable ends, its place is used for another variable.
+</p>
+
+<p><a id="ix_memory.&amp;, address of" content="&amp;, address of"></a> The <code class="d_inline">&amp;</code> (address-of) operator is useful when experimenting with memory. For example, the following program prints the addresses of two variables that are defined next to each other:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">int</span> i;
+    <span class="d_keyword">int</span> j;
+
+    writeln(<span class="d_string">"i: "</span>, <span class="hilite">&amp;</span>i);
+    writeln(<span class="d_string">"j: "</span>, <span class="hilite">&amp;</span>j);
+}
+</pre>
+
+<p><i> <b>Note:</b> The addresses would likely be different every time the program is executed. Additionally, the mere act of taking the address of a variable disables the optimization that would otherwise make the variable live on a CPU register.</i>
+</p>
+
+<p>As can be seen from the output, the locations of the variables are four bytes apart:
+</p>
+
+<pre class="shell">i: 7FFF2B633E2<span class="hilite">8</span>
+j: 7FFF2B633E2<span class="hilite">C</span>
+</pre>
+
+<p>The last digits of the two addresses indicate that <code class="d_inline">i</code> lives in a memory location that is right before the location of <code class="d_inline">j</code>: 8 plus 4 (size of <code class="d_inline">int</code>) makes 12 (C in hexadecimal notation).
+</p>
+
+<h5 class="subsection"><a id="ix_memory.garbage collector" content="garbage collector"></a> <a id="ix_memory.GC" content="GC"></a> The garbage collector</h5>
+
+<p>The dynamic variables that are used in D programs live on memory blocks that are owned by the garbage collector (GC). When the lifetime of a variable ends (i.e. it's no longer being used), that variable is subject to being finalized according to an algorithm that is executed by the GC. If nothing else needs the memory location containing the variable, the memory may be reclaimed to be used for other variables. This algorithm is called <i>garbage collection</i> and an execution of the algorithm is called a <i>garbage collection cycle</i>.
+</p>
+
+<p>The algorithm that the GC executes can roughly be described as the following. All of the memory blocks that can be reached directly or indirectly by pointers (including references) that are in the program roots are scanned. Any memory block that can be reached is tagged as being still in use and all the others are tagged as not being used anymore. The finalizers of objects and structs that live on inaccessible blocks are executed and those memory blocks are reclaimed to be used for future variables. The roots are defined as all of the program stack for every thread, all global and thread-local variables, and any additional data added via <code class="d_inline">GC.addRoot</code> or <code class="d_inline">GC.addRange</code>.
+</p>
+
+<p>Some GC algorithms can move objects around to keep them together in one place in memory. To preserve program correctness, all of the pointers (and references) that point to such objects are automatically modified to point to the new locations. D's current GC does not do this.
+</p>
+
+<p>A GC is said to be "precise" if it knows exactly which memory contains pointers and which doesn't. A GC is conservative if it scans all memory as if it were pointers. D's GC is partially conservative, scanning only blocks that contain pointers, but it will scan all data in those blocks. For this reason, in some cases blocks are not ever collected, thereby "leaking" that memory. Large blocks are more likely to be targeted by "false pointers". In some cases it may be recommended to manually free large blocks you are no longer using to avoid this problem.
+</p>
+
+<p>The order of executing the finalizers is unspecified. For example, a reference member of an object may be finalized before the object that contains that member. For that reason, no class member that refers to a dynamic variable should be accessed inside the destructor. Note that this is very different from the deterministic destruction order of languages like C++.
+</p>
+
+<p>A garbage collection cycle can be started for various reasons like needing to find space for more data. Depending on the GC implementation, because allocating new objects during a garbage collection cycle can interfere with the collection process itself, all of the running threads may have to be halted during collection cycles. Sometimes this can be observed as a hesitation in the execution of the program.
+</p>
+
+<p>In most cases the programmer does not need to interfere with the garbage collection process. However, it is possible to delay or dispatch garbage collection cycles as needed by the functions defined in the <code class="d_inline">core.memory</code> module.
+</p>
+
+<h6><a id="ix_memory.GC.enable" content="GC.enable"></a> <a id="ix_memory.GC.disable" content="GC.disable"></a> <a id="ix_memory.GC.collect" content="GC.collect"></a> Starting and delaying garbage collection cycles</h6>
+
+<p>It may be desired to delay the execution of garbage collection cycles during a part of the program where it is important for the program to be responsive. <code class="d_inline">GC.disable</code> disables garbage collection cycles and <code class="d_inline">GC.enable</code> enables them again:
+</p>
+
+<pre class="d_code">    GC.disable();
+
+<span class="d_comment">// ... a part of the program where responsiveness is important ...
+</span>
+    GC.enable();
+</pre>
+
+<p>However, <code class="d_inline">GC.disable</code> is not guaranteed to prevent a garbage collection cycle from executing: If the GC needs to obtain more memory from the OS, but it cannot, it still goes ahead and runs a garbage collection cycle as a last-ditch effort to gain some available memory.
+</p>
+
+<p>Instead of relying on garbage collections happening automatically at unspecified times, a garbage collection cycle can be started explicitly using <code class="d_inline">GC.collect()</code>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> core.memory;
+
+<span class="d_comment">// ...
+</span>
+    GC.collect();    <span class="d_comment">// starts a garbage collection cycle
+</span></pre>
+
+<p>Normally, the GC does not return memory blocks back to the operating system; it holds on to those memory pages for future needs of the program. If desired, the GC can be asked to give unused memory back to the operating system using <code class="d_inline">GC.minimize()</code>:
+</p>
+
+<pre class="d_code">    GC.minimize();
+</pre>
+
+<h5 class="subsection">Allocating memory</h5>
+
+<p>System languages allow programmers to specify the memory areas where objects should live. Such memory areas are commonly called <i>buffers</i>.
+</p>
+
+<p>There are several methods of allocating memory. The simplest method would be using a fixed-length array:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">ubyte</span>[100] buffer;    <span class="d_comment">// A memory area of 100 bytes
+</span></pre>
+
+<p><a id="ix_memory.uninitialized array" content="uninitialized array"></a> <a id="ix_memory.array, uninitialized" content="array, uninitialized"></a> <a id="ix_memory.= void" content="= void"></a> <code class="d_inline">buffer</code> is ready to be used as a 100-byte memory area. Instead of <code class="d_inline">ubyte</code>, it is also possible to define such buffers as arrays of <code class="d_inline">void</code>, without any association to any type. Since <code class="d_inline">void</code> cannot be assigned any value, it cannot have the <code class="d_inline">.init</code> value either. Such arrays must be initialized by the special syntax <code class="d_inline">=void</code>:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">void</span>[100] buffer = <span class="d_keyword">void</span>;    <span class="d_comment">// A memory area of 100 bytes
+</span></pre>
+
+<p><a id="ix_memory.GC.calloc" content="GC.calloc"></a> We will use only <code class="d_inline">GC.calloc</code> from the <code class="d_inline">core.memory</code> module to reserve memory in this chapter. That module has many other features that are useful in various situations. Additionally, the memory allocation functions of the C standard library are avaliable in the <code class="d_inline">core.stdc.stdlib</code> module.
+</p>
+
+<p><code class="d_inline">GC.calloc</code> allocates a memory area of the specified size pre-filled with all 0 values, and returns the beginning address of the allocated area:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> core.memory;
+<span class="d_comment">// ...
+</span>    <span class="d_keyword">void</span> * buffer = GC.calloc(100);
+                            <span class="d_comment">// A memory area of 100 zero bytes
+</span></pre>
+
+<p><a id="ix_memory.void*" content="void*"></a> Normally, the returned <code class="d_inline">void*</code> value is cast to a pointer of the proper type:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span> * intBuffer = <span class="d_keyword">cast</span>(<span class="d_keyword">int</span>*)buffer;
+</pre>
+
+<p>However, that intermediate step is usually skipped and the return value is cast directly:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span> * intBuffer = <span class="hilite"><span class="d_keyword">cast</span>(<span class="d_keyword">int</span>*)</span>GC.calloc(100);
+</pre>
+
+<p>Instead of arbitrary values like 100, the size of the memory area is usually calculated by multiplying the number of elements needed with the size of each element:
+</p>
+
+<pre class="d_code">    <span class="d_comment">// Allocate room for 25 ints
+</span>    <span class="d_keyword">int</span> * intBuffer = <span class="d_keyword">cast</span>(<span class="d_keyword">int</span>*)GC.calloc(<span class="hilite"><span class="d_keyword">int</span>.sizeof * 25</span>);
+</pre>
+
+<p><a id="ix_memory.classInstanceSize" content="classInstanceSize"></a> <a id="ix_memory..sizeof, class" content=".sizeof, class"></a> There is an important difference for classes: The size of a class variable and the size of a class object are not the same. <code class="d_inline">.sizeof</code> is the size of a class variable and is always the same value: 8 on 64-bit systems and 4 on 32-bit systems. The size of a class object must be obtained by <code class="d_inline">__traits(classInstanceSize)</code>:
+</p>
+
+<pre class="d_code">    <span class="d_comment">// Allocate room for 10 MyClass objects
+</span>    MyClass * buffer =
+        <span class="d_keyword">cast</span>(MyClass*)GC.calloc(
+            <span class="hilite"><span class="d_keyword">__traits</span>(classInstanceSize, MyClass)</span> * 10);
+</pre>
+
+<p><a id="ix_memory.OutOfMemoryError" content="OutOfMemoryError"></a> When there is not enough memory in the system for the requested size, then a <code class="d_inline">core.exception.OutOfMemoryError</code> exception is thrown:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">void</span> * buffer = GC.calloc(10_000_000_000);
+</pre>
+
+<p>The output on a system that does not have that much free space:
+</p>
+
+<pre class="shell">core.exception.OutOfMemoryError
+</pre>
+
+<p><a id="ix_memory.GC.free" content="GC.free"></a> The memory areas that are allocated from the GC can be returned back to it using <code class="d_inline">GC.free</code>:
+</p>
+
+<pre class="d_code">    GC.free(buffer);
+</pre>
+
+<p>However, calling <code class="d_inline">free()</code> does not necessarily execute the destructors of the variables that live on that memory block. The destructors may be executed explicitly by calling <code class="d_inline">destroy()</code> for each variable. Note that various internal mechanisms are used to call finalizers on <code class="d_inline">class</code> and <code class="d_inline">struct</code> variables during GC collection or freeing. The best way to ensure these are called is to use the <code class="d_inline">new</code> operator when allocating variables. In that case, <code class="d_inline">GC.free</code> will call the destructors.
+</p>
+
+<p><a id="ix_memory.GC.realloc" content="GC.realloc"></a> Sometimes the program may determine that a previously allocated memory area is all used up and does not have room for more data. It is possible to <i>extend</i> a previously allocated memory area by <code class="d_inline">GC.realloc</code>. <code class="d_inline">realloc()</code> takes the previously allocated memory pointer and the newly requested size, and returns a new area:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">void</span> * oldBuffer = GC.calloc(100);
+<span class="d_comment">// ...
+</span>    <span class="d_keyword">void</span> * newBuffer = GC.realloc(oldBuffer, 200);
+</pre>
+
+<p><code class="d_inline">realloc()</code> tries to be efficient by not actually allocating new memory unless it is really necessary:
+</p>
+
+<ul>
+<li>If the memory area following the old area is not in use for any other purpose and is large enough to satisfy the new request, <code class="d_inline">realloc()</code> adds that part of the memory to the old area, extending the buffer <i>in-place</i>.</li>
+
+<li>If the memory area following the old area is already in use or is not large enough, then <code class="d_inline">realloc()</code> allocates a new larger memory area and copies the contents of the old area to the new one.</li>
+
+<li>It is possible to pass <code class="d_inline">null</code> as <code class="d_inline">oldBuffer</code>, in which case <code class="d_inline">realloc()</code> simply allocates new memory.</li>
+
+<li>It is possible to pass a size less than the previous one, in which case the remaining part of the old memory is returned back to the GC.</li>
+
+<li>It is possible to pass 0 as the new size, in which case <code class="d_inline">realloc()</code> simply frees the memory.</li>
+
+</ul>
+
+<p><code class="d_inline">GC.realloc</code> is adapted from the C standard library function <code class="d_inline">realloc()</code>. For having such a complicated behavior, <code class="d_inline">realloc()</code> is considered to have a badly designed function interface. A potentially surprising aspect of <code class="d_inline">GC.realloc</code> is that even if the original memory has been allocated with <code class="d_inline">GC.calloc</code>, the extended part is never cleared. For that reason, when it is important that the memory is zero-initialized, a function like <code class="d_inline">reallocCleared()</code> below would be useful. We will see the meaning of <code class="d_inline">blockAttributes</code> later below:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> core.memory;
+
+<span class="d_comment">/* Works like GC.realloc but clears the extra bytes if memory
+ * is extended. */</span>
+<span class="d_keyword">void</span> * reallocCleared(
+    <span class="d_keyword">void</span> * buffer,
+    size_t oldLength,
+    size_t newLength,
+    GC.BlkAttr blockAttributes = GC.BlkAttr.NONE,
+    <span class="d_keyword">const</span> TypeInfo typeInfo = <span class="d_keyword">null</span>) {
+    <span class="d_comment">/* Dispatch the actual work to GC.realloc. */</span>
+    buffer = GC.realloc(buffer, newLength,
+                        blockAttributes, typeInfo);
+
+    <span class="d_comment">/* Clear the extra bytes if extended. */</span>
+    <span class="d_keyword">if</span> (newLength &gt; oldLength) {
+        <span class="d_keyword">import</span> core.stdc.string;
+
+        <span class="d_keyword">auto</span> extendedPart = buffer + oldLength;
+        <span class="d_keyword">const</span> extendedLength = newLength - oldLength;
+
+        memset(extendedPart, 0, extendedLength);
+    }
+
+    <span class="d_keyword">return</span> buffer;
+}
+</pre>
+
+<p><a id="ix_memory.memset, core.stdc.string" content="memset, core.stdc.string"></a> The function above uses <code class="d_inline">memset()</code> from the <code class="d_inline">core.stdc.string</code> module to clear the newly extended bytes. <code class="d_inline">memset()</code> assigns the specified value to the bytes of a memory area specified by a pointer and a length. In the example, it assigns <code class="d_inline">0</code> to <code class="d_inline">extendedLength</code> number of bytes at <code class="d_inline">extendedPart</code>.
+</p>
+
+<p>We will use <code class="d_inline">reallocCleared()</code> in an example below.
+</p>
+
+<p><a id="ix_memory.GC.extend" content="GC.extend"></a> The behavior of the similar function <code class="d_inline">GC.extend</code> is not complicated like <code class="d_inline">realloc()</code>; it applies only the first item above: If the memory area cannot be extended in-place, <code class="d_inline">extend()</code> does not do anything and returns 0.
+</p>
+
+<h6><a id="ix_memory.memory block attribute" content="memory block attribute"></a> <a id="ix_memory.BlkAttr" content="BlkAttr"></a> Memory block attributes</h6>
+
+<p>The concepts and the steps of a GC algorithm can be configured to some degree for each memory block by <code class="d_inline">enum BlkAttr</code>. <code class="d_inline">BlkAttr</code> is an optional parameter of <code class="d_inline">GC.calloc</code> and other allocation functions. It consists of the following values:
+</p>
+
+<ul>
+<li><code class="d_inline">NONE</code>: The value zero; specifies <i>no attribute</i>.</li>
+
+<li><code class="d_inline">FINALIZE</code>: Specifies that the objects that live in the memory block should be finalized.
+
+<p>Normally, the GC assumes that the lifetimes of objects that live on explicitly-allocated memory locations are under the control of the programmer; it does not finalize objects on such memory areas. <code class="d_inline">GC.BlkAttr.FINALIZE</code> is for requesting the GC to execute the destructors of objects:
+</p>
+
+<pre class="d_code">    Class * buffer =
+        <span class="d_keyword">cast</span>(Class*)GC.calloc(
+            <span class="d_keyword">__traits</span>(classInstanceSize, Class) * 10,
+            GC.BlkAttr.FINALIZE);
+</pre>
+
+<p>Note that <code class="d_inline">FINALIZE</code> depends on implementation details properly set up on the block. It is highly recommended to let the GC take care of setting up these details using the <code class="d_inline">new</code> operator.
+</p>
+
+</li>
+
+<li><code class="d_inline">NO_SCAN</code>: Specifies that the memory area should not be scanned by the GC.
+
+<p>The byte values in a memory area may accidentally look like pointers to unrelated objects in other parts of the memory. When that happens, the GC would assume that those objects are still in use even after their actual lifetimes have ended.
+</p>
+
+<p>A memory block that is known to not contain any object pointers should be marked as <code class="d_inline">GC.BlkAttr.NO_SCAN</code>:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span> * intBuffer =
+        <span class="d_keyword">cast</span>(<span class="d_keyword">int</span>*)GC.calloc(100, GC.BlkAttr.NO_SCAN);
+</pre>
+
+<p>The <code class="d_inline">int</code> variables placed in that memory block can have any value without concern of being mistaken for object pointers.
+</p>
+
+</li>
+
+<li><code class="d_inline">NO_MOVE</code>: Specifies that objects in the memory block should not be moved to other places.</li>
+
+<li><code class="d_inline">APPENDABLE</code>: This is an internal flag used by the D runtime to aid in fast appending. You should not use this flag when allocating memory.</li>
+
+<li><code class="d_inline">NO_INTERIOR</code>: Specifies that only pointers to the block's first address exist. This allows one to cut down on "false pointers" because a pointer to the middle of the block does not count when tracing where a pointer goes.</li>
+
+</ul>
+
+<p><a id="ix_memory.|" content="|"></a> The values of <code class="d_inline">enum BlkAttr</code> are suitable to be used as bit flags that we saw in <a href="bit_operations.html">the Bit Operations chapter</a>. The following is how two attributes can be merged by the <code class="d_inline">|</code> operator:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">const</span> attributes =
+        GC.BlkAttr.NO_SCAN <span class="hilite">|</span> GC.BlkAttr.NO_INTERIOR;
+</pre>
+
+<p>Naturally, the GC would be aware only of memory blocks that are reserved by its own functions and scans only those memory blocks. For example, it would not know about a memory block allocated by <code class="d_inline">core.stdc.stdlib.calloc</code>.
+</p>
+
+<p><a id="ix_memory.GC.addRange" content="GC.addRange"></a> <a id="ix_memory.GC.removeRange" content="GC.removeRange"></a> <a id="ix_memory.GC.addRoot" content="GC.addRoot"></a> <code class="d_inline">GC.addRange</code> is for introducing unrelated memory blocks to the GC. The complement function <code class="d_inline">GC.removeRange</code> should be called before freeing a memory block by other means e.g. by <code class="d_inline">core.stdc.stdlib.free</code>.
+</p>
+
+<p>In some cases, there may be no reference in the program to a memory block even if that memory block has been reserved by the GC. For example, if the only reference to a memory block lives inside a C library, the GC would normally not know about that reference and assume that the memory block is not in use anymore.
+</p>
+
+<p><code class="d_inline">GC.addRoot</code> introduces a memory block to the GC as a <i>root</i>, to be scanned during collection cycles. All of the variables that can be reached directly or indirectly through that memory block would be marked as alive. The complement function <code class="d_inline">GC.removeRoot</code> should be called when a memory block is not in use anymore.
+</p>
+
+<h6>Example of extending a memory area</h6>
+
+<p>Let's design a simple <code class="d_inline">struct</code> template that works like an array. To keep the example short, let's provide only the functionality of adding and accessing elements. Similar to arrays, let's increase the capacity as needed. The following program uses <code class="d_inline">reallocCleared()</code>, which has been defined above:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Array(T) {
+    T * buffer;         <span class="d_comment">// Memory area that holds the elements
+</span>    size_t capacity;    <span class="d_comment">// The element capacity of the buffer
+</span>    size_t length;      <span class="d_comment">// The number of actual elements
+</span>
+    <span class="d_comment">/* Returns the specified element */</span>
+    T element(size_t index) {
+        <span class="d_keyword">import</span> std.string;
+        enforce(index &lt; length,
+                format(<span class="d_string">"Invalid index %s"</span>, index));
+
+        <span class="d_keyword">return</span> *(buffer + index);
+    }
+
+    <span class="d_comment">/* Appends the element to the end */</span>
+    <span class="d_keyword">void</span> append(T element) {
+        writefln(<span class="d_string">"Appending element %s"</span>, length);
+
+        <span class="d_keyword">if</span> (length == capacity) {
+            <span class="d_comment">/* There is no room for the new element; must
+             * increase capacity. */</span>
+            size_t newCapacity = capacity + (capacity / 2) + 1;
+            increaseCapacity(newCapacity);
+        }
+
+        <span class="d_comment">/* Place the element at the end */</span>
+        *(buffer + length) = element;
+        ++length;
+    }
+
+    <span class="d_keyword">void</span> increaseCapacity(size_t newCapacity) {
+        writefln(<span class="d_string">"Increasing capacity from %s to %s"</span>,
+                 capacity, newCapacity);
+
+        size_t oldBufferSize = capacity * T.sizeof;
+        size_t newBufferSize = newCapacity * T.sizeof;
+
+        <span class="d_comment">/* Also specify that this memory block should not be
+         * scanned for pointers. */</span>
+        buffer = <span class="d_keyword">cast</span>(T*)<span class="hilite">reallocCleared</span>(
+            buffer, oldBufferSize, newBufferSize,
+            GC.BlkAttr.NO_SCAN);
+
+        capacity = newCapacity;
+    }
+}
+</pre>
+
+<p>The capacity of the array grows by about 50%. For example, after the capacity for 100 elements is consumed, the new capacity would become 151. (<i>The extra 1 is for the case of 0 length, where adding 50% would not grow the array.</i>)
+</p>
+
+<p>The following program uses that template with the <code class="d_inline">double</code> type:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> core.memory;
+<span class="d_keyword">import</span> std.exception;
+
+<span class="d_comment">// ...
+</span>
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> array = Array!<span class="d_keyword">double</span>();
+
+    <span class="d_keyword">const</span> count = 10;
+
+    <span class="d_keyword">foreach</span> (i; 0 .. count) {
+        <span class="d_keyword">double</span> elementValue = i * 1.1;
+        array.append(elementValue);
+    }
+
+    writeln(<span class="d_string">"The elements:"</span>);
+
+    <span class="d_keyword">foreach</span> (i; 0 .. count) {
+        write(array.element(i), ' ');
+    }
+
+    writeln();
+}
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">Adding element with index 0
+Increasing capacity from 0 to 1
+Adding element with index 1
+Increasing capacity from 1 to 2
+Adding element with index 2
+Increasing capacity from 2 to 4
+Adding element with index 3
+Adding element with index 4
+Increasing capacity from 4 to 7
+Adding element with index 5
+Adding element with index 6
+Adding element with index 7
+Increasing capacity from 7 to 11
+Adding element with index 8
+Adding element with index 9
+The elements:
+0 1.1 2.2 3.3 4.4 5.5 6.6 7.7 8.8 9.9 
+</pre>
+
+<h5 class="subsection"><a id="ix_memory.alignment" content="alignment"></a> Alignment</h5>
+
+<p>By default, every object is placed at memory locations that are multiples of an amount specific to the type of that object. That amount is called the <i>alignment</i> of that type. For example, the alignment of <code class="d_inline">int</code> is 4 because <code class="d_inline">int</code> variables are placed at memory locations that are multiples of 4 (4, 8, 12, etc.).
+</p>
+
+<p>Alignment is needed for CPU performance or requirements, because accessing misaligned memory addresses can be slower or cause a bus error. In addition, certain types of variables only work properly at aligned addresses.
+</p>
+
+<h6><a id="ix_memory..alignof" content=".alignof"></a> The <code class="d_inline">.alignof</code> property</h6>
+
+<p><a id="ix_memory.classInstanceAlignment" content="classInstanceAlignment"></a> The <code class="d_inline">.alignof</code> property of a type is its default alignment value. For classes, <code class="d_inline">.alignof</code> is the alignment of the class variable, not the class object. The alignment of a class object is obtained by <code class="d_inline">std.traits.classInstanceAlignment</code>.
+</p>
+
+<p>The following program prints the alignments of various types:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.meta;
+<span class="d_keyword">import</span> std.traits;
+
+<span class="d_keyword">struct</span> EmptyStruct {
+}
+
+<span class="d_keyword">struct</span> Struct {
+    <span class="d_keyword">char</span> c;
+    <span class="d_keyword">double</span> d;
+}
+
+<span class="d_keyword">class</span> EmptyClass {
+}
+
+<span class="d_keyword">class</span> Class {
+    <span class="d_keyword">char</span> c;
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">alias</span> Types = AliasSeq!(<span class="d_keyword">char</span>, <span class="d_keyword">short</span>, <span class="d_keyword">int</span>, <span class="d_keyword">long</span>,
+                            <span class="d_keyword">double</span>, <span class="d_keyword">real</span>,
+                            string, <span class="d_keyword">int</span>[<span class="d_keyword">int</span>], <span class="d_keyword">int</span>*,
+                            EmptyStruct, Struct,
+                            EmptyClass, Class);
+
+    writeln(<span class="d_string">" Size  Alignment  Type\n"</span>,
+            <span class="d_string">"========================="</span>);
+
+    <span class="d_keyword">foreach</span> (Type; Types) {
+        <span class="d_keyword">static</span> <span class="d_keyword">if</span> (<span class="d_keyword">is</span> (Type == <span class="d_keyword">class</span>)) {
+            size_t size = <span class="d_keyword">__traits</span>(classInstanceSize, Type);
+            size_t alignment = <span class="hilite">classInstanceAlignment!Type</span>;
+
+        } <span class="d_keyword">else</span> {
+            size_t size = Type.sizeof;
+            size_t alignment = <span class="hilite">Type.alignof</span>;
+        }
+
+        writefln(<span class="d_string">"%4s%8s      %s"</span>,
+                 size, alignment, Type.stringof);
+    }
+}
+</pre>
+
+<p>The output of the program may be different in different environments. The following is a sample output:
+</p>
+
+<pre class="shell"> Size  Alignment  Type
+=========================
+   1       1      char
+   2       2      short
+   4       4      int
+   8       8      long
+   8       8      double
+  16      16      real
+  16       8      string
+   8       8      int[int]
+   8       8      int*
+   1       1      EmptyStruct
+  16       8      Struct
+  16       8      EmptyClass
+  17       8      Class
+</pre>
+
+<p>We will see later below how variables can be constructed (emplaced) at specific memory locations. For correctness and efficiency, objects must be constructed at addresses that match their alignments.
+</p>
+
+<p>Let's consider two <i>consecutive</i> objects of <code class="d_inline">Class</code> type above, which are 17 bytes each. Although 0 is not a legal address for a variable on most platforms, to simplify the example let's assume that the first object is at address 0. The 17 bytes of this object would be at adresses from 0 to 16:
+</p>
+
+<pre class="mono">     <span class="hilite">0</span>    1           16
+  ┌────┬────┬─ ... ─┬────┬─ ...
+  │<span class="hilite">&lt;────first object────&gt;</span>│
+  └────┴────┴─ ... ─┴────┴─ ...
+</pre>
+
+<p><a id="ix_memory.padding" content="padding"></a> Although the next available address is 17, that location cannot be used for a <code class="d_inline">Class</code> object because 17 is not a multiple of the alignment value 8 of that type. The nearest possible address for the second object is 24 because 24 is the next smallest multiple of 8. When the second object is placed at that address, there would be unused bytes between the two objects. Those bytes are called <i>padding bytes</i>:
+</p>
+
+<p></p>
+
+<pre class="mono">     <span class="hilite">0</span>    1           16   17           23   <span class="hilite">24</span>   25           30
+  ┌────┬────┬─ ... ─┬────┬────┬─ ... ─┬────┬────┬────┬─ ... ─┬────┬─ ...
+  │<span class="hilite">&lt;────first object────&gt;</span>│&lt;────<i>padding</i>────&gt;│<span class="hilite">&lt;───second object────&gt;</span>│
+  └────┴────┴─ ... ─┴────┴────┴─ ... ─┴────┴────┴────┴─ ... ─┴────┴─ ...
+</pre>
+
+<p>The following formula can determine the nearest address value that an object can be placed at:
+</p>
+
+<pre class="d_code">    (candidateAddress + alignmentValue - 1)
+    / alignmentValue
+    * alignmentValue
+</pre>
+
+<p>For that formula to work, the fractional part of the result of the division must be truncated. Since truncation is automatic for integral types, all of the variables above are assumed to be integral types.
+</p>
+
+<p>We will use the following function in the examples later below:
+</p>
+
+<pre class="d_code">T * nextAlignedAddress(T)(T * candidateAddr) {
+    <span class="d_keyword">import</span> std.traits;
+
+    <span class="d_keyword">static</span> <span class="d_keyword">if</span> (<span class="d_keyword">is</span> (T == <span class="d_keyword">class</span>)) {
+        <span class="d_keyword">const</span> alignment = classInstanceAlignment!T;
+
+    } <span class="d_keyword">else</span> {
+        <span class="d_keyword">const</span> alignment = T.alignof;
+    }
+
+    <span class="d_keyword">const</span> result = (<span class="d_keyword">cast</span>(size_t)candidateAddr + alignment - 1)
+                   / alignment * alignment;
+    <span class="d_keyword">return</span> <span class="d_keyword">cast</span>(T*)result;
+}
+</pre>
+
+<p>That function template deduces the type of the object from its template parameter. Since that is not possible when the type is <code class="d_inline">void*</code>, the type must be provided as an explicit template argument for the <code class="d_inline">void*</code> overload. That overload can trivially forward the call to the function template above:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> * nextAlignedAddress(T)(<span class="d_keyword">void</span> * candidateAddr) {
+    <span class="d_keyword">return</span> nextAlignedAddress(<span class="d_keyword">cast</span>(T*)candidateAddr);
+}
+</pre>
+
+<p>The function template above will be useful below when constructing <i>class</i> objects by <code class="d_inline">emplace()</code>.
+</p>
+
+<p>Let's define one more function template to calculate the total size of an object including the padding bytes that must be placed between two objects of that type:
+</p>
+
+<pre class="d_code">size_t sizeWithPadding(T)() {
+    <span class="d_keyword">static</span> <span class="d_keyword">if</span> (<span class="d_keyword">is</span> (T == <span class="d_keyword">class</span>)) {
+        <span class="d_keyword">const</span> candidateAddr = <span class="d_keyword">__traits</span>(classInstanceSize, T);
+
+    } <span class="d_keyword">else</span> {
+        <span class="d_keyword">const</span> candidateAddr = T.sizeof;
+    }
+
+    <span class="d_keyword">return</span> <span class="d_keyword">cast</span>(size_t)nextAlignedAddress(<span class="d_keyword">cast</span>(T*)candidateAddr);
+}
+</pre>
+
+<h6><a id="ix_memory..offsetof" content=".offsetof"></a> The <code class="d_inline">.offsetof</code> property</h6>
+
+<p>Alignment is observed for members of user-defined types as well. There may be padding bytes <i>between</i> members so that the members are aligned according to their respective types. For that reason, the size of the following <code class="d_inline">struct</code> is not 6 bytes as one might expect, but 12:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> A {
+    <span class="d_keyword">byte</span> b;     <span class="d_comment">// 1 byte
+</span>    <span class="d_keyword">int</span> i;      <span class="d_comment">// 4 bytes
+</span>    <span class="d_keyword">ubyte</span> u;    <span class="d_comment">// 1 byte
+</span>}
+
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="hilite">A.sizeof == 12</span>);    <span class="d_comment">// More than 1 + 4 + 1
+</span></pre>
+
+<p>This is due to padding bytes before the <code class="d_inline">int</code> member so that it is aligned at an address that is a multiple of 4, as well as padding bytes at the end for the alignment of the entire <code class="d_inline">struct</code> object itself.
+</p>
+
+<p>The <code class="d_inline">.offsetof</code> property gives the number of bytes a member variable is from the beginning of the object that it is a part of. The following function prints the layout of a type by determining the padding bytes by <code class="d_inline">.offsetof</code>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> printObjectLayout(T)()
+        <span class="d_keyword">if</span> (<span class="d_keyword">is</span> (T == <span class="d_keyword">struct</span>) || <span class="d_keyword">is</span> (T == <span class="d_keyword">union</span>)) {
+    <span class="d_keyword">import</span> std.stdio;
+    <span class="d_keyword">import</span> std.string;
+
+    writefln(<span class="d_string">"=== Memory layout of '%s'"</span> ~
+             <span class="d_string">" (.sizeof: %s, .alignof: %s) ==="</span>,
+             T.stringof, T.sizeof, T.alignof);
+
+    <span class="d_comment">/* Prints a single line of layout information. */</span>
+    <span class="d_keyword">void</span> printLine(size_t offset, string info) {
+        writefln(<span class="d_string">"%4s: %s"</span>, offset, info);
+    }
+
+    <span class="d_comment">/* Prints padding information if padding is actually
+     * observed. */</span>
+    <span class="d_keyword">void</span> maybePrintPaddingInfo(size_t expectedOffset,
+                               size_t actualOffset) {
+        <span class="d_keyword">if</span> (expectedOffset &lt; actualOffset) {
+            <span class="d_comment">/* There is some padding because the actual offset
+             * is beyond the expected one. */</span>
+
+            <span class="d_keyword">const</span> paddingSize = actualOffset - expectedOffset;
+
+            printLine(expectedOffset,
+                      format(<span class="d_string">"... %s-byte PADDING"</span>,
+                             paddingSize));
+        }
+    }
+
+    <span class="d_comment">/* This is the expected offset of the next member if there
+     * were no padding bytes before that member. */</span>
+    size_t noPaddingOffset = 0;
+
+    <span class="d_comment">/* Note: __traits(allMembers) is a 'string' collection of
+     * names of the members of a type. */</span>
+    <span class="d_keyword">foreach</span> (memberName; <span class="d_keyword">__traits</span>(allMembers, T)) {
+        <span class="d_keyword">mixin</span> (format(<span class="d_string">"alias member = %s.%s;"</span>,
+                      T.stringof, memberName));
+
+        <span class="d_keyword">const</span> offset = member<span class="hilite">.offsetof</span>;
+        maybePrintPaddingInfo(noPaddingOffset, offset);
+
+        <span class="d_keyword">const</span> typeName = <span class="d_keyword">typeof</span>(member).stringof;
+        printLine(offset,
+                  format(<span class="d_string">"%s %s"</span>, typeName, memberName));
+
+        noPaddingOffset = offset + member.sizeof;
+    }
+
+    maybePrintPaddingInfo(noPaddingOffset, T.sizeof);
+}
+</pre>
+
+<p>The following program prints the layout of the 12-byte <code class="d_inline">struct A</code> that was defined above:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> A {
+    <span class="d_keyword">byte</span> b;
+    <span class="d_keyword">int</span> i;
+    <span class="d_keyword">ubyte</span> u;
+}
+
+<span class="d_keyword">void</span> main() {
+    printObjectLayout!A();
+}
+</pre>
+
+<p>The output of the program showns where the total of 6 padding bytes are located inside the object. The first column of the output is the offset from the beginning of the object:
+</p>
+
+<pre class="shell">=== Memory layout of 'A' (.sizeof: <span class="hilite">12</span>, .alignof: 4) ===
+   0: byte b
+   1: ... 3-byte PADDING
+   4: int i
+   8: ubyte u
+   9: ... 3-byte PADDING
+</pre>
+
+<p>One technique of minimizing padding is ordering the members by their sizes from the largest to the smallest. For example, when the <code class="d_inline">int</code> member is moved to the beginning of the previous <code class="d_inline">struct</code> then the size of the object would be less:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> B {
+    <span class="hilite"><span class="d_keyword">int</span> i;</span>    <span class="d_comment">// Moved up inside the struct definition
+</span>    <span class="d_keyword">byte</span> b;
+    <span class="d_keyword">ubyte</span> u;
+}
+
+<span class="d_keyword">void</span> main() {
+    printObjectLayout!B();
+}
+</pre>
+
+<p>This time, the size of the object is down to 8 due to just 2 bytes of padding at the end:
+</p>
+
+<pre class="shell">=== Memory layout of 'B' (.sizeof: <span class="hilite">8</span>, .alignof: 4) ===
+   0: int i
+   4: byte b
+   5: ubyte u
+   6: ... 2-byte PADDING
+</pre>
+
+<h6><a id="ix_memory.align" content="align"></a> The <code class="d_inline">align</code> attribute</h6>
+
+<p>The <code class="d_inline">align</code> attribute is for specifying alignments of variables, user-defined types, and members of user-defined types. The value provided in parentheses specifies the alignment value. Every definition can be specified separately. For example, the following definition would align <code class="d_inline">S</code> objects at 2-byte boundaries and its <code class="d_inline">i</code> member at 1-byte boundaries (1-byte alignment always results in no padding at all):
+</p>
+
+<pre class="d_code"><span class="hilite"><span class="d_keyword">align</span> (2)</span>               <span class="d_comment">// The alignment of 'S' objects
+</span><span class="d_keyword">struct</span> S {
+    <span class="d_keyword">byte</span> b;
+    <span class="hilite"><span class="d_keyword">align</span> (1)</span> <span class="d_keyword">int</span> i;    <span class="d_comment">// The alignment of member 'i'
+</span>    <span class="d_keyword">ubyte</span> u;
+}
+
+<span class="d_keyword">void</span> main() {
+    printObjectLayout!S();
+}
+</pre>
+
+<p>When the <code class="d_inline">int</code> member is aligned at a 1-byte boundary, there is no padding before it and this time the size of the object ends up being exactly 6:
+</p>
+
+<pre class="shell">=== Memory layout of 'S' (.sizeof: <span class="hilite">6</span>, .alignof: 4) ===
+   0: byte b
+   1: int i
+   5: ubyte u
+</pre>
+
+<p>Although <code class="d_inline">align</code> can reduce sizes of user-defined types, there can be <i>significant performance penalties</i> when default alignments of types are not observed (and on some CPUs, using misaligned data can actually crash the program).
+</p>
+
+<p><code class="d_inline">align</code> can specify the alignment of variables as well:
+</p>
+
+<pre class="d_code">    <span class="hilite"><span class="d_keyword">align</span> (32)</span> <span class="d_keyword">double</span> d;    <span class="d_comment">// The alignment of a variable
+</span></pre>
+
+<p>However, objects that are allocated by <code class="d_inline">new</code> must always be aligned at multiples of the size of the <code class="d_inline">size_t</code> type because that is what the GC assumes. Doing otherwise is undefined behavior. For example, if <code class="d_inline">size_t</code> is 8 bytes long, than the alignments of variables allocated by <code class="d_inline">new</code> must be a multiple of 8.
+</p>
+
+<h5 class="subsection"><a id="ix_memory.construction, emplace" content="construction, emplace"></a> <a id="ix_memory.emplace" content="emplace"></a> Constructing variables at specific memory locations</h5>
+
+<p><a id="ix_memory.new" content="new"></a> The <code class="d_inline">new</code> expression achieves three tasks:
+</p>
+
+<ol>
+<li>Allocates memory large enough for the object. The newly allocated memory area is considered to be <i>raw</i>, not associated with any type or any object.
+</li>
+
+<li>Copies the <code class="d_inline">.init</code> value of that type on that memory area and executes the constructor of the object on that area. Only after this step the object becomes <i>placed</i> on that memory area.
+</li>
+
+<li>Configures the memory block so it has all the necessary flags and infrastructure to properly destroy the object when freed.
+</li>
+
+</ol>
+
+<p>We have already seen that the first of these tasks can explicitly be achieved by memory allocation functions like <code class="d_inline">GC.calloc</code>. Being a system language, D allows the programmer manage the second step as well.
+</p>
+
+<p>Variables can be constructed at specific locations with <code class="d_inline">std.conv.emplace</code>.
+</p>
+
+<h6><a id="ix_memory.emplace, struct" content="emplace, struct"></a> Constructing a struct object at a specific location</h6>
+
+<p><code class="d_inline">emplace()</code> takes the address of a memory location as its first parameter and constructs an object at that location. If provided, it uses the remaining parameters as the object's constructor arguments:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.conv;
+<span class="d_comment">// ...
+</span>    emplace(<i>address</i>, <span class="d_comment">/* ... constructor arguments ... */</span>);
+</pre>
+
+<p>It is not necessary to specify the type of the object explicitly when constructing a <code class="d_inline">struct</code> object because <code class="d_inline">emplace()</code> deduces the type of the object from the type of the pointer. For example, since the type of the following pointer is <code class="d_inline">Student*</code>, <code class="d_inline">emplace()</code> constructs a <code class="d_inline">Student</code> object at that address:
+</p>
+
+<pre class="d_code">        Student * objectAddr = nextAlignedAddress(candidateAddr);
+<span class="d_comment">// ...
+</span>        emplace(objectAddr, name, id);
+</pre>
+
+<p>The following program allocates a memory area large enough for three objects and constructs them one by one at aligned addresses inside that memory area:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.string;
+<span class="d_keyword">import</span> core.memory;
+<span class="d_keyword">import</span> std.conv;
+
+<span class="d_comment">// ...
+</span>
+<span class="d_keyword">struct</span> Student {
+    string name;
+    <span class="d_keyword">int</span> id;
+
+    string toString() {
+        <span class="d_keyword">return</span> format(<span class="d_string">"%s(%s)"</span>, name, id);
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_comment">/* Some information about this type. */</span>
+    writefln(<span class="d_string">"Student.sizeof: %#x (%s) bytes"</span>,
+             Student.sizeof, Student.sizeof);
+    writefln(<span class="d_string">"Student.alignof: %#x (%s) bytes"</span>,
+             Student.alignof, Student.alignof);
+
+    string[] names = [ <span class="d_string">"Amy"</span>, <span class="d_string">"Tim"</span>, <span class="d_string">"Joe"</span> ];
+    <span class="d_keyword">const</span> totalSize = sizeWithPadding!Student() * names.length;
+
+    <span class="d_comment">/* Reserve room for all Student objects.
+     *
+     * Warning! The objects that are accessible through this
+     * slice are not constructed yet; they should not be
+     * accessed until after they are properly constructed. */</span>
+    Student[] students =
+        (<span class="d_keyword">cast</span>(Student*)GC.calloc(totalSize))[0 .. names.length];
+
+    <span class="d_keyword">foreach</span> (i, name; names) {
+        Student * candidateAddr = students.ptr + i;
+        Student * objectAddr =
+            nextAlignedAddress(candidateAddr);
+        writefln(<span class="d_string">"address of object %s: %s"</span>, i, objectAddr);
+
+        <span class="d_keyword">const</span> id = 100 + i.to!<span class="d_keyword">int</span>;
+        <span class="hilite">emplace</span>(objectAddr, name, id);
+    }
+
+    <span class="d_comment">/* All of the objects are constructed and can be used. */</span>
+    writeln(students);
+}
+</pre>
+
+<p>The output of the program:
+</p>
+
+<pre class="shell">Student.sizeof: 0x18 (24) bytes
+Student.alignof: 0x8 (8) bytes
+address of object 0: 7F1532861F00
+address of object 1: 7F1532861F18
+address of object 2: 7F1532861F30
+[Amy(100), Tim(101), Joe(102)]
+</pre>
+
+<h6><a id="ix_memory.emplace, class" content="emplace, class"></a> Constructing a class object at a specific location</h6>
+
+<p>Class variables need not be of the exact type of class objects. For example, a class variable of type <code class="d_inline">Animal</code> can refer to a <code class="d_inline">Cat</code> object. For that reason, <code class="d_inline">emplace()</code> does not determine the type of the object from the type of the memory pointer. Instead, the actual type of the object must be explicitly specified as a template argument of <code class="d_inline">emplace()</code>. (<i><b>Note:</b> Additionally, a class pointer is a pointer to a class variable, not to a class object. For that reason, specifying the actual type allows the programmer to specify whether to emplace a class object or a class variable.</i>)
+</p>
+
+<p><a id="ix_memory.void[]" content="void[]"></a> The memory location for a class object must be specified as a <code class="d_inline">void[]</code> slice with the following syntax:
+</p>
+
+<pre class="d_code">    Type variable =
+        emplace!<i>Type</i>(<i>voidSlice</i>,
+                         <span class="d_comment">/* ... constructor arguments ... */</span>);
+</pre>
+
+<p><code class="d_inline">emplace()</code> constructs a class <i>object</i> at the location specified by the slice and returns a class <i>variable</i> for that object.
+</p>
+
+<p>Let's use <code class="d_inline">emplace()</code> on objects of an <code class="d_inline">Animal</code> hierarchy. The objects of this hierarchy will be placed <i>side-by-side</i> on a piece of memory that is allocated by <code class="d_inline">GC.calloc</code>. To make the example more interesting, we will ensure that the subclasses have different sizes. This will be useful to demonstrate how the address of a subsequent object can be determined depending on the size of the previous one.
+</p>
+
+<pre class="d_code"><span class="d_keyword">interface</span> Animal {
+    string sing();
+}
+
+<span class="d_keyword">class</span> Cat : Animal {
+    string sing() {
+        <span class="d_keyword">return</span> <span class="d_string">"meow"</span>;
+    }
+}
+
+<span class="d_keyword">class</span> Parrot : Animal {
+    string[] lyrics;
+
+    <span class="d_keyword">this</span>(string[] lyrics) {
+        <span class="d_keyword">this</span>.lyrics = lyrics;
+    }
+
+    string sing() {
+        <span class="d_comment">/* std.algorithm.joiner joins elements of a range with
+         * the specified separator. */</span>
+        <span class="d_keyword">return</span> lyrics.joiner(<span class="d_string">", "</span>).to!string;
+    }
+}
+</pre>
+
+<p>The buffer that holds the objects will be allocated with <code class="d_inline">GC.calloc</code>:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">const</span> capacity = 10_000;
+    <span class="d_keyword">void</span> * buffer = GC.calloc(capacity);
+</pre>
+
+<p>Normally, it must be ensured that there is always available capacity for objects. We will ignore that check here to keep the example simple and assume that the objects in the example will fit in ten thousand bytes.
+</p>
+
+<p>The buffer will be used for constructing a <code class="d_inline">Cat</code> and a <code class="d_inline">Parrot</code> object:
+</p>
+
+<pre class="d_code">    Cat cat = emplace!Cat(catPlace);
+<span class="d_comment">// ...
+</span>    Parrot parrot =
+        emplace!Parrot(parrotPlace, [ <span class="d_string">"squawk"</span>, <span class="d_string">"arrgh"</span> ]);
+</pre>
+
+<p>Note that the constructor argument of <code class="d_inline">Parrot</code> is specified after the address of the object.
+</p>
+
+<p>The variables that <code class="d_inline">emplace()</code> returns will be stored in an <code class="d_inline">Animal</code> slice later to be used in a <code class="d_inline">foreach</code> loop:
+</p>
+
+<pre class="d_code">    Animal[] animals;
+<span class="d_comment">// ...
+</span>    animals ~= cat;
+<span class="d_comment">// ...
+</span>    animals ~= parrot;
+
+    <span class="d_keyword">foreach</span> (animal; animals) {
+        writeln(animal.sing());
+    }
+</pre>
+
+<p>More explanations are inside the code comments:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.algorithm;
+<span class="d_keyword">import</span> std.conv;
+<span class="d_keyword">import</span> core.memory;
+
+<span class="d_comment">// ...
+</span>
+<span class="d_keyword">void</span> main() {
+    <span class="d_comment">/* A slice of Animal variables (not Animal objects). */</span>
+    Animal[] animals;
+
+    <span class="d_comment">/* Allocating a buffer with an arbitrary capacity and
+     * assuming that the two objects in this example will fit
+     * in that area. Normally, this condition must be
+     * validated. */</span>
+    <span class="d_keyword">const</span> capacity = 10_000;
+    <span class="d_keyword">void</span> * buffer = GC.calloc(capacity);
+
+    <span class="d_comment">/* Let's first place a Cat object. */</span>
+    <span class="d_keyword">void</span> * catCandidateAddr = buffer;
+    <span class="d_keyword">void</span> * catAddr = nextAlignedAddress!Cat(catCandidateAddr);
+    writeln(<span class="d_string">"Cat address   : "</span>, catAddr);
+
+    <span class="d_comment">/* Since emplace() requires a void[] for a class object,
+     * we must first produce a slice from the pointer. */</span>
+    size_t catSize = <span class="d_keyword">__traits</span>(classInstanceSize, Cat);
+    <span class="d_keyword">void</span>[] catPlace = catAddr[0..catSize];
+
+    <span class="d_comment">/* Construct a Cat object inside that memory slice and
+     * store the returned class variable for later use. */</span>
+    Cat cat = <span class="hilite">emplace!Cat</span>(catPlace);
+    animals ~= cat;
+
+    <span class="d_comment">/* Now construct a Parrot object at the next available
+     * address that satisfies the alignment requirement. */</span>
+    <span class="d_keyword">void</span> * parrotCandidateAddr = catAddr + catSize;
+    <span class="d_keyword">void</span> * parrotAddr =
+        nextAlignedAddress!Parrot(parrotCandidateAddr);
+    writeln(<span class="d_string">"Parrot address: "</span>, parrotAddr);
+
+    size_t parrotSize = <span class="d_keyword">__traits</span>(classInstanceSize, Parrot);
+    <span class="d_keyword">void</span>[] parrotPlace = parrotAddr[0..parrotSize];
+
+    Parrot parrot =
+        <span class="hilite">emplace!Parrot</span>(parrotPlace, [ <span class="d_string">"squawk"</span>, <span class="d_string">"arrgh"</span> ]);
+    animals ~= parrot;
+
+    <span class="d_comment">/* Use the objects. */</span>
+    <span class="d_keyword">foreach</span> (animal; animals) {
+        writeln(animal.sing());
+    }
+}
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">Cat address   : 7F0E343A2000
+Parrot address: 7F0E343A2018
+meow
+squawk, arrgh
+</pre>
+
+<p>Instead of repeating the steps inside <code class="d_inline">main()</code> for each object, a function template like <code class="d_inline">newObject(T)</code> would be more useful.
+</p>
+
+<h5 class="subsection">Destroying objects explicitly</h5>
+
+<p>The reverse operations of the <code class="d_inline">new</code> operator are destroying an object and returning the object's memory back to the GC. Normally, these operations are executed automatically at unspecified times.
+</p>
+
+<p>However, sometimes it is necessary to execute destructors at specific points in the program. For example, an object may be closing a <code class="d_inline">File</code> member in its destructor and the destructor may have to be executed immediately when the lifetime of the object ends.
+</p>
+
+<p><a id="ix_memory.destroy" content="destroy"></a> <code class="d_inline">destroy()</code> calls the destructor of an object:
+</p>
+
+<pre class="d_code">    destroy(variable);
+</pre>
+
+<p><a id="ix_memory..init" content=".init"></a> After executing the destructor, <code class="d_inline">destroy()</code> sets the variable to its <code class="d_inline">.init</code> state. Note that the <code class="d_inline">.init</code> state of a class variable is <code class="d_inline">null</code>; so, a class variable cannot be used once destroyed. <code class="d_inline">destroy()</code> merely executes the destructor. It is still up to the GC when to reuse the piece of memory that used to be occupied by the destroyed object.
+</p>
+
+<p><b>Warning:</b> When used with a <i>struct</i> pointer, <code class="d_inline">destroy()</code> must receive the pointee, not the pointer. Otherwise, the pointer would be set to <code class="d_inline">null</code> but the object would not be destroyed:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">struct</span> S {
+    <span class="d_keyword">int</span> i;
+
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> i) {
+        <span class="d_keyword">this</span>.i = i;
+        writefln(<span class="d_string">"Constructing object with value %s"</span>, i);
+    }
+
+    ~<span class="d_keyword">this</span>() {
+        writefln(<span class="d_string">"Destroying object with value %s"</span>, i);
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> p = <span class="d_keyword">new</span> S(42);
+
+    writeln(<span class="d_string">"Before destroy()"</span>);
+    destroy(<span class="hilite">p</span>);                        <span class="d_comment">// ← WRONG USAGE
+</span>    writeln(<span class="d_string">"After destroy()"</span>);
+
+    writefln(<span class="d_string">"p: %s"</span>, p);
+
+    writeln(<span class="d_string">"Leaving main"</span>);
+}
+</pre>
+
+<p>When <code class="d_inline">destroy()</code> receives a pointer, it is the pointer that gets destroyed (i.e. the pointer becomes <code class="d_inline">null</code>):
+</p>
+
+<pre class="shell">Constructing object with value 42
+Before destroy()
+After destroy()  <span class="shell_note_wrong">← The object is not destroyed before this line</span>
+p: null          <span class="shell_note_wrong">← Instead, the pointer becomes null</span>
+Leaving main
+Destroying object with value 42
+</pre>
+
+<p>For that reason, when used with a struct pointer, <code class="d_inline">destroy()</code> must receive the pointee:
+</p>
+
+<pre class="d_code">    destroy(<span class="hilite">*p</span>);                       <span class="d_comment">// ← Correct usage
+</span></pre>
+
+<p>This time the destructor is executed at the right spot and the pointer is not set to <code class="d_inline">null</code>:
+</p>
+
+<pre class="shell">Constructing object with value 42
+Before destroy()
+Destroying object with value 42  <span class="shell_note">← Destroyed at the right spot</span>
+After destroy()
+p: 7FB64FE3F200                  <span class="shell_note">← The pointer is not null</span>
+Leaving main
+Destroying object with value 0   <span class="shell_note">← Once more for S.init</span>
+</pre>
+
+<p>The last line is due to executing the destructor one more time for the same object, which now has the value <code class="d_inline">S.init</code>.
+</p>
+
+<h5 class="subsection"><a id="ix_memory.construction, by name" content="construction, by name"></a> Constructing objects at run time by name</h5>
+
+<p><a id="ix_memory.factory" content="factory"></a> <a id="ix_memory.Object" content="Object"></a> The <code class="d_inline">factory()</code> member function of <code class="d_inline">Object</code> takes the fully qualified name of a class type as parameter, constructs an object of that type, and returns a class variable for that object:
+</p>
+
+<pre class="d_code"><span class="hilite"><span class="d_keyword">module</span> test_module</span>;
+
+<span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">interface</span> Animal {
+    string sing();
+}
+
+<span class="d_keyword">class</span> Cat : Animal {
+    string sing() {
+        <span class="d_keyword">return</span> <span class="d_string">"meow"</span>;
+    }
+}
+
+<span class="d_keyword">class</span> Dog : Animal {
+    string sing() {
+        <span class="d_keyword">return</span> <span class="d_string">"woof"</span>;
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    string[] toConstruct = [ <span class="d_string">"Cat"</span>, <span class="d_string">"Dog"</span>, <span class="d_string">"Cat"</span> ];
+
+    Animal[] animals;
+
+    <span class="d_keyword">foreach</span> (typeName; toConstruct) {
+        <span class="d_comment">/* The pseudo variable __MODULE__ is always the name
+         * of the current module, which can be used as a
+         * string literal at compile time. */</span>
+        <span class="d_keyword">const</span> fullName = <span class="d_keyword">__MODULE__</span> ~ '.' ~ typeName;
+        writefln(<span class="d_string">"Constructing %s"</span>, fullName);
+        animals ~= <span class="d_keyword">cast</span>(Animal)<span class="hilite">Object.factory</span>(fullName);
+    }
+
+    <span class="d_keyword">foreach</span> (animal; animals) {
+        writeln(animal.sing());
+    }
+}
+</pre>
+
+<p>Although there is no explicit <code class="d_inline">new</code> expression in that program, three class objects are created and added to the <code class="d_inline">animals</code> slice:
+</p>
+
+<pre class="shell">Constructing test_module.Cat
+Constructing test_module.Dog
+Constructing test_module.Cat
+meow
+woof
+meow
+</pre>
+
+<p>Note that <code class="d_inline">Object.factory()</code> takes the fully qualified name of the type of the object. Also, the return type of <code class="d_inline">factory()</code> is <code class="d_inline">Object</code>; so, it must be cast to the actual type of the object before being used in the program.
+</p>
+
+<h5 class="subsection">Summary</h5>
+
+<ul><li>The garbage collector scans the memory at unspecified times, determines the objects that cannot possibly be reached anymore by the program, destroys them, and reclaims their memory locations.</li>
+
+<li>The operations of the GC may be controlled by the programmer to some extent by <code class="d_inline">GC.collect</code>, <code class="d_inline">GC.disable</code>, <code class="d_inline">GC.enable</code>, <code class="d_inline">GC.minimize</code>, etc.</li>
+
+<li><code class="d_inline">GC.calloc</code> and other functions reserve memory, <code class="d_inline">GC.realloc</code> extends a previously allocated memory area, and <code class="d_inline">GC.free</code> returns it back to the GC.</li>
+
+<li>It is possible to mark the allocated memory by attributes like <code class="d_inline">GC.BlkAttr.NO_SCAN</code>, <code class="d_inline">GC.BlkAttr.NO_INTERIOR</code>, etc.</li>
+
+<li>The <code class="d_inline">.alignof</code> property is the default memory alignment of a type. Alignment must be obtained by <code class="d_inline">classInstanceAlignment</code> for class <i>objects</i>.</li>
+
+<li>The <code class="d_inline">.offsetof</code> property is the number of bytes a member is from the beginning of the object that it is a part of.</li>
+
+<li>The <code class="d_inline">align</code> attribute specifies the alignment of a variable, a user-defined type, or a member.</li>
+
+<li><code class="d_inline">emplace()</code> takes a pointer when constructing a <code class="d_inline">struct</code> object, a <code class="d_inline">void[]</code> slice when constructing a <code class="d_inline">class</code> object.</li>
+
+<li><code class="d_inline">destroy()</code> executes the destructor of objects. (One must destroy the struct pointee, not the struct pointer.)</li>
+
+<li><code class="d_inline">Object.factory()</code> constructs objects with their fully qualified type names.</li>
+
+</ul>
+
+macros:
+        TITLE=Memory Management
+
+        DESCRIPTION=The memory, the garbage collector, and managing memory explicitly.
+
+        KEYWORDS=d programming language tutorial book integer gc memory
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2022 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on Sun May 15 14:08:34 2022
+</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>
