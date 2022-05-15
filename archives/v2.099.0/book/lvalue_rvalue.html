@@ -1,0 +1,307 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2022 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Lvalues and Rvalues - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Lvalues and Rvalues' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BLvalues and Rvalues%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/d.en/lvalue_rvalue.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Lvalues and Rvalues</h1>
+        
+        
+
+
+
+<p><a id="ix_Lvalues and Rvalues.expression, lvalue vs rvalue" content="expression, lvalue vs rvalue"></a> The value of every expression is classified as either an lvalue or an rvalue. A simple way of differentiating the two is thinking of lvalues as actual variables (including elements of arrays and associative arrays), and rvalues as temporary results of expressions (including literals).
+</p>
+
+<p>As a demonstration, the first <code class="d_inline">writeln()</code> expression below uses only lvalues and the other one uses only rvalues:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">int</span> i;
+    <span class="d_keyword">immutable</span>(<span class="d_keyword">int</span>) imm;
+    <span class="d_keyword">auto</span> arr = [ 1 ];
+    <span class="d_keyword">auto</span> aa = [ 10 : <span class="d_string">"ten"</span> ];
+
+    <span class="d_comment">/* All of the following arguments are lvalues. */</span>
+
+    writeln(i,          <span class="d_comment">// mutable variable
+</span>            imm,        <span class="d_comment">// immutable variable
+</span>            arr,        <span class="d_comment">// array
+</span>            arr[0],     <span class="d_comment">// array element
+</span>            aa[10]);    <span class="d_comment">// associative array element
+</span>                        <span class="d_comment">// etc.
+</span>
+    <span class="d_keyword">enum</span> message = <span class="d_string">"hello"</span>;
+
+    <span class="d_comment">/* All of the following arguments are rvalues. */</span>
+
+    writeln(42,               <span class="d_comment">// a literal
+</span>            message,          <span class="d_comment">// a manifest constant
+</span>            i + 1,            <span class="d_comment">// a temporary value
+</span>            calculate(i));    <span class="d_comment">// return value of a function
+</span>                              <span class="d_comment">// etc.
+</span>}
+
+<span class="d_keyword">int</span> calculate(<span class="d_keyword">int</span> i) {
+    <span class="d_keyword">return</span> i * 2;
+}
+</pre>
+
+<h5 class="subsection">Limitations of rvalues</h5>
+
+<p>Compared to lvalues, rvalues have the following three limitations.
+</p>
+
+<h6>Rvalues don't have memory addresses</h6>
+
+<p>An lvalue has a memory location to which we can refer, while an rvalue does not.
+</p>
+
+<p>For example, it is not possible to take the address of the rvalue expression <code class="d_inline">a&nbsp;+&nbsp;b</code> in the following program:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">int</span> a;
+    <span class="d_keyword">int</span> b;
+
+    readf(<span class="d_string">" %s"</span>, &amp;a);          <span class="d_comment">// ← compiles</span>
+    readf(<span class="d_string">" %s"</span>, &amp;(a + b));    <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+}
+</pre>
+
+<pre class="shell">Error: a + b <span class="hilite">is not an lvalue</span>
+</pre>
+
+<h6>Rvalues cannot be assigned new values</h6>
+
+<p>If mutable, an lvalue can be assigned a new value, while an rvalue cannot be:
+</p>
+
+<pre class="d_code">    a = 1;          <span class="d_comment">// ← compiles</span>
+    (a + b) = 2;    <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+</pre>
+
+<pre class="shell">Error: a + b <span class="hilite">is not an lvalue</span>
+</pre>
+
+<h6>Rvalues cannot be passed to functions by reference</h6>
+
+<p>An lvalue can be passed to a function that takes a parameter by reference, while an rvalue cannot be:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> incrementByTen(<span class="hilite"><span class="d_keyword">ref</span> <span class="d_keyword">int</span></span> value) {
+    value += 10;
+}
+
+<span class="d_comment">// ...
+</span>
+    incrementByTen(a);        <span class="d_comment">// ← compiles</span>
+    incrementByTen(a + b);    <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+</pre>
+
+<pre class="shell">Error: function deneme.incrementByTen (ref int value)
+<span class="hilite">is not callable</span> using argument types (int)
+</pre>
+
+<p>The main reason for this limitation is the fact that a function taking a <code class="d_inline">ref</code> parameter can hold on to that reference for later use, at a time when the rvalue would not be available.
+</p>
+
+<p>Different from languages like C++, in D an rvalue cannot be passed to a function even if that function does <i>not</i> modify the argument:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> print(<span class="hilite"><span class="d_keyword">ref</span> <span class="d_keyword">const</span>(<span class="d_keyword">int</span>)</span> value) {
+    writeln(value);
+}
+
+<span class="d_comment">// ...
+</span>
+    print(a);        <span class="d_comment">// ← compiles</span>
+    print(a + b);    <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+</pre>
+
+<pre class="shell">Error: function deneme.print (ref const(int) value)
+<span class="hilite">is not callable</span> using argument types (int)
+</pre>
+
+<h5 class="subsection"><a id="ix_Lvalues and Rvalues.auto ref, parameter" content="auto ref, parameter"></a> <a id="ix_Lvalues and Rvalues.parameter, auto ref" content="parameter, auto ref"></a> Using <code class="d_inline">auto ref</code> parameters to accept both lvalues and rvalues</h5>
+
+<p>As it was mentioned in the previous chapter, <code class="d_inline">auto ref</code> parameters of <a href="templates.html">function templates</a> can take both lvalues and rvalues.
+</p>
+
+<p>When the argument is an lvalue, <code class="d_inline">auto ref</code> means <i>by reference</i>. On the other hand, since rvalues cannot be passed to functions by reference, when the argument is an rvalue, it means <i>by copy</i>. For the compiler to generate code differently for these two distinct cases, the function must be a template.
+</p>
+
+<p>We will see templates in a later chapter. For now, please accept that the highlighted empty parentheses below make the following definition a <i>function template</i>.
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> incrementByTen<span class="hilite">()</span>(<span class="hilite"><span class="d_keyword">auto</span> <span class="d_keyword">ref</span></span> <span class="d_keyword">int</span> value) {
+    <span class="d_comment">/* WARNING: The parameter may be a copy if the argument is
+     * an rvalue. This means that the following modification
+     * may not be observable by the caller. */</span>
+
+    value += 10;
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">int</span> a;
+    <span class="d_keyword">int</span> b;
+
+    incrementByTen(a);        <span class="d_comment">// ← lvalue; passed by reference</span>
+    incrementByTen(a + b);    <span class="d_comment">// ← rvalue; copied</span>
+}
+</pre>
+
+<p><a id="ix_Lvalues and Rvalues.isRef" content="isRef"></a> It is possible to determine whether the parameter is an lvalue or an rvalue by using <code class="d_inline">__traits(isRef)</code> with <code class="d_inline">static if</code> :
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> incrementByTen()(<span class="d_keyword">auto</span> <span class="d_keyword">ref</span> <span class="d_keyword">int</span> value) {
+    <span class="hilite"><span class="d_keyword">static</span> <span class="d_keyword">if</span></span> (<span class="d_keyword">__traits</span>(<span class="hilite">isRef</span>, value)) {
+        <span class="d_comment">// 'value' is passed by reference
+</span>    } <span class="d_keyword">else</span> {
+        <span class="d_comment">// 'value' is copied
+</span>    }
+}
+</pre>
+
+<p>We will see <code class="d_inline">static if</code> and <code class="d_inline">__traits</code> later in <a href="cond_comp.html">the Conditional Compilation chapter</a>.
+</p>
+
+<h5 class="subsection">Terminology</h5>
+
+<p>The names "lvalue" and "rvalue" do not represent the characteristics of these two kinds of values accurately. The initial letters <i>l</i> and <i>r</i> come from <i>left</i> and <i>right</i>, referring to the left- and the right-hand side expressions of the assignment operator:
+</p>
+
+<ul>
+<li>Assuming that it is mutable, an lvalue can be the left-hand expression of an assignment operation.</li>
+
+<li>An rvalue cannot be the left-hand expression of an assignment operation.</li>
+
+</ul>
+
+<p>The terms "left value" and "right value" are confusing because in general both lvalues and rvalues can be on either side of an assignment operation:
+</p>
+
+<pre class="d_code">    <span class="d_comment">// rvalue 'a + b' on the left, lvalue 'a' on the right:
+</span>    array[a + b] = a;
+</pre>
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2022 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on Sun May 15 14:08:35 2022
+</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

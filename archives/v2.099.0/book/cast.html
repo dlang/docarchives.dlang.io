@@ -1,0 +1,718 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2022 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Type Conversions - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Type Conversions' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BType Conversions%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/d.en/cast.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Type Conversions</h1>
+        
+        
+
+
+
+<p>Variables must be compatible with the expressions that they take part in. As it has probably been obvious from the programs that we have seen so far, D is a <i>statically typed language</i>, meaning that the compatibility of types is validated at compile time.
+</p>
+
+<p>All of the expressions that we have written so far always had compatible types because otherwise the code would be rejected by the compiler. The following is an example of code that has incompatible types:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">char</span>[] slice;
+    writeln(slice + 5);    <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+</pre>
+
+<p>The compiler rejects the code due to the incompatible types <code class="d_inline">char[]</code> and <code class="d_inline">int</code> for the addition operation:
+</p>
+
+<pre class="shell">Error: <span class="hilite">incompatible types</span> for ((slice) + (5)): 'char[]' and 'int'
+</pre>
+
+<p>Type incompatibility does not mean that the types are different; different types can indeed be used in expressions safely. For example, an <code class="d_inline">int</code> variable can safely be used in place of a <code class="d_inline">double</code> value:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">double</span> sum = 1.25;
+    <span class="d_keyword">int</span> increment = 3;
+    sum += increment;
+</pre>
+
+<p>Even though <code class="d_inline">sum</code> and <code class="d_inline">increment</code> are of different types, the code above is valid because incrementing a <code class="d_inline">double</code> variable by an <code class="d_inline">int</code> value is legal.
+</p>
+
+<h5 class="subsection"><a id="ix_Type Conversions.automatic type conversion" content="automatic type conversion"></a> <a id="ix_Type Conversions.implicit type conversion" content="implicit type conversion"></a> Automatic type conversions</h5>
+
+<p>Automatic type conversions are also called <i>implicit type conversions</i>.
+</p>
+
+<p>Although <code class="d_inline">double</code> and <code class="d_inline">int</code> are compatible types in the expression above, the addition operation must still be evaluated as a specific type at the microprocessor level.  As you would remember from the <a href="floating_point.html">Floating Point Types chapter</a>, the 64-bit type <code class="d_inline">double</code> is <i>wider</i> (or <i>larger</i>) than the 32-bit type <code class="d_inline">int</code>. Additionally, any value that fits in an <code class="d_inline">int</code> also fits in a <code class="d_inline">double</code>.
+</p>
+
+<p>When the compiler encounters an expression that involves mismatched types, it first converts the parts of the expressions to a common type and then evaluates the overall expression. The automatic conversions that are performed by the compiler are in the direction that avoids data loss. For example, <code class="d_inline">double</code> can hold any value that <code class="d_inline">int</code> can hold but the opposite is not true. The <code class="d_inline">+=</code> operation above can work because any <code class="d_inline">int</code> value can safely be converted to <code class="d_inline">double</code>.
+</p>
+
+<p>The value that has been generated automatically as a result of a conversion is always an anonymous (and often temporary) variable. The original value does not change. For example, the automatic conversion during <code class="d_inline">+=</code> above does not change the type of <code class="d_inline">increment</code>; it is always an <code class="d_inline">int</code>. Rather, a temporary value of type <code class="d_inline">double</code> is constructed with the value of <code class="d_inline">increment</code>. The conversion that takes place in the background is equivalent to the following code:
+</p>
+
+<pre class="d_code">    {
+        <span class="d_keyword">double</span> <i>an_anonymous_double_value</i> = increment;
+        sum += <i>an_anonymous_double_value</i>;
+    }
+</pre>
+
+<p>The compiler converts the <code class="d_inline">int</code> value to a temporary <code class="d_inline">double</code> value and uses that value in the operation. In this example, the temporary variable lives only during the <code class="d_inline">+=</code> operation.
+</p>
+
+<p>Automatic conversions are not limited to arithmetic operations. There are other cases where types are converted to other types automatically. As long as the conversions are valid, the compiler takes advantage of type conversions to be able to use values in expressions. For example, a <code class="d_inline">byte</code> value can be passed for an <code class="d_inline">int</code> parameter:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> func(<span class="d_keyword">int</span> number) {
+    <span class="d_comment">// ...
+</span>}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">byte</span> smallValue = 7;
+    func(smallValue);    <span class="d_comment">// automatic type conversion
+</span>}
+</pre>
+
+<p>In the code above, first a temporary <code class="d_inline">int</code> value is constructed and the function is called with that value.
+</p>
+
+<h6><a id="ix_Type Conversions.integer promotion" content="integer promotion"></a> <a id="ix_Type Conversions.promotion, integer" content="promotion, integer"></a> Integer promotions</h6>
+
+<p>Values of types that are on the left-hand side of the following table never take part in arithmetic expressions as their actual types. Each type is first promoted to the type that is on the right-hand side of the table.
+</p>
+
+<table class="narrow" border="1" cellpadding="4" cellspacing="0">
+<tr><th scope="col">From</th> <th scope="col">To</th>
+</tr>
+
+        <tr align="center">
+	<td>bool</td>
+	<td>int</td>
+	</tr>
+
+        <tr align="center">
+	<td>byte</td>
+	<td>int</td>
+	</tr>
+
+	<tr align="center">
+	<td>ubyte</td>
+	<td>int</td>
+	</tr>
+
+        <tr align="center">
+	<td>short</td>
+	<td>int</td>
+	</tr>
+
+	<tr align="center">
+	<td>ushort</td>
+	<td>int</td>
+	</tr>
+
+	<tr align="center">
+	<td>char</td>
+	<td>int</td>
+	</tr>
+
+        <tr align="center">
+	<td>wchar</td>
+	<td>int</td>
+	</tr>
+
+        <tr align="center">
+	<td>dchar</td>
+	<td>uint</td>
+	</tr>
+</table>
+
+<p>Integer promotions are applied to <code class="d_inline">enum</code> values as well.
+</p>
+
+<p>The reasons for integer promotions are both historical (where the rules come from C) and the fact that the natural arithmetic type for the microprocessor is <code class="d_inline">int</code>. For example, although the following two variables are both <code class="d_inline">ubyte</code>, the addition operation is performed only after both of the values are individually promoted to <code class="d_inline">int</code>:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">ubyte</span> a = 1;
+    <span class="d_keyword">ubyte</span> b = 2;
+    writeln(<span class="d_keyword">typeof</span>(a + b).stringof);  <span class="d_comment">// the addition is not in ubyte
+</span></pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">int
+</pre>
+
+<p>Note that the types of the variables <code class="d_inline">a</code> and <code class="d_inline">b</code> do not change; only their values are temporarily promoted to <code class="d_inline">int</code> for the duration of the addition operation.
+</p>
+
+<h6><a id="ix_Type Conversions.arithmetic conversion" content="arithmetic conversion"></a> Arithmetic conversions</h6>
+
+<p>There are other conversion rules that are applied for arithmetic operations. In general, automatic arithmetic conversions are applied in the safe direction: from the <i>narrower</i> type to the <i>wider</i> type. Although this rule is easy to remember and is correct in most cases, automatic conversion rules are very complicated and in the case of signed-to-unsigned conversions, carry some risk of bugs.
+</p>
+
+<p>The arithmetic conversion rules are the following:
+</p>
+
+<ol>
+<li>If one of the values is <code class="d_inline">real</code>, then the other value is converted to <code class="d_inline">real</code></li>
+
+<li>Else, if one of the values is <code class="d_inline">double</code>, then the other value is converted to <code class="d_inline">double</code></li>
+
+<li>Else, if one of the values is <code class="d_inline">float</code>, then the other value is converted to <code class="d_inline">float</code></li>
+
+<li>Else, first <i>integer promotions</i> are applied according to the table above, and then the following rules are followed:
+
+<ol><li>If both types are the same, then no more steps needed</li>
+<li>If both types are signed or both types are unsigned, then the narrower value is converted to the wider type</li>
+<li>If the signed type is wider than the unsigned type, then the unsigned value is converted to the signed type</li>
+<li>Otherwise the signed type is converted to the unsigned type</li>
+</ol>
+</li>
+</ol>
+
+<p>Unfortunately, the last rule above can cause subtle bugs:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span>    a = 0;
+    <span class="d_keyword">int</span>    b = 1;
+    size_t c = 0;
+    writeln(a - b + c);  <span class="d_comment">// Surprising result!
+</span></pre>
+
+<p>Surprisingly, the output is not -1, but <code class="d_inline">size_t.max</code>:
+</p>
+
+<pre class="shell">18446744073709551615
+</pre>
+
+<p>Although one would expect <code class="d_inline">(0 - 1 + 0)</code> to be calculated as -1, according to the rules above, the type of the entire expression is <code class="d_inline">size_t</code>, not <code class="d_inline">int</code>; and since <code class="d_inline">size_t</code> cannot hold negative values, the result overflows and becomes <code class="d_inline">size_t.max</code>.
+</p>
+
+<h6>Slice conversions</h6>
+
+<p><a id="ix_Type Conversions.fixed-length array, conversion to slice" content="fixed-length array, conversion to slice"></a> <a id="ix_Type Conversions.static array, conversion to slice" content="static array, conversion to slice"></a> As a convenience, fixed-length arrays can automatically be converted to slices when calling a function:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> foo() {
+    <span class="hilite"><span class="d_keyword">int</span>[2]</span> array = [ 1, 2 ];
+    bar(array);    <span class="d_comment">// Passes fixed-length array as a slice
+</span>}
+
+<span class="d_keyword">void</span> bar(<span class="hilite"><span class="d_keyword">int</span>[]</span> slice) {
+    writeln(slice);
+}
+
+<span class="d_keyword">void</span> main() {
+    foo();
+}
+</pre>
+
+<p><code class="d_inline">bar()</code> receives a slice to all elements of the fixed-length array and prints it:
+</p>
+
+<pre class="shell">[1, 2]
+</pre>
+
+<p><b>Warning:</b> A <i>local</i> fixed-length array must not be passed as a slice if the function stores the slice for later use. For example, the following program has a bug because the slice that <code class="d_inline">bar()</code> stores would not be valid after <code class="d_inline">foo()</code> exits:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> foo() {
+    <span class="d_keyword">int</span>[2] array = [ 1, 2 ];
+    bar(array);    <span class="d_comment">// Passes fixed-length array as a slice
+</span>
+}  <span class="d_comment">// ← NOTE: 'array' is not valid beyond this point
+</span>
+<span class="d_keyword">int</span>[] sliceForLaterUse;
+
+<span class="d_keyword">void</span> bar(<span class="d_keyword">int</span>[] slice) {
+    <span class="d_comment">// Saves a slice that is about to become invalid
+</span>    sliceForLaterUse = slice;
+    writefln(<span class="d_string">"Inside bar : %s"</span>, sliceForLaterUse);
+}
+
+<span class="d_keyword">void</span> main() {
+    foo();
+
+    <span class="d_comment">/* BUG: Accesses memory that is not array elements anymore */</span>
+    writefln(<span class="d_string">"Inside main: %s"</span>, sliceForLaterUse);
+}
+</pre>
+
+<p>The result of such a bug is undefined behavior. A sample execution can prove that the memory that used to be the elements of <code class="d_inline">array</code> has already been reused for other purposes:
+</p>
+
+<pre class="shell">Inside bar : [1, 2]        <span class="shell_note">← actual elements</span>
+Inside main: [4396640, 0]  <span class="shell_note_wrong">← a manifestation of undefined behavior</span>
+</pre>
+
+<h6><code class="d_inline">const</code> conversions</h6>
+
+<p>As we have seen earlier in the <a href="function_parameters.html">Function Parameters chapter</a>, reference types can automatically be converted to the <code class="d_inline">const</code> of the same type. Conversion to <code class="d_inline">const</code> is safe because the width of the type does not change and <code class="d_inline">const</code> is a promise to not modify the variable:
+</p>
+
+<pre class="d_code"><span class="d_keyword">char</span>[] parenthesized(<span class="hilite"><span class="d_keyword">const</span> <span class="d_keyword">char</span>[]</span> text) {
+    <span class="d_keyword">return</span> <span class="d_string">"{"</span> ~ text ~ <span class="d_string">"}"</span>;
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="hilite"><span class="d_keyword">char</span>[]</span> greeting;
+    greeting ~= <span class="d_string">"hello world"</span>;
+    parenthesized(greeting);
+}
+</pre>
+
+<p>The mutable <code class="d_inline">greeting</code> above is automatically converted to a <code class="d_inline">const char[]</code> as it is passed to <code class="d_inline">parenthesized()</code>.
+</p>
+
+<p>As we have also seen earlier, the opposite conversion is not automatic. A <code class="d_inline">const</code> reference is not automatically converted to a mutable reference:
+</p>
+
+<pre class="d_code"><span class="d_keyword">char</span>[] parenthesized(<span class="d_keyword">const</span> <span class="d_keyword">char</span>[] text) {
+    <span class="d_keyword">char</span>[] argument = text;  <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+<span class="d_comment">// ...
+</span>}
+</pre>
+
+<p>Note that this topic is only about references; since variables of value types are copied, it is not possible to affect the original through the copy anyway:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">const</span> <span class="d_keyword">int</span> totalCorners = 4;
+    <span class="d_keyword">int</span> theCopy = totalCorners;      <span class="d_comment">// compiles (value type)
+</span></pre>
+
+<p>The conversion from <code class="d_inline">const</code> to mutable above is legal because the copy is not a reference to the original.
+</p>
+
+<h6><code class="d_inline">immutable</code> conversions</h6>
+
+<p>Because <code class="d_inline">immutable</code> specifies that a variable can never change, neither conversion from <code class="d_inline">immutable</code> nor to <code class="d_inline">immutable</code> are automatic:
+</p>
+
+<pre class="d_code">    string a = <span class="d_string">"hello"</span>;    <span class="d_comment">// immutable characters
+</span>    <span class="d_keyword">char</span>[] b = a;          <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+    string c = b;          <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+</pre>
+
+<p>As with <code class="d_inline">const</code> conversions above, this topic is also only about reference types. Since variables of value types are copied anyway, conversions to and from <code class="d_inline">immutable</code> are valid:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">immutable</span> a = 10;
+    <span class="d_keyword">int</span> b = a;           <span class="d_comment">// compiles (value type)
+</span></pre>
+
+<h6><code class="d_inline">enum</code> conversions</h6>
+
+<p>As we have seen in the <a href="enum.html"><code class="d_inline">enum</code> chapter</a>, <code class="d_inline">enum</code> is for defining <i>named constants</i>:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">enum</span> Suit { spades, hearts, diamonds, clubs }
+</pre>
+
+<p>Remember that since no values are specified explicitly above, the values of the <code class="d_inline">enum</code> members start with zero and are automatically incremented by one. Accordingly, the value of <code class="d_inline">Suit.clubs</code> is 3.
+</p>
+
+<p><code class="d_inline">enum</code> values are atomatically converted to integral types. For example, the value of <code class="d_inline">Suit.hearts</code> is taken to be 1 in the following calculation and the result becomes 11:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span> result = 10 + Suit.hearts;
+    <span class="d_keyword">assert</span>(result == 11);
+</pre>
+
+<p>The opposite conversion is not automatic: Integer values are not automatically converted to corresponding <code class="d_inline">enum</code> values. For example, the <code class="d_inline">suit</code> variable below might be expected to become <code class="d_inline">Suit.diamonds</code>, but the code cannot be compiled:
+</p>
+
+<pre class="d_code">    Suit suit = 2;    <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+</pre>
+
+<p>As we will see below, conversions from integers to <code class="d_inline">enum</code> values are still possible but they must be explicit.
+</p>
+
+<h6><a id="ix_Type Conversions.bool, automatic conversion" content="bool, automatic conversion"></a> <code class="d_inline">bool</code> conversions</h6>
+
+<p><a id="ix_Type Conversions.bool, 1-bit integer" content="bool, 1-bit integer"></a> <a id="ix_Type Conversions.1-bit integer" content="1-bit integer"></a> <a id="ix_Type Conversions.one-bit integer" content="one-bit integer"></a> Although <code class="d_inline">bool</code> is the natural type of logical expressions, as it has only two values, it can be seen as a 1-bit integer and does behave like one in some cases. <code class="d_inline">false</code> and <code class="d_inline">true</code> are automatically converted to 0 and 1, respectively:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span> a = <span class="d_keyword">false</span>;
+    <span class="d_keyword">assert</span>(a == 0);
+
+    <span class="d_keyword">int</span> b = <span class="d_keyword">true</span>;
+    <span class="d_keyword">assert</span>(b == 1);
+</pre>
+
+<p>Regarding <i>literal values</i>, the opposite conversion is automatic only for two special literal values: 0 and 1 are converted automatically to <code class="d_inline">false</code> and <code class="d_inline">true</code>, respectively:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">bool</span> a = 0;
+    <span class="d_keyword">assert</span>(!a);     <span class="d_comment">// false
+</span>
+    <span class="d_keyword">bool</span> b = 1;
+    <span class="d_keyword">assert</span>(b);      <span class="d_comment">// true
+</span></pre>
+
+<p>Other literal values cannot be converted to <code class="d_inline">bool</code> automatically:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">bool</span> b = 2;    <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+</pre>
+
+<p>Some statements make use of logical expressions: <code class="d_inline">if</code>, <code class="d_inline">while</code>, etc. For the logical expressions of such statements, not only <code class="d_inline">bool</code> but most other types can be used as well. The value zero is automatically converted to <code class="d_inline">false</code> and the nonzero values are automatically converted to <code class="d_inline">true</code>.
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span> i;
+    <span class="d_comment">// ...
+</span>
+    <span class="d_keyword">if</span> (i) {    <span class="d_comment">// ← int value is being used as a logical expression
+</span>        <span class="d_comment">// ... 'i' is not zero
+</span>
+    } <span class="d_keyword">else</span> {
+        <span class="d_comment">// ... 'i' is zero
+</span>    }
+</pre>
+
+<p>Similarly, <code class="d_inline">null</code> references are automatically converted to <code class="d_inline">false</code> and non-<code class="d_inline">null</code> references are automatically converted to <code class="d_inline">true</code>. This makes it easy to ensure that a reference is non-<code class="d_inline">null</code> before actually using it:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span>[] a;
+    <span class="d_comment">// ...
+</span>
+    <span class="d_keyword">if</span> (a) {    <span class="d_comment">// ← automatic bool conversion
+</span>        <span class="d_comment">// ... not null; 'a' can be used ...
+</span>
+    } <span class="d_keyword">else</span> {
+        <span class="d_comment">// ... null; 'a' cannot be used ...
+</span>    }
+</pre>
+
+<h5 class="subsection"><a id="ix_Type Conversions.explicit type conversion" content="explicit type conversion"></a> <a id="ix_Type Conversions.type conversion, explicit" content="type conversion, explicit"></a> Explicit type conversions</h5>
+
+<p>As we have seen above, there are cases where automatic conversions are not available:
+</p>
+
+<ul><li>Conversions from wider types to narrower types</li>
+<li>Conversions from <code class="d_inline">const</code> to mutable</li>
+<li><code class="d_inline">immutable</code> conversions</li>
+<li>Conversions from integers to <code class="d_inline">enum</code> values</li>
+<li>etc.</li>
+</ul>
+
+<p>If such a conversion is known to be safe, the programmer can explicitly ask for a type conversion by one of the following methods:
+</p>
+
+<ul><li>Construction syntax</li>
+<li><code class="d_inline">std.conv.to</code> function</li>
+<li><code class="d_inline">std.exception.assumeUnique</code> function</li>
+<li><code class="d_inline">cast</code> operator</li>
+</ul>
+
+<h6><a id="ix_Type Conversions.construction, type conversion" content="construction, type conversion"></a> Construction syntax</h6>
+
+<p>The <code class="d_inline">struct</code> and <code class="d_inline">class</code> construction syntax is available for other types as well:
+</p>
+
+<pre class="d_code">    <i>DestinationType</i>(value)
+</pre>
+
+<p>For example, the following <i>conversion</i> makes a <code class="d_inline">double</code> value from an <code class="d_inline">int</code> value, presumably to preserve the fractional part of the division operation:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span> i;
+    <span class="d_comment">// ...
+</span>    <span class="d_keyword">const</span> result = <span class="hilite"><span class="d_keyword">double</span>(i)</span> / 2;
+</pre>
+
+<h6><a id="ix_Type Conversions.to, std.conv" content="to, std.conv"></a> <code class="d_inline">to()</code> for most conversions</h6>
+
+<p>The <code class="d_inline">to()</code> function, which we have already used mostly to convert values to <code class="d_inline">string</code>, can actually be used for many other types. Its complete syntax is the following:
+</p>
+
+<pre class="d_code">    to!(<i>DestinationType</i>)(value)
+</pre>
+
+<p>Being a template, <code class="d_inline">to()</code> can take advantage of the shortcut template parameter notation: When the destination type consists only of a single token (generally, <i>a single word</i>), it can be called without the first pair of parentheses:
+</p>
+
+<pre class="d_code">    to!<i>DestinationType</i>(value)
+</pre>
+
+<p>The following program is trying to convert a <code class="d_inline">double</code> value to <code class="d_inline">short</code> and a <code class="d_inline">string</code> value to <code class="d_inline">int</code>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> main() {
+    <span class="d_keyword">double</span> d = -1.75;
+
+    <span class="d_keyword">short</span> s = d;     <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+    <span class="d_keyword">int</span> i = <span class="d_string">"42"</span>;    <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+}
+</pre>
+
+<p>Since not every <code class="d_inline">double</code> value can be represented as a <code class="d_inline">short</code> and not every <code class="d_inline">string</code> can be represented as an <code class="d_inline">int</code>, those conversions are not automatic. When it is known by the programmer that the conversions are in fact safe or that the potential consequences are acceptable, then the types can be converted by <code class="d_inline">to()</code>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.conv;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">double</span> d = -1.75;
+
+    <span class="d_keyword">short</span> s = to!<span class="d_keyword">short</span>(d);
+    <span class="d_keyword">assert</span>(s == -1);
+
+    <span class="d_keyword">int</span> i = to!<span class="d_keyword">int</span>(<span class="d_string">"42"</span>);
+    <span class="d_keyword">assert</span>(i == 42);
+}
+</pre>
+
+<p>Note that because <code class="d_inline">short</code> cannot carry fractional values, the converted value is -1.
+</p>
+
+<p><code class="d_inline">to()</code> is safe: It throws an exception when a conversion is not possible.
+</p>
+
+<h6><a id="ix_Type Conversions.assumeUnique, std.exception" content="assumeUnique, std.exception"></a> <code class="d_inline">assumeUnique()</code> for fast <code class="d_inline">immutable</code> conversions</h6>
+
+<p><code class="d_inline">to()</code> can perform <code class="d_inline">immutable</code> conversions as well:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span>[] slice = [ 10, 20, 30 ];
+    <span class="d_keyword">auto</span> immutableSlice = to!(<span class="hilite"><span class="d_keyword">immutable</span> <span class="d_keyword">int</span>[]</span>)(slice);
+</pre>
+
+<p>In order to guarantee that the elements of <code class="d_inline">immutableSlice</code> will never change, it cannot share the same elements with <code class="d_inline">slice</code>. For that reason, <code class="d_inline">to()</code> creates an additional slice with <code class="d_inline">immutable</code> elements above. Otherwise, modifications to the elements of <code class="d_inline">slice</code> would cause the elements of <code class="d_inline">immutableSlice</code> change as well. This behavior is the same with the <code class="d_inline">.idup</code> property of arrays.
+</p>
+
+<p>We can see that the elements of <code class="d_inline">immutableSlice</code> are indeed copies of the elements of <code class="d_inline">slice</code> by looking at the addresses of their first elements:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">assert</span>(&amp;(slice[0]) <span class="hilite">!=</span> &amp;(immutableSlice[0]));
+</pre>
+
+<p>Sometimes this copy is unnecessary and may slow the speed of the program noticeably in certain cases. As an example of this, let's look at the following function that takes an <code class="d_inline">immutable</code> slice:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> calculate(<span class="d_keyword">immutable</span> <span class="d_keyword">int</span>[] coordinates) {
+    <span class="d_comment">// ...
+</span>}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">int</span>[] numbers;
+    numbers ~= 10;
+    <span class="d_comment">// ... various other modifications ...
+</span>    numbers[0] = 42;
+
+    calculate(numbers);    <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+}
+</pre>
+
+<p>The program above cannot be compiled because the caller is not passing an <code class="d_inline">immutable</code> argument to <code class="d_inline">calculate()</code>. As we have seen above, an <code class="d_inline">immutable</code> slice can be created by <code class="d_inline">to()</code>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.conv;
+<span class="d_comment">// ...
+</span>    <span class="d_keyword">auto</span> immutableNumbers = to!(<span class="d_keyword">immutable</span> <span class="d_keyword">int</span>[])(numbers);
+    calculate(immutableNumbers);    <span class="d_comment">// ← now compiles
+</span></pre>
+
+<p>However, if <code class="d_inline">numbers</code> is needed only to produce this argument and will never be used after the function is called, copying its elements to <code class="d_inline">immutableNumbers</code> would be unnecessary. <code class="d_inline">assumeUnique()</code> makes the elements of a slice <code class="d_inline">immutable</code> without copying:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.exception;
+<span class="d_comment">// ...
+</span>    <span class="d_keyword">auto</span> immutableNumbers = assumeUnique(numbers);
+    calculate(immutableNumbers);
+    <span class="d_keyword">assert</span>(numbers <span class="d_keyword">is</span> <span class="d_keyword">null</span>);    <span class="d_comment">// the original slice becomes null
+</span></pre>
+
+<p><code class="d_inline">assumeUnique()</code> returns a new slice that provides <code class="d_inline">immutable</code> access to the existing elements. It also makes the original slice <code class="d_inline">null</code> to prevent the elements from accidentally being modified through it.
+</p>
+
+<h6><a id="ix_Type Conversions.cast" content="cast"></a> The <code class="d_inline">cast</code> operator</h6>
+
+<p>Both <code class="d_inline">to()</code> and <code class="d_inline">assumeUnique()</code> make use of the conversion operator <code class="d_inline">cast</code>, which is available to the programmer as well.
+</p>
+
+<p>The <code class="d_inline">cast</code> operator takes the destination type in parentheses:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">cast</span>(<i>DestinationType</i>)value
+</pre>
+
+<p><code class="d_inline">cast</code> is powerful even for conversions that <code class="d_inline">to()</code> cannot safely perform. For example, <code class="d_inline">to()</code> fails for the following conversions at runtime:
+</p>
+
+<pre class="d_code">    Suit suit = to!Suit(7);    <span class="d_comment">// ← <span class="code_note_wrong">throws exception</span></span>
+    <span class="d_keyword">bool</span> b = to!<span class="d_keyword">bool</span>(2);       <span class="d_comment">// ← <span class="code_note_wrong">throws exception</span></span>
+</pre>
+
+<pre class="shell">std.conv.ConvException@phobos/std/conv.d(1778): Value (7)
+<span class="hilite">does not match any member</span> value of enum 'Suit'
+</pre>
+
+<p>Sometimes only the programmer can know whether an integer value corresponds to a valid <code class="d_inline">enum</code> value or that it makes sense to treat an integer value as a <code class="d_inline">bool</code>. The <code class="d_inline">cast</code> operator can be used when the conversion is known to be correct according the program's logic:
+</p>
+
+<pre class="d_code">    <span class="d_comment">// Probably incorrect but possible:
+</span>    Suit suit = <span class="d_keyword">cast</span>(Suit)7;
+
+    <span class="d_keyword">bool</span> b = <span class="d_keyword">cast</span>(<span class="d_keyword">bool</span>)2;
+    <span class="d_keyword">assert</span>(b);
+</pre>
+
+<p><code class="d_inline">cast</code> is the only option when converting to and from pointer types:
+</p>
+
+<pre class="d_code">    <span class="hilite"><span class="d_keyword">void</span> *</span> v;
+    <span class="d_comment">// ...
+</span>    <span class="d_keyword">int</span> * p = <span class="d_keyword">cast</span>(<span class="hilite"><span class="d_keyword">int</span>*</span>)v;
+</pre>
+
+<p>Although rare, some C library interfaces make it necessary to store a pointer value as a non-pointer type. If it is guaranteed that the conversion will preserve the actual value, <code class="d_inline">cast</code> can convert between pointer and non-pointer types as well:
+</p>
+
+<pre class="d_code">    size_t savedPointerValue = <span class="d_keyword">cast</span>(<span class="hilite">size_t</span>)p;
+    <span class="d_comment">// ...
+</span>    <span class="d_keyword">int</span> * p2 = <span class="d_keyword">cast</span>(<span class="hilite"><span class="d_keyword">int</span>*</span>)savedPointerValue;
+</pre>
+
+<h5 class="subsection">Summary</h5>
+
+<ul>
+<li>Automatic type conversions are mostly in the safe direction: From the narrower type to the wider type and from mutable to <code class="d_inline">const</code>.</li>
+
+<li>However, conversions to unsigned types may have surprising effects because unsigned types cannot have negative values.</li>
+
+<li><code class="d_inline">enum</code> types can automatically be converted to integer values but the opposite conversion is not automatic.</li>
+
+<li><code class="d_inline">false</code> and <code class="d_inline">true</code> are automatically converted to 0 and 1 respectively. Similarly, zero values are automatically converted to <code class="d_inline">false</code> and nonzero values are automatically converted to <code class="d_inline">true</code>.</li>
+
+<li><code class="d_inline">null</code> references are automatically converted to <code class="d_inline">false</code> and non-<code class="d_inline">null</code> references are automatically converted to <code class="d_inline">true</code>.</li>
+
+<li>The construction syntax can be used for explicit conversions.</li>
+
+<li><code class="d_inline">to()</code> covers most of the explicit conversions.</li>
+
+<li><code class="d_inline">assumeUnique()</code> converts to <code class="d_inline">immutable</code> without copying.</li>
+
+<li>The <code class="d_inline">cast</code> operator is the most powerful conversion tool.</li>
+
+</ul>
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2022 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on Sun May 15 14:08:35 2022
+</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

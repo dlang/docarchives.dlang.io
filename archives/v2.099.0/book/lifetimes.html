@@ -1,0 +1,396 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2022 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Lifetimes and Fundamental Operations - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Lifetimes and Fundamental Operations' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BLifetimes and Fundamental Operations%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/d.en/lifetimes.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Lifetimes and Fundamental Operations</h1>
+        
+        
+
+
+
+<p>We will soon cover structs, the basic feature that allows the programmer to define application-specific types. Structs are for combining fundamental types and other structs together to define higher-level types that behave according to special needs of programs. After structs, we will learn about classes, which are the basis of the object oriented programming features of D.
+</p>
+
+<p>Before getting to structs and classes, it will be better to talk about some important concepts first. These concepts will help understand structs and classes and some of their differences.
+</p>
+
+<p>We have been calling any piece of data that represented a concept in a program a <i>variable</i>. In a few places we have referred to struct and class variables specifically as <i>objects</i>. I will continue calling both of these concepts variables in this chapter.
+</p>
+
+<p>Although this chapter includes only fundamental types, slices, and associative arrays; these concepts apply to user-defined types as well.
+</p>
+
+<h5 class="subsection"><a id="ix_Lifetimes and Fundamental Operations.variable, lifetime" content="variable, lifetime"></a> Lifetime of a variable</h5>
+
+<p>The time between when a variable is defined and when it is <i>finalized</i> is the lifetime of that variable. Although it is the case for many types, <i>becoming unavailable</i> and <i>being finalized</i> need not be at the same time.
+</p>
+
+<p>You would remember from the <a href="name_space.html">Name Scope chapter</a> how variables become unavailable. In simple cases, exiting the scope where a variable was defined would render that variable unavailable.
+</p>
+
+<p>Let's consider the following example as a reminder:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> speedTest() {
+    <span class="d_keyword">int</span> speed;               <span class="d_comment">// Single variable ...
+</span>
+    <span class="d_keyword">foreach</span> (i; 0 .. 10) {
+        speed = 100 + i;     <span class="d_comment">// ... takes 10 different values.
+</span>        <span class="d_comment">// ...
+</span>    }
+} <span class="d_comment">// ← 'speed' is unavailable beyond this point.
+</span></pre>
+
+<p>The lifetime of the <code class="d_inline">speed</code> variable in that code ends upon exiting the <code class="d_inline">speedTest()</code> function. There is a single variable in the code above, which takes ten different values from 100 to 109.
+</p>
+
+<p>When it comes to variable lifetimes, the following code is very different compared to the previous one:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> speedTest() {
+    <span class="d_keyword">foreach</span> (i; 0 .. 10) {
+        <span class="d_keyword">int</span> speed = 100 + i; <span class="d_comment">// Ten separate variables.
+</span>        <span class="d_comment">// ...
+</span>    } <span class="d_comment">// ← Lifetime of each variable ends here.
+</span>}
+</pre>
+
+<p>There are ten separate variables in that code, each taking a single value. Upon every iteration of the loop, a new variable starts its life, which eventually ends at the end of each iteration.
+</p>
+
+<h5 class="subsection"><a id="ix_Lifetimes and Fundamental Operations.parameter, lifetime" content="parameter, lifetime"></a> Lifetime of a parameter</h5>
+
+<p>The lifetime of a parameter depends on its qualifiers:
+</p>
+
+<p><a id="ix_Lifetimes and Fundamental Operations.ref, parameter lifetime" content="ref, parameter lifetime"></a> <code class="d_inline">ref</code>: The parameter is just an alias of the actual variable that is specified when calling the function. <code class="d_inline">ref</code> parameters do not affect the lifetimes of actual variables.
+</p>
+
+<p><a id="ix_Lifetimes and Fundamental Operations.in, parameter lifetime" content="in, parameter lifetime"></a> <code class="d_inline">in</code>: For <i>value types</i>, the lifetime of the parameter starts upon entering the function and ends upon exiting it. For <i>reference types</i>, the lifetime of the parameter is the same as with <code class="d_inline">ref</code>.
+</p>
+
+<p><a id="ix_Lifetimes and Fundamental Operations.out, parameter lifetime" content="out, parameter lifetime"></a> <code class="d_inline">out</code>: Same with <code class="d_inline">ref</code>, the parameter is just an alias of the actual variable that is specified when calling the function. The only difference is that the variable is set to its <code class="d_inline">.init</code> value automatically upon entering the function.
+</p>
+
+<p><a id="ix_Lifetimes and Fundamental Operations.lazy, parameter lifetime" content="lazy, parameter lifetime"></a> <code class="d_inline">lazy</code>: The life of the parameter starts when the parameter is actually used and ends right then.
+</p>
+
+<p>The following example uses these four types of parameters and explains their lifetimes in program comments:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> main() {
+    <span class="d_keyword">int</span> main_in;      <span class="d_comment">/* The value of main_in is copied to the
+                       * parameter. */</span>
+
+    <span class="d_keyword">int</span> main_ref;     <span class="d_comment">/* main_ref is passed to the function as
+                       * itself. */</span>
+
+    <span class="d_keyword">int</span> main_out;     <span class="d_comment">/* main_out is passed to the function as
+                       * itself. Its value is set to int.init
+                       * upon entering the function. */</span>
+
+    foo(main_in, main_ref, main_out, aCalculation());
+}
+
+<span class="d_keyword">void</span> foo(
+    <span class="d_keyword">in</span> <span class="d_keyword">int</span> p_in,       <span class="d_comment">/* The lifetime of p_in starts upon
+                        * entering the function and ends upon
+                        * exiting the function. */</span>
+
+    <span class="d_keyword">ref</span> <span class="d_keyword">int</span> p_ref,     <span class="d_comment">/* p_ref is an alias of main_ref. */</span>
+
+    <span class="d_keyword">out</span> <span class="d_keyword">int</span> p_out,     <span class="d_comment">/* p_out is an alias of main_out. Its
+                        * value is set to int.init upon
+                        * entering the function. */</span>
+
+    <span class="d_keyword">lazy</span> <span class="d_keyword">int</span> p_lazy) { <span class="d_comment">/* The lifetime of p_lazy starts when
+                        * it is used and ends when its use
+                        * ends. Its value is calculated by
+                        * calling aCalculation() every time
+                        * p_lazy is used in the function. */</span>
+    <span class="d_comment">// ...
+</span>}
+
+<span class="d_keyword">int</span> aCalculation() {
+    <span class="d_keyword">int</span> result;
+    <span class="d_comment">// ...
+</span>    <span class="d_keyword">return</span> result;
+}
+</pre>
+
+<h5 class="subsection">Fundamental operations</h5>
+
+<p>Regardless of its type, there are three fundamental operations throughout the lifetime of a variable:
+</p>
+
+<ul><li><b>Initialization</b>: The start of its life.</li>
+<li><b>Finalization</b>: The end of its life.</li>
+<li><b>Assignment</b>: Changing its value as a whole.</li>
+</ul>
+
+<p>To be considered an object, it must first be initialized. There may be final operations for some types. The value of a variable may change during its lifetime.
+</p>
+
+<h6><a id="ix_Lifetimes and Fundamental Operations.initialization" content="initialization"></a> Initialization</h6>
+
+<p>Every variable must be initialized before being used. Initialization involves two steps:
+</p>
+
+<ol>
+<li><b>Reserving space for the variable</b>: This space is where the value of the variable is stored in memory.</li>
+
+<li><b>Construction</b>: Setting the first value of the variable on that space (or the first values of the members of structs and classes).</li>
+
+</ol>
+
+<p>Every variable lives in a place in memory that is reserved for it. Some of the code that the compiler generates is about reserving space for each variable.
+</p>
+
+<p>Let's consider the following variable:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span> speed = 123;
+</pre>
+
+<p>As we have seen in <a href="value_vs_reference.html">the Value Types and Reference Types chapter</a>, we can imagine this variable living on some part of the memory:
+</p>
+
+<pre class="mono">   ──┬─────┬─────┬─────┬──
+     │     │ 123 │     │
+   ──┴─────┴─────┴─────┴──
+</pre>
+
+<p>The memory location that a variable is placed at is called its address. In a sense, the variable lives at that address. When the value of a variable is changed, the new value is stored at the same place:
+</p>
+
+<pre class="d_code">    ++speed;
+</pre>
+
+<p>The new value would be at the same place where the old value has been:
+</p>
+
+<pre class="mono">   ──┬─────┬─────┬─────┬──
+     │     │ 124 │     │
+   ──┴─────┴─────┴─────┴──
+</pre>
+
+<p>Construction is necessary to prepare variables for use. Since a variable cannot be used reliably before being constructed, it is performed by the compiler automatically.
+</p>
+
+<p>Variables can be constructed in three ways:
+</p>
+
+<ul><li><b>By their default value</b>: when the programmer does not specify a value explicitly</li>
+<li><b>By copying</b>: when the variable is constructed as a copy of another variable of the same type</li>
+<li><b>By a specific value</b>: when the programmer specifies a value explicitly</li>
+</ul>
+
+<p>When a value is not specified, the value of the variable would be the <i>default</i> value of its type, i.e. its <code class="d_inline">.init</code> value.
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span> speed;
+</pre>
+
+<p>The value of <code class="d_inline">speed</code> above is <code class="d_inline">int.init</code>, which happens to be zero. Naturally, a variable that is constructed by its default value may have other values during its lifetime (unless it is <code class="d_inline">immutable</code>).
+</p>
+
+<pre class="d_code">    File file;
+</pre>
+
+<p>With the definition above, the variable <code class="d_inline">file</code> is a <code class="d_inline">File</code> object that is not yet associated with an actual file on the file system. It is not usable until it is modified to be associated with a file.
+</p>
+
+<p>Variables are sometimes constructed as a copy of another variable:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span> speed = otherSpeed;
+</pre>
+
+<p><code class="d_inline">speed</code> above is constructed by the value of <code class="d_inline">otherSpeed</code>.
+</p>
+
+<p>As we will see in later chapters, this operation has a different meaning for class variables:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> classVariable = otherClassVariable;
+</pre>
+
+<p>Although <code class="d_inline">classVariable</code> starts its life as a copy of <code class="d_inline">otherClassVariable</code>, there is a fundamental difference with classes: Although <code class="d_inline">speed</code> and <code class="d_inline">otherSpeed</code> are distinct values, <code class="d_inline">classVariable</code> and <code class="d_inline">otherClassVariable</code> both provide access to the same value. This is the fundamental difference between value types and reference types.
+</p>
+
+<p>Finally, variables can be constructed by the value of an expression of a compatible type:
+</p>
+
+<pre class="d_code">   <span class="d_keyword">int</span> speed = someCalculation();
+</pre>
+
+<p><code class="d_inline">speed</code> above would be constructed by the return value of <code class="d_inline">someCalculation()</code>.
+</p>
+
+<h6><a id="ix_Lifetimes and Fundamental Operations.finalization" content="finalization"></a> <a id="ix_Lifetimes and Fundamental Operations.destruction" content="destruction"></a> Finalization</h6>
+
+<p>Finalizing is the final operations that are executed for a variable and reclaiming its memory:
+</p>
+
+<ol><li><b>Destruction</b>: The final operations that must be executed for the variable.</li>
+<li><b>Reclaiming the variable's memory</b>: Reclaiming the piece of memory that the variable has been living on.</li>
+</ol>
+
+<p>For simple fundamental types, there are no final operations to execute. For example, the value of a variable of type <code class="d_inline">int</code> is not set back to zero. For such variables there is only reclaiming their memory, so that it will be used for other variables later.
+</p>
+
+<p>On the other hand, some types of variables require special operations during finalization. For example, a <code class="d_inline">File</code> object would need to write the characters that are still in its output buffer to disk and notify the file system that it no longer uses the file. These operations are the destruction of a <code class="d_inline">File</code> object.
+</p>
+
+<p>Final operations of arrays are at a little higher-level: Before finalizing the array, first its elements are destructed. If the elements are of a simple fundamental type like <code class="d_inline">int</code>, then there are no special final operations for them. If the elements are of a struct or a class type that needs finalization, then those operations are executed for each element.
+</p>
+
+<p>Associative arrays are similar to arrays. Additionally, the keys may also be finalized if they are of a type that needs destruction.
+</p>
+
+<p><b>The garbage collector:</b> D is a <i>garbage-collected</i> language. In such languages finalizing an object need not be initiated explicitly by the programmer. When a variable's lifetime ends, its finalization is automatically handled by the garbage collector. We will cover the garbage collector and special memory management in <a href="memory.html">a later chapter</a>.
+</p>
+
+<p>Variables can be finalized in two ways:
+</p>
+
+<ul><li><b>When the lifetime ends</b>: Finalization happens at the end of the variable's life.</li>
+<li><b>Some time in the future</b>: Finalization happens at an indeterminate time in the future by the garbage collector.</li>
+</ul>
+
+<p>Which of the two ways a variable will be finalized depends primarily on its type. Some types like arrays, associative arrays and classes are normally destructed by the garbage collector some time in the future.
+</p>
+
+<h6><a id="ix_Lifetimes and Fundamental Operations.assignment" content="assignment"></a> Assignment</h6>
+
+<p>The other fundamental operation that a variable experiences during its lifetime is assignment.
+</p>
+
+<p>For simple fundamental types assignment is merely changing the value of the variable. As we have seen above on the memory representation, an <code class="d_inline">int</code> variable would start having the value 124 instead of 123. However, more generally, assignment consists of two steps, which are not necessarily executed in the following order:
+</p>
+
+<ul><li><b>Destructing the old value</b></li>
+<li><b>Constructing the new value</b></li>
+</ul>
+
+<p>These two steps are not important for simple fundamental types that don't need destruction. For types that need destruction, it is important to remember that assignment is a combination of the two steps above.
+</p>
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2022 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on Sun May 15 14:08:35 2022
+</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>
