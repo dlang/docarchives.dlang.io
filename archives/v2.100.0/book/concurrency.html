@@ -1,0 +1,1319 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>concurrency - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='concurrency' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5Bconcurrency%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/d.en/concurrency.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>concurrency</h1>
+        
+        
+
+
+
+<p>Concurrency is similar to but different from the topic of the previous chapter, parallelism. As these two concepts both involve executing programs on threads, and as parallelism is based on concurrency, they are sometimes confused with each other.
+</p>
+
+<p><a id="ix_concurrency.parallelism vs. concurrency" content="parallelism vs. concurrency"></a> <a id="ix_concurrency.concurrency vs. parallelism" content="concurrency vs. parallelism"></a> The following are the differences between parallelism and concurrency:
+</p>
+
+<ul>
+<li>The main purpose of parallelism is to take advantage of microprocessor cores to improve the performance of programs. Concurrency on the other hand, is a concept that may be needed even on a single-core environment. Concurrency is about making a program run on more than one thread at a time. An example of a concurrent program would be a server program that is responding to requests of more than one client at the same time.
+</li>
+
+<li>In parallelism, tasks are independent from each other. In fact, it would be a bug if they did depend on results of other tasks that are running at the same time. In concurrency, it is normal for threads to depend on results of other threads.
+</li>
+
+<li>Although both programming models use operating system threads, in parallelism threads are encapsulated by the concept of task. Concurrency makes use of threads explicitly.
+</li>
+
+<li>Parallelism is easy to use, and as long as tasks are independent it is easy to produce programs that work correctly. Concurrency is easy only when it is based on <i>message passing</i>. It is very difficult to write correct concurrent programs if they are based on the traditional model of concurrency that involves lock-based data sharing.
+</li>
+
+</ul>
+
+<p>D supports both models of concurrency: message passing and data sharing. We will cover message passing in this chapter and data sharing in the next chapter.
+</p>
+
+<h5 class="subsection">Concepts</h5>
+
+<p><a id="ix_concurrency.thread" content="thread"></a> <b>Thread</b>: Operating systems execute programs as work units called <i>threads</i>. D programs start executing with <code class="d_inline">main()</code> on a thread that has been assigned to that program by the operating system. All of the operations of the program are normally executed on that thread. The program is free to start other threads to be able to work on multiple tasks at the same time. In fact, tasks that have been covered in the previous chapter are based on threads that are started automatically by <code class="d_inline">std.parallelism</code>.
+</p>
+
+<p>The operating system can pause threads at unpredictable times for unpredictable durations. As a result, even operations as simple as incrementing a variable may be paused mid operation:
+</p>
+
+<pre class="d_code">    ++i;
+</pre>
+
+<p>The operation above involves three steps: Reading the value of the variable, incrementing the value, and assigning the new value back to the variable. The thread may be paused at any point between these steps to be continued after an unpredictable time.
+</p>
+
+<p><a id="ix_concurrency.message" content="message"></a> <b>Message</b>: Data that is passed between threads are called messages. Messages may be composed of any type and any number of variables.
+</p>
+
+<p><a id="ix_concurrency.thread id" content="thread id"></a> <b>Thread identifier</b>: Every thread has an id, which is used for specifying recipients of messages.
+</p>
+
+<p><a id="ix_concurrency.owner" content="owner"></a> <b>Owner</b>: Any thread that starts another thread is called the owner of the new thread.
+</p>
+
+<p><a id="ix_concurrency.worker" content="worker"></a> <b>Worker</b>: Any thread that is started by an owner is called a worker.
+</p>
+
+<h5 class="subsection"><a id="ix_concurrency.spawn" content="spawn"></a> Starting threads</h5>
+
+<p><code class="d_inline">spawn()</code> takes a function pointer as a parameter and starts a new thread from that function. Any operations that are carried out by that function, including other functions that it may call, would be executed on the new thread. The main difference between a thread that is started with <code class="d_inline">spawn()</code> and a thread that is started with <a href="parallelism.html"><code class="d_inline">task()</code></a> is the fact that <code class="d_inline">spawn()</code> makes it possible for threads to send messages to each other.
+</p>
+
+<p>As soon as a new thread is started, the owner and the worker start executing separately as if they were independent programs:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.concurrency;
+<span class="d_keyword">import</span> core.thread;
+
+<span class="d_keyword">void</span> worker() {
+    <span class="d_keyword">foreach</span> (i; 0 .. 5) {
+        Thread.sleep(500.msecs);
+        writeln(i, <span class="d_string">" (worker)"</span>);
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="hilite">spawn(&amp;worker)</span>;
+
+    <span class="d_keyword">foreach</span> (i; 0 .. 5) {
+        Thread.sleep(300.msecs);
+        writeln(i, <span class="d_string">" (main)"</span>);
+    }
+
+    writeln(<span class="d_string">"main is done."</span>);
+}
+</pre>
+
+<p>The examples in this chapter call <code class="d_inline">Thread.sleep</code> to slow down threads to demonstrate that they run at the same time. The output of the program shows that the two threads, one that runs <code class="d_inline">main()</code> and the other that has been started by <code class="d_inline">spawn()</code>, execute independently at the same time:
+</p>
+
+<pre class="shell">0 (main)
+0 (worker)
+1 (main)
+2 (main)
+1 (worker)
+3 (main)
+2 (worker)
+4 (main)
+main is done.
+3 (worker)
+4 (worker)
+</pre>
+
+<p>The program automatically waits for all of the threads to finish executing. We can see this in the output above by the fact that <code class="d_inline">worker()</code> continues executing even after <code class="d_inline">main()</code> exits after printing "main is done."
+</p>
+
+<p>The parameters that the thread function takes are passed to <code class="d_inline">spawn()</code> as its second and later arguments. The two worker threads in the following program print four numbers each. They take the starting number as the thread function parameter:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.concurrency;
+<span class="d_keyword">import</span> core.thread;
+
+<span class="d_keyword">void</span> worker(<span class="hilite"><span class="d_keyword">int</span> firstNumber</span>) {
+    <span class="d_keyword">foreach</span> (i; 0 .. 4) {
+        Thread.sleep(500.msecs);
+        writeln(firstNumber + i);
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">foreach</span> (i; 1 .. 3) {
+        spawn(&amp;worker, <span class="hilite">i * 10</span>);
+    }
+}
+</pre>
+
+<p>The output of one of the threads is highlighted:
+</p>
+
+<pre class="shell">10
+<span class="hilite">20</span>
+11
+<span class="hilite">21</span>
+12
+<span class="hilite">22</span>
+13
+<span class="hilite">23</span>
+</pre>
+
+<p>The lines of the output may be different at different times depending on how the threads are paused and resumed by the operating system.
+</p>
+
+<p><a id="ix_concurrency.CPU bound" content="CPU bound"></a> <a id="ix_concurrency.I/O bound" content="I/O bound"></a> <a id="ix_concurrency.thread performance" content="thread performance"></a> Every operating system puts limits on the number of threads that can exist at one time. These limits can be set for each user, for the whole system, or for something else. The overall performance of the system can be reduced if there are more threads that are busily working than the number of cores in the system. A thread that is busily working at a given time is said to be <i>CPU bound</i> at that point in time. On the other hand, some threads spend considerable amount of their time waiting for some event to occur like input from a user, data from a network connection, the completion of a <code class="d_inline">Thread.sleep</code> call, etc. Such threads are said to be <i>I/O bound</i> at those times. If the majority of its threads are I/O bound, then a program can afford to start more threads than the number of cores without any degradation of performance. As it should be in every design decision that concerns program performance, one must take actual measurements to be exactly sure whether that really is the case.
+</p>
+
+<h5 class="subsection"><a id="ix_concurrency.Tid" content="Tid"></a> <a id="ix_concurrency.thisTid" content="thisTid"></a> <a id="ix_concurrency.ownerTid" content="ownerTid"></a> Thread identifiers</h5>
+
+<p><code class="d_inline">thisTid()</code> returns the identifier of the <i>current</i> thread. It is commonly called without the function parentheses:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.concurrency;
+
+<span class="d_keyword">void</span> printTid(string tag) {
+    writefln(<span class="d_string">"%s: %s"</span>, tag, <span class="hilite">thisTid</span>);
+}
+
+<span class="d_keyword">void</span> worker() {
+    printTid(<span class="d_string">"Worker"</span>);
+}
+
+<span class="d_keyword">void</span> main() {
+    spawn(&amp;worker);
+    printTid(<span class="d_string">"Owner "</span>);
+}
+</pre>
+
+<p>The return type of <code class="d_inline">thisTid()</code> is <code class="d_inline">Tid</code>, which has no significance for the program. Even its <code class="d_inline">toString()</code> function is not overloaded:
+</p>
+
+<pre class="shell">Owner : Tid(std.concurrency.MessageBox)
+Worker: Tid(std.concurrency.MessageBox)
+</pre>
+
+<p>The return value of <code class="d_inline">spawn()</code>, which I have been ignoring until this point, is the id of the worker thread:
+</p>
+
+<pre class="d_code">    <span class="hilite">Tid myWorker</span> = spawn(&amp;worker);
+</pre>
+
+<p>Conversely, the owner of a worker thread is obtained by the <code class="d_inline">ownerTid()</code> function.
+</p>
+
+<p>In summary, the owner is identified by <code class="d_inline">ownerTid</code> and the worker is identified by the return value of <code class="d_inline">spawn()</code>.
+</p>
+
+<h5 class="subsection"><a id="ix_concurrency.send" content="send"></a> <a id="ix_concurrency.receiveOnly" content="receiveOnly"></a> Message Passing</h5>
+
+<p><code class="d_inline">send()</code> sends messages and <code class="d_inline">receiveOnly()</code> waits for a message of a particular type. (There is also <code class="d_inline">prioritySend()</code>, <code class="d_inline">receive()</code>, and <code class="d_inline">receiveTimeout()</code>, which will be explained later below.)
+</p>
+
+<p>The owner in the following program sends its worker a message of type <code class="d_inline">int</code> and waits for a message from the worker of type <code class="d_inline">double</code>. The threads continue sending messages back and forth until the owner sends a negative <code class="d_inline">int</code>. This is the owner thread:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> main() {
+    Tid worker = spawn(&amp;workerFunc);
+
+    <span class="d_keyword">foreach</span> (value; 1 .. 5) {
+        <span class="hilite">worker.send</span>(value);
+        <span class="d_keyword">double</span> result = <span class="hilite">receiveOnly!<span class="d_keyword">double</span></span>();
+        writefln(<span class="d_string">"sent: %s, received: %s"</span>, value, result);
+    }
+
+    <span class="d_comment">/* Sending a negative value to the worker so that it
+     * terminates. */</span>
+    <span class="hilite">worker.send</span>(-1);
+}
+</pre>
+
+<p><code class="d_inline">main()</code> stores the return value of <code class="d_inline">spawn()</code> under the name <code class="d_inline">worker</code> and uses that variable when sending messages to the worker.
+</p>
+
+<p>On the other side, the worker receives the message that it needs as an <code class="d_inline">int</code>, uses that value in a calculation, and sends the result as type <code class="d_inline">double</code> to its owner:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> workerFunc() {
+    <span class="d_keyword">int</span> value = 0;
+
+    <span class="d_keyword">while</span> (value &gt;= 0) {
+        value = <span class="hilite">receiveOnly!<span class="d_keyword">int</span></span>();
+        <span class="d_keyword">double</span> result = to!<span class="d_keyword">double</span>(value) / 5;
+        <span class="hilite">ownerTid.send</span>(result);
+    }
+}
+</pre>
+
+<p>The main thread reports the messages that it sends and the messages that it receives:
+</p>
+
+<pre class="shell">sent: 1, received: 0.2
+sent: 2, received: 0.4
+sent: 3, received: 0.6
+sent: 4, received: 0.8
+</pre>
+
+<p>It is possible to send more than one value as a part of the same message. The following message consists of three parts:
+</p>
+
+<pre class="d_code">    ownerTid.send(<span class="hilite">thisTid, 42, 1.5</span>);
+</pre>
+
+<p>Values that are passed as parts of a single message appear as a tuple on the receiver's side. In such cases the template parameters of <code class="d_inline">receiveOnly()</code> must match the types of the tuple members:
+</p>
+
+<pre class="d_code">    <span class="d_comment">/* Wait for a message composed of Tid, int, and double. */</span>
+    <span class="d_keyword">auto</span> message = receiveOnly!(<span class="hilite">Tid, <span class="d_keyword">int</span>, <span class="d_keyword">double</span></span>)();
+
+    <span class="d_keyword">auto</span> sender   = message[0];    <span class="d_comment">// of type Tid
+</span>    <span class="d_keyword">auto</span> integer  = message[1];    <span class="d_comment">// of type int
+</span>    <span class="d_keyword">auto</span> floating = message[2];    <span class="d_comment">// of type double
+</span></pre>
+
+<p><a id="ix_concurrency.MessageMismatch" content="MessageMismatch"></a> If the types do not match, a <code class="d_inline">MessageMismatch</code> exception is thrown:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.concurrency;
+
+<span class="d_keyword">void</span> workerFunc() {
+    ownerTid.send(<span class="d_string">"hello"</span>);    <span class="d_comment">// ← Sending <span class="hilite">string</span></span>
+}
+
+<span class="d_keyword">void</span> main() {
+    spawn(&amp;workerFunc);
+
+    <span class="d_keyword">auto</span> message = receiveOnly!<span class="d_keyword">double</span>();    <span class="d_comment">// ← Expecting <span class="hilite"><span class="d_keyword">double</span></span></span>
+}
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">std.concurrency.<span class="hilite">MessageMismatch</span>@std/concurrency.d(235):
+Unexpected message type: expected 'double', got 'immutable(char)[]'
+</pre>
+
+<p>The exceptions that the worker may throw cannot be caught by the owner. One solution is to have the worker catch the exception to be sent as a message. We will see this below.
+</p>
+
+<h6>Example</h6>
+
+<p>Let's use what we have seen so far in a simulation program.
+</p>
+
+<p>The following program simulates independent robots moving around randomly in a two dimensional space. The movement of each robot is handled by a separate thread that takes three pieces of information when started:
+</p>
+
+<ul>
+<li>The number (id) of the robot: This information is sent back to the owner to identify the robot that the message is related to.
+</li>
+
+<li>The origin: This is where the robot starts moving from.
+</li>
+
+<li>The duration between each step: This information is used for determining when the robot's next step will be.
+</li>
+
+</ul>
+
+<p>That information can be stored in the following <code class="d_inline">Job</code> struct:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Job {
+    size_t robotId;
+    Position origin;
+    Duration restDuration;
+}
+</pre>
+
+<p>The thread function that moves each robot sends the id of the robot and its movement to the owner thread continuously:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> robotMover(Job job) {
+    Position from = job.origin;
+
+    <span class="d_keyword">while</span> (<span class="d_keyword">true</span>) {
+        Thread.sleep(job.restDuration);
+
+        Position to = randomNeighbor(from);
+        Movement movement = Movement(from, to);
+        from = to;
+
+        ownerTid.send(<span class="hilite">MovementMessage</span>(job.robotId, movement));
+    }
+}
+</pre>
+
+<p>The owner simply waits for these messages in an unconditional loop. It identifies the robots by the robot ids that are sent as parts of the messages. The owner simply prints every movement:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">while</span> (<span class="d_keyword">true</span>) {
+        <span class="d_keyword">auto</span> message = receiveOnly!<span class="hilite">MovementMessage</span>();
+
+        writefln(<span class="d_string">"%s %s"</span>,
+                 robots[message.robotId], message.movement);
+    }
+</pre>
+
+<p>All of the messages in this simple program go from the worker to the owner. Message passing normally involves more complicated communication in many kinds of programs.
+</p>
+
+<p>Here is the complete program:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.random;
+<span class="d_keyword">import</span> std.string;
+<span class="d_keyword">import</span> std.concurrency;
+<span class="d_keyword">import</span> core.thread;
+
+<span class="d_keyword">struct</span> Position {
+    <span class="d_keyword">int</span> line;
+    <span class="d_keyword">int</span> column;
+
+    string toString() {
+        <span class="d_keyword">return</span> format(<span class="d_string">"%s,%s"</span>, line, column);
+    }
+}
+
+<span class="d_keyword">struct</span> Movement {
+    Position from;
+    Position to;
+
+    string toString() {
+        <span class="d_keyword">return</span> ((from == to)
+                ? format(<span class="d_string">"%s (idle)"</span>, from)
+                : format(<span class="d_string">"%s -&gt; %s"</span>, from, to));
+    }
+}
+
+<span class="d_keyword">class</span> Robot {
+    string image;
+    Duration restDuration;
+
+    <span class="d_keyword">this</span>(string image, Duration restDuration) {
+        <span class="d_keyword">this</span>.image = image;
+        <span class="d_keyword">this</span>.restDuration = restDuration;
+    }
+
+    <span class="d_keyword">override</span> string toString() {
+        <span class="d_keyword">return</span> format(<span class="d_string">"%s(%s)"</span>, image, restDuration);
+    }
+}
+
+<span class="d_comment">/* Returns a random position around 0,0. */</span>
+Position randomPosition() {
+    <span class="d_keyword">return</span> Position(uniform!<span class="d_string">"[]"</span>(-10, 10),
+                    uniform!<span class="d_string">"[]"</span>(-10, 10));
+}
+
+<span class="d_comment">/* Returns at most one step from the specified coordinate. */</span>
+<span class="d_keyword">int</span> randomStep(<span class="d_keyword">int</span> current) {
+    <span class="d_keyword">return</span> current + uniform!<span class="d_string">"[]"</span>(-1, 1);
+}
+
+<span class="d_comment">/* Returns a neighbor of the specified Position. It may be one
+ * of the neighbors at eight directions, or the specified
+ * position itself. */</span>
+Position randomNeighbor(Position position) {
+    <span class="d_keyword">return</span> Position(randomStep(position.line),
+                    randomStep(position.column));
+}
+
+<span class="d_keyword">struct</span> Job {
+    size_t robotId;
+    Position origin;
+    Duration restDuration;
+}
+
+<span class="d_keyword">struct</span> MovementMessage {
+    size_t robotId;
+    Movement movement;
+}
+
+<span class="d_keyword">void</span> robotMover(Job job) {
+    Position from = job.origin;
+
+    <span class="d_keyword">while</span> (<span class="d_keyword">true</span>) {
+        Thread.sleep(job.restDuration);
+
+        Position to = randomNeighbor(from);
+        Movement movement = Movement(from, to);
+        from = to;
+
+        ownerTid.send(MovementMessage(job.robotId, movement));
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_comment">/* Robots with various restDurations. */</span>
+    Robot[] robots = [ <span class="d_keyword">new</span> Robot(<span class="d_string">"A"</span>,  600.msecs),
+                       <span class="d_keyword">new</span> Robot(<span class="d_string">"B"</span>, 2000.msecs),
+                       <span class="d_keyword">new</span> Robot(<span class="d_string">"C"</span>, 5000.msecs) ];
+
+    <span class="d_comment">/* Start a mover thread for each robot. */</span>
+    <span class="d_keyword">foreach</span> (robotId, robot; robots) {
+        spawn(&amp;robotMover, Job(robotId,
+                               randomPosition(),
+                               robot.restDuration));
+    }
+
+    <span class="d_comment">/* Ready to collect information about the movements of the
+     * robots. */</span>
+    <span class="d_keyword">while</span> (<span class="d_keyword">true</span>) {
+        <span class="d_keyword">auto</span> message = receiveOnly!MovementMessage();
+
+        <span class="d_comment">/* Print the movement of this robot. */</span>
+        writefln(<span class="d_string">"%s %s"</span>,
+                 robots[message.robotId], message.movement);
+    }
+}
+</pre>
+
+<p>The program prints every movement until terminated:
+</p>
+
+<pre class="shell">A(600 ms) 6,2 -&gt; 7,3
+A(600 ms) 7,3 -&gt; 8,3
+A(600 ms) 8,3 -&gt; 7,3
+B(2 secs) -7,-4 -&gt; -6,-3
+A(600 ms) 7,3 -&gt; 6,2
+A(600 ms) 6,2 -&gt; 7,1
+A(600 ms) 7,1 (idle)
+B(2 secs) -6,-3 (idle)
+A(600 ms) 7,1 -&gt; 7,2
+A(600 ms) 7,2 -&gt; 7,3
+C(5 secs) -4,-4 -&gt; -3,-5
+A(600 ms) 7,3 -&gt; 6,4
+...
+</pre>
+
+<p>This program demonstrates how helpful message passing concurrency can be: Movements of robots are calculated independently by separate threads without knowledge of each other. It is the owner thread that <i>serializes</i> the printing process simply by receiving messages from its message box one by one.
+</p>
+
+<h5 class="subsection"><a id="ix_concurrency.delegate, message passing" content="delegate, message passing"></a> Expecting different types of messages</h5>
+
+<p><code class="d_inline">receiveOnly()</code> can expect only one type of message. <code class="d_inline">receive()</code> on the other hand can wait for more than one type of message. It dispatches messages to message handling delegates. When a message arrives, it is compared to the message type of each delegate. The delegate that matches the type of the particular message handles it.
+</p>
+
+<p>For example, the following <code class="d_inline">receive()</code> call specifies two message handlers that handle messages of types <code class="d_inline">int</code> and <code class="d_inline">string</code>, respectively:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> workerFunc() {
+    <span class="d_keyword">bool</span> isDone = <span class="d_keyword">false</span>;
+
+    <span class="d_keyword">while</span> (!isDone) {
+        <span class="d_keyword">void</span> intHandler(<span class="hilite"><span class="d_keyword">int</span></span> message) {
+            writeln(<span class="d_string">"handling int message: "</span>, message);
+
+            <span class="d_keyword">if</span> (message == -1) {
+                writeln(<span class="d_string">"exiting"</span>);
+                isDone = <span class="d_keyword">true</span>;
+            }
+        }
+
+        <span class="d_keyword">void</span> stringHandler(<span class="hilite">string</span> message) {
+            writeln(<span class="d_string">"handling string message: "</span>, message);
+        }
+
+        receive(<span class="hilite">&amp;intHandler</span>, <span class="hilite">&amp;stringHandler</span>);
+    }
+}
+</pre>
+
+<p>Messages of type <code class="d_inline">int</code> would match <code class="d_inline">intHandler()</code> and messages of type <code class="d_inline">string</code> would match <code class="d_inline">stringHandler()</code>. The worker thread above can be tested by the following program:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.concurrency;
+
+<span class="d_comment">// ...
+</span>
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> worker = spawn(&amp;workerFunc);
+
+    worker.send(10);
+    worker.send(42);
+    worker.send(<span class="d_string">"hello"</span>);
+    worker.send(-1);        <span class="d_comment">// ← to terminate the worker
+</span>}
+</pre>
+
+<p>The output of the program indicates that the messages are handled by matching functions on the receiver's side:
+</p>
+
+<pre class="shell">handling int message: 10
+handling int message: 42
+handling string message: hello
+handling int message: -1
+exiting
+</pre>
+
+<p>Lambda functions and objects of types that define the <code class="d_inline">opCall()</code> member function can also be passed to <code class="d_inline">receive()</code> as message handlers. The following worker handles messages by lambda functions. The following program also defines a special type named <code class="d_inline">Exit</code> used for communicating to the thread that it is time for it to exit. Using such a specific type is more expressive than sending the arbitrary value of -1 like it was done in the previous example.
+</p>
+
+<p>There are three anonymous functions below that are passed to <code class="d_inline">receive()</code> as message handlers. Their curly brackets are highlighted:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.concurrency;
+
+<span class="d_keyword">struct</span> Exit {
+}
+
+<span class="d_keyword">void</span> workerFunc() {
+    <span class="d_keyword">bool</span> isDone = <span class="d_keyword">false</span>;
+
+    <span class="d_keyword">while</span> (!isDone) {
+        receive(
+            (<span class="d_keyword">int</span> message) <span class="hilite">{</span>
+                writeln(<span class="d_string">"int message: "</span>, message);
+            <span class="hilite">}</span>,
+
+            (string message) <span class="hilite">{</span>
+                writeln(<span class="d_string">"string message: "</span>, message);
+            <span class="hilite">}</span>,
+
+            (Exit message) <span class="hilite">{</span>
+                writeln(<span class="d_string">"exiting"</span>);
+                isDone = <span class="d_keyword">true</span>;
+            <span class="hilite">}</span>);
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> worker = spawn(&amp;workerFunc);
+
+    worker.send(10);
+    worker.send(42);
+    worker.send(<span class="d_string">"hello"</span>);
+    worker.send(<span class="hilite">Exit()</span>);
+}
+</pre>
+
+<h6>Receiving any type of message</h6>
+
+<p><a id="ix_concurrency.Variant, concurrency" content="Variant, concurrency"></a> <code class="d_inline">std.variant.Variant</code> is a type that can encapsulate any type of data. Messages that do not match the handlers that are specified earlier in the argument list always match a <code class="d_inline">Variant</code> handler:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.concurrency;
+
+<span class="d_keyword">void</span> workerFunc() {
+    receive(
+        (<span class="d_keyword">int</span> message) { <span class="d_comment">/* ... */</span> },
+
+        (<span class="d_keyword">double</span> message) { <span class="d_comment">/* ... */</span> },
+
+        (<span class="hilite">Variant</span> message) {
+            writeln(<span class="d_string">"Unexpected message: "</span>, message);
+        });
+}
+
+<span class="d_keyword">struct</span> SpecialMessage {
+    <span class="d_comment">// ...
+</span>}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> worker = spawn(&amp;workerFunc);
+    worker.send(SpecialMessage());
+}
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">Unexpected message: SpecialMessage()
+</pre>
+
+<p>The details of <code class="d_inline">Variant</code> are outside of the scope of this chapter.
+</p>
+
+<h5 class="subsection"><a id="ix_concurrency.receiveTimeout" content="receiveTimeout"></a> Waiting for messages up to a certain time</h5>
+
+<p>It may not make sense to wait for messages beyond a certain time. The sender may have been busy temporarily or may have terminated with an exception. <code class="d_inline">receiveTimeout()</code> prevents blocking the receiving thread indefinitely.
+</p>
+
+<p>The first parameter of <code class="d_inline">receiveTimeout()</code> determines how long the message should be waited for. Its return value is <code class="d_inline">true</code> if a message has been received within that time, <code class="d_inline">false</code> otherwise.
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.concurrency;
+<span class="d_keyword">import</span> core.thread;
+
+<span class="d_keyword">void</span> workerFunc() {
+    Thread.sleep(3.seconds);
+    ownerTid.send(<span class="d_string">"hello"</span>);
+}
+
+<span class="d_keyword">void</span> main() {
+    spawn(&amp;workerFunc);
+
+    writeln(<span class="d_string">"Waiting for a message"</span>);
+    <span class="d_keyword">bool</span> received = <span class="d_keyword">false</span>;
+    <span class="d_keyword">while</span> (!received) {
+        received = <span class="hilite">receiveTimeout</span>(600.msecs,
+                                  (string message) {
+                                      writeln(<span class="d_string">"received: "</span>, message);
+                                });
+
+        <span class="d_keyword">if</span> (!received) {
+            writeln(<span class="d_string">"... no message yet"</span>);
+
+            <span class="d_comment">/* ... other operations may be executed here ... */</span>
+        }
+    }
+}
+</pre>
+
+<p>The owner above waits for a message for up to 600 milliseconds. It can continue working on other things if a message does not arrive within that time:
+</p>
+
+<pre class="shell">Waiting for a message
+... no message yet
+... no message yet
+... no message yet
+... no message yet
+received: hello
+</pre>
+
+<h5 class="subsection"><a id="ix_concurrency.exception, concurrency" content="exception, concurrency"></a> Exceptions during the execution of the worker</h5>
+
+<p>As we have seen in the previous chapter, the facilities of the <code class="d_inline">std.parallelism</code> module automatically catch exceptions that have been thrown during the execution of tasks and rethrow them in the context of the owner. This allows the owner to catch such exceptions:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">try</span> {
+        theTask.yieldForce();
+
+    } <span class="d_keyword">catch</span> (Exception exc) {
+        writefln(<span class="d_string">"Detected an error in the task: '%s'"</span>,
+                 exc.msg);
+    }
+</pre>
+
+<p><code class="d_inline">std.concurrency</code> does not provide such a convenience for general exception types. However, the exceptions can be caught and sent explicitly by the worker. As we will see below, it is also possible to receive <code class="d_inline">OwnerTerminated</code> and <code class="d_inline">LinkTerminated</code> exceptions as messages.
+</p>
+
+<p>The <code class="d_inline">calculate()</code> function below receives <code class="d_inline">string</code> messages, converts them to <code class="d_inline">double</code>, adds 0.5, and sends the result back as a message:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> calculate() {
+    <span class="d_keyword">while</span> (<span class="d_keyword">true</span>) {
+        <span class="d_keyword">auto</span> message = receiveOnly!string();
+        ownerTid.send(to!<span class="d_keyword">double</span>(message) + 0.5);
+    }
+}
+</pre>
+
+<p>The <code class="d_inline">to!double()</code> call above would throw an exception if the string cannot be converted to a <code class="d_inline">double</code> value. Because such an exception would terminate the worker thread right away, the owner in the following program can receive a response only for the first message:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.concurrency;
+<span class="d_keyword">import</span> std.conv;
+
+<span class="d_comment">// ...
+</span>
+<span class="d_keyword">void</span> main() {
+    Tid calculator = spawn(&amp;calculate);
+
+    calculator.send(<span class="d_string">"1.2"</span>);
+    calculator.send(<span class="d_string">"hello"</span>);  <span class="d_comment">// ← incorrect input
+</span>    calculator.send(<span class="d_string">"3.4"</span>);
+
+    <span class="d_keyword">foreach</span> (i; 0 .. 3) {
+        <span class="d_keyword">auto</span> message = receiveOnly!<span class="d_keyword">double</span>();
+        writefln(<span class="d_string">"result %s: %s"</span>, i, message);
+    }
+}
+</pre>
+
+<p>The owner receives the response for "1.2" as 1.7 but because the worker has been terminated, the owner would be blocked waiting for a message that would never arrive:
+</p>
+
+<pre class="shell">result 0: 1.7
+                 <span class="shell_note">← waiting for a message that will never arrive</span>
+</pre>
+
+<p>One thing that the worker can do is to catch the exception explicitly and to send it as a special error message. The following program sends the reason of the failure as a <code class="d_inline">CalculationFailure</code> message. Additionally, this program takes advantage of a special message type to signal to the worker when it is time to exit:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.concurrency;
+<span class="d_keyword">import</span> std.conv;
+
+<span class="d_keyword">struct</span> CalculationFailure {
+    string reason;
+}
+
+<span class="d_keyword">struct</span> Exit {
+}
+
+<span class="d_keyword">void</span> calculate() {
+    <span class="d_keyword">bool</span> isDone = <span class="d_keyword">false</span>;
+
+    <span class="d_keyword">while</span> (!isDone) {
+        receive(
+            (string message) {
+                <span class="d_keyword">try</span> {
+                    ownerTid.send(to!<span class="d_keyword">double</span>(message) + 0.5);
+
+                } <span class="hilite"><span class="d_keyword">catch</span></span> (Exception exc) {
+                    ownerTid.send(CalculationFailure(exc.msg));
+                }
+            },
+
+            (Exit message) {
+                isDone = <span class="d_keyword">true</span>;
+            });
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    Tid calculator = spawn(&amp;calculate);
+
+    calculator.send(<span class="d_string">"1.2"</span>);
+    calculator.send(<span class="d_string">"hello"</span>);  <span class="d_comment">// ← incorrect input
+</span>    calculator.send(<span class="d_string">"3.4"</span>);
+    calculator.send(Exit());
+
+    <span class="d_keyword">foreach</span> (i; 0 .. 3) {
+        writef(<span class="d_string">"result %s: "</span>, i);
+
+        receive(
+            (<span class="d_keyword">double</span> message) {
+                writeln(message);
+            },
+
+            (CalculationFailure message) {
+                writefln(<span class="d_string">"ERROR! '%s'"</span>, message.reason);
+            });
+    }
+}
+</pre>
+
+<p>This time the reason of the failure is printed by the owner:
+</p>
+
+<pre class="shell">result 0: 1.7
+result 1: ERROR! 'no digits seen'
+result 2: 3.9
+</pre>
+
+<p>Another method would be to send the actual exception object itself to the owner. The owner can use the exception object or simply rethrow it:
+</p>
+
+<pre class="d_code"><span class="d_comment">// ... at the worker ...
+</span>                <span class="d_keyword">try</span> {
+                    <span class="d_comment">// ...
+</span>
+                } <span class="d_keyword">catch</span> (<span class="hilite"><span class="d_keyword">shared</span>(Exception)</span> exc) {
+                    ownerTid.send(exc);
+                }},
+
+<span class="d_comment">// ... at the owner ...
+</span>        receive(
+            <span class="d_comment">// ...
+</span>
+            (<span class="hilite"><span class="d_keyword">shared</span>(Exception)</span> exc) {
+                <span class="d_keyword">throw</span> exc;
+            });
+</pre>
+
+<p>The reason why the <code class="d_inline">shared</code> specifiers are necessary is explained in the next chapter.
+</p>
+
+<h5 class="subsection">Detecting thread termination</h5>
+
+<p>Threads can detect that the receiver of a message has terminated.
+</p>
+
+<h6><a id="ix_concurrency.OwnerTerminated" content="OwnerTerminated"></a> <code class="d_inline">OwnerTerminated</code> exception</h6>
+
+<p>This exception is thrown when receiving a message from the owner if the owner has been terminated. The intermediate owner thread below simply exits after sending two messages to its worker. This causes an <code class="d_inline">OwnerTerminated</code> exception to be thrown at the worker thread:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.concurrency;
+
+<span class="d_keyword">void</span> main() {
+    spawn(&amp;intermediaryFunc);
+}
+
+<span class="d_keyword">void</span> intermediaryFunc() {
+    <span class="d_keyword">auto</span> worker = spawn(&amp;workerFunc);
+    worker.send(1);
+    worker.send(2);
+}  <span class="d_comment">// ← Terminates after sending two messages
+</span>
+<span class="d_keyword">void</span> workerFunc() {
+    <span class="d_keyword">while</span> (<span class="d_keyword">true</span>) {
+        <span class="d_keyword">auto</span> m = receiveOnly!<span class="d_keyword">int</span>(); <span class="d_comment">// ← An exception is
+</span>                                    <span class="d_comment">//   thrown if the owner
+</span>                                    <span class="d_comment">//   has terminated.
+</span>        writeln(<span class="d_string">"Message: "</span>, m);
+    }
+}
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">Message: 1
+Message: 2
+std.concurrency.<span class="hilite">OwnerTerminated</span>@std/concurrency.d(248):
+Owner terminated
+</pre>
+
+<p>The worker can catch that exception to exit gracefully:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> workerFunc() {
+    <span class="d_keyword">bool</span> isDone = <span class="d_keyword">false</span>;
+
+    <span class="d_keyword">while</span> (!isDone) {
+        <span class="d_keyword">try</span> {
+            <span class="d_keyword">auto</span> m = receiveOnly!<span class="d_keyword">int</span>();
+            writeln(<span class="d_string">"Message: "</span>, m);
+
+        } <span class="d_keyword">catch</span> (<span class="hilite">OwnerTerminated</span> exc) {
+            writeln(<span class="d_string">"The owner has terminated."</span>);
+            isDone = <span class="d_keyword">true</span>;
+        }
+    }
+}
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">Message: 1
+Message: 2
+The owner has terminated.
+</pre>
+
+<p>We will see below that this exception can be received as a message as well.
+</p>
+
+<h6><a id="ix_concurrency.LinkTerminated" content="LinkTerminated"></a> <a id="ix_concurrency.spawnLinked" content="spawnLinked"></a> <code class="d_inline">LinkTerminated</code> exception</h6>
+
+<p><code class="d_inline">spawnLinked()</code> is used in the same way as <code class="d_inline">spawn()</code>. When a worker that has been started by <code class="d_inline">spawnLinked()</code> terminates, a <code class="d_inline">LinkTerminated</code> exception is thrown at the owner:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.concurrency;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> worker = <span class="hilite">spawnLinked</span>(&amp;workerFunc);
+
+    <span class="d_keyword">while</span> (<span class="d_keyword">true</span>) {
+        <span class="d_keyword">auto</span> m = receiveOnly!<span class="d_keyword">int</span>(); <span class="d_comment">// ← An exception is
+</span>                                    <span class="d_comment">//   thrown if the worker
+</span>                                    <span class="d_comment">//   has terminated.
+</span>        writeln(<span class="d_string">"Message: "</span>, m);
+    }
+}
+
+<span class="d_keyword">void</span> workerFunc() {
+    ownerTid.send(10);
+    ownerTid.send(20);
+}  <span class="d_comment">// ← Terminates after sending two messages
+</span></pre>
+
+<p>The worker above terminates after sending two messages. Since the worker has been started by <code class="d_inline">spawnLinked()</code>, the owner is notified of the worker's termination by a <code class="d_inline">LinkTerminated</code> exception:
+</p>
+
+<pre class="shell">Message: 10
+Message: 20
+std.concurrency.<span class="hilite">LinkTerminated</span>@std/concurrency.d(263):
+Link terminated
+</pre>
+
+<p>The owner can catch the exception to do something special like terminating gracefully:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">bool</span> isDone = <span class="d_keyword">false</span>;
+
+    <span class="d_keyword">while</span> (!isDone) {
+        <span class="d_keyword">try</span> {
+            <span class="d_keyword">auto</span> m = receiveOnly!<span class="d_keyword">int</span>();
+            writeln(<span class="d_string">"Message: "</span>, m);
+
+        } <span class="d_keyword">catch</span> (<span class="hilite">LinkTerminated</span> exc) {
+            writeln(<span class="d_string">"The worker has terminated."</span>);
+            isDone = <span class="d_keyword">true</span>;
+        }
+    }
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">Message: 10
+Message: 20
+The worker has terminated.
+</pre>
+
+<p>This exception can be received as a message as well.
+</p>
+
+<h6>Receiving exceptions as messages</h6>
+
+<p>The <code class="d_inline">OwnerTerminated</code> and <code class="d_inline">LinkTerminated</code> exceptions can be received as messages as well. The following code demonstrates this for the <code class="d_inline">OwnerTerminated</code> exception:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">bool</span> isDone = <span class="d_keyword">false</span>;
+
+    <span class="d_keyword">while</span> (!isDone) {
+        receive(
+            (<span class="d_keyword">int</span> message) {
+                writeln(<span class="d_string">"Message: "</span>, message);
+            },
+
+            (<span class="hilite">OwnerTerminated exc</span>) {
+                writeln(<span class="d_string">"The owner has terminated; exiting."</span>);
+                isDone = <span class="d_keyword">true</span>;
+            }
+        );
+    }
+</pre>
+
+<h5 class="subsection">Mailbox management</h5>
+
+<p>Every thread has a private mailbox that holds the messages that are sent to that thread. The number of messages in a mailbox may increase or decrease depending on how long it takes for the thread to receive and respond to each message. A continuously growing mailbox puts stress on the entire system and may point to a design flaw in the program. It may also mean that the thread may never get to the most recent messages.
+</p>
+
+<p><a id="ix_concurrency.setMaxMailboxSize" content="setMaxMailboxSize"></a> <code class="d_inline">setMaxMailboxSize()</code> is used for limiting the number of messages that a mailbox can hold. Its three parameters specify the mailbox, the maximum number of messages that it can hold, and what should happen when the mailbox is full, in that order. There are four choices for the last parameter:
+</p>
+
+<ul>
+<li><a id="ix_concurrency.OnCrowding" content="OnCrowding"></a> <code class="d_inline">OnCrowding.block</code>: The sender waits until there is room in the mailbox.</li>
+
+<li><code class="d_inline">OnCrowding.ignore</code>: The message is discarded.</li>
+
+<li><a id="ix_concurrency.MailboxFull" content="MailboxFull"></a> <code class="d_inline">OnCrowding.throwException</code>: A <code class="d_inline">MailboxFull</code> exception is thrown when sending the message.</li>
+
+<li>A function pointer of type <code class="d_inline">bool function(Tid)</code>: The specified function is called.</li>
+
+</ul>
+
+<p>Before seeing an example of <code class="d_inline">setMaxMailboxSize()</code>, let's first cause a mailbox to grow continuously. The worker in the following program sends messages back to back but the owner spends some time for each message:
+</p>
+
+<pre class="d_code"><span class="d_comment">/* WARNING: Your system may become unresponsive when this
+ *          program is running. */</span>
+<span class="d_keyword">import</span> std.concurrency;
+<span class="d_keyword">import</span> core.thread;
+
+<span class="d_keyword">void</span> workerFunc() {
+    <span class="d_keyword">while</span> (<span class="d_keyword">true</span>) {
+        ownerTid.send(42);    <span class="d_comment">// ← Produces messages continuously
+</span>    }
+}
+
+<span class="d_keyword">void</span> main() {
+    spawn(&amp;workerFunc);
+
+    <span class="d_keyword">while</span> (<span class="d_keyword">true</span>) {
+        receive(
+            (<span class="d_keyword">int</span> message) {
+                <span class="d_comment">// Spends time for each message
+</span>                Thread.sleep(1.seconds);
+            });
+    }
+}
+</pre>
+
+<p>Because the consumer is slower than the producer, the memory that the program above uses would grow continuously. To prevent that, the owner may limit the size of its mailbox before starting the worker:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> main() {
+    setMaxMailboxSize(thisTid, 1000, OnCrowding.block);
+
+    spawn(&amp;workerFunc);
+<span class="d_comment">// ...
+</span>}
+</pre>
+
+<p>The <code class="d_inline">setMaxMailboxSize()</code> call above sets the main thread's mailbox size to 1000. <code class="d_inline">OnCrowding.block</code> causes the sender to wait until there is room in the mailbox.
+</p>
+
+<p>The following example uses <code class="d_inline">OnCrowding.throwException</code>, which causes a <code class="d_inline">MailboxFull</code> exception to be thrown when sending a message to a mailbox that is full:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.concurrency;
+<span class="d_keyword">import</span> core.thread;
+
+<span class="d_keyword">void</span> workerFunc() {
+    <span class="d_keyword">while</span> (<span class="d_keyword">true</span>) {
+        <span class="d_keyword">try</span> {
+            ownerTid.send(42);
+
+        } <span class="d_keyword">catch</span> (<span class="hilite">MailboxFull</span> exc) {
+            <span class="d_comment">/* Failed to send; will try again later. */</span>
+            Thread.sleep(1.msecs);
+        }
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    setMaxMailboxSize(thisTid, 1000, <span class="hilite">OnCrowding.throwException</span>);
+
+    spawn(&amp;workerFunc);
+
+    <span class="d_keyword">while</span> (<span class="d_keyword">true</span>) {
+        receive(
+            (<span class="d_keyword">int</span> message) {
+                Thread.sleep(1.seconds);
+            });
+    }
+}
+</pre>
+
+<h5 class="subsection"><a id="ix_concurrency.prioritySend" content="prioritySend"></a> <a id="ix_concurrency.PriorityMessageException" content="PriorityMessageException"></a> Priority messages</h5>
+
+<p>Messages can be sent with higher priority than regular messages by <code class="d_inline">prioritySend()</code>. These messages are handled before the other messages that are already in the mailbox:
+</p>
+
+<pre class="d_code">    prioritySend(ownerTid, ImportantMessage(100));
+</pre>
+
+<p>If the receiver does not have a message handler that matches the type of the priority message, then a <code class="d_inline">PriorityMessageException</code> is thrown:
+</p>
+
+<pre class="shell">std.concurrency.<span class="hilite">PriorityMessageException</span>@std/concurrency.d(280):
+Priority message
+</pre>
+
+<h5 class="subsection">Thread names</h5>
+
+<p>In the simple programs that we have used above, it was easy to pass the thread ids of owners and workers. Passing thread ids from thread to thread may be overly complicated in programs that use more than a couple of threads. To reduce this complexity, it is possible to assign names to threads, which are globally accessible from any thread.
+</p>
+
+<p>The following three functions define an interface to an associative array that every thread has access to:
+</p>
+
+<ul>
+<li><a id="ix_concurrency.register, concurrency" content="register, concurrency"></a> <code class="d_inline">register()</code>: Associates a thread with a name.</li>
+
+<li><a id="ix_concurrency.locate" content="locate"></a> <code class="d_inline">locate()</code>: Returns the thread that is associated with the specified name. If there is no thread associated with that name, then <code class="d_inline">Tid.init</code> is returned.</li>
+
+<li><a id="ix_concurrency.unregister" content="unregister"></a> <code class="d_inline">unregister()</code>: Breaks the association between the specified name and the thread.</li>
+
+</ul>
+
+<p>The following program starts two threads that find each other by their names. These threads continuously send messages to each other until instructed to terminate by an <code class="d_inline">Exit</code> message:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.concurrency;
+<span class="d_keyword">import</span> core.thread;
+
+<span class="d_keyword">struct</span> Exit {
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_comment">// A thread whose partner is named "second"
+</span>    <span class="d_keyword">auto</span> first = spawn(&amp;player, <span class="d_string">"second"</span>);
+    <span class="hilite">register</span>(<span class="d_string">"first"</span>, first);
+    <span class="d_keyword">scope</span>(exit) <span class="hilite">unregister</span>(<span class="d_string">"first"</span>);
+
+    <span class="d_comment">// A thread whose partner is named "first"
+</span>    <span class="d_keyword">auto</span> second = spawn(&amp;player, <span class="d_string">"first"</span>);
+    <span class="hilite">register</span>(<span class="d_string">"second"</span>, second);
+    <span class="d_keyword">scope</span>(exit) <span class="hilite">unregister</span>(<span class="d_string">"second"</span>);
+
+    Thread.sleep(2.seconds);
+
+    prioritySend(first, Exit());
+    prioritySend(second, Exit());
+
+    <span class="d_comment">// For the unregister() calls to succeed, main() must wait
+</span>    <span class="d_comment">// until the workers terminate.
+</span>    thread_joinAll();
+}
+
+<span class="d_keyword">void</span> player(string nameOfPartner) {
+    Tid partner;
+
+    <span class="d_keyword">while</span> (partner == Tid.init) {
+        Thread.sleep(1.msecs);
+        partner = <span class="hilite">locate</span>(nameOfPartner);
+    }
+
+    <span class="d_keyword">bool</span> isDone = <span class="d_keyword">false</span>;
+
+    <span class="d_keyword">while</span> (!isDone) {
+        partner.send(<span class="d_string">"hello "</span> ~ nameOfPartner);
+        receive(
+            (string message) {
+                writeln(<span class="d_string">"Message: "</span>, message);
+                Thread.sleep(500.msecs);
+            },
+
+            (Exit message) {
+                writefln(<span class="d_string">"%s, I am exiting."</span>, nameOfPartner);
+                isDone = <span class="d_keyword">true</span>;
+            });
+    }
+}
+</pre>
+
+<p><a id="ix_concurrency.thread_joinAll" content="thread_joinAll"></a> The <code class="d_inline">thread_joinAll()</code> call that is seen at the end of <code class="d_inline">main()</code> is for making the owner to wait for all of its workers to terminate.
+</p>
+
+<p>The output:
+</p>
+
+<pre class="shell">Message: hello second
+Message: hello first
+Message: hello second
+Message: hello first
+Message: hello first
+Message: hello second
+Message: hello first
+Message: hello second
+second, I am exiting.
+first, I am exiting.
+</pre>
+
+<h5 class="subsection">Summary</h5>
+
+<ul>
+<li>When threads do not depend on other threads, prefer <i>parallelism</i>, which has been the topic of the previous chapter. Consider <i>concurrency</i> only when threads depend on operations of other threads.</li>
+
+<li>Because concurrency by data sharing is hard to implement correctly, prefer concurrency by message passing, which is the subject of this chapter.</li>
+
+<li><code class="d_inline">spawn()</code> and <code class="d_inline">spawnLinked()</code> start threads.</li>
+
+<li><code class="d_inline">thisTid</code> is the thread id of the current thread.</li>
+
+<li><code class="d_inline">ownerTid</code> is the thread id of the owner of the current thread.</li>
+
+<li><code class="d_inline">send()</code> and <code class="d_inline">prioritySend()</code> send messages.</li>
+
+<li><code class="d_inline">receiveOnly()</code>, <code class="d_inline">receive()</code>, and <code class="d_inline">receiveTimeout()</code> wait for messages.</li>
+
+<li><code class="d_inline">Variant</code> matches any type of message.</li>
+
+<li><code class="d_inline">setMaxMailboxSize()</code> limits the size of mailboxes.</li>
+
+<li><code class="d_inline">register()</code>, <code class="d_inline">unregister()</code>, and <code class="d_inline">locate()</code> allow referring to threads by name.</li>
+
+<li>Exceptions may be thrown during message passing: <code class="d_inline">MessageMismatch</code>, <code class="d_inline">OwnerTerminated</code>, <code class="d_inline">LinkTerminated</code>, <code class="d_inline">MailboxFull</code>, and <code class="d_inline">PriorityMessageException</code>.</li>
+
+<li>The owner cannot automatically catch exceptions that are thrown from the worker.</li>
+
+</ul>
+
+macros:
+        TITLE=Message Passing Concurrency
+
+        DESCRIPTION=Starting multiple threads in the D programming language and the interactions of threads by message passing.
+
+        KEYWORDS=d programming language tutorial book concurrency thread
+
+MINI_SOZLUK=
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on Mon Jan 29 20:32:08 2024
+</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

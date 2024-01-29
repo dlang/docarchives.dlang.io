@@ -1,0 +1,1187 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Application Binary Interface - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Application Binary Interface' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href=".."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option selected value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+<div class="subnav-helper"></div> <div class="subnav">    <div class="head"><h2>Language Reference</h2> <p class="subnav-duplicate"><a href="../spec/spec.html">table of contents</a></p></div>
+    <ul>        <li><a href='            ../spec/intro.html'>Introduction</a></li><li><a href='            ../spec/lex.html'>Lexical</a></li><li><a href='            ../spec/grammar.html'>Grammar</a></li><li><a href='            ../spec/module.html'>Modules</a></li><li><a href='            ../spec/declaration.html'>Declarations</a></li><li><a href='            ../spec/type.html'>Types</a></li><li><a href='            ../spec/property.html'>Properties</a></li><li><a href='            ../spec/attribute.html'>Attributes</a></li><li><a href='            ../spec/pragma.html'>Pragmas</a></li><li><a href='            ../spec/expression.html'>Expressions</a></li><li><a href='            ../spec/statement.html'>Statements</a></li><li><a href='            ../spec/arrays.html'>Arrays</a></li><li><a href='            ../spec/hash-map.html'>Associative Arrays</a></li><li><a href='            ../spec/struct.html'>Structs and Unions</a></li><li><a href='            ../spec/class.html'>Classes</a></li><li><a href='            ../spec/interface.html'>Interfaces</a></li><li><a href='            ../spec/enum.html'>Enums</a></li><li><a href='            ../spec/const3.html'>Type Qualifiers</a></li><li><a href='            ../spec/function.html'>Functions</a></li><li><a href='            ../spec/operatoroverloading.html'>Operator Overloading</a></li><li><a href='            ../spec/template.html'>Templates</a></li><li><a href='            ../spec/template-mixin.html'>Template Mixins</a></li><li><a href='            ../spec/contracts.html'>Contract Programming</a></li><li><a href='            ../spec/version.html'>Conditional Compilation</a></li><li><a href='            ../spec/traits.html'>Traits</a></li><li><a href='            ../spec/errors.html'>Error Handling</a></li><li><a href='            ../spec/unittest.html'>Unit Tests</a></li><li><a href='            ../spec/garbage.html'>Garbage Collection</a></li><li><a href='            ../spec/float.html'>Floating Point</a></li><li><a href='            ../spec/iasm.html'>D x86 Inline Assembler</a></li><li><a href='            ../spec/ddoc.html'>Embedded Documentation</a></li><li><a href='            ../spec/interfaceToC.html'>Interfacing to C</a></li><li><a href='            ../spec/cpp_interface.html'>Interfacing to C++</a></li><li><a href='            ../spec/objc_interface.html'>Interfacing to Objective-C</a></li><li><a href='            ../spec/portability.html'>Portability Guide</a></li><li><a href='            ../spec/entity.html'>Named Character Entities</a></li><li><a href='            ../spec/memory-safe-d.html'>Memory Safety</a></li><li><a href='            ../spec/abi.html'>Application Binary Interface</a></li><li><a href='            ../spec/simd.html'>Vector Extensions</a></li><li><a href='            ../spec/betterc.html'>Better C</a></li><li><a href='            ../spec/importc.html'>ImportC</a></li><li><a href='            ../spec/ob.html'>Live Functions
+        </a></li>
+    </ul>
+</div>
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BApplication Binary Interface%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/spec/abi.dd">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Application Binary Interface</h1>
+        
+<style>    body { counter-reset: h1 38; counter-increment: h1 -1; }
+    h1 { counter-reset: h2 h3 p; }
+    h2 { counter-reset: h3 h4 p; }
+    h3 { counter-reset: h4 p; }
+    h4 { counter-reset: p; }
+    h1::before {
+        counter-increment: h1;
+        content: counter(h1) ". ";
+    }
+    .hyphenate h2::before {
+        counter-increment: h2;
+        content: counter(h1) "." counter(h2) " ";
+    }
+    h3::before {
+        counter-increment: h3;
+        content: counter(h1) "." counter(h2) "." counter(h3) " ";
+    }
+    h4::before {
+        counter-increment: h4;
+        content: counter(h1) "." counter(h2) "." counter(h3) "." counter(h4) " ";
+    }
+    p::before, .spec-boxes::before {
+        counter-increment: p;
+        content: counter(p) ". ";
+    }
+    h1::before, h2::before, h3::before, h4::before, p::before, .spec-boxes::before
+    {
+        color: #999;
+        font-size: 80%;
+        margin-right: 0.25em;
+    }
+</style>
+        <div class="blankline"></div>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<div class="page-contents quickindex">    <div class="page-contents-header">        <b>Contents</b>
+    </div>
+    <ol>    <li><a href="#c_abi">C ABI</a></li>
+    <li><a href="#endianness">Endianness</a></li>
+    <li><a href="#basic_types">Basic Types</a></li>
+    <li><a href="#delegates">Delegates</a></li>
+    <li><a href="#structs">Structs</a></li>
+    <li><a href="#classes">Classes</a></li>
+    <li><a href="#interfaces">Interfaces</a></li>
+    <li><a href="#arrays">Arrays</a></li>
+    <li><a href="#associative_arrays">Associative Arrays</a></li>
+    <li><a href="#references_types">Reference Types</a></li>
+    <li><a href="#name_mangling">Name Mangling</a><ol>        <li><a href="#back_ref">Back references</a></li>
+        <li><a href="#type_mangling">Type Mangling</a></li>
+    </ol></li>
+    <li><a href="#function_calling_conventions">Function Calling Conventions</a><ol>        <li><a href="#register_conventions">Register Conventions</a></li>
+        <li><a href="#return_value">Return Value</a></li>
+        <li><a href="#parameters">Parameters</a></li>
+    </ol></li>
+    <li><a href="#exception_handling">Exception Handling</a><ol>        <li><a href="#windows_eh">Windows 32 bit</a></li>
+        <li><a href="#ninux_fbsd_osx_eh">Linux, FreeBSD and OS X</a></li>
+        <li><a href="#win64_eh">Windows 64 bit</a></li>
+    </ol></li>
+    <li><a href="#garbage_collection">Garbage Collection</a></li>
+    <li><a href="#runtime_helper_functions">Runtime Helper Functions</a></li>
+    <li><a href="#module_init_and_fina">Module Initialization and Termination</a></li>
+    <li><a href="#unit_testing">Unit Testing</a></li>
+    <li><a href="#symbolic_debugging">Symbolic Debugging</a><ol>        <li><a href="#codeview">Codeview Debugger Extensions</a></li>
+    </ol></li>
+</ol>
+</div>
+<div class="blankline"></div>
+        <p>A D implementation that conforms to the D ABI (Application Binary
+        Interface)
+        will be able to generate libraries, DLLs, etc., that can interoperate
+        with
+        D binaries built by other implementations.
+        </p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="c_abi" href="#c_abi">C ABI</a></h2>
+<div class="blankline"></div>
+        <p>The C ABI referred to in this specification means the C Application
+        Binary Interface of the target system.
+        C and D code should be freely linkable together, in particular, D
+        code shall have access to the entire C ABI runtime library.
+        </p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="endianness" href="#endianness">Endianness</a></h2>
+<div class="blankline"></div>
+        <p>The <a href="https://en.wikipedia.org/wiki/Endianness">endianness</a>
+        (byte order) of the layout of the data
+        will conform to the endianness of the target machine.
+        The Intel x86 CPUs are <i>little endian</i> meaning that
+        the value 0x0A0B0C0D is stored in memory as:
+        <span class="d_inlinecode donthyphenate notranslate">0D 0C 0B 0A</span>.
+        </p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="basic_types" href="#basic_types">Basic Types</a></h2>
+<div class="blankline"></div>
+        <table>        <tr><td>bool</td><td>8 bit byte with the values 0 for false and 1 for true</td></tr>
+        <tr><td>byte</td><td>8 bit signed value</td></tr>
+        <tr><td>ubyte</td><td>8 bit unsigned value</td></tr>
+        <tr><td>short</td><td>16 bit signed value</td></tr>
+        <tr><td>ushort</td><td>16 bit unsigned value</td></tr>
+        <tr><td>int</td><td>32 bit signed value</td></tr>
+        <tr><td>uint</td><td>32 bit unsigned value</td></tr>
+        <tr><td>long</td><td>64 bit signed value</td></tr>
+        <tr><td>ulong</td><td>64 bit unsigned value</td></tr>
+        <tr><td>cent</td><td>128 bit signed value</td></tr>
+        <tr><td>ucent</td><td>128 bit unsigned value</td></tr>
+        <tr><td>float</td><td>32 bit IEEE 754 floating point value</td></tr>
+        <tr><td>double</td><td>64 bit IEEE 754 floating point value</td></tr>
+        <tr><td>real</td><td>implementation defined floating point value, for x86 it is
+         80 bit IEEE 754 extended real</td></tr>
+        </table>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="delegates" href="#delegates">Delegates</a></h2>
+<div class="blankline"></div>
+        <p>Delegates are <i>fat pointers</i> with two parts:</p>
+<div class="blankline"></div>
+        <center><table><caption>Delegate Layout</caption>        <tr><th class="donthyphenate"><b>offset</b></th><th class="donthyphenate"><b>property</b></th><th class="donthyphenate"><b>contents</b></th></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">0</span></td><td><span class="d_inlinecode donthyphenate notranslate">.ptr</span></td><td>context pointer</td></tr>
+        <tr><td><i>ptrsize</i></td><td><span class="d_inlinecode donthyphenate notranslate">.funcptr</span></td><td>pointer to function</td></tr>
+        </table></center>
+<div class="blankline"></div>
+        <p>The <i>context pointer</i> can be a class <i>this</i>
+        reference, a struct <i>this</i> pointer, a pointer to
+        a closure (nested functions) or a pointer to an enclosing
+        function's stack frame (nested functions).
+        </p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="structs" href="#structs">Structs</a></h2>
+<div class="blankline"></div>
+        <p>Conforms to the target's C ABI struct layout.</p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="classes" href="#classes">Classes</a></h2>
+<div class="blankline"></div>
+        <p>An object consists of:</p>
+<div class="blankline"></div>
+    <center><table><caption>Class Object Layout</caption>    <tr><th class="donthyphenate"><b>size</b></th><th class="donthyphenate"><b>property</b></th><th class="donthyphenate"><b>contents</b></th></tr>
+    <tr><td><i>ptrsize</i></td><td><span class="d_inlinecode donthyphenate notranslate">.__vptr</span></td><td>pointer to vtable</td></tr>
+    <tr><td><i>ptrsize</i></td><td><span class="d_inlinecode donthyphenate notranslate">.__monitor</span></td><td>monitor</td></tr>
+    <tr><td><i>ptrsize</i>...</td><td>&nbsp;</td><td>vptrs for any interfaces implemented by this class in left to right, most to least derived, order</td></tr>
+    <tr><td><span class="d_inlinecode donthyphenate notranslate">...</span></td><td><span class="d_inlinecode donthyphenate notranslate">...</span></td><td>super's non-static fields and super's interface vptrs, from least to most derived</td></tr>
+    <tr><td><span class="d_inlinecode donthyphenate notranslate">...</span></td><td>named fields</td><td>non-static fields</td></tr>
+    </table></center>
+<div class="blankline"></div>
+        <p>The vtable consists of:</p>
+<div class="blankline"></div>
+<center><table><caption>Virtual Function Pointer Table Layout</caption><tr><th class="donthyphenate"><b>size</b></th><th class="donthyphenate"><b>contents</b></th></tr>
+<tr><td><i>ptrsize</i></td><td>pointer to instance of TypeInfo</td></tr>
+<tr><td><i>ptrsize</i>...</td><td>pointers to virtual member functions</td></tr>
+</table></center>
+<div class="blankline"></div>
+        <p>Casting a class object to an interface consists of adding the offset of
+        the interface's corresponding vptr to the address of the base of the object.
+        Casting an interface ptr back to the class type it came from involves getting
+        the correct offset to subtract from it from the object.Interface entry at vtbl[0].
+        Adjustor thunks are created and pointers to them stored in the method entries in the vtbl[]
+        in order to set the this pointer to the start of the object instance corresponding
+        to the implementing method.
+        </p>
+<div class="blankline"></div>
+        <p>An adjustor thunk looks like:</p>
+<div class="blankline"></div>
+<pre class="ccode notranslate">  ADD EAX,offset
+  JMP method
+</pre>
+<div class="blankline"></div>
+        <p>The leftmost side of the inheritance graph of the interfaces all share
+        their vptrs, this is the single inheritance model.
+        Every time the inheritance graph forks (for multiple inheritance) a new vptr is created
+        and stored in the class' instance.
+        Every time a virtual method is overridden, a new vtbl[] must be created with
+        the updated method pointers in it.
+        </p>
+<div class="blankline"></div>
+        <p>The class definition:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">class</span> XXXX
+{
+    ....
+};
+</pre>
+<div class="blankline"></div>
+        <p>Generates the following:</p>
+<div class="blankline"></div>
+        <ul>        <li>An instance of Class called ClassXXXX.</li>
+<div class="blankline"></div>
+        <li>A type called StaticClassXXXX which defines all the static members.</li>
+<div class="blankline"></div>
+        <li>An instance of StaticClassXXXX called StaticXXXX for the static members.</li>
+        </ul>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="interfaces" href="#interfaces">Interfaces</a></h2>
+<div class="blankline"></div>
+        <p>An interface is a pointer to a pointer to a vtbl[].
+        The vtbl[0] entry is a pointer to the corresponding
+        instance of the object.Interface class.
+        The rest of the <span class="d_inlinecode donthyphenate notranslate">vtbl[1..$]</span> entries are pointers to the
+        virtual functions implemented by that interface, in the
+        order that they were declared.
+        </p>
+<div class="blankline"></div>
+        <p>A COM interface differs from a regular interface in that
+        there is no object.Interface entry in <span class="d_inlinecode donthyphenate notranslate">vtbl[0]</span>; the entries
+        <span class="d_inlinecode donthyphenate notranslate">vtbl[0..$]</span> are all the virtual function pointers, in the order
+        that they were declared.
+        This matches the COM object layout used by Windows.
+        </p>
+        <p>A C++ interface differs from a regular interface in that
+        it matches the layout of a C++ class using single inheritance
+        on the target machine.
+        </p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="arrays" href="#arrays">Arrays</a></h2>
+<div class="blankline"></div>
+        <p>A dynamic array consists of:</p>
+<div class="blankline"></div>
+<center><table><caption>Dynamic Array Layout</caption><tr><th class="donthyphenate"><b>offset</b></th><th class="donthyphenate"><b>property</b></th><th class="donthyphenate"><b>contents</b></th></tr>
+<tr><td><span class="d_inlinecode donthyphenate notranslate">0</span></td><td><span class="d_inlinecode donthyphenate notranslate">.length</span></td><td>array dimension</td></tr>
+<tr><td><span class="d_inlinecode donthyphenate notranslate">size_t</span></td><td><span class="d_inlinecode donthyphenate notranslate">.ptr</span></td><td>pointer to array data</td></tr>
+</table></center>
+<div class="blankline"></div>
+        <p>A dynamic array is declared as:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate">type[] array;
+</pre>
+<div class="blankline"></div>
+        whereas a static array is declared as:
+<div class="blankline"></div>
+<pre class="d_code notranslate">type[dimension] array;
+</pre>
+<div class="blankline"></div>
+        <p>Thus, a static array always has the dimension statically available as part of the type, and
+        so it is implemented like in C. Static arrays and Dynamic arrays can be easily converted back
+        and forth to each other.
+        </p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="associative_arrays" href="#associative_arrays">Associative Arrays</a></h2>
+<div class="blankline"></div>
+        <p>Associative arrays consist of a pointer to an opaque, implementation
+        defined type.</p>
+<div class="blankline"></div>
+        <p>The current implementation is contained in and defined by
+         <a href="https://github.com/dlang/druntime/blob/master/src/rt/aaA.d">rt/aaA.d</a>.
+        </p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="references_types" href="#references_types">Reference Types</a></h2>
+<div class="blankline"></div>
+        <p>D has reference types, but they are implicit. For example, classes are always
+        referred to by reference; this means that class instances can never reside on the stack
+        or be passed as function parameters.
+        </p>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="name_mangling" href="#name_mangling">Name Mangling</a></h2>
+<div class="blankline"></div>
+        <p>D accomplishes typesafe linking by <i>mangling</i> a D identifier
+        to include scope and type information.
+        </p>
+<div class="blankline"></div>
+<pre class="bnf notranslate"><a id="MangledName"><span class="gname">MangledName</span></a>:
+    <b>_D</b> <a href="#QualifiedName"><i>QualifiedName</i></a> <a href="#Type"><i>Type</i></a>
+    <b>_D</b> <a href="#QualifiedName"><i>QualifiedName</i></a> <b>Z</b>        <span class="green">// Internal</span>
+</pre>
+<div class="blankline"></div>
+    <p>The <a href="#Type"><i>Type</i></a> above is the type of a variable or the return type of a function.
+    This is never a <a href="#TypeFunction"><i>TypeFunction</i></a>, as the latter can only be bound to a value via a pointer
+    to a function or a delegate.</p>
+<div class="blankline"></div>
+<pre class="bnf notranslate"><a id="QualifiedName"><span class="gname">QualifiedName</span></a>:
+    <a href="#SymbolFunctionName"><i>SymbolFunctionName</i></a>
+    <a href="#SymbolFunctionName"><i>SymbolFunctionName</i></a> <i>QualifiedName</i>
+<div class="blankline"></div>
+<a id="SymbolFunctionName"><span class="gname">SymbolFunctionName</span></a>:
+    <a href="#SymbolName"><i>SymbolName</i></a>
+    <a href="#SymbolName"><i>SymbolName</i></a> <a href="#TypeFunctionNoReturn"><i>TypeFunctionNoReturn</i></a>
+    <a href="#SymbolName"><i>SymbolName</i></a> <b>M</b> <a href="#TypeModifiers"><i>TypeModifiers</i></a><sub>opt</sub> <a href="#TypeFunctionNoReturn"><i>TypeFunctionNoReturn</i></a>
+</pre>
+<div class="blankline"></div>
+    <p>The <b>M</b> means that the symbol is a function that requires
+    a <span class="d_inlinecode donthyphenate notranslate">this</span> pointer. Class or struct fields are mangled without <b>M</b>.
+    To disambiguate <b>M</b> from being a <a href="#Parameter"><i>Parameter</i></a> with modifier <span class="d_inlinecode donthyphenate notranslate">scope</span>, the
+    following type needs to be checked for being a <a href="#TypeFunction"><i>TypeFunction</i></a>.</p>
+<div class="blankline"></div>
+<pre class="bnf notranslate"><a id="SymbolName"><span class="gname">SymbolName</span></a>:
+    <a href="#LName"><i>LName</i></a>
+    <a href="#TemplateInstanceName"><i>TemplateInstanceName</i></a>
+    <a href="#IdentifierBackRef"><i>IdentifierBackRef</i></a>
+    <b>0</b>                         <span class="green">// anonymous symbols</span>
+</pre>
+<div class="blankline"></div>
+        <p>Template Instance Names have the types and values of its parameters
+        encoded into it:
+        </p>
+<div class="blankline"></div>
+<pre class="bnf notranslate"><a id="TemplateInstanceName"><span class="gname">TemplateInstanceName</span></a>:
+    <a href="#TemplateID"><i>TemplateID</i></a> <a href="#LName"><i>LName</i></a> <a href="#TemplateArgs"><i>TemplateArgs</i></a> <b>Z</b>
+<div class="blankline"></div>
+<a id="TemplateID"><span class="gname">TemplateID</span></a>:
+    <b>__T</b>
+    <b>__U</b>        <span class="green">// for symbols declared inside template constraint</span>
+<div class="blankline"></div>
+<a id="TemplateArgs"><span class="gname">TemplateArgs</span></a>:
+    <a href="#TemplateArg"><i>TemplateArg</i></a>
+    <a href="#TemplateArg"><i>TemplateArg</i></a> <i>TemplateArgs</i>
+<div class="blankline"></div>
+<a id="TemplateArg"><span class="gname">TemplateArg</span></a>:
+    <a href="#TemplateArgX"><i>TemplateArgX</i></a>
+    <b>H</b> <a href="#TemplateArgX"><i>TemplateArgX</i></a>
+</pre>
+<div class="blankline"></div>
+    <p>If a template argument matches a specialized template parameter, the argument
+    is mangled with prefix <b>H</b>.</p>
+<div class="blankline"></div>
+<pre class="bnf notranslate"><a id="TemplateArgX"><span class="gname">TemplateArgX</span></a>:
+    <b>T</b> <a href="#Type"><i>Type</i></a>
+    <b>V</b> <a href="#Type"><i>Type</i></a> <a href="#Value"><i>Value</i></a>
+    <b>S</b> <a href="#QualifiedName"><i>QualifiedName</i></a>
+    <b>X</b> <a href="#Number"><i>Number</i></a> <i>ExternallyMangledName</i>
+</pre>
+<div class="blankline"></div>
+    <p><i>ExternallyMangledName</i> can be any series of characters allowed on the
+    current platform, e.g. generated by functions with C++ linkage or annotated
+    with <span class="d_inlinecode donthyphenate notranslate">pragma(mangle,...)</span>.</p>
+<div class="blankline"></div>
+<pre class="bnf notranslate"><a id="Values"><span class="gname">Values</span></a>:
+    <a href="#Value"><i>Value</i></a>
+    <a href="#Value"><i>Value</i></a> <i>Values</i>
+<div class="blankline"></div>
+<a id="Value"><span class="gname">Value</span></a>:
+    <b>n</b>
+    <b>i</b> <a href="#Number"><i>Number</i></a>
+    <b>N</b> <a href="#Number"><i>Number</i></a>
+    <b>e</b> <a href="#HexFloat"><i>HexFloat</i></a>
+    <b>c</b> <a href="#HexFloat"><i>HexFloat</i></a> <b>c</b> <a href="#HexFloat"><i>HexFloat</i></a>
+    <a href="#CharWidth"><i>CharWidth</i></a> <a href="#Number"><i>Number</i></a> <b>_</b> <a href="#HexDigits"><i>HexDigits</i></a>
+    <b>A</b> <a href="#Number"><i>Number</i></a> <a href="#Values"><i>Values</i></a>
+    <b>S</b> <a href="#Number"><i>Number</i></a> <a href="#Values"><i>Values</i></a>
+    <b>f</b> <a href="#MangledName"><i>MangledName</i></a>
+<div class="blankline"></div>
+<a id="HexFloat"><span class="gname">HexFloat</span></a>:
+    <b>NAN</b>
+    <b>INF</b>
+    <b>NINF</b>
+    <b>N</b> <a href="#HexDigits"><i>HexDigits</i></a> <b>P</b> <a href="#Exponent"><i>Exponent</i></a>
+    <a href="#HexDigits"><i>HexDigits</i></a> <b>P</b> <a href="#Exponent"><i>Exponent</i></a>
+<div class="blankline"></div>
+<a id="Exponent"><span class="gname">Exponent</span></a>:
+    <b>N</b> <a href="#Number"><i>Number</i></a>
+    <a href="#Number"><i>Number</i></a>
+<div class="blankline"></div>
+<a id="HexDigits"><span class="gname">HexDigits</span></a>:
+    <a href="#HexDigit"><i>HexDigit</i></a>
+    <a href="#HexDigit"><i>HexDigit</i></a> <a href="#HexDigits"><i>HexDigits</i></a>
+<div class="blankline"></div>
+<a id="HexDigit"><span class="gname">HexDigit</span></a>:
+    <a href="#Digit"><i>Digit</i></a>
+    <b>A</b>
+    <b>B</b>
+    <b>C</b>
+    <b>D</b>
+    <b>E</b>
+    <b>F</b>
+<div class="blankline"></div>
+<a id="CharWidth"><span class="gname">CharWidth</span></a>:
+    <b>a</b>
+    <b>w</b>
+    <b>d</b>
+</pre>
+<div class="blankline"></div>
+    <dl>            <dt><b>n</b></dt>
+            <dd>is for <b>null</b> arguments.</dd>
+<div class="blankline"></div>
+            <dt><b>i</b> <a href="#Number"><i>Number</i></a></dt>
+            <dd>is for positive numeric literals (including
+            character literals).</dd>
+<div class="blankline"></div>
+            <dt><b>N</b> <a href="#Number"><i>Number</i></a></dt>
+            <dd>is for negative numeric literals.</dd>
+<div class="blankline"></div>
+            <dt><b>e</b> <a href="#HexFloat"><i>HexFloat</i></a></dt>
+            <dd>is for real and imaginary floating point literals.</dd>
+<div class="blankline"></div>
+            <dt><b>c</b> <a href="#HexFloat"><i>HexFloat</i></a> <b>c</b> <a href="#HexFloat"><i>HexFloat</i></a></dt>
+            <dd>is for complex floating point literals.</dd>
+<div class="blankline"></div>
+            <dt><a href="#CharWidth"><i>CharWidth</i></a> <a href="#Number"><i>Number</i></a> <span class="d_inlinecode donthyphenate notranslate">_</span> <a href="#HexDigits"><i>HexDigits</i></a></dt>
+            <dd><a href="#CharWidth"><i>CharWidth</i></a> is whether the characters
+            are 1 byte (<b>a</b>), 2 bytes (<b>w</b>) or 4 bytes (<b>d</b>) in size.
+            <a href="#Number"><i>Number</i></a> is the number of characters in the string.
+            The <a href="#HexDigits"><i>HexDigits</i></a> are the hex data for the string.
+            </dd>
+<div class="blankline"></div>
+            <dt><b>A</b> <a href="#Number"><i>Number</i></a> <a href="#Values"><i>Values</i></a></dt>
+            <dd>An array or asssociative array literal.
+            <a href="#Number"><i>Number</i></a> is the length of the array.
+            <a href="#Value"><i>Value</i></a> is repeated <a href="#Number"><i>Number</i></a> times for a normal array,
+            and 2 * <a href="#Number"><i>Number</i></a> times for an associative array.
+            </dd>
+<div class="blankline"></div>
+            <dt><b>S</b> <a href="#Number"><i>Number</i></a> <a href="#Values"><i>Values</i></a></dt>
+            <dd>A struct literal. <a href="#Value"><i>Value</i></a> is repeated <a href="#Number"><i>Number</i></a> times.
+            </dd>
+    </dl>
+<div class="blankline"></div>
+<pre class="bnf notranslate"><a id="Name"><span class="gname">Name</span></a>:
+    <a href="#Namestart"><i>Namestart</i></a>
+    <a href="#Namestart"><i>Namestart</i></a> <a href="#Namechars"><i>Namechars</i></a>
+<div class="blankline"></div>
+<a id="Namestart"><span class="gname">Namestart</span></a>:
+    <b>_</b>
+    <i>Alpha</i>
+<div class="blankline"></div>
+<a id="Namechar"><span class="gname">Namechar</span></a>:
+    <a href="#Namestart"><i>Namestart</i></a>
+    <a href="#Digit"><i>Digit</i></a>
+<div class="blankline"></div>
+<a id="Namechars"><span class="gname">Namechars</span></a>:
+    <a href="#Namechar"><i>Namechar</i></a>
+    <a href="#Namechar"><i>Namechar</i></a> <i>Namechars</i>
+</pre>
+<div class="blankline"></div>
+        <p>A <a href="#Name"><i>Name</i></a> is a standard D <a href="../spec/lex.html#identifiers">identifier</a>.</p>
+<div class="blankline"></div>
+<pre class="bnf notranslate"><a id="LName"><span class="gname">LName</span></a>:
+    <a href="#Number"><i>Number</i></a> <a href="#Name"><i>Name</i></a>
+    <a href="#Number"><i>Number</i></a> <b>__S</b> <a href="#Number"><i>Number</i></a>    <span class="green">// function-local parent symbols</span>
+<div class="blankline"></div>
+<a id="Number"><span class="gname">Number</span></a>:
+    <a href="#Digit"><i>Digit</i></a>
+    <a href="#Digit"><i>Digit</i></a> <i>Number</i>
+<div class="blankline"></div>
+<a id="Digit"><span class="gname">Digit</span></a>:
+    <b>0</b>
+    <b>1</b>
+    <b>2</b>
+    <b>3</b>
+    <b>4</b>
+    <b>5</b>
+    <b>6</b>
+    <b>7</b>
+    <b>8</b>
+    <b>9</b>
+</pre>
+<div class="blankline"></div>
+        <p>An <a href="#LName"><i>LName</i></a> is a name preceded by a <a href="#Number"><i>Number</i></a> giving
+        the number of characters in the <a href="#Name"><i>Name</i></a>.
+        </p>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="back_ref" href="#back_ref">Back references</a></h3>
+<div class="blankline"></div>
+    <p>Any <a href="#LName"><i>LName</i></a> or non-basic <a href="#Type"><i>Type</i></a> (i.e. any type
+    that does not encode as a fixed one or two character sequence) that has been
+    emitted to the mangled symbol before will not be emitted again, but is referenced
+    by a special sequence encoding the relative position of the original occurrence in the mangled
+    symbol name.</p>
+<div class="blankline"></div>
+    <p>Numbers in back references are encoded with base 26 by upper case letters <b>A</b> - <b>Z</b> for higher digits
+    but lower case letters <b>a</b> - <b>z</b> for the last digit.</p>
+<div class="blankline"></div>
+<pre class="bnf notranslate"><a id="TypeBackRef"><span class="gname">TypeBackRef</span></a>:
+    <b>Q</b> <a href="#NumberBackRef"><i>NumberBackRef</i></a>
+<div class="blankline"></div>
+<a id="IdentifierBackRef"><span class="gname">IdentifierBackRef</span></a>:
+    <b>Q</b> <a href="#NumberBackRef"><i>NumberBackRef</i></a>
+<div class="blankline"></div>
+<a id="NumberBackRef"><span class="gname">NumberBackRef</span></a>:
+    <i>lower-case-letter</i>
+    <i>upper-case-letter</i> <a href="#NumberBackRef"><i>NumberBackRef</i></a>
+</pre>
+<div class="blankline"></div>
+    <p>To distinguish between the type of the back reference a look-up of the back referenced character is necessary:
+    An identifier back reference always points to a digit <b>0</b> to <b>9</b>, while a type back reference always points
+    to a letter.</p>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="type_mangling" href="#type_mangling">Type Mangling</a></h3>
+<div class="blankline"></div>
+        <p>Types are mangled using a simple linear scheme:</p>
+<div class="blankline"></div>
+<pre class="bnf notranslate"><a id="Type"><span class="gname">Type</span></a>:
+    <a href="#TypeModifiers"><i>TypeModifiers</i></a><sub>opt</sub> <a href="#TypeX"><i>TypeX</i></a>
+    <a href="#TypeBackRef"><i>TypeBackRef</i></a>
+<div class="blankline"></div>
+<a id="TypeX"><span class="gname">TypeX</span></a>:
+    <a href="#TypeArray"><i>TypeArray</i></a>
+    <a href="#TypeStaticArray"><i>TypeStaticArray</i></a>
+    <a href="#TypeAssocArray"><i>TypeAssocArray</i></a>
+    <a href="#TypePointer"><i>TypePointer</i></a>
+    <a href="#TypeFunction"><i>TypeFunction</i></a>
+    <a href="#TypeIdent"><i>TypeIdent</i></a>
+    <a href="#TypeClass"><i>TypeClass</i></a>
+    <a href="#TypeStruct"><i>TypeStruct</i></a>
+    <a href="#TypeEnum"><i>TypeEnum</i></a>
+    <a href="#TypeTypedef"><i>TypeTypedef</i></a>
+    <a href="#TypeDelegate"><i>TypeDelegate</i></a>
+    <a href="#TypeVoid"><i>TypeVoid</i></a>
+    <a href="#TypeByte"><i>TypeByte</i></a>
+    <a href="#TypeUbyte"><i>TypeUbyte</i></a>
+    <a href="#TypeShort"><i>TypeShort</i></a>
+    <a href="#TypeUshort"><i>TypeUshort</i></a>
+    <a href="#TypeInt"><i>TypeInt</i></a>
+    <a href="#TypeUint"><i>TypeUint</i></a>
+    <a href="#TypeLong"><i>TypeLong</i></a>
+    <a href="#TypeUlong"><i>TypeUlong</i></a>
+    <a href="#TypeCent"><i>TypeCent</i></a>
+    <a href="#TypeUcent"><i>TypeUcent</i></a>
+    <a href="#TypeFloat"><i>TypeFloat</i></a>
+    <a href="#TypeDouble"><i>TypeDouble</i></a>
+    <a href="#TypeReal"><i>TypeReal</i></a>
+    <a href="#TypeIfloat"><i>TypeIfloat</i></a>
+    <a href="#TypeIdouble"><i>TypeIdouble</i></a>
+    <a href="#TypeIreal"><i>TypeIreal</i></a>
+    <a href="#TypeCfloat"><i>TypeCfloat</i></a>
+    <a href="#TypeCdouble"><i>TypeCdouble</i></a>
+    <a href="#TypeCreal"><i>TypeCreal</i></a>
+    <a href="#TypeBool"><i>TypeBool</i></a>
+    <a href="#TypeChar"><i>TypeChar</i></a>
+    <a href="#TypeWchar"><i>TypeWchar</i></a>
+    <a href="#TypeDchar"><i>TypeDchar</i></a>
+    <a href="#TypeNoreturn"><i>TypeNoreturn</i></a>
+    <a href="#TypeNull"><i>TypeNull</i></a>
+    <a href="#TypeTuple"><i>TypeTuple</i></a>
+    <a href="#TypeVector"><i>TypeVector</i></a>
+<div class="blankline"></div>
+<a id="TypeModifiers"><span class="gname">TypeModifiers</span></a>:
+    <a href="#Const"><i>Const</i></a>
+    <a href="#Wild"><i>Wild</i></a>
+    <a href="#Wild"><i>Wild</i></a> <a href="#Const"><i>Const</i></a>
+    <a href="#Shared"><i>Shared</i></a>
+    <a href="#Shared"><i>Shared</i></a> <a href="#Const"><i>Const</i></a>
+    <a href="#Shared"><i>Shared</i></a> <a href="#Wild"><i>Wild</i></a>
+    <a href="#Shared"><i>Shared</i></a> <a href="#Wild"><i>Wild</i></a> <a href="#Const"><i>Const</i></a>
+    <a href="#Immutable"><i>Immutable</i></a>
+<div class="blankline"></div>
+<a id="Shared"><span class="gname">Shared</span></a>:
+    <b>O</b>
+<div class="blankline"></div>
+<a id="Const"><span class="gname">Const</span></a>:
+    <b>x</b>
+<div class="blankline"></div>
+<a id="Immutable"><span class="gname">Immutable</span></a>:
+    <b>y</b>
+<div class="blankline"></div>
+<a id="Wild"><span class="gname">Wild</span></a>:
+    <b>Ng</b>
+<div class="blankline"></div>
+<a id="TypeArray"><span class="gname">TypeArray</span></a>:
+    <b>A</b> <a href="#Type"><i>Type</i></a>
+<div class="blankline"></div>
+<a id="TypeStaticArray"><span class="gname">TypeStaticArray</span></a>:
+    <b>G</b> <a href="#Number"><i>Number</i></a> <a href="#Type"><i>Type</i></a>
+<div class="blankline"></div>
+<a id="TypeAssocArray"><span class="gname">TypeAssocArray</span></a>:
+    <b>H</b> <a href="#Type"><i>Type</i></a> <a href="#Type"><i>Type</i></a>
+<div class="blankline"></div>
+<a id="TypePointer"><span class="gname">TypePointer</span></a>:
+    <b>P</b> <a href="#Type"><i>Type</i></a>
+<div class="blankline"></div>
+<a id="TypeVector"><span class="gname">TypeVector</span></a>:
+    <b>Nh</b> <a href="#Type"><i>Type</i></a>
+<div class="blankline"></div>
+<a id="TypeFunction"><span class="gname">TypeFunction</span></a>:
+    <a href="#TypeFunctionNoReturn"><i>TypeFunctionNoReturn</i></a> <a href="#Type"><i>Type</i></a>
+<div class="blankline"></div>
+<a id="TypeFunctionNoReturn"><span class="gname">TypeFunctionNoReturn</span></a>:
+    <a href="#CallConvention"><i>CallConvention</i></a> <a href="#FuncAttrs"><i>FuncAttrs</i></a><sub>opt</sub> <a href="#Parameters"><i>Parameters</i></a><sub>opt</sub> <a href="#ParamClose"><i>ParamClose</i></a>
+<div class="blankline"></div>
+<a id="CallConvention"><span class="gname">CallConvention</span></a>:
+    <b>F</b>       <span class="green">// D</span>
+    <b>U</b>       <span class="green">// C</span>
+    <b>W</b>       <span class="green">// Windows</span>
+    <b>R</b>       <span class="green">// C++</span>
+    <b>Y</b>       <span class="green">// Objective-C</span>
+<div class="blankline"></div>
+<a id="FuncAttrs"><span class="gname">FuncAttrs</span></a>:
+    <a href="#FuncAttr"><i>FuncAttr</i></a>
+    <a href="#FuncAttr"><i>FuncAttr</i></a> <i>FuncAttrs</i>
+<div class="blankline"></div>
+<a id="FuncAttr"><span class="gname">FuncAttr</span></a>:
+    <a href="#FuncAttrPure"><i>FuncAttrPure</i></a>
+    <a href="#FuncAttrNothrow"><i>FuncAttrNothrow</i></a>
+    <a href="#FuncAttrRef"><i>FuncAttrRef</i></a>
+    <a href="#FuncAttrProperty"><i>FuncAttrProperty</i></a>
+    <a href="#FuncAttrNogc"><i>FuncAttrNogc</i></a>
+    <a href="#FuncAttrReturn"><i>FuncAttrReturn</i></a>
+    <a href="#FuncAttrScope"><i>FuncAttrScope</i></a>
+    <a href="#FuncAttrTrusted"><i>FuncAttrTrusted</i></a>
+    <a href="#FuncAttrSafe"><i>FuncAttrSafe</i></a>
+    <a href="#FuncAttrLive"><i>FuncAttrLive</i></a>
+</pre>
+<div class="blankline"></div>
+    <p>Function attributes are emitted in the order as listed above.</p>
+<div class="blankline"></div>
+<pre class="bnf notranslate"><a id="FuncAttrPure"><span class="gname">FuncAttrPure</span></a>:
+    <b>Na</b>
+<div class="blankline"></div>
+<a id="FuncAttrNogc"><span class="gname">FuncAttrNogc</span></a>:
+    <b>Ni</b>
+<div class="blankline"></div>
+<a id="FuncAttrNothrow"><span class="gname">FuncAttrNothrow</span></a>:
+    <b>Nb</b>
+<div class="blankline"></div>
+<a id="FuncAttrProperty"><span class="gname">FuncAttrProperty</span></a>:
+    <b>Nd</b>
+<div class="blankline"></div>
+<a id="FuncAttrRef"><span class="gname">FuncAttrRef</span></a>:
+    <b>Nc</b>
+<div class="blankline"></div>
+<a id="FuncAttrReturn"><span class="gname">FuncAttrReturn</span></a>:
+    <b>Nj</b>
+<div class="blankline"></div>
+<a id="FuncAttrScope"><span class="gname">FuncAttrScope</span></a>:
+    <b>Nl</b>
+<div class="blankline"></div>
+<a id="FuncAttrTrusted"><span class="gname">FuncAttrTrusted</span></a>:
+    <b>Ne</b>
+<div class="blankline"></div>
+<a id="FuncAttrSafe"><span class="gname">FuncAttrSafe</span></a>:
+    <b>Nf</b>
+<div class="blankline"></div>
+<a id="FuncAttrLive"><span class="gname">FuncAttrLive</span></a>:
+    <b>Nm</b>
+<div class="blankline"></div>
+<a id="Parameters"><span class="gname">Parameters</span></a>:
+    <a href="#Parameter"><i>Parameter</i></a>
+    <a href="#Parameter"><i>Parameter</i></a> <i>Parameters</i>
+<div class="blankline"></div>
+<a id="Parameter"><span class="gname">Parameter</span></a>:
+    <a href="#Parameter2"><i>Parameter2</i></a>
+    <b>M</b> <a href="#Parameter2"><i>Parameter2</i></a>     <span class="green">// scope</span>
+    <b>Nk</b> <a href="#Parameter2"><i>Parameter2</i></a>    <span class="green">// return</span>
+<div class="blankline"></div>
+<a id="Parameter2"><span class="gname">Parameter2</span></a>:
+    <a href="#Type"><i>Type</i></a>
+    <b>I</b> <a href="#Type"><i>Type</i></a>     <span class="green">// in</span>
+    <b>J</b> <a href="#Type"><i>Type</i></a>     <span class="green">// out</span>
+    <b>K</b> <a href="#Type"><i>Type</i></a>     <span class="green">// ref</span>
+    <b>L</b> <a href="#Type"><i>Type</i></a>     <span class="green">// lazy</span>
+<div class="blankline"></div>
+<a id="ParamClose"><span class="gname">ParamClose</span></a>:
+    <b>X</b>     <span class="green">// variadic T t...) style</span>
+    <b>Y</b>     <span class="green">// variadic T t,...) style</span>
+    <b>Z</b>     <span class="green">// not variadic</span>
+<div class="blankline"></div>
+<a id="TypeIdent"><span class="gname">TypeIdent</span></a>:
+    <b>I</b> <a href="#QualifiedName"><i>QualifiedName</i></a>
+<div class="blankline"></div>
+<a id="TypeClass"><span class="gname">TypeClass</span></a>:
+    <b>C</b> <a href="#QualifiedName"><i>QualifiedName</i></a>
+<div class="blankline"></div>
+<a id="TypeStruct"><span class="gname">TypeStruct</span></a>:
+    <b>S</b> <a href="#QualifiedName"><i>QualifiedName</i></a>
+<div class="blankline"></div>
+<a id="TypeEnum"><span class="gname">TypeEnum</span></a>:
+    <b>E</b> <a href="#QualifiedName"><i>QualifiedName</i></a>
+<div class="blankline"></div>
+<a id="TypeTypedef"><span class="gname">TypeTypedef</span></a>:
+    <b>T</b> <a href="#QualifiedName"><i>QualifiedName</i></a>
+<div class="blankline"></div>
+<a id="TypeDelegate"><span class="gname">TypeDelegate</span></a>:
+    <b>D</b> <a href="#TypeModifiers"><i>TypeModifiers</i></a><sub>opt</sub> <a href="#TypeFunction"><i>TypeFunction</i></a>
+<div class="blankline"></div>
+<a id="TypeVoid"><span class="gname">TypeVoid</span></a>:
+    <b>v</b>
+<div class="blankline"></div>
+<a id="TypeByte"><span class="gname">TypeByte</span></a>:
+    <b>g</b>
+<div class="blankline"></div>
+<a id="TypeUbyte"><span class="gname">TypeUbyte</span></a>:
+    <b>h</b>
+<div class="blankline"></div>
+<a id="TypeShort"><span class="gname">TypeShort</span></a>:
+    <b>s</b>
+<div class="blankline"></div>
+<a id="TypeUshort"><span class="gname">TypeUshort</span></a>:
+    <b>t</b>
+<div class="blankline"></div>
+<a id="TypeInt"><span class="gname">TypeInt</span></a>:
+    <b>i</b>
+<div class="blankline"></div>
+<a id="TypeUint"><span class="gname">TypeUint</span></a>:
+    <b>k</b>
+<div class="blankline"></div>
+<a id="TypeLong"><span class="gname">TypeLong</span></a>:
+    <b>l</b>
+<div class="blankline"></div>
+<a id="TypeUlong"><span class="gname">TypeUlong</span></a>:
+    <b>m</b>
+<div class="blankline"></div>
+<a id="TypeCent"><span class="gname">TypeCent</span></a>:
+    <b>zi</b>
+<div class="blankline"></div>
+<a id="TypeUcent"><span class="gname">TypeUcent</span></a>:
+    <b>zk</b>
+<div class="blankline"></div>
+<a id="TypeFloat"><span class="gname">TypeFloat</span></a>:
+    <b>f</b>
+<div class="blankline"></div>
+<a id="TypeDouble"><span class="gname">TypeDouble</span></a>:
+    <b>d</b>
+<div class="blankline"></div>
+<a id="TypeReal"><span class="gname">TypeReal</span></a>:
+    <b>e</b>
+<div class="blankline"></div>
+<a id="TypeIfloat"><span class="gname">TypeIfloat</span></a>:
+    <b>o</b>
+<div class="blankline"></div>
+<a id="TypeIdouble"><span class="gname">TypeIdouble</span></a>:
+    <b>p</b>
+<div class="blankline"></div>
+<a id="TypeIreal"><span class="gname">TypeIreal</span></a>:
+    <b>j</b>
+<div class="blankline"></div>
+<a id="TypeCfloat"><span class="gname">TypeCfloat</span></a>:
+    <b>q</b>
+<div class="blankline"></div>
+<a id="TypeCdouble"><span class="gname">TypeCdouble</span></a>:
+    <b>r</b>
+<div class="blankline"></div>
+<a id="TypeCreal"><span class="gname">TypeCreal</span></a>:
+    <b>c</b>
+<div class="blankline"></div>
+<a id="TypeBool"><span class="gname">TypeBool</span></a>:
+    <b>b</b>
+<div class="blankline"></div>
+<a id="TypeChar"><span class="gname">TypeChar</span></a>:
+    <b>a</b>
+<div class="blankline"></div>
+<a id="TypeWchar"><span class="gname">TypeWchar</span></a>:
+    <b>u</b>
+<div class="blankline"></div>
+<a id="TypeDchar"><span class="gname">TypeDchar</span></a>:
+    <b>w</b>
+<div class="blankline"></div>
+<a id="TypeNoreturn"><span class="gname">TypeNoreturn</span></a>:
+    <b>Nn</b>
+<div class="blankline"></div>
+<a id="TypeNull"><span class="gname">TypeNull</span></a>:
+    <b>n</b>
+<div class="blankline"></div>
+<a id="TypeTuple"><span class="gname">TypeTuple</span></a>:
+    <b>B</b> <a href="#Parameters"><i>Parameters</i></a> <b>Z</b>
+</pre>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="function_calling_conventions" href="#function_calling_conventions">Function Calling Conventions</a></h2>
+<div class="blankline"></div>
+        <p>The <span class="d_inlinecode donthyphenate notranslate">extern (C)</span> and <span class="d_inlinecode donthyphenate notranslate">extern (D)</span> calling convention matches the C
+        calling convention
+        used by the supported C compiler on the host system.
+        Except that the extern (D) calling convention for Windows x86 is described here.
+        </p>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="register_conventions" href="#register_conventions">Register Conventions</a></h3>
+<div class="blankline"></div>
+        <ul><div class="blankline"></div>
+        <li>EAX, ECX, EDX are scratch registers and can be destroyed
+        by a function.</li>
+<div class="blankline"></div>
+        <li>EBX, ESI, EDI, EBP must be preserved across function calls.</li>
+<div class="blankline"></div>
+        <li>EFLAGS is assumed destroyed across function calls, except
+        for the direction flag which must be forward.</li>
+<div class="blankline"></div>
+        <li>The FPU stack must be empty when calling a function.</li>
+<div class="blankline"></div>
+        <li>The FPU control word must be preserved across function calls.</li>
+<div class="blankline"></div>
+        <li>Floating point return values are returned on the FPU stack.
+        These must be cleaned off by the caller, even if they are not used.</li>
+<div class="blankline"></div>
+        </ul>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="return_value" href="#return_value">Return Value</a></h3>
+<div class="blankline"></div>
+        <ul><div class="blankline"></div>
+        <li>The types bool, byte, ubyte, short, ushort, int, uint,
+        pointer, Object, and interfaces
+        are returned in EAX.</li>
+<div class="blankline"></div>
+        <li>long and ulong
+        are returned in EDX,EAX, where EDX gets the most significant
+        half.</li>
+<div class="blankline"></div>
+        <li>float, double, real, ifloat, idouble, ireal are returned
+        in ST0.</li>
+<div class="blankline"></div>
+        <li>cfloat, cdouble, creal are returned in ST1,ST0 where ST1
+        is the real part and ST0 is the imaginary part.</li>
+<div class="blankline"></div>
+        <li>Dynamic arrays are returned with the pointer in EDX
+        and the length in EAX.</li>
+<div class="blankline"></div>
+        <li>Associative arrays are returned in EAX.</li>
+<div class="blankline"></div>
+        <li>References are returned as pointers in EAX.</li>
+<div class="blankline"></div>
+        <li>Delegates are returned with the pointer to the function
+        in EDX and the context pointer in EAX.</li>
+<div class="blankline"></div>
+        <li>1, 2 and 4 byte structs and static arrays are returned in EAX.</li>
+<div class="blankline"></div>
+        <li>8 byte structs and static arrays are returned in EDX,EAX, where
+        EDX gets the most significant half.</li>
+<div class="blankline"></div>
+        <li>For other sized structs and static arrays,
+        the return value is stored through a hidden pointer passed as
+        an argument to the function.</li>
+<div class="blankline"></div>
+        <li>Constructors return the this pointer in EAX.</li>
+<div class="blankline"></div>
+        </ul>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="parameters" href="#parameters">Parameters</a></h3>
+<div class="blankline"></div>
+        <p>The parameters to the non-variadic function:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate">foo(a1, a2, ..., an);
+</pre>
+<div class="blankline"></div>
+        are passed as follows:
+<div class="blankline"></div>
+        <table>        <tr><td>a1</td></tr>
+        <tr><td>a2</td></tr>
+        <tr><td>...</td></tr>
+        <tr><td>an</td></tr>
+        <tr><td>hidden</td></tr>
+        <tr><td>this</td></tr>
+        </table>
+<div class="blankline"></div>
+        <p>where <i>hidden</i> is present if needed to return a struct
+        value, and <i>this</i> is present if needed as the this pointer
+        for a member function or the context pointer for a nested
+        function.</p>
+<div class="blankline"></div>
+        <p>The last parameter is passed in EAX rather than being pushed
+        on the stack if the following conditions are met:</p>
+<div class="blankline"></div>
+        <ul>        <li>It fits in EAX.</li>
+        <li>It is not a 3 byte struct.</li>
+        <li>It is not a floating point type.</li>
+        </ul>
+<div class="blankline"></div>
+        <p>Parameters are always pushed as multiples of 4 bytes,
+        rounding upwards,
+        so the stack is always aligned on 4 byte boundaries.
+        They are pushed most significant first.
+        <b>out</b> and <b>ref</b> are passed as pointers.
+        Static arrays are passed as pointers to their first element.
+        On Windows, a real is pushed as a 10 byte quantity,
+        a creal is pushed as a 20 byte quantity.
+        On Linux, a real is pushed as a 12 byte quantity,
+        a creal is pushed as two 12 byte quantities.
+        The extra two bytes of pad occupy the &lsquo;most significant&rsquo; position.
+        </p>
+<div class="blankline"></div>
+        <p>The callee cleans the stack.</p>
+<div class="blankline"></div>
+        <p>The parameters to the variadic function:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">void</span> foo(<span class="d_keyword">int</span> p1, <span class="d_keyword">int</span> p2, <span class="d_keyword">int</span>[] p3...)
+foo(a1, a2, ..., an);
+</pre>
+<div class="blankline"></div>
+        are passed as follows:
+<div class="blankline"></div>
+        <table>        <tr><td>p1</td></tr>
+        <tr><td>p2</td></tr>
+        <tr><td>a3</td></tr>
+        <tr><td>hidden</td></tr>
+        <tr><td>this</td></tr>
+        </table>
+<div class="blankline"></div>
+        <p>The variadic part is converted to a dynamic array and the
+        rest is the same as for non-variadic functions.</p>
+<div class="blankline"></div>
+        <p>The parameters to the variadic function:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">void</span> foo(<span class="d_keyword">int</span> p1, <span class="d_keyword">int</span> p2, ...)
+foo(a1, a2, a3, ..., an);
+</pre>
+<div class="blankline"></div>
+        are passed as follows:
+<div class="blankline"></div>
+        <table>        <tr><td>an</td></tr>
+        <tr><td>...</td></tr>
+        <tr><td>a3</td></tr>
+        <tr><td>a2</td></tr>
+        <tr><td>a1</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">_</span>arguments</td></tr>
+        <tr><td>hidden</td></tr>
+        <tr><td>this</td></tr>
+        </table>
+<div class="blankline"></div>
+        <p>The caller is expected to clean the stack.
+        <span class="d_inlinecode donthyphenate notranslate">_argptr</span> is not
+        passed, it is computed by the callee.</p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="exception_handling" href="#exception_handling">Exception Handling</a></h2>
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="windows_eh" href="#windows_eh">Windows 32 bit</a></h3>
+<div class="blankline"></div>
+        <p>Conforms to the Microsoft Windows Structured Exception Handling
+        conventions.
+        </p>
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="ninux_fbsd_osx_eh" href="#ninux_fbsd_osx_eh">Linux, FreeBSD and OS X</a></h3>
+<div class="blankline"></div>
+    <p>Conforms to the DWARF (debugging with attributed record
+    formats) Exception Handling conventions.
+        </p>
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="win64_eh" href="#win64_eh">Windows 64 bit</a></h3>
+<div class="blankline"></div>
+        <p>Uses static address range/handler tables.
+        It is not compatible with the MSVC x64 exception handling tables.
+        The stack is walked assuming it uses the EBP/RBP stack frame
+        convention. The EBP/RBP convention must be used for every
+        function that has an associated EH (Exception Handler) table.
+        </p>
+<div class="blankline"></div>
+        <p>For each function that has exception handlers,
+        an EH table entry is generated.
+        </p>
+<div class="blankline"></div>
+        <center><table><caption>EH Table Entry</caption>        <tr><th class="donthyphenate"><b>field</b></th><th class="donthyphenate"><b>description</b></th></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">void*</span></td><td>pointer to start of function</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">DHandlerTable*</span></td><td>pointer to corresponding EH data</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">uint</span></td><td>size in bytes of the function</td></tr>
+        </table></center>
+<div class="blankline"></div>
+        <p>The EH table entries are placed into the following special
+        segments, which are concatenated by the linker.
+        </p>
+<div class="blankline"></div>
+        <center><table><caption>EH Table Segment</caption>        <tr><th class="donthyphenate"><b>Operating System</b></th><th class="donthyphenate"><b>Segment Name</b></th></tr>
+        <tr><td>Win32</td><td><span class="d_inlinecode donthyphenate notranslate">FI</span></td></tr>
+        <tr><td>Win64</td><td><span class="d_inlinecode donthyphenate notranslate">._deh$B</span></td></tr>
+        <tr><td>Linux</td><td><span class="d_inlinecode donthyphenate notranslate">.deh_eh</span></td></tr>
+        <tr><td>FreeBSD</td><td><span class="d_inlinecode donthyphenate notranslate">.deh_eh</span></td></tr>
+        <tr><td>OS X</td><td><span class="d_inlinecode donthyphenate notranslate">__deh_eh</span>, <span class="d_inlinecode donthyphenate notranslate">__DATA</span></td></tr>
+        </table></center>
+        <br>
+<div class="blankline"></div>
+        <p>The rest of the EH data can be placed anywhere,
+        it is immutable.</p>
+<div class="blankline"></div>
+        <center><table><caption>DHandlerTable</caption>        <tr><th class="donthyphenate"><b>field</b></th><th class="donthyphenate"><b>description</b></th></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">void*</span></td><td>pointer to start of function</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">uint</span></td><td>offset of ESP/RSP from EBP/RBP</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">uint</span></td><td>offset from start of function to return code</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">uint</span></td><td>number of entries in <span class="d_inlinecode donthyphenate notranslate">DHandlerInfo[]</span></td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">DHandlerInfo[]</span></td><td>array of handler information</td></tr>
+        </table></center>
+        <br>
+<div class="blankline"></div>
+        <center><table><caption>DHandlerInfo</caption>        <tr><th class="donthyphenate"><b>field</b></th><th class="donthyphenate"><b>description</b></th></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">uint</span></td><td>offset from function address to start of guarded section</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">uint</span></td><td>offset of end of guarded section</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">int</span></td><td>previous table index</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">uint</span></td><td>if != 0 offset to DCatchInfo data from start of table</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">void*</span></td><td>if not null, pointer to finally code to execute</td></tr>
+        </table></center>
+        <br>
+<div class="blankline"></div>
+        <center><table><caption>DCatchInfo</caption>        <tr><th class="donthyphenate"><b>field</b></th><th class="donthyphenate"><b>description</b></th></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">uint</span></td><td>number of entries in <span class="d_inlinecode donthyphenate notranslate">DCatchBlock[]</span></td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">DCatchBlock[]</span></td><td>array of catch information</td></tr>
+        </table></center>
+        <br>
+<div class="blankline"></div>
+        <center><table><caption>DCatchBlock</caption>        <tr><th class="donthyphenate"><b>field</b></th><th class="donthyphenate"><b>description</b></th></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">ClassInfo</span></td><td>catch type</td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">uint</span></td><td>offset from EBP/RBP to catch variable</td></tr>
+        <tr><span class="d_inlinecode donthyphenate notranslate">void*</span>, catch handler code</tr>
+        </table></center>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="garbage_collection" href="#garbage_collection">Garbage Collection</a></h2>
+<div class="blankline"></div>
+        <p>The interface to this is found in Druntime's <a href="https://github.com/dlang/druntime/blob/master/src/core/gc/gcinterface.d">core/gc/gcinterface.d</a>.</p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="runtime_helper_functions" href="#runtime_helper_functions">Runtime Helper Functions</a></h2>
+<div class="blankline"></div>
+        <p>These are found in Druntime's <a href="https://github.com/dlang/druntime/blob/master/src/rt/">rt/</a>.</p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="module_init_and_fina" href="#module_init_and_fina">Module Initialization and Termination</a></h2>
+<div class="blankline"></div>
+        <p>All the static constructors for a module are aggregated into a
+        single function, and a pointer to that function is inserted
+        into the ctor member of the ModuleInfo instance for that
+        module.
+        </p>
+<div class="blankline"></div>
+        <p>All the static destructors for a module are aggregated into a
+        single function, and a pointer to that function is inserted
+        into the dtor member of the ModuleInfo instance for that
+        module.
+        </p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="unit_testing" href="#unit_testing">Unit Testing</a></h2>
+<div class="blankline"></div>
+        <p>All the unit tests for a module are aggregated into a
+        single function, and a pointer to that function is inserted
+        into the unitTest member of the ModuleInfo instance for that
+        module.
+        </p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="symbolic_debugging" href="#symbolic_debugging">Symbolic Debugging</a></h2>
+<div class="blankline"></div>
+        <p>D has types that are not represented in existing C or C++ debuggers.
+        These are dynamic arrays, associative arrays, and delegates.
+        Representing these types as structs causes problems because function
+        calling conventions for structs are often different than that for
+        these types, which causes C/C++ debuggers to misrepresent things.
+        For these debuggers, they are represented as a C type which
+        does match the calling conventions for the type.
+        </p>
+<div class="blankline"></div>
+        <center><table><caption>Types for C Debuggers</caption>        <tr><th class="donthyphenate"><b>D type</b></th><th class="donthyphenate"><b>C representation</b></th></tr>
+        <tr><td>dynamic array</td><td><span class="d_inlinecode donthyphenate notranslate">unsigned long long</span></td></tr>
+        <tr><td>associative array</td><td><span class="d_inlinecode donthyphenate notranslate">void*</span></td></tr>
+        <tr><td>delegate</td><td><span class="d_inlinecode donthyphenate notranslate">long long</span></td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">dchar</span></td><td><span class="d_inlinecode donthyphenate notranslate">unsigned long</span></td></tr>
+        </table></center>
+<div class="blankline"></div>
+        <p>For debuggers that can be modified to accept new types, the
+        following extensions help them fully support the types.
+        </p>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="codeview" href="#codeview">Codeview Debugger Extensions</a></h3>
+<div class="blankline"></div>
+        <p>The D <b>dchar</b> type is represented by the special
+        primitive type 0x78.</p>
+<div class="blankline"></div>
+        <p>D makes use of the Codeview OEM generic type record
+        indicated by <span class="d_inlinecode donthyphenate notranslate">LF_OEM</span> (0x0015). The format is:</p>
+<div class="blankline"></div>
+        <center><table><caption>Codeview OEM Extensions for D</caption>        <tr><td>field size</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td></tr>
+        <tr><th class="donthyphenate"><b>D Type</b></th><th class="donthyphenate"><b>Leaf Index</b></th><th class="donthyphenate"><b>OEM Identifier</b></th><th class="donthyphenate"><b>recOEM</b></th><th class="donthyphenate"><b>num indices</b></th><th class="donthyphenate"><b>        type index</b></th><th class="donthyphenate"><b>type index</b></th></tr>
+        <tr><td>dynamic array</td><td><span class="d_inlinecode donthyphenate notranslate">LF_OEM</span></td><td><i>OEM</i></td><td>1</td><td>2</td><td>@<i>index</i></td><td>@<i>element</i></td></tr>
+        <tr><td>associative array</td><td><span class="d_inlinecode donthyphenate notranslate">LF_OEM</span></td><td><i>OEM</i></td><td>2</td><td>2</td><td>@<i>key</i></td><td>@<i>element</i></td></tr>
+        <tr><td>delegate</td><td><span class="d_inlinecode donthyphenate notranslate">LF_OEM</span></td><td><i>OEM</i></td><td>3</td><td>2</td><td>@<i>this</i></td><td>@<i>function</i></td></tr></table></center>
+<div class="blankline"></div>
+        where:
+<div class="blankline"></div>
+        <center><table><caption></caption>        <tr><td><i>OEM</i></td><td>0x42</td></tr>
+        <tr><td><i>index</i></td><td>type index of array index</td></tr>
+        <tr><td><i>key</i></td><td>type index of key</td></tr>
+        <tr><td><i>element</i></td><td>type index of array element</td></tr>
+        <tr><td><i>this</i></td><td>type index of context pointer</td></tr>
+        <tr><td><i>function</i></td><td>type index of function</td></tr></table></center>
+<div class="blankline"></div>
+        <p>These extensions can be pretty-printed
+        by <a href="http://www.digitalmars.com/ctg/obj2asm.html">obj2asm</a>. The <a href="http://ddbg.mainia.de/releases.html">Ddbg</a> debugger
+        supports them.</p>
+
+<div style="float: left"><i class="fa fa-angle-left" aria-hidden="true"></i> <a href="../spec/memory-safe-d.html">Memory Safety</a></div>
+<div style="float: right"><a href="../spec/simd.html">Vector Extensions</a> <i class="fa fa-angle-right" aria-hidden="true"></i></div>
+<div style="clear:both"></div>
+
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on (no date time)</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<script type="text/javascript" src="../js/listanchors.js"></script>
+<script type="text/javascript">jQuery(document).ready(addVersionSelector);</script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

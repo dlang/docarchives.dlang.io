@@ -1,0 +1,781 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>concurrency_shared - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='concurrency_shared' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5Bconcurrency_shared%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/d.en/concurrency_shared.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>concurrency_shared</h1>
+        
+        
+
+
+
+<p>The previous chapter was about threads sharing information through message passing. As it has been mentioned in that chapter, message passing is a safe method of concurrency.
+</p>
+
+<p>Another method involves more than one thread reading from and writing to the same data. For example, the owner thread can start the worker with the address of a <code class="d_inline">bool</code> variable and the worker can determine whether to terminate or not by reading the current value of that variable. Another example would be where the owner starts multiple workers with the address of the same variable so that the variable gets modified by more than one worker.
+</p>
+
+<p>One of the reasons why data sharing is not safe is <i>race conditions</i>. A race condition occurs when more than one thread accesses the same mutable data in an uncontrolled order. Since the operating system pauses and starts individual threads in unspecified ways, the behavior of a program that has race conditions is unpredictable.
+</p>
+
+<p>The examples in this chapter may look simplistic. However, the issues that they convey appear in real programs at greater scales. Also, although these examples use the <code class="d_inline">std.concurrency</code> module, the concepts of this chapter apply to the <code class="d_inline">core.thread</code> module as well.
+</p>
+
+<h5 class="subsection">Sharing is not automatic</h5>
+
+<p>Unlike most other programming languages, data is not automatically shared in D; data is thread-local by default. Although module-level variables may give the impression of being accessible by all threads, each thread actually gets its own copy:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.concurrency;
+<span class="d_keyword">import</span> core.thread;
+
+<span class="d_keyword">int</span> <span class="hilite">variable</span>;
+
+<span class="d_keyword">void</span> printInfo(string message) {
+    writefln(<span class="d_string">"%s: %s (@%s)"</span>, message, variable, &amp;variable);
+}
+
+<span class="d_keyword">void</span> worker() {
+    variable = <span class="hilite">42</span>;
+    printInfo(<span class="d_string">"Before the worker is terminated"</span>);
+}
+
+<span class="d_keyword">void</span> main() {
+    spawn(&amp;worker);
+    thread_joinAll();
+    printInfo(<span class="d_string">"After the worker is terminated"</span>);
+}
+</pre>
+
+<p><code class="d_inline">variable</code> that is modified inside <code class="d_inline">worker()</code> is not the same <code class="d_inline">variable</code> that is seen by <code class="d_inline">main()</code>. This fact can be observed by printing both the values and the addresses of the variables:
+</p>
+
+<pre class="shell">Before the worker is terminated: 42 (@7F26C6711670)
+After the worker is terminated: 0 (@7F26C68127D0)
+</pre>
+
+<p>Since each thread gets its own copy of data, <code class="d_inline">spawn()</code> does not allow passing references to thread-local variables. For example, the following program that tries to pass the address of a <code class="d_inline">bool</code> variable to another thread cannot be compiled:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.concurrency;
+
+<span class="d_keyword">void</span> worker(<span class="hilite"><span class="d_keyword">bool</span> * isDone</span>) {
+    <span class="d_keyword">while</span> (!(*isDone)) {
+        <span class="d_comment">// ...
+</span>    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">bool</span> isDone = <span class="d_keyword">false</span>;
+    spawn(&amp;worker, <span class="hilite">&amp;isDone</span>);      <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+
+    <span class="d_comment">// ...
+</span>
+    <span class="d_comment">// Hoping to signal the worker to terminate:
+</span>    isDone = <span class="d_keyword">true</span>;
+
+    <span class="d_comment">// ...
+</span>}
+</pre>
+
+<p>A <code class="d_inline">static assert</code> inside the <code class="d_inline">std.concurrency</code> module prevents accessing <i>mutable</i> data from another thread:
+</p>
+
+<pre class="shell">src/phobos/std/concurrency.d(329): Error: static assert
+"Aliases to <span class="hilite">mutable thread-local data</span> not allowed."
+</pre>
+
+<p>The address of the mutable variable <code class="d_inline">isDone</code> cannot be passed between threads.
+</p>
+
+<p><a id="ix_concurrency_shared.__gshared" content="__gshared"></a> An exception to this rule is a variable that is defined as <code class="d_inline">__gshared</code>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">__gshared</span> <span class="d_keyword">int</span> globallyShared;
+</pre>
+
+<p>There is only one copy of such a variable in the entire program and all threads can share that variable. <code class="d_inline">__gshared</code> is necessary when interacting with libraries of languages like C and C++ where data sharing is automatic by default.
+</p>
+
+<h5 class="subsection"><a id="ix_concurrency_shared.shared" content="shared"></a> <code class="d_inline">shared</code> to share mutable data between threads</h5>
+
+<p>Mutable variables that need to be shared must be defined with the <code class="d_inline">shared</code> keyword:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.concurrency;
+
+<span class="d_keyword">void</span> worker(<span class="hilite"><span class="d_keyword">shared</span>(<span class="d_keyword">bool</span>)</span> * isDone) {
+    <span class="d_keyword">while</span> (*isDone) {
+        <span class="d_comment">// ...
+</span>    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="hilite"><span class="d_keyword">shared</span>(<span class="d_keyword">bool</span>)</span> isDone = <span class="d_keyword">false</span>;
+    spawn(&amp;worker, &amp;isDone);
+
+    <span class="d_comment">// ...
+</span>
+    <span class="d_comment">// Signalling the worker to terminate:
+</span>    isDone = <span class="d_keyword">true</span>;
+
+    <span class="d_comment">// ...
+</span>}
+</pre>
+
+<p><i><b>Note:</b> Prefer message-passing to signal a thread.</i>
+</p>
+
+<p><a id="ix_concurrency_shared.immutable, concurrency" content="immutable, concurrency"></a> On the other hand, since <code class="d_inline">immutable</code> variables cannot be modified, there is no problem with sharing them directly. For that reason, <code class="d_inline">immutable</code> implies <code class="d_inline">shared</code>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.concurrency;
+<span class="d_keyword">import</span> core.thread;
+
+<span class="d_keyword">void</span> worker(<span class="hilite"><span class="d_keyword">immutable</span>(<span class="d_keyword">int</span>)</span> * data) {
+    writeln(<span class="d_string">"data: "</span>, *data);
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="hilite"><span class="d_keyword">immutable</span>(<span class="d_keyword">int</span>)</span> i = 42;
+    spawn(&amp;worker, &amp;i);         <span class="d_comment">// ← compiles
+</span>
+    thread_joinAll();
+}
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">data: 42
+</pre>
+
+<p>Note that since the lifetime of <code class="d_inline">i</code> is defined by the scope of <code class="d_inline">main()</code>, it is important that <code class="d_inline">main()</code> does not terminate before the worker thread. The call to <code class="d_inline">core.thread.thread_joinAll</code> above is to make a thread wait for all of its child threads to terminate.
+</p>
+
+<h5 class="subsection">A race condition example</h5>
+
+<p>The correctness of the program requires extra attention when mutable data is shared between threads.
+</p>
+
+<p>To see an example of a race condition let's consider multiple threads sharing the same mutable variable. The threads in the following program receive the addresses as two variables and swap their values a large number of times:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.concurrency;
+<span class="d_keyword">import</span> core.thread;
+
+<span class="d_keyword">void</span> swapper(<span class="hilite"><span class="d_keyword">shared</span>(<span class="d_keyword">int</span>)</span> * first, <span class="hilite"><span class="d_keyword">shared</span>(<span class="d_keyword">int</span>)</span> * second) {
+    <span class="d_keyword">foreach</span> (i; 0 .. 10_000) {
+        <span class="d_keyword">int</span> temp = *second;
+        *second = *first;
+        *first = temp;
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="hilite"><span class="d_keyword">shared</span>(<span class="d_keyword">int</span>)</span> i = 1;
+    <span class="hilite"><span class="d_keyword">shared</span>(<span class="d_keyword">int</span>)</span> j = 2;
+
+    writefln(<span class="d_string">"before: %s and %s"</span>, i, j);
+
+    <span class="d_keyword">foreach</span> (id; 0 .. 10) {
+        spawn(&amp;swapper, &amp;i, &amp;j);
+    }
+
+    <span class="d_comment">// Wait for all threads to finish their tasks
+</span>    thread_joinAll();
+
+    writefln(<span class="d_string">"after : %s and %s"</span>, i, j);
+}
+</pre>
+
+<p>Although the program above gets compiled successfully, in most cases it would work incorrectly. Observe that it starts ten threads that all access the same two variables <code class="d_inline">i</code> and <code class="d_inline">j</code>. As a result of the <i>race conditions</i> that they are in, they inadvertently spoil the operations of other threads.
+</p>
+
+<p>Also observe that total number of swaps is 10 times 10 thousand. Since that amount is an even number, it is natural to expect that the variables end up having values 1 and 2, their initial values:
+</p>
+
+<pre class="shell">before: 1 and 2
+after : 1 and 2    <span class="shell_note">← expected result</span>
+</pre>
+
+<p>Although it is possible that the program can indeed produce that result, most of the time the actual outcome would be one of the following:
+</p>
+
+<pre class="shell">before: 1 and 2
+after : 1 and 1    <span class="shell_note_wrong">← incorrect result</span>
+</pre>
+
+<pre class="shell">before: 1 and 2
+after : 2 and 2    <span class="shell_note_wrong">← incorrect result</span>
+</pre>
+
+<p>It is possible but highly unlikely that the result may even end up being "2 and 1" as well.
+</p>
+
+<p>The reason why the program works incorrectly can be explained by the following scenario between just two threads that are in a race condition. As the operating system pauses and restarts the threads at indeterminate times, the following order of execution of the operations of the two threads is likely as well.
+</p>
+
+<p>Let's consider the state where <code class="d_inline">i</code> is 1 and <code class="d_inline">j</code> is 2. Although the two threads execute the same <code class="d_inline">swapper()</code> function, remember that the local variable <code class="d_inline">temp</code> is separate for each thread and it is independent from the other <code class="d_inline">temp</code> variables of other threads. To identify those separate variables, they are renamed as <code class="d_inline">tempA</code> and <code class="d_inline">tempB</code> below.
+</p>
+
+<p>The chart below demonstrates how the 3-line code inside the <code class="d_inline">for</code> loop may be executed by each thread over time, from top to bottom, operation 1 being the first operation and operation 6 being the last operation. Whether <code class="d_inline">i</code> or <code class="d_inline">j</code> is modified at each step is indicated by highlighting that variable:
+</p>
+
+<pre class="mono"><b>Operation        Thread A                             Thread B</b>
+────────────────────────────────────────────────────────────────────────────
+
+  1:   int temp = *second; (tempA==2)
+  2:   *second = *first;   (i==1, <span class="hilite">j==1</span>)
+
+          <i>(Assume that A is paused and B is started at this point)</i>
+
+  3:                                        int temp = *second; (tempB==1)
+  4:                                        *second = *first;   (i==1, <span class="hilite">j==1</span>)
+
+          <i>(Assume that B is paused and A is restarted at this point)</i>
+
+  5:   *first = temp;    (<span class="hilite">i==2</span>, j==1)
+
+          <i>(Assume that A is paused and B is restarted at this point)</i>
+
+  6:                                        *first = temp;    (<span class="hilite">i==1</span>, j==1)
+</pre>
+
+<p>As can be seen, at the end of the previous scenario both <code class="d_inline">i</code> and <code class="d_inline">j</code> end up having the value 1. It is not possible that they can ever have any other value after that point.
+</p>
+
+<p>The scenario above is just one example that is sufficient to explain the incorrect results of the program. Obviously, the race conditions would be much more complicated in the case of the ten threads of this example.
+</p>
+
+<h5 class="subsection"><a id="ix_concurrency_shared.synchronized" content="synchronized"></a> <code class="d_inline">synchronized</code> to avoid race conditions</h5>
+
+<p>The incorrect program behavior above is due to more than one thread accessing the same mutable data (and at least one of them modifying it). One way of avoiding these race conditions is to mark the common code with the <code class="d_inline">synchronized</code> keyword. The program would work correctly with the following change:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">foreach</span> (i; 0 .. 10_000) {
+        <span class="hilite"><span class="d_keyword">synchronized</span> {</span>
+            <span class="d_keyword">int</span> temp = *b;
+            *b = *a;
+            *a = temp;
+        <span class="hilite">}</span>
+    }
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">before: 1 and 2
+after : 1 and 2      <span class="shell_note">← correct result</span>
+</pre>
+
+<p><a id="ix_concurrency_shared.lock" content="lock"></a> The effect of <code class="d_inline">synchronized</code> is to create a lock behind the scenes and to allow only one thread hold that lock at a given time. Only the thread that holds the lock can be executed and the others wait until the lock becomes available again when the executing thread completes its <code class="d_inline">synchronized</code> block. Since one thread executes the <i>synchronized</i> code at a time, each thread would now swap the values safely before another thread does the same. The state of the variables <code class="d_inline">i</code> and <code class="d_inline">j</code> would always be either "1 and 2" or "2 and 1" at the end of processing the synchronized block.
+</p>
+
+<p><i><b>Note:</b> It is a relatively expensive operation for a thread to wait for a lock, which may slow down the execution of the program noticeably. Fortunately, in some cases program correctness can be ensured without the use of a <code class="d_inline">synchronized</code> block, by taking advantage of <i>atomic operations</i> that will be explained below.</i>
+</p>
+
+<p>When it is needed to synchronize more than one block of code, it is possible to specify one or more locks with the <code class="d_inline">synchronized</code> keyword.
+</p>
+
+<p>Let's see an example of this in the following program that has two separate code blocks that access the same shared variable. The program calls two functions with the address of the same variable, one function incrementing and the other function decrementing it equal number of times:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> incrementer(<span class="d_keyword">shared</span>(<span class="d_keyword">int</span>) * value) {
+    <span class="d_keyword">foreach</span> (i; 0 .. count) {
+        *value = *value + 1;
+    }
+}
+
+<span class="d_keyword">void</span> decrementer(<span class="d_keyword">shared</span>(<span class="d_keyword">int</span>) * value) {
+    <span class="d_keyword">foreach</span> (i; 0 .. count) {
+        *value = *value - 1;
+    }
+}
+</pre>
+
+<p><i><b>Note:</b> If the shorter equivalents of the expression above are used (i.e. <code class="d_inline">++(*value)</code> and <code class="d_inline">&#8209;&#8209;(*value)</code>), then the compiler warns that such read-modify-write operations on <code class="d_inline">shared</code> variables are deprecated.</i>
+</p>
+
+<p>Unfortunately, marking those blocks individually with <code class="d_inline">synchronized</code> is not sufficient, because the anonymous locks of the two blocks would be independent. So, the two code blocks would still be accessing the same variable concurrently:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.concurrency;
+<span class="d_keyword">import</span> core.thread;
+
+<span class="d_keyword">enum</span> count = 1000;
+
+<span class="d_keyword">void</span> incrementer(<span class="d_keyword">shared</span>(<span class="d_keyword">int</span>) * value) {
+    <span class="d_keyword">foreach</span> (i; 0 .. count) {
+        <span class="hilite"><span class="d_keyword">synchronized</span></span> { <span class="d_comment">// ← This lock is different from the one below.
+</span>            *value = *value + 1;
+        }
+    }
+}
+
+<span class="d_keyword">void</span> decrementer(<span class="d_keyword">shared</span>(<span class="d_keyword">int</span>) * value) {
+    <span class="d_keyword">foreach</span> (i; 0 .. count) {
+        <span class="hilite"><span class="d_keyword">synchronized</span></span> { <span class="d_comment">// ← This lock is different from the one above.
+</span>            *value = *value - 1;
+        }
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">shared</span>(<span class="d_keyword">int</span>) number = 0;
+
+    <span class="d_keyword">foreach</span> (i; 0 .. 100) {
+        spawn(&amp;incrementer, &amp;number);
+        spawn(&amp;decrementer, &amp;number);
+    }
+
+    thread_joinAll();
+    writeln(<span class="d_string">"Final value: "</span>, number);
+}
+</pre>
+
+<p>Since there are equal number of threads that increment and decrement the same variable equal number of times, one would expect the final value of <code class="d_inline">number</code> to be zero. However, that is almost never the case:
+</p>
+
+<pre class="shell">Final value: -672    <span class="shell_note_wrong">← not zero</span>
+</pre>
+
+<p>For more than one block to use the same lock or locks, the lock objects must be specified within the <code class="d_inline">synchronized</code> parentheses:
+</p>
+
+<p><span class="hilite"><i><b>Note:</b> This feature is not supported by dmd 2.088.</i></span>
+</p>
+
+<pre class="d_code">    <span class="d_comment">// Note: dmd 2.088 does not support <span class="d_keyword">this</span> feature.</span>
+    <span class="d_keyword">synchronized</span> (<i>lock_object</i>, <i>another_lock_object</i>, ...)
+</pre>
+
+<p>There is no need for a special lock type in D because any class object can be used as a <code class="d_inline">synchronized</code> lock. The following program defines an empty class named <code class="d_inline">Lock</code> to use its objects as locks:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.concurrency;
+<span class="d_keyword">import</span> core.thread;
+
+<span class="d_keyword">enum</span> count = 1000;
+
+<span class="hilite"><span class="d_keyword">class</span> Lock {
+}</span>
+
+<span class="d_keyword">void</span> incrementer(<span class="d_keyword">shared</span>(<span class="d_keyword">int</span>) * value, <span class="hilite"><span class="d_keyword">shared</span>(Lock) lock</span>) {
+    <span class="d_keyword">foreach</span> (i; 0 .. count) {
+        <span class="d_keyword">synchronized</span> <span class="hilite">(lock)</span> {
+            *value = *value + 1;
+        }
+    }
+}
+
+<span class="d_keyword">void</span> decrementer(<span class="d_keyword">shared</span>(<span class="d_keyword">int</span>) * value, <span class="hilite"><span class="d_keyword">shared</span>(Lock) lock</span>) {
+    <span class="d_keyword">foreach</span> (i; 0 .. count) {
+        <span class="d_keyword">synchronized</span> <span class="hilite">(lock)</span> {
+            *value = *value - 1;
+        }
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="hilite"><span class="d_keyword">shared</span>(Lock) lock = <span class="d_keyword">new</span> <span class="d_keyword">shared</span>(Lock)()</span>;
+    <span class="d_keyword">shared</span>(<span class="d_keyword">int</span>) number = 0;
+
+    <span class="d_keyword">foreach</span> (i; 0 .. 100) {
+        spawn(&amp;incrementer, &amp;number, <span class="hilite">lock</span>);
+        spawn(&amp;decrementer, &amp;number, <span class="hilite">lock</span>);
+    }
+
+    thread_joinAll();
+    writeln(<span class="d_string">"Final value: "</span>, number);
+}
+</pre>
+
+<p>Because this time both <code class="d_inline">synchronized</code> blocks are connected by the same lock, only one of them is executed at a given time and the result is zero as expected:
+</p>
+
+<pre class="shell">Final value: 0       <span class="shell_note">← correct result</span>
+</pre>
+
+<p>Class types can be defined as <code class="d_inline">synchronized</code> as well. This means that all of the non-static member functions of that type are synchronized on a given object of that class:
+</p>
+
+<pre class="d_code"><span class="hilite"><span class="d_keyword">synchronized</span></span> <span class="d_keyword">class</span> Class {
+    <span class="d_keyword">void</span> foo() {
+        <span class="d_comment">// ...
+</span>    }
+
+    <span class="d_keyword">void</span> bar() {
+        <span class="d_comment">// ...
+</span>    }
+}
+</pre>
+
+<p>The following is the equivalent of the class definition above:
+</p>
+
+<pre class="d_code"><span class="d_keyword">class</span> Class {
+    <span class="d_keyword">void</span> foo() {
+        <span class="d_keyword">synchronized</span> (<span class="d_keyword">this</span>) {
+            <span class="d_comment">// ...
+</span>        }
+    }
+
+    <span class="d_keyword">void</span> bar() {
+        <span class="d_keyword">synchronized</span> (<span class="d_keyword">this</span>) {
+            <span class="d_comment">// ...
+</span>        }
+    }
+}
+</pre>
+
+<p>When blocks of code need to be synchronized on more than one object, those objects must be specified together. Otherwise, it is possible that more than one thread may have locked objects that other threads are waiting for, in which case the program may be <i>deadlocked</i>.
+</p>
+
+<p>A well known example of this problem is a function that tries to transfer money from one bank account to another. For this function to work correctly in a multi-threaded environment, both of the accounts must first be locked. However, the following attempt would be incorrect:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> transferMoney(<span class="d_keyword">shared</span> BankAccount from,
+                   <span class="d_keyword">shared</span> BankAccount to) {
+    <span class="d_keyword">synchronized</span> (from) {           <span class="d_comment">// ← <span class="code_note_wrong">INCORRECT</span></span>
+        <span class="d_keyword">synchronized</span> (to) {
+            <span class="d_comment">// ...
+</span>        }
+    }
+}
+</pre>
+
+<p><a id="ix_concurrency_shared.deadlock" content="deadlock"></a> The error can be explained by an example where one thread attempting to transfer money from account A to account to B while another thread attempting to transfer money in the reverse direction. It is possible that each thread may have just locked its respective <code class="d_inline">from</code> object, hoping next to lock its <code class="d_inline">to</code> object. Since the <code class="d_inline">from</code> objects correspond to A and B in the two threads respectively, the objects would be in locked state in separate threads, making it impossible for the other thread to ever lock its <code class="d_inline">to</code> object. This situation is called a <i>deadlock</i>.
+</p>
+
+<p>The solution to this problem is to define an ordering relation between the objects and to lock them in that order, which is handled automatically by the <code class="d_inline">synchronized</code> statement. In D, it is sufficient to specify the objects in the same <code class="d_inline">synchronized</code> statement for the code to avoid such deadlocks:
+</p>
+
+<p><span class="hilite"><i><b>Note:</b> This feature is not supported by dmd 2.088.</i></span>
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> transferMoney(<span class="d_keyword">shared</span> BankAccount from,
+                   <span class="d_keyword">shared</span> BankAccount to) {
+    <span class="d_comment">// Note: dmd 2.088 does not support <span class="d_keyword">this</span> feature.</span>
+    <span class="d_keyword">synchronized</span> (from, to) {       <span class="d_comment">// ← correct</span>
+        <span class="d_comment">// ...
+</span>    }
+}
+</pre>
+
+<h5 class="subsection"><a id="ix_concurrency_shared.shared static this" content="shared static this"></a> <a id="ix_concurrency_shared.static this, shared" content="static this, shared"></a> <a id="ix_concurrency_shared.shared static ~this" content="shared static ~this"></a> <a id="ix_concurrency_shared.static ~this, shared" content="static ~this, shared"></a> <a id="ix_concurrency_shared.this, shared static" content="this, shared static"></a> <a id="ix_concurrency_shared.~this, shared static" content="~this, shared static"></a> <a id="ix_concurrency_shared.module constructor, shared" content="module constructor, shared"></a> <code class="d_inline">shared static this()</code> for single initialization and <code class="d_inline">shared static ~this()</code> for single finalization</h5>
+
+<p>We have already seen that <code class="d_inline">static this()</code> can be used for initializing modules, including their variables. Because data is thread-local by default, <code class="d_inline">static this()</code> must be executed by every thread so that module-level variables are initialized for all threads:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.concurrency;
+<span class="d_keyword">import</span> core.thread;
+
+<span class="d_keyword">static</span> <span class="d_keyword">this</span>() {
+    writeln(<span class="d_string">"executing static this()"</span>);
+}
+
+<span class="d_keyword">void</span> worker() {
+}
+
+<span class="d_keyword">void</span> main() {
+    spawn(&amp;worker);
+
+    thread_joinAll();
+}
+</pre>
+
+<p>The <code class="d_inline">static this()</code> block above would be executed once for the main thread and once for the worker thread:
+</p>
+
+<pre class="shell">executing static this()
+executing static this()
+</pre>
+
+<p>This would cause problems for <code class="d_inline">shared</code> module variables because initializing a variable more than once would be wrong especially in concurrency due to race conditions. (That applies to <code class="d_inline">immutable</code> variables as well because they are implicitly <code class="d_inline">shared</code>.) The solution is to use <code class="d_inline">shared static this()</code> blocks, which are executed only once per program:
+</p>
+
+<pre class="d_code"><span class="d_keyword">int</span> a;              <span class="d_comment">// thread-local
+</span><span class="d_keyword">immutable</span> <span class="d_keyword">int</span> b;    <span class="d_comment">// shared by all threads
+</span>
+<span class="d_keyword">static</span> <span class="d_keyword">this</span>() {
+    writeln(<span class="d_string">"Initializing per-thread variable at "</span>, &amp;a);
+    a = 42;
+}
+
+<span class="hilite"><span class="d_keyword">shared</span></span> <span class="d_keyword">static</span> <span class="d_keyword">this</span>() {
+    writeln(<span class="d_string">"Initializing per-program variable at "</span>, &amp;b);
+    b = 43;
+}
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">Initializing per-program variable at 6B0120    <span class="shell_note">← only once</span>
+Initializing per-thread variable at 7FBDB36557D0
+Initializing per-thread variable at 7FBDB3554670
+</pre>
+
+<p>Similarly, <code class="d_inline">shared static ~this()</code> is for final operations that must be executed only once per program.
+</p>
+
+<h5 class="subsection"><a id="ix_concurrency_shared.atomic operation" content="atomic operation"></a> Atomic operations</h5>
+
+<p>Another way of ensuring that only one thread mutates a certain variable is by using atomic operations, functionality of which are provided by the microprocessor, the compiler, or the operating system.
+</p>
+
+<p>The atomic operations of D are in the <code class="d_inline">core.atomic</code> module. We will see only two of its functions in this chapter:
+</p>
+
+<h6><a id="ix_concurrency_shared.atomicOp, core.atomic" content="atomicOp, core.atomic"></a> <code class="d_inline">atomicOp</code></h6>
+
+<p>This function applies its template parameter to its two function parameters. The template parameter must be a <i>binary operator</i> like <code class="d_inline"><span class="d_string">"+"</span></code>, <code class="d_inline"><span class="d_string">"+="</span></code>, etc.
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> core.atomic;
+
+<span class="d_comment">// ...
+</span>
+        atomicOp!<span class="d_string">"+="</span>(*value, 1);    <span class="d_comment">// atomic
+</span></pre>
+
+<p>The line above is the equivalent of the following line, with the difference that the <code class="d_inline">+=</code> operation would be executed without interruptions by other threads (i.e. it would be executed <i>atomically</i>):
+</p>
+
+<pre class="d_code">        *value += 1;                 <span class="d_comment">// NOT atomic
+</span></pre>
+
+<p>Consequently, when it is only a binary operation that needs to be synchronized, then there is no need for a <code class="d_inline">synchronized</code> block, which is known to be slow because of needing to acquire a lock. The following equivalents of the <code class="d_inline">incrementer()</code> and <code class="d_inline">decrementer()</code> functions that use <code class="d_inline">atomicOp</code> are correct as well. Note that there is no need for the <code class="d_inline">Lock</code> class anymore either:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> core.atomic;
+
+<span class="d_comment">//...
+</span>
+<span class="d_keyword">void</span> incrementer(<span class="d_keyword">shared</span>(<span class="d_keyword">int</span>) * value) {
+    <span class="d_keyword">foreach</span> (i; 0 .. count) {
+        <span class="hilite">atomicOp!<span class="d_string">"+="</span>(*value, 1)</span>;
+    }
+}
+
+<span class="d_keyword">void</span> decrementer(<span class="d_keyword">shared</span>(<span class="d_keyword">int</span>) * value) {
+    <span class="d_keyword">foreach</span> (i; 0 .. count) {
+        <span class="hilite">atomicOp!<span class="d_string">"-="</span>(*value, 1)</span>;
+    }
+}
+</pre>
+
+<p><code class="d_inline">atomicOp</code> can be used with other binary operators as well.
+</p>
+
+<h6><a id="ix_concurrency_shared.cas, core.atomic" content="cas, core.atomic"></a> <code class="d_inline">cas</code></h6>
+
+<p>The name of this function is the abbreviation of "compare and swap". Its behavior can be described as <i>mutate the variable if it still has its currently known value</i>. It is used by specifying the current and the desired values of the variable at the same time:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">bool</span> is_mutated = cas(address_of_variable, currentValue, newValue);
+</pre>
+
+<p>The fact that the value of the variable still equals <code class="d_inline">currentValue</code> when <code class="d_inline">cas()</code> is operating is an indication that no other thread has mutated the variable since it has last been read by this thread. If so, <code class="d_inline">cas()</code> assigns <code class="d_inline">newValue</code> to the variable and returns <code class="d_inline">true</code>. On the other hand, if the variable's value is different from <code class="d_inline">currentValue</code> then <code class="d_inline">cas()</code> does not mutate the variable and returns <code class="d_inline">false</code>.
+</p>
+
+<p>The following functions re-read the current value and call <code class="d_inline">cas()</code> until the operation succeeds. Again, these calls can be described as <i>if the value of the variable equals this old value, replace with this new value</i>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> incrementer(<span class="d_keyword">shared</span>(<span class="d_keyword">int</span>) * value) {
+    <span class="d_keyword">foreach</span> (i; 0 .. count) {
+        <span class="d_keyword">int</span> currentValue;
+
+        <span class="d_keyword">do</span> {
+            currentValue = *value;
+        } <span class="d_keyword">while</span> (!<span class="hilite">cas(value, currentValue, currentValue + 1)</span>);
+    }
+}
+
+<span class="d_keyword">void</span> decrementer(<span class="d_keyword">shared</span>(<span class="d_keyword">int</span>) * value) {
+    <span class="d_keyword">foreach</span> (i; 0 .. count) {
+        <span class="d_keyword">int</span> currentValue;
+
+        <span class="d_keyword">do</span> {
+            currentValue = *value;
+        } <span class="d_keyword">while</span> (!<span class="hilite">cas(value, currentValue, currentValue - 1)</span>);
+    }
+}
+</pre>
+
+<p>The functions above work correctly without the need for <code class="d_inline">synchronized</code> blocks.
+</p>
+
+<p>In most cases, the features of the <code class="d_inline">core.atomic</code> module can be several times faster than using <code class="d_inline">synchronized</code> blocks. I recommend that you consider this module as long as the operations that need synchronization are less than a block of code.
+</p>
+
+<p>Atomic operations enable <i>lock-free data structures</i> as well, which are beyond the scope of this book.
+</p>
+
+<p>You may also want to investigate the <code class="d_inline">core.sync</code> package, which contains classic concurrency primitives in the following modules:
+</p>
+
+<ul>
+<li><code class="d_inline">core.sync.barrier</code></li>
+<li><code class="d_inline">core.sync.condition</code></li>
+<li><code class="d_inline">core.sync.config</code></li>
+<li><code class="d_inline">core.sync.exception</code></li>
+<li><code class="d_inline">core.sync.mutex</code></li>
+<li><code class="d_inline">core.sync.rwmutex</code></li>
+<li><code class="d_inline">core.sync.semaphore</code></li>
+
+</ul>
+
+<h5 class="subsection">Summary</h5>
+
+<ul>
+<li>When threads do not depend on other threads, prefer <i>parallelism</i>. Consider <i>concurrency</i> only when threads depend on operations of other threads.</li>
+
+<li>Even then, prefer <i>message passing concurrency</i>, which has been the topic of the previous chapter.</li>
+
+<li>Only <code class="d_inline">shared</code> data can be shared; <code class="d_inline">immutable</code> is implicitly <code class="d_inline">shared</code>.</li>
+
+<li><code class="d_inline">__gshared</code> provides data sharing as in C and C++ languages.</li>
+
+<li><code class="d_inline">synchronized</code> is for preventing other threads from intervening when a thread is executing a certain piece of code.</li>
+
+<li>A class can be defined as <code class="d_inline">synchronized</code> so that only one member function can be executed on a given object at a given time. In other words, a thread can execute a member function only if no other thread is executing a member function on the same object.</li>
+
+<li><code class="d_inline">static this()</code> is executed once for each thread; <code class="d_inline">shared static this()</code> is executed once for the entire program.</li>
+
+<li>The <code class="d_inline">core.atomic</code> module enables safe data sharing that can be multiple times faster than <code class="d_inline">synchronized</code>.</li>
+
+<li>The <code class="d_inline">core.sync</code> package includes many other concurrency primitives.</li>
+
+</ul>
+
+macros:
+        TITLE=Data Sharing Concurrency
+
+        DESCRIPTION=Executing multiple threads that share data.
+
+        KEYWORDS=d programming language tutorial book concurrency thread data sharing
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on Mon Jan 29 20:32:07 2024
+</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>
