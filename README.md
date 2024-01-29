@@ -61,16 +61,8 @@ Building documentation assumes the following is set-up:
  - A DMD compiler [installed and activated](https://dlang.org/download.html).
  - [Kindlegen](https://dump.cy.md/21aef3c8846946203e178c83a37beba1/kindlegen_linux_2.6_i386_v2_9.tar.gz) extracted and installed.
 
-For example, as a `Dockerfile`
-```Dockerfile
-FROM ubuntu:20.04
-RUN apt-get -qq update && \
-    DEBIAN_FRONTEND=noninteractive \
-    apt-get install -yqq curl gawk gcc g++ git gnupg make pkg-config libssl-dev tar unzip xz-utils zlib1g-dev
-RUN curl -fsS https://dlang.org/install.sh | bash -s dmd
-RUN curl https://dump.cy.md/21aef3c8846946203e178c83a37beba1/kindlegen_linux_2.6_i386_v2_9.tar.gz -o- | \
-    tar -C /usr/local/bin -zx kindlegen
-
-# docker build -t docarchives.dlang.io .
-# docker run -v $PWD:/build -it docarchives.dlang.io bash -c 'source /root/dlang/*/activate; cd /build; ./builder.d'
+The provided [Dockerfile](contrib/Dockerfile) can be used as build environment in the following way:
+```bash
+# docker build -t docarchives.dlang.io contrib
+# docker run -v $PWD:/build -it docarchives.dlang.io bash -c 'source /root/dlang/*/activate; cd /build; ./builder.d v2.098.0'
 ```
