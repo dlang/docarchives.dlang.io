@@ -55,7 +55,7 @@ void main(string[] args)
         auto web = dlangOrgFolder.buildPath("web");
 
         // cleanup
-        if (diggerWorkRepo.exists) 
+        if (diggerWorkRepo.exists)
         {
             auto removeWorkTree = (string p) => p.exists && p.remove;
             auto diggerModulePath = diggerWorkRepo.buildPath(".git", "modules");
@@ -78,16 +78,22 @@ void main(string[] args)
         auto env = [
             "NODATETIME": "nodatetime.ddoc"
         ];
-        auto folders = " DMD_DIR=" ~ diggerWorkRepo.buildPath("dmd") ~
-            " DRUNTIME_DIR=" ~ diggerWorkRepo.buildPath("druntime") ~
-            " PHOBOS_DIR=" ~ diggerWorkRepo.buildPath("phobos") ~
-            " INSTALLER_DIR=" ~ diggerWorkRepo.buildPath("installer") ~
-            " TOOLS_DIR=" ~ diggerWorkRepo.buildPath("tools") ~
-            " LATEST=" ~ tag[1..$];
+        auto folders = " DMD_DIR=" ~ diggerWorkRepo.buildPath("dmd");
+        if (tag.split(".")[1].to!int >= 101)
+            folders ~= " DRUNTIME_DIR=" ~ diggerWorkRepo.buildPath("dmd/druntime");
+        else
+            folders ~= " DRUNTIME_DIR=" ~ diggerWorkRepo.buildPath("druntime");
+        folders ~= " PHOBOS_DIR=" ~ diggerWorkRepo.buildPath("phobos");
+        folders ~= " INSTALLER_DIR=" ~ diggerWorkRepo.buildPath("installer");
+        folders ~= " TOOLS_DIR=" ~ diggerWorkRepo.buildPath("tools");
+        folders ~= " LATEST=" ~ tag[1..$];
 
         auto nextTag = tagVersion(tag.split(".")[1].to!int + 1);
         if (execute("git -C " ~ diggerWorkRepo ~ " show-ref --tags " ~ nextTag) == 0)
             folders ~= " CHANGELOG_VERSION_MASTER=" ~ tag ~ ".." ~ nextTag;
+
+        auto patch = (string c) => c.exists && executeOrFail("patch -p1 -i " ~ c ~ " -d " ~ diggerWorkRepo);
+        patch(cwd.buildPath("patches", tag ~ ".diff"));
 
         auto make = (string c) => executeOrFail("make -f posix.mak " ~ c ~ " -C " ~ dlangOrgFolder ~ folders, env);
         make("all");

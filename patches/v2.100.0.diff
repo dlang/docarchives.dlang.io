@@ -1,0 +1,106 @@
+diff --git a/tools/changed.d b/tools/changed.d
+index 095eca9..e86626e 100755
+--- a/tools/changed.d
++++ b/tools/changed.d
+@@ -147,21 +147,33 @@ auto getIssues(string revRange)
+         auto p = pipeProcess(cmd, Redirect.stdout);
+         enforce(wait(p.pid) == 0, "Failed to execute '%(%s %)'.".format(cmd));
+ 
+-        cmd = ["git", "-C", repo, "log", revRange];
+-        p = pipeProcess(cmd, Redirect.stdout);
+-        scope(exit) enforce(wait(p.pid) == 0, "Failed to execute '%(%s %)'.".format(cmd));
++        void runCmd(string[] cmd)
++        {
++            auto p = pipeProcess(cmd, Redirect.stdout);
++            scope(exit) enforce(wait(p.pid) == 0, "Failed to execute '%(%s %)'.".format(cmd));
+ 
+-        foreach (line; p.stdout.byLine())
+-        {
+-            if (auto m = match(line.stripLeft, closedRE))
++            foreach (line; p.stdout.byLine())
+             {
+-                m.captures[1]
+-                    .splitter(ctRegex!`[^\d]+`)
+-                    .filter!(b => b.length)
+-                    .map!(to!int)
+-                    .copy(issues);
++                if (auto m = match(line.stripLeft, closedRE))
++                {
++                    m.captures[1]
++                        .splitter(ctRegex!`[^\d]+`)
++                        .filter!(b => b.length)
++                        .map!(to!int)
++                        .copy(issues);
++                }
+             }
+         }
++        if (repo.endsWith("/dmd"))
++        {
++            repo.buildPath("druntime").mkdirRecurse;
++            runCmd(["git", "-C", repo, "log", revRange, ":!druntime"]);
++            runCmd(["git", "-C", repo, "log", revRange, "druntime"]);
++        }
++        else if (repo.endsWith("/druntime"))
++            runCmd(["git", "-C", repo, "log", "v2.100.0..upstream/stable"]);
++        else
++            runCmd(["git", "-C", repo, "log", revRange]);
+     }
+     return issues.data.sort().release.uniq;
+ }
+diff --git a/tools/contributors.d b/tools/contributors.d
+index d2c01df..4160e1f 100755
+--- a/tools/contributors.d
++++ b/tools/contributors.d
+@@ -78,23 +78,39 @@ auto findAuthors(string revRange, FindConfig config)
+             enforce(wait(p.pid) == 0, "Failed to execute '%(%s %)'.".format(cmd));
+         }
+ 
++        void runCmd(string[] cmd)
++        {
++            auto p = pipeProcess(cmd, Redirect.stdout);
++            scope(exit) enforce(wait(p.pid) == 0, "Failed to execute '%(%s %)'.".format(cmd));
++
++            authors ~= p.stdout
++                .byLineCopy
++                .tee!(_ => commits++)
++                .map!((line){
++                    auto ps = line.splitter("|");
++                    return GitAuthor(ps.front, ps.dropOne.front);
++                })
++                .filter!(a => a.name != "The Dlang Bot");
++        }
++
+         auto cmd = ["git", "-c", "mailmap.file=%s".format(config.mailmapFile), "-C", repo, "log", "--use-mailmap", "--pretty=format:%aN|%aE"];
+         if (!config.showAllContributors)
+-            cmd ~= revRange;
++        {
++            if (repo.endsWith("/druntime"))
++                cmd ~= "v2.100.0..upstream/stable";
++            else
++                cmd ~= revRange;
++        }
+         if (config.noMerges)
+             cmd ~= "--no-merges";
+-
+-        auto p = pipeProcess(cmd, Redirect.stdout);
+-        scope(exit) enforce(wait(p.pid) == 0, "Failed to execute '%(%s %)'.".format(cmd));
+-
+-        authors ~= p.stdout
+-            .byLineCopy
+-            .tee!(_ => commits++)
+-            .map!((line){
+-                auto ps = line.splitter("|");
+-                return GitAuthor(ps.front, ps.dropOne.front);
+-            })
+-            .filter!(a => a.name != "The Dlang Bot");
++        if (repo.endsWith("/dmd"))
++        {
++            repo.buildPath("druntime").mkdirRecurse;
++            runCmd(cmd ~ ":!druntime");
++            runCmd(cmd ~ "druntime");
++        }
++        else
++            runCmd(cmd);
+     }
+     if (!config.showAllContributors)
+         stderr.writefln("Looked at %d commits in %s", commits, revRange);
