@@ -1,0 +1,543 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Encapsulation and Protection Attributes - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Encapsulation and Protection Attributes' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BEncapsulation and Protection Attributes%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/d.en/encapsulation.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Encapsulation and Protection Attributes</h1>
+        
+        
+
+
+
+<p>All of the structs and classes that we have defined so far have all been accessible from the <i>outside</i>.
+</p>
+
+<p>Let's consider the following struct:
+</p>
+
+<pre class="d_code"><span class="d_keyword">enum</span> Gender { female, male }
+
+<span class="d_keyword">struct</span> Student {
+    string name;
+    Gender gender;
+}
+</pre>
+
+<p>The members of that struct is freely accessible to the rest of the program:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> student = Student(<span class="d_string">"Tim"</span>, Gender.male);
+    writefln(<span class="d_string">"%s is a %s student."</span>, student<span class="hilite">.name</span>, student<span class="hilite">.gender</span>);
+</pre>
+
+<p>Such freedom is a convenience in programs. For example, the previous line has been useful to produce the following output:
+</p>
+
+<pre class="shell">Tim is a male student.
+</pre>
+
+<p>However, this freedom is also a liability. As an example, let's assume that perhaps by mistake, the name of a student object gets modified in the program:
+</p>
+
+<pre class="d_code">    student.name = <span class="d_string">"Anna"</span>;
+</pre>
+
+<p>That assignment may put the object in an invalid state:
+</p>
+
+<pre class="shell"><span class="hilite">Anna</span> is a <span class="hilite">male</span> student.
+</pre>
+
+<p>As another example, let's consider a <code class="d_inline">School</code> class. Let's assume that this class has two member variables that store the numbers of the male and female students separately:
+</p>
+
+<pre class="d_code"><span class="d_keyword">class</span> School {
+    Student[] students;
+    size_t femaleCount;
+    size_t maleCount;
+
+    <span class="d_keyword">void</span> add(Student student) {
+        students ~= student;
+
+        <span class="d_keyword">final</span> <span class="d_keyword">switch</span> (student.gender) {
+
+        <span class="d_keyword">case</span> Gender.female:
+            <span class="hilite">++femaleCount</span>;
+            <span class="d_keyword">break</span>;
+
+        <span class="d_keyword">case</span> Gender.male:
+            <span class="hilite">++maleCount</span>;
+            <span class="d_keyword">break</span>;
+        }
+    }
+
+    <span class="d_keyword">override</span> string toString() <span class="d_keyword">const</span> {
+        <span class="d_keyword">return</span> format(<span class="d_string">"%s female, %s male; total %s students"</span>,
+                      femaleCount, maleCount, students.length);
+    }
+}
+</pre>
+
+<p>The <code class="d_inline">add()</code> member function adds students while ensuring that the counts are always correct:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> school = <span class="d_keyword">new</span> School;
+    school.add(Student(<span class="d_string">"Lindsey"</span>, Gender.female));
+    school.add(Student(<span class="d_string">"Mark"</span>, Gender.male));
+    writeln(school);
+</pre>
+
+<p>The program produces the following consistent output:
+</p>
+
+<pre class="shell">1 female, 1 male; total 2 students
+</pre>
+
+<p>However, being able to access the members of <code class="d_inline">School</code> freely would not guarantee that this consistency would always be maintained. Let's consider adding a new element to the <code class="d_inline">students</code> member, this time directly:
+</p>
+
+<pre class="d_code">    school<span class="hilite">.students</span> ~= Student(<span class="d_string">"Nancy"</span>, Gender.female);
+</pre>
+
+<p>Because the new student has been added to the array directly, without going through the <code class="d_inline">add()</code> member function, the <code class="d_inline">School</code> object is now in an inconsistent state:
+</p>
+
+<pre class="shell"><span class="hilite">1</span> female, <span class="hilite">1</span> male; total <span class="hilite">3</span> students
+</pre>
+
+<h5 class="subsection"><a id="ix_Encapsulation and Protection Attributes.encapsulation" content="encapsulation"></a> Encapsulation</h5>
+
+<p>Encapsulation is a programming concept of restricting access to members to avoid problems similar to the one above.
+</p>
+
+<p>Another benefit of encapsulation is to eliminate the need to know the implementation details of types. In a sense, encapsulation allows presenting a type as a black box that is used only through its interface.
+</p>
+
+<p>Additionally, preventing users from accessing the members directly allows changing the members of a class freely in the future. As long as the functions that define the interface of a class is kept the same, its implementation can be changed freely.
+</p>
+
+<p>Encapsulation is not for restricting access to sensitive data like a credit card number or a password, and it cannot be used for that purpose. Encapsulation is a development tool: It allows using and coding types easily and safely.
+</p>
+
+<h5 class="subsection"><a id="ix_Encapsulation and Protection Attributes.protection" content="protection"></a> <a id="ix_Encapsulation and Protection Attributes.access protection" content="access protection"></a> Protection attributes</h5>
+
+<p>Protection attributes limit access to members of structs, classes, and modules. There are two ways of specifying protection attributes:
+</p>
+
+<ul>
+<li>At struct or class level to specify the protection of every struct or class member individually.
+</li>
+
+<li>At module level to specify the protection of every feature of a module individually: class, struct, function, enum, etc.
+</li>
+
+</ul>
+
+<p>Protection attributes can be specified by the following keywords. The default attribute is <code class="d_inline">public</code>.
+</p>
+
+<ul>
+<li><a id="ix_Encapsulation and Protection Attributes.public" content="public"></a>
+<code class="d_inline">public</code>: Specifies accessibility by any part of the program without any restriction.
+
+<p>An example of this is <code class="d_inline">stdout</code>. Merely importing <code class="d_inline">std.stdio</code> makes <code class="d_inline">stdout</code> available to every module that imported it.
+</p>
+
+</li>
+
+<li><a id="ix_Encapsulation and Protection Attributes.private" content="private"></a>
+<code class="d_inline">private</code>: Specifies restricted accessibility.
+
+<p><code class="d_inline">private</code> class members and module members can only be accessed by the module that defines that member.
+</p>
+
+<p>Additionally, <code class="d_inline">private</code> member functions cannot be overridden by subclasses.
+</p>
+
+</li>
+
+<li><a id="ix_Encapsulation and Protection Attributes.package, protection" content="package, protection"></a>
+<code class="d_inline">package</code>: Specifies package-level accessibility.
+
+<p>A feature that is marked as <code class="d_inline">package</code> can be accessed by all of the code that is a part of the same package. The <code class="d_inline">package</code> attribute involves only the inner-most package.
+</p>
+
+<p>For example, a <code class="d_inline">package</code> definition that is inside the <code class="d_inline">animal.vertebrate.cat</code> module can be accessed by any other module of the <code class="d_inline">vertebrate</code> package.
+</p>
+
+<p>Similar to the <code class="d_inline">private</code> attribute, <code class="d_inline">package</code> member functions cannot be overridden by subclasses.
+</p>
+
+</li>
+
+<li><a id="ix_Encapsulation and Protection Attributes.protected" content="protected"></a>
+<code class="d_inline">protected</code>: Specifies accessibility by derived classes.
+
+<p>This attribute extends the <code class="d_inline">private</code> attribute: A <code class="d_inline">protected</code> member can be accessed not only by the module that defines it, but also by the classes that inherit from the class that defines that <code class="d_inline">protected</code> member.
+</p>
+
+</li>
+
+</ul>
+
+<p><a id="ix_Encapsulation and Protection Attributes.export" content="export"></a> Additionally, the <code class="d_inline">export</code> attribute specifies accessibility from the outside of the program.
+</p>
+
+<h5 class="subsection">Definition</h5>
+
+<p>Protection attributes can be specified in three ways.
+</p>
+
+<p>When written in front of a single definition, it specifies the protection attribute of that definition only. This is similar to the Java programming language:
+</p>
+
+<pre class="d_code"><span class="d_keyword">private</span> <span class="d_keyword">int</span> foo;
+
+<span class="d_keyword">private</span> <span class="d_keyword">void</span> bar() {
+    <span class="d_comment">// ...
+</span>}
+</pre>
+
+<p>When specified by a colon, it specifies the protection attributes of all of the following definitions until the next specification of a protection attribute. This is similar to the C++ programming language:
+</p>
+
+<pre class="d_code"><span class="d_keyword">private</span>:
+    <span class="d_comment">// ...
+</span>    <span class="d_comment">// ... all of the definitions here are private ...
+</span>    <span class="d_comment">// ...
+</span>
+<span class="d_keyword">protected</span>:
+    <span class="d_comment">// ...
+</span>    <span class="d_comment">// ... all of the definitions here are protected ...
+</span>    <span class="d_comment">// ...
+</span></pre>
+
+<p>When specified for a block, the protection attribute is for all of the definitions that are inside that block:
+</p>
+
+<pre class="d_code"><span class="d_keyword">private</span> {
+    <span class="d_comment">// ...
+</span>    <span class="d_comment">// ... all of the definitions here are private ...
+</span>    <span class="d_comment">// ...
+</span>}
+</pre>
+
+<h5 class="subsection">Module imports are private by default</h5>
+
+<p>A module that is imported by <code class="d_inline">import</code> is private to the module that imports it. It would not be visible to other modules that import it indirectly. For example, if a <code class="d_inline">school</code> module imports <code class="d_inline">std.stdio</code>, modules that import <code class="d_inline">school</code> cannot automatically use the <code class="d_inline">std.stdio</code> module.
+</p>
+
+<p>Let's assume that the <code class="d_inline">school</code> module starts by the following lines:
+</p>
+
+<pre class="d_code"><span class="d_keyword">module</span> school.school;
+
+<span class="d_keyword">import</span> std.stdio;    <span class="d_comment">// imported for this module's own use...
+</span>
+<span class="d_comment">// ...
+</span></pre>
+
+<p>The following program cannot be compiled because <code class="d_inline">writeln</code> is not visible to it:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> school.school;
+
+<span class="d_keyword">void</span> main() {
+    writeln(<span class="d_string">"hello"</span>);    <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+}
+</pre>
+
+<p><code class="d_inline">std.stdio</code> must be imported by that module as well:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> school.school;
+<span class="hilite"><span class="d_keyword">import</span> std.stdio;</span>
+
+<span class="d_keyword">void</span> main() {
+    writeln(<span class="d_string">"hello"</span>);   <span class="d_comment">// now compiles
+</span>}
+</pre>
+
+<p><a id="ix_Encapsulation and Protection Attributes.public import" content="public import"></a> <a id="ix_Encapsulation and Protection Attributes.import, public" content="import, public"></a> Sometimes it is desired that a module presents other modules indirectly. For example, it would make sense for a <code class="d_inline">school</code> module to automatically import a <code class="d_inline">student</code> module for its users. This is achieved by marking the <code class="d_inline">import</code> as <code class="d_inline">public</code>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">module</span> school.school;
+
+<span class="hilite"><span class="d_keyword">public</span> <span class="d_keyword">import</span></span> school.student;
+
+<span class="d_comment">// ...
+</span></pre>
+
+<p>With that definition, modules that import <code class="d_inline">school</code> can use the definitions that are inside the <code class="d_inline">student</code> module without needing to import it:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> school.school;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> student = Student(<span class="d_string">"Tim"</span>, Gender.male);
+
+    <span class="d_comment">// ...
+</span>}
+</pre>
+
+<p>Although the program above imports only the <code class="d_inline">school</code> module, the <code class="d_inline">student.Student</code> struct is also available to it.
+</p>
+
+<h5 class="subsection">When to use encapsulation</h5>
+
+<p>Encapsulation avoids problems similar to the one we have seen in the introduction section of this chapter. It is an invaluable tool to ensure that objects are always in consistent states. Encapsulation helps preserve struct and class <i>invariants</i> by protecting members from direct modifications by the users of the type.
+</p>
+
+<p>Encapsulation provides freedom of implementation by abstracting implementations away from user code. Otherwise, if users had direct access to for example <code class="d_inline">School.students</code>, it would be hard to modify the design of the class by changing that array e.g. to an associative array, because this would affect all user code that has been accessing that member.
+</p>
+
+<p>Encapsulation is one of the most powerful benefits of object oriented programming.
+</p>
+
+<h5 class="subsection">Example</h5>
+
+<p>Let's define the <code class="d_inline">Student</code> struct and the <code class="d_inline">School</code> class by taking advantage of encapsulation and let's use them in a short test program.
+</p>
+
+<p>This example program will consist of three files. As you remember from the previous chapter, being parts of the <code class="d_inline">school</code> package, two of these files will be under the "school" directory:
+</p>
+
+<ul><li>"school/student.d": The <code class="d_inline">student</code> module that defines the <code class="d_inline">Student</code> struct</li>
+<li>"school/school.d": The <code class="d_inline">school</code> module that defines the <code class="d_inline">School</code> class</li>
+<li>"deneme.d": A short test program</li>
+</ul>
+
+<p>Here is the "school/student.d" file:
+</p>
+
+<pre class="d_code"><span class="d_keyword">module</span> school.student;
+
+<span class="d_keyword">import</span> std.string;
+<span class="d_keyword">import</span> std.conv;
+
+<span class="d_keyword">enum</span> Gender { female, male }
+
+<span class="d_keyword">struct</span> Student {
+    <span class="hilite"><span class="d_keyword">package</span></span> string name;
+    <span class="hilite"><span class="d_keyword">package</span></span> Gender gender;
+
+    string toString() <span class="d_keyword">const</span> {
+        <span class="d_keyword">return</span> format(<span class="d_string">"%s is a %s student."</span>,
+                      name, to!string(gender));
+    }
+}
+</pre>
+
+<p>The members of this struct are marked as <code class="d_inline">package</code> to enable access only to modules of the same package. We will soon see that <code class="d_inline">School</code> will be accessing these members directly. (Note that even this should be considered as violating the principle of encapsulation. Still, let's stick with the <code class="d_inline">package</code> attribute in this example program.)
+</p>
+
+<p>The following is the "school/school.d" module that makes use of the previous one:
+</p>
+
+<pre class="d_code"><span class="d_keyword">module</span> school.school;
+
+<span class="hilite"><span class="d_keyword">public</span> <span class="d_keyword">import</span></span> school.student;                  <span class="d_comment">// 1
+</span>
+<span class="d_keyword">import</span> std.string;
+
+<span class="d_keyword">class</span> School {
+<span class="hilite"><span class="d_keyword">private</span>:</span>                                       <span class="d_comment">// 2
+</span>
+    Student[] students;
+    size_t femaleCount;
+    size_t maleCount;
+
+<span class="hilite"><span class="d_keyword">public</span>:</span>                                        <span class="d_comment">// 3
+</span>
+    <span class="d_keyword">void</span> add(Student student) {
+        students ~= student;
+
+        <span class="d_keyword">final</span> <span class="d_keyword">switch</span> (student<span class="hilite">.gender</span>) {        <span class="d_comment">// 4a
+</span>
+        <span class="d_keyword">case</span> Gender.female:
+            ++femaleCount;
+            <span class="d_keyword">break</span>;
+
+        <span class="d_keyword">case</span> Gender.male:
+            ++maleCount;
+            <span class="d_keyword">break</span>;
+        }
+    }
+
+    <span class="d_keyword">override</span> string toString() <span class="d_keyword">const</span> {
+        string result = format(
+            <span class="d_string">"%s female, %s male; total %s students"</span>,
+            femaleCount, maleCount, students.length);
+
+        <span class="d_keyword">foreach</span> (i, student; students) {
+            result ~= (i == 0) ? <span class="d_string">": "</span> : <span class="d_string">", "</span>;
+            result ~= student<span class="hilite">.name</span>;            <span class="d_comment">// 4b
+</span>        }
+
+        <span class="d_keyword">return</span> result;
+    }
+}
+</pre>
+
+<ol>
+<li><code class="d_inline">school.student</code> is being imported publicly so that the users of <code class="d_inline">school.school</code> will not need to import that module explicitly. In a sense, the <code class="d_inline">student</code> module is made available by the <code class="d_inline">school</code> module.
+</li>
+
+<li>All of the member variables of <code class="d_inline">School</code> are marked as private. This is important to help protect the consistency of the member variables of this class.
+</li>
+
+<li>For this class to be useful, it must present some member functions. <code class="d_inline">add()</code> and <code class="d_inline">toString()</code> are made available to the users of this class.
+</li>
+
+<li>As the two member variables of <code class="d_inline">Student</code> have been marked as <code class="d_inline">package</code>, being a part of the same package, <code class="d_inline">School</code> can access those variables.
+</li>
+
+</ol>
+
+<p>Finally, the following is a test program that uses those types:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> school.school;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> student = Student(<span class="d_string">"Tim"</span>, Gender.male);
+    writeln(student);
+
+    <span class="d_keyword">auto</span> school = <span class="d_keyword">new</span> School;
+
+    school.add(Student(<span class="d_string">"Lindsey"</span>, Gender.female));
+    school.add(Student(<span class="d_string">"Mark"</span>, Gender.male));
+    school.add(Student(<span class="d_string">"Nancy"</span>, Gender.female));
+
+    writeln(school);
+}
+</pre>
+
+<p>This program can use <code class="d_inline">Student</code> and <code class="d_inline">School</code> only through their public interfaces. It cannot access the member variables of those types. As a result, the objects would always be consistent:
+</p>
+
+<pre class="shell">Tim is a male student.
+2 female, 1 male; total 3 students: Lindsey, Mark, Nancy
+</pre>
+
+<p>Note that the program interacts with <code class="d_inline">School</code> only by its <code class="d_inline">add()</code> and <code class="d_inline">toString()</code> functions. As long as the interfaces of these functions are kept the same, changes in their implementations would not affect the program above.
+</p>
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on Mon Jan 29 21:28:32 2024
+</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>
