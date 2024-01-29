@@ -1,0 +1,418 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D Programming Language, constraints, template, concepts, C++">
+<meta name="description" content="Going beyond type patterns to constrain template instantiations.">
+<title>Template Constraints - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Template Constraints' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Google Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BTemplate Constraints%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/articles/constraints.dd">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Template Constraints</h1>
+        
+        
+
+
+        <p>Templates are normally overloaded and matched based on the
+        template arguments being matched to the template parameters.
+        The template parameters can specify
+        <a href="../spec/template.html#parameters_specialization">specializations</a>, so that
+        the template argument must match particular type patterns.
+        Similarly, template value arguments can be constrained to
+        match particular types.</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">template</span> Foo(T) { ... }
+<span class="d_keyword">template</span> Foo(T : T*) { ... }
+<span class="d_keyword">template</span> Foo(T : T[]) { ... }
+
+<span class="d_keyword">alias</span> f1 = Foo!(<span class="d_keyword">int</span>);   <span class="d_comment">// picks Foo(T)
+</span><span class="d_keyword">alias</span> f2 = Foo!(<span class="d_keyword">int</span>*);  <span class="d_comment">// picks Foo(T : T*)
+</span><span class="d_keyword">alias</span> f3 = Foo!(<span class="d_keyword">int</span>[]); <span class="d_comment">// picks Foo(T : T[])
+</span></pre>
+
+        <p>But this has its limitations. Many times there are
+        arbitrarily more
+        complex criteria for what should be accepted by the template.
+        Such criteria could be to:
+        </p>
+
+        <ul>        <li>more finely discriminate about which
+         template gets instantiated for given arguments</li>
+        <li>provide better self-documentation about what
+         characteristics template parameters must have</li>
+        <li>provide better diagnostics when arguments don't match,
+         rather than an obscure error message based on the irrelevant
+         (to the user) internal details of the template implementation</li>
+        </ul>
+
+        <p>Constraints address this by simply providing a boolean
+        expression that is evaluated at compile-time,
+        after the arguments are matched to the parameters.
+        If that boolean is true, then the template is a valid match for
+        the arguments, if not, then the template does not match and
+        is passed over during overload matching.</p>
+
+        <p>The constraint expression follows the template declaration
+        and the <span class="d_inlinecode donthyphenate notranslate">if</span> keyword:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">template</span> Foo(<span class="d_keyword">int</span> N)
+    <span class="d_keyword">if</span> (N &amp; 1)
+{
+    ...
+}
+</pre>
+
+        <p>which constrains the template <span class="d_inlinecode donthyphenate notranslate">Foo</span> to match only if its
+        argument
+        is an odd integer.</p>
+
+<h2><a class="anchor" title="Permalink to this section" id="predicates" href="#predicates">Predicate Functions</a></h2>
+
+        <p>Arbitrarily complex criteria can be used, as
+        long as it can be computed at compile time. For example, here's
+        a template that only accepts prime numbers:
+        </p>
+
+<div class="runnable-examples" data-compile=''>
+<pre class="d_code notranslate"><span class="d_keyword">bool</span> isPrime(<span class="d_keyword">int</span> n)
+{
+    <span class="d_keyword">if</span> (n == 2)
+        <span class="d_keyword">return</span> <span class="d_keyword">true</span>;
+    <span class="d_comment">// 0, negative and even numbers are not prime
+</span>    <span class="d_keyword">if</span> (n &lt; 1 || (n &amp; 1) == 0)
+        <span class="d_keyword">return</span> <span class="d_keyword">false</span>;
+    <span class="d_keyword">if</span> (n &gt; 3)
+    {
+        <span class="d_comment">// check possible odd integer denominators
+</span>        <span class="d_keyword">for</span> (<span class="d_keyword">auto</span> i = 3; i * i &lt;= n; i += 2)
+        {
+            <span class="d_keyword">if</span> ((n % i) == 0)
+                <span class="d_keyword">return</span> <span class="d_keyword">false</span>;
+        }
+    }
+    <span class="d_keyword">return</span> <span class="d_keyword">true</span>;
+}
+
+<span class="d_keyword">template</span> Foo(<span class="d_keyword">int</span> N)
+    <span class="d_keyword">if</span> (isPrime(N))
+{
+    <span class="d_comment">// ...
+</span>}
+
+<span class="d_keyword">alias</span> f1 = Foo!(5);    <span class="d_comment">// ok, 5 is prime
+</span><span class="d_comment">//alias f2 = Foo!(6);    // error: no match for Foo
+</span><span class="d_comment">//alias f3 = Foo!(9);    // error: no match for Foo
+</span></pre>
+
+</div>
+
+        <div class="note"><b>Note:</b> <span class="d_inlinecode donthyphenate notranslate">isPrime</span> is called using <a href="../spec/function.html#interpretation">Compile-Time Function Evaluation</a>.</div>
+
+<h2><a class="anchor" title="Permalink to this section" id="is" href="#is"><span class="d_inlinecode donthyphenate notranslate">is</span> Expressions</a></h2>
+
+        <p>Type constraints can be complex, too. With type specialization alone, a template
+        <span class="d_inlinecode donthyphenate notranslate">Bar</span> that will accept any type that implicitly converts to a built-in floating
+        point type must use template overloads:
+        </p>
+<pre class="d_code notranslate"><span class="d_keyword">template</span> Bar(T:<span class="d_keyword">float</span>)
+{
+    ...
+}
+<span class="d_keyword">template</span> Bar(T:<span class="d_keyword">double</span>)
+{
+    ...
+}
+<span class="d_keyword">template</span> Bar(T:<span class="d_keyword">real</span>)
+{
+    ...
+}
+</pre>
+        <p>and the template implementation body must be duplicated
+        three times. But with constraints, this can be specified
+        with one template:
+        </p>
+<pre class="d_code notranslate"><span class="d_keyword">template</span> Bar(T)
+    <span class="d_keyword">if</span> (<span class="d_keyword">is</span>(T : <span class="d_keyword">float</span>) || <span class="d_keyword">is</span>(T : <span class="d_keyword">double</span>) || <span class="d_keyword">is</span>(T : <span class="d_keyword">real</span>))
+{
+    ...
+}
+</pre>
+        <p>Unlike with parameter specialization, types with implicit conversion to
+        floating point can be ruled out with a different constraint:</p>
+
+<div class="runnable-examples" data-compile=''>
+<pre class="d_code notranslate"><span class="d_keyword">template</span> Bar(T)
+    <span class="d_keyword">if</span> (<span class="d_keyword">is</span>(T == <span class="d_keyword">float</span>) || <span class="d_keyword">is</span>(T == <span class="d_keyword">double</span>) || <span class="d_keyword">is</span>(T == <span class="d_keyword">real</span>))
+{
+    <span class="d_comment">// ...
+</span>}
+
+<span class="d_keyword">alias</span> b1 = Bar!<span class="d_keyword">float</span>; <span class="d_comment">// OK
+</span><span class="d_comment">//alias b2 = Bar!int;   // error
+</span></pre>
+
+</div>
+        <p>See <a href="../spec/expression.html#IsExpression"><i>IsExpression</i></a> for more tests.</p>
+
+        <p>The above example can be simplified by using the <span class="d_inlinecode donthyphenate notranslate">isFloatingPoint</span>
+        template in library module <a href="../phobos/std_traits.html"><span class="d_inlinecode donthyphenate notranslate">std.traits</span></a>:
+        </p>
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.traits;
+
+<span class="d_keyword">template</span> Bar(T)
+    <span class="d_keyword">if</span> (isFloatingPoint!(T))
+{
+    ...
+}
+</pre>
+
+<h2><a class="anchor" title="Permalink to this section" id="traits" href="#traits"><span class="d_inlinecode donthyphenate notranslate">__traits</span></a></h2>
+
+        <p>Characteristics of types can be tested, such as if
+        a type instance can be added:
+        </p>
+
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_comment">// Returns true if instances of type T can be added
+</span><span class="d_comment">// Works by attempting to add two instances of type T
+</span><span class="d_keyword">const</span> isAddable(T) = <span class="d_keyword">__traits</span>(compiles, (T t) { <span class="d_keyword">return</span> t + t; });
+
+<span class="d_keyword">auto</span> twice(T)(T t)
+    <span class="d_keyword">if</span> (isAddable!(T))
+{
+    <span class="d_keyword">return</span> t + t;
+}
+
+<span class="d_comment">// an addable struct type
+</span><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span> i;
+
+    S opBinary(string op : <span class="d_string">"+"</span>)(S s)
+    {
+        <span class="d_keyword">return</span> S(i + s.i);
+    }
+}
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">assert</span>(twice(4) == 8);
+    S s = {2};
+    <span class="d_keyword">assert</span>(twice(s).i == 4);
+    <span class="d_comment">//twice("a"); // fails to match
+</span>}
+</pre>
+
+</div>
+
+        <p><a href="../spec/traits.html#compiles"><span class="d_inlinecode donthyphenate notranslate">__traits(compiles)</span></a> is
+        used to check if a function literal successfully compiles. Other
+        expressions can be used instead of a function literal. The expression
+        is not evaluated.
+        Other compile-time <span class="d_inlinecode donthyphenate notranslate">__traits</span> <a href="../spec/traits.html">are available</a>.</p>
+
+        <div class="note"><b>Note:</b> The function literal above declares an argument of type
+        <span class="d_inlinecode donthyphenate notranslate">T</span> to obtain an instance of <span class="d_inlinecode donthyphenate notranslate">T</span> without having to construct it.</div>
+
+        <p>Since any expression that can be computed at compile time
+        is allowed as a constraint, constraints can be composed:
+        </p>
+
+<pre class="d_code notranslate">T foo(T)(T t)
+    <span class="d_keyword">if</span> (isAddable!(T) &amp;&amp; isMultipliable!(T))
+{
+    <span class="d_keyword">return</span> t + t * t;
+}
+</pre>
+
+        <p>Constraints can deal with multiple parameters:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">template</span> Foo(T, <span class="d_keyword">int</span> N)
+    <span class="d_keyword">if</span> (isAddable!(T) &amp;&amp; isPrime(N))
+{
+    ...
+}
+</pre>
+
+        <p>A more complex constraint can specify a list of operations
+        that must be doable with the type, such as evaluating template <span class="d_inlinecode donthyphenate notranslate">isStack</span> which
+        requires that the type has a type property <span class="d_inlinecode donthyphenate notranslate">ValueType</span>, and that 4 functions
+        exist which take an instance of the type, 2 of which return certain
+        values:</p>
+
+<pre class="d_code notranslate"><span class="d_keyword">const</span> isStack(T) =
+    <span class="d_keyword">__traits</span>(compiles,
+        (T t)
+        {
+            T.ValueType v = top(t);
+            push(t, v);
+            pop(t);
+            <span class="d_keyword">if</span> (empty(t)) { }
+        });
+
+<span class="d_keyword">template</span> Foo(T)
+    <span class="d_keyword">if</span> (isStack!(T))
+{
+    ...
+}
+</pre>
+
+<h2><a class="anchor" title="Permalink to this section" id="overloading" href="#overloading">Overloading based on Constraints</a></h2>
+
+        <p>Given a list of overloaded templates with the same name,
+        constraints act as a yes/no filter to determine the list
+        of candidates for a match.
+        Overloading based on constraints can thus be achieved by
+        setting up constraint expressions that are mutually exclusive.
+        For example, overloading template <span class="d_inlinecode donthyphenate notranslate">Foo</span> so that one
+        takes odd integers and the other even:
+        </p>
+<pre class="d_code notranslate"><span class="d_keyword">template</span> Foo(<span class="d_keyword">int</span> N) <span class="d_keyword">if</span> (N &amp; 1)    { ... } <span class="d_comment">// A
+</span><span class="d_keyword">template</span> Foo(<span class="d_keyword">int</span> N) <span class="d_keyword">if</span> (!(N &amp; 1)) { ... } <span class="d_comment">// B
+</span>...
+Foo!(3)    <span class="d_comment">// instantiates A
+</span>Foo!(64)   <span class="d_comment">// instantiates B
+</span></pre>
+
+        <p>Note the above 2 templates could be combined using
+        <a href="../spec/version.html#staticif"><span class="d_inlinecode donthyphenate notranslate">static if</span></a>:</p>
+<pre class="d_code notranslate"><span class="d_keyword">template</span> Foo(<span class="d_keyword">int</span> N)
+{
+    <span class="d_keyword">static</span> <span class="d_keyword">if</span> (N &amp; 1)
+        <span class="d_comment">// body of A
+</span>    <span class="d_keyword">else</span>
+        <span class="d_comment">// body of B
+</span>}
+</pre>
+        <p>Constraints are not involved with determining which
+        template is more specialized than another.
+        </p>
+
+<pre class="d_code notranslate"><span class="d_keyword">void</span> foo(T, <span class="d_keyword">int</span> N)()        <span class="d_keyword">if</span> (N &amp; 1) { ... } <span class="d_comment">// A
+</span><span class="d_keyword">void</span> foo(T : <span class="d_keyword">int</span>, <span class="d_keyword">int</span> N)()  <span class="d_keyword">if</span> (N &gt; 3) { ... } <span class="d_comment">// B
+</span>...
+foo!(<span class="d_keyword">int</span>, 7)();   <span class="d_comment">// picks B, more specialized
+</span>foo!(<span class="d_keyword">int</span>, 1)();   <span class="d_comment">// picks A, as it fails B's constraint
+</span>foo!(<span class="d_string">"a"</span>, 7)();   <span class="d_comment">// picks A
+</span>foo!(<span class="d_string">"a"</span>, 4)();   <span class="d_comment">// error, no match
+</span></pre>
+
+<h2>References</h2>
+
+        <ul>        <li><a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2006/n2081.pdf">Concepts (Revision 1)</a>
+         by Douglas Gregor and Bjarne Stroustrup
+        </li>
+        </ul>
+
+
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on (no date time)</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

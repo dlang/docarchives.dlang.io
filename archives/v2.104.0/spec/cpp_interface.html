@@ -1,0 +1,1127 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Interfacing to C++ - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Interfacing to C++' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href=".."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Google Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option selected value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+<div class="subnav-helper"></div> <div class="subnav">    <div class="head"><h2>Language Reference</h2> <p class="subnav-duplicate"><a href="../spec/spec.html">table of contents</a></p></div>
+    <ul>        <li><a href='            ../spec/intro.html'>Introduction</a></li><li><a href='            ../spec/lex.html'>Lexical</a></li><li><a href='            ../spec/grammar.html'>Grammar</a></li><li><a href='            ../spec/module.html'>Modules</a></li><li><a href='            ../spec/declaration.html'>Declarations</a></li><li><a href='            ../spec/type.html'>Types</a></li><li><a href='            ../spec/property.html'>Properties</a></li><li><a href='            ../spec/attribute.html'>Attributes</a></li><li><a href='            ../spec/pragma.html'>Pragmas</a></li><li><a href='            ../spec/expression.html'>Expressions</a></li><li><a href='            ../spec/statement.html'>Statements</a></li><li><a href='            ../spec/arrays.html'>Arrays</a></li><li><a href='            ../spec/hash-map.html'>Associative Arrays</a></li><li><a href='            ../spec/struct.html'>Structs and Unions</a></li><li><a href='            ../spec/class.html'>Classes</a></li><li><a href='            ../spec/interface.html'>Interfaces</a></li><li><a href='            ../spec/enum.html'>Enums</a></li><li><a href='            ../spec/const3.html'>Type Qualifiers</a></li><li><a href='            ../spec/function.html'>Functions</a></li><li><a href='            ../spec/operatoroverloading.html'>Operator Overloading</a></li><li><a href='            ../spec/template.html'>Templates</a></li><li><a href='            ../spec/template-mixin.html'>Template Mixins</a></li><li><a href='            ../spec/contracts.html'>Contract Programming</a></li><li><a href='            ../spec/version.html'>Conditional Compilation</a></li><li><a href='            ../spec/traits.html'>Traits</a></li><li><a href='            ../spec/errors.html'>Error Handling</a></li><li><a href='            ../spec/unittest.html'>Unit Tests</a></li><li><a href='            ../spec/garbage.html'>Garbage Collection</a></li><li><a href='            ../spec/float.html'>Floating Point</a></li><li><a href='            ../spec/iasm.html'>D x86 Inline Assembler</a></li><li><a href='            ../spec/ddoc.html'>Embedded Documentation</a></li><li><a href='            ../spec/interfaceToC.html'>Interfacing to C</a></li><li><a href='            ../spec/cpp_interface.html'>Interfacing to C++</a></li><li><a href='            ../spec/objc_interface.html'>Interfacing to Objective-C</a></li><li><a href='            ../spec/portability.html'>Portability Guide</a></li><li><a href='            ../spec/entity.html'>Named Character Entities</a></li><li><a href='            ../spec/memory-safe-d.html'>Memory Safety</a></li><li><a href='            ../spec/abi.html'>Application Binary Interface</a></li><li><a href='            ../spec/simd.html'>Vector Extensions</a></li><li><a href='            ../spec/betterc.html'>Better C</a></li><li><a href='            ../spec/importc.html'>ImportC</a></li><li><a href='            ../spec/ob.html'>Live Functions
+        </a></li>
+    </ul>
+</div>
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BInterfacing to C++%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/spec/cpp_interface.dd">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Interfacing to C++</h1>
+        
+<style>    body { counter-reset: h1 33; counter-increment: h1 -1; }
+    h1 { counter-reset: h2 h3 p; }
+    h2 { counter-reset: h3 h4 p; }
+    h3 { counter-reset: h4 p; }
+    h4 { counter-reset: p; }
+    h1::before {
+        counter-increment: h1;
+        content: counter(h1) ". ";
+    }
+    .hyphenate h2::before {
+        counter-increment: h2;
+        content: counter(h1) "." counter(h2) " ";
+    }
+    h3::before {
+        counter-increment: h3;
+        content: counter(h1) "." counter(h2) "." counter(h3) " ";
+    }
+    h4::before {
+        counter-increment: h4;
+        content: counter(h1) "." counter(h2) "." counter(h3) "." counter(h4) " ";
+    }
+    p::before, .spec-boxes::before {
+        counter-increment: p;
+        content: counter(p) ". ";
+    }
+    h1::before, h2::before, h3::before, h4::before, p::before, .spec-boxes::before
+    {
+        color: #999;
+        font-size: 80%;
+        margin-right: 0.25em;
+    }
+</style>
+        <div class="blankline"></div>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<div class="page-contents quickindex">    <div class="page-contents-header">        <b>Contents</b>
+    </div>
+    <ol>    <li><a href="#general_idea">The General Idea</a></li>
+    <li><a href="#global-functions">Global Functions</a><ol>        <li><a href="#calling_cpp_global_from_d">Calling C++ Global Functions from D</a></li>
+        <li><a href="#calling_global_d_functions_from_cpp">Calling Global D Functions From C++</a></li>
+    </ol></li>
+    <li><a href="#cpp-namespaces">C++ Namespaces</a></li>
+    <li><a href="#classes">Classes</a><ol>        <li><a href="#using_cpp_classes_from_d">Using C++ Classes From D</a></li>
+        <li><a href="#using_d_classes_from_cpp">Using D Classes From C++</a></li>
+    </ol></li>
+    <li><a href="#structs">Structs</a></li>
+    <li><a href="#cpp-templates">C++ Templates</a></li>
+    <li><a href="#function-overloading">Function Overloading</a></li>
+    <li><a href="#memory-allocation">Memory Allocation</a></li>
+    <li><a href="#data-type-compatibility">Data Type Compatibility</a></li>
+    <li><a href="#packing-and-alignment">Packing and Alignment</a></li>
+    <li><a href="#lifetime-management">Lifetime Management</a></li>
+    <li><a href="#special-member-functions">Special Member Functions</a></li>
+    <li><a href="#rtti">Runtime Type Identification</a></li>
+    <li><a href="#exception-handling">Exception Handling</a></li>
+    <li><a href="#comparing-d-immutable-and-const-with-cpp-const">Comparing D Immutable and Const with C++ Const</a></li>
+</ol>
+</div>
+<div class="blankline"></div>
+    <p>This document specifies how to interface with C++ directly.</p>
+<div class="blankline"></div>
+    <p>It is also possible to indirectly interface with C++ code, either
+    through a <a href="../spec/interfaceToC.html">C interface</a> or a
+    COM interface.</p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="general_idea" href="#general_idea">The General Idea</a></h2>
+<div class="blankline"></div>
+    <p>Being 100% compatible with C++ means more or less adding
+    a fully functional C++ compiler front end to D.
+    Anecdotal evidence suggests that writing such is a minimum
+    of a 10 man-year project, essentially making a D compiler
+    with such capability unimplementable.
+    Other languages looking to hook up to C++ face the same
+    problem, and the solutions have been:
+    </p>
+<div class="blankline"></div>
+    <ol>    <li>Support the COM interface (but that only works for Windows).</li>
+    <li>Laboriously construct a C wrapper around
+    the C++ code.</li>
+    <li>Use an automated tool such as SWIG to construct a
+    C wrapper.</li>
+    <li>Reimplement the C++ code in the other language.</li>
+    <li>Give up.</li>
+    </ol>
+<div class="blankline"></div>
+    <p>D takes a pragmatic approach that assumes a couple
+    modest accommodations can solve a significant chunk of
+    the problem:
+    </p>
+<div class="blankline"></div>
+    <ul>    <li>matching C++ name mangling conventions</li>
+    <li>matching C++ function calling conventions</li>
+    <li>matching C++ virtual function table layout for single inheritance</li>
+    </ul>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="global-functions" href="#global-functions">Global Functions</a></h2>
+<div class="blankline"></div>
+    <p>C++ global functions, including those in namespaces, can be declared
+    and called in D, or defined in D and called in C++.</p>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="calling_cpp_global_from_d" href="#calling_cpp_global_from_d">Calling C++ Global Functions from D</a></h3>
+<div class="blankline"></div>
+    <p>Given a C++ function in a C++ source file:</p>
+<div class="blankline"></div>
+<pre class="cppcode notranslate">#include &lt;iostream&gt;
+<div class="blankline"></div>
+using namespace std;
+<div class="blankline"></div>
+int foo(int i, int j, int k)
+{
+    cout &lt;&lt; "i = " &lt;&lt; i &lt;&lt; endl;
+    cout &lt;&lt; "j = " &lt;&lt; j &lt;&lt; endl;
+    cout &lt;&lt; "k = " &lt;&lt; k &lt;&lt; endl;
+<div class="blankline"></div>
+    return 7;
+}
+</pre>
+<div class="blankline"></div>
+    <p>In the corresponding D code, <span class="d_inlinecode donthyphenate notranslate">foo</span>
+    is declared as having C++ linkage and function calling conventions:
+    </p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">extern</span> (C++) <span class="d_keyword">int</span> foo(<span class="d_keyword">int</span> i, <span class="d_keyword">int</span> j, <span class="d_keyword">int</span> k);
+</pre>
+<div class="blankline"></div>
+    <p>and then it can be called within the D code:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">extern</span> (C++) <span class="d_keyword">int</span> foo(<span class="d_keyword">int</span> i, <span class="d_keyword">int</span> j, <span class="d_keyword">int</span> k);
+
+<span class="d_keyword">void</span> main()
+{
+    foo(1, 2, 3);
+}
+</pre>
+<div class="blankline"></div>
+    <p>Compiling the two files, the first with a C++ compiler,
+    the second with a D compiler, linking them together,
+    and then running it yields:</p>
+<div class="blankline"></div>
+<pre class="console notranslate">&gt; g++ -c foo.cpp
+&gt; dmd bar.d foo.o -L-lstdc++ &amp;&amp; ./bar
+i = 1
+j = 2
+k = 3
+</pre>
+<div class="blankline"></div>
+    <p>There are several things going on here:</p>
+<div class="blankline"></div>
+    <ul>    <li>D understands how C++ function names are "mangled" and the
+    correct C++ function call/return sequence.</li>
+<div class="blankline"></div>
+    <li>Because modules are not part of C++, each function with C++ linkage
+    in the global namespace must be globally unique within the program.</li>
+<div class="blankline"></div>
+    <li>There are no <span class="d_inlinecode donthyphenate notranslate">__cdecl</span>, <span class="d_inlinecode donthyphenate notranslate">__far</span>, <span class="d_inlinecode donthyphenate notranslate">__stdcall</span>, <span class="d_inlinecode donthyphenate notranslate">__declspec</span>, or other
+    such nonstandard C++ extensions in D.</li>
+<div class="blankline"></div>
+    <li>There are no volatile type modifiers in D.</li>
+<div class="blankline"></div>
+    <li>Strings are not 0 terminated in D. See "Data Type Compatibility"
+    for more information about this. However, string literals in D are
+    0 terminated.</li>
+<div class="blankline"></div>
+    </ul>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="calling_global_d_functions_from_cpp" href="#calling_global_d_functions_from_cpp">Calling Global D Functions From C++</a></h3>
+<div class="blankline"></div>
+    <p>To make a D function accessible from C++, give it
+    C++ linkage:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">extern</span> (C++) <span class="d_keyword">int</span> foo(<span class="d_keyword">int</span> i, <span class="d_keyword">int</span> j, <span class="d_keyword">int</span> k)
+{
+    writefln(<span class="d_string">"i = %s"</span>, i);
+    writefln(<span class="d_string">"j = %s"</span>, j);
+    writefln(<span class="d_string">"k = %s"</span>, k);
+    <span class="d_keyword">return</span> 1;
+}
+
+<span class="d_keyword">extern</span> (C++) <span class="d_keyword">void</span> bar();
+
+<span class="d_keyword">void</span> main()
+{
+    bar();
+}
+</pre>
+<div class="blankline"></div>
+    <p>The C++ end looks like:</p>
+<div class="blankline"></div>
+<pre class="cppcode notranslate">int foo(int i, int j, int k);
+<div class="blankline"></div>
+void bar()
+{
+    foo(6, 7, 8);
+}
+</pre>
+<div class="blankline"></div>
+    <p>Compiling, linking, and running produces the output:</p>
+<div class="blankline"></div>
+<pre class="console notranslate">&gt; dmd -c foo.d
+&gt; g++ bar.cpp foo.o -lphobos2 -pthread -o bar &amp;&amp; ./bar
+i = 6
+j = 7
+k = 8
+</pre>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="cpp-namespaces" href="#cpp-namespaces">C++ Namespaces</a></h2>
+<div class="blankline"></div>
+        <p>C++ symbols that reside in namespaces can be
+        accessed from D. A <a href="attribute.html#namespace">namespace</a>
+        can be added to the <span class="d_inlinecode donthyphenate notranslate">extern (C++)</span>
+        <a href="attribute.html#linkage">LinkageAttribute</a>:
+    </p>
+<pre class="d_code notranslate"><span class="d_keyword">extern</span> (C++, N) <span class="d_keyword">int</span> foo(<span class="d_keyword">int</span> i, <span class="d_keyword">int</span> j, <span class="d_keyword">int</span> k);
+
+<span class="d_keyword">void</span> main()
+{
+    N.foo(1, 2, 3);   <span class="d_comment">// foo is in C++ namespace 'N'
+</span>}
+</pre>
+<div class="blankline"></div>
+    <p>C++ can open the same namespace in the same file and multiple files.
+      In D, this can be done as follows:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">module</span> ns;
+<span class="d_keyword">extern</span> (C++, <span class="d_string">`ns`</span>)
+{
+    <span class="d_keyword">int</span> foo() { <span class="d_keyword">return</span> 1; }
+}
+</pre>
+    <p>Any expression that resolves to either a tuple of strings or an empty tuple is accepted.
+      When the expression resolves to an empty tuple, it is equivalent to <span class="d_inlinecode donthyphenate notranslate">extern (C++)</span></p>
+<pre class="d_code notranslate"><span class="d_keyword">extern</span>(C++, (expression))
+{
+    <span class="d_keyword">int</span> bar() { <span class="d_keyword">return</span> 2; }
+}
+</pre>
+<div class="blankline"></div>
+<p>or in multiple files, by organizing them in a package consisting of several modules:</p>
+<pre class="d_code notranslate">ns/
+|-- a.d
+|-- b.d
+|-- <span class="d_keyword">package</span>.d
+</pre>
+<div class="blankline"></div>
+<p>File <span class="d_inlinecode donthyphenate notranslate">ns/a.d</span>:</p>
+<pre class="d_code notranslate"><span class="d_keyword">module</span> a; <span class="d_keyword">extern</span> (C++, <span class="d_string">`ns`</span>) { <span class="d_keyword">int</span> foo() { <span class="d_keyword">return</span> 1; } }
+</pre>
+<div class="blankline"></div>
+<p>File <span class="d_inlinecode donthyphenate notranslate">ns/b.d</span>:</p>
+<pre class="d_code notranslate"><span class="d_keyword">module</span> b; <span class="d_keyword">extern</span> (C++, <span class="d_string">`ns`</span>) { <span class="d_keyword">int</span> bar() { <span class="d_keyword">return</span> 2; } }
+</pre>
+<div class="blankline"></div>
+<p>File <span class="d_inlinecode donthyphenate notranslate">ns/package.d</span>:</p>
+<pre class="d_code notranslate"><span class="d_keyword">module</span> ns;
+<span class="d_keyword">public</span> <span class="d_keyword">import</span> a, b;
+</pre>
+<p>Then import the package containing the extern C++ declarations as follows:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">import</span> ns;
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(foo() == 1 &amp;&amp; bar() == 2);
+</pre>
+<div class="blankline"></div>
+<p>Note that the <span class="d_inlinecode donthyphenate notranslate">extern (C++, </span>ns<span class="d_inlinecode donthyphenate notranslate">)</span> linkage attribute affects only the ABI (name mangling and calling convention) of
+  these declarations. Importing them follows the usual
+  <a href="spec/module">D module import semantics</a>.</p>
+<div class="blankline"></div>
+<p>Alternatively, the non-string form can be used to introduce a scope. Note that the
+    enclosing module already provides a scope for the symbols declared in the namespace.
+    This form does not allow closing and reopening the same namespace with in the same module. That is:</p>
+<pre class="d_code notranslate"><span class="d_keyword">module</span> a; <span class="d_keyword">extern</span> (C++, ns1) { <span class="d_keyword">int</span> foo() { <span class="d_keyword">return</span> 1; } }
+</pre>
+<pre class="d_code notranslate"><span class="d_keyword">module</span> b; <span class="d_keyword">extern</span> (C++, ns1) { <span class="d_keyword">int</span> bar() { <span class="d_keyword">return</span> 2; } }
+</pre>
+<pre class="d_code notranslate"><span class="d_keyword">import</span> a, b;
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(foo() == 1 &amp;&amp; bar() == 2);
+</pre>
+   <p>works, but:</p>
+<pre class="d_code notranslate"><span class="d_keyword">extern</span> (C++, ns1) { <span class="d_keyword">int</span> foo() { <span class="d_keyword">return</span> 1; } }
+<span class="d_keyword">extern</span> (C++, ns1) { <span class="d_keyword">int</span> bar() { <span class="d_keyword">return</span> 2; } }
+</pre>
+   <p>does not. Additionally, aliases can be used to avoid collision of symbols:</p>
+<pre class="d_code notranslate"><span class="d_keyword">module</span> a; <span class="d_keyword">extern</span> (C++, ns) { <span class="d_keyword">int</span> foo() { <span class="d_keyword">return</span> 1; } }
+</pre>
+<pre class="d_code notranslate"><span class="d_keyword">module</span> b; <span class="d_keyword">extern</span> (C++, ns) { <span class="d_keyword">int</span> bar() { <span class="d_keyword">return</span> 2; } }
+</pre>
+<pre class="d_code notranslate"><span class="d_keyword">module</span> ns;
+<span class="d_keyword">import</span> a, b;
+<span class="d_keyword">alias</span> foo = a.ns.foo;
+<span class="d_keyword">alias</span> bar = b.ns.bar;
+</pre>
+<pre class="d_code notranslate"><span class="d_keyword">import</span> ns;
+<span class="d_keyword">static</span> <span class="d_keyword">assert</span>(foo() == 1 &amp;&amp; bar() == 2);
+</pre>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="classes" href="#classes">Classes</a></h2>
+<div class="blankline"></div>
+    <p>C++ classes can be declared in D by using the <span class="d_inlinecode donthyphenate notranslate">extern (C++)</span>
+    attribute on <span class="d_inlinecode donthyphenate notranslate">class</span>, <span class="d_inlinecode donthyphenate notranslate">struct</span> and <span class="d_inlinecode donthyphenate notranslate">interface</span>
+    declarations. <span class="d_inlinecode donthyphenate notranslate">extern (C++)</span> interfaces have the same restrictions as
+    D interfaces, which means that Multiple Inheritance is supported to the
+    extent that only one base class can have member fields.</p>
+<div class="blankline"></div>
+    <p><span class="d_inlinecode donthyphenate notranslate">extern (C++)</span> structs do not support virtual functions but can
+    be used to map C++ value types.</p>
+<div class="blankline"></div>
+    <p>Unlike classes and interfaces with D linkage, <span class="d_inlinecode donthyphenate notranslate">extern (C++)</span>
+    classes and interfaces are not rooted in <span class="d_inlinecode donthyphenate notranslate">Object</span> and cannot be used
+    with <span class="d_inlinecode donthyphenate notranslate">typeid</span>.</p>
+<div class="blankline"></div>
+    <p>D structs and classes have different semantics whereas C++ structs and
+    classes are basically the same. The use of a D struct or class depends on
+    the C++ implementation and not on the used C++ keyword.
+    When mapping a D <span class="d_inlinecode donthyphenate notranslate">class</span> onto a C++ <span class="d_inlinecode donthyphenate notranslate">struct</span>,
+    use <span class="d_inlinecode donthyphenate notranslate">extern(C++, struct)</span> to avoid linking problems with C++ compilers
+    (notably MSVC) that distinguish between C++'s <span class="d_inlinecode donthyphenate notranslate">class</span> and <span class="d_inlinecode donthyphenate notranslate">struct</span>
+    when mangling. Conversely, use <span class="d_inlinecode donthyphenate notranslate">extern(C++, class)</span> to map a D
+    <span class="d_inlinecode donthyphenate notranslate">struct</span> onto a C++ <span class="d_inlinecode donthyphenate notranslate">class</span>.</p>
+<div class="blankline"></div>
+    <p><span class="d_inlinecode donthyphenate notranslate">extern(C++, class)</span> and <span class="d_inlinecode donthyphenate notranslate">extern(C++, struct)</span> can be combined
+    with C++ namespaces:</p>
+<pre class="d_code notranslate"><span class="d_keyword">extern</span> (C++, <span class="d_keyword">struct</span>) <span class="d_keyword">extern</span> (C++, foo)
+<span class="d_keyword">class</span> Bar
+{
+}
+</pre>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="using_cpp_classes_from_d" href="#using_cpp_classes_from_d">Using C++ Classes From D</a></h3>
+<div class="blankline"></div>
+    <p>The following example shows binding of a pure virtual function, its
+    implementation in a derived class, a non-virtual member function, and a
+    member field:</p>
+<div class="blankline"></div>
+<pre class="cppcode notranslate">#include &lt;iostream&gt;
+<div class="blankline"></div>
+using namespace std;
+<div class="blankline"></div>
+class Base
+{
+    public:
+        virtual void print3i(int a, int b, int c) = 0;
+};
+<div class="blankline"></div>
+class Derived : public Base
+{
+    public:
+        int field;
+        Derived(int field) : field(field) {}
+<div class="blankline"></div>
+        void print3i(int a, int b, int c)
+        {
+            cout &lt;&lt; "a = " &lt;&lt; a &lt;&lt; endl;
+            cout &lt;&lt; "b = " &lt;&lt; b &lt;&lt; endl;
+            cout &lt;&lt; "c = " &lt;&lt; c &lt;&lt; endl;
+        }
+<div class="blankline"></div>
+        int mul(int factor);
+};
+<div class="blankline"></div>
+int Derived::mul(int factor)
+{
+    return field * factor;
+}
+<div class="blankline"></div>
+Derived *createInstance(int i)
+{
+    return new Derived(i);
+}
+<div class="blankline"></div>
+void deleteInstance(Derived *&d)
+{
+    delete d;
+    d = 0;
+}
+</pre>
+<div class="blankline"></div>
+    <p>We can use it in D code like:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">extern</span>(C++)
+{
+    <span class="d_keyword">abstract</span> <span class="d_keyword">class</span> Base
+    {
+        <span class="d_keyword">void</span> print3i(<span class="d_keyword">int</span> a, <span class="d_keyword">int</span> b, <span class="d_keyword">int</span> c);
+    }
+
+    <span class="d_keyword">class</span> Derived : Base
+    {
+        <span class="d_keyword">int</span> field;
+        @disable <span class="d_keyword">this</span>();
+        <span class="d_keyword">override</span> <span class="d_keyword">void</span> print3i(<span class="d_keyword">int</span> a, <span class="d_keyword">int</span> b, <span class="d_keyword">int</span> c);
+        <span class="d_keyword">final</span> <span class="d_keyword">int</span> mul(<span class="d_keyword">int</span> factor);
+    }
+
+    Derived createInstance(<span class="d_keyword">int</span> i);
+    <span class="d_keyword">void</span> deleteInstance(<span class="d_keyword">ref</span> Derived d);
+}
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">import</span> std.stdio;
+
+    <span class="d_keyword">auto</span> d1 = createInstance(5);
+    writeln(d1.field);
+    writeln(d1.mul(4));
+
+    Base b1 = d1;
+    b1.print3i(1, 2, 3);
+
+    deleteInstance(d1);
+    <span class="d_keyword">assert</span>(d1 <span class="d_keyword">is</span> <span class="d_keyword">null</span>);
+
+    <span class="d_keyword">auto</span> d2 = createInstance(42);
+    writeln(d2.field);
+
+    deleteInstance(d2);
+    <span class="d_keyword">assert</span>(d2 <span class="d_keyword">is</span> <span class="d_keyword">null</span>);
+}
+</pre>
+<div class="blankline"></div>
+<p>Compiling, linking, and running produces the output:</p>
+<div class="blankline"></div>
+<pre class="console notranslate">&gt; g++ base.cpp
+&gt; dmd main.d base.o -L-lstdc++ &amp;&amp; ./main
+5
+20
+a = 1
+b = 2
+c = 3
+42
+</pre>
+<div class="blankline"></div>
+<p>Note how in the above example, the constructor is not bindable and is
+instead disabled on the D side; an alternative would be to reimplement the
+constructor in D. See the <a href="../spec/cpp_interface.html#lifetime-management">section below on lifetime management</a> for more information.</p>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="using_d_classes_from_cpp" href="#using_d_classes_from_cpp">Using D Classes From C++</a></h3>
+<div class="blankline"></div>
+    <p>Given D code like:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">extern</span> (C++) <span class="d_keyword">int</span> callE(E);
+
+<span class="d_keyword">extern</span> (C++) <span class="d_keyword">interface</span> E
+{
+    <span class="d_keyword">int</span> bar(<span class="d_keyword">int</span> i, <span class="d_keyword">int</span> j, <span class="d_keyword">int</span> k);
+}
+
+<span class="d_keyword">class</span> F : E
+{
+    <span class="d_keyword">extern</span> (C++) <span class="d_keyword">int</span> bar(<span class="d_keyword">int</span> i, <span class="d_keyword">int</span> j, <span class="d_keyword">int</span> k)
+    {
+        <span class="d_keyword">import</span> std.stdio : writefln;
+        writefln(<span class="d_string">"i = %s"</span>, i);
+        writefln(<span class="d_string">"j = %s"</span>, j);
+        writefln(<span class="d_string">"k = %s"</span>, k);
+        <span class="d_keyword">return</span> 8;
+    }
+}
+
+<span class="d_keyword">void</span> main()
+{
+    F f = <span class="d_keyword">new</span> F();
+    callE(f);
+}
+</pre>
+<div class="blankline"></div>
+    <p>The C++ code to access it looks like:</p>
+<div class="blankline"></div>
+<pre class="cppcode notranslate">class E
+{
+  public:
+    virtual int bar(int i, int j, int k);
+};
+<div class="blankline"></div>
+<div class="blankline"></div>
+int callE(E *e)
+{
+    return e-&gt;bar(11, 12, 13);
+}
+</pre>
+<div class="blankline"></div>
+<pre class="console notranslate">&gt; dmd -c base.d
+&gt; g++ klass.cpp base.o -lphobos2 -pthread -o klass &amp;&amp; ./klass
+i = 11
+j = 12
+k = 13
+</pre>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="structs" href="#structs">Structs</a></h2>
+<div class="blankline"></div>
+    <p>C++ allows a struct to inherit from a base struct. This is done in D using
+    <span class="d_inlinecode donthyphenate notranslate">alias this</span>:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> Base { ... members ... };
+
+<span class="d_keyword">struct</span> Derived
+{
+    Base base;       <span class="d_comment">// make it the first field
+</span>    <span class="d_keyword">alias</span> base <span class="d_keyword">this</span>;
+
+    ... members ...
+}
+</pre>
+<div class="blankline"></div>
+    <p>In both C++ and D, if a struct has zero fields, the struct still has a
+    size of 1 byte. But, in C++ if the struct with zero fields is used as a base
+    struct, its size is zero (called the
+    <a href="https://en.cppreference.com/w/cpp/language/ebo">Empty Base Optimization</a>).
+    There are two methods for emulating this behavior in D.
+    The first forwards references to a function returning a faked reference to the base:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> Base { ... members ... };
+
+<span class="d_keyword">struct</span> DerivedStruct
+{
+    <span class="d_keyword">static</span> <span class="d_keyword">if</span> (Base.tupleof.length &gt; 0)
+        Base base;
+    <span class="d_keyword">else</span>
+        <span class="d_keyword">ref</span> <span class="d_keyword">inout</span>(Base) base() <span class="d_keyword">inout</span>
+        {
+            <span class="d_keyword">return</span> *<span class="d_keyword">cast</span>(<span class="d_keyword">inout</span>(Base)*)&amp;<span class="d_keyword">this</span>;
+        }
+    <span class="d_keyword">alias</span> base <span class="d_keyword">this</span>;
+
+    ... members ...
+}
+</pre>
+<div class="blankline"></div>
+    <p>The second makes use of template mixins:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">mixin</span> <span class="d_keyword">template</span> BaseMembers()
+{
+    <span class="d_keyword">void</span> memberFunction() { ... }
+}
+
+<span class="d_keyword">struct</span> Base
+{
+    <span class="d_keyword">mixin</span> BaseMembers!();
+}
+
+<span class="d_keyword">struct</span> Derived
+{
+    <span class="d_keyword">mixin</span> BaseMembers!();
+
+    ... members ...
+}
+</pre>
+<div class="blankline"></div>
+    <p>Note that the template mixin is evaluated in the context of its
+    instantiation, not declaration. If this is a problem, the template mixin
+    can use local imports, or have the member functions forward to the
+    actual functions.</p>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="cpp-templates" href="#cpp-templates">C++ Templates</a></h2>
+<div class="blankline"></div>
+    <p>C++ function and type templates can be bound by using the
+    <span class="d_inlinecode donthyphenate notranslate">extern (C++)</span> attribute on a function or type template declaration.</p>
+<div class="blankline"></div>
+    <p>Note that all instantiations used in D code must be provided by linking
+    to C++ object code or shared libraries containing the instantiations.</p>
+<div class="blankline"></div>
+    <p>For example:</p>
+<div class="blankline"></div>
+<pre class="cppcode notranslate">#include &lt;iostream&gt;
+<div class="blankline"></div>
+template&lt;class T&gt;
+struct Foo
+{
+    private:
+    T field;
+<div class="blankline"></div>
+    public:
+    Foo(T t) : field(t) {}
+    T get();
+    void set(T t);
+};
+<div class="blankline"></div>
+template&lt;class T&gt;
+T Foo&lt;T&gt;::get()
+{
+    return field;
+}
+<div class="blankline"></div>
+template&lt;class T&gt;
+void Foo&lt;T&gt;::set(T t)
+{
+    field = t;
+}
+<div class="blankline"></div>
+Foo&lt;int&gt; makeIntFoo(int i)
+{
+    return Foo&lt;int&gt;(i);
+}
+<div class="blankline"></div>
+Foo&lt;char&gt; makeCharFoo(char c)
+{
+    return Foo&lt;char&gt;(c);
+}
+<div class="blankline"></div>
+template&lt;class T&gt;
+void increment(Foo&lt;T&gt; &foo)
+{
+    foo.set(foo.get() + 1);
+}
+<div class="blankline"></div>
+template&lt;class T&gt;
+void printThreeNext(Foo&lt;T&gt; foo)
+{
+    for(size_t i = 0; i &lt; 3; ++i)
+    {
+        std::cout &lt;&lt; foo.get() &lt;&lt; std::endl;
+        increment(foo);
+    }
+}
+<div class="blankline"></div>
+// The following two functions ensure that the required instantiations of
+// printThreeNext are provided by this code module
+void printThreeNexti(Foo&lt;int&gt; foo)
+{
+    printThreeNext(foo);
+}
+<div class="blankline"></div>
+void printThreeNextc(Foo&lt;char&gt; foo)
+{
+    printThreeNext(foo);
+}
+</pre>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">extern</span>(C++):
+<span class="d_keyword">struct</span> Foo(T)
+{
+    <span class="d_keyword">private</span>:
+    T field;
+
+    <span class="d_keyword">public</span>:
+    @disable <span class="d_keyword">this</span>();
+    T get();
+    <span class="d_keyword">void</span> set(T t);
+}
+
+Foo!<span class="d_keyword">int</span> makeIntFoo(<span class="d_keyword">int</span> i);
+Foo!<span class="d_keyword">char</span> makeCharFoo(<span class="d_keyword">char</span> c);
+<span class="d_keyword">void</span> increment(T)(<span class="d_keyword">ref</span> Foo!T foo);
+<span class="d_keyword">void</span> printThreeNext(T)(Foo!T foo);
+
+<span class="d_keyword">extern</span>(D) <span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">auto</span> i = makeIntFoo(42);
+    <span class="d_keyword">assert</span>(i.get() == 42);
+    i.set(1);
+    increment(i);
+    <span class="d_keyword">assert</span>(i.get() == 2);
+
+    <span class="d_keyword">auto</span> c = makeCharFoo('a');
+    increment(c);
+    <span class="d_keyword">assert</span>(c.get() == 'b');
+
+    c.set('A');
+    printThreeNext(c);
+}
+</pre>
+<div class="blankline"></div>
+<p>Compiling, linking, and running produces the output:</p>
+<div class="blankline"></div>
+<pre class="console notranslate">&gt; g++ -c template.cpp
+&gt; dmd main.d template.o -L-lstdc++ &amp;&amp; ./main
+A
+B
+C
+</pre>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="function-overloading" href="#function-overloading">Function Overloading</a></h2>
+<div class="blankline"></div>
+    <p>C++ and D follow different rules for function overloading.
+    D source code, even when calling <span class="d_inlinecode donthyphenate notranslate">extern (C++)</span> functions,
+    will still follow D overloading rules.
+    </p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="memory-allocation" href="#memory-allocation">Memory Allocation</a></h2>
+<div class="blankline"></div>
+    <p>C++ code explicitly manages memory with calls to
+    <span class="d_inlinecode donthyphenate notranslate">::operator new()</span> and <span class="d_inlinecode donthyphenate notranslate">::operator delete()</span>.
+    D's <span class="d_inlinecode donthyphenate notranslate">new</span> operator allocates memory using the D garbage collector,
+    so no explicit delete is necessary. D's <span class="d_inlinecode donthyphenate notranslate">new</span> operator is not
+    compatible with C++'s <span class="d_inlinecode donthyphenate notranslate">::operator new</span> and <span class="d_inlinecode donthyphenate notranslate">::operator delete</span>.
+    Attempting to allocate memory with D's <span class="d_inlinecode donthyphenate notranslate">new</span> and deallocate with
+    C++ <span class="d_inlinecode donthyphenate notranslate">::operator delete</span> will result in miserable failure.
+    </p>
+<div class="blankline"></div>
+    <p>D can explicitly manage memory using a variety of library tools, such as
+    with <a href="../phobos/std_experimental_allocator.html"><span class="d_inlinecode donthyphenate notranslate">std.experimental.allocator</span></a>. Additionally,
+    <span class="d_inlinecode donthyphenate notranslate">core.stdc.stdlib.malloc</span> and <span class="d_inlinecode donthyphenate notranslate">core.stdc.stdlib.free</span> can be
+    used directly for connecting to C++ functions that expect <span class="d_inlinecode donthyphenate notranslate">malloc</span>'d
+    buffers.
+    </p>
+<div class="blankline"></div>
+    <p>If pointers to memory allocated on the D garbage collector heap are
+    passed to C++ functions, it's critical to ensure that the referenced memory
+    will not be collected by the D garbage collector before the C++ function is
+    done with it. This is accomplished by:
+    </p>
+<div class="blankline"></div>
+    <ul><div class="blankline"></div>
+    <li>Making a copy of the data using
+    <a href="../phobos/std_experimental_allocator.html"><span class="d_inlinecode donthyphenate notranslate">std.experimental.allocator</span></a> or <span class="d_inlinecode donthyphenate notranslate">core.stdc.stdlib.malloc</span>
+    and passing the copy instead.</li>
+<div class="blankline"></div>
+    <li>Leaving a pointer to it on the stack (as a parameter or
+    automatic variable), as the garbage collector will scan the stack.</li>
+<div class="blankline"></div>
+    <li>Leaving a pointer to it in the static data segment, as the
+    garbage collector will scan the static data segment.</li>
+<div class="blankline"></div>
+    <li>Registering the pointer with the garbage collector using the
+    <span class="d_inlinecode donthyphenate notranslate">core.memory.GC.addRoot</span> or <span class="d_inlinecode donthyphenate notranslate">core.memory.GC.addRange</span>
+    functions.</li>
+<div class="blankline"></div>
+    </ul>
+<div class="blankline"></div>
+    <p>An interior pointer to the allocated memory block is sufficient to let
+    the GC know the object is in use; i.e. it is not necessary to maintain
+    a pointer to the <i>beginning</i> of the allocated memory.
+    </p>
+<div class="blankline"></div>
+    <p>The garbage collector does not scan the stacks of threads not
+    registered with the D runtime, nor does it scan the data segments of
+    shared libraries that aren't registered with the D runtime.
+    </p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="data-type-compatibility" href="#data-type-compatibility">Data Type Compatibility</a></h2>
+<div class="blankline"></div>
+    <center><table><caption>D And C++ Type Equivalence</caption><div class="blankline"></div>
+    <tr><th class="donthyphenate"><b>D type</b></th><th class="donthyphenate"><b>C++ type</b></th></tr>
+<div class="blankline"></div>
+    <tr><td>    <b>void</b></td><td>    <b>void</b>
+    </td></tr>
+<div class="blankline"></div>
+    <tr><td>    <b>byte</b></td><td>    <b>signed char</b>
+    </td></tr>
+<div class="blankline"></div>
+    <tr><td>    <b>ubyte</b></td><td>    <b>unsigned char</b>
+    </td></tr>
+<div class="blankline"></div>
+    <tr><td>    <b>char</b></td><td>    <b>char</b> (chars are unsigned in D)
+    </td></tr>
+<div class="blankline"></div>
+    <tr><td>    <span class="d_inlinecode donthyphenate notranslate">core.stdc.stddef.wchar_t</span></td><td>    <span class="d_inlinecode donthyphenate notranslate">wchar_t</span>
+    </td></tr>
+<div class="blankline"></div>
+    <tr><td>    <b>short</b></td><td>    <b>short</b>
+    </td></tr>
+<div class="blankline"></div>
+    <tr><td>    <b>ushort</b></td><td>    <b>unsigned short</b>
+    </td></tr>
+<div class="blankline"></div>
+    <tr><td>    <b>int</b></td><td>    <b>int</b>
+    </td></tr>
+<div class="blankline"></div>
+    <tr><td>    <b>uint</b></td><td>    <b>unsigned</b>
+    </td></tr>
+<div class="blankline"></div>
+    <tr><td>    <b>long</b></td><td>    <b>long</b> if it is 64 bits wide, otherwise <b>long long</b>
+    </td></tr>
+<div class="blankline"></div>
+    <tr><td>    <b>ulong</b></td><td>    <b>unsigned long</b> if it is 64 bits wide, otherwise <b>unsigned long long</b>
+    </td></tr>
+<div class="blankline"></div>
+    <tr><td>    <span class="d_inlinecode donthyphenate notranslate">core.stdc.config.cpp_long</span></td><td>    <b>long</b>
+    </td></tr>
+<div class="blankline"></div>
+    <tr><td>    <span class="d_inlinecode donthyphenate notranslate">core.stdc.config.cpp_ulong</span></td><td>    <b>unsigned long</b>
+    </td></tr>
+<div class="blankline"></div>
+    <tr><td>    <b>float</b></td><td>    <b>float</b>
+    </td></tr>
+<div class="blankline"></div>
+    <tr><td>    <b>double</b></td><td>    <b>double</b>
+    </td></tr>
+<div class="blankline"></div>
+    <tr><td>    <b>real</b></td><td>    <b>long double</b>
+    </td></tr>
+<div class="blankline"></div>
+    <tr><td>    <span class="d_inlinecode donthyphenate notranslate">extern (C++)</span> <b>struct</b></td><td>    <b>struct</b> or <b>class</b>
+    </td></tr>
+<div class="blankline"></div>
+    <tr><td>    <span class="d_inlinecode donthyphenate notranslate">extern (C++)</span> <b>class</b></td><td>    <b>struct</b> or <b>class</b>
+    </td></tr>
+<div class="blankline"></div>
+    <tr><td>    <span class="d_inlinecode donthyphenate notranslate">extern (C++)</span> <b>interface</b></td><td>    <b>struct</b> or <b>class</b> with no member fields
+    </td></tr>
+<div class="blankline"></div>
+    <tr><td>    <b>union</b></td><td>    <b>union</b>
+    </td></tr>
+<div class="blankline"></div>
+    <tr><td>    <b>enum</b></td><td>    <b>enum</b>
+    </td></tr>
+<div class="blankline"></div>
+    <tr><td>    <i>type</i><b>*</b></td><td>    <i>type</i> <b>*</b>
+    </td></tr>
+<div class="blankline"></div>
+    <tr><td>    <b>ref</b> <i>type</i> (in parameter lists only)</td><td>    <i>type</i> <span class="d_inlinecode donthyphenate notranslate">&amp;</span>
+    </td></tr>
+<div class="blankline"></div>
+    <tr><td>    <i>type</i><b>[</b><i>dim</i><b>]</b></td><td>    <i>type</i><b>[</b><i>dim</i><b>]</b>
+    </td></tr>
+<div class="blankline"></div>
+    <tr><td>    <i>type</i><b>[</b><i>dim</i><b>]*</b></td><td>    <i>type</i><b>(*)[</b><i>dim</i><b>]</b>
+    </td></tr>
+<div class="blankline"></div>
+    <tr><td>    <i>type</i><b>[]</b></td><td>    no equivalent
+    </td></tr>
+<div class="blankline"></div>
+    <tr><td>    <i>type</i><b>[</b><i>type</i><b>]</b></td><td>    no equivalent
+    </td></tr>
+<div class="blankline"></div>
+    <tr><td>    <i>type</i> <b>function</b><b>(</b><i>parameters</i><b>)</b></td><td>    <i>type</i><b>(*)</b><b>(</b><i>parameters</i><b>)</b>
+    </td></tr>
+<div class="blankline"></div>
+    <tr><td>    <i>type</i> <b>delegate</b><b>(</b><i>parameters</i><b>)</b></td><td>    no equivalent
+    </td></tr>
+    </table></center>
+<div class="blankline"></div>
+    <p>These equivalents hold when the D and C++ compilers used are companions
+    on the host platform.</p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="packing-and-alignment" href="#packing-and-alignment">Packing and Alignment</a></h2>
+<div class="blankline"></div>
+    <p>D structs and unions are analogous to C's.
+    </p>
+<div class="blankline"></div>
+    <p>C code often adjusts the alignment and packing of struct members
+    with a command line switch or with various implementation specific
+    #pragmas. D supports explicit alignment attributes that correspond
+    to the C compiler's rules. Check what alignment the C code is using,
+    and explicitly set it for the D struct declaration.
+    </p>
+<div class="blankline"></div>
+    <p>D supports bitfields in the standard library: see
+    <a href="../phobos/std_bitmanip.html#.bitfields"><span class="d_inlinecode donthyphenate notranslate">std.bitmanip.bitfields</span></a>.
+    </p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="lifetime-management" href="#lifetime-management">Lifetime Management</a></h2>
+<div class="blankline"></div>
+    <p>C++ constructors, copy constructors, move constructors and destructors
+    cannot be called directly in D code, and D constructors, postblit operators
+    and destructors cannot be directly exported to C++ code. Interoperation of
+    types with these special operators is possible by either 1)
+    disabling the operator in the client language and only using it in the host
+    language, or 2) faithfully reimplementing the operator in the
+    client language. With the latter approach, care needs to be taken to ensure
+    observable semantics remain the same with both implementations, which can be
+    difficult, or in some edge cases impossible, due to differences in how the
+    operators work in the two languages. For example, in D all objects are
+    movable and there is no move constructor.</p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="special-member-functions" href="#special-member-functions">Special Member Functions</a></h2>
+<div class="blankline"></div>
+    <p>D cannot directly call C++ special member functions, and vice versa.
+    These include constructors, destructors, conversion operators,
+    operator overloading, and allocators.
+    </p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="rtti" href="#rtti">Runtime Type Identification</a></h2>
+<div class="blankline"></div>
+    <p>D runtime type identification
+    uses completely different techniques than C++.
+    The two are incompatible.</p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="exception-handling" href="#exception-handling">Exception Handling</a></h2>
+<div class="blankline"></div>
+    <p>Exception interoperability is a work in progress.</p>
+<div class="blankline"></div>
+    <p>At present, C++ exceptions cannot be caught in or thrown from D, and D
+    exceptions cannot be caught in or thrown from C++. Additionally, objects
+    in C++ stack frames are not guaranteed to be destroyed when unwinding the
+    stack due to a D exception, and vice versa.</p>
+<div class="blankline"></div>
+    <p>The plan is to support all of the above except throwing D exceptions
+    directly in C++ code (but they will be throwable indirectly by calling into
+    a D function with C++ linkage).</p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="comparing-d-immutable-and-const-with-cpp-const" href="#comparing-d-immutable-and-const-with-cpp-const">Comparing D Immutable and Const with C++ Const</a></h2><div class="blankline"></div>
+<center><table><caption>Const, Immutable Comparison</caption>   <tr><th class="donthyphenate"><b>Feature</b></th><th class="donthyphenate"><b>D</b></th><th class="donthyphenate"><b>C++98</b></th></tr>
+    <tr><td><span class="d_inlinecode donthyphenate notranslate">const</span> keyword</td><td>Yes</td><td>Yes</td></tr>
+    <tr><td><span class="d_inlinecode donthyphenate notranslate">immutable</span> keyword</td><td>Yes</td><td>No</td></tr>
+    <tr><td>const notation</td><td><pre class="d_code notranslate"><span class="d_comment">// Functional:
+</span><span class="d_comment">//ptr to const ptr to const int
+</span><span class="d_keyword">const</span>(<span class="d_keyword">int</span>*)* p;
+</pre>
+</td><td><pre class="cppcode notranslate">// Postfix:
+//ptr to const ptr to const int
+const int *const *p;
+</pre>
+    </td></tr>
+<div class="blankline"></div>
+    <tr><td>transitive const</td><td><pre class="d_code notranslate"><span class="d_comment">// Yes:
+</span><span class="d_comment">//const ptr to const ptr to const int
+</span><span class="d_keyword">const</span> <span class="d_keyword">int</span>** p;
+**p = 3; <span class="d_comment">// error
+</span></pre>
+</td><td><pre class="cppcode notranslate">// No:
+// const ptr to ptr to int
+int** const p;
+**p = 3;    // ok
+</pre>
+    </td></tr>
+<div class="blankline"></div>
+    <tr><td>cast away const</td><td><pre class="d_code notranslate"><span class="d_comment">// Yes:
+</span><span class="d_comment">// ptr to const int
+</span><span class="d_keyword">const</span>(<span class="d_keyword">int</span>)* p;
+<span class="d_keyword">int</span>* q = <span class="d_keyword">cast</span>(<span class="d_keyword">int</span>*)p; <span class="d_comment">// ok
+</span></pre>
+</td><td><pre class="cppcode notranslate">// Yes:
+// ptr to const int
+const int* p;
+int* q = const_cast&lt;int*&gt;p; //ok
+</pre>
+    </td></tr>
+<div class="blankline"></div>
+    <tr><td>cast+mutate</td><td><pre class="d_code notranslate"><span class="d_comment">// No:
+</span><span class="d_comment">// ptr to const int
+</span><span class="d_keyword">const</span>(<span class="d_keyword">int</span>)* p;
+<span class="d_keyword">int</span>* q = <span class="d_keyword">cast</span>(<span class="d_keyword">int</span>*)p;
+*q = 3;   <span class="d_comment">// undefined behavior
+</span></pre>
+</td><td><pre class="cppcode notranslate">// Yes:
+// ptr to const int
+const int* p;
+int* q = const_cast&lt;int*&gt;p;
+*q = 3;   // ok
+</pre>
+    </td></tr>
+<div class="blankline"></div>
+    <tr><td>overloading</td><td><pre class="d_code notranslate"><span class="d_comment">// Yes:
+</span><span class="d_keyword">void</span> foo(<span class="d_keyword">int</span> x);
+<span class="d_keyword">void</span> foo(<span class="d_keyword">const</span> <span class="d_keyword">int</span> x);  <span class="d_comment">//ok
+</span></pre>
+</td><td><pre class="cppcode notranslate">// No:
+void foo(int x);
+void foo(const int x);  //error
+</pre>
+    </td></tr>
+<div class="blankline"></div>
+    <tr><td>const/mutable aliasing</td><td><pre class="d_code notranslate"><span class="d_comment">// Yes:
+</span><span class="d_keyword">void</span> foo(<span class="d_keyword">const</span> <span class="d_keyword">int</span>* x, <span class="d_keyword">int</span>* y)
+{
+    bar(*x); <span class="d_comment">// bar(3)
+</span>    *y = 4;
+    bar(*x); <span class="d_comment">// bar(4)
+</span>}
+...
+<span class="d_keyword">int</span> i = 3;
+foo(&amp;i, &amp;i);
+</pre>
+</td><td><pre class="cppcode notranslate">// Yes:
+void foo(const int* x, int* y)
+{
+    bar(*x); // bar(3)
+    *y = 4;
+    bar(*x); // bar(4)
+}
+...
+int i = 3;
+foo(&i, &i);
+</pre>
+    </td></tr>
+<div class="blankline"></div>
+    <tr><td>immutable/mutable aliasing</td><td><pre class="d_code notranslate"><span class="d_comment">// No:
+</span><span class="d_keyword">void</span> foo(<span class="d_keyword">immutable</span> <span class="d_keyword">int</span>* x, <span class="d_keyword">int</span>* y)
+{
+    bar(*x); <span class="d_comment">// bar(3)
+</span>    *y = 4;  <span class="d_comment">// undefined behavior
+</span>    bar(*x); <span class="d_comment">// bar(??)
+</span>}
+...
+<span class="d_keyword">int</span> i = 3;
+foo(<span class="d_keyword">cast</span>(<span class="d_keyword">immutable</span>)&amp;i, &amp;i);
+</pre>
+</td><td>    No immutables
+    </td></tr>
+<div class="blankline"></div>
+    <tr><td>type of string literal</td><td>    <span class="d_inlinecode donthyphenate notranslate">immutable(char)[]</span></td><td>    <span class="d_inlinecode donthyphenate notranslate">const char*</span>
+    </td></tr>
+<div class="blankline"></div>
+<div class="blankline"></div>
+    <tr><td>string literal to non-const</td><td>    not allowed</td><td>    allowed, but deprecated
+    </td></tr>
+</table></center>
+
+<div class="blankline"></div>
+
+<div style="float: left"><i class="fa fa-angle-left" aria-hidden="true"></i> <a href="../spec/interfaceToC.html">Interfacing to C</a></div>
+<div style="float: right"><a href="../spec/objc_interface.html">Interfacing to Objective-C</a> <i class="fa fa-angle-right" aria-hidden="true"></i></div>
+<div style="clear:both"></div>
+
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on (no date time)</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<script type="text/javascript" src="../js/listanchors.js"></script>
+<script type="text/javascript">jQuery(document).ready(addVersionSelector);</script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

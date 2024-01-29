@@ -1,0 +1,1194 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Constructor and Other Special Functions - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Constructor and Other Special Functions' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BConstructor and Other Special Functions%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/d.en/special_functions.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Constructor and Other Special Functions</h1>
+        
+        
+
+
+
+<p>Although this chapter focuses only on structs, the topics that are covered here apply mostly to classes as well. The differences will be explained in later chapters.
+</p>
+
+<p>Four member functions of structs are special because they define the fundamental operations of that type:
+</p>
+<ul><li>Constructor: <code class="d_inline">this()</code></li>
+<li>Destructor: <code class="d_inline">~this()</code></li>
+<li>Postblit: <code class="d_inline">this(this)</code></li>
+<li>Assignment operator: <code class="d_inline">opAssign()</code></li>
+</ul>
+
+<p>Although these fundamental operations are handled automatically for structs, hence need not be defined by the programmer, they can be overridden to make the <code class="d_inline">struct</code> behave in special ways.
+</p>
+
+<h5 class="subsection"><a id="ix_Constructor and Other Special Functions.constructor" content="constructor"></a> <a id="ix_Constructor and Other Special Functions.this, constructor" content="this, constructor"></a> Constructor</h5>
+
+<p>The responsibility of the constructor is to prepare an object for use by assigning appropriate values to its members.
+</p>
+
+<p>We have already used constructors in previous chapters. When the name of a type is used like a function, it is actually the constructor that gets called. We can see this on the right-hand side of the following line:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> busArrival = <span class="hilite">TimeOfDay</span>(8, 30);
+</pre>
+
+<p>Similarly, a <i>class</i> object is being constructed on the right hand side of the following line:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> variable = <span class="d_keyword">new</span> <span class="hilite">SomeClass()</span>;
+</pre>
+
+<p>The arguments that are specified within parentheses correspond to the constructor parameters. For example, the values 8 and 30 above are passed to the <code class="d_inline">TimeOfDay</code> constructor as its parameters.
+</p>
+
+<p>In addition to different object construction syntaxes that we have seen so far; <code class="d_inline">const</code>, <code class="d_inline">immutable</code>, and <code class="d_inline">shared</code> objects can be constructed with the <i>type constructor</i> syntax as well (e.g. as <code class="d_inline">immutable(S)(2)</code>). (We will see the <code class="d_inline">shared</code> keyword in <a href="concurrency_shared.html">a later chapter</a>.)
+</p>
+
+<p>For example, although all three variables below are <code class="d_inline">immutable</code>, the construction of variable <code class="d_inline">a</code> is semantically different from the constructions of variables <code class="d_inline">b</code> and <code class="d_inline">c</code>:
+</p>
+
+<pre class="d_code">    <span class="d_comment">/* More familiar syntax; immutable variable of a mutable
+     * type: */</span>
+    <span class="hilite"><span class="d_keyword">immutable</span></span> a = S(1);
+
+    <span class="d_comment">/* Type constructor syntax; a variable of an immutable
+     * type: */</span>
+    <span class="d_keyword">auto</span> b = <span class="hilite"><span class="d_keyword">immutable</span>(S)</span>(2);
+
+    <span class="d_comment">/* Same meaning as 'b' */</span>
+    <span class="d_keyword">immutable</span> c = <span class="hilite"><span class="d_keyword">immutable</span>(S)</span>(3);
+</pre>
+
+<h6>Constructor syntax</h6>
+
+<p>Different from other functions, constructors do not have return values. The name of the constructor is always <code class="d_inline">this</code>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> SomeStruct {
+    <span class="d_comment">// ...
+</span>
+    <span class="d_keyword">this</span>(<span class="d_comment">/* constructor parameters */</span>) {
+        <span class="d_comment">// ... operations that prepare the object for use ...
+</span>    }
+}
+</pre>
+
+<p>The constructor parameters include information that is needed to make a useful and consistent object.
+</p>
+
+<h6><a id="ix_Constructor and Other Special Functions.automatic constructor" content="automatic constructor"></a> <a id="ix_Constructor and Other Special Functions.default constructor" content="default constructor"></a> Compiler-generated automatic constructor</h6>
+
+<p>All of the structs that we have seen so far have been taking advantage of a constructor that has been generated automatically by the compiler. The automatic constructor assigns the parameter values to the members in the order that they are specified.
+</p>
+
+<p>As you will remember from <a href="struct.html">the Structs chapter</a>, the initial values for the trailing members need not be specified. The members that are not specified get initialized by the <code class="d_inline">.init</code> value of their respective types.  The <code class="d_inline">.init</code> values of a member could be provided during the definition of that member after the <code class="d_inline">=</code> operator:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Test {
+    <span class="d_keyword">int</span> member <span class="hilite">= 42</span>;
+}
+</pre>
+
+<p>Also considering the <i>default parameter values</i> feature from <a href="parameter_flexibility.html">the Variable Number of Parameters chapter</a>, we can imagine that the automatic constructor for the following <code class="d_inline">struct</code> would be the equivalent of the following <code class="d_inline">this()</code>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Test {
+    <span class="d_keyword">char</span>   c;
+    <span class="d_keyword">int</span>    i;
+    <span class="d_keyword">double</span> d;
+
+    <span class="d_comment">/* The equivalent of the compiler-generated automatic
+     * constructor (Note: This is only for demonstration; the
+     * following constructor would not actually be called
+     * when default-constructing the object as Test().) */</span>
+    <span class="d_keyword">this</span>(<span class="d_keyword">char</span>   c_parameter = <span class="d_keyword">char</span>.init,
+         <span class="d_keyword">int</span>    i_parameter = <span class="d_keyword">int</span>.init,
+         <span class="d_keyword">double</span> d_parameter = <span class="d_keyword">double</span>.init) {
+        c = c_parameter;
+        i = i_parameter;
+        d = d_parameter;
+    }
+}
+</pre>
+
+<p>For most structs, the compiler-generated constructor is sufficient: Usually, providing appropriate values for each member is all that is needed for objects to be constructed.
+</p>
+
+<h6><a id="ix_Constructor and Other Special Functions.this, member access" content="this, member access"></a> Accessing the members by <code class="d_inline">this.</code></h6>
+
+<p>To avoid mixing the parameters with the members, the parameter names above had <code class="d_inline">_parameter</code> appended to their names. There would be compilation errors without doing that:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Test {
+    <span class="d_keyword">char</span>   c;
+    <span class="d_keyword">int</span>    i;
+    <span class="d_keyword">double</span> d;
+
+    <span class="d_keyword">this</span>(<span class="d_keyword">char</span>   c = <span class="d_keyword">char</span>.init,
+         <span class="d_keyword">int</span>    i = <span class="d_keyword">int</span>.init,
+         <span class="d_keyword">double</span> d = <span class="d_keyword">double</span>.init) {
+        <span class="d_comment">// An attempt to assign an 'in' parameter to itself!
+</span>        c = c;    <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+        i = i;
+        d = d;
+    }
+}
+</pre>
+
+<p>The reason is; <code class="d_inline">c</code> alone would mean the parameter, not the member, and as the parameters above are defined as <code class="d_inline">in</code>, they cannot be modified:
+</p>
+
+<pre class="shell">Error: variable deneme.Test.this.c <span class="hilite">cannot modify const</span>
+</pre>
+
+<p>A solution is to prepend the member names with <code class="d_inline">this.</code>. Inside member functions, <code class="d_inline">this</code> means "this object", making <code class="d_inline">this.c</code> mean "the c member of this object":
+</p>
+
+<pre class="d_code">    <span class="d_keyword">this</span>(<span class="d_keyword">char</span>   c = <span class="d_keyword">char</span>.init,
+         <span class="d_keyword">int</span>    i = <span class="d_keyword">int</span>.init,
+         <span class="d_keyword">double</span> d = <span class="d_keyword">double</span>.init) {
+        <span class="hilite"><span class="d_keyword">this</span>.</span>c = c;
+        <span class="hilite"><span class="d_keyword">this</span>.</span>i = i;
+        <span class="hilite"><span class="d_keyword">this</span>.</span>d = d;
+    }
+</pre>
+
+<p>Now <code class="d_inline">c</code> alone means the parameter and <code class="d_inline">this.c</code> means the member, and the code compiles and works as expected: The member <code class="d_inline">c</code> gets initialized by the value of the parameter <code class="d_inline">c</code>.
+</p>
+
+<h6><a id="ix_Constructor and Other Special Functions.user defined constructor" content="user defined constructor"></a> User-defined constructors</h6>
+
+<p>I have described the behavior of the compiler-generated constructor. Since that constructor is suitable for most cases, there is no need to define a constructor by hand.
+</p>
+
+<p>Still, there are cases where constructing an object involves more complicated operations than assigning values to each member in order. As an example, let's consider <code class="d_inline">Duration</code> from the earlier chapters:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Duration {
+    <span class="d_keyword">int</span> minute;
+}
+</pre>
+
+<p>The compiler-generated constructor is sufficient for this single-member struct:
+</p>
+
+<pre class="d_code">    time.decrement(Duration(12));
+</pre>
+
+<p>Since that constructor takes the duration in minutes, the programmers would sometimes need to make calculations:
+</p>
+
+<pre class="d_code">    <span class="d_comment">// 23 hours and 18 minutes earlier
+</span>    time.decrement(Duration(23 * 60 + 18));
+
+    <span class="d_comment">// 22 hours and 20 minutes later
+</span>    time.increment(Duration(22 * 60 + 20));
+</pre>
+
+<p>To eliminate the need for these calculations, we can design a <code class="d_inline">Duration</code> constructor that takes two parameters and makes the calculation automatically:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Duration {
+    <span class="d_keyword">int</span> minute;
+
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> hour, <span class="d_keyword">int</span> minute) {
+        <span class="d_keyword">this</span>.minute = hour * 60 + minute;
+    }
+}
+</pre>
+
+<p>Since hour and minute are now separate parameters, the users simply provide their values without needing to make the calculation themselves:
+</p>
+
+<pre class="d_code">    <span class="d_comment">// 23 hours and 18 minutes earlier
+</span>    time.decrement(Duration(<span class="hilite">23, 18</span>));
+
+    <span class="d_comment">// 22 hours and 20 minutes later
+</span>    time.increment(Duration(<span class="hilite">22, 20</span>));
+</pre>
+
+<h6>First assignment to a member is construction</h6>
+
+<p>When setting values of members in a constructor, the first assignment to each member is treated specially: Instead of assigning a new value over the <code class="d_inline">.init</code> value of that member, the first assignment actually constructs that member. Further assignments to that member are treated regularly as assignment operations.
+</p>
+
+<p>This special behavior is necessary so that <code class="d_inline">immutable</code> and <code class="d_inline">const</code> members can in fact be constructed with values known only at run time. Otherwise, they could never be set to desired values as assignment is disallowed for <code class="d_inline">immutable</code> and <code class="d_inline">const</code> variables.
+</p>
+
+<p>The following program demonstrates how assigment operation is allowed only once for an <code class="d_inline">immutable</code> member:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> S {
+    <span class="d_keyword">int</span> m;
+    <span class="d_keyword">immutable</span> <span class="d_keyword">int</span> i;
+
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> m, <span class="d_keyword">int</span> i) {
+        <span class="d_keyword">this</span>.m = m;     <span class="d_comment">// ← construction</span>
+        <span class="d_keyword">this</span>.m = 42;    <span class="d_comment">// ← assignment (possible <span class="d_keyword">for</span> mutable member)</span>
+
+        <span class="d_keyword">this</span>.i = i;     <span class="d_comment">// ← construction</span>
+        <span class="d_keyword">this</span>.i = i;     <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> s = S(1, 2);
+}
+</pre>
+
+<h6>User-defined constructor disables compiler-generated constructor</h6>
+
+<p>A constructor that is defined by the programmer makes some uses of the compiler-generated constructor invalid: Objects cannot be constructed by <i>default parameter values</i> anymore. For example, trying to construct <code class="d_inline">Duration</code> by a single parameter is a compilation error:
+</p>
+
+<pre class="d_code">    time.decrement(Duration(12));    <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+</pre>
+
+<p>Calling the constructor with a single parameter does not match the programmer's constructor and the compiler-generated constructor is disabled.
+</p>
+
+<p>One solution is to <i>overload</i> the constructor by providing another constructor that takes just one parameter:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Duration {
+    <span class="d_keyword">int</span> minute;
+
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> hour, <span class="d_keyword">int</span> minute) {
+        <span class="d_keyword">this</span>.minute = hour * 60 + minute;
+    }
+
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> minute) {
+        <span class="d_keyword">this</span>.minute = minute;
+    }
+}
+</pre>
+
+<p>A user-defined constructor disables constructing objects by the <code class="d_inline">{&nbsp;}</code> syntax as well:
+</p>
+
+<pre class="d_code">    Duration duration = { 5 };    <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+</pre>
+
+<p>Initializing without providing any parameter is still valid:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> d = Duration();    <span class="d_comment">// compiles
+</span></pre>
+
+<p>The reason is, in D, the <code class="d_inline">.init</code> value of every type must be known at compile time. The value of <code class="d_inline">d</code> above is equal to the initial value of <code class="d_inline">Duration</code>:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">assert</span>(d == Duration.init);
+</pre>
+
+<h6><a id="ix_Constructor and Other Special Functions.static opCall" content="static opCall"></a> <a id="ix_Constructor and Other Special Functions.opCall, static" content="opCall, static"></a> <code class="d_inline">static opCall</code> instead of the default constructor</h6>
+
+<p>Because the initial value of every type must be known at compile time, it is impossible to define the default constructor explicitly.
+</p>
+
+<p>Let's consider the following constructor that tries to print some information every time an object of that type is constructed:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Test {
+    <span class="d_keyword">this</span>() {    <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+        writeln(<span class="d_string">"A Test object is being constructed."</span>);
+    }
+}
+</pre>
+
+<p>The compiler output:
+</p>
+
+<pre class="shell">Error: constructor deneme.Deneme.this default constructor for
+structs only allowed with @disable and no body
+</pre>
+
+<p><i><b>Note:</b> We will see in later chapters that it is possible to define the default constructor for classes.
+</i></p>
+
+<p>As a workaround, a no-parameter <code class="d_inline">static opCall()</code> can be used for constructing objects without providing any parameters. Note that this has no effect on the <code class="d_inline">.init</code> value of the type.
+</p>
+
+<p>For this to work, <code class="d_inline">static opCall()</code> must construct and return an object of that struct type:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">struct</span> Test {
+    <span class="hilite"><span class="d_keyword">static</span></span> Test <span class="hilite">opCall</span>() {
+        writeln(<span class="d_string">"A Test object is being constructed."</span>);
+        Test test;
+        <span class="d_keyword">return</span> test;
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> test = <span class="hilite">Test()</span>;
+}
+</pre>
+
+<p>The <code class="d_inline">Test()</code> call in <code class="d_inline">main()</code> executes <code class="d_inline">static opCall()</code>:
+</p>
+
+<pre class="shell">A Test object is being constructed.
+</pre>
+
+<p>Note that it is not possible to type <code class="d_inline">Test()</code> inside <code class="d_inline">static opCall()</code>. That syntax would execute <code class="d_inline">static opCall()</code> as well and cause an infinite recursion:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">static</span> Test opCall() {
+        writeln(<span class="d_string">"A Test object is being constructed."</span>);
+        <span class="d_keyword">return</span> <span class="hilite">Test()</span>;    <span class="d_comment">// ← Calls 'static opCall()' again
+</span>    }
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">A Test object is being constructed.
+A Test object is being constructed.
+A Test object is being constructed.
+...    <span class="shell_note">← repeats the same message</span>
+</pre>
+
+<h6>Calling other constructors</h6>
+
+<p>Constructors can call other constructors to avoid code duplication. Although <code class="d_inline">Duration</code> is too simple to demonstrate how useful this feature is, the following single-parameter constructor takes advantage of the two-parameter constructor:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> hour, <span class="d_keyword">int</span> minute) {
+        <span class="d_keyword">this</span>.minute = hour * 60 + minute;
+    }
+
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> minute) {
+        <span class="d_keyword">this</span>(0, minute);    <span class="d_comment">// calls the other constructor
+</span>    }
+</pre>
+
+<p>The constructor that only takes the minute value calls the other constructor by passing 0 as the value of hour.
+</p>
+
+<p><i><b>Warning:</b> There is a design flaw in the <code class="d_inline">Duration</code> constructors above because the intention is not clear when the objects are constructed by a single parameter</i>:
+</p>
+
+<pre class="d_code">    <span class="d_comment">// 10 hours or 10 minutes?
+</span>    <span class="d_keyword">auto</span> travelDuration = Duration(10);
+</pre>
+
+<p>Although it is possible to determine by reading the documentation or the code of the struct that the parameter actually means "10 minutes," it is an inconsistency as the first parameter of the two-parameter constructor is <i>hours</i>.
+</p>
+
+<p>Such design mistakes are causes of bugs and must be avoided.
+</p>
+
+<h6><a id="ix_Constructor and Other Special Functions.constructor qualifier" content="constructor qualifier"></a> <a id="ix_Constructor and Other Special Functions.qualifier, constructor" content="qualifier, constructor"></a> Constructor qualifiers</h6>
+
+<p>Normally, the same constructor is used for <i>mutable</i>, <code class="d_inline">const</code>, <code class="d_inline">immutable</code>, and <code class="d_inline">shared</code> objects:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">struct</span> S {
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> i) {
+        writeln(<span class="d_string">"Constructing an object"</span>);
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> m = S(1);
+    <span class="d_keyword">const</span> c = S(2);
+    <span class="d_keyword">immutable</span> i = S(3);
+    <span class="d_keyword">shared</span> s = S(4);
+}
+</pre>
+
+<p>Semantically, the objects that are constructed on the right-hand sides of those expressions are all mutable but the variables have different type qualifiers. The same constructor is used for all of them:
+</p>
+
+<pre class="shell">Constructing an object
+Constructing an object
+Constructing an object
+Constructing an object
+</pre>
+
+<p>Depending on the qualifier of the resulting object, sometimes some members may need to be initialized differently or need not be initialized at all. For example, since no member of an <code class="d_inline">immutable</code> object can be mutated throughout the lifetime of that object, leaving its mutable members uninitialized can improve program performance.
+</p>
+
+<p><i>Qualified constructors</i> can be defined differently for objects with different qualifiers:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">struct</span> S {
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> i) {
+        writeln(<span class="d_string">"Constructing an object"</span>);
+    }
+
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> i) <span class="hilite"><span class="d_keyword">const</span></span> {
+        writeln(<span class="d_string">"Constructing a const object"</span>);
+    }
+
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> i) <span class="hilite"><span class="d_keyword">immutable</span></span> {
+        writeln(<span class="d_string">"Constructing an immutable object"</span>);
+    }
+
+    <span class="d_comment">// We will see the 'shared' keyword in a later chapter.
+</span>    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> i) <span class="hilite"><span class="d_keyword">shared</span></span> {
+        writeln(<span class="d_string">"Constructing a shared object"</span>);
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> m = S(1);
+    <span class="d_keyword">const</span> c = S(2);
+    <span class="d_keyword">immutable</span> i = S(3);
+    <span class="d_keyword">shared</span> s = S(4);
+}
+</pre>
+
+<p>However, as indicated above, as the right-hand side expressions are all semantically mutable, those objects are still constructed with the <i>mutable</i> object contructor:
+</p>
+
+<pre class="shell">Constructing an object
+Constructing an object    <span class="shell_note_wrong">← NOT the const constructor</span>
+Constructing an object    <span class="shell_note_wrong">← NOT the immutable constructor</span>
+Constructing an object    <span class="shell_note_wrong">← NOT the shared constructor</span>
+</pre>
+
+<p><a id="ix_Constructor and Other Special Functions.type constructor" content="type constructor"></a> To take advantage of qualified constructors, one must use the <i>type constructor</i> syntax. (The term <i>type constructor</i> should not be confused with object constructors; type constructor is related to types, not objects.) This syntax <i>makes</i> a different type by combining a qualifier with an existing type. For example, <code class="d_inline">immutable(S)</code> is a qualified type made from <code class="d_inline">immutable</code> and <code class="d_inline">S</code>:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> m = S(1);
+    <span class="d_keyword">auto</span> c = <span class="hilite"><span class="d_keyword">const</span>(S)</span>(2);
+    <span class="d_keyword">auto</span> i = <span class="hilite"><span class="d_keyword">immutable</span>(S)</span>(3);
+    <span class="d_keyword">auto</span> s = <span class="hilite"><span class="d_keyword">shared</span>(S)</span>(4);
+</pre>
+
+<p>This time, the objects that are in the right-hand expressions are different: <i>mutable</i>, <code class="d_inline">const</code>, <code class="d_inline">immutable</code>, and <code class="d_inline">shared</code>, respectively. As a result, each object is constructed with its matching constructor:
+</p>
+
+<pre class="shell">Constructing an object
+Constructing a <span class="hilite">const</span> object
+Constructing an <span class="hilite">immutable</span> object
+Constructing a <span class="hilite">shared</span> object
+</pre>
+
+<p>Note that, since all of the variables above are defined with the <code class="d_inline">auto</code> keyword, they are correctly inferred to be <i>mutable</i>, <code class="d_inline">const</code>, <code class="d_inline">immutable</code>, and <code class="d_inline">shared</code>, respectively.
+</p>
+
+<h6>Immutability of constructor parameters</h6>
+
+<p>In the <a href="const_and_immutable.html">Immutability chapter</a> we have seen that it is not easy to decide whether parameters of reference types should be defined as <code class="d_inline">const</code> or <code class="d_inline">immutable</code>. Although the same considerations apply for constructor parameters as well, <code class="d_inline">immutable</code> is usually a better choice for constructor parameters.
+</p>
+
+<p>The reason is, it is common to assign the parameters to members to be used at a later time. When a parameter is not <code class="d_inline">immutable</code>, there is no guarantee that the original variable will not change by the time the member gets used.
+</p>
+
+<p>Let's consider a constructor that takes a file name as a parameter. The file name will be used later on when writing student grades. According to the guidelines in the <a href="const_and_immutable.html">Immutability chapter</a>, to be more useful, let's assume that the constructor parameter is defined as <code class="d_inline">const&nbsp;char[]</code>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">struct</span> Student {
+    <span class="hilite"><span class="d_keyword">const</span> <span class="d_keyword">char</span>[]</span> fileName;
+    <span class="d_keyword">int</span>[] grades;
+
+    <span class="d_keyword">this</span>(<span class="hilite"><span class="d_keyword">const</span> <span class="d_keyword">char</span>[]</span> fileName) {
+        <span class="d_keyword">this</span>.fileName = fileName;
+    }
+
+    <span class="d_keyword">void</span> save() {
+        <span class="d_keyword">auto</span> file = File(fileName.idup, <span class="d_string">"w"</span>);
+        file.writeln(<span class="d_string">"The grades of the student:"</span>);
+        file.writeln(grades);
+    }
+
+    <span class="d_comment">// ...
+</span>}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">char</span>[] fileName;
+    fileName ~= <span class="d_string">"student_grades"</span>;
+
+    <span class="d_keyword">auto</span> student = Student(fileName);
+
+    <span class="d_comment">// ...
+</span>
+    <span class="d_comment">/* Assume the fileName variable is modified later on
+     * perhaps unintentionally (all of its characters are
+     * being set to 'A' here): */</span>
+    <span class="hilite">fileName[] = 'A'</span>;
+
+    <span class="d_comment">// ...
+</span>
+    <span class="d_comment">/* The grades would be written to the wrong file: */</span>
+    student.save();
+}
+</pre>
+
+<p>The program above saves the grades of the student under a file name that consists of A characters, not to <code class="d_inline"><span class="d_string">"student_grades"</span></code>. For that reason, sometimes it is more suitable to define constructor parameters and members of reference types as <code class="d_inline">immutable</code>. We know that this is easy for strings by using aliases like <code class="d_inline">string</code>. The following code shows the parts of the struct that would need to be modified:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Student {
+    <span class="hilite">string</span> fileName;
+    <span class="d_comment">// ...
+</span>    <span class="d_keyword">this</span>(<span class="hilite">string</span> fileName) {
+        <span class="d_comment">// ...
+</span>    }
+    <span class="d_comment">// ...
+</span>}
+</pre>
+
+<p>Now the users of the struct must provide <code class="d_inline">immutable</code> strings and as a result the confusion about the name of the file would be prevented.
+</p>
+
+<h6><a id="ix_Constructor and Other Special Functions.type conversion, constructor" content="type conversion, constructor"></a> Type conversions through single-parameter constructors</h6>
+
+<p>Single-parameter constructors can be thought of as providing a sort of type conversion: They produce an object of the particular struct type starting from a constructor parameter. For example, the following constructor produces a <code class="d_inline">Student</code> object from a <code class="d_inline">string</code>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Student {
+    string name;
+
+    <span class="d_keyword">this</span>(string name) {
+        <span class="d_keyword">this</span>.name = name;
+    }
+}
+</pre>
+
+<p><code class="d_inline">to()</code> and <code class="d_inline">cast</code> observe this behavior as a <i>conversion</i> as well. To see examples of this, let's consider the following <code class="d_inline">salute()</code> function. Sending a <code class="d_inline">string</code> parameter when it expects a <code class="d_inline">Student</code> would naturally cause a compilation error:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> salute(Student student) {
+    writeln(<span class="d_string">"Hello "</span>, student.name);
+}
+<span class="d_comment">// ...
+</span>    salute(<span class="d_string">"Jane"</span>);    <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+</pre>
+
+<p>On the other hand, all of the following lines ensure that a <code class="d_inline">Student</code> object is constructed before calling the function:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.conv;
+<span class="d_comment">// ...
+</span>    salute(Student(<span class="d_string">"Jane"</span>));
+    salute(to!Student(<span class="d_string">"Jean"</span>));
+    salute(<span class="d_keyword">cast</span>(Student)<span class="d_string">"Jim"</span>);
+</pre>
+
+<p><code class="d_inline">to</code> and <code class="d_inline">cast</code> take advantage of the single-parameter constructor by constructing a temporary <code class="d_inline">Student</code> object and calling <code class="d_inline">salute()</code> with that object.
+</p>
+
+<h6><a id="ix_Constructor and Other Special Functions.@disable, constructor" content="@disable, constructor"></a> Disabling the default constructor</h6>
+
+<p>Functions that are declared as <code class="d_inline">@disable</code> cannot be called.
+</p>
+
+<p>Sometimes there are no sensible default values for the members of a type. For example, it may be illegal for the following type to have an empty file name:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Archive {
+    string fileName;
+}
+</pre>
+
+<p>Unfortunately, the compiler-generated default constructor would initialize <code class="d_inline">fileName</code> as empty:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> archive = Archive();    <span class="d_comment">// ← fileName member is empty
+</span></pre>
+
+<p>The default constructor can explicitly be disabled by declaring it as <code class="d_inline">@disable</code> so that objects must be constructed by one of the other constructors. There is no need to provide a body for a disabled function:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Archive {
+    string fileName;
+
+    <span class="hilite">@disable <span class="d_keyword">this</span>();</span>             <span class="d_comment">// ← cannot be called</span>
+
+    <span class="d_keyword">this</span>(string fileName) {      <span class="d_comment">// ← can be called</span>
+        <span class="d_comment">// ...
+</span>    }
+}
+
+<span class="d_comment">// ...
+</span>
+    <span class="d_keyword">auto</span> archive = Archive();    <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+</pre>
+
+<p>This time the compiler does not allow calling <code class="d_inline">this()</code>:
+</p>
+
+<pre class="shell">Error: constructor deneme.Archive.this is <span class="hilite">not callable</span> because
+it is annotated with @disable
+</pre>
+
+<p>Objects of <code class="d_inline">Archive</code> must be constructed either with one of the other constructors or explicitly with its <code class="d_inline">.init</code> value:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> a = Archive(<span class="d_string">"records"</span>);    <span class="d_comment">// ← compiles</span>
+    <span class="d_keyword">auto</span> b = Archive.init;          <span class="d_comment">// ← compiles</span>
+</pre>
+
+<h5 class="subsection"><a id="ix_Constructor and Other Special Functions.destructor" content="destructor"></a> <a id="ix_Constructor and Other Special Functions.~this" content="~this"></a> Destructor</h5>
+
+<p>The destructor includes the operations that must be executed when the lifetime of an object ends.
+</p>
+
+<p>The compiler-generated automatic destructor executes the destructors of all of the members in order. For that reason, as it is with the constructor, there is no need to define a destructor for most structs.
+</p>
+
+<p>However, sometimes some special operations may need to be executed when an object's lifetime ends. For example, an operating system resource that the object owns may need to be returned to the system; a member function of another object may need to be called; a server running somewhere on the network may need to be notified that a connection to it is about to be terminated; etc.
+</p>
+
+<p>The name of the destructor is <code class="d_inline">~this</code> and just like constructors, it has no return type.
+</p>
+
+<h6>Destructor is executed automatically</h6>
+
+<p>The destructor is executed as soon as the lifetime of the struct object ends. (This is not the case for objects that are constructed with the <code class="d_inline">new</code> keyword.)
+</p>
+
+<p>As we have seen in the <a href="lifetimes.html">Lifetimes and Fundamental Operations chapter,</a> the lifetime of an object ends when leaving the scope that it is defined in. The following are times when the lifetime of a struct ends:
+</p>
+
+<ul><li>When leaving the scope of the object either normally or due to a thrown exception:
+
+<pre class="d_code">    <span class="d_keyword">if</span> (aCondition) {
+        <span class="d_keyword">auto</span> duration = Duration(7);
+        <span class="d_comment">// ...
+</span>
+    } <span class="d_comment">// ← The destructor is executed for 'duration'
+</span>      <span class="d_comment">//   at this point
+</span></pre>
+
+</li>
+
+<li>Anonymous objects are destroyed at the end of the whole expression that they are constructed in:
+
+<pre class="d_code">    time.increment(Duration(5)); <span class="d_comment">// ← The Duration(5) object
+</span>                                 <span class="d_comment">//   gets destroyed at the end
+</span>                                 <span class="d_comment">//   of the whole expression.
+</span></pre>
+
+</li>
+
+<li>All of the struct members of a struct object get destroyed when the outer object is destroyed.
+
+</li>
+
+</ul>
+
+<h6>Destructor example</h6>
+
+<p>Let's design a type for generating simple XML documents. XML elements are defined by angle brackets. They contain data and other XML elements. XML elements can have attributes as well; we will ignore them here.
+</p>
+
+<p>Our aim will be to ensure that an element that has been <i>opened</i> by a <code class="d_inline">&lt;name&gt;</code> tag will always be <i>closed</i> by a matching <code class="d_inline">&lt;/name&gt;</code> tag:
+</p>
+
+<pre class="mono">  &lt;class1&gt;    ← opening the outer XML element
+    &lt;grade&gt;   ← opening the inner XML element
+      57      ← the data
+    &lt;/grade&gt;  ← closing the inner element
+  &lt;/class1&gt;   ← closing the outer element
+</pre>
+
+<p>A struct that can produce the output above can be designed by two members that store the tag for the XML element and the indentation to use when printing it:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> XmlElement {
+    string name;
+    string indentation;
+}
+</pre>
+
+<p>If the responsibilities of opening and closing the XML element are given to the constructor and the destructor, respectively, the desired output can be produced by managing the lifetimes of XmlElement objects. For example, the constructor can print <code class="d_inline">&lt;tag&gt;</code> and the destructor can print <code class="d_inline">&lt;/tag&gt;</code>.
+</p>
+
+<p>The following definition of the constructor produces the opening tag:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">this</span>(string name, <span class="d_keyword">int</span> level) {
+        <span class="d_keyword">this</span>.name = name;
+        <span class="d_keyword">this</span>.indentation = indentationString(level);
+
+        writeln(indentation, '&lt;', name, '&gt;');
+    }
+</pre>
+
+<p><code class="d_inline">indentationString()</code> is the following function:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.array;
+<span class="d_comment">// ...
+</span>string indentationString(<span class="d_keyword">int</span> level) {
+    <span class="d_keyword">return</span> replicate(<span class="d_string">" "</span>, level * 2);
+}
+</pre>
+
+<p>The function calls <code class="d_inline">replicate()</code> from the <code class="d_inline">std.array</code> module, which makes and returns a new string made up of the specified value repeated the specified number of times.
+</p>
+
+<p>The destructor can be defined similar to the constructor to produce the closing tag:
+</p>
+
+<pre class="d_code">    ~<span class="d_keyword">this</span>() {
+        writeln(indentation, <span class="d_string">"&lt;/"</span>, name, '&gt;');
+    }
+</pre>
+
+<p>Here is a test code to demonstrate the effects of the automatic constructor and destructor calls:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.conv;
+<span class="d_keyword">import</span> std.random;
+<span class="d_keyword">import</span> std.array;
+
+string indentationString(<span class="d_keyword">int</span> level) {
+    <span class="d_keyword">return</span> replicate(<span class="d_string">" "</span>, level * 2);
+}
+
+<span class="d_keyword">struct</span> XmlElement {
+    string name;
+    string indentation;
+
+    <span class="d_keyword">this</span>(string name, <span class="d_keyword">int</span> level) {
+        <span class="d_keyword">this</span>.name = name;
+        <span class="d_keyword">this</span>.indentation = indentationString(level);
+
+        writeln(indentation, '&lt;', name, '&gt;');
+    }
+
+    ~<span class="d_keyword">this</span>() {
+        writeln(indentation, <span class="d_string">"&lt;/"</span>, name, '&gt;');
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">immutable</span> classes = XmlElement(<span class="d_string">"classes"</span>, 0);
+
+    <span class="d_keyword">foreach</span> (classId; 0 .. 2) {
+        <span class="d_keyword">immutable</span> classTag = <span class="d_string">"class"</span> ~ to!string(classId);
+        <span class="d_keyword">immutable</span> classElement = XmlElement(classTag, 1);
+
+        <span class="d_keyword">foreach</span> (i; 0 .. 3) {
+            <span class="d_keyword">immutable</span> gradeElement = XmlElement(<span class="d_string">"grade"</span>, 2);
+            <span class="d_keyword">immutable</span> randomGrade = uniform(50, 101);
+
+            writeln(indentationString(3), randomGrade);
+        }
+    }
+}
+</pre>
+
+<p>Note that the <code class="d_inline">XmlElement</code> objects are created in three separate scopes in the program above. The opening and closing tags of the XML elements in the output are produced solely by the constructor and the destructor of <code class="d_inline">XmlElement</code>.
+</p>
+
+<pre class="shell">&lt;classes&gt;
+  &lt;class0&gt;
+    &lt;grade&gt;
+      72
+    &lt;/grade&gt;
+    &lt;grade&gt;
+      97
+    &lt;/grade&gt;
+    &lt;grade&gt;
+      90
+    &lt;/grade&gt;
+  &lt;/class0&gt;
+  &lt;class1&gt;
+    &lt;grade&gt;
+      77
+    &lt;/grade&gt;
+    &lt;grade&gt;
+      87
+    &lt;/grade&gt;
+    &lt;grade&gt;
+      56
+    &lt;/grade&gt;
+  &lt;/class1&gt;
+&lt;/classes&gt;
+</pre>
+
+<p>The <code class="d_inline">&lt;classes&gt;</code> element is produced by the <code class="d_inline">classesElement</code> variable. Because that variable is constructed first in <code class="d_inline">main()</code>, the output contains the output of its construction first. Since it is also the variable that is destroyed last, upon leaving <code class="d_inline">main()</code>, the output contains the output of the destructor call for its destruction last.
+</p>
+
+<h5 class="subsection"><a id="ix_Constructor and Other Special Functions.postblit" content="postblit"></a> <a id="ix_Constructor and Other Special Functions.this(this)" content="this(this)"></a> Postblit</h5>
+
+<p><i>Copying</i> is constructing a new object from an existing one. Copying involves two steps:
+</p>
+
+<ol>
+<li>Copying the members of the existing object to the new object bit-by-bit. This step is called <i>blit</i>, short for <i>block transfer</i>.
+</li>
+
+<li>Making further adjustments to the new object. This step is called <i>postblit</i>.
+</li>
+
+</ol>
+
+<p>The first step is handled automatically by the compiler: It copies the members of the existing object to the members of the new object:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> returnTripDuration = tripDuration;   <span class="d_comment">// copying
+</span></pre>
+
+<p>Do not confuse copying with <i>assignment</i>. The <code class="d_inline">auto</code> keyword above is an indication that a new object is being defined. (The actual type name could have been spelled out instead of <code class="d_inline">auto</code>.)
+</p>
+
+<p>For an operation to be assignment, the object on the left-hand side must be an existing object. For example, assuming that <code class="d_inline">returnTripDuration</code> has already been defined:
+</p>
+
+<pre class="d_code">    returnTripDuration = tripDuration;  <span class="d_comment">// assignment (see below)
+</span></pre>
+
+<p>Sometimes it is necessary to make adjustments to the members of the new object after the automatic blit. These operations are defined in the postblit function of the struct.
+</p>
+
+<p>Since it is about object construction, the name of the postblit is <code class="d_inline">this</code> as well. To separate it from the other constructors, its parameter list contains the keyword <code class="d_inline">this</code>:
+
+</p>
+
+<pre class="d_code">    <span class="d_keyword">this</span>(<span class="d_keyword">this</span>) {
+        <span class="d_comment">// ...
+</span>    }
+</pre>
+
+<p>We have defined a <code class="d_inline">Student</code> type in the <a href="struct.html">Structs chapter</a>, which had a problem about copying objects of that type:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Student {
+    <span class="d_keyword">int</span> number;
+    <span class="d_keyword">int</span>[] grades;
+}
+</pre>
+
+<p>Being a slice, the <code class="d_inline">grades</code> member of that <code class="d_inline">struct</code> is a reference type. The consequence of copying a <code class="d_inline">Student</code> object is that the <code class="d_inline">grades</code> members of both the original and the copy provide access to the same actual array elements of type <code class="d_inline">int</code>. As a result, the effect of modifying a grade through one of these objects is seen through the other object as well:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> student1 = Student(1, [ 70, 90, 85 ]);
+
+    <span class="d_keyword">auto</span> student2 = student1;    <span class="d_comment">// copying
+</span>    student2.number = 2;
+
+    student1.grades[0] += 5; <span class="d_comment">// this changes the grade of the
+</span>                             <span class="d_comment">// second student as well:
+</span>    <span class="d_keyword">assert</span>(<span class="hilite">student2</span>.grades[0] == <span class="hilite">75</span>);
+</pre>
+
+<p>To avoid such a confusion, the elements of the <code class="d_inline">grades</code> member of the second object must be separate and belong only to that object. Such <i>adjustments</i> are done in the postblit:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Student {
+    <span class="d_keyword">int</span> number;
+    <span class="d_keyword">int</span>[] grades;
+
+    <span class="d_keyword">this</span>(<span class="d_keyword">this</span>) {
+        grades = grades.dup;
+    }
+}
+</pre>
+
+<p>Remember that all of the members have already been copied automatically before <code class="d_inline">this(this)</code> started executing. The single line in the postblit above makes a copy of the <i>elements</i> of the original array and assigns a slice of it back to <code class="d_inline">grades</code>. As a result, the new object gets its own copy of the grades.
+</p>
+
+<p>Making modifications through the first object does not affect the second object anymore:
+</p>
+
+<pre class="d_code">    student1.grades[0] += 5;
+    <span class="d_keyword">assert</span>(<span class="hilite">student2</span>.grades[0] == <span class="hilite">70</span>);
+</pre>
+
+<h6><a id="ix_Constructor and Other Special Functions.@disable, postblit" content="@disable, postblit"></a> Disabling postblit</h6>
+
+<p>The postblit function can be disabled by <code class="d_inline">@disable</code> as well. Objects of such a type cannot be copied:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Archive {
+<span class="d_comment">// ...
+</span>
+    <span class="hilite">@disable <span class="d_keyword">this</span>(<span class="d_keyword">this</span>);</span>
+}
+
+<span class="d_comment">// ...
+</span>
+    <span class="d_keyword">auto</span> a = Archive(<span class="d_string">"records"</span>);
+    <span class="d_keyword">auto</span> b = a;                     <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+</pre>
+
+<p>The compiler does not allow calling the disabled postblit function:
+</p>
+
+<pre class="shell">Error: struct deneme.Archive is <span class="hilite">not copyable</span> because it is
+annotated with @disable
+</pre>
+
+<h5 class="subsection"><a id="ix_Constructor and Other Special Functions.assignment operator" content="assignment operator"></a> <a id="ix_Constructor and Other Special Functions.=" content="="></a> <a id="ix_Constructor and Other Special Functions.opAssign" content="opAssign"></a> Assignment operator</h5>
+
+<p>Assigment is giving a new value to an existing object:
+</p>
+
+<pre class="d_code">    returnTripDuration = tripDuration;  <span class="d_comment">// assignment
+</span></pre>
+
+<p>Assignment is more complicated from the other special operations because it is actually a combination of two operations:
+</p>
+
+<ul><li>Destroying the left-hand side object</li>
+<li>Copying the right-hand side object to the left-hand side object</li>
+</ul>
+
+<p>However, applying those two steps in that order is risky because the original object would be destroyed before knowing that copying will succeed. Otherwise, an exception that is thrown during the copy operation can leave the left-hand side object in an inconsistent state: fully destroyed but not completely copied.
+</p>
+
+<p>For that reason, the compiler-generated assignment operator acts safely by applying the following steps:
+</p>
+
+<ol>
+<li>Copy the right-hand side object to a temporary object
+
+<p>This is the actual copying half of the assignment operation. Since there is no change to the left-hand side object yet, it will remain intact if an exception is thrown during this copy operation.
+</p>
+
+</li>
+
+<li>Destroy the left-hand side object
+
+<p>This is the other half of the assignment operation.
+</p>
+
+</li>
+
+<li>Transfer the temporary object to the left-hand side object
+
+<p>No postblit nor a destructor is executed during or after this step. As a result, the left-hand side object becomes the equivalent of the temporary object.
+</p>
+
+</li>
+
+</ol>
+
+<p>After the steps above, the temporary object disappears and only the right-hand side object and its copy (i.e. the left-hand side object) remain.
+</p>
+
+<p>Although the compiler-generated assignment operator is suitable in most cases, it can be defined by the programmer. When you do that, consider potential exceptions and write the assignment operator in a way that works even at the presence of thrown exceptions.
+</p>
+
+<p>The syntax of the assignment operator is the following:
+</p>
+
+<ul><li>The name of the function is <code class="d_inline">opAssign</code>.</li>
+<li>The type of the parameter is the same as the <code class="d_inline">struct</code> type. This parameter is often named as <code class="d_inline">rhs</code>, short for <i>right-hand side</i>.</li>
+<li>The return type is the same as the <code class="d_inline">struct</code> type.</li>
+<li>The function is exited by <code class="d_inline">return this</code>.</li>
+</ul>
+
+<p>As an example, let's consider a simple <code class="d_inline">Duration</code> struct where the assignment operator prints a message:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Duration {
+    <span class="d_keyword">int</span> minute;
+
+    <span class="hilite">Duration</span> opAssign(<span class="hilite">Duration</span> rhs) {
+        writefln(<span class="d_string">"minute is being changed from %s to %s"</span>,
+                 <span class="d_keyword">this</span>.minute, rhs.minute);
+
+        <span class="d_keyword">this</span>.minute = rhs.minute;
+
+        <span class="hilite"><span class="d_keyword">return</span> <span class="d_keyword">this</span>;</span>
+    }
+}
+<span class="d_comment">// ...
+</span>    <span class="d_keyword">auto</span> duration = Duration(100);
+    duration = Duration(200);          <span class="d_comment">// assignment
+</span></pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">minute is being changed from 100 to 200
+</pre>
+
+<h6>Assigning from other types</h6>
+
+<p>Sometimes it is convenient to assign values of types that are different from the type of the <code class="d_inline">struct</code>. For example, instead of requiring a <code class="d_inline">Duration</code> object on the right-hand side, it may be useful to assign from an integer:
+</p>
+
+<pre class="d_code">    duration = 300;
+</pre>
+
+<p>This is possible by defining another assignment operator that takes an <code class="d_inline">int</code> parameter:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Duration {
+    <span class="d_keyword">int</span> minute;
+
+    Duration opAssign(Duration rhs) {
+        writefln(<span class="d_string">"minute is being changed from %s to %s"</span>,
+                 <span class="d_keyword">this</span>.minute, rhs.minute);
+
+        <span class="d_keyword">this</span>.minute = rhs.minute;
+
+        <span class="d_keyword">return</span> <span class="d_keyword">this</span>;
+    }
+
+    Duration opAssign(<span class="hilite"><span class="d_keyword">int</span> minute</span>) {
+        writefln(<span class="d_string">"minute is being replaced by an int"</span>);
+
+        <span class="d_keyword">this</span>.minute = minute;
+
+        <span class="d_keyword">return</span> <span class="d_keyword">this</span>;
+    }
+}
+<span class="d_comment">// ...
+</span>    duration = Duration(200);
+    duration = <span class="hilite">300</span>;
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">minute is being changed from 100 to 200
+minute is being replaced by an int
+</pre>
+
+<p><b>Note:</b> Although convenient, assigning different types to each other may cause confusions and errors.
+</p>
+
+<h5 class="subsection">Summary</h5>
+
+<ul>
+<li>Constructor (<code class="d_inline">this</code>) is for preparing objects for use. The compiler-generated default constructor is sufficient in most cases.</li>
+
+<li>The behavior of the default constructor may not be changed in structs; <code class="d_inline">static opCall</code> can be used instead.</li>
+
+<li>Single-parameter constructors can be used during type conversions by <code class="d_inline">to</code> and <code class="d_inline">cast</code>.</li>
+
+<li>Destructor (<code class="d_inline">~this</code>) is for the operations that must be executed when the lifetimes of objects end.</li>
+
+<li>Postblit (<code class="d_inline">this(this)</code>) is for adjustments to the object after the automatic member copies.</li>
+
+<li>Assigment operator (<code class="d_inline">opAssign</code>) is for changing values of existing objects.</li>
+
+</ul>
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on Mon Jan 29 21:09:27 2024
+</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

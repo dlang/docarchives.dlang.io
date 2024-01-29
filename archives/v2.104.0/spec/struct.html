@@ -1,0 +1,2424 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Structs, Unions - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Structs, Unions' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href=".."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Google Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option selected value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+<div class="subnav-helper"></div> <div class="subnav">    <div class="head"><h2>Language Reference</h2> <p class="subnav-duplicate"><a href="../spec/spec.html">table of contents</a></p></div>
+    <ul>        <li><a href='            ../spec/intro.html'>Introduction</a></li><li><a href='            ../spec/lex.html'>Lexical</a></li><li><a href='            ../spec/grammar.html'>Grammar</a></li><li><a href='            ../spec/module.html'>Modules</a></li><li><a href='            ../spec/declaration.html'>Declarations</a></li><li><a href='            ../spec/type.html'>Types</a></li><li><a href='            ../spec/property.html'>Properties</a></li><li><a href='            ../spec/attribute.html'>Attributes</a></li><li><a href='            ../spec/pragma.html'>Pragmas</a></li><li><a href='            ../spec/expression.html'>Expressions</a></li><li><a href='            ../spec/statement.html'>Statements</a></li><li><a href='            ../spec/arrays.html'>Arrays</a></li><li><a href='            ../spec/hash-map.html'>Associative Arrays</a></li><li><a href='            ../spec/struct.html'>Structs and Unions</a></li><li><a href='            ../spec/class.html'>Classes</a></li><li><a href='            ../spec/interface.html'>Interfaces</a></li><li><a href='            ../spec/enum.html'>Enums</a></li><li><a href='            ../spec/const3.html'>Type Qualifiers</a></li><li><a href='            ../spec/function.html'>Functions</a></li><li><a href='            ../spec/operatoroverloading.html'>Operator Overloading</a></li><li><a href='            ../spec/template.html'>Templates</a></li><li><a href='            ../spec/template-mixin.html'>Template Mixins</a></li><li><a href='            ../spec/contracts.html'>Contract Programming</a></li><li><a href='            ../spec/version.html'>Conditional Compilation</a></li><li><a href='            ../spec/traits.html'>Traits</a></li><li><a href='            ../spec/errors.html'>Error Handling</a></li><li><a href='            ../spec/unittest.html'>Unit Tests</a></li><li><a href='            ../spec/garbage.html'>Garbage Collection</a></li><li><a href='            ../spec/float.html'>Floating Point</a></li><li><a href='            ../spec/iasm.html'>D x86 Inline Assembler</a></li><li><a href='            ../spec/ddoc.html'>Embedded Documentation</a></li><li><a href='            ../spec/interfaceToC.html'>Interfacing to C</a></li><li><a href='            ../spec/cpp_interface.html'>Interfacing to C++</a></li><li><a href='            ../spec/objc_interface.html'>Interfacing to Objective-C</a></li><li><a href='            ../spec/portability.html'>Portability Guide</a></li><li><a href='            ../spec/entity.html'>Named Character Entities</a></li><li><a href='            ../spec/memory-safe-d.html'>Memory Safety</a></li><li><a href='            ../spec/abi.html'>Application Binary Interface</a></li><li><a href='            ../spec/simd.html'>Vector Extensions</a></li><li><a href='            ../spec/betterc.html'>Better C</a></li><li><a href='            ../spec/importc.html'>ImportC</a></li><li><a href='            ../spec/ob.html'>Live Functions
+        </a></li>
+    </ul>
+</div>
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BStructs, Unions%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/spec/struct.dd">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Structs, Unions</h1>
+        
+<style>    body { counter-reset: h1 14; counter-increment: h1 -1; }
+    h1 { counter-reset: h2 h3 p; }
+    h2 { counter-reset: h3 h4 p; }
+    h3 { counter-reset: h4 p; }
+    h4 { counter-reset: p; }
+    h1::before {
+        counter-increment: h1;
+        content: counter(h1) ". ";
+    }
+    .hyphenate h2::before {
+        counter-increment: h2;
+        content: counter(h1) "." counter(h2) " ";
+    }
+    h3::before {
+        counter-increment: h3;
+        content: counter(h1) "." counter(h2) "." counter(h3) " ";
+    }
+    h4::before {
+        counter-increment: h4;
+        content: counter(h1) "." counter(h2) "." counter(h3) "." counter(h4) " ";
+    }
+    p::before, .spec-boxes::before {
+        counter-increment: p;
+        content: counter(p) ". ";
+    }
+    h1::before, h2::before, h3::before, h4::before, p::before, .spec-boxes::before
+    {
+        color: #999;
+        font-size: 80%;
+        margin-right: 0.25em;
+    }
+</style>
+        <div class="blankline"></div>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<div class="page-contents quickindex">    <div class="page-contents-header">        <b>Contents</b>
+    </div>
+    <ol>    <li><a href="#intro">Introduction</a></li>
+    <li><a href="#members">Members</a><ol>        <li><a href="#struct-members">Struct Members</a></li>
+        <li><a href="#union-members">Union Members</a></li>
+        <li><a href="#recursive-types">Recursive Structs and Unions</a></li>
+    </ol></li>
+    <li><a href="#struct_layout">Struct Layout</a></li>
+    <li><a href="#POD">Plain Old Data</a></li>
+    <li><a href="#opaque_struct_unions">Opaque Structs and Unions</a></li>
+    <li><a href="#initialization">Initialization</a><ol>        <li><a href="#default_struct_init">Default Initialization of Structs</a></li>
+        <li><a href="#static_struct_init">Static Initialization of Structs</a></li>
+        <li><a href="#default_union_init">Default Initialization of Unions</a></li>
+        <li><a href="#static_union_init">Static Initialization of Unions</a></li>
+        <li><a href="#dynamic_struct_init">Dynamic Initialization of Structs</a></li>
+        <li><a href="#dynamic_union_init">Dynamic Initialization of Unions</a></li>
+    </ol></li>
+    <li><a href="#struct-literal">Struct Literals</a></li>
+    <li><a href="#union-literal">Union Literals</a></li>
+    <li><a href="#anonymous">Anonymous Structs and Unions</a></li>
+    <li><a href="#struct_properties">Struct Properties</a><ol>        <li><a href="#struct_instance_properties">Struct Instance Properties</a></li>
+        <li><a href="#struct_field_properties">Struct Field Properties</a></li>
+    </ol></li>
+    <li><a href="#const-struct">Const, Immutable and Shared Structs</a></li>
+    <li><a href="#UnionConstructor">Union Constructors</a></li>
+    <li><a href="#struct-constructor">Struct Constructors</a><ol>        <li><a href="#delegating-constructor">Delegating Constructors</a></li>
+        <li><a href="#struct-instantiation">Struct Instantiation</a></li>
+        <li><a href="#constructor-attributes">Constructor Attributes</a></li>
+        <li><a href="#disable_default_construction">Disabling Default Struct Construction</a></li>
+        <li><a href="#field-init">Field initialization inside a constructor</a></li>
+    </ol></li>
+    <li><a href="#struct-copy-constructor">Struct Copy Constructors</a><ol>        <li><a href="#disable-copy">Disabled Copying</a></li>
+        <li><a href="#copy-constructor-attributes">Copy Constructor Attributes</a></li>
+        <li><a href="#implicit-copy-constructors">Implicit Copy Constructors</a></li>
+    </ol></li>
+    <li><a href="#struct-postblit">Struct Postblits</a></li>
+    <li><a href="#struct-destructor">Struct Destructors</a></li>
+    <li><a href="#Invariant">Struct Invariants</a></li>
+    <li><a href="#assign-overload">Identity Assignment Overload</a></li>
+    <li><a href="#alias-this">Alias This</a></li>
+    <li><a href="#nested">Nested Structs</a></li>
+    <li><a href="#unions_and_special_memb_funct">Unions and Special Member Functions</a></li>
+</ol>
+</div>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="intro" href="#intro">Introduction</a></h2>
+<div class="blankline"></div>
+    <p>Whereas <a href="../spec/class.html">classes</a> are reference types,
+    structs and unions are value types.
+    Structs are simple aggregations of data and their
+    associated operations on that data.
+    </p>
+<div class="blankline"></div>
+<pre class="bnf notranslate"><a id="StructDeclaration"><span class="gname">StructDeclaration</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">struct</span> <a href="../spec/lex.html#Identifier"><i>Identifier</i></a> <span class="d_inlinecode donthyphenate notranslate">;</span>
+    <span class="d_inlinecode donthyphenate notranslate">struct</span> <a href="../spec/lex.html#Identifier"><i>Identifier</i></a> <a href="#AggregateBody"><i>AggregateBody</i></a>
+    <a href="../spec/template.html#StructTemplateDeclaration"><i>StructTemplateDeclaration</i></a>
+    <i>AnonStructDeclaration</i>
+<div class="blankline"></div>
+<a id="AnonStructDeclaration"><span class="gname">AnonStructDeclaration</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">struct</span> <a href="#AggregateBody"><i>AggregateBody</i></a>
+</pre>
+<pre class="bnf notranslate"><a id="UnionDeclaration"><span class="gname">UnionDeclaration</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">union</span> <a href="../spec/lex.html#Identifier"><i>Identifier</i></a> <span class="d_inlinecode donthyphenate notranslate">;</span>
+    <span class="d_inlinecode donthyphenate notranslate">union</span> <a href="../spec/lex.html#Identifier"><i>Identifier</i></a> <a href="#AggregateBody"><i>AggregateBody</i></a>
+    <a href="../spec/template.html#UnionTemplateDeclaration"><i>UnionTemplateDeclaration</i></a>
+    <i>AnonUnionDeclaration</i>
+<div class="blankline"></div>
+<a id="AnonUnionDeclaration"><span class="gname">AnonUnionDeclaration</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">union</span> <a href="#AggregateBody"><i>AggregateBody</i></a>
+</pre>
+<pre class="bnf notranslate"><a id="AggregateBody"><span class="gname">AggregateBody</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">{</span> <a href="../spec/module.html#DeclDefs"><i>DeclDefs</i></a><sub>opt</sub> <span class="d_inlinecode donthyphenate notranslate">}</span>
+</pre>
+<div class="blankline"></div>
+    <p>The following example declares a struct type with a single integer field:</p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span> i;
+}
+
+<span class="d_keyword">void</span> main()
+{
+    S a;
+    a.i = 3;
+
+    S b = a; <span class="d_comment">// copy a
+</span>    a.i++;
+    <span class="d_keyword">assert</span>(a.i == 4);
+    <span class="d_keyword">assert</span>(b.i == 3);
+}
+</pre>
+
+</div>
+<div class="blankline"></div>
+    <p>For local variables, a struct instance is allocated on the stack
+    by default. To allocate on the heap, use <span class="d_inlinecode donthyphenate notranslate">new</span>:</p>
+<pre class="d_code notranslate">S* p = <span class="d_keyword">new</span> S;
+<span class="d_keyword">assert</span>(p.i == 0);
+</pre>
+<div class="blankline"></div>
+    <p>A struct can contain multiple fields which are stored sequentially.
+    Conversely, multiple fields in a union use overlapping storage.</p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">union</span> U
+{
+    <span class="d_keyword">ubyte</span> i;
+    <span class="d_keyword">char</span> c;
+}
+
+<span class="d_keyword">void</span> main()
+{
+    U u;
+    u.i = 3;
+    <span class="d_keyword">assert</span>(u.c == '\x03');
+    u.c++;
+    <span class="d_keyword">assert</span>(u.i == 4);
+}
+</pre>
+
+</div>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="members" href="#members">Members</a></h2>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="struct-members" href="#struct-members">Struct Members</a></h3>
+<div class="blankline"></div>
+    <p>A struct definition can contain:</p>
+    <ul>        <li>Fields</li>
+        <li><a href="../spec/attribute.html#static">Static</a> fields</li>
+        <li><a href="#anonymous">Anonymous Structs and Unions</a></li>
+        <li><a href="../spec/class.html#member-functions">member functions</a>
+        <ul>            <li>static member functions</li>
+            <li><a href="#struct-constructor">Constructors</a></li>
+            <li><a href="#struct-destructor">Destructors</a></li>
+            <li><a href="#Invariant">Invariants</a></li>
+            <li><a href="../spec/operatoroverloading.html">Operator Overloading</a></li>
+        </ul>
+        <li><a href="#alias-this">Alias This</a></li>
+        <li>Other declarations (see <a href="../spec/module.html#DeclDef"><i>DeclDef</i></a>)</li>
+        </li>
+    </ul>
+<div class="blankline"></div>
+    <p>A struct is defined to not have an identity; that is,
+    the implementation is free to make bit copies of the struct
+    as convenient.</p>
+<div class="blankline"></div>
+    <div class="spec-boxes best-practice"><b>Best Practices:</b>     <ol>    <li>Bit fields are supported with the
+    <a href="https://dlang.org/phobos/std_bitmanip.html#bitfields">bitfields</a> template.</li>
+    </ol></div>
+
+
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="union-members" href="#union-members">Union Members</a></h3>
+<div class="blankline"></div>
+    <p>A union definition can contain:</p>
+    <ul>        <li>Fields</li>
+        <li><a href="../spec/attribute.html#static">Static</a> fields</li>
+        <li><a href="#anonymous">Anonymous Structs and Unions</a></li>
+        <li><a href="../spec/class.html#member-functions">member functions</a>
+        <ul>            <li>static member functions</li>
+            <li><a href="#UnionConstructor">Constructors</a></li>
+            <li><a href="../spec/operatoroverloading.html">Operator Overloading</a></li>
+        </ul>
+        <li><a href="#alias-this">Alias This</a></li>
+        <li>Other declarations (see <a href="../spec/module.html#DeclDef"><i>DeclDef</i></a>)</li>
+        </li>
+    </ul>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="recursive-types" href="#recursive-types">Recursive Structs and Unions</a></h3>
+<div class="blankline"></div>
+    <p>Structs and unions may not contain a non-static instance of themselves,
+    however, they may contain a pointer to the same type.
+    </p>
+<div class="blankline"></div>
+    <div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    S* ptr;     <span class="d_comment">// OK
+</span>    S[] slice;  <span class="d_comment">// OK
+</span>
+    S s;        <span class="d_comment">// error
+</span>    S[2] array; <span class="d_comment">// error
+</span>
+    <span class="d_keyword">static</span> S global; <span class="d_comment">// OK
+</span>}
+</pre>
+    
+</div>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="struct_layout" href="#struct_layout">Struct Layout</a></h2>
+<div class="blankline"></div>
+    <p>The non-static data members of a struct are called <i>fields</i>. Fields are laid
+    out in lexical order. Fields are aligned according to the <a href="../spec/attribute.html#align">Align Attribute</a>
+    in effect.
+    Unnamed padding is inserted between fields to align fields. There is no padding between
+    the first field and the start of the object.
+    </p>
+<div class="blankline"></div>
+    <p>Structs with no fields of non-zero size (aka <i>Empty Structs</i>) have a size of one byte.</p>
+<div class="blankline"></div>
+    <p>Non-static <a href="#nested">function-nested D structs</a>, which access the context of
+    their enclosing scope, have an extra field.
+    </p>
+<div class="blankline"></div>
+    <div class="spec-boxes implementation-defined"><b>Implementation Defined:</b>     <ol>    <li>The default layout of the fields of a struct is an exact
+    match with the <i>associated C compiler</i>.</li>
+    <li>g++ and clang++ differ in how empty structs are handled. Both return <span class="d_inlinecode donthyphenate notranslate">1</span> from <span class="d_inlinecode donthyphenate notranslate">sizeof</span>,
+    however, clang++ does not push them onto the parameter stack while g++ does. This is a
+    binary incompatibility between g++ and clang++.
+    dmd follows clang++ behavior for OSX and FreeBSD, and g++ behavior for Linux and other
+    Posix platforms.
+    </li>
+    <li>clang and gcc both return <span class="d_inlinecode donthyphenate notranslate">0</span> from <span class="d_inlinecode donthyphenate notranslate">sizeof</span> for empty structs. Using <span class="d_inlinecode donthyphenate notranslate">extern "C++"</span>
+    in clang++ and g++ does not cause them to conform to the behavior of their respective C compilers.</li>
+    </ol></div>
+
+
+<div class="blankline"></div>
+    <div class="spec-boxes undefined-behavior"><b>Undefined Behavior:</b>     <ol>    <li>The padding data can be accessed, but its contents are undefined.</li>
+    <li>Do not pass or return structs with no fields of non-zero size to <span class="d_inlinecode donthyphenate notranslate">extern (C)</span> functions.
+    According to C11 6.7.2.1p8 this is undefined behavior.</li>
+    </ol></div>
+
+
+<div class="blankline"></div>
+    <div class="spec-boxes best-practice"><b>Best Practices:</b>     <ol>    <li>When laying out a struct to match an externally defined layout, use align
+    attributes to describe an exact match. Using a <a href="../spec/version.html#static-assert">Static Assert</a>
+    to ensure the result is as expected.</li>
+    <li>Although the contents of the padding are often zero, do not rely on that.</li>
+    <li>Avoid using empty structs when interfacing with C and C++ code.</li>
+    <li>Avoid using empty structs as parameters or arguments to variadic functions.</li>
+    </ol></div>
+
+
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="POD" href="#POD">Plain Old Data</a></h2>
+<div class="blankline"></div>
+    <p>A struct or union is <i>Plain Old Data</i> (POD) if it meets the following criteria:</p>
+<div class="blankline"></div>
+    <ol>    <li>it is not nested</li>
+    <li>it has no postblits, copy constructors, destructors, or assignment operators</li>
+    <li>it has no fields that are themselves non-POD</li>
+    </ol>
+<div class="blankline"></div>
+    <div class="spec-boxes best-practice"><b>Best Practices:</b> Structs or unions that interface with C code should be POD.</div>
+
+
+<div class="blankline"></div>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="opaque_struct_unions" href="#opaque_struct_unions">Opaque Structs and Unions</a></h2>
+<div class="blankline"></div>
+    <p>Opaque struct and union declarations do not have an <a href="#AggregateBody"><i>AggregateBody</i></a>:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S;
+<span class="d_keyword">union</span> U;
+<span class="d_keyword">struct</span> V(T);
+<span class="d_keyword">union</span> W(T);
+</pre>
+<div class="blankline"></div>
+        <p>The members are completely hidden to the user, and so the only operations
+        on those types are ones that do not require any knowledge of the contents
+        of those types. For example:</p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S;
+S.sizeof; <span class="d_comment">// error, size is not known
+</span>S s;      <span class="d_comment">// error, cannot initialize unknown contents
+</span>S* p;     <span class="d_comment">// ok, knowledge of members is not necessary
+</span></pre>
+
+</div>
+<div class="blankline"></div>
+        <div class="spec-boxes best-practice"><b>Best Practices:</b> They can be used to implement the
+        <a href="https://en.wikipedia.org/wiki/Opaque_pointer">PIMPL idiom</a>.</div>
+
+
+<div class="blankline"></div>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="initialization" href="#initialization">Initialization</a></h2>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="default_struct_init" href="#default_struct_init">Default Initialization of Structs</a></h3>
+<div class="blankline"></div>
+        <p>Struct fields are by default initialized to whatever the
+        <a href="../spec/declaration.html#Initializer"><i>Initializer</i></a> for the field is, and if none is supplied, to
+        the default initializer for the field's type.
+        </p>
+<div class="blankline"></div>
+        <div class="runnable-examples" data-compile=''>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S { <span class="d_keyword">int</span> a = 4; <span class="d_keyword">int</span> b; }
+S x; <span class="d_comment">// x.a is set to 4, x.b to 0
+</span></pre>
+        
+</div>
+<div class="blankline"></div>
+        <p>The default initializers are evaluated at compile time.</p>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="static_struct_init" href="#static_struct_init">Static Initialization of Structs</a></h3>
+<div class="blankline"></div>
+<pre class="bnf notranslate"><a id="StructInitializer"><span class="gname">StructInitializer</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">{</span> <i>StructMemberInitializers</i><sub>opt</sub> <span class="d_inlinecode donthyphenate notranslate">}</span>
+<div class="blankline"></div>
+<a id="StructMemberInitializers"><span class="gname">StructMemberInitializers</span></a>:
+    <i>StructMemberInitializer</i>
+    <i>StructMemberInitializer</i> <span class="d_inlinecode donthyphenate notranslate">,</span>
+    <i>StructMemberInitializer</i> <span class="d_inlinecode donthyphenate notranslate">,</span> <i>StructMemberInitializers</i>
+<div class="blankline"></div>
+<a id="StructMemberInitializer"><span class="gname">StructMemberInitializer</span></a>:
+    <a href="../spec/declaration.html#NonVoidInitializer"><i>NonVoidInitializer</i></a>
+    <a href="../spec/lex.html#Identifier"><i>Identifier</i></a> <span class="d_inlinecode donthyphenate notranslate">:</span> <a href="../spec/declaration.html#NonVoidInitializer"><i>NonVoidInitializer</i></a>
+</pre>
+<div class="blankline"></div>
+        <p>If a <i>StructInitializer</i> is supplied, the
+        fields are initialized by the <i>StructMemberInitializer</i> syntax.
+        <i>StructMemberInitializers</i> with the <i>Identifier : NonVoidInitializer</i> syntax
+        may be appear in any order, where <i>Identifier</i> is the field identifier.
+        <i>StructMemberInitializer</i>s with the <a href="../spec/declaration.html#NonVoidInitializer"><i>NonVoidInitializer</i></a> syntax
+        appear in the lexical order of the fields in the <a href="#StructDeclaration"><i>StructDeclaration</i></a>.
+        </p>
+<div class="blankline"></div>
+        <p>Fields not specified in the <i>StructInitializer</i> are default initialized.</p>
+<div class="blankline"></div>
+        <div class="runnable-examples" data-compile=''>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S { <span class="d_keyword">int</span> a, b, c, d = 7; }
+S r;                          <span class="d_comment">// r.a = 0, r.b = 0, r.c = 0, r.d = 7
+</span>S s = { a:1, b:2 };           <span class="d_comment">// s.a = 1, s.b = 2, s.c = 0, s.d = 7
+</span>S t = { c:4, b:5, a:2, d:5 }; <span class="d_comment">// t.a = 2, t.b = 5, t.c = 4, t.d = 5
+</span>S u = { 1, 2 };               <span class="d_comment">// u.a = 1, u.b = 2, u.c = 0, u.d = 7
+</span>S v = { 1, d:3 };             <span class="d_comment">// v.a = 1, v.b = 0, v.c = 0, v.d = 3
+</span>S w = { b:1, 3 };             <span class="d_comment">// w.a = 0, w.b = 1, w.c = 3, w.d = 7
+</span></pre>
+        
+</div>
+<div class="blankline"></div>
+        <p>Initializing a field more than once is an error:</p>
+<div class="blankline"></div>
+        <div class="runnable-examples">
+<pre class="d_code notranslate">S x = { 1, a:2 };  <span class="d_comment">// error: duplicate initializer for field `a`
+</span></pre>
+        
+</div>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="default_union_init" href="#default_union_init">Default Initialization of Unions</a></h3>
+<div class="blankline"></div>
+        <p>Unions are by default initialized to whatever the
+        <a href="../spec/declaration.html#Initializer"><i>Initializer</i></a> for the first field is, and if none is supplied, to
+        the default initializer for the first field's type.
+        If the union is larger than the first field, the remaining bits
+        are set to 0.</p>
+<div class="blankline"></div>
+        <div class="runnable-examples" data-compile=''>
+<pre class="d_code notranslate"><span class="d_keyword">union</span> U { <span class="d_keyword">int</span> a = 4; <span class="d_keyword">long</span> b; }
+U x; <span class="d_comment">// x.a is set to 4, x.b to an implementation-defined value
+</span></pre>
+        
+</div>
+<div class="blankline"></div>
+        <p>It is an error to supply initializers for members other than the first one.</p>
+<div class="blankline"></div>
+        <div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">union</span> V { <span class="d_keyword">int</span> a; <span class="d_keyword">long</span> b = 4; }     <span class="d_comment">// error: union field `b` with default initialization `4` must be before field `a`
+</span><span class="d_keyword">union</span> W { <span class="d_keyword">int</span> a = 4; <span class="d_keyword">long</span> b = 5; } <span class="d_comment">// error: overlapping default initialization for `a` and `b`
+</span></pre>
+        
+</div>
+<div class="blankline"></div>
+        <p>The default initializer is evaluated at compile time.</p>
+<div class="blankline"></div>
+        <div class="spec-boxes implementation-defined"><b>Implementation Defined:</b> The values the fields other than the
+        default initialized field are set to.</div>
+
+
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="static_union_init" href="#static_union_init">Static Initialization of Unions</a></h3>
+<div class="blankline"></div>
+        <p>Unions are initialized similarly to structs, except that only
+        one member initializer is allowed.</p>
+<div class="blankline"></div>
+        <div class="runnable-examples" data-compile=''>
+<pre class="d_code notranslate"><span class="d_keyword">union</span> U { <span class="d_keyword">int</span> a; <span class="d_keyword">double</span> b; }
+U u = { 2 };       <span class="d_comment">// u.a = 2
+</span>U v = { b : 5.0 }; <span class="d_comment">// v.b = 5.0
+</span></pre>
+        
+</div>
+<div class="blankline"></div>
+        <div class="runnable-examples">
+<pre class="d_code notranslate">U w = { 2, 3 };    <span class="d_comment">// error: overlapping initialization for field `a` and `b`
+</span></pre>
+        
+</div>
+<div class="blankline"></div>
+        <p>If the union is larger than the initialized field, the remaining bits
+        are set to 0.</p>
+<div class="blankline"></div>
+        <div class="spec-boxes implementation-defined"><b>Implementation Defined:</b> The values the fields other than the
+        initialized field are set to.</div>
+
+
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="dynamic_struct_init" href="#dynamic_struct_init">Dynamic Initialization of Structs</a></h3>
+<div class="blankline"></div>
+        <p>The <a href="#static_struct_init">static initializer syntax</a>
+        can also be used to initialize non-static variables.
+        The initializer need not be evaluable at compile time.</p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S { <span class="d_keyword">int</span> a, b, c, d = 7; }
+
+<span class="d_keyword">void</span> test(<span class="d_keyword">int</span> i)
+{
+    S q = { 1, b:i }; <span class="d_comment">// q.a = 1, q.b = i, q.c = 0, q.d = 7
+</span>}
+</pre>
+
+</div>
+<div class="blankline"></div>
+        <p>Structs can be dynamically initialized from another
+        value of the same type:</p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S { <span class="d_keyword">int</span> a; }
+S t;      <span class="d_comment">// default initialized
+</span>t.a = 3;
+S s = t;  <span class="d_comment">// s.a is set to 3
+</span></pre>
+
+</div>
+<div class="blankline"></div>
+        <p>If the struct has a <a href="#struct-constructor">constructor</a>, and
+        the struct is initialized with a value that is of a different type,
+        then the constructor is called:</p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span> a;
+
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> v)
+    {
+        <span class="d_keyword">this</span>.a = v;
+    }
+}
+
+S s = 3; <span class="d_comment">// sets s.a to 3 using S's constructor
+</span></pre>
+
+</div>
+<div class="blankline"></div>
+        <p>If the struct does not have a constructor but
+        <a href="../spec/operatoroverloading.html#FunctionCall"><span class="d_inlinecode donthyphenate notranslate">opCall</span></a> is
+        overridden for the struct, and the struct is initialized with a value
+        that is of a different type, then the <span class="d_inlinecode donthyphenate notranslate">opCall</span> operator is called:</p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span> a;
+
+    <span class="d_keyword">static</span> S opCall(<span class="d_keyword">int</span> v)
+    {
+        S s;
+        s.a = v;
+        <span class="d_keyword">return</span> s;
+    }
+
+    <span class="d_keyword">static</span> S opCall(S v)
+    {
+        <span class="d_keyword">assert</span>(0);
+    }
+}
+
+S s = 3; <span class="d_comment">// sets s.a to 3 using S.opCall(int)
+</span>S t = s; <span class="d_comment">// sets t.a to 3, S.opCall(S) is not called
+</span></pre>
+
+</div>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="dynamic_union_init" href="#dynamic_union_init">Dynamic Initialization of Unions</a></h3>
+<div class="blankline"></div>
+        <p>The <a href="#static_union_init">static initializer syntax</a>
+        can also be used to initialize non-static variables.
+        The initializer need not be evaluable at compile time.</p>
+<div class="blankline"></div>
+<div class="runnable-examples" data-compile=''>
+<pre class="d_code notranslate"><span class="d_keyword">union</span> U { <span class="d_keyword">int</span> a; <span class="d_keyword">double</span> b; }
+
+<span class="d_keyword">void</span> test(<span class="d_keyword">int</span> i)
+{
+    U u = { a : i };   <span class="d_comment">// u.a = i
+</span>    U v = { b : 5.0 }; <span class="d_comment">// v.b = 5.0
+</span>}
+</pre>
+
+</div>
+<div class="blankline"></div>
+<h2><span id="StructLiteral"><a class="anchor" title="Permalink to this section" id="struct-literal" href="#struct-literal">Struct Literals</a></span></h2>
+<div class="blankline"></div>
+        <p>A struct literal consists of the name of the struct followed
+        by a parenthesized argument list:</p>
+<div class="blankline"></div>
+        <div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S { <span class="d_keyword">int</span> x; <span class="d_keyword">float</span> y; }
+
+<span class="d_keyword">int</span> foo(S s) { <span class="d_keyword">return</span> s.x; }
+
+foo( S(1, 2) ); <span class="d_comment">// set field x to 1, field y to 2
+</span></pre>
+        
+</div>
+<div class="blankline"></div>
+        <p>Struct literals are syntactically like function calls.
+        If a struct has a member function named <span class="d_inlinecode donthyphenate notranslate">opCall</span>, then
+        struct literals for that struct are not possible. See also
+        <a href="../spec/operatoroverloading.html#FunctionCall">opCall operator overloading</a>
+        for the issue workaround.</p>
+        <p>        It is an error if there are more arguments than fields of
+        the struct.
+        If there are fewer arguments than fields, the remaining
+        fields are initialized with their respective default
+        initializers.</p>
+        <p>        If there is a union field in the struct, only the first
+        member of the union can be initialized inside a
+        struct literal. This matches the behaviour for union literals.
+        </p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="union-literal" href="#union-literal">Union Literals</a></h2>
+<div class="blankline"></div>
+    <p>A union literal is like a struct literal, but only the first field can
+    be initialized with an initializer expression. Any field larger than the
+    first will have the remainder of its memory initialized to zero.
+    </p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">union</span> U
+{
+    <span class="d_keyword">byte</span> a;
+    <span class="d_keyword">char</span>[2] b;
+}
+
+U u = U(2);
+<span class="d_keyword">assert</span>(u.a == 2);
+<span class="d_keyword">assert</span>(u.b == [2, 0]);
+</pre>
+
+</div>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="anonymous" href="#anonymous">Anonymous Structs and Unions</a></h2>
+<div class="blankline"></div>
+    <p>An anonymous struct or union can be declared as a member of a
+    parent class, struct or union by omitting the identifier after <span class="d_inlinecode donthyphenate notranslate">struct</span> or <span class="d_inlinecode donthyphenate notranslate">union</span>.
+    An anonymous struct declares sequentially stored fields in the
+    parent type. An anonymous union declares overlapping fields in
+    the parent type.</p>
+<div class="blankline"></div>
+    <p>An anonymous union is useful inside a class or struct to share
+    memory for fields, without having to name a parent field with a
+    separate union type.</p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span> a;
+    <span class="d_keyword">union</span>
+    {
+        <span class="d_keyword">byte</span> b;
+        <span class="d_keyword">char</span> c;
+    }
+}
+
+S s = S(1, 2);
+<span class="d_keyword">assert</span>(s.a == 1);
+<span class="d_keyword">assert</span>(s.b == 2);
+<span class="d_keyword">assert</span>(s.c == 2); <span class="d_comment">// overlaps with `b`
+</span></pre>
+
+</div>
+<div class="blankline"></div>
+    <p>Conversely, an anonymous struct is useful inside a union to
+    declare multiple fields that are stored sequentially.</p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">union</span> U
+{
+    <span class="d_keyword">int</span> a;
+    <span class="d_keyword">struct</span>
+    {
+        <span class="d_keyword">uint</span> b;
+        <span class="d_keyword">bool</span> c;
+    }
+}
+
+U u = U(1);
+<span class="d_keyword">assert</span>(u.a == 1);
+<span class="d_keyword">assert</span>(u.b == 1); <span class="d_comment">// overlaps with `a`
+</span><span class="d_keyword">assert</span>(u.c == <span class="d_keyword">false</span>); <span class="d_comment">// no overlap
+</span></pre>
+
+</div>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="struct_properties" href="#struct_properties">Struct Properties</a></h2>
+<div class="blankline"></div>
+<center><table><caption>Struct Properties</caption><tr><th class="donthyphenate"><b>Name</b></th><th class="donthyphenate"><b>Description</b></th></tr>
+<tr><td><span class="d_inlinecode donthyphenate notranslate">.sizeof</span></td><td>Size in bytes of struct</td></tr>
+<tr><td><span class="d_inlinecode donthyphenate notranslate">.alignof</span></td><td>Size boundary struct needs to be aligned on</td></tr>
+</table></center>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="struct_instance_properties" href="#struct_instance_properties">Struct Instance Properties</a></h3>
+<div class="blankline"></div>
+<center><table><caption>Struct Instance Properties</caption><tr><th class="donthyphenate"><b>Name</b></th><th class="donthyphenate"><b>Description</b></th></tr>
+<tr><td><span class="d_inlinecode donthyphenate notranslate">.tupleof</span></td><td>An <a href="../spec/template.html#homogeneous_sequences">lvalue sequence</a>
+    of all struct fields - see
+    <a href="../spec/class.html#class_properties">Class Properties</a> for a class-based example.</td></tr>
+</table></center>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="struct_field_properties" href="#struct_field_properties">Struct Field Properties</a></h3>
+<div class="blankline"></div>
+<center><table><caption>Struct Field Properties</caption><tr><th class="donthyphenate"><b>Name</b></th><th class="donthyphenate"><b>Description</b></th></tr>
+<tr><td><span class="d_inlinecode donthyphenate notranslate">.offsetof</span></td><td>Offset in bytes of field from beginning of struct</td></tr>
+</table></center>
+<div class="blankline"></div>
+<h2><span id="ConstStruct"><a class="anchor" title="Permalink to this section" id="const-struct" href="#const-struct">Const, Immutable and Shared Structs</a></span></h2>
+<div class="blankline"></div>
+        <p>A struct declaration can have a storage class of
+        <span class="d_inlinecode donthyphenate notranslate">const</span>, <span class="d_inlinecode donthyphenate notranslate">immutable</span> or <span class="d_inlinecode donthyphenate notranslate">shared</span>. It has an equivalent
+        effect as declaring each member of the struct as
+        <span class="d_inlinecode donthyphenate notranslate">const</span>, <span class="d_inlinecode donthyphenate notranslate">immutable</span> or <span class="d_inlinecode donthyphenate notranslate">shared</span>.
+        </p>
+<div class="blankline"></div>
+        <div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">const</span> <span class="d_keyword">struct</span> S { <span class="d_keyword">int</span> a; <span class="d_keyword">int</span> b = 2; }
+<span class="d_keyword">void</span> main()
+{
+    S s = S(3); <span class="d_comment">// initializes s.a to 3
+</span>    S t;        <span class="d_comment">// initializes t.a to 0
+</span>    t = s;      <span class="d_comment">// error, t.a and t.b are const, so cannot modify them.
+</span>    t.a = 4;    <span class="d_comment">// error, t.a is const
+</span>}
+</pre>
+        
+</div>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="UnionConstructor" href="#UnionConstructor">Union Constructors</a></h2>
+<div class="blankline"></div>
+        <p>Unions are constructed in the same way as structs.</p>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<h2><span id="Struct-Constructor"><a class="anchor" title="Permalink to this section" id="struct-constructor" href="#struct-constructor">Struct Constructors</a></span></h2>
+<div class="blankline"></div>
+        <p>Struct constructors are used to initialize an instance of a struct when a more
+        complex construction is needed than is allowed by
+        <a href="#static_struct_init">static initialization</a> or a
+        <a href="#struct-literal">struct literal</a>.
+        </p>
+<div class="blankline"></div>
+        <p>Constructors are defined with a function name of <span class="d_inlinecode donthyphenate notranslate">this</span> and have no return value.
+        The grammar is the same as for the class <a href="../spec/class.html#Constructor"><i>Constructor</i></a>.
+        </p>
+<div class="blankline"></div>
+        <p>A struct constructor is called by the name of the struct followed by
+        <a href="../spec/function.html#Parameters"><i>Parameters</i></a>.
+        </p>
+        <p>If the <a href="../spec/function.html#ParameterList"><i>ParameterList</i></a> is empty,
+        the struct instance is default initialized.</p>
+<div class="blankline"></div>
+        <div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span> x, y = 4, z = 6;
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> a, <span class="d_keyword">int</span> b)
+    {
+        x = a;
+        y = b;
+    }
+}
+
+<span class="d_keyword">void</span> main()
+{
+    S a = S(4, 5); <span class="d_comment">// calls S.this(4, 5):  a.x = 4, a.y = 5, a.z = 6
+</span>    S b = S();  <span class="d_comment">// default initialized:    b.x = 0, b.y = 4, b.z = 6
+</span>    S c = S(1); <span class="d_comment">// error, matching this(int) not found
+</span>}
+</pre>
+        
+</div>
+<div class="blankline"></div>
+        <p>A <i>default constructor</i> (i.e. one with an empty <a href="../spec/function.html#ParameterList"><i>ParameterList</i></a>)
+        is not allowed.</p>
+<div class="blankline"></div>
+        <div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span> x;
+    <span class="d_keyword">this</span>() { } <span class="d_comment">// error, struct default constructor not allowed
+</span>}
+</pre>
+        
+</div>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="delegating-constructor" href="#delegating-constructor">Delegating Constructors</a></h3>
+<div class="blankline"></div>
+        <p>A constructor can call another constructor for the same struct
+        in order to share common initializations. This is called a
+        <i>delegating constructor</i>:
+        </p>
+<div class="blankline"></div>
+        <div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span> j = 1;
+    <span class="d_keyword">long</span> k = 2;
+    <span class="d_keyword">this</span>(<span class="d_keyword">long</span> k)
+    {
+        <span class="d_keyword">this</span>.k = k;
+    }
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> i)
+    {
+        <span class="d_comment">// At this point: j=1, k=2
+</span>        <b><i><span class="d_keyword">this</span></i></b>(6); <span class="d_comment">// delegating constructor call
+</span>        <span class="d_comment">// At this point: j=1, k=6
+</span>        j = i;
+        <span class="d_comment">// At this point: j=i, k=6
+</span>    }
+}
+</pre>
+        
+</div>
+<div class="blankline"></div>
+        <p>The following restrictions apply:</p>
+<div class="blankline"></div>
+        <ol>        <li>If a constructor's code contains a delegating constructor call, all
+        possible execution paths through the constructor must make exactly one
+        delegating constructor call:
+<div class="blankline"></div>
+        <div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span> a;
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> i) { }
+
+    <span class="d_keyword">this</span>(<span class="d_keyword">char</span> c)
+    {
+        c || <span class="d_keyword">this</span>(1);  <span class="d_comment">// error, not on all paths
+</span>    }
+
+    <span class="d_keyword">this</span>(<span class="d_keyword">wchar</span> w)
+    {
+        (w) ? <span class="d_keyword">this</span>(1) : <span class="d_keyword">this</span>('c');  <span class="d_comment">// ok
+</span>    }
+
+    <span class="d_keyword">this</span>(<span class="d_keyword">byte</span> b)
+    {
+        <span class="d_keyword">foreach</span> (i; 0 .. b)
+        {
+            <span class="d_keyword">this</span>(1);  <span class="d_comment">// error, inside loop
+</span>        }
+    }
+}
+</pre>
+        
+</div>
+        </li>
+<div class="blankline"></div>
+        <li>It is illegal to refer to <span class="d_inlinecode donthyphenate notranslate">this</span> implicitly or explicitly
+        prior to making a delegating constructor call.</li>
+<div class="blankline"></div>
+        <li>Once the delegating constructor returns, all fields are considered
+        constructed.</li>
+<div class="blankline"></div>
+        <li>Delegating constructor calls cannot appear after labels.</li>
+        </ol>
+<div class="blankline"></div>
+        <p>See also: <a href="../spec/class.html#delegating-constructors">delegating class constructors</a>.</p>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="struct-instantiation" href="#struct-instantiation">Struct Instantiation</a></h3>
+<div class="blankline"></div>
+        <p>When an instance of a struct is created, the following steps happen:</p>
+<div class="blankline"></div>
+        <ol>        <li>The raw data is statically initialized using the values provided
+        in the struct definition.
+        This operation is equivalent to doing a memory copy of a static
+        version of the object onto the newly allocated one.
+        </li>
+<div class="blankline"></div>
+        <li>If there is a constructor defined for the struct,
+        the constructor matching the argument list is called.
+        </li>
+<div class="blankline"></div>
+        <li>If struct invariant checking is turned on, the struct invariant
+        is called at the end of the constructor.
+        </li>
+        </ol>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="constructor-attributes" href="#constructor-attributes">Constructor Attributes</a></h3>
+<div class="blankline"></div>
+        <p>A constructor qualifier (<span class="d_inlinecode donthyphenate notranslate">const</span>, <span class="d_inlinecode donthyphenate notranslate">immutable</span> or <span class="d_inlinecode donthyphenate notranslate">shared</span>) constructs the object instance
+        with that specific qualifier.
+        </p>
+        <div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S1
+{
+    <span class="d_keyword">int</span>[] a;
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> n) { a = <span class="d_keyword">new</span> <span class="d_keyword">int</span>[](n); }
+}
+<span class="d_keyword">struct</span> S2
+{
+    <span class="d_keyword">int</span>[] a;
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> n) <span class="d_keyword">immutable</span> { a = <span class="d_keyword">new</span> <span class="d_keyword">int</span>[](n); }
+}
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_comment">// Mutable constructor creates mutable object.
+</span>    S1 m1 = S1(1);
+
+    <span class="d_comment">// Constructed mutable object is implicitly convertible to const.
+</span>    <span class="d_keyword">const</span> S1 c1 = S1(1);
+
+    <span class="d_comment">// Constructed mutable object is not implicitly convertible to immutable.
+</span>    <span class="d_keyword">immutable</span> i1 = S1(1); <span class="d_comment">// error
+</span>
+    <span class="d_comment">// Mutable constructor cannot construct immutable object.
+</span>    <span class="d_keyword">auto</span> x1 = <span class="d_keyword">immutable</span> S1(1); <span class="d_comment">// error
+</span>
+
+    <span class="d_comment">// Immutable constructor creates immutable object.
+</span>    <span class="d_keyword">immutable</span> i2 = <span class="d_keyword">immutable</span> S2(1);
+
+    <span class="d_comment">// Immutable constructor cannot construct mutable object.
+</span>    <span class="d_keyword">auto</span> x2 = S2(1); <span class="d_comment">// error
+</span>
+    <span class="d_comment">// Constructed immutable object is not implicitly convertible to mutable.
+</span>    S2 m2 = <span class="d_keyword">immutable</span> S2(1); <span class="d_comment">// error
+</span>
+    <span class="d_comment">// Constructed immutable object is implicitly convertible to const.
+</span>    <span class="d_keyword">const</span> S2 c2 = <span class="d_keyword">immutable</span> S2(1);
+}
+</pre>
+        
+</div>
+<div class="blankline"></div>
+        <p>Constructors can be overloaded with different attributes.</p>
+<div class="blankline"></div>
+        <div class="runnable-examples" data-compile=''>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span>);           <span class="d_comment">// non-shared mutable constructor
+</span>    <span class="d_keyword">this</span>(<span class="d_keyword">int</span>) <span class="d_keyword">shared</span>;    <span class="d_comment">// shared mutable constructor
+</span>    <span class="d_keyword">this</span>(<span class="d_keyword">int</span>) <span class="d_keyword">immutable</span>; <span class="d_comment">// immutable constructor
+</span>}
+
+<span class="d_keyword">void</span> fun()
+{
+    S m = S(1);
+    <span class="d_keyword">shared</span> s = <span class="d_keyword">shared</span> S(2);
+    <span class="d_keyword">immutable</span> i = <span class="d_keyword">immutable</span> S(3);
+}
+</pre>
+        
+</div>
+<div class="blankline"></div>
+<h4><a class="anchor" title="Permalink to this section" id="pure-constructors" href="#pure-constructors">Pure Constructors</a></h4>
+<div class="blankline"></div>
+        <p>If the constructor can create a unique object (i.e. if it is <span class="d_inlinecode donthyphenate notranslate">pure</span>),
+        the object is implicitly convertible to any qualifiers.
+        </p>
+        <div class="runnable-examples" data-compile=''>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span>) <span class="d_keyword">pure</span>;
+    <span class="d_comment">// Based on the definition, this creates a mutable object. But the
+</span>    <span class="d_comment">// created object cannot contain any mutable global data.
+</span>    <span class="d_comment">// Therefore the created object is unique.
+</span>
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span>[] arr) <span class="d_keyword">immutable</span> <span class="d_keyword">pure</span>;
+    <span class="d_comment">// Based on the definition, this creates an immutable object. But
+</span>    <span class="d_comment">// the argument int[] never appears in the created object so it
+</span>    <span class="d_comment">// isn't implicitly convertible to immutable. Also, it cannot store
+</span>    <span class="d_comment">// any immutable global data.
+</span>    <span class="d_comment">// Therefore the created object is unique.
+</span>}
+
+<span class="d_keyword">void</span> fun()
+{
+    <span class="d_keyword">immutable</span> i = <span class="d_keyword">immutable</span> S(1); <span class="d_comment">// this(int) pure is called
+</span>    <span class="d_keyword">shared</span> s = <span class="d_keyword">shared</span> S(1);       <span class="d_comment">// this(int) pure is called
+</span>    S m = S([1,2,3]);             <span class="d_comment">// this(int[]) immutable pure is called
+</span>}
+</pre>
+        
+</div>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="disable_default_construction" href="#disable_default_construction">Disabling Default Struct Construction</a></h3>
+<div class="blankline"></div>
+        <p>If a struct constructor is annotated with <span class="d_inlinecode donthyphenate notranslate">@disable</span> and has
+        an empty <a href="../spec/function.html#ParameterList"><i>ParameterList</i></a>, the struct has disabled default construction.
+        The only way it can be constructed is via a call to another constructor with a non-empty
+        <i>ParameterList</i>.
+        </p>
+<div class="blankline"></div>
+        <p>A struct with a disabled default constructor, and no other constructors, cannot
+        be instantiated other than via a <a href="../spec/declaration.html#VoidInitializer"><i>VoidInitializer</i></a>.</p>
+<div class="blankline"></div>
+        <p>A disabled default constructor may not have a <a href="../spec/function.html#FunctionBody"><i>FunctionBody</i></a>.</p>
+<div class="blankline"></div>
+        <p>If any fields have disabled default construction, struct default construction is
+        also disabled.</p>
+<div class="blankline"></div>
+        <div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span> x;
+
+    <span class="d_comment">// Disables default construction
+</span>    @disable <span class="d_keyword">this</span>();
+
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> v) { x = v; }
+}
+<span class="d_keyword">struct</span> T
+{
+    <span class="d_keyword">int</span> y;
+    S s;
+}
+<span class="d_keyword">void</span> main()
+{
+    S s;          <span class="d_comment">// error: default construction is disabled
+</span>    S t = S();    <span class="d_comment">// error: also disabled
+</span>    S u = S(1);   <span class="d_comment">// constructed by calling `S.this(1)`
+</span>    S v = <span class="d_keyword">void</span>;   <span class="d_comment">// not initialized, but allowed
+</span>    S w = { 1 };  <span class="d_comment">// error: cannot use { } since constructor exists
+</span>    S[3] a;       <span class="d_comment">// error: default construction is disabled
+</span>    S[3] b = [S(1), S(20), S(-2)]; <span class="d_comment">// ok
+</span>    T t;          <span class="d_comment">// error: default construction is disabled
+</span>}
+</pre>
+        
+</div>
+<div class="blankline"></div>
+        <div class="spec-boxes best-practice"><b>Best Practices:</b> Disabling default construction is useful when the default value,
+        such as <span class="d_inlinecode donthyphenate notranslate">null</span>, is not acceptable.</div>
+
+
+<div class="blankline"></div>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="field-init" href="#field-init">Field initialization inside a constructor</a></h3>
+<div class="blankline"></div>
+        <p>In a constructor body, if a delegating constructor is called,
+        all field assignments are considered assignments.
+        Otherwise, the first instance of field assignment is
+        its initialization, and assignments of the form <span class="d_inlinecode donthyphenate notranslate">field = expression</span>
+        are treated as equivalent to <span class="d_inlinecode donthyphenate notranslate">typeof(field)(expression)</span>.
+        The values of fields may be read before initialization or construction
+        with a delegating constructor.
+        </p>
+<div class="blankline"></div>
+        <div class="runnable-examples" data-compile=''>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span> num;
+    <span class="d_keyword">int</span> ber;
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> i)
+    {
+        num = i + 1;   <span class="d_comment">// initialization
+</span>        num = i + 2;   <span class="d_comment">// assignment
+</span>        ber = ber + 1; <span class="d_comment">// ok to read before initialization
+</span>    }
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> i, <span class="d_keyword">int</span> j)
+    {
+        <span class="d_keyword">this</span>(i);
+        num = i + 1;  <span class="d_comment">// assignment
+</span>    }
+}
+</pre>
+        
+</div>
+<div class="blankline"></div>
+        <p>If the field type has an <a href="../spec/operatoroverloading.html#assignment"><span class="d_inlinecode donthyphenate notranslate">opAssign</span></a>
+        method, it will not be used for initialization.</p>
+<div class="blankline"></div>
+        <div class="runnable-examples" data-compile=''>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> A
+{
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> n) {}
+    <span class="d_keyword">void</span> opAssign(A rhs) {}
+}
+<span class="d_keyword">struct</span> S
+{
+    A val;
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> i)
+    {
+        val = A(i);  <span class="d_comment">// val is initialized to the value of A(i)
+</span>        val = A(2);  <span class="d_comment">// rewritten to val.opAssign(A(2))
+</span>    }
+}
+</pre>
+        
+</div>
+<div class="blankline"></div>
+        <p>If the field type is not mutable, multiple initialization will be rejected.</p>
+<div class="blankline"></div>
+        <div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">immutable</span> <span class="d_keyword">int</span> num;
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span>)
+    {
+        num = 1;  <span class="d_comment">// OK
+</span>        num = 2;  <span class="d_comment">// Error: assignment to immutable
+</span>    }
+}
+</pre>
+        
+</div>
+<div class="blankline"></div>
+        <p>If the field is initialized on one path, it must be initialized on all paths.</p>
+        <div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">immutable</span> <span class="d_keyword">int</span> num;
+    <span class="d_keyword">immutable</span> <span class="d_keyword">int</span> ber;
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> i)
+    {
+        <span class="d_keyword">if</span> (i)
+            num = 3;   <span class="d_comment">// initialization
+</span>        <span class="d_keyword">else</span>
+            num = 4;   <span class="d_comment">// initialization
+</span>    }
+    <span class="d_keyword">this</span>(<span class="d_keyword">long</span> j)
+    {
+        j ? (num = 3) : (num = 4); <span class="d_comment">// ok
+</span>        j || (ber = 3);  <span class="d_comment">// Error: initialized on only one path
+</span>        j &amp;&amp; (ber = 3);  <span class="d_comment">// Error: initialized on only one path
+</span>    }
+}
+</pre>
+        
+</div>
+<div class="blankline"></div>
+        <p>A field initialization may not appear in a loop or after
+        a label.</p>
+<div class="blankline"></div>
+        <div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">immutable</span> <span class="d_keyword">int</span> num;
+    <span class="d_keyword">immutable</span> string str;
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> j)
+    {
+        <span class="d_keyword">foreach</span> (i; 0..j)
+        {
+            num = 1;    <span class="d_comment">// Error: field initialization not allowed in loops
+</span>        }
+        size_t i = 0;
+    Label:
+        str = <span class="d_string">"hello"</span>;  <span class="d_comment">// Error: field initialization not allowed after labels
+</span>        <span class="d_keyword">if</span> (i++ &lt; 2)
+            <span class="d_keyword">goto</span> Label;
+    }
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> j, <span class="d_keyword">int</span> k)
+    {
+        <span class="d_keyword">switch</span> (j)
+        {
+            <span class="d_keyword">case</span> 1: ++j; <span class="d_keyword">break</span>;
+            <span class="d_keyword">default</span>: <span class="d_keyword">break</span>;
+        }
+        num = j;        <span class="d_comment">// Error: `case` and `default` are also labels
+</span>    }
+}
+</pre>
+        
+</div>
+<div class="blankline"></div>
+        <p>If a field's type has disabled default construction, then it must be initialized
+        in the constructor.</p>
+        <div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S { <span class="d_keyword">int</span> y; @disable <span class="d_keyword">this</span>(); }
+
+<span class="d_keyword">struct</span> T
+{
+    S s;
+    <span class="d_keyword">this</span>(S t) { s = t; }       <span class="d_comment">// ok
+</span>    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> i) { <span class="d_keyword">this</span>('c'); } <span class="d_comment">// ok
+</span>    <span class="d_keyword">this</span>(<span class="d_keyword">char</span>) { }             <span class="d_comment">// Error: s not initialized
+</span>}
+</pre>
+        
+</div>
+<div class="blankline"></div>
+<h2><span id="StructCopyConstructor"><a class="anchor" title="Permalink to this section" id="struct-copy-constructor" href="#struct-copy-constructor">Struct Copy Constructors</a></span></h2>
+<div class="blankline"></div>
+    <p>Copy constructors are used to initialize a <span class="d_inlinecode donthyphenate notranslate">struct</span> instance from
+    another instance of the same type. A <span class="d_inlinecode donthyphenate notranslate">struct</span> that defines a copy constructor
+    is not <a href="#POD">POD</a>.</p>
+<div class="blankline"></div>
+    <p>A constructor declaration is a copy constructor declaration if it meets
+    the following requirements:</p>
+<div class="blankline"></div>
+    <ul>    <li>It takes exactly one parameter without a
+    <a href="../spec/function.html#function-default-args">default argument</a>,
+    followed by any number of parameters with default arguments.</li>
+<div class="blankline"></div>
+    <li>Its first parameter is a
+    <a href="../spec/function.html#ref-params"><span class="d_inlinecode donthyphenate notranslate">ref</span> parameter</a>.</li>
+<div class="blankline"></div>
+    <li>The type of its first parameter is the same type as
+    <a href="../spec/type.html#typeof"><span class="d_inlinecode donthyphenate notranslate">typeof(this)</span></a>, optionally with one or more
+    <a href="../spec/const3.html">type qualifiers</a> applied to it.</li>
+<div class="blankline"></div>
+    <li>It is not a
+    <a href="../spec/template.html#template_ctors">template constructor declaration</a>.</li>
+    </ul>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> A
+{
+    <span class="d_keyword">this</span>(<span class="d_keyword">ref</span> <span class="d_keyword">return</span> <span class="d_keyword">scope</span> A rhs) {}                        <span class="d_comment">// copy constructor
+</span>    <span class="d_keyword">this</span>(<span class="d_keyword">ref</span> <span class="d_keyword">return</span> <span class="d_keyword">scope</span> <span class="d_keyword">const</span> A rhs, <span class="d_keyword">int</span> b = 7) {}       <span class="d_comment">// copy constructor with default parameter
+</span>}
+</pre>
+<div class="blankline"></div>
+    <p>The copy constructor is type checked as a normal constructor.</p>
+<div class="blankline"></div>
+    <p>If a copy constructor is defined, implicit calls to it will be inserted
+    in the following situations:</p>
+<div class="blankline"></div>
+    <ol>    <li>When a variable is explicitly initialized:</li>
+<div class="blankline"></div>
+    <div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> A
+{
+    <span class="d_keyword">int</span>[] arr;
+    <span class="d_keyword">this</span>(<span class="d_keyword">ref</span> <span class="d_keyword">return</span> <span class="d_keyword">scope</span> A rhs) { arr = rhs.arr.dup; }
+}
+
+<span class="d_keyword">void</span> main()
+{
+    A a;
+    a.arr = [1, 2];
+
+    A b = a; <span class="d_comment">// copy constructor gets called
+</span>    b.arr[] += 1;
+    <span class="d_keyword">assert</span>(a.arr == [1, 2]); <span class="d_comment">// a is unchanged
+</span>    <span class="d_keyword">assert</span>(b.arr == [2, 3]);
+}
+</pre>
+    
+</div>
+<div class="blankline"></div>
+    <li>When a parameter is passed by value to a function:</li>
+<div class="blankline"></div>
+    <div class="runnable-examples" data-compile=''>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> A
+{
+    <span class="d_keyword">this</span>(<span class="d_keyword">ref</span> <span class="d_keyword">return</span> <span class="d_keyword">scope</span> A another) {}
+}
+
+<span class="d_keyword">void</span> fun(A a) {}
+
+<span class="d_keyword">void</span> main()
+{
+    A a;
+    fun(a);    <span class="d_comment">// copy constructor gets called
+</span>}
+</pre>
+    
+</div>
+<div class="blankline"></div>
+    <li>When a parameter is returned by value from a function and Named Returned Value Optimization (NRVO)
+    cannot be performed:</li>
+<div class="blankline"></div>
+    <div class="runnable-examples" data-compile=''>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> A
+{
+    <span class="d_keyword">this</span>(<span class="d_keyword">ref</span> <span class="d_keyword">return</span> <span class="d_keyword">scope</span> A another) {}
+}
+
+A fun()
+{
+    A a;
+    <span class="d_keyword">return</span> a;       <span class="d_comment">// NRVO, no copy constructor call
+</span>}
+
+A a;
+A gun()
+{
+    <span class="d_keyword">return</span> a;       <span class="d_comment">// cannot perform NRVO, rewrite to: return (A __tmp; __tmp.copyCtor(a));
+</span>}
+
+<span class="d_keyword">void</span> main()
+{
+    A a = fun();
+    A b = gun();
+}
+</pre>
+    
+</div>
+    </ol>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="disable-copy" href="#disable-copy">Disabled Copying</a></h3>
+<div class="blankline"></div>
+    <p>When a copy constructor is defined for a <span class="d_inlinecode donthyphenate notranslate">struct</span> (or marked <span class="d_inlinecode donthyphenate notranslate">@disable</span>), the compiler no
+    longer implicitly generates default copy/blitting constructors for that <span class="d_inlinecode donthyphenate notranslate">struct</span>:
+    </p>
+<div class="blankline"></div>
+    <div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> A
+{
+    <span class="d_keyword">int</span>[] a;
+    <span class="d_keyword">this</span>(<span class="d_keyword">ref</span> <span class="d_keyword">return</span> <span class="d_keyword">scope</span> A rhs) {}
+}
+
+<span class="d_keyword">void</span> fun(<span class="d_keyword">immutable</span> A) {}
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">immutable</span> A a;
+    fun(a);        <span class="d_comment">// error: copy constructor cannot be called with types (immutable) immutable
+</span>}
+</pre>
+    
+</div>
+<div class="blankline"></div>
+    <div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> A
+{
+    @disable <span class="d_keyword">this</span>(<span class="d_keyword">ref</span> A);
+}
+
+<span class="d_keyword">void</span> main()
+{
+    A a;
+    A b = a; <span class="d_comment">// error: copy constructor is disabled
+</span>}
+</pre>
+    
+</div>
+<div class="blankline"></div>
+    <p>If a <span class="d_inlinecode donthyphenate notranslate">union U</span> has fields that define a copy constructor, whenever an object of type <span class="d_inlinecode donthyphenate notranslate">U</span>
+    is initialized by copy, an error will be issued. The same rule applies to overlapped fields
+    (anonymous unions).</p>
+<div class="blankline"></div>
+    <div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">this</span>(<span class="d_keyword">ref</span> S);
+}
+
+<span class="d_keyword">union</span> U
+{
+    S s;
+}
+
+<span class="d_keyword">void</span> main()
+{
+    U a;
+    U b = a; <span class="d_comment">// error, could not generate copy constructor for U
+</span>}
+</pre>
+    
+</div>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="copy-constructor-attributes" href="#copy-constructor-attributes">Copy Constructor Attributes</a></h3>
+<div class="blankline"></div>
+    <p>The copy constructor can be overloaded with different qualifiers applied
+    to the parameter (copying from a qualified source) or to the copy constructor
+    itself (copying to a qualified destination):
+    </p>
+<div class="blankline"></div>
+    <div class="runnable-examples" data-compile=''>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> A
+{
+    <span class="d_keyword">this</span>(<span class="d_keyword">ref</span> <span class="d_keyword">return</span> <span class="d_keyword">scope</span> A another) {}                        <span class="d_comment">// 1 - mutable source, mutable destination
+</span>    <span class="d_keyword">this</span>(<span class="d_keyword">ref</span> <span class="d_keyword">return</span> <span class="d_keyword">scope</span> <span class="d_keyword">immutable</span> A another) {}              <span class="d_comment">// 2 - immutable source, mutable destination
+</span>    <span class="d_keyword">this</span>(<span class="d_keyword">ref</span> <span class="d_keyword">return</span> <span class="d_keyword">scope</span> A another) <span class="d_keyword">immutable</span> {}              <span class="d_comment">// 3 - mutable source, immutable destination
+</span>    <span class="d_keyword">this</span>(<span class="d_keyword">ref</span> <span class="d_keyword">return</span> <span class="d_keyword">scope</span> <span class="d_keyword">immutable</span> A another) <span class="d_keyword">immutable</span> {}    <span class="d_comment">// 4 - immutable source, immutable destination
+</span>}
+
+<span class="d_keyword">void</span> main()
+{
+    A a;
+    <span class="d_keyword">immutable</span> A ia;
+
+    A a2 = a;      <span class="d_comment">// calls 1
+</span>    A a3 = ia;     <span class="d_comment">// calls 2
+</span>    <span class="d_keyword">immutable</span> A a4 = a;     <span class="d_comment">// calls 3
+</span>    <span class="d_keyword">immutable</span> A a5 = ia;    <span class="d_comment">// calls 4
+</span>}
+</pre>
+    
+</div>
+<div class="blankline"></div>
+    <p>The <span class="d_inlinecode donthyphenate notranslate">inout</span> qualifier may be applied to the copy constructor parameter in
+    order to specify that mutable, <span class="d_inlinecode donthyphenate notranslate">const</span>, or <span class="d_inlinecode donthyphenate notranslate">immutable</span> types are treated the same:
+    </p>
+<div class="blankline"></div>
+    <div class="runnable-examples" data-compile=''>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> A
+{
+    <span class="d_keyword">this</span>(<span class="d_keyword">ref</span> <span class="d_keyword">return</span> <span class="d_keyword">scope</span> <span class="d_keyword">inout</span> A rhs) <span class="d_keyword">immutable</span> {}
+}
+
+<span class="d_keyword">void</span> main()
+{
+    A r1;
+    <span class="d_keyword">const</span>(A) r2;
+    <span class="d_keyword">immutable</span>(A) r3;
+
+    <span class="d_comment">// All call the same copy constructor because `inout` acts like a wildcard
+</span>    <span class="d_keyword">immutable</span>(A) a = r1;
+    <span class="d_keyword">immutable</span>(A) b = r2;
+    <span class="d_keyword">immutable</span>(A) c = r3;
+}
+</pre>
+    
+</div>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="implicit-copy-constructors" href="#implicit-copy-constructors">Implicit Copy Constructors</a></h3>
+<div class="blankline"></div>
+    <p>A copy constructor is generated implicitly by the compiler for a <span class="d_inlinecode donthyphenate notranslate">struct S</span>
+    if all of the following conditions are met:</p>
+<div class="blankline"></div>
+    <ol>    <li><span class="d_inlinecode donthyphenate notranslate">S</span> does not explicitly declare any copy constructors;</li>
+    <li><span class="d_inlinecode donthyphenate notranslate">S</span> defines at least one direct member that has a copy constructor, and that
+    member is not overlapped (by means of <span class="d_inlinecode donthyphenate notranslate">union</span>) with any other member.</li>
+    </ol>
+<div class="blankline"></div>
+    <p>If the restrictions above are met, the following copy constructor is generated:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">this</span>(<span class="d_keyword">ref</span> <span class="d_keyword">return</span> <span class="d_keyword">scope</span> <span class="d_keyword">inout</span>(S) src) <span class="d_keyword">inout</span>
+{
+    <span class="d_keyword">foreach</span> (i, <span class="d_keyword">ref</span> <span class="d_keyword">inout</span> field; src.tupleof)
+        <span class="d_keyword">this</span>.tupleof[i] = field;
+}
+</pre>
+<div class="blankline"></div>
+    <p>If the generated copy constructor fails to type check, it will receive the <span class="d_inlinecode donthyphenate notranslate">@disable</span> attribute.</p>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<h2><span id="StructPostblit"><a class="anchor" title="Permalink to this section" id="struct-postblit" href="#struct-postblit">Struct Postblits</a></span></h2>
+<div class="blankline"></div>
+<pre class="bnf notranslate"><a id="Postblit"><span class="gname">Postblit</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">this ( this )</span> <a href="../spec/function.html#MemberFunctionAttributes"><i>MemberFunctionAttributes</i></a><sub>opt</sub> <span class="d_inlinecode donthyphenate notranslate">;</span>
+    <span class="d_inlinecode donthyphenate notranslate">this ( this )</span> <a href="../spec/function.html#MemberFunctionAttributes"><i>MemberFunctionAttributes</i></a><sub>opt</sub> <a href="../spec/function.html#FunctionBody"><i>FunctionBody</i></a>
+</pre>
+<div class="blankline"></div>
+    <p><span class="red">Warning</span>: The postblit is considered legacy and is not recommended for new code.
+    Code should use <a href="#struct-copy-constructor">copy constructors</a>
+    defined in the previous section. For backward compatibility reasons, a <span class="d_inlinecode donthyphenate notranslate">struct</span> that
+    explicitly defines both a copy constructor and a postblit will only use the postblit
+    for implicit copying. However, if the postblit is disabled, the copy constructor will
+    be used. If a struct defines a copy constructor (user-defined or generated) and has
+    fields that define postblits, a deprecation will be issued, informing that the postblit
+    will have priority over the copy constructor.</p>
+<div class="blankline"></div>
+        <p><i>Copy construction</i> is defined as initializing
+         a struct instance from another instance of the same type.
+         Copy construction is divided into two parts:</p>
+<div class="blankline"></div>
+        <ol>        <li>blitting the fields, i.e. copying the bits</li>
+        <li>running <i>postblit</i> on the result</li>
+        </ol>
+<div class="blankline"></div>
+        <p>The first part is done automatically by the language,
+        the second part is done if a postblit function is defined
+        for the struct.
+        The postblit has access only to the destination struct object,
+        not the source.
+        Its job is to &lsquo;fix up&rsquo; the destination as necessary, such as
+        making copies of referenced data, incrementing reference counts,
+        etc. For example:
+        </p>
+<div class="blankline"></div>
+        <div class="runnable-examples" data-compile=''>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span>[] a;    <span class="d_comment">// array is privately owned by this instance
+</span>    <span class="d_keyword">this</span>(<span class="d_keyword">this</span>)
+    {
+        a = a.dup;
+    }
+}
+</pre>
+        
+</div>
+<div class="blankline"></div>
+        <p>Disabling struct postblit makes the object not copyable.
+        </p>
+<div class="blankline"></div>
+        <div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> T
+{
+    @disable <span class="d_keyword">this</span>(<span class="d_keyword">this</span>);  <span class="d_comment">// disabling makes T not copyable
+</span>}
+<span class="d_keyword">struct</span> S
+{
+    T t;   <span class="d_comment">// uncopyable member makes S also not copyable
+</span>}
+
+<span class="d_keyword">void</span> main()
+{
+    S s;
+    S t = s; <span class="d_comment">// error, S is not copyable
+</span>}
+</pre>
+        
+</div>
+<div class="blankline"></div>
+        <p>Depending on the struct layout, the compiler may generate the following
+        internal postblit functions:</p>
+<div class="blankline"></div>
+        <ol>        <li><span class="d_inlinecode donthyphenate notranslate">void __postblit()</span>. The compiler assigns this name to the explicitly
+        defined postblit <span class="d_inlinecode donthyphenate notranslate">this(this)</span> so that it can be treated exactly as
+        a normal function. Note that if a struct defines a postblit, it cannot
+        define a function named <span class="d_inlinecode donthyphenate notranslate">__postblit</span> - no matter the signature -
+        as this would result in a compilation error due to the name conflict.</li>
+        <li><span class="d_inlinecode donthyphenate notranslate">void __fieldPostblit()</span>. If a struct <span class="d_inlinecode donthyphenate notranslate">X</span> has at least one <span class="d_inlinecode donthyphenate notranslate">struct</span>
+        member that in turn defines (explicitly or implicitly) a postblit, then a field
+        postblit is generated for <span class="d_inlinecode donthyphenate notranslate">X</span> that calls all the underlying postblits
+        of the struct fields in declaration order.</li>
+        <li><span class="d_inlinecode donthyphenate notranslate">void __aggrPostblit()</span>. If a struct has an explicitly defined postblit
+        and at least 1 struct member that has a postblit (explicit or implicit)
+        an aggregated postblit is generated which calls <span class="d_inlinecode donthyphenate notranslate">__fieldPostblit</span> first
+        and then <span class="d_inlinecode donthyphenate notranslate">__postblit</span>.</li>
+        <li><span class="d_inlinecode donthyphenate notranslate">void __xpostblit()</span>. The field and aggregated postblits, although
+        generated for a struct, are not actual struct members. In order to be able
+        to call them, the compiler internally creates an alias, called <span class="d_inlinecode donthyphenate notranslate">__xpostblit</span>
+        which is a member of the struct and which points to the generated postblit that
+        is the most inclusive.</li>
+        </ol>
+<div class="blankline"></div>
+<div class="runnable-examples" data-compile=''>
+<pre class="d_code notranslate"><span class="d_comment">// struct with alias __xpostblit = __postblit
+</span><span class="d_keyword">struct</span> X
+{
+    <span class="d_keyword">this</span>(<span class="d_keyword">this</span>) {}
+}
+
+<span class="d_comment">// struct with alias __xpostblit = __fieldPostblit
+</span><span class="d_comment">// which contains a call to X.__xpostblit
+</span><span class="d_keyword">struct</span> Y
+{
+    X a;
+}
+
+<span class="d_comment">// struct with alias __xpostblit = __aggrPostblit which contains
+</span><span class="d_comment">// a call to Y.__xpostblit and a call to Z.__postblit
+</span><span class="d_keyword">struct</span> Z
+{
+    Y a;
+    <span class="d_keyword">this</span>(<span class="d_keyword">this</span>) {}
+}
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_comment">// X has __postblit and __xpostblit (pointing to __postblit)
+</span>    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(hasMember, X, <span class="d_string">"__postblit"</span>));
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(hasMember, X, <span class="d_string">"__xpostblit"</span>));
+
+    <span class="d_comment">// Y does not have __postblit, but has __xpostblit (pointing to __fieldPostblit)
+</span>    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(hasMember, Y, <span class="d_string">"__postblit"</span>));
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(hasMember, Y, <span class="d_string">"__xpostblit"</span>));
+    <span class="d_comment">// __fieldPostblit is not a member of the struct
+</span>    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(hasMember, Y, <span class="d_string">"__fieldPostblit"</span>));
+
+    <span class="d_comment">// Z has  __postblit and __xpostblit (pointing to __aggrPostblit)
+</span>    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(hasMember, Z, <span class="d_string">"__postblit"</span>));
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">__traits</span>(hasMember, Z, <span class="d_string">"__xpostblit"</span>));
+    <span class="d_comment">// __aggrPostblit is not a member of the struct
+</span>    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(hasMember, Z, <span class="d_string">"__aggrPostblit"</span>));
+}
+</pre>
+
+</div>
+<div class="blankline"></div>
+        <p>Neither of the above postblits is defined for structs that don't
+        define <span class="d_inlinecode donthyphenate notranslate">this(this)</span> and don't have fields that transitively define it.
+        If a struct does not define a postblit (implicit or explicit) but
+        defines functions that use the same name/signature as the internally
+        generated postblits, the compiler is able to identify that the functions
+        are not actual postblits and does not insert calls to them when the
+        struct is copied. Example:</p>
+<div class="blankline"></div>
+<div class="runnable-examples" data-compile=''>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> X
+{}
+
+<span class="d_keyword">int</span> a;
+
+<span class="d_keyword">struct</span> Y
+{
+    <span class="d_keyword">int</span> a;
+    X b;
+    <span class="d_keyword">void</span> __fieldPostPostblit()
+    {
+        a = 42;
+    }
+}
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(hasMember, X, <span class="d_string">"__postblit"</span>));
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(hasMember, X, <span class="d_string">"__xpostblit"</span>));
+
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(hasMember, Y, <span class="d_string">"__postblit"</span>));
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(hasMember, Y, <span class="d_string">"__xpostblit"</span>));
+
+    Y y;
+    <span class="d_keyword">auto</span> y2 = y;
+    <span class="d_keyword">assert</span>(a == 0); <span class="d_comment">// __fieldPostBlit does not get called
+</span>}
+</pre>
+
+</div>
+<div class="blankline"></div>
+        <p>Postblits cannot be overloaded. If two or more postblits are defined,
+        even if the signatures differ, the compiler assigns the
+        <span class="d_inlinecode donthyphenate notranslate">__postblit</span> name to both and later issues a conflicting function
+        name error:</p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> X
+{
+    <span class="d_keyword">this</span>(<span class="d_keyword">this</span>) {}
+    <span class="d_keyword">this</span>(<span class="d_keyword">this</span>) <span class="d_keyword">const</span> {} <span class="d_comment">// error: function X.__postblit conflicts with function X.__postblit
+</span>}
+</pre>
+
+</div>
+<div class="blankline"></div>
+        <p>The following describes the behavior of the
+        qualified postblit definitions:</p>
+<div class="blankline"></div>
+        <ol>        <li><span class="d_inlinecode donthyphenate notranslate">const</span>. When a postblit is qualified with <span class="d_inlinecode donthyphenate notranslate">const</span> as in
+        <span class="d_inlinecode donthyphenate notranslate">this(this) const;</span> or <span class="d_inlinecode donthyphenate notranslate">const this(this);</span> then the postblit
+        is successfully called on mutable (unqualified), <span class="d_inlinecode donthyphenate notranslate">const</span>,
+        and <span class="d_inlinecode donthyphenate notranslate">immutable</span> objects, but the postblit cannot modify the object
+        because it regards it as <span class="d_inlinecode donthyphenate notranslate">const</span>; hence <span class="d_inlinecode donthyphenate notranslate">const</span> postblits are of
+        limited usefulness. Example:</li>
+<div class="blankline"></div>
+<div class="runnable-examples" data-compile=''>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span> n;
+    <span class="d_keyword">this</span>(<span class="d_keyword">this</span>) <span class="d_keyword">const</span>
+    {
+        <span class="d_keyword">import</span> std.stdio : writeln;
+        writeln(<span class="d_string">"postblit called"</span>);
+        <span class="d_comment">//++n; // error: cannot modify this.n in `const` function
+</span>    }
+}
+
+<span class="d_keyword">void</span> main()
+{
+    S s1;
+    <span class="d_keyword">auto</span> s2 = s1;
+    <span class="d_keyword">const</span> S s3;
+    <span class="d_keyword">auto</span> s4 = s3;
+    <span class="d_keyword">immutable</span> S s5;
+    <span class="d_keyword">auto</span> s6 = s5;
+}
+</pre>
+
+</div>
+        <li><span class="d_inlinecode donthyphenate notranslate">immutable</span>. When a postblit is qualified with <span class="d_inlinecode donthyphenate notranslate">immutable</span>
+        as in <span class="d_inlinecode donthyphenate notranslate">this(this) immutable</span> or <span class="d_inlinecode donthyphenate notranslate">immutable this(this)</span>
+        the code is ill-formed. The <span class="d_inlinecode donthyphenate notranslate">immutable</span> postblit passes the
+        compilation phase but cannot be invoked. Example:</li>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> Y
+{
+    <span class="d_comment">// not invoked anywhere, no error is issued
+</span>    <span class="d_keyword">this</span>(<span class="d_keyword">this</span>) <span class="d_keyword">immutable</span>
+    { }
+}
+
+<span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">this</span>(<span class="d_keyword">this</span>) <span class="d_keyword">immutable</span>
+    { }
+}
+
+<span class="d_keyword">void</span> main()
+{
+    S s1;
+    <span class="d_keyword">auto</span> s2 = s1;    <span class="d_comment">// error: immutable method `__postblit` is not callable using a mutable object
+</span>    <span class="d_keyword">const</span> S s3;
+    <span class="d_keyword">auto</span> s4 = s3;    <span class="d_comment">// error: immutable method `__postblit` is not callable using a mutable object
+</span>    <span class="d_keyword">immutable</span> S s5;
+    <span class="d_keyword">auto</span> s6 = s5;    <span class="d_comment">// error: immutable method `__postblit` is not callable using a mutable object
+</span>}
+</pre>
+
+</div>
+<div class="blankline"></div>
+        <li><span class="d_inlinecode donthyphenate notranslate">shared</span>. When a postblit is qualified with <span class="d_inlinecode donthyphenate notranslate">shared</span> as in
+        <span class="d_inlinecode donthyphenate notranslate">this(this) shared</span> or <span class="d_inlinecode donthyphenate notranslate">shared this(this)</span> solely <span class="d_inlinecode donthyphenate notranslate">shared</span>
+        objects may invoke the postblit; attempts of postbliting unshared
+        objects will result in compile time errors:</li>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">this</span>(<span class="d_keyword">this</span>) <span class="d_keyword">shared</span>
+    { }
+}
+
+<span class="d_keyword">void</span> main()
+{
+    S s1;
+    <span class="d_keyword">auto</span> s2 = s1;    <span class="d_comment">// error: shared method `__postblit` is not callable using a non-shared object
+</span>    <span class="d_keyword">const</span> S s3;
+    <span class="d_keyword">auto</span> s4 = s3;    <span class="d_comment">// error: shared method `__postblit` is not callable using a non-shared object
+</span>    <span class="d_keyword">immutable</span> S s5;
+    <span class="d_keyword">auto</span> s6 = s5;    <span class="d_comment">// error: shared method `__postblit` is not callable using a non-shared object
+</span>
+    <span class="d_comment">// calling the shared postblit on a shared object is accepted
+</span>    <span class="d_keyword">shared</span> S s7;
+    <span class="d_keyword">auto</span> s8 = s7;
+}
+</pre>
+
+</div>
+        </ol>
+<div class="blankline"></div>
+        <p>An unqualified postblit will get called even if the
+        struct is instantiated as <span class="d_inlinecode donthyphenate notranslate">immutable</span> or <span class="d_inlinecode donthyphenate notranslate">const</span>, but
+        the compiler issues an error if the struct is instantiated
+        as <span class="d_inlinecode donthyphenate notranslate">shared</span>:</p>
+<div class="blankline"></div>
+<div class="runnable-examples" data-compile=''>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span> n;
+    <span class="d_keyword">this</span>(<span class="d_keyword">this</span>) { ++n; }
+}
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">immutable</span> S a;      <span class="d_comment">// shared S a; =&gt; error : non-shared method is not callable using a shared object
+</span>    <span class="d_keyword">auto</span> a2 = a;
+    <span class="d_keyword">import</span> std.stdio: writeln;
+    writeln(a2.n);     <span class="d_comment">// prints 1
+</span>}
+</pre>
+
+</div>
+<div class="blankline"></div>
+        <p>From a postblit perspective, qualifiying the struct definition
+        yields the same result as explicitly qualifying the postblit.</p>
+<div class="blankline"></div>
+        <p>The following table lists all the possibilities of grouping
+        qualifiers for a postblit associated with the type of object that
+        needs to be used in order to successfully invoke the postblit:</p>
+<div class="blankline"></div>
+        <center><table><caption>Qualifier Groups</caption>        <tr><td>object type to be invoked on</td><td><span class="d_inlinecode donthyphenate notranslate">const</span></td><td><span class="d_inlinecode donthyphenate notranslate">immutable</span></td><td><span class="d_inlinecode donthyphenate notranslate">shared</span></td></tr>        <tr><td>any object type</td><td>                &#10004;</td><td>    </td><td>          </td></tr>
+        <tr><td>uncallable</td><td>                     </td><td>     &#10004;</td><td>         </td></tr>
+        <tr><td>shared object</td><td>                  </td><td>     </td><td>         &#10004;</td></tr>
+        <tr><td>uncallable</td><td>                     &#10004;</td><td>    &#10004;</td><td>         </td></tr>
+        <tr><td>shared object</td><td>                  &#10004;</td><td>    </td><td>         &#10004;</td></tr>
+        <tr><td>uncallable</td><td>                     </td><td>     &#10004;</td><td>        &#10004;</td></tr>
+        <tr><td>uncallable</td><td>                     &#10004;</td><td>    &#10004;</td><td>        &#10004;</td></tr>
+        </table></center>
+<div class="blankline"></div>
+        <p>Note that when <span class="d_inlinecode donthyphenate notranslate">const</span> and <span class="d_inlinecode donthyphenate notranslate">immutable</span> are used to explicitly
+        qualify a postblit as in <span class="d_inlinecode donthyphenate notranslate">this(this) const immutable;</span> or
+        <span class="d_inlinecode donthyphenate notranslate">const immutable this(this);</span> - the order in which the qualifiers
+        are declared does not matter - the compiler generates a conflicting
+        attribute error, however declaring the struct as <span class="d_inlinecode donthyphenate notranslate">const</span>/<span class="d_inlinecode donthyphenate notranslate">immutable</span>
+        and the postblit as <span class="d_inlinecode donthyphenate notranslate">immutable</span>/<span class="d_inlinecode donthyphenate notranslate">const</span> achieves the effect of applying
+        both qualifiers to the postblit. In both cases the postblit is
+        qualified with the more restrictive qualifier, which is <span class="d_inlinecode donthyphenate notranslate">immutable</span>.
+        </p>
+<div class="blankline"></div>
+        <p>The postblits <span class="d_inlinecode donthyphenate notranslate">__fieldPostblit</span> and <span class="d_inlinecode donthyphenate notranslate">__aggrPostblit</span>
+        are generated without any implicit qualifiers and are not considered
+        struct members. This leads to the situation where qualifying an
+        entire struct declaration with <span class="d_inlinecode donthyphenate notranslate">const</span> or <span class="d_inlinecode donthyphenate notranslate">immutable</span> does not have
+        any impact on the above-mentioned postblits. However, since <span class="d_inlinecode donthyphenate notranslate">__xpostblit</span>
+        is a member of the struct and an alias of one of the other postblits,
+        the qualifiers applied to the struct will affect the aliased postblit.</p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">this</span>(<span class="d_keyword">this</span>)
+    { }
+}
+
+<span class="d_comment">// `__xpostblit` aliases the aggregated postblit so the `const` applies to it.
+</span><span class="d_comment">// However, the aggregated postblit calls the field postblit which does not have
+</span><span class="d_comment">// any qualifier applied, resulting in a qualifier mismatch error
+</span><span class="d_keyword">const</span> <span class="d_keyword">struct</span> B
+{
+    S a;        <span class="d_comment">// error : mutable method B.__fieldPostblit is not callable using a const object
+</span>    <span class="d_keyword">this</span>(<span class="d_keyword">this</span>)
+    { }
+}
+
+<span class="d_comment">// `__xpostblit` aliases the field postblit; no error
+</span><span class="d_keyword">const</span> <span class="d_keyword">struct</span> B2
+{
+    S a;
+}
+
+<span class="d_comment">// Similar to B
+</span><span class="d_keyword">immutable</span> <span class="d_keyword">struct</span> C
+{
+    S a;        <span class="d_comment">// error : mutable method C.__fieldPostblit is not callable using a immutable object
+</span>    <span class="d_keyword">this</span>(<span class="d_keyword">this</span>)
+    { }
+}
+
+<span class="d_comment">// Similar to B2, compiles
+</span><span class="d_keyword">immutable</span> <span class="d_keyword">struct</span> C2
+{
+    S a;
+}
+</pre>
+
+</div>
+<div class="blankline"></div>
+        <p>In the above situations the errors do not contain line numbers because
+        the errors are regarding generated code.
+        </p>
+<div class="blankline"></div>
+        <p>Qualifying an entire struct as <span class="d_inlinecode donthyphenate notranslate">shared</span> correctly propagates the attribute
+        to the generated postblits:</p>
+<div class="blankline"></div>
+<div class="runnable-examples" data-compile=''>
+<pre class="d_code notranslate"><span class="d_keyword">shared</span> <span class="d_keyword">struct</span> A
+{
+    <span class="d_keyword">this</span>(<span class="d_keyword">this</span>)
+    {
+        <span class="d_keyword">import</span> std.stdio : writeln;
+        writeln(<span class="d_string">"the shared postblit was called"</span>);
+    }
+}
+
+<span class="d_keyword">struct</span> B
+{
+    A a;
+}
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">shared</span> B b1;
+    <span class="d_keyword">auto</span> b2 = b1;
+}
+</pre>
+
+</div>
+<div class="blankline"></div>
+        <p>Unions may have fields that have postblits. However, a union itself never has
+        a postblit. Copying a union does not result in postblit calls for any fields.
+        If those calls are desired, they must be inserted explicitly by the programmer:</p>
+<div class="blankline"></div>
+<div class="runnable-examples" data-compile=''>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span> count;
+    <span class="d_keyword">this</span>(<span class="d_keyword">this</span>)
+    {
+        ++count;
+    }
+}
+
+<span class="d_keyword">union</span> U
+{
+    S s;
+}
+
+<span class="d_keyword">void</span> main()
+{
+    U a = U.init;
+    U b = a;
+    <span class="d_keyword">assert</span>(b.s.count == 0);
+    b.s.__postblit;
+    <span class="d_keyword">assert</span>(b.s.count == 1);
+}
+</pre>
+
+</div>
+<div class="blankline"></div>
+<h2><span id="StructDestructor"><a class="anchor" title="Permalink to this section" id="struct-destructor" href="#struct-destructor">Struct Destructors</a></span></h2>
+<div class="blankline"></div>
+        <p>Destructors are called when an object goes out of scope.
+        Their purpose is to free up resources owned by the struct
+        object.
+        </p>
+<div class="blankline"></div>
+        <p>Unions may have fields that have destructors. However, a union itself never has
+        a destructor. When a union goes out of scope, destructors for its fields are not called.
+        If those calls are desired, they must be inserted explicitly by the programmer:</p>
+<div class="blankline"></div>
+<div class="runnable-examples" data-compile=''>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    ~<span class="d_keyword">this</span>()
+    {
+        <span class="d_keyword">import</span> std.stdio;
+        writeln(<span class="d_string">"S is being destructed"</span>);
+    }
+}
+
+<span class="d_keyword">union</span> U
+{
+    S s;
+}
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">import</span> std.stdio;
+    {
+        writeln(<span class="d_string">"entering first scope"</span>);
+        U u = U.init;
+        <span class="d_keyword">scope</span> (exit) writeln(<span class="d_string">"exiting first scope"</span>);
+    }
+    {
+        writeln(<span class="d_string">"entering second scope"</span>);
+        U u = U.init;
+        <span class="d_keyword">scope</span> (exit)
+        {
+            writeln(<span class="d_string">"exiting second scope"</span>);
+            destroy(u.s);
+        }
+    }
+}
+</pre>
+
+</div>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="Invariant" href="#Invariant">Struct Invariants</a></h2>
+<div class="blankline"></div>
+<pre class="bnf notranslate"><a id="Invariant"><span class="gname">Invariant</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">invariant ( )</span> <a href="../spec/statement.html#BlockStatement"><i>BlockStatement</i></a>
+    <span class="d_inlinecode donthyphenate notranslate">invariant</span> <a href="../spec/statement.html#BlockStatement"><i>BlockStatement</i></a>
+    <span class="d_inlinecode donthyphenate notranslate">invariant (</span> <a href="../spec/expression.html#AssertArguments"><i>AssertArguments</i></a> <span class="d_inlinecode donthyphenate notranslate">) ;</span>
+</pre>
+<div class="blankline"></div>
+    <p>Struct <i>Invariant</i>s specify the relationships among the members of a struct instance.
+    Those relationships must hold for any interactions with the instance from its
+    public interface.
+    </p>
+<div class="blankline"></div>
+    <p>The invariant is in the form of a <span class="d_inlinecode donthyphenate notranslate">const</span> member function. The invariant is defined
+    to <i>hold</i> if all the <a href="../spec/expression.html#AssertExpression"><i>AssertExpression</i></a>s within the invariant that are executed
+    succeed.
+    </p>
+<div class="blankline"></div>
+    <div class="runnable-examples" data-compile=''>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> Date
+{
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> d, <span class="d_keyword">int</span> h)
+    {
+        day = d;    <span class="d_comment">// days are 1..31
+</span>        hour = h;   <span class="d_comment">// hours are 0..23
+</span>    }
+
+    <span class="d_keyword">invariant</span>
+    {
+        <span class="d_keyword">assert</span>(1 &lt;= day &amp;&amp; day &lt;= 31);
+        <span class="d_keyword">assert</span>(0 &lt;= hour &amp;&amp; hour &lt; 24);
+    }
+
+  <span class="d_keyword">private</span>:
+    <span class="d_keyword">int</span> day;
+    <span class="d_keyword">int</span> hour;
+}
+</pre>
+    
+</div>
+<div class="blankline"></div>
+    <p>There may be multiple invariants in a struct. They are applied in lexical order.</p>
+<div class="blankline"></div>
+    <p>Struct <i>Invariant</i>s must hold at the exit of the struct constructor (if any),
+    and at the entry of the struct destructor (if any).</p>
+<div class="blankline"></div>
+    <p>Struct <i>Invariant</i>s must hold
+    at the entry and exit of all public or exported non-static member functions.
+    The order of application of invariants is:
+    </p>
+    <ol>    <li>preconditions</li>
+    <li>invariant</li>
+    <li>function body</li>
+    <li>invariant</li>
+    <li>postconditions</li>
+    </ol>
+<div class="blankline"></div>
+    <p>The invariant need not hold if the struct instance is implicitly constructed using
+    the default <span class="d_inlinecode donthyphenate notranslate">.init</span> value.</p>
+<div class="blankline"></div>
+    <p>If the invariant does not hold, then the program enters an invalid state.</p>
+<div class="blankline"></div>
+    <div class="spec-boxes implementation-defined"><b>Implementation Defined:</b>     <ol>    <li>Whether the struct <i>Invariant</i> is executed at runtime or not. This is typically
+    controlled with a compiler switch.</li>
+    <li>The behavior when the invariant does not hold is typically the same as
+    for when <a href="../spec/expression.html#AssertExpression"><i>AssertExpression</i></a>s fail.</li>
+    </ol>
+    </div>
+
+
+<div class="blankline"></div>
+    <div class="spec-boxes undefined-behavior"><b>Undefined Behavior:</b> happens if the invariant does not hold and execution continues.</div>
+
+
+<div class="blankline"></div>
+    <p>Public or exported non-static member functions cannot be called from within an invariant.</p>
+<div class="blankline"></div>
+    <div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> Foo
+{
+    <span class="d_keyword">public</span> <span class="d_keyword">void</span> f() { }
+    <span class="d_keyword">private</span> <span class="d_keyword">void</span> g() { }
+
+    <span class="d_keyword">invariant</span>
+    {
+        f();  <span class="d_comment">// error, cannot call public member function from invariant
+</span>        g();  <span class="d_comment">// ok, g() is not public
+</span>    }
+}
+</pre>
+    
+</div>
+<div class="blankline"></div>
+    <div class="spec-boxes best-practice"><b>Best Practices:</b>     <ol>    <li>Do not indirectly call exported or public member functions within a struct invariant,
+    as this can result in infinite recursion.</li>
+    <li>Avoid reliance on side effects in the invariant. as the invariant may or may not
+    be executed.</li>
+    <li>Avoid having mutable public fields of structs with invariants,
+    as then the invariant cannot verify the public interface.</li>
+    </ol>
+    </div>
+
+
+<div class="blankline"></div>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<h2><span id="AssignOverload"><a class="anchor" title="Permalink to this section" id="assign-overload" href="#assign-overload">Identity Assignment Overload</a></span></h2>
+<div class="blankline"></div>
+        <p>While copy construction takes care of initializing
+        an object from another object of the same type,
+        assignment is defined as copying the contents of a source
+        object over those of a destination object, calling the
+        destination object's destructor if it has one in the process:
+        </p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S { ... }  <span class="d_comment">// S has postblit or destructor
+</span>S s;      <span class="d_comment">// default construction of s
+</span>S t = s;  <span class="d_comment">// t is copy-constructed from s
+</span>t = s;    <span class="d_comment">// t is assigned from s
+</span></pre>
+<div class="blankline"></div>
+        <p>Struct assignment <span class="d_inlinecode donthyphenate notranslate">t=s</span> is defined to be semantically
+        equivalent to:
+        </p>
+<div class="blankline"></div>
+<pre class="d_code notranslate">t.opAssign(s);
+</pre>
+<div class="blankline"></div>
+        <p>where <span class="d_inlinecode donthyphenate notranslate">opAssign</span> is a member function of S:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">ref</span> S opAssign(<span class="d_keyword">ref</span> S s)
+{
+    S tmp = <span class="d_keyword">this</span>;   <span class="d_comment">// bitcopy this into tmp
+</span>    <span class="d_keyword">this</span> = s;       <span class="d_comment">// bitcopy s into this
+</span>    tmp.__dtor();   <span class="d_comment">// call destructor on tmp
+</span>    <span class="d_keyword">return</span> <span class="d_keyword">this</span>;
+}
+</pre>
+<div class="blankline"></div>
+        <p>An identity assignment overload is required for a struct if one or more of
+        these conditions hold:</p>
+<div class="blankline"></div>
+        <ul>        <li>it has a <a href="#struct-destructor">destructor</a></li>
+        <li>it has a <a href="#struct-postblit">postblit</a></li>
+        <li>it has a field with an identity assignment overload</li>
+        </ul>
+<div class="blankline"></div>
+        <p>If an identity assignment overload is required and does not
+        exist, an identity assignment overload function of the type
+        <span class="d_inlinecode donthyphenate notranslate">ref S opAssign(ref S)</span>  will be automatically generated.</p>
+<div class="blankline"></div>
+        <p>A user-defined one can implement the equivalent semantics, but can
+        be more efficient.
+        </p>
+<div class="blankline"></div>
+        <p>One reason a custom <span class="d_inlinecode donthyphenate notranslate">opAssign</span> might be more efficient
+        is if the struct has a reference to a local buffer:
+        </p>
+<div class="blankline"></div>
+        <div class="runnable-examples" data-compile=''>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span>[] buf;
+    <span class="d_keyword">int</span> a;
+
+    <span class="d_keyword">ref</span> S opAssign(<span class="d_keyword">ref</span> <span class="d_keyword">const</span> S s) <span class="d_keyword">return</span>
+    {
+        a = s.a;
+        <span class="d_keyword">return</span> <span class="d_keyword">this</span>;
+    }
+
+    <span class="d_keyword">this</span>(<span class="d_keyword">this</span>)
+    {
+        buf = buf.dup;
+    }
+}
+</pre>
+        
+</div>
+<div class="blankline"></div>
+        <p>Here, <span class="d_inlinecode donthyphenate notranslate">S</span> has a temporary workspace <span class="d_inlinecode donthyphenate notranslate">buf[]</span>.
+        The normal postblit
+        will pointlessly free and reallocate it. The custom <span class="d_inlinecode donthyphenate notranslate">opAssign</span>
+        will reuse the existing storage.
+        </p>
+<div class="blankline"></div>
+<h2><span id="AliasThis"><a class="anchor" title="Permalink to this section" id="alias-this" href="#alias-this">Alias This</a></span></h2>
+<div class="blankline"></div>
+<pre class="bnf notranslate"><a id="AliasThis"><span class="gname">AliasThis</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">alias</span> <a href="../spec/lex.html#Identifier"><i>Identifier</i></a> <span class="d_inlinecode donthyphenate notranslate">this ;</span>
+</pre>
+<div class="blankline"></div>
+        <p>An <i>AliasThis</i> declaration names a member to subtype.
+        The <i>Identifier</i> names that member.
+        </p>
+<div class="blankline"></div>
+        <p>A struct or union instance can be implicitly converted to the <i>AliasThis</i>
+        member.
+        </p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span> x;
+    <span class="d_keyword">alias</span> x <span class="d_keyword">this</span>;
+}
+
+<span class="d_keyword">int</span> foo(<span class="d_keyword">int</span> i) { <span class="d_keyword">return</span> i * 2; }
+
+<span class="d_keyword">void</span> main()
+{
+    S s;
+    s.x = 7;
+    <span class="d_keyword">int</span> i = -s;
+    <span class="d_keyword">assert</span>(i == -7);
+    i = s + 8;
+    <span class="d_keyword">assert</span>(i == 15);
+    i = s + s;
+    <span class="d_keyword">assert</span>(i == 14);
+    i = 9 + s;
+    <span class="d_keyword">assert</span>(i == 16);
+    i = foo(s);  <span class="d_comment">// implicit conversion to int
+</span>    <span class="d_keyword">assert</span>(i == 14);
+}
+</pre>
+
+</div>
+<div class="blankline"></div>
+        <p>If the member is a class or struct, undefined lookups will
+        be forwarded to the <i>AliasThis</i> member.
+        </p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">class</span> Foo
+{
+    <span class="d_keyword">int</span> baz = 4;
+    <span class="d_keyword">int</span> get() { <span class="d_keyword">return</span> 7; }
+}
+
+<span class="d_keyword">struct</span> Bar
+{
+    Foo foo;
+    <span class="d_keyword">alias</span> foo <span class="d_keyword">this</span>;
+}
+
+<span class="d_keyword">void</span> main()
+{
+    Bar bar = Bar(<span class="d_keyword">new</span> Foo());
+    <span class="d_keyword">int</span> i = bar.baz;
+    <span class="d_keyword">assert</span>(i == 4);
+    i = bar.get();
+    <span class="d_keyword">assert</span>(i == 7);
+}
+</pre>
+
+</div>
+<div class="blankline"></div>
+        <p>If the <i>Identifier</i> refers to a property member
+        function with no parameters then conversions and undefined
+        lookups are forwarded to the return value of the function.
+        </p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span> x;
+    @property <span class="d_keyword">int</span> get()
+    {
+        <span class="d_keyword">return</span> x * 2;
+    }
+    <span class="d_keyword">alias</span> get <span class="d_keyword">this</span>;
+}
+
+<span class="d_keyword">void</span> main()
+{
+    S s;
+    s.x = 2;
+    <span class="d_keyword">int</span> i = s;
+    <span class="d_keyword">assert</span>(i == 4);
+}
+</pre>
+
+</div>
+<div class="blankline"></div>
+        <p>If a struct declaration defines an <span class="d_inlinecode donthyphenate notranslate">opCmp</span> or <span class="d_inlinecode donthyphenate notranslate">opEquals</span>
+        method, it will take precedence to that of the <em>AliasThis</em> member. Note
+        that, unlike an <span class="d_inlinecode donthyphenate notranslate">opCmp</span> method, an <span class="d_inlinecode donthyphenate notranslate">opEquals</span> method is implicitly
+        defined for a <span class="d_inlinecode donthyphenate notranslate">struct</span> declaration if a user-defined one isn't provided.
+        This means that if the <em>AliasThis</em> member's <span class="d_inlinecode donthyphenate notranslate">opEquals</span> should be used, it
+        must be explicitly defined:
+        </p>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span> a;
+    <span class="d_keyword">bool</span> opEquals(S rhs) <span class="d_keyword">const</span>
+    {
+        <span class="d_keyword">return</span> <span class="d_keyword">this</span>.a == rhs.a;
+    }
+}
+
+<span class="d_keyword">struct</span> T
+{
+    <span class="d_keyword">int</span> b;
+    S s;
+    <span class="d_keyword">alias</span> s <span class="d_keyword">this</span>;
+}
+
+<span class="d_keyword">void</span> main()
+{
+    S s1, s2;
+    T t1, t2;
+
+    <span class="d_keyword">assert</span>(s1 == s2);      <span class="d_comment">// calls S.opEquals
+</span>    <span class="d_keyword">assert</span>(t1 == t2);      <span class="d_comment">// calls compiler generated T.opEquals that implements member-wise equality
+</span>
+    <span class="d_keyword">assert</span>(s1 == t1);      <span class="d_comment">// calls s1.opEquals(t1.s);
+</span>    <span class="d_keyword">assert</span>(t1 == s1);      <span class="d_comment">// calls t1.s.opEquals(s1);
+</span>}
+</pre>
+
+</div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> U
+{
+    <span class="d_keyword">int</span> a;
+    <span class="d_keyword">bool</span> opCmp(U rhs) <span class="d_keyword">const</span>
+    {
+        <span class="d_keyword">return</span> <span class="d_keyword">this</span>.a &lt; rhs.a;
+    }
+}
+
+<span class="d_keyword">struct</span> V
+{
+    <span class="d_keyword">int</span> b;
+    U u;
+    <span class="d_keyword">alias</span> u <span class="d_keyword">this</span>;
+}
+
+<span class="d_keyword">void</span> main()
+{
+    U u1, u2;
+    V v1, v2;
+
+    <span class="d_keyword">assert</span>(!(u1 &lt; u2));    <span class="d_comment">// calls U.opCmp
+</span>    <span class="d_keyword">assert</span>(!(v1 &lt; v2));    <span class="d_comment">// calls U.opCmp because V does not define an opCmp method
+</span>                           <span class="d_comment">// so the alias this of v1 is employed; U.opCmp expects a
+</span>                           <span class="d_comment">// paramter of type U, so alias this of v2 is used
+</span>
+    <span class="d_keyword">assert</span>(!(u1 &lt; v1));    <span class="d_comment">// calls u1.opCmp(v1.u);
+</span>    <span class="d_keyword">assert</span>(!(v1 &lt; u1));    <span class="d_comment">// calls v1.u.opCmp(v1);
+</span>}
+</pre>
+
+</div>
+        <p><a href="../spec/attribute.html#Attribute"><i>Attribute</i></a>s are ignored for <span class="d_inlinecode donthyphenate notranslate">AliasThis</span>.
+        </p>
+<div class="blankline"></div>
+        <p>A struct/union may only have a single <i>AliasThis</i> member.</p>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="nested" href="#nested">Nested Structs</a></h2>
+<div class="blankline"></div>
+    <p>A struct is a <i>nested struct</i> if</p>
+<div class="blankline"></div>
+        <ol>        <li>it is declared inside the scope of a function, or</li>
+        <li>it is a templated struct with one or more template arguments
+             that alias local functions.</li>
+        </ol>
+<div class="blankline"></div>
+    <p>A nested struct can have member functions.
+        It has access to the context of its enclosing scope
+        via a hidden field.</p>
+<div class="blankline"></div>
+        <div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">void</span> foo()
+{
+    <span class="d_keyword">int</span> i = 7;
+    <span class="d_keyword">struct</span> SS
+    {
+        <span class="d_keyword">int</span> x,y;
+        <span class="d_keyword">int</span> bar() { <span class="d_keyword">return</span> x + i + 1; }
+    }
+    SS s;
+    s.x = 3;
+    s.bar(); <span class="d_comment">// returns 11
+</span>}
+</pre>
+        
+</div>
+<div class="blankline"></div>
+    <p>The static attribute will prevent a struct from being nested. As such,
+        the struct will not have access to its enclosing scope.</p>
+<div class="blankline"></div>
+        <div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">void</span> foo()
+{
+    <span class="d_keyword">int</span> i = 7;
+    <span class="d_keyword">static</span> <span class="d_keyword">struct</span> SS
+    {
+        <span class="d_keyword">int</span> x, y;
+        <span class="d_keyword">int</span> bar()
+        {
+            <span class="d_keyword">return</span> i; <span class="d_comment">// error, SS is not a nested struct
+</span>        }
+    }
+}
+</pre>
+        
+</div>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="unions_and_special_memb_funct" href="#unions_and_special_memb_funct">Unions and Special Member Functions</a></h2>
+<div class="blankline"></div>
+    <p>Unions may not have postblits, destructors, or invariants.</p>
+<div class="blankline"></div>
+
+<div style="float: left"><i class="fa fa-angle-left" aria-hidden="true"></i> <a href="../spec/hash-map.html">Associative Arrays</a></div>
+<div style="float: right"><a href="../spec/class.html">Classes</a> <i class="fa fa-angle-right" aria-hidden="true"></i></div>
+<div style="clear:both"></div>
+
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on (no date time)</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<script type="text/javascript" src="../js/listanchors.js"></script>
+<script type="text/javascript">jQuery(document).ready(addVersionSelector);</script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>
