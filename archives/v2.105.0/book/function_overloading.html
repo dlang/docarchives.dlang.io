@@ -1,0 +1,367 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Function Overloading - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Function Overloading' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BFunction Overloading%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/d.en/function_overloading.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Function Overloading</h1>
+        
+        
+
+
+
+<p>Defining more than one function having the same name is <i>function overloading</i>. In order to be able to differentiate these functions, their parameters must be different. 
+</p>
+
+<p>The following code has multiple overloads of the <code class="d_inline">info()</code> function, each taking a different type of parameter:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> info(<span class="hilite"><span class="d_keyword">double</span></span> number) {
+    writeln(<span class="d_string">"Floating point: "</span>, number);
+}
+
+<span class="d_keyword">void</span> info(<span class="hilite"><span class="d_keyword">int</span></span> number) {
+    writeln(<span class="d_string">"Integer       : "</span>, number);
+}
+
+<span class="d_keyword">void</span> info(<span class="hilite">string</span> str) {
+    writeln(<span class="d_string">"String        : "</span>, str);
+}
+
+<span class="d_keyword">void</span> main() {
+    info(1.2);
+    info(3);
+    info(<span class="d_string">"hello"</span>);
+}
+</pre>
+
+<p>Although all of the functions are named <code class="d_inline">info()</code>, the compiler picks the one that matches the argument that is used when making the call. For example, because the literal <code class="d_inline">1.2</code> is of type <code class="d_inline">double</code>, the <code class="d_inline">info()</code> function that takes a <code class="d_inline">double</code> gets called for it.
+</p>
+
+<p>The choice of which function to call is made at compile time, which may not always be easy or clear. For example, because <code class="d_inline">int</code> can implicitly be converted to both <code class="d_inline">double</code> and <code class="d_inline">real</code>, the compiler cannot decide which of the functions to call in the following program:
+</p>
+
+<pre class="d_code"><span class="d_keyword">real</span> sevenTimes(<span class="d_keyword">real</span> value) {
+    <span class="d_keyword">return</span> 7 * value;
+}
+
+<span class="d_keyword">double</span> sevenTimes(<span class="d_keyword">double</span> value) {
+    <span class="d_keyword">return</span> 7 * value;
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">int</span> value = 5;
+    <span class="d_keyword">auto</span> result = sevenTimes(value);    <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+}
+</pre>
+
+<p><i><b>Note:</b> It is usually unnecessary to write separate functions when the function bodies are exactly the same. We will see later in the <a href="templates.html">Templates chapter</a> how a single definition can be used for multiple types.</i>
+</p>
+
+<p>However, if there is another function overload that takes a <code class="d_inline">long</code> parameter, then the ambiguity would be resolved because <code class="d_inline">long</code> is a <i>better match</i> for <code class="d_inline">int</code> than <code class="d_inline">double</code> or <code class="d_inline">real</code>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">long</span> sevenTimes(<span class="d_keyword">long</span> value) {
+    <span class="d_keyword">return</span> 7 * value;
+}
+
+<span class="d_comment">// ...
+</span>
+    <span class="d_keyword">auto</span> result = sevenTimes(value);    <span class="d_comment">// now compiles
+</span></pre>
+
+<h5 class="subsection">Overload resolution</h5>
+
+<p>The compiler picks the overload that is the <i>best match</i> for the arguments. This is called overload resolution.
+</p>
+
+<p>Although overload resolution is simple and intuitive in most cases, it is sometimes complicated. The following are the rules of overload resolution. They are being presented in a simplified way in this book.
+</p>
+
+<p>There are four states of match, listed from the worst to the best:
+</p>
+
+<ul><li>mismatch</li>
+<li>match through automatic type conversion</li>
+<li>match through <code class="d_inline">const</code> qualification</li>
+<li>exact match</li>
+</ul>
+
+<p>The compiler considers all of the overloads of a function during overload resolution. It first determines the match state of every parameter for every overload. For each overload, the least match state among the parameters is taken to be the match state of that overload.
+</p>
+
+<p>After all of the match states of the overloads are determined, then the overload with the best match is selected. If there are more than one overload that has the best match, then more complicated resolution rules are applied. I will not get into more details of these rules in this book. If your program is in a situation where it depends on complicated overload resolution rules, it may be an indication that it is time to change the design of the program. Another option is to take advantage of other features of D, like templates. An even simpler but not always desirable approach would be to abandon function overloading altogether by naming functions differently for each type e.g. like <code class="d_inline">sevenTimes_real()</code> and <code class="d_inline">sevenTimes_double()</code>.
+</p>
+
+<h5 class="subsection">Function overloading for user-defined types</h5>
+
+<p>Function overloading is useful with structs and classes as well. Additionally, overload resolution ambiguities are much less frequent with user-defined types. Let's overload the <code class="d_inline">info()</code> function above for some of the types that we have defined in the <a href="struct.html">Structs chapter</a>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> TimeOfDay {
+    <span class="d_keyword">int</span> hour;
+    <span class="d_keyword">int</span> minute;
+}
+
+<span class="d_keyword">void</span> info(TimeOfDay time) {
+    writef(<span class="d_string">"%02s:%02s"</span>, time.hour, time.minute);
+}
+</pre>
+
+<p>That overload enables <code class="d_inline">TimeOfDay</code> objects to be used with <code class="d_inline">info()</code>. As a result, variables of user-defined types can be printed in exactly the same way as fundamental types:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> breakfastTime = TimeOfDay(7, 0);
+    info(breakfastTime);
+</pre>
+
+<p>The <code class="d_inline">TimeOfDay</code> objects would be matched with that overload of <code class="d_inline">info()</code>:
+</p>
+
+<pre class="shell">07:00
+</pre>
+
+<p>The following is an overload of <code class="d_inline">info()</code> for the <code class="d_inline">Meeting</code> type:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Meeting {
+    string    topic;
+    size_t    attendanceCount;
+    TimeOfDay start;
+    TimeOfDay end;
+}
+
+<span class="d_keyword">void</span> info(Meeting meeting) {
+    info(meeting.start);
+    write('-');
+    info(meeting.end);
+
+    writef(<span class="d_string">" \"%s\" meeting with %s attendees"</span>,
+           meeting.topic,
+           meeting.attendanceCount);
+}
+</pre>
+
+<p>Note that this overload makes use of the already-defined overload for <code class="d_inline">TimeOfDay</code>. <code class="d_inline">Meeting</code> objects can now be printed in exactly the same way as fundamental types as well:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> bikeRideMeeting = Meeting(<span class="d_string">"Bike Ride"</span>, 3,
+                                   TimeOfDay(9, 0),
+                                   TimeOfDay(9, 10));
+    info(bikeRideMeeting);
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">09:00-09:10 "Bike Ride" meeting with 3 attendees
+</pre>
+
+<h5 class="subsection">Limitations</h5>
+
+<p>Although the <code class="d_inline">info()</code> function overloads above are a great convenience, this method has some limitations:
+</p>
+
+<ul>
+<li><code class="d_inline">info()</code> always prints to <code class="d_inline">stdout</code>. It would be more useful if it could print to any <code class="d_inline">File</code>. One way of achieving this is to pass the output stream as a parameter as well e.g. for the <code class="d_inline">TimeOfDay</code> type:
+
+<pre class="d_code"><span class="d_keyword">void</span> info(File file, TimeOfDay time) {
+    file.writef(<span class="d_string">"%02s:%02s"</span>, time.hour, time.minute);
+}
+</pre>
+
+<p>That would enable printing <code class="d_inline">TimeOfDay</code> objects to any file, including <code class="d_inline">stdout</code>:
+</p>
+
+<pre class="d_code">    info(<span class="hilite">stdout</span>, breakfastTime);
+
+    <span class="d_keyword">auto</span> file = File(<span class="d_string">"a_file"</span>, <span class="d_string">"w"</span>);
+    info(<span class="hilite">file</span>, breakfastTime);
+</pre>
+
+<p><i><b>Note:</b> The special objects <code class="d_inline">stdin</code>, <code class="d_inline">stdout</code>, and <code class="d_inline">stderr</code> are of type <code class="d_inline">File</code>.</i>
+</p>
+
+</li>
+
+<li>More importantly, <code class="d_inline">info()</code> does not solve the more general problem of producing the string representation of variables. For example, it does not help with passing objects of user-defined types to <code class="d_inline">writeln()</code>:
+
+<pre class="d_code">    writeln(breakfastTime);  <span class="d_comment">// Not useful: prints in generic format
+</span></pre>
+
+<p>The code above prints the object in a generic format that includes the name of the type and the values of its members, not in a way that would be useful in the program:
+</p>
+
+<pre class="shell">TimeOfDay(7, 0)
+</pre>
+
+<p>It would be much more useful if there were a function that converted <code class="d_inline">TimeOfDay</code> objects to <code class="d_inline">string</code> in their special format as in <code class="d_inline"><span class="d_string">"12:34"</span></code>. We will see how to define <code class="d_inline">string</code> representations of struct objects in the next chapter.
+</p>
+
+</li>
+
+</ul>
+
+<h5 class="subsection">Problem</h5>
+    
+<p>Overload the <code class="d_inline">info()</code> function for the following structs as well:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Meal {
+    TimeOfDay time;
+    string    address;
+}
+
+<span class="d_keyword">struct</span> DailyPlan {
+    Meeting amMeeting;
+    Meal    lunch;
+    Meeting pmMeeting;
+}
+</pre>
+
+<p>Since <code class="d_inline">Meal</code> has only the start time, add an hour and a half to determine its end time. You can use the <code class="d_inline">addDuration()</code> function that we have defined earlier in the structs chapter:
+</p>
+
+<pre class="d_code">TimeOfDay addDuration(TimeOfDay start,
+                      TimeOfDay duration) {
+    TimeOfDay result;
+
+    result.minute = start.minute + duration.minute;
+    result.hour = start.hour + duration.hour;
+    result.hour += result.minute / 60;
+
+    result.minute %= 60;
+    result.hour %= 24;
+
+    <span class="d_keyword">return</span> result;
+}
+</pre>
+
+<p>Once the end times of <code class="d_inline">Meal</code> objects are calculated by <code class="d_inline">addDuration()</code>, <code class="d_inline">DailyPlan</code> objects should be printed as in the following output:
+</p>
+
+<pre class="shell">10:30-11:45 "Bike Ride" meeting with 4 attendees
+12:30-14:00 Meal, Address: İstanbul
+15:30-17:30 "Budget" meeting with 8 attendees
+</pre>
+
+ <div class="cozum_link_tek"><p><a target="ddili_cozum" href="function_overloading.cozum.html"><i>... çözüm</i></a></p></div>
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on Mon Jan 29 21:19:13 2024
+</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

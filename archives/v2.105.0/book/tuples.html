@@ -1,0 +1,614 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>tuples - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='tuples' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5Btuples%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/d.en/tuples.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>tuples</h1>
+        
+        
+
+
+
+<p>Tuples are for combining multiple values to be used as a single object. They are implemented as a library feature by the <code class="d_inline">Tuple</code> template from the <code class="d_inline">std.typecons</code> module.
+</p>
+
+<p><code class="d_inline">Tuple</code> makes use of <code class="d_inline">AliasSeq</code> from the <code class="d_inline">std.meta</code> module for some of its operations.
+</p>
+
+<p>This chapter covers only the more common operations of tuples. For more information on tuples and templates see <a href="https://github.com/PhilippeSigaud/D-templates-tutorial">Philippe Sigaud's <i>D Templates: A Tutorial</i></a>.
+</p>
+
+<h5 class="subsection"><code class="d_inline">Tuple</code> and <code class="d_inline">tuple()</code></h5>
+
+<p>Tuples are usually constructed by the convenience function <code class="d_inline">tuple()</code>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.typecons;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> t = <span class="hilite">tuple(42, <span class="d_string">"hello"</span>)</span>;
+    writeln(t);
+}
+</pre>
+
+<p>The <code class="d_inline">tuple</code> call above constructs an object that consists of the <code class="d_inline">int</code> value 42 and the <code class="d_inline">string</code> value <code class="d_inline"><span class="d_string">"hello"</span></code>. The output of the program includes the type of the tuple object and its members:
+</p>
+
+<pre class="shell">Tuple!(int, string)(42, "hello")
+</pre>
+
+<p>The tuple type above is the equivalent of the following pseudo <code class="d_inline">struct</code> definition and likely have been implemented in exactly the same way:
+</p>
+
+<pre class="d_code"><span class="d_comment">// The equivalent of Tuple!(int, string)
+</span><span class="d_keyword">struct</span> __Tuple_int_string {
+    <span class="d_keyword">int</span> __member_0;
+    string __member_1;
+}
+</pre>
+
+<p>The members of a tuple are normally accessed by their index values. That syntax suggests that tuples can be seen as arrays consisting of different types of elements:
+</p>
+
+<pre class="d_code">    writeln(t<span class="hilite">[0]</span>);
+    writeln(t<span class="hilite">[1]</span>);
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">42
+hello
+</pre>
+
+<h6>Member properties</h6>
+
+<p>It is possible to access the members by properties if the tuple is constructed directly by the <code class="d_inline">Tuple</code> template instead of the <code class="d_inline">tuple()</code> function. The type and the name of each member are specified as two consecutive template parameters:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> t = Tuple!(<span class="d_keyword">int</span>, <span class="d_string">"number"</span>,
+                    string, <span class="d_string">"message"</span>)(42, <span class="d_string">"hello"</span>);
+</pre>
+
+<p>The definition above allows accessing the members by <code class="d_inline">.number</code> and <code class="d_inline">.message</code> properties as well:
+</p>
+
+<pre class="d_code">    writeln(<span class="d_string">"by index 0 : "</span>, t[0]);
+    writeln(<span class="d_string">"by .number : "</span>, t<span class="hilite">.number</span>);
+    writeln(<span class="d_string">"by index 1 : "</span>, t[1]);
+    writeln(<span class="d_string">"by .message: "</span>, t<span class="hilite">.message</span>);
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">by index 0 : 42
+by .number : 42
+by index 1 : hello
+by .message: hello
+</pre>
+
+<h6><a id="ix_tuples..expand" content=".expand"></a> Expanding the members as a list of values</h6>
+
+<p>Tuple members can be expanded as a list of values that can be used e.g. as an argument list when calling a function. The members can be expanded either by the <code class="d_inline">.expand</code> property or by slicing:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.typecons;
+
+<span class="d_keyword">void</span> foo(<span class="d_keyword">int</span> i, string s, <span class="d_keyword">double</span> d, <span class="d_keyword">char</span> c) {
+    <span class="d_comment">// ...
+</span>}
+
+<span class="d_keyword">void</span> bar(<span class="d_keyword">int</span> i, <span class="d_keyword">double</span> d, <span class="d_keyword">char</span> c) {
+    <span class="d_comment">// ...
+</span>}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> t = tuple(1, <span class="d_string">"2"</span>, 3.3, '4');
+
+    <span class="d_comment">// Both of the following lines are equivalents of
+</span>    <span class="d_comment">// foo(1, "2", 3.3, '4'):
+</span>    foo(t<span class="hilite">.expand</span>);
+    foo(t<span class="hilite">[]</span>);
+
+    <span class="d_comment">// The equivalent of bar(1, 3.3, '4'):
+</span>    bar(t<span class="hilite">[0]</span>, t<span class="hilite">[$-2..$]</span>);
+}
+</pre>
+
+<p>The tuple above consists of four values of <code class="d_inline">int</code>, <code class="d_inline">string</code>, <code class="d_inline">double</code>, and <code class="d_inline">char</code>. Since those types match the parameter list of <code class="d_inline">foo()</code>, an expansion of its members can be used as arguments to <code class="d_inline">foo()</code>. When calling <code class="d_inline">bar()</code>, a matching argument list is made up of the first member and the last two members of the tuple.
+</p>
+
+<p>As long as the members are compatible to be elements of the same array, the expansion of a tuple can be used as the element values of an array literal as well:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.typecons;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> t = tuple(1, 2, 3);
+    <span class="d_keyword">auto</span> a = [ t.expand, t[] ];
+    writeln(a);
+}
+</pre>
+
+<p>The array literal above is initialized by expanding the same tuple twice:
+</p>
+
+<pre class="shell">[1, 2, 3, 1, 2, 3]
+</pre>
+
+<h6><a id="ix_tuples.foreach, compile-time" content="foreach, compile-time"></a> <a id="ix_tuples.compile-time foreach" content="compile-time foreach"></a> Compile-time <code class="d_inline">foreach</code></h6>
+
+<p>Because their values can be expanded, tuples can be used with the <code class="d_inline">foreach</code> statement as well:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> t = tuple(42, <span class="d_string">"hello"</span>, 1.5);
+
+    <span class="d_keyword">foreach</span> (i, member; <span class="hilite">t</span>) {
+        writefln(<span class="d_string">"%s: %s"</span>, i, member);
+    }
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">0: 42
+1: hello
+2: 1.5
+</pre>
+
+<p><a id="ix_tuples.unroll" content="unroll"></a>
+The <code class="d_inline">foreach</code> statement above may give a false impression: It may be thought of being a loop that gets executed at run time. That is not the case. Rather, a <code class="d_inline">foreach</code> statement that operates on the members of a tuple is an <i>unrolling</i> of the loop body for each member. The <code class="d_inline">foreach</code> statement above is the equivalent of the following code:
+</p>
+
+<pre class="d_code">    {
+        <span class="d_keyword">enum</span> size_t i = 0;
+        <span class="hilite"><span class="d_keyword">int</span></span> member = t[i];
+        writefln(<span class="d_string">"%s: %s"</span>, i, member);
+    }
+    {
+        <span class="d_keyword">enum</span> size_t i = 1;
+        <span class="hilite">string</span> member = t[i];
+        writefln(<span class="d_string">"%s: %s"</span>, i, member);
+    }
+    {
+        <span class="d_keyword">enum</span> size_t i = 2;
+        <span class="hilite"><span class="d_keyword">double</span></span> member = t[i];
+        writefln(<span class="d_string">"%s: %s"</span>, i, member);
+    }
+</pre>
+
+<p>The reason for the unrolling is the fact that when the tuple members are of different types, the <code class="d_inline">foreach</code> body has to be compiled differently for each type.
+</p>
+
+<p>We will see <code class="d_inline">static foreach</code>, a more powerful loop unrolling feature, in <a href="static_foreach.html">a later chapter</a>.
+</p>
+
+<h6>Returning multiple values from functions</h6>
+
+<p><a id="ix_tuples.findSplit, std.algorithm" content="findSplit, std.algorithm"></a> Tuples can be a simple solution to the limitation of functions having to return a single value. An example of this is <code class="d_inline">std.algorithm.findSplit</code>. <code class="d_inline">findSplit()</code> searches for a range inside another range and produces a result consisting of three pieces: the part before the found range, the found range, and the part after the found range:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.algorithm;
+
+<span class="d_comment">// ...
+</span>
+    <span class="d_keyword">auto</span> entireRange = <span class="d_string">"hello"</span>;
+    <span class="d_keyword">auto</span> searched = <span class="d_string">"ll"</span>;
+
+    <span class="d_keyword">auto</span> result = findSplit(entireRange, searched);
+
+    writeln(<span class="d_string">"before: "</span>, result[0]);
+    writeln(<span class="d_string">"found : "</span>, result[1]);
+    writeln(<span class="d_string">"after : "</span>, result[2]);
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">before: he
+found : ll
+after : o
+</pre>
+
+<p>Another option for returning multiple values from a function is to return a <code class="d_inline">struct</code> object:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Result {
+    <span class="d_comment">// ...
+</span>}
+
+<span class="hilite">Result</span> foo() {
+    <span class="d_comment">// ...
+</span>}
+</pre>
+
+<h5 class="subsection"><a id="ix_tuples.AliasSeq, std.meta" content="AliasSeq, std.meta"></a> <code class="d_inline">AliasSeq</code></h5>
+
+<p><code class="d_inline">AliasSeq</code> is defined in the <code class="d_inline">std.meta</code> module. It is used for representing a concept that is normally used by the compiler but otherwise not available to the programmer as an entity: A comma-separated list of values, types, and symbols (i.e. <code class="d_inline">alias</code> template arguments). The following are three examples of such lists:
+</p>
+
+<ul><li>Function argument list</li>
+<li>Template argument list</li>
+<li>Array literal element list</li>
+</ul>
+
+<p>The following three lines of code are examples of those lists in the same order:
+</p>
+
+<pre class="d_code">    foo(<span class="hilite">1, <span class="d_string">"hello"</span>, 2.5</span>);         <span class="d_comment">// function arguments
+</span>    <span class="d_keyword">auto</span> o = Bar!(<span class="hilite"><span class="d_keyword">char</span>, <span class="d_keyword">long</span></span>)();  <span class="d_comment">// template arguments
+</span>    <span class="d_keyword">auto</span> a = [ <span class="hilite">1, 2, 3, 4</span> ];      <span class="d_comment">// array literal elements
+</span></pre>
+
+<p><code class="d_inline">Tuple</code> takes advantage of <code class="d_inline">AliasSeq</code> when expanding its members.
+</p>
+
+<p><a id="ix_tuples.TypeTuple, std.typetuple" content="TypeTuple, std.typetuple"></a> The name <code class="d_inline">AliasSeq</code> comes from "alias sequence" and it can contain types, values, and symbols. (<code class="d_inline">AliasSeq</code> and <code class="d_inline">std.meta</code> used to be called <code class="d_inline">TypeTuple</code> and <code class="d_inline">std.typetuple</code>, respectively.)
+</p>
+
+<p>This chapter includes <code class="d_inline">AliasSeq</code> examples that consist only of types or only of values. Examples of its use with both types and values will appear in the next chapter. <code class="d_inline">AliasSeq</code> is especially useful with variadic templates, which we will see in the next chapter as well.
+</p>
+
+<h6><code class="d_inline">AliasSeq</code> consisting of values</h6>
+
+<p>The values that an <code class="d_inline">AliasSeq</code> represents are specified as its template arguments.
+</p>
+
+<p>Let's imagine a function that takes three parameters:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> foo(<span class="hilite"><span class="d_keyword">int</span> i, string s, <span class="d_keyword">double</span> d</span>) {
+    writefln(<span class="d_string">"foo is called with %s, %s, and %s."</span>, i, s, d);
+}
+</pre>
+
+<p>That function would normally be called with three arguments:
+</p>
+
+<pre class="d_code">    foo(1, <span class="d_string">"hello"</span>, 2.5);
+</pre>
+
+<p><code class="d_inline">AliasSeq</code> can combine those arguments as a single entity and can automatically be expanded when calling functions:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.meta;
+
+<span class="d_comment">// ...
+</span>
+    <span class="d_keyword">alias</span> arguments = AliasSeq!(1, <span class="d_string">"hello"</span>, 2.5);
+    foo(<span class="hilite">arguments</span>);
+</pre>
+
+<p>Although it looks like the function is now being called with a single argument, the <code class="d_inline">foo()</code> call above is the equivalent of the previous one. As a result, both calls produce the same output:
+</p>
+
+<pre class="shell">foo is called with 1, hello, and 2.5.
+</pre>
+
+<p>Also note that <code class="d_inline">arguments</code> is not defined as a variable, e.g. with <code class="d_inline">auto</code>. Rather, it is an <code class="d_inline">alias</code> of a specific <code class="d_inline">AliasSeq</code> instance. Although it is possible to define variables of <code class="d_inline">AliasSeq</code>s as well, the examples in this chapter will use them only as aliases.
+</p>
+
+<p>As we have seen above with <code class="d_inline">Tuple</code>, when the values are compatible to be elements of the same array, an <code class="d_inline">AliasSeq</code> can be used to initialize an array literal as well:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">alias</span> elements = AliasSeq!(1, 2, 3, 4);
+    <span class="d_keyword">auto</span> arr = [ <span class="hilite">elements</span> ];
+    <span class="d_keyword">assert</span>(arr == [ 1, 2, 3, 4 ]);
+</pre>
+
+<h6>Indexing and slicing</h6>
+
+<p>Same with <code class="d_inline">Tuple</code>, the members of an <code class="d_inline">AliasSeq</code> can be accessed by indexes and slices:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">alias</span> arguments = AliasSeq!(1, <span class="d_string">"hello"</span>, 2.5);
+    <span class="d_keyword">assert</span>(arguments<span class="hilite">[0]</span> == 1);
+    <span class="d_keyword">assert</span>(arguments<span class="hilite">[1]</span> == <span class="d_string">"hello"</span>);
+    <span class="d_keyword">assert</span>(arguments<span class="hilite">[2]</span> == 2.5);
+</pre>
+
+<p>Let's assume there is a function with parameters matching the last two members of the <code class="d_inline">AliasSeq</code> above. That function can be called with a slice of just the last two members of the <code class="d_inline">AliasSeq</code>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> bar(string s, <span class="d_keyword">double</span> d) {
+    <span class="d_comment">// ...
+</span>}
+
+<span class="d_comment">// ...
+</span>
+    bar(arguments<span class="hilite">[$-2 .. $]</span>);
+</pre>
+
+<h6><code class="d_inline">AliasSeq</code> consisting of types</h6>
+
+<p>Members of an <code class="d_inline">AliasSeq</code> can consist of types. In other words, not a specific value of a specific type but a type like <code class="d_inline">int</code> itself. An <code class="d_inline">AliasSeq</code> consisting of types can represent template arguments.
+</p>
+
+<p>Let's use an <code class="d_inline">AliasSeq</code> with a <code class="d_inline">struct</code> template that has two parameters. The first parameter of this template determines the element type of a member array and the second parameter determines the return value of a member function:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.conv;
+
+<span class="d_keyword">struct</span> S(<span class="hilite">ElementT, ResultT</span>) {
+    ElementT[] arr;
+
+    ResultT length() {
+        <span class="d_keyword">return</span> to!ResultT(arr.length);
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> s = S!<span class="hilite">(<span class="d_keyword">double</span>, <span class="d_keyword">int</span>)</span>([ 1, 2, 3 ]);
+    <span class="d_keyword">auto</span> l = s.length();
+}
+</pre>
+
+<p>In the code above, we see that the template is instantiated with <code class="d_inline">(double, int)</code>. An <code class="d_inline">AliasSeq</code> can represent the same argument list as well:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.meta;
+
+<span class="d_comment">// ...
+</span>
+    <span class="d_keyword">alias</span> Types = AliasSeq!(<span class="d_keyword">double</span>, <span class="d_keyword">int</span>);
+    <span class="d_keyword">auto</span> s = S!<span class="hilite">Types</span>([ 1, 2, 3 ]);
+</pre>
+
+<p>Although it appears to be a single template argument, <code class="d_inline">Types</code> gets expanded automatically and the template instantiation becomes <code class="d_inline">S!(double,&nbsp;int)</code> as before.
+</p>
+
+<p><code class="d_inline">AliasSeq</code> is especially useful in <i>variadic templates</i>. We will see examples of this in the next chapter.
+</p>
+
+<h6><code class="d_inline">foreach</code> with <code class="d_inline">AliasSeq</code></h6>
+
+<p>Same with <code class="d_inline">Tuple</code>, the <code class="d_inline">foreach</code> statement operating on an <code class="d_inline">AliasSeq</code> is not a run time loop. Rather, it is the unrolling of the loop body for each member.
+</p>
+
+<p>Let's see an example of this with a unit test written for the <code class="d_inline">S</code> struct that was defined above. The following code tests <code class="d_inline">S</code> for element types <code class="d_inline">int</code>, <code class="d_inline">long</code>, and <code class="d_inline">float</code> (<code class="d_inline">ResultT</code> is always <code class="d_inline">size_t</code> in this example):
+</p>
+
+<pre class="d_code"><span class="d_keyword">unittest</span> {
+    <span class="d_keyword">alias</span> Types = AliasSeq!(<span class="hilite"><span class="d_keyword">int</span>, <span class="d_keyword">long</span>, <span class="d_keyword">float</span></span>);
+
+    <span class="d_keyword">foreach</span> (Type; <span class="hilite">Types</span>) {
+        <span class="d_keyword">auto</span> s = S!(Type, size_t)([ Type.init, Type.init ]);
+        <span class="d_keyword">assert</span>(s.length() == 2);
+    }
+}
+</pre>
+
+<p>The <code class="d_inline">foreach</code> variable <code class="d_inline">Type</code> corresponds to <code class="d_inline">int</code>, <code class="d_inline">long</code>, and <code class="d_inline">float</code>, in that order. As a result, the <code class="d_inline">foreach</code> statement gets compiled as the equivalent of the code below:
+</p>
+
+<pre class="d_code">    {
+        <span class="d_keyword">auto</span> s = S!(<span class="hilite"><span class="d_keyword">int</span></span>, size_t)([ <span class="hilite"><span class="d_keyword">int</span></span>.init, <span class="hilite"><span class="d_keyword">int</span></span>.init ]);
+        <span class="d_keyword">assert</span>(s.length() == 2);
+    }
+    {
+        <span class="d_keyword">auto</span> s = S!(<span class="hilite"><span class="d_keyword">long</span></span>, size_t)([ <span class="hilite"><span class="d_keyword">long</span></span>.init, <span class="hilite"><span class="d_keyword">long</span></span>.init ]);
+        <span class="d_keyword">assert</span>(s.length() == 2);
+    }
+    {
+        <span class="d_keyword">auto</span> s = S!(<span class="hilite"><span class="d_keyword">float</span></span>, size_t)([ <span class="hilite"><span class="d_keyword">float</span></span>.init, <span class="hilite"><span class="d_keyword">float</span></span>.init ]);
+        <span class="d_keyword">assert</span>(s.length() == 2);
+    }
+</pre>
+
+<h5 class="subsection"><a id="ix_tuples..tupleof" content=".tupleof"></a> <code class="d_inline">.tupleof</code> property</h5>
+
+<p><code class="d_inline">.tupleof</code> represents the members of a type or an object. When applied to a user-defined type, <code class="d_inline">.tupleof</code> provides access to the definitions of the members of that type:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">struct</span> S {
+    <span class="d_keyword">int</span> number;
+    string message;
+    <span class="d_keyword">double</span> value;
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">foreach</span> (i, MemberType; <span class="d_keyword">typeof</span>(<span class="hilite">S.tupleof</span>)) {
+        writefln(<span class="d_string">"Member %s:"</span>, i);
+        writefln(<span class="d_string">"  type: %s"</span>, MemberType.stringof);
+
+        string name = <span class="hilite">S.tupleof</span>[i].stringof;
+        writefln(<span class="d_string">"  name: %s"</span>, name);
+    }
+}
+</pre>
+
+<p><code class="d_inline">S.tupleof</code> appears in two places in the program. First, the types of the elements are obtained by applying <code class="d_inline">typeof</code> to <code class="d_inline">.tupleof</code> so that each type appears as the <code class="d_inline">MemberType</code> variable. Second, the name of the member is obtained by <code class="d_inline">S.tupleof[i].stringof</code>.
+</p>
+
+<pre class="shell">Member 0:
+  type: int
+  name: number
+Member 1:
+  type: string
+  name: message
+Member 2:
+  type: double
+  name: value
+</pre>
+
+<p><code class="d_inline">.tupleof</code> can be applied to an object as well. In that case, it produces a tuple consisting of the values of the members of the object:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> object = S(42, <span class="d_string">"hello"</span>, 1.5);
+
+    <span class="d_keyword">foreach</span> (i, member; <span class="hilite">object.tupleof</span>) {
+        writefln(<span class="d_string">"Member %s:"</span>, i);
+        writefln(<span class="d_string">"  type : %s"</span>, <span class="d_keyword">typeof</span>(member).stringof);
+        writefln(<span class="d_string">"  value: %s"</span>, member);
+    }
+</pre>
+
+<p>The <code class="d_inline">foreach</code> variable <code class="d_inline">member</code> represents each member of the object:
+</p>
+
+<pre class="shell">Member 0:
+  type : int
+  value: 42
+Member 1:
+  type : string
+  value: hello
+Member 2:
+  type : double
+  value: 1.5
+</pre>
+
+<p>Here, an important point to make is that the tuple that <code class="d_inline">.tupleof</code> returns consists of the members of the object themselves, not their copies. In other words, the tuple members are references to the actual object members.
+</p>
+
+<h5 class="subsection">Summary</h5>
+
+<ul>
+<li><code class="d_inline">tuple()</code> combines different types of values similar to a <code class="d_inline">struct</code> object.</li>
+
+<li>Explicit use of <code class="d_inline">Tuple</code> allows accessing the members by properties.</li>
+
+<li>The members can be expanded as a value list by <code class="d_inline">.expand</code> or by slicing.</li>
+
+<li><code class="d_inline">foreach</code> with a tuple is not a run time loop; rather, it is a loop unrolling.</li>
+
+<li><code class="d_inline">AliasSeq</code> represents concepts like function argument list, template argument list, array literal element list, etc.</li>
+
+<li><code class="d_inline">AliasSeq</code> can consist of values and types.</li>
+
+<li>Tuples support indexing and slicing.</li>
+
+<li><code class="d_inline">.tupleof</code> provides information about the members of types and objects.</li>
+
+</ul>
+
+macros:
+        TITLE=Tuples
+
+        DESCRIPTION=Combining values and types to be able to access them as members of the same object.
+
+        KEYWORDS=d programming language tutorial book Tuple AliasSeq tuple
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on Mon Jan 29 21:19:13 2024
+</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

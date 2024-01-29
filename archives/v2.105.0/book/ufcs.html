@@ -1,0 +1,313 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Universal Function Call Syntax (UFCS) - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Universal Function Call Syntax (UFCS)' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BUniversal Function Call Syntax (UFCS)%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/d.en/ufcs.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Universal Function Call Syntax (UFCS)</h1>
+        
+        
+
+
+
+<p>UFCS is a feature that is applied by the compiler automatically. It enables the member function syntax even for regular functions. It can be explained simply by comparing two expressions:
+</p>
+
+<pre class="d_code">    variable.foo(<i>arguments</i>)
+</pre>
+
+<p>When the compiler encounters an expression such as the one above, if there is no member function named <code class="d_inline">foo</code> that can be called on <code class="d_inline">variable</code> with the provided arguments, then the compiler also tries to compile the following expression:
+</p>
+
+<pre class="d_code">    foo(variable, <i>arguments</i>)
+</pre>
+
+<p>If this new expression can indeed be compiled, then the compiler simply accepts that one. As a result, although <code class="d_inline">foo()</code> evidently has been a regular function, it gets accepted to be used by the member function syntax.
+</p>
+
+<p><i><b>Note:</b> UFCS considers only functions that are defined at module scope; for example, <a href="nested.html">nested functions</a> cannot be called with the UFCS syntax.</i>
+</p>
+
+<p>We know that functions that are closely related to a type are defined as member functions of that type. This is especially important for encapsulation as only the member functions of a type (and that type's module) can access its <code class="d_inline">private</code> members.
+</p>
+
+<p>Let's consider a <code class="d_inline">Car</code> class which maintains the amount of fuel:
+</p>
+
+<pre class="d_code"><span class="d_keyword">class</span> Car {
+    <span class="d_keyword">enum</span> economy = 12.5;          <span class="d_comment">// kilometers per liter (average)
+</span>    <span class="d_keyword">private</span> <span class="d_keyword">double</span> fuelAmount;    <span class="d_comment">// liters
+</span>
+    <span class="d_keyword">this</span>(<span class="d_keyword">double</span> fuelAmount) {
+        <span class="d_keyword">this</span>.fuelAmount = fuelAmount;
+    }
+
+    <span class="d_keyword">double</span> fuel() <span class="d_keyword">const</span> {
+        <span class="d_keyword">return</span> fuelAmount;
+    }
+
+    <span class="d_comment">// ...
+</span>}
+</pre>
+
+<p>Although member functions are very useful and sometimes necessary, not every function that operates on a type should be a member function. Some operations on a type are too specific to a certain application to be member functions. For example, a function that determines whether a car can travel a specific distance may more appropriately be defined as a regular function:
+</p>
+
+<pre class="d_code"><span class="d_keyword">bool</span> canTravel(Car car, <span class="d_keyword">double</span> distance) {
+    <span class="d_keyword">return</span> (car.fuel() * car.economy) &gt;= distance;
+}
+</pre>
+
+<p>This naturally brings a discrepancy in calling functions that are related to a type: objects appear at different places in these two syntaxes:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> car = <span class="d_keyword">new</span> Car(5);
+
+    <span class="d_keyword">auto</span> remainingFuel = <span class="hilite">car</span>.fuel();  <span class="d_comment">// Member function syntax
+</span>
+    <span class="d_keyword">if</span> (canTravel(<span class="hilite">car</span>, 100)) {        <span class="d_comment">// Regular function syntax
+</span>        <span class="d_comment">// ...
+</span>    }
+}
+</pre>
+
+<p>UFCS removes this discrepancy by allowing regular functions to be called by the member function syntax:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">if</span> (<span class="hilite">car</span>.canTravel(100)) {  <span class="d_comment">// Regular function, called by the
+</span>                               <span class="d_comment">// member function syntax
+</span>        <span class="d_comment">// ...
+</span>    }
+</pre>
+
+<p>This feature is available for fundamental types as well, including literals:
+</p>
+
+<pre class="d_code"><span class="d_keyword">int</span> half(<span class="d_keyword">int</span> value) {
+    <span class="d_keyword">return</span> value / 2;
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">assert</span>(42.half() == 21);
+}
+</pre>
+
+<p>As we will see in the next chapter, when there are no arguments to pass to a function, that function can be called without parentheses. When that feature is used as well, the expression above gets even shorter. All three of the following statements are equivalent:
+</p>
+
+<pre class="d_code">    result = half(value);
+    result = value.half();
+    result = value.half;
+</pre>
+
+<p><a id="ix_Universal Function Call Syntax (UFCS).chaining, function call" content="chaining, function call"></a> <a id="ix_Universal Function Call Syntax (UFCS).function call chaining" content="function call chaining"></a> UFCS is especially useful when function calls are <i>chained</i>. Let's see this on a group of functions that operate on <code class="d_inline">int</code> slices:
+</p>
+
+<pre class="d_code"><span class="d_comment">// Returns the result of dividing all of the elements by
+</span><span class="d_comment">// 'divisor'
+</span><span class="d_keyword">int</span>[] divide(<span class="d_keyword">int</span>[] slice, <span class="d_keyword">int</span> divisor) {
+    <span class="d_keyword">int</span>[] result;
+    result.reserve(slice.length);
+
+    <span class="d_keyword">foreach</span> (value; slice) {
+        result ~= value / divisor;
+    }
+
+    <span class="d_keyword">return</span> result;
+}
+
+<span class="d_comment">// Returns the result of multiplying all of the elements by
+</span><span class="d_comment">// 'multiplier'
+</span><span class="d_keyword">int</span>[] multiply(<span class="d_keyword">int</span>[] slice, <span class="d_keyword">int</span> multiplier) {
+    <span class="d_keyword">int</span>[] result;
+    result.reserve(slice.length);
+
+    <span class="d_keyword">foreach</span> (value; slice) {
+        result ~= value * multiplier;
+    }
+
+    <span class="d_keyword">return</span> result;
+}
+
+<span class="d_comment">// Filters out elements that have odd values
+</span><span class="d_keyword">int</span>[] evens(<span class="d_keyword">int</span>[] slice) {
+    <span class="d_keyword">int</span>[] result;
+    result.reserve(slice.length);
+
+    <span class="d_keyword">foreach</span> (value; slice) {
+        <span class="d_keyword">if</span> (!(value % 2)) {
+            result ~= value;
+        }
+    }
+
+    <span class="d_keyword">return</span> result;
+}
+</pre>
+
+<p>When written by the regular syntax, without taking advantage of UFCS, an expression that chains three calls to these functions can be written as in the following program:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_comment">// ...
+</span>
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> values = [ 1, 2, 3, 4, 5 ];
+    writeln(evens(divide(multiply(values, 10), 3)));
+}
+</pre>
+
+<p>The values are first multiplied by 10, then divided by 3, and finally only the even numbers are used:
+</p>
+
+<pre class="shell">[6, 10, 16]
+</pre>
+
+<p>A problem with the expression above is that although the pair of <code class="d_inline">multiply</code> and <code class="d_inline">10</code> are related and the pair of <code class="d_inline">divide</code> and <code class="d_inline">3</code> are related, parts of each pair end up written away from each other. UFCS eliminates this issue and enables a more natural syntax that reflects the actual order of operations:
+</p>
+
+<pre class="d_code">    writeln(values.multiply(10).divide(3).evens);
+</pre>
+
+<p>Some programmers take advantage of UFCS even for calls like <code class="d_inline">writeln()</code>:
+</p>
+
+<pre class="d_code">    values.multiply(10).divide(3).evens.writeln;
+</pre>
+
+<p>As an aside, the entire program above could have been written in a much simpler way by <code class="d_inline">map()</code> and <code class="d_inline">filter()</code>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.algorithm;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> values = [ 1, 2, 3, 4, 5 ];
+
+    writeln(values
+            .map!(a =&gt; a * 10)
+            .map!(a =&gt; a / 3)
+            .filter!(a =&gt; !(a % 2)));
+}
+</pre>
+
+<p>The program above takes advantage of <a href="templates.html">templates</a>, <a href="ranges.html">ranges</a>, and <a href="lambda.html">lambda functions</a>, all of which will be explained in later chapters.
+</p>
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on Mon Jan 29 21:19:11 2024
+</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

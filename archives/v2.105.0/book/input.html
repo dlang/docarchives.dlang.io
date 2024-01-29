@@ -1,0 +1,320 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Reading from the Standard Input - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Reading from the Standard Input' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BReading from the Standard Input%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/d.en/input.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Reading from the Standard Input</h1>
+        
+        
+
+
+
+<p>Any data that is read by the program must first be stored in a variable. For example, a program that reads the number of students from the input must store this information in a variable. The type of this specific variable can be <code class="d_inline">int</code>.
+</p>
+
+<p>As we've seen in the previous chapter, we don't need to type <code class="d_inline">stdout</code> when printing to the output, because it is implied. Further, what is to be printed is specified as the argument. So, <code class="d_inline">write(studentCount)</code> is sufficient to print the value of <code class="d_inline">studentCount</code>. To summarize:
+</p>
+
+<pre class="mono">stream:      stdout
+operation:   write
+data:        the value of the studentCount variable
+target:      commonly the terminal window
+</pre>
+
+<p><a id="ix_Reading from the Standard Input.readf" content="readf"></a> The reverse of <code class="d_inline">write</code> is <code class="d_inline">readf</code>; it reads from the standard input. The "f" in its name comes from "formatted" as what it reads must always be presented in a certain format.
+</p>
+
+<p>We've also seen in the previous chapter that the standard input stream is <code class="d_inline">stdin</code>.
+</p>
+
+<p>In the case of reading, one piece of the puzzle is still missing: where to store the data. To summarize:
+</p>
+
+<pre class="mono">stream:      stdin
+operation:   readf
+data:        some information
+target:      ?
+</pre>
+
+<p>The location of where to store the data is specified by the address of a variable. The address of a variable is the exact location in the computer's memory where its value is stored.
+</p>
+
+<p><a id="ix_Reading from the Standard Input.&amp;, address of" content="&amp;, address of"></a> In D, the <code class="d_inline">&amp;</code> character that is typed before a name is the address of what that name represents. For example, the address of <code class="d_inline">studentCount</code> is <code class="d_inline">&amp;studentCount</code>. Here, <code class="d_inline">&amp;studentCount</code> can be read as "the address of <code class="d_inline">studentCount</code>" and is the missing piece to replace the question mark above:
+</p>
+
+<pre class="mono">stream:      stdin
+operation:   readf
+data:        some information
+target:      the location of the studentCount variable
+</pre>
+
+<p>Typing a <code class="d_inline">&amp;</code> in front of a name means <i>pointing</i> at what that name represents. This concept is the foundation of references and pointers that we will see in later chapters.
+</p>
+
+<p>I will leave one peculiarity about the use of <code class="d_inline">readf</code> for later; for now, let's accept as a rule that the first argument to <code class="d_inline">readf</code> must be <code class="d_inline"><span class="d_string">"%s"</span></code>:
+</p>
+
+<pre class="d_code">    readf(<span class="d_string">"%s"</span>, &amp;studentCount);
+</pre>
+
+<p>Actually, <code class="d_inline">readf</code> can work without the <code class="d_inline">&amp;</code> character as well:
+</p>
+
+<pre class="d_code">    readf(<span class="d_string">"%s"</span>, studentCount);    <span class="d_comment">// same as above
+</span></pre>
+
+<p>Although the code is cleaner and safer without the <code class="d_inline">&amp;</code> character, I will continue to use <code class="d_inline">readf</code> with pointers partly to prepare you to the concepts of <a href="value_vs_reference.html">references</a> and <a href="function_parameters.html">reference function parameters</a>.
+</p>
+
+<p><code class="d_inline"><span class="d_string">"%s"</span></code> indicates that the data should automatically be converted in a way that is suitable to the type of the variable. For example, when the '4' and '2' characters are read to a variable of type <code class="d_inline">int</code>, they are converted to the integer value 42.
+</p>
+
+<p>The program below asks the user to enter the number of students. You must press the Enter key after typing the input:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main() {
+    write(<span class="d_string">"How many students are there? "</span>);
+
+    <span class="d_comment">/* The definition of the variable that will be used to
+     * store the information that is read from the input. */</span>
+    <span class="d_keyword">int</span> studentCount;
+
+    <span class="d_comment">// Storing the input data to that variable
+</span>    readf(<span class="d_string">"%s"</span>, &amp;studentCount);
+
+    writeln(<span class="d_string">"Got it: There are "</span>, studentCount, <span class="d_string">" students."</span>);
+}
+</pre>
+
+<h5 class="subsection"><a id="ix_Reading from the Standard Input.%s, with whitespace" content="%s, with whitespace"></a> <a id="ix_Reading from the Standard Input.whitespace" content="whitespace"></a> Skipping the whitespace characters</h5>
+
+<p>Even the Enter key that we press after typing the data is stored as a special code and is placed into the <code class="d_inline">stdin</code> stream. This is useful to the programs to detect whether the information has been input on a single line or multiple lines.
+</p>
+
+<p>Although sometimes useful, such special codes are mostly not important for the program and must be filtered out from the input. Otherwise they <i>block</i> the input and prevent reading other data.
+</p>
+
+<p>To see this <i>problem</i> in a program, let's also read the number of teachers from the input:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main() {
+    write(<span class="d_string">"How many students are there? "</span>);
+    <span class="d_keyword">int</span> studentCount;
+    readf(<span class="d_string">"%s"</span>, &amp;studentCount);
+
+    write(<span class="d_string">"How many teachers are there? "</span>);
+    <span class="d_keyword">int</span> teacherCount;
+    readf(<span class="d_string">"%s"</span>, &amp;teacherCount);
+
+    writeln(<span class="d_string">"Got it: There are "</span>, studentCount, <span class="d_string">" students"</span>,
+            <span class="d_string">" and "</span>, teacherCount, <span class="d_string">" teachers."</span>);
+}
+</pre>
+
+<p>Unfortunately, the program cannot use that special code when expecting an <code class="d_inline">int</code> value:
+</p>
+
+<pre class="shell">How many students are there? 100
+How many teachers are there? 20
+  <span class="shell_note_wrong">← An exception is thrown here</span>
+</pre>
+
+<p>Although the user enters the number of teachers as 20, the special code(s) that represents the Enter key that has been pressed when entering the previous 100 is still in the input stream and is blocking it. The characters that appeared in the input stream are similar to the following representation:
+</p>
+
+<pre class="mono">100<span class="hilite">[EnterCode]</span>20[EnterCode]
+</pre>
+
+<p>I have highlighted the Enter code that is blocking the input.
+</p>
+
+<p>The solution is to use a space character before <code class="d_inline"><span class="d_string">%s</span></code> to indicate that the Enter code that appears before reading the number of teachers is not important: <code class="d_inline"><span class="d_string">"&nbsp;%s"</span></code>. Spaces that are in the format strings are used to read and ignore zero or more invisible characters that would otherwise appear in the input. Such characters include the actual space character, the code(s) that represent the Enter key, the Tab character, etc. and are called the <i>whitespace characters</i>.
+</p>
+
+<p>As a general rule, you can use <code class="d_inline"><span class="d_string">"&nbsp;%s"</span></code> for every data that is read from the input. The program above works as expected with the following changes:
+</p>
+
+<pre class="d_code"><span class="d_comment">// ...
+</span>    readf(<span class="d_string">" %s"</span>, &amp;studentCount);
+<span class="d_comment">// ...
+</span>    readf(<span class="d_string">" %s"</span>, &amp;teacherCount);
+<span class="d_comment">// ...
+</span></pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">How many students are there? 100
+How many teachers are there? 20
+Got it: There are 100 students and 20 teachers.
+</pre>
+
+<h5 class="subsection">Additional information</h5>
+
+<ul>
+<li><a id="ix_Reading from the Standard Input.comment" content="comment"></a> <a id="ix_Reading from the Standard Input./*" content="/*"></a> <a id="ix_Reading from the Standard Input.*/" content="*/"></a> Lines that start with <span class="d_comment">//</span> are useful for single lines of comments. To write multiple lines as a single comment, enclose the lines within <span class="d_comment">/*</span> and <span class="d_comment">*/</span> markers.
+
+
+<p><a id="ix_Reading from the Standard Input./+" content="/+"></a> <a id="ix_Reading from the Standard Input.+/" content="+/"></a> In order to be able to comment even other comments, use <span class="d_comment">/+</span> and <span class="d_comment">+/</span>:
+
+</p>
+
+<pre class="d_code">    <span class="d_comment">/+
+     // A single line of comment
+
+     /*
+       A comment that spans
+       multiple lines
+      */
+
+      /+
+        It can even include nested /+ comments +/
+      +/
+
+      A comment block that includes other comments
+     +/</span>
+</pre>
+
+</li>
+
+<li>Most of the whitespace in the source code is insignificant. It is good practice to write longer expressions as multiple lines or add extra whitespace to make the code more readable. Still, as long as the syntax rules of the language are observed, the programs can be written without any extra whitespace:
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;<span class="d_keyword">void</span> main(){writeln(<span class="d_string">"Hard to read!"</span>);}
+</pre>
+
+<p>It can be hard to read source code with small amounts of whitespace.
+</p>
+
+</li>
+
+</ul>
+
+<h5 class="subsection">Problem</h5>
+    
+<p>Enter non-numerical characters when the program is expecting integer values and observe that the program does not work correctly.
+</p>
+
+ <div class="cozum_link_tek"><p><a target="ddili_cozum" href="input.cozum.html"><i>... çözüm</i></a></p></div>
+
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on Mon Jan 29 21:19:13 2024
+</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

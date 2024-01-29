@@ -1,0 +1,685 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Structs and Classes with foreach - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Structs and Classes with foreach' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BStructs and Classes with foreach%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/d.en/foreach_opapply.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Structs and Classes with foreach</h1>
+        
+        
+
+
+
+<p>As you remember from <a href="foreach.html">the <code class="d_inline">foreach</code> Loop chapter</a>, both how <code class="d_inline">foreach</code> works and the types and numbers of loop variables that it supports depend on the kind of collection: For slices, <code class="d_inline">foreach</code> provides access to elements with or without a counter; for associative arrays, to values with or without keys; for number ranges, to the individual values. For library types, <code class="d_inline">foreach</code> behaves in a way that is specific to that type; e.g. for <code class="d_inline">File</code>, it provides the lines of a file.
+</p>
+
+<p>It is possible to define the behavior of <code class="d_inline">foreach</code> for user-defined types as well. There are two methods of providing this support:
+</p>
+
+<ul><li>Defining <i>range member functions</i>, which allows using the user-defined type with other range algorithms as well</li>
+
+<li>Defining one or more <code class="d_inline">opApply</code> member functions</li>
+</ul>
+
+<p>Of the two methods, <code class="d_inline">opApply</code> has priority: If it is defined, the compiler uses <code class="d_inline">opApply</code>, otherwise it considers the range member functions. However, in most cases range member functions are sufficient, easier, and more useful.
+</p>
+
+<p><code class="d_inline">foreach</code> need not be supported for every type. Iterating over an object makes sense only if that object defines the concept of <i>a collection</i>.
+</p>
+
+<p>For example, it may not be clear what elements should <code class="d_inline">foreach</code> provide when iterating over a class that represents a student, so the class better not support <code class="d_inline">foreach</code> at all. On the other hand, a design may require that <code class="d_inline">Student</code> is a collection of grades and <code class="d_inline">foreach</code> may provide individual grades of the student.
+</p>
+
+<p>It depends on the design of the program what types should provide this support and how.
+</p>
+
+<h5 class="subsection"><a id="ix_Structs and Classes with foreach.range, foreach" content="range, foreach"></a> <code class="d_inline">foreach</code> support by range member functions</h5>
+
+<p><a id="ix_Structs and Classes with foreach.empty" content="empty"></a> <a id="ix_Structs and Classes with foreach.front" content="front"></a> <a id="ix_Structs and Classes with foreach.popFront" content="popFront"></a> We know that <code class="d_inline">foreach</code> is very similar to <code class="d_inline">for</code>, except that it is more useful and safer than <code class="d_inline">for</code>. Consider the following loop:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">foreach</span> (element; myObject) {
+        <span class="d_comment">// ... expressions ...
+</span>    }
+</pre>
+
+<p>Behind the scenes, the compiler rewrites that <code class="d_inline">foreach</code> loop as a <code class="d_inline">for</code> loop, roughly an equivalent of the following one:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">for</span> ( ; <span class="d_comment">/* while not done */</span>; <span class="d_comment">/* skip the front element */</span>) {
+
+        <span class="d_keyword">auto</span> element = <span class="d_comment">/* the front element */</span>;
+
+        <span class="d_comment">// ... expressions ...
+</span>    }
+</pre>
+
+<p>User-defined types that need to support <code class="d_inline">foreach</code> can provide three member functions that correspond to the three sections of the previous code: determining whether the loop is over, skipping the front element, and providing access to the front element.
+</p>
+
+<p>Those three member functions must be named as <code class="d_inline">empty</code>, <code class="d_inline">popFront</code>, and <code class="d_inline">front</code>, respectively. The code that is generated by the compiler calls those functions:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">for</span> ( ; !myObject.empty(); myObject.popFront()) {
+
+        <span class="d_keyword">auto</span> element = myObject.front();
+
+        <span class="d_comment">// ... expressions ...
+</span>    }
+</pre>
+
+<p>These three functions must work according to the following expectations:
+</p>
+
+<ul>
+<li><code class="d_inline">.empty()</code> must return <code class="d_inline">true</code> if the loop is over, <code class="d_inline">false</code> otherwise</li>
+
+<li><code class="d_inline">.popFront()</code> must move to the next element (in other words, skip the front element)</li>
+
+<li><code class="d_inline">.front()</code> must return the front element</li>
+
+</ul>
+
+<p>Any type that defines those member functions can be used with <code class="d_inline">foreach</code>.
+</p>
+
+<h6>Example</h6>
+
+<p>Let's define a <code class="d_inline">struct</code> that produces numbers within a certain range. In order to be consistent with D's number ranges and slice indexes, let's have the last number be outside of the valid numbers. Under these requirements, the following <code class="d_inline">struct</code> would work exactly like D's number ranges:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> NumberRange {
+    <span class="d_keyword">int</span> begin;
+    <span class="d_keyword">int</span> end;
+
+    <span class="d_keyword">invariant</span>() {
+        <span class="d_comment">// There is a bug if begin is greater than end
+</span>        <span class="d_keyword">assert</span>(begin &lt;= end);
+    }
+
+    <span class="d_keyword">bool</span> empty() <span class="d_keyword">const</span> {
+        <span class="d_comment">// The range is consumed when begin equals end
+</span>        <span class="d_keyword">return</span> begin == end;
+    }
+
+    <span class="d_keyword">void</span> popFront() {
+        <span class="d_comment">// Skipping the first element is achieved by
+</span>        <span class="d_comment">// incrementing the beginning of the range
+</span>        ++begin;
+    }
+
+    <span class="d_keyword">int</span> front() <span class="d_keyword">const</span> {
+        <span class="d_comment">// The front element is the one at the beginning
+</span>        <span class="d_keyword">return</span> begin;
+    }
+}
+</pre>
+
+<p><i><b>Note:</b> The safety of that implementation depends solely on a single <code class="d_inline">invariant</code> block. Additional checks could be added to <code class="d_inline">front</code> and <code class="d_inline">popFront</code> to ensure that those functions are never called when the range is empty.</i>
+</p>
+
+<p>Objects of that <code class="d_inline">struct</code> can be used with <code class="d_inline">foreach</code>:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">foreach</span> (element; NumberRange(3, 7)) {
+        write(element, ' ');
+    }
+</pre>
+
+<p><code class="d_inline">foreach</code> uses those three functions behind the scenes and iterates until <code class="d_inline">empty()</code> returns <code class="d_inline">true</code>:
+</p>
+
+<pre class="shell">3 4 5 6 
+</pre>
+
+<h6><a id="ix_Structs and Classes with foreach.retro, std.range" content="retro, std.range"></a> <code class="d_inline">std.range.retro</code> to iterate in reverse</h6>
+
+<p><a id="ix_Structs and Classes with foreach.save" content="save"></a> <a id="ix_Structs and Classes with foreach.back" content="back"></a> <a id="ix_Structs and Classes with foreach.popBack" content="popBack"></a> The <code class="d_inline">std.range</code> module contains many range algorithms. <code class="d_inline">retro</code> is one of those algorithms, which iterates a range in reverse order. It requires two additional range member functions:
+</p>
+
+<ul>
+<li><code class="d_inline">.popBack()</code> must move to the element that is one before the end (skips the last element)</li>
+
+<li><code class="d_inline">.back()</code> must return the last element</li>
+
+</ul>
+
+<p>However, although not directly related to reverse iteration, for <code class="d_inline">retro</code> to consider those functions at all, there must be one more function defined:
+</p>
+
+<ul><li><code class="d_inline">.save()</code> must return a copy of this object</li>
+</ul>
+
+<p>We will learn more about these member functions later in <a href="ranges.html">the Ranges chapter</a>.
+</p>
+
+<p>These three additional member functions can trivially be defined for <code class="d_inline">NumberRange</code>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> NumberRange {
+<span class="d_comment">// ...
+</span>
+    <span class="d_keyword">void</span> popBack() {
+        <span class="d_comment">// Skipping the last element is achieved by
+</span>        <span class="d_comment">// decrementing the end of the range.
+</span>        --end;
+    }
+
+    <span class="d_keyword">int</span> back() <span class="d_keyword">const</span> {
+        <span class="d_comment">// As the 'end' value is outside of the range, the
+</span>        <span class="d_comment">// last element is one less than that
+</span>        <span class="d_keyword">return</span> end - 1;
+    }
+
+    NumberRange save() <span class="d_keyword">const</span> {
+        <span class="d_comment">// Returning a copy of this struct object
+</span>        <span class="d_keyword">return</span> <span class="d_keyword">this</span>;
+    }
+}
+</pre>
+
+<p>Objects of this type can now be used with <code class="d_inline">retro</code>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.range;
+
+<span class="d_comment">// ...
+</span>
+    <span class="d_keyword">foreach</span> (element; NumberRange(3, 7)<span class="hilite">.retro</span>) {
+        write(element, ' ');
+    }
+</pre>
+
+<p>The output of the program is now in reverse:
+</p>
+
+<pre class="shell">6 5 4 3 
+</pre>
+
+<h5 class="subsection"><a id="ix_Structs and Classes with foreach.opApply" content="opApply"></a> <a id="ix_Structs and Classes with foreach.opApplyReverse" content="opApplyReverse"></a> <code class="d_inline">foreach</code> support by <code class="d_inline">opApply</code> and <code class="d_inline">opApplyReverse</code> member functions</h5>
+
+<p><a id="ix_Structs and Classes with foreach.foreach_reverse" content="foreach_reverse"></a> Everything that is said about <code class="d_inline">opApply</code> in this section is valid for <code class="d_inline">opApplyReverse</code> as well. <code class="d_inline">opApplyReverse</code> is for defining the behaviors of objects in the <code class="d_inline">foreach_reverse</code> loops.
+</p>
+
+<p>The member functions above allow using objects as ranges. That method is more suitable when there is only one sensible way of iterating over a range. For example, it would be easy to provide access to individual students of a <code class="d_inline">Students</code> type.
+</p>
+
+<p>On the other hand, sometimes it makes more sense to iterate over the same object in different ways. We know this from associative arrays where it is possible to access either only to the values or to both the keys and the values:
+</p>
+
+<pre class="d_code">    string[string] dictionary;    <span class="d_comment">// from English to Turkish
+</span>
+    <span class="d_comment">// ...
+</span>
+    <span class="d_keyword">foreach</span> (inTurkish; dictionary) {
+        <span class="d_comment">// ... only values ...
+</span>    }
+
+    <span class="d_keyword">foreach</span> (inEnglish, inTurkish; dictionary) {
+        <span class="d_comment">// ... keys and values ...
+</span>    }
+</pre>
+
+<p><code class="d_inline">opApply</code> allows using user-defined types with <code class="d_inline">foreach</code> in various and sometimes more complex ways. Before learning how to define <code class="d_inline">opApply</code>, we must first understand how it is called automatically by <code class="d_inline">foreach</code>.
+</p>
+
+<p>The program execution alternates between the expressions inside the <code class="d_inline">foreach</code> block and the expressions inside the <code class="d_inline">opApply()</code> function. First the <code class="d_inline">opApply()</code> member function gets called, and then <code class="d_inline">opApply</code> makes an explicit call to the <code class="d_inline">foreach</code> block. They alternate in that way until the loop eventually terminates. This process is based on a <i>convention</i>, which I will explain soon.
+</p>
+
+<p>Let's first observe the structure of the <code class="d_inline">foreach</code> loop one more time:
+</p>
+
+<pre class="d_code"><span class="d_comment">// The loop that is written by the programmer:
+</span>
+    <span class="d_keyword">foreach</span> (<span class="d_comment">/* loop variables */</span>; myObject) {
+        <span class="d_comment">// ... expressions inside the foreach block ...
+</span>    }
+</pre>
+
+<p><a id="ix_Structs and Classes with foreach.delegate, foreach" content="delegate, foreach"></a> If there is an <code class="d_inline">opApply()</code> member function that matches the loop variables, then the <code class="d_inline">foreach</code> block becomes a delegate, which is then passed to <code class="d_inline">opApply()</code>.
+</p>
+
+<p>Accordingly, the loop above is converted to the following code behind the scenes. The curly brackets that define the body of the delegate are highlighted:
+</p>
+
+<pre class="d_code"><span class="d_comment">// The code that the compiler generates behind the scenes:
+</span>
+    myObject.opApply(<span class="d_keyword">delegate</span> <span class="d_keyword">int</span>(<span class="d_comment">/* loop variables */</span>) <span class="hilite">{</span>
+        <span class="d_comment">// ... expressions inside the foreach block ...
+</span>        <span class="d_keyword">return</span> hasBeenTerminated;
+    <span class="hilite">}</span>);
+</pre>
+
+<p>In other words, the <code class="d_inline">foreach</code> loop is replaced by a <code class="d_inline">delegate</code> that is passed to <code class="d_inline">opApply()</code>. Before showing an example, here are the requirements and expectations of this convention that <code class="d_inline">opApply()</code> must observe:
+</p>
+
+<ol>
+<li>The body of the <code class="d_inline">foreach</code> loop becomes the body of the delegate. <code class="d_inline">opApply</code> must call this delegate for each iteration.</li>
+
+<li>The loop variables become the parameters of the delegate. <code class="d_inline">opApply()</code> must define these parameters as <code class="d_inline">ref</code>. (The variables may be defined without the <code class="d_inline">ref</code> keyword as well but doing that would prevent iterating over the elements <a href="value_vs_reference.html"><i>by reference</i></a>.)</li>
+
+<li>The return type of the delegate is <code class="d_inline">int</code>. Accordingly, the compiler injects a <code class="d_inline">return</code> statement at the end of the delegate, which determines whether the loop has been terminated (by a <code class="d_inline">break</code> or a <code class="d_inline">return</code> statement): If the return value is zero, the iteration must continue, otherwise it must terminate.</li>
+
+<li>The actual iteration happens inside <code class="d_inline">opApply()</code>.</li>
+
+<li><code class="d_inline">opApply()</code> must return the same value that is returned by the delegate.</li>
+
+</ol>
+
+<p>The following is a definition of <code class="d_inline">NumberRange</code> that is implemented according to that convention:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> NumberRange {
+    <span class="d_keyword">int</span> begin;
+    <span class="d_keyword">int</span> end;
+                         <span class="d_comment">//    (2)       (1)
+</span>    <span class="d_keyword">int</span> opApply(<span class="d_keyword">int</span> <span class="d_keyword">delegate</span>(<span class="d_keyword">ref</span> <span class="d_keyword">int</span>) operations) <span class="d_keyword">const</span> {
+        <span class="d_keyword">int</span> result = 0;
+
+        <span class="d_keyword">for</span> (<span class="d_keyword">int</span> number = begin; number != end; ++number) { <span class="d_comment">// (4)
+</span>            result = operations(number);  <span class="d_comment">// (1)
+</span>
+            <span class="d_keyword">if</span> (result) {
+                <span class="d_keyword">break</span>;                    <span class="d_comment">// (3)
+</span>            }
+        }
+
+        <span class="d_keyword">return</span> result;                    <span class="d_comment">// (5)
+</span>    }
+}
+</pre>
+
+<p>This definition of <code class="d_inline">NumberRange</code> can be used with <code class="d_inline">foreach</code> in exactly the same way as before:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">foreach</span> (element; NumberRange(3, 7)) {
+        write(element, ' ');
+    }
+</pre>
+
+<p>The output is the same as the one produced by range member functions:
+</p>
+
+<pre class="shell">3 4 5 6 
+</pre>
+
+<h6>Overloading <code class="d_inline">opApply</code> to iterate in different ways</h6>
+
+<p>It is possible to iterate over the same object in different ways by defining overloads of <code class="d_inline">opApply()</code> that take different types of delegates. The compiler calls the overload that matches the particular set of loop variables.
+</p>
+
+<p>As an example, let's make it possible to iterate over <code class="d_inline">NumberRange</code> by two loop variables as well:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">foreach</span> (<span class="hilite">first, second</span>; NumberRange(0, 15)) {
+        writef(<span class="d_string">"%s,%s "</span>, first, second);
+    }
+</pre>
+
+<p>Note how it is similar to the way associative arrays are iterated over by both keys and values.
+</p>
+
+<p>For this example, let's require that when a <code class="d_inline">NumberRange</code> object is iterated by two variables, it should provide two consecutive values and that it arbitrarily increases the values by 5. So, the loop above should produce the following output:
+</p>
+
+<pre class="shell">0,1 5,6 10,11 
+</pre>
+
+<p>This is achieved by an additional definition of <code class="d_inline">opApply()</code> that takes a delegate that takes two parameters. <code class="d_inline">opApply()</code> must call that delegate with two values:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span> opApply(<span class="d_keyword">int</span> <span class="d_keyword">delegate</span><span class="hilite">(<span class="d_keyword">ref</span> <span class="d_keyword">int</span>, <span class="d_keyword">ref</span> <span class="d_keyword">int</span>)</span> dg) <span class="d_keyword">const</span> {
+        <span class="d_keyword">int</span> result = 0;
+
+        <span class="d_keyword">for</span> (<span class="d_keyword">int</span> i = begin; (i + 1) &lt; end; i += 5) {
+            <span class="d_keyword">int</span> first = i;
+            <span class="d_keyword">int</span> second = i + 1;
+
+            result = dg(<span class="hilite">first, second</span>);
+
+            <span class="d_keyword">if</span> (result) {
+                <span class="d_keyword">break</span>;
+            }
+        }
+
+        <span class="d_keyword">return</span> result;
+    }
+</pre>
+
+<p>When there are two loop variables, this overload of <code class="d_inline">opApply()</code> gets called.
+</p>
+
+<p>There may be as many overloads of <code class="d_inline">opApply()</code> as needed.
+</p>
+
+<p>It is possible and sometimes necessary to give hints to the compiler on what overload to choose. This is done by specifying types of the loop variables explicitly.
+</p>
+
+<p>For example, let's assume that there is a <code class="d_inline">School</code> type that supports iterating over the teachers and the students separately:
+</p>
+
+<pre class="d_code"><span class="d_keyword">class</span> School {
+    <span class="d_keyword">int</span> opApply(<span class="d_keyword">int</span> <span class="d_keyword">delegate</span>(<span class="d_keyword">ref</span> <span class="hilite">Student</span>) dg) <span class="d_keyword">const</span> {
+        <span class="d_comment">// ...
+</span>    }
+
+    <span class="d_keyword">int</span> opApply(<span class="d_keyword">int</span> <span class="d_keyword">delegate</span>(<span class="d_keyword">ref</span> <span class="hilite">Teacher</span>) dg) <span class="d_keyword">const</span> {
+        <span class="d_comment">// ...
+</span>    }
+}
+</pre>
+
+<p>To indicate the desired overload, the loop variable must be specified:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">foreach</span> (<span class="hilite">Student</span> student; school) {
+        <span class="d_comment">// ...
+</span>    }
+
+    <span class="d_keyword">foreach</span> (<span class="hilite">Teacher</span> teacher; school) {
+        <span class="d_comment">// ...
+</span>    }
+</pre>
+
+<h5 class="subsection"><a id="ix_Structs and Classes with foreach.loop counter" content="loop counter"></a> <a id="ix_Structs and Classes with foreach.counter, loop" content="counter, loop"></a> Loop counter</h5>
+
+<p>The convenient loop counter of slices is not automatic for other types. Loop counter can be achieved for user-defined types in different ways depending on whether the <code class="d_inline">foreach</code> support is provided by range member functions or by <code class="d_inline">opApply</code> overloads.
+</p>
+
+<h6>Loop counter with range functions</h6>
+
+<p><a id="ix_Structs and Classes with foreach.enumerate, std.range" content="enumerate, std.range"></a> If <code class="d_inline">foreach</code> support is provided by range member functions, then a loop counter can be achieved simply by <code class="d_inline">enumerate</code> from the <code class="d_inline">std.range</code> module:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.range;
+
+<span class="d_comment">// ...
+</span>
+    <span class="d_keyword">foreach</span> (<span class="hilite">i</span>, element; NumberRange(42, 47)<span class="hilite">.enumerate</span>) {
+        writefln(<span class="d_string">"%s: %s"</span>, i, element);
+    }
+</pre>
+
+<p><code class="d_inline">enumerate</code> is a range that produces consecutive numbers starting by default from 0. <code class="d_inline">enumerate</code> pairs each number with the elements of the range that it is applied on. As a result, the numbers that <code class="d_inline">enumerate</code> generates and the elements of the actual range (<code class="d_inline">NumberRange</code> in this case) appear in lockstep as loop variables:
+</p>
+
+<pre class="shell">0: 42
+1: 43
+2: 44
+3: 45
+4: 46
+</pre>
+
+<h6>Loop counter with <code class="d_inline">opApply</code></h6>
+
+<p>On the other hand, if <code class="d_inline">foreach</code> support is provided by <code class="d_inline">opApply()</code>, then the loop counter must be defined as a separate parameter of the delegate, suitably as type <code class="d_inline">size_t</code>. Let's see this on a <code class="d_inline">struct</code> that represents a colored polygon.
+</p>
+
+<p>As we have already seen above, an <code class="d_inline">opApply()</code> that provides access to the points of this polygon can be implemented <i>without</i> a counter as in the following code:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">enum</span> Color { blue, green, red }
+
+<span class="d_keyword">struct</span> Point {
+    <span class="d_keyword">int</span> x;
+    <span class="d_keyword">int</span> y;
+}
+
+<span class="d_keyword">struct</span> Polygon {
+    Color color;
+    Point[] points;
+
+    <span class="d_keyword">int</span> <span class="hilite">opApply</span>(<span class="d_keyword">int</span> <span class="d_keyword">delegate</span>(<span class="d_keyword">ref</span> <span class="d_keyword">const</span>(Point)) dg) <span class="d_keyword">const</span> {
+        <span class="d_keyword">int</span> result = 0;
+
+        <span class="d_keyword">foreach</span> (point; points) {
+            result = dg(point);
+
+            <span class="d_keyword">if</span> (result) {
+                <span class="d_keyword">break</span>;
+            }
+        }
+
+        <span class="d_keyword">return</span> result;
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> polygon = Polygon(Color.blue,
+                           [ Point(0, 0), Point(1, 1) ] );
+
+    <span class="d_keyword">foreach</span> (point; polygon) {
+        writeln(point);
+    }
+}
+</pre>
+
+<p>Note that <code class="d_inline">opApply()</code> itself is implemented by a <code class="d_inline">foreach</code> loop. As a result, the <code class="d_inline">foreach</code> inside <code class="d_inline">main()</code> ends up making indirect use of a <code class="d_inline">foreach</code> over the <code class="d_inline">points</code> member.
+</p>
+
+<p>Also note that the type of the delegate parameter is <code class="d_inline">ref const(Point)</code>. This means that this definition of <code class="d_inline">opApply()</code> does not allow modifying the <code class="d_inline">Point</code> elements of the polygon. In order to allow user code to modify the elements, both the <code class="d_inline">opApply()</code> function itself and the delegate parameter must be defined without the <code class="d_inline">const</code> specifier.
+</p>
+
+<p>The output:
+</p>
+
+<pre class="shell">const(Point)(0, 0)
+const(Point)(1, 1)
+</pre>
+
+<p>Naturally, trying to use this definition of <code class="d_inline">Polygon</code> with a loop counter would cause a compilation error:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">foreach</span> (<span class="hilite">i</span>, point; polygon) {    <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+        writefln(<span class="d_string">"%s: %s"</span>, i, point);
+    }
+</pre>
+
+<p>The compilation error:
+</p>
+
+<pre class="shell">Error: cannot uniquely infer foreach argument types
+</pre>
+
+<p>For that to work, another <code class="d_inline">opApply()</code> overload that supports a counter must be defined:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span> opApply(<span class="d_keyword">int</span> <span class="d_keyword">delegate</span>(<span class="hilite"><span class="d_keyword">ref</span> size_t</span>,
+                             <span class="d_keyword">ref</span> <span class="d_keyword">const</span>(Point)) dg) <span class="d_keyword">const</span> {
+        <span class="d_keyword">int</span> result = 0;
+
+        <span class="d_keyword">foreach</span> (<span class="hilite">i</span>, point; points) {
+            result = dg(<span class="hilite">i</span>, point);
+
+            <span class="d_keyword">if</span> (result) {
+                <span class="d_keyword">break</span>;
+            }
+        }
+
+        <span class="d_keyword">return</span> result;
+    }
+</pre>
+
+<p>This time the <code class="d_inline">foreach</code> variables are matched to the new <code class="d_inline">opApply()</code> overload and the program prints the desired output:
+</p>
+
+<pre class="shell">0: const(Point)(0, 0)
+1: const(Point)(1, 1)
+</pre>
+
+<p>Note that this implementation of <code class="d_inline">opApply()</code> takes advantage of the automatic counter over the <code class="d_inline">points</code> member. (<i>Although the delegate variable is defined as <code class="d_inline">ref size_t</code>, the <code class="d_inline">foreach</code> loop inside <code class="d_inline">main()</code> cannot modify the counter variable over <code class="d_inline">points</code></i>).
+</p>
+
+<p>When needed, the loop counter can be defined and incremented explicitly as well. For example, because the following <code class="d_inline">opApply()</code> is implemented by a <code class="d_inline">while</code> statement it must define a separate variable for the counter:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span> opApply(<span class="d_keyword">int</span> <span class="d_keyword">delegate</span>(<span class="d_keyword">ref</span> size_t,
+                             <span class="d_keyword">ref</span> <span class="d_keyword">const</span>(Point)) dg) <span class="d_keyword">const</span> {
+        <span class="d_keyword">int</span> result = 0;
+        <span class="d_keyword">bool</span> isDone = <span class="d_keyword">false</span>;
+
+        <span class="hilite">size_t counter = 0;</span>
+        <span class="d_keyword">while</span> (!isDone) {
+            <span class="d_comment">// ...
+</span>
+            result = dg(counter, nextElement);
+
+            <span class="d_keyword">if</span> (result) {
+                <span class="d_keyword">break</span>;
+            }
+
+            ++counter;
+        }
+
+        <span class="d_keyword">return</span> result;
+    }
+</pre>
+
+<h5 class="subsection">Warning: The collection must not mutate during the iteration</h5>
+
+<p>Regardless of whether the iteration support is provided by the range member functions or by <code class="d_inline">opApply()</code> functions, the collection itself must not mutate. New elements must not be added to the container and the existing elements must not be removed. (Mutating the existing elements is allowed.)
+</p>
+
+<p>Doing otherwise is undefined behavior.
+</p>
+
+<h5 class="subsection">Problemler</h5>
+    <ol>
+<li>Design a <code class="d_inline">struct</code> that works similarly to <code class="d_inline">NumberRange</code>, which also supports specifying the step size. The step size can be the third member:
+
+<pre class="d_code">    <span class="d_keyword">foreach</span> (element; NumberRange(0, 10, <span class="hilite">2</span>)) {
+        write(element, ' ');
+    }
+</pre>
+
+<p>The expected output of the code above is every second number from 0 to 10:
+</p>
+
+<pre class="shell">0 2 4 6 8 
+</pre>
+
+</li>
+
+<li>Implement the <code class="d_inline">School</code> class that was mentioned in the text in a way that it provides access to students or teachers depending on the <code class="d_inline">foreach</code> variable.
+</li>
+
+</ol> <div class="cozum_link_cok"><p><a target="ddili_cozum" href="foreach_opapply.cozum.html"><i>... çözümler</i></a></p></div>
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on Mon Jan 29 21:19:10 2024
+</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

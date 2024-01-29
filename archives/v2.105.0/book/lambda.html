@@ -1,0 +1,1135 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Function Pointers, Delegates, and Lambdas - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Function Pointers, Delegates, and Lambdas' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BFunction Pointers, Delegates, and Lambdas%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/d.en/lambda.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Function Pointers, Delegates, and Lambdas</h1>
+        
+        
+
+
+
+<p>Function pointers are for storing addresses of functions in order to execute those functions at a later time. Function pointers are similar to their counterparts in the C programming language.
+</p>
+
+<p>Delegates store both a function pointer and the context to execute that function pointer in. The stored context can either be the scope that the function execution will take place or a <code class="d_inline">struct</code> or <code class="d_inline">class</code> object.
+</p>
+
+<p>Delegates enable <i>closures</i> as well, a concept that is supported by most functional programming languages.
+</p>
+
+<h5 class="subsection"><a id="ix_Function Pointers, Delegates, and Lambdas.function pointer" content="function pointer"></a> <a id="ix_Function Pointers, Delegates, and Lambdas.pointer, function" content="pointer, function"></a> Function pointers</h5>
+
+<p><a id="ix_Function Pointers, Delegates, and Lambdas.&amp;, function address" content="&amp;, function address"></a> We have seen in the previous chapter that it is possible to take addresses of functions with the <code class="d_inline">&amp;</code> operator. In one of those examples, we passed such an address to a function template.
+</p>
+
+<p>Taking advantage of the fact that template type parameters can match any type, let's pass a function pointer to a template to observe its type by printing its <code class="d_inline">.stringof</code> property:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">int</span> myFunction(<span class="d_keyword">char</span> c, <span class="d_keyword">double</span> d) {
+    <span class="d_keyword">return</span> 42;
+}
+
+<span class="d_keyword">void</span> main() {
+    myTemplate(<span class="hilite">&amp;myFunction</span>);    <span class="d_comment">// Taking the function's address and
+</span>                                <span class="d_comment">// passing it as a parameter
+</span>}
+
+<span class="d_keyword">void</span> myTemplate(T)(T parameter) {
+    writeln(<span class="d_string">"type : "</span>, T.stringof);
+    writeln(<span class="d_string">"value: "</span>, parameter);
+}
+</pre>
+
+<p>The output of the program reveals the type and the address of <code class="d_inline">myFunction()</code>:
+</p>
+
+<pre class="shell">type : int function(char c, double d)
+value: 406948
+</pre>
+
+<h6><a id="ix_Function Pointers, Delegates, and Lambdas.member function pointer" content="member function pointer"></a> <a id="ix_Function Pointers, Delegates, and Lambdas.pointer, member function" content="pointer, member function"></a> Member function pointers</h6>
+
+<p>The address of a member function can be taken either on a type or on an object of a type, with different results:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> MyStruct {
+    <span class="d_keyword">void</span> func() {
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> o = MyStruct();
+
+    <span class="d_keyword">auto</span> f = &amp;<span class="hilite">MyStruct</span>.func;    <span class="d_comment">// on a type
+</span>    <span class="d_keyword">auto</span> d = &amp;<span class="hilite">o</span>.func;           <span class="d_comment">// on an object
+</span>
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">is</span> (<span class="d_keyword">typeof</span>(<span class="hilite">f</span>) == <span class="d_keyword">void</span> <span class="hilite"><span class="d_keyword">function</span></span>()));
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">is</span> (<span class="d_keyword">typeof</span>(<span class="hilite">d</span>) == <span class="d_keyword">void</span> <span class="hilite"><span class="d_keyword">delegate</span></span>()));
+}
+</pre>
+
+<p>As the two <code class="d_inline">static assert</code> lines above indicate, <code class="d_inline">f</code> is a <code class="d_inline">function</code> and <code class="d_inline">d</code> is a <code class="d_inline">delegate</code>. We will see later below that <code class="d_inline">d</code> can be called directly but <code class="d_inline">f</code> needs an object to be called on.
+</p>
+
+<h6>Definition</h6>
+
+<p><a id="ix_Function Pointers, Delegates, and Lambdas.function" content="function"></a> Similar to regular pointers, each function pointer type can point exactly to a particular type of function; the parameter list and the return type of the function pointer and the function must match. Function pointers are defined by the <code class="d_inline">function</code> keyword between the return type and the parameter list of that particular type:
+</p>
+
+<pre class="d_code">   <i>return_type</i> <span class="d_keyword">function</span>(<i>parameters</i>) ptr;
+</pre>
+
+<p>The names of the parameters (<code class="d_inline">c</code> and <code class="d_inline">d</code> in the output above) are optional. Because <code class="d_inline">myFunction()</code> takes a <code class="d_inline">char</code> and a <code class="d_inline">double</code> and returns an <code class="d_inline">int</code>, the type of a function pointer that can point at <code class="d_inline">myFunction()</code> must be defined accordingly:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span> <span class="d_keyword">function</span>(<span class="d_keyword">char</span>, <span class="d_keyword">double</span>) ptr = &amp;myFunction;
+</pre>
+
+<p>The line above defines <code class="d_inline">ptr</code> as a function pointer taking two parameters (<code class="d_inline">char</code> and <code class="d_inline">double</code>) and returning <code class="d_inline">int</code>. Its value is the address of <code class="d_inline">myFunction()</code>.
+</p>
+
+<p>Function pointer syntax is relatively harder to read; it is common to make code more readable by an <code class="d_inline">alias</code>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">alias</span> CalculationFunc = <span class="d_keyword">int</span> <span class="d_keyword">function</span>(<span class="d_keyword">char</span>, <span class="d_keyword">double</span>);
+</pre>
+
+<p>That alias makes the code easier to read:
+</p>
+
+<pre class="d_code">    CalculationFunc ptr = &amp;myFunction;
+</pre>
+
+<p>As with any type, <code class="d_inline">auto</code> can be used as well:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> ptr = &amp;myFunction;
+</pre>
+
+<h6>Calling a function pointer</h6>
+
+<p>Function pointers can be called exactly like functions:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span> result = <span class="hilite">ptr</span>('a', 5.67);
+    <span class="d_keyword">assert</span>(result == 42);
+</pre>
+
+<p>The call <code class="d_inline">ptr('a', 5.67)</code> above is the equivalent of calling the actual function by <code class="d_inline">myFunction('a', 5.67)</code>.
+</p>
+
+<h6>When to use</h6>
+
+<p>Because function pointers store what function to call and they are called exactly like the functions that they point at, function pointers effectively store the behavior of the program for later.
+</p>
+
+<p>There are many other features of D that are about program behavior. For example, the appropriate function to call to calculate the wages of an <code class="d_inline">Employee</code> can be determined by the value of an <code class="d_inline">enum</code> member:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">final</span> <span class="d_keyword">switch</span> (employee.type) {
+
+    <span class="d_keyword">case</span> EmployeeType.fullTime:
+        fullTimeEmployeeWages();
+        <span class="d_keyword">break</span>;
+
+    <span class="d_keyword">case</span> EmployeeType.hourly:
+        hourlyEmployeeWages();
+        <span class="d_keyword">break</span>;
+    }
+</pre>
+
+<p>Unfortunately, that method is relatively harder to maintain because it obviously has to support all known employee types. If a new type of employee is added to the program, then all such <code class="d_inline">switch</code> statements must be located so that a new <code class="d_inline">case</code> clause is added for the new employee type.
+</p>
+
+<p>A more common alternative of implementing behavior differences is polymorphism. An <code class="d_inline">Employee</code> interface can be defined and different wage calculations can be handled by different implementations of that interface:
+</p>
+
+<pre class="d_code"><span class="d_keyword">interface</span> Employee {
+    <span class="d_keyword">double</span> wages();
+}
+
+<span class="d_keyword">class</span> FullTimeEmployee : Employee {
+    <span class="d_keyword">double</span> wages() {
+        <span class="d_keyword">double</span> result;
+        <span class="d_comment">// ...
+</span>        <span class="d_keyword">return</span> result;
+    }
+}
+
+<span class="d_keyword">class</span> HourlyEmployee : Employee {
+    <span class="d_keyword">double</span> wages() {
+        <span class="d_keyword">double</span> result;
+        <span class="d_comment">// ...
+</span>        <span class="d_keyword">return</span> result;
+    }
+}
+
+<span class="d_comment">// ...
+</span>
+    <span class="d_keyword">double</span> result = employee.wages();
+</pre>
+
+<p>Function pointers are yet another alternative for implementing different behavior. They are more common in programming languages that do not support object oriented programming.
+</p>
+
+<h6>Function pointer as a parameter</h6>
+
+<p>Let's design a function that takes an array and returns another array. This function will filter out elements with values less than or equal to zero, and multiply the others by ten:
+</p>
+
+<pre class="d_code"><span class="d_keyword">int</span>[] filterAndConvert(<span class="d_keyword">const</span> <span class="d_keyword">int</span>[] numbers) {
+    <span class="d_keyword">int</span>[] result;
+
+    <span class="d_keyword">foreach</span> (e; numbers) {
+        <span class="d_keyword">if</span> (e &gt; 0) {                       <span class="d_comment">// filtering,
+</span>            <span class="d_keyword">immutable</span> newNumber = e * 10;  <span class="d_comment">// and conversion
+</span>            result ~= newNumber;
+        }
+    }
+
+    <span class="d_keyword">return</span> result;
+}
+</pre>
+
+<p>The following program demonstrates its behavior with randomly generated values:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.random;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">int</span>[] numbers;
+
+    <span class="d_comment">// Random numbers
+</span>    <span class="d_keyword">foreach</span> (i; 0 .. 10) {
+        numbers ~= uniform(0, 10) - 5;
+    }
+
+    writeln(<span class="d_string">"input : "</span>, numbers);
+    writeln(<span class="d_string">"output: "</span>, filterAndConvert(numbers));
+}
+</pre>
+
+<p>The output contains numbers that are ten times the original numbers, which were greater than zero to begin with. The original numbers that have been selected are highlighted:
+</p>
+
+<pre class="shell">input : [-2, <span class="hilite">2</span>, -2, <span class="hilite">3</span>, -2, <span class="hilite">2</span>, -1, -4, 0, 0]
+output: [20, 30, 20]
+</pre>
+
+<p><code class="d_inline">filterAndConvert()</code> is for a very specific task: It always selects numbers that are greater than zero and always multiplies them by ten. It could be more useful if the behaviors of filtering and conversion were parameterized.
+</p>
+
+<p>Noting that filtering is a form of conversion as well (from <code class="d_inline">int</code> to <code class="d_inline">bool</code>), <code class="d_inline">filterAndConvert()</code> performs two conversions:
+</p>
+
+<ul><li><code class="d_inline">number &gt; 0</code>, which produces <code class="d_inline">bool</code> by considering an <code class="d_inline">int</code> value.</li>
+<li><code class="d_inline">number * 10</code>, which produces <code class="d_inline">int</code> from an <code class="d_inline">int</code> value.</li>
+</ul>
+
+<p>Let's define convenient aliases for function pointers that would match the two conversions above:
+</p>
+
+<pre class="d_code"><span class="d_keyword">alias</span> Predicate = <span class="d_keyword">bool</span> <span class="d_keyword">function</span>(<span class="d_keyword">int</span>);    <span class="d_comment">// makes bool from int
+</span><span class="d_keyword">alias</span> Convertor = <span class="d_keyword">int</span> <span class="d_keyword">function</span>(<span class="d_keyword">int</span>);     <span class="d_comment">// makes int from int
+</span></pre>
+
+<p><code class="d_inline">Predicate</code> is the type of functions that take <code class="d_inline">int</code> and return <code class="d_inline">bool</code>, and <code class="d_inline">Convertor</code> is the type of functions that take <code class="d_inline">int</code> and return <code class="d_inline">int</code>.
+</p>
+
+<p>If we provide such function pointers as parameters, we can have <code class="d_inline">filterAndConvert()</code> use those function pointers during its work:
+</p>
+
+<pre class="d_code"><span class="d_keyword">int</span>[] filterAndConvert(<span class="d_keyword">const</span> <span class="d_keyword">int</span>[] numbers,
+                       <span class="hilite">Predicate predicate</span>,
+                       <span class="hilite">Convertor convertor</span>) {
+    <span class="d_keyword">int</span>[] result;
+
+    <span class="d_keyword">foreach</span> (number; numbers) {
+        <span class="d_keyword">if</span> (<span class="hilite">predicate(number)</span>) {
+            <span class="d_keyword">immutable</span> newNumber = <span class="hilite">convertor(number)</span>;
+            result ~= newNumber;
+        }
+    }
+
+    <span class="d_keyword">return</span> result;
+}
+</pre>
+
+<p><code class="d_inline">filterAndConvert()</code> is now an algorithm that is independent of the actual filtering and conversion operations. When desired, its earlier behavior can be achieved by the following two simple functions:
+</p>
+
+<pre class="d_code"><span class="d_keyword">bool</span> isGreaterThanZero(<span class="d_keyword">int</span> number) {
+    <span class="d_keyword">return</span> number &gt; 0;
+}
+
+<span class="d_keyword">int</span> tenTimes(<span class="d_keyword">int</span> number) {
+    <span class="d_keyword">return</span> number * 10;
+}
+
+<span class="d_comment">// ...
+</span>
+    writeln(<span class="d_string">"output: "</span>, filterAndConvert(numbers,
+                                         <span class="hilite">&amp;isGreaterThanZero</span>,
+                                         <span class="hilite">&amp;tenTimes</span>));
+</pre>
+
+<p>This design allows calling <code class="d_inline">filterAndConvert()</code> with any filtering and conversion behaviors. For example, the following two functions would make <code class="d_inline">filterAndConvert()</code> produce <i>the negatives of the even numbers</i>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">bool</span> isEven(<span class="d_keyword">int</span> number) {
+    <span class="d_keyword">return</span> (number % 2) == 0;
+}
+
+<span class="d_keyword">int</span> negativeOf(<span class="d_keyword">int</span> number) {
+    <span class="d_keyword">return</span> -number;
+}
+
+<span class="d_comment">// ...
+</span>
+    writeln(<span class="d_string">"output: "</span>, filterAndConvert(numbers,
+                                         &amp;isEven,
+                                         &amp;negativeOf));
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">input : [3, -3, 2, 1, -5, 1, 2, 3, 4, -4]
+output: [-2, -2, -4, 4]
+</pre>
+
+<p>As seen in these examples, sometimes such functions are so trivial that defining them as proper functions with name, return type, parameter list, and curly brackets is unnecessarily wordy.
+</p>
+
+<p>As we will see below, the <code class="d_inline">=&gt;</code> syntax of anonymous functions makes the code more concise and more readable. The following line has anonymous functions that are the equivalents of <code class="d_inline">isEven()</code> and <code class="d_inline">negativeOf()</code>, without proper function definitions:
+</p>
+
+<pre class="d_code">    writeln(<span class="d_string">"output: "</span>, filterAndConvert(numbers,
+                                         number =&gt; (number % 2) == 0,
+                                         number =&gt; -number));
+</pre>
+
+<h6>Function pointer as a member</h6>
+
+<p>Function pointers can be stored as members of structs and classes as well. To see this, let's design a <code class="d_inline">class</code> that takes the predicate and convertor as constructor parameters in order to use them later on:
+</p>
+
+<pre class="d_code"><span class="d_keyword">class</span> NumberHandler {
+    <span class="hilite">Predicate predicate</span>;
+    <span class="hilite">Convertor convertor</span>;
+
+    <span class="d_keyword">this</span>(Predicate predicate, Convertor convertor) {
+        <span class="d_keyword">this</span>.predicate = predicate;
+        <span class="d_keyword">this</span>.convertor = convertor;
+    }
+
+    <span class="d_keyword">int</span>[] handle(<span class="d_keyword">const</span> <span class="d_keyword">int</span>[] numbers) {
+        <span class="d_keyword">int</span>[] result;
+
+        <span class="d_keyword">foreach</span> (number; numbers) {
+            <span class="d_keyword">if</span> (predicate(number)) {
+                <span class="d_keyword">immutable</span> newNumber = convertor(number);
+                result ~= newNumber;
+            }
+        }
+
+        <span class="d_keyword">return</span> result;
+    }
+}
+</pre>
+
+<p>An object of that type can be used similarly to <code class="d_inline">filterAndConvert()</code>:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> handler = <span class="d_keyword">new</span> NumberHandler(<span class="hilite">&amp;isEven</span>, <span class="hilite">&amp;negativeOf</span>);
+    writeln(<span class="d_string">"result: "</span>, handler.handle(numbers));
+</pre>
+
+<h5 class="subsection"><a id="ix_Function Pointers, Delegates, and Lambdas.anonymous function" content="anonymous function"></a> <a id="ix_Function Pointers, Delegates, and Lambdas.function, anonymous" content="function, anonymous"></a> <a id="ix_Function Pointers, Delegates, and Lambdas.function, lambda" content="function, lambda"></a> <a id="ix_Function Pointers, Delegates, and Lambdas.function literal" content="function literal"></a> <a id="ix_Function Pointers, Delegates, and Lambdas.literal, function" content="literal, function"></a> <a id="ix_Function Pointers, Delegates, and Lambdas.lambda" content="lambda"></a> Anonymous functions</h5>
+
+<p>The code can be more readable and concise when short functions are defined without proper function definitions.
+</p>
+
+<p>Anonymous functions, which are also knows as <i>function literals</i> or <i>lambdas</i>, allow defining functions inside of expressions. Anonymous functions can be used at any point where a function pointer can be used.
+</p>
+
+<p>We will get to their shorter <code class="d_inline">=&gt;</code> syntax later below. Let's first see their full syntax, which is usually too wordy especially when it appears inside of other expressions:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">function</span> <i>return_type</i>(<i>parameters</i>) { <span class="d_comment">/* operations */</span> }
+</pre>
+
+<p>For example, an object of <code class="d_inline">NumberHandler</code> that produces <i>7 times the numbers that are greater than 2</i> can be constructed by anonymous functions as in the following code:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">new</span> NumberHandler(<span class="d_keyword">function</span> <span class="d_keyword">bool</span>(<span class="d_keyword">int</span> number) { <span class="d_keyword">return</span> number &gt; 2; },
+                      <span class="d_keyword">function</span> <span class="d_keyword">int</span>(<span class="d_keyword">int</span> number) { <span class="d_keyword">return</span> number * 7; });
+</pre>
+
+<p>Two advantages of the code above is that the functions are not defined as proper functions and that their implementations are visible right where the <code class="d_inline">NumberHandler</code> object is constructed.
+</p>
+
+<p>Note that the anonymous function syntax is very similar to regular function syntax. Although this consistency has benefits, the full syntax of anonymous functions makes code too wordy.
+</p>
+
+<p>For that reason, there are various shorter ways of defining anonymous functions.
+</p>
+
+<h6>Shorter syntax</h6>
+
+<p>When the return type can be deduced from the <code class="d_inline">return</code> statement inside the anonymous function, then the return type need not be specified (The place where the return type would normally appear is highlighted by code comments.):
+</p>
+
+<pre class="d_code">    <span class="d_keyword">new</span> NumberHandler(<span class="d_keyword">function</span> <span class="d_comment">/**/</span>(<span class="d_keyword">int</span> number) { <span class="d_keyword">return</span> number &gt; 2; },
+                      <span class="d_keyword">function</span> <span class="d_comment">/**/</span>(<span class="d_keyword">int</span> number) { <span class="d_keyword">return</span> number * 7; });
+</pre>
+
+<p>Further, when the anonymous function does not take parameters, its parameter list need not be provided. Let's consider a function that takes a function pointer that takes <i>nothing</i> and returns <code class="d_inline">double</code>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> foo(<span class="d_keyword">double</span> <span class="d_keyword">function</span><span class="hilite">()</span> func) {
+    <span class="d_comment">// ...
+</span>}
+</pre>
+
+<p>Anonymous functions that are passed to that function need not have the empty parameter list. Therefore, all three of the following anonymous function syntaxes are equivalent:
+</p>
+
+<pre class="d_code">    foo(<span class="d_keyword">function</span> <span class="d_keyword">double</span>() { <span class="d_keyword">return</span> 42.42; });
+    foo(<span class="d_keyword">function</span> () { <span class="d_keyword">return</span> 42.42; });
+    foo(<span class="d_keyword">function</span> { <span class="d_keyword">return</span> 42.42; });
+</pre>
+
+<p>The first one is written in the full syntax. The second one omits the return type, taking advantage of the return type deduction. The third one omits the unnecessary parameter list.
+</p>
+
+<p>Even further, the keyword <code class="d_inline">function</code> need not be provided either. In that case it is left to the compiler to determine whether it is an anonymous function or an anonymous delegate. Unless it uses a variable from one of the enclosing scopes, it is a function:
+</p>
+
+<pre class="d_code">    foo({ <span class="d_keyword">return</span> 42.42; });
+</pre>
+
+<p>Most anonymous functions can be defined even shorter by the <i>lambda syntax</i>.
+</p>
+
+<h6><a id="ix_Function Pointers, Delegates, and Lambdas.=&gt;" content="=&gt;"></a> Lambda syntax instead of a single <code class="d_inline">return</code> statement</h6>
+
+<p>In most cases even the shortest syntax above is unnecessarily cluttered. The curly brackets that are just inside the function parameter list make the code harder to read and a <code class="d_inline">return</code> statement as well as its semicolon inside a function argument looks out of place.
+</p>
+
+<p>Let's start with the full syntax of an anonymous function that has a single <code class="d_inline">return</code> statement:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">function</span> <i>return_type</i>(<i>parameters</i>) { <span class="d_keyword">return</span> <i>expression</i>; }
+</pre>
+
+<p>We have already seen that the <code class="d_inline">function</code> keyword is not necessary and the return type can be deduced:
+</p>
+
+<pre class="d_code">    (<i>parameters</i>) { <span class="d_keyword">return</span> <i>expression</i>; }
+</pre>
+
+<p>The equivalent of that definition is the following <code class="d_inline">=&gt;</code> syntax, where the <code class="d_inline">=&gt;</code> characters replace the curly brackets, the <code class="d_inline">return</code> keyword, and the semicolon:
+</p>
+
+<pre class="d_code">    (<i>parameters</i>) =&gt; <i>expression</i>
+</pre>
+
+<p>The meaning of that syntax can be spelled out as "given those parameters, produce this expression (value)".
+</p>
+
+<p>Further, when there is a single parameter, the parentheses around the parameter list can be omitted as well:
+</p>
+
+<pre class="d_code">    <i>single_parameter</i> =&gt; <i>expression</i>
+</pre>
+
+<p>On the other hand, to avoid grammar ambiguities, the parameter list must still be written as empty parentheses when there is no parameter at all:
+</p>
+
+<pre class="d_code">    () =&gt; <i>expression</i>
+</pre>
+
+<p>Programmers who know lambdas from other languages may make a mistake of using curly brackets after the <code class="d_inline">=&gt;</code> characters, which can be valid D syntax with a different meaning:
+</p>
+
+<pre class="d_code">    <span class="d_comment">// A lambda that returns 'a + 1'
+</span>    <span class="d_keyword">auto</span> l0 = (<span class="d_keyword">int</span> a) =&gt; a + 1
+
+    <span class="d_comment">// A lambda that returns a parameter-less lambda that
+</span>    <span class="d_comment">// returns 'a + 1'
+</span>    <span class="d_keyword">auto</span> l1 = (<span class="d_keyword">int</span> a) =&gt; <span class="hilite">{</span> <span class="d_keyword">return</span> a + 1; <span class="hilite">}</span>
+
+    <span class="d_keyword">assert</span>(l0(42) == 43);
+    <span class="d_keyword">assert</span>(l1(42)<span class="hilite">()</span> == 43);    <span class="d_comment">// Executing what l1 returns
+</span></pre>
+
+<p><a id="ix_Function Pointers, Delegates, and Lambdas.filter, std.algorithm" content="filter, std.algorithm"></a> Let's use the lambda syntax in a predicate passed to <code class="d_inline">std.algorithm.filter</code>. <code class="d_inline">filter()</code> takes a predicate as its template parameter and a range as its function parameter. It applies the predicate to each element of the range and returns the ones that satisfy the predicate. One of several ways of specifying the predicate is the lambda syntax.
+</p>
+
+<p>(<i>Note: We will see ranges in a later chapter. At this point, it should be sufficient to know that D slices are ranges.</i>)
+</p>
+
+<p>The following lambda is a predicate that matches elements that are greater than 10:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.algorithm;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">int</span>[] numbers = [ 20, 1, 10, 300, -2 ];
+    writeln(numbers.filter!(<span class="hilite">number =&gt; number &gt; 10</span>));
+}
+</pre>
+
+<p>The output contains only the elements that satisfy the predicate:
+</p>
+
+<pre class="shell">[20, 300]
+</pre>
+
+<p>For comparison, let's write the same lambda in the longest syntax. The curly brackets that define the body of the anonymous function are highlighted:
+</p>
+
+<pre class="d_code">    writeln(numbers.filter!(<span class="d_keyword">function</span> <span class="d_keyword">bool</span>(<span class="d_keyword">int</span> number) <span class="hilite">{</span>
+                                <span class="d_keyword">return</span> number &gt; 10;
+                            <span class="hilite">}</span>));
+</pre>
+
+<p>As another example, this time let's define an anonymous function that takes two parameters. The following algorithm takes two slices and passes their corresponding elements one by one to a <code class="d_inline">function</code> that itself takes two parameters. It then collects and returns the results as another slice:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.exception;
+
+<span class="d_keyword">int</span>[] binaryAlgorithm(<span class="d_keyword">int</span> <span class="d_keyword">function</span><span class="hilite">(<span class="d_keyword">int</span>, <span class="d_keyword">int</span>)</span> func,
+                      <span class="d_keyword">const</span> <span class="d_keyword">int</span>[] slice1,
+                      <span class="d_keyword">const</span> <span class="d_keyword">int</span>[] slice2) {
+    enforce(slice1.length == slice2.length);
+
+    <span class="d_keyword">int</span>[] results;
+
+    <span class="d_keyword">foreach</span> (i; 0 .. slice1.length) {
+        results ~= func(slice1[i], slice2[i]);
+    }
+
+    <span class="d_keyword">return</span> results;
+}
+</pre>
+
+<p>Since the <code class="d_inline">function</code> parameter above takes two parameters, lambdas that can be passed to <code class="d_inline">binaryAlgorithm()</code> must take two parameters as well:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main() {
+    writeln(binaryAlgorithm(<span class="hilite">(a, b)</span> =&gt; (a * 10) + b,
+                            [ 1, 2, 3 ],
+                            [ 4, 5, 6 ]));
+}
+</pre>
+
+<p>The output contains ten times the elements of the first array plus the elements of the second array (e.g. 14 is 10 * 1 + 4):
+</p>
+
+<pre class="shell">[14, 25, 36]
+</pre>
+
+<h5 class="subsection"><a id="ix_Function Pointers, Delegates, and Lambdas.delegate" content="delegate"></a> Delegates</h5>
+
+<p><a id="ix_Function Pointers, Delegates, and Lambdas.context" content="context"></a> <a id="ix_Function Pointers, Delegates, and Lambdas.closure" content="closure"></a> A delegate is a combination of a function pointer and the context that it should be executed in. Delegates also support <i>closures</i> in D. Closures are a feature supported by many functional programming languages.
+</p>
+
+<p>As we have seen in <a href="lifetimes.html">the Lifetimes and Fundamental Operations chapter</a>, the lifetime of a variable ends upon leaving the scope that it is defined in:
+</p>
+
+<pre class="d_code">{
+    <span class="d_keyword">int</span> increment = 10;
+    <span class="d_comment">// ...
+</span>} <span class="d_comment">// ← the life of 'increment' ends here
+</span></pre>
+
+<p>That is why the address of such a local variable cannot be returned from a function.
+</p>
+
+<p>Let's imagine that <code class="d_inline">increment</code> is a local variable of a function that itself returns a <code class="d_inline">function</code>. Let's make it so that the returned lambda happens to use that local variable:
+</p>
+
+<pre class="d_code"><span class="d_keyword">alias</span> Calculator = <span class="d_keyword">int</span> <span class="d_keyword">function</span>(<span class="d_keyword">int</span>);
+
+Calculator makeCalculator() {
+    <span class="d_keyword">int</span> increment = 10;
+    <span class="d_keyword">return</span> value =&gt; <span class="hilite">increment</span> + value;    <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+}
+</pre>
+
+<p>That code is in error because the returned lambda makes use of a local variable that is about to go out of scope. If the code were allowed to compile, the lambda would be trying to access <code class="d_inline">increment</code>, whose life has already ended.
+</p>
+
+<p>For that code to be compiled and work correctly, the lifetime of <code class="d_inline">increment</code> must at least be as long as the lifetime of the lambda that uses it. Delegates extend the lifetime of the context of a lambda so that the local state that the function uses remains valid.
+</p>
+
+<p><code class="d_inline">delegate</code> syntax is similar to <code class="d_inline">function</code> syntax, the only difference being the keyword. That change is sufficient to make the previous code compile:
+</p>
+
+<pre class="d_code"><span class="d_keyword">alias</span> Calculator = <span class="d_keyword">int</span> <span class="hilite"><span class="d_keyword">delegate</span></span>(<span class="d_keyword">int</span>);
+
+Calculator makeCalculator() {
+    <span class="d_keyword">int</span> increment = 10;
+    <span class="d_keyword">return</span> value =&gt; increment + value;
+}
+</pre>
+
+<p>Having been used by a delegate, the local variable <code class="d_inline">increment</code> will now live as long as that delegate lives. The variable is available to the delegate just as any other variable would be, mutable as needed. We will see examples of this in the next chapter when using delegates with <code class="d_inline">opApply()</code> member functions.
+</p>
+
+<p>The following is a test of the delegate above:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> calculator = makeCalculator();
+    writeln(<span class="d_string">"The result of the calculation: "</span>, calculator(3));
+</pre>
+
+<p>Note that <code class="d_inline">makeCalculator()</code> returns an anonymous delegate. The code above assigns that delegate to the variable <code class="d_inline">calculator</code> and then calls it by <code class="d_inline">calculator(3)</code>. Since the delegate is implemented to return the sum of its parameter and the variable <code class="d_inline">increment</code>, the code outputs the sum of 3 and 10:
+</p>
+
+<pre class="shell">The result of the calculation: 13
+</pre>
+
+<h6>Shorter syntax</h6>
+
+<p>As we have already used in the previous example, delegates can take advantage of the shorter syntaxes as well. When neither <code class="d_inline">function</code> nor <code class="d_inline">delegate</code> is specified, the type of the lambda is decided by the compiler, depending on whether the lambda accesses local state. If so, then it is a <code class="d_inline">delegate</code>.
+</p>
+
+<p>The following example has a delegate that does not take any parameters:
+</p>
+
+<pre class="d_code"><span class="d_keyword">int</span>[] delimitedNumbers(<span class="d_keyword">int</span> count, <span class="d_keyword">int</span> <span class="d_keyword">delegate</span><span class="hilite">()</span> numberGenerator) {
+    <span class="d_keyword">int</span>[] result = [ -1 ];
+    result.reserve(count + 2);
+
+    <span class="d_keyword">foreach</span> (i; 0 .. count) {
+        result ~= numberGenerator();
+    }
+
+    result ~= -1;
+
+    <span class="d_keyword">return</span> result;
+}
+</pre>
+
+<p>The function <code class="d_inline">delimitedNumbers()</code> generates a slice where the first and last elements are -1. It takes two parameters that specify the other elements that come between those first and last elements.
+</p>
+
+<p>Let's call that function with a trivial delegate that always returns the same value. Remember that when there is no parameter, the parameter list of a lambda must be specified as empty:
+</p>
+
+<pre class="d_code">    writeln(delimitedNumbers(3, <span class="hilite">() =&gt; 42</span>));
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">-1 42 42 42 -1
+</pre>
+
+<p>Let's call <code class="d_inline">delimitedNumbers()</code> this time with a delegate that makes use of a local variable:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span> lastNumber;
+    writeln(delimitedNumbers(
+                15, <span class="hilite">() =&gt; lastNumber += uniform(0, 3)</span>));
+
+    writeln(<span class="d_string">"Last number: "</span>, lastNumber);
+</pre>
+
+<p>Although that delegate produces a random value, since the value is added to the last one, none of the generated values is less than its predecessor:
+</p>
+
+<pre class="shell">-1 0 2 3 4 6 6 8 9 9 9 10 12 14 15 17 -1
+Last number: 17
+</pre>
+
+<h6><a id="ix_Function Pointers, Delegates, and Lambdas.&amp;, object delegate" content="&amp;, object delegate"></a> <a id="ix_Function Pointers, Delegates, and Lambdas.delegate, member function" content="delegate, member function"></a> <a id="ix_Function Pointers, Delegates, and Lambdas.object delegate" content="object delegate"></a> <a id="ix_Function Pointers, Delegates, and Lambdas.member function delegate" content="member function delegate"></a> An object and a member function as a delegate</h6>
+
+<p>We have seen that a delegate is nothing but a function pointer and the context that it is to be executed in. Instead of those two, a delegate can also be composed of a member function and an existing object that that member function is to be called on.
+</p>
+
+<p>The syntax that defines such a delegate from an object is the following:
+</p>
+
+<pre class="d_code">    &amp;<i>object</i>.<i>member_function</i>
+</pre>
+
+<p>Let's first observe that such a syntax indeed defines a <code class="d_inline">delegate</code> by printing its <code class="d_inline">string</code> representation:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">struct</span> Location {
+    <span class="d_keyword">long</span> x;
+    <span class="d_keyword">long</span> y;
+
+    <span class="d_keyword">void</span> moveHorizontally(<span class="d_keyword">long</span> step) { x += step; }
+    <span class="d_keyword">void</span> moveVertically(<span class="d_keyword">long</span> step)   { y += step; }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> location = Location();
+    writeln(<span class="d_keyword">typeof</span>(<span class="hilite">&amp;location.moveHorizontally</span>).stringof);
+}
+</pre>
+
+<p>According to the output, the type of <code class="d_inline">moveHorizontally()</code> called on <code class="d_inline">location</code> is indeed a <code class="d_inline">delegate</code>:
+</p>
+
+<pre class="shell">void delegate(long step)
+</pre>
+
+<p>Note that the <code class="d_inline">&amp;</code> syntax is only for constructing the delegate. The delegate will be called later by the function call syntax:
+</p>
+
+<pre class="d_code">    <span class="d_comment">// The definition of the delegate variable:
+</span>    <span class="d_keyword">auto</span> directionFunction = &amp;location.moveHorizontally;
+
+    <span class="d_comment">// Calling the delegate by the function call syntax:
+</span>    directionFunction<span class="hilite">(3)</span>;
+
+    writeln(location);
+</pre>
+
+<p>Since the <code class="d_inline">delegate</code> combines the <code class="d_inline">location</code> object and the <code class="d_inline">moveHorizontally()</code> member function, calling the delegate is the equivalent of calling <code class="d_inline">moveHorizontally()</code> on <code class="d_inline">location</code>. The output indicates that the object has indeed moved 3 steps horizontally:
+</p>
+
+<pre class="shell">Location(3, 0)
+</pre>
+
+<p>Function pointers, lambdas, and delegates are expressions. They can be used in places where a value of their type is expected. For example, a slice of <code class="d_inline">delegate</code> objects is initialized below from delegates constructed from an object and its various member functions. The <code class="d_inline">delegate</code> elements of the slice are later called just like functions:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> location = Location();
+
+    <span class="d_keyword">void</span> <span class="d_keyword">delegate</span>(<span class="d_keyword">long</span>)[] movements =
+        [ &amp;location.moveHorizontally,
+          &amp;location.moveVertically,
+          &amp;location.moveHorizontally ];
+
+    <span class="d_keyword">foreach</span> (movement; movements) {
+        movement<span class="hilite">(1)</span>;
+    }
+
+    writeln(location);
+</pre>
+
+<p>According to the elements of the slice, the location has been changed twice horizontally and once vertically:
+</p>
+
+<pre class="shell">Location(2, 1)
+</pre>
+
+<h6><a id="ix_Function Pointers, Delegates, and Lambdas..ptr, delegate context" content=".ptr, delegate context"></a> <a id="ix_Function Pointers, Delegates, and Lambdas.pointer, delegate context" content="pointer, delegate context"></a> <a id="ix_Function Pointers, Delegates, and Lambdas..funcptr" content=".funcptr"></a> <a id="ix_Function Pointers, Delegates, and Lambdas.function pointer, delegate" content="function pointer, delegate"></a> Delegate properties</h6>
+
+<p>The function and context pointers of a delegate can be accessed through its <code class="d_inline">.funcptr</code> and <code class="d_inline">.ptr</code> properties, respectively:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> MyStruct {
+    <span class="d_keyword">void</span> func() {
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> o = MyStruct();
+
+    <span class="d_keyword">auto</span> d = &amp;o.func;
+
+    <span class="d_keyword">assert</span>(d<span class="hilite">.funcptr</span> == &amp;MyStruct.func);
+    <span class="d_keyword">assert</span>(d<span class="hilite">.ptr</span> == &amp;o);
+}
+</pre>
+
+<p>It is possible to make a <code class="d_inline">delegate</code> from scratch by setting those properties explicitly:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> MyStruct {
+    <span class="d_keyword">int</span> i;
+
+    <span class="d_keyword">void</span> func() {
+        <span class="d_keyword">import</span> std.stdio;
+        writeln(i);
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> o = MyStruct(42);
+
+    <span class="d_keyword">void</span> <span class="d_keyword">delegate</span>() d;
+    <span class="d_keyword">assert</span>(d <span class="d_keyword">is</span> <span class="d_keyword">null</span>);    <span class="d_comment">// null to begin with
+</span>
+    d<span class="hilite">.funcptr</span> = &amp;MyStruct.func;
+    d<span class="hilite">.ptr</span> = &amp;o;
+
+    <span class="hilite">d()</span>;
+}
+</pre>
+
+<p>Calling the delegate above as <code class="d_inline">d()</code> is the equivalent of the expression <code class="d_inline">o.func()</code> (i.e. calling <code class="d_inline">MyStruct.func</code> on <code class="d_inline">o</code>):
+</p>
+
+<pre class="shell">42
+</pre>
+
+<h6><a id="ix_Function Pointers, Delegates, and Lambdas.lazy parameter as delegate" content="lazy parameter as delegate"></a> Lazy parameters are delegates</h6>
+
+<p>We saw the <code class="d_inline">lazy</code> keyword in <a href="function_parameters.html">the Function Parameters chapter</a>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> log(Level level, <span class="hilite"><span class="d_keyword">lazy</span></span> string message) {
+    <span class="d_keyword">if</span> (level &gt;= interestedLevel) {
+        writeln(message);
+    }
+}
+
+<span class="d_comment">// ...
+</span>
+    <span class="d_keyword">if</span> (failedToConnect) {
+        log(Level.medium,
+            <span class="hilite">format</span>(<span class="d_string">"Failure. The connection state is '%s'."</span>,
+                   getConnectionState()));
+    }
+</pre>
+
+<p>Because <code class="d_inline">message</code> is a <code class="d_inline">lazy</code> parameter above, the entire <code class="d_inline">format</code> expression (including the <code class="d_inline">getConnectionState()</code> call that it makes) would be evaluated if and when that parameter is used inside <code class="d_inline">log()</code>.
+</p>
+
+<p>Behind the scenes, lazy parameters are in fact delegates and the arguments that are passed to lazy parameters are delegate objects that are created automatically by the compiler. The code below is the equivalent of the one above:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> log(Level level, string <span class="hilite"><span class="d_keyword">delegate</span></span>() lazyMessage) {  <span class="d_comment">// (1)
+</span>    <span class="d_keyword">if</span> (level &gt;= interestedLevel) {
+        writefln(<span class="d_string">"%s"</span>, <span class="hilite">lazyMessage()</span>);                  <span class="d_comment">// (2)
+</span>    }
+}
+
+<span class="d_comment">// ...
+</span>
+    <span class="d_keyword">if</span> (failedToConnect) {
+        log(Level.medium,
+            <span class="d_keyword">delegate</span> string() <span class="hilite">{</span>                         <span class="d_comment">// (3)
+</span>                <span class="d_keyword">return</span> format(
+                    <span class="d_string">"Failure. The connection state is '%s'."</span>,
+                    getConnectionState());
+            <span class="hilite">}</span>);
+    }
+</pre>
+
+<ol>
+<li>The <code class="d_inline">lazy</code> parameter is not a <code class="d_inline">string</code> but a delegate that returns a <code class="d_inline">string</code>.</li>
+
+<li>The delegate is called to get its return value.</li>
+
+<li>The entire expression is wrapped inside a delegate and returned from it.</li>
+
+</ol>
+
+<h6><a id="ix_Function Pointers, Delegates, and Lambdas.lazy variadic functions" content="lazy variadic functions"></a> <a id="ix_Function Pointers, Delegates, and Lambdas.variadic function, lazy" content="variadic function, lazy"></a> Lazy variadic functions</h6>
+
+<p>When a function needs a variable number of lazy parameters, it is necessarily impossible to specify those <i>unknown number of</i> parameters as <code class="d_inline">lazy</code>.
+</p>
+
+<p>The solution is to use variadic <code class="d_inline">delegate</code> parameters. Such parameters can receive any number of expressions that are the same as the <i>return type</i> of those delegates. The delegates cannot take parameters:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> foo(<span class="d_keyword">double</span> <span class="d_keyword">delegate</span>()<span class="hilite">[]</span> args<span class="hilite">...</span>) {
+    <span class="d_keyword">foreach</span> (arg; args) {
+        writeln(<span class="hilite">arg()</span>);     <span class="d_comment">// Calling each delegate
+</span>    }
+}
+
+<span class="d_keyword">void</span> main() {
+    foo(<span class="hilite">1.5</span>, () =&gt; 2.5);    <span class="d_comment">// 'double' passed as delegate
+</span>}
+</pre>
+
+<p>Note how both a <code class="d_inline">double</code> expression and a lambda are matched to the variadic parameter. The <code class="d_inline">double</code> expression is automatically wrapped inside a delegate and the function prints the values of all its <i>effectively-lazy</i> parameters:
+</p>
+
+<pre class="shell">1.5
+2.5
+</pre>
+
+<p>A limitation of this method is that all parameters must be the same type (<code class="d_inline">double</code> above). We will see later in the <a href="templates_more.html">More Templates chapter</a> how to take advantage of <i>tuple template parameters</i> to remove that limitation.
+</p>
+
+<h5 class="subsection"><a id="ix_Function Pointers, Delegates, and Lambdas.sink" content="sink"></a> <a id="ix_Function Pointers, Delegates, and Lambdas.toString, delegate" content="toString, delegate"></a> <code class="d_inline">toString()</code> with a <code class="d_inline">delegate</code> parameter</h5>
+
+<p>We have defined many <code class="d_inline">toString()</code> functions up to this point in the book to represent objects as strings. Those <code class="d_inline">toString()</code> definitions all returned a <code class="d_inline">string</code> without taking any parameters. As noted by the comment lines below, structs and classes took advantage of <code class="d_inline">toString()</code> functions of their respective members by simply passing those members to <code class="d_inline">format()</code>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.string;
+
+<span class="d_keyword">struct</span> Point {
+    <span class="d_keyword">int</span> x;
+    <span class="d_keyword">int</span> y;
+
+    string toString() <span class="d_keyword">const</span> {
+        <span class="d_keyword">return</span> format(<span class="d_string">"(%s,%s)"</span>, x, y);
+    }
+}
+
+<span class="d_keyword">struct</span> Color {
+    <span class="d_keyword">ubyte</span> r;
+    <span class="d_keyword">ubyte</span> g;
+    <span class="d_keyword">ubyte</span> b;
+
+    string toString() <span class="d_keyword">const</span> {
+        <span class="d_keyword">return</span> format(<span class="d_string">"RGB:%s,%s,%s"</span>, r, g, b);
+    }
+}
+
+<span class="d_keyword">struct</span> ColoredPoint {
+    Color color;
+    Point point;
+
+    string toString() <span class="d_keyword">const</span> {
+        <span class="d_comment">/* Taking advantage of Color.toString and
+         * Point.toString: */</span>
+        <span class="d_keyword">return</span> format(<span class="d_string">"{%s;%s}"</span>, color, point);
+    }
+}
+
+<span class="d_keyword">struct</span> Polygon {
+    ColoredPoint[] points;
+
+    string toString() <span class="d_keyword">const</span> {
+        <span class="d_comment">/* Taking advantage of ColoredPoint.toString: */</span>
+        <span class="d_keyword">return</span> format(<span class="d_string">"%s"</span>, points);
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> polygon = Polygon(
+        [ ColoredPoint(Color(10, 10, 10), Point(1, 1)),
+          ColoredPoint(Color(20, 20, 20), Point(2, 2)),
+          ColoredPoint(Color(30, 30, 30), Point(3, 3)) ]);
+
+    writeln(polygon);
+}
+</pre>
+
+<p>In order for <code class="d_inline">polygon</code> to be sent to the output as a <code class="d_inline">string</code> on the last line of the program, all of the <code class="d_inline">toString()</code> functions of <code class="d_inline">Polygon</code>, <code class="d_inline">ColoredPoint</code>, <code class="d_inline">Color</code>, and <code class="d_inline">Point</code> are called indirectly, creating a total of 10 strings in the process. Note that the strings that are constructed and returned by the lower-level functions are used only once by the respective higher-level function that called them.
+</p>
+
+<p>However, although a total of 10 strings get constructed, only the very last one is printed to the output:
+</p>
+
+<pre class="shell">[{RGB:10,10,10;(1,1)}, {RGB:20,20,20;(2,2)}, {RGB:30,30,30;(3,3)}]
+</pre>
+
+<p>However practical, this method may degrade the performance of the program because of the many <code class="d_inline">string</code> objects that are constructed and promptly thrown away.
+</p>
+
+<p>An overload of <code class="d_inline">toString()</code> avoids this performance issue by taking a <code class="d_inline">delegate</code> parameter:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">void</span> toString(<span class="d_keyword">void</span> <span class="d_keyword">delegate</span>(<span class="d_keyword">const</span>(<span class="d_keyword">char</span>)[]) sink) <span class="d_keyword">const</span>;
+</pre>
+
+<p>As seen in its declaration, this overload of <code class="d_inline">toString()</code> does not return a <code class="d_inline">string</code>. Instead, the characters that are going to be printed are passed to its <code class="d_inline">delegate</code> parameter. It is the responsibility of the <code class="d_inline">delegate</code> to append those characters to the single <code class="d_inline">string</code> that is going to be printed to the output.
+</p>
+
+<p><a id="ix_Function Pointers, Delegates, and Lambdas.formattedWrite, std.format" content="formattedWrite, std.format"></a> All the programmer needs to do differently is to call <code class="d_inline">std.format.formattedWrite</code> instead of <code class="d_inline">std.string.format</code> and pass the <code class="d_inline">delegate</code> parameter as its first parameter (in UFCS below). Also note that the following calls are providing the format strings as template arguments to take advantage of <code class="d_inline">formattedWrite</code>'s compile-time format string checks.
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="hilite"><span class="d_keyword">import</span> std.format;</span>
+
+<span class="d_keyword">struct</span> Point {
+    <span class="d_keyword">int</span> x;
+    <span class="d_keyword">int</span> y;
+
+    <span class="d_keyword">void</span> toString(<span class="d_keyword">void</span> <span class="d_keyword">delegate</span>(<span class="d_keyword">const</span>(<span class="d_keyword">char</span>)[]) sink) <span class="d_keyword">const</span> {
+        sink.<span class="hilite">formattedWrite</span>!<span class="d_string">"(%s,%s)"</span>(x, y);
+    }
+}
+
+<span class="d_keyword">struct</span> Color {
+    <span class="d_keyword">ubyte</span> r;
+    <span class="d_keyword">ubyte</span> g;
+    <span class="d_keyword">ubyte</span> b;
+
+    <span class="d_keyword">void</span> toString(<span class="d_keyword">void</span> <span class="d_keyword">delegate</span>(<span class="d_keyword">const</span>(<span class="d_keyword">char</span>)[]) sink) <span class="d_keyword">const</span> {
+        sink.<span class="hilite">formattedWrite</span>!<span class="d_string">"RGB:%s,%s,%s"</span>(r, g, b);
+    }
+}
+
+<span class="d_keyword">struct</span> ColoredPoint {
+    Color color;
+    Point point;
+
+    <span class="d_keyword">void</span> toString(<span class="d_keyword">void</span> <span class="d_keyword">delegate</span>(<span class="d_keyword">const</span>(<span class="d_keyword">char</span>)[]) sink) <span class="d_keyword">const</span> {
+        sink.<span class="hilite">formattedWrite</span>!<span class="d_string">"{%s;%s}"</span>(color, point);
+    }
+}
+
+<span class="d_keyword">struct</span> Polygon {
+    ColoredPoint[] points;
+
+    <span class="d_keyword">void</span> toString(<span class="d_keyword">void</span> <span class="d_keyword">delegate</span>(<span class="d_keyword">const</span>(<span class="d_keyword">char</span>)[]) sink) <span class="d_keyword">const</span> {
+        sink.<span class="hilite">formattedWrite</span>!<span class="d_string">"%s"</span>(points);
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> polygon = Polygon(
+        [ ColoredPoint(Color(10, 10, 10), Point(1, 1)),
+          ColoredPoint(Color(20, 20, 20), Point(2, 2)),
+          ColoredPoint(Color(30, 30, 30), Point(3, 3)) ]);
+
+    writeln(polygon);
+}
+</pre>
+
+<p>The advantage of this program is that, even though there are still a total of 10 calls made to various <code class="d_inline">toString()</code> functions, those calls collectively produce a single <code class="d_inline">string</code>, not 10.
+</p>
+
+<h5 class="subsection">Summary</h5>
+
+<ul><li>The <code class="d_inline">function</code> keyword is for defining function pointers to be called later just like a function.</li>
+
+<li>The <code class="d_inline">delegate</code> keyword is for defining delegates. A delegate is the pair of a function pointer and the context that that function pointer to be executed in.</li>
+
+<li>A <code class="d_inline">delegate</code> can be created from an object and a member function by the syntax <code class="d_inline">&amp;object.member_function</code>.</li>
+
+<li>A delegate can be constructed explicitly by setting its <code class="d_inline">.funcptr</code> and <code class="d_inline">.ptr</code> properties.</li>
+
+<li>Anonymous functions and anonymous delegates (lambdas) can be used in places of function pointers and delegates in expressions.</li>
+
+<li>There are several syntaxes for lambdas, the shortest of which is for when the equivalent consists only of a single <code class="d_inline">return</code> statement: <code class="d_inline">parameter&nbsp;=&gt;&nbsp;expression</code>.</li>
+
+<li>A more efficient overload of <code class="d_inline">toString()</code> takes a <code class="d_inline">delegate</code>.</li>
+
+</ul>
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on Mon Jan 29 21:19:13 2024
+</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

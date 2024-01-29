@@ -1,0 +1,531 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>destroy and scoped - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='destroy and scoped' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5Bdestroy and scoped%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/d.en/destroy.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>destroy and scoped</h1>
+        
+        
+
+
+
+<p>We have seen the lifetimes of objects in the <a href="lifetimes.html">Lifetimes and Fundamental Operations chapter</a>.
+</p>
+
+<p>In later chapters, we have seen that the objects are prepared for use in the constructor, which is called <code class="d_inline">this()</code>; and the final operations of objects are applied in the destructor, which is called <code class="d_inline">~this()</code>.
+</p>
+
+<p>For structs and other value types, the destructor is executed at the time when the lifetime of an object ends. For classes and other reference types, it is executed by the garbage collector some time in the future. The important distinction is that the destructor of a class object is not executed when its lifetime ends.
+</p>
+
+<p>System resources are commonly returned back to the system in destructors. For example, <code class="d_inline">std.stdio.File</code> returns the file resource back to the operating system in its destructor. As it is not certain when the destructor of a class object will be called, the system resources that it holds may not be returned until too late when other objects cannot get a hold of the same resource.
+</p>
+
+<h5 class="subsection">An example of calling destructors late</h5>
+
+<p>Let's define a class to see the effects of executing class destructors late. The following constructor increments a <code class="d_inline">static</code> counter, and the destructor decrements it. As you remember, there is only one of each <code class="d_inline">static</code> member, which is shared by all of the objects of a type. Such a counter would indicate the number of objects that are yet to be destroyed.
+</p>
+
+<pre class="d_code"><span class="d_keyword">class</span> LifetimeObserved {
+    <span class="d_keyword">int</span>[] array;           <span class="d_comment">// ← Belongs to each object
+</span>
+    <span class="d_keyword">static</span> size_t counter; <span class="d_comment">// ← Shared by all objects
+</span>
+    <span class="d_keyword">this</span>() {
+        <span class="d_comment">/* We are using a relatively large array to make each
+         * object consume a large amount of memory. Hopefully
+         * this will make the garbage collector call object
+         * destructors more frequently to open up space for
+         * more objects. */</span>
+        array.length = 30_000;
+
+        <span class="d_comment">/* Increment the counter for this object that is being
+         * constructed. */</span>
+        ++counter;
+    }
+
+    ~<span class="d_keyword">this</span>() {
+        <span class="d_comment">/* Decrement the counter for this object that is being
+         * destroyed. */</span>
+        --counter;
+    }
+}
+</pre>
+
+<p>The following program constructs objects of that class inside a loop:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">foreach</span> (i; 0 .. 20) {
+        <span class="d_keyword">auto</span> variable = <span class="d_keyword">new</span> LifetimeObserved;  <span class="d_comment">// ← start
+</span>        write(LifetimeObserved.counter, ' ');
+    } <span class="d_comment">// ← end
+</span>
+    writeln();
+}
+</pre>
+
+<p>The lifetime of each <code class="d_inline">LifetimeObserved</code> object is in fact very short: Its life starts when it is constructed by the <code class="d_inline">new</code> keyword and ends at the closing curly bracket of the <code class="d_inline">foreach</code> loop. Each object then becomes the responsibility of the garbage collector. The <span class="d_comment">start</span> and <span class="d_comment">end</span> comments indicate the start and end of the lifetimes.
+</p>
+
+<p>Even though there is up to one object alive at a given time, the value of the counter indicates that the destructor is not executed when the lifetime ends:
+</p>
+
+<pre class="shell">1 2 3 4 5 6 7 8 2 3 4 5 6 7 8 2 3 4 5 6 
+</pre>
+
+<p>According to that output, the memory sweep algorithm of the garbage collector has delayed executing the destructor for up to 8 objects. (<i>Note: The output may be different depending on the garbage collection algorithm, available memory, and other factors.</i>)
+</p>
+
+<h5 class="subsection"><a id="ix_destroy and scoped.destroy" content="destroy"></a> <a id="ix_destroy and scoped.destructor, execution" content="destructor, execution"></a> <code class="d_inline">destroy()</code> to execute the destructor</h5>
+
+<p><code class="d_inline">destroy()</code> executes the destructor for an object:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> main() {
+    <span class="d_keyword">foreach</span> (i; 0 .. 20) {
+        <span class="d_keyword">auto</span> variable = <span class="d_keyword">new</span> LifetimeObserved;
+        write(LifetimeObserved.counter, ' ');
+        <span class="hilite">destroy(variable)</span>;
+    }
+
+    writeln();
+}
+</pre>
+
+<p>Like before, the value of <code class="d_inline">LifetimeObserved.counter</code> is incremented by the constructor as a result of <code class="d_inline">new</code>, and becomes 1. This time, right after it gets printed, <code class="d_inline">destroy()</code> executes the destructor for the object and the value of the counter is decremented again down to zero. For that reason, this time its value is always 1:
+</p>
+
+<pre class="shell">1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+</pre>
+
+<p>Once destroyed, the object should be considered to be in an invalid state and must not be used anymore:
+</p>
+
+<pre class="d_code">    destroy(variable);
+    <span class="d_comment">// ...
+</span>    <span class="d_comment">// Warning: Using a potentially invalid object
+</span>    writeln(variable.array);
+</pre>
+
+<p>Although <code class="d_inline">destroy()</code> is primarily for reference types, it can also be called on <code class="d_inline">struct</code> objects to destroy them before the end of their normal lifetimes.
+</p>
+
+<h5 class="subsection">When to use</h5>
+
+<p>As has been seen in the previous example, <code class="d_inline">destroy()</code> is used when resources need to be released at a specific time without relying on the garbage collector.
+</p>
+
+<h5 class="subsection">Example</h5>
+
+<p>We had designed an <code class="d_inline">XmlElement</code> struct in the <a href="special_functions.html">Constructor and Other Special Functions chapter</a>. That struct was being used for printing XML elements in the format <code class="d_inline">&lt;tag&gt;value&lt;/tag&gt;</code>. Printing the closing tag has been the responsibility of the destructor:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> XmlElement {
+    <span class="d_comment">// ...
+</span>
+    ~<span class="d_keyword">this</span>() {
+        writeln(indentation, <span class="d_string">"&lt;/"</span>, name, '&gt;');
+    }
+}
+</pre>
+
+<p>The following output was produced by a program that used that struct. This time, I am replacing the word "class" with "course" to avoid confusing it with the <code class="d_inline">class</code> keyword:
+</p>
+
+<pre class="shell">&lt;courses&gt;
+  &lt;course0&gt;
+    &lt;grade&gt;
+      72
+    &lt;/grade&gt;   <span class="shell_note">← The closing tags appear on correct lines</span>
+    &lt;grade&gt;
+      97
+    &lt;/grade&gt;   <span class="shell_note">← </span>
+    &lt;grade&gt;
+      90
+    &lt;/grade&gt;   <span class="shell_note">← </span>
+  &lt;/course0&gt;   <span class="shell_note">← </span>
+  &lt;course1&gt;
+    &lt;grade&gt;
+      77
+    &lt;/grade&gt;   <span class="shell_note">← </span>
+    &lt;grade&gt;
+      87
+    &lt;/grade&gt;   <span class="shell_note">← </span>
+    &lt;grade&gt;
+      56
+    &lt;/grade&gt;   <span class="shell_note">← </span>
+  &lt;/course1&gt;   <span class="shell_note">← </span>
+&lt;/courses&gt;     <span class="shell_note">← </span>
+</pre>
+
+<p>The previous output happens to be correct because <code class="d_inline">XmlElement</code> is a <code class="d_inline">struct</code>. The desired output is achieved simply by placing the objects in appropriate scopes:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> main() {
+    <span class="d_keyword">const</span> <span class="hilite">courses</span> = XmlElement(<span class="d_string">"courses"</span>, 0);
+
+    <span class="d_keyword">foreach</span> (courseId; 0 .. 2) {
+        <span class="d_keyword">const</span> courseTag = <span class="d_string">"course"</span> ~ to!string(courseId);
+        <span class="d_keyword">const</span> <span class="hilite">courseElement</span> = XmlElement(courseTag, 1);
+
+        <span class="d_keyword">foreach</span> (i; 0 .. 3) {
+            <span class="d_keyword">const</span> <span class="hilite">gradeElement</span> = XmlElement(<span class="d_string">"grade"</span>, 2);
+            <span class="d_keyword">const</span> randomGrade = uniform(50, 101);
+
+            writeln(indentationString(3), randomGrade);
+
+        } <span class="d_comment">// ← gradeElement is destroyed
+</span>
+    } <span class="d_comment">// ← courseElement is destroyed
+</span>
+} <span class="d_comment">// ← courses is destroyed
+</span></pre>
+
+<p>The destructor prints the closing tags as the objects gets destroyed.
+</p>
+
+<p>To see how classes behave differently, let's convert <code class="d_inline">XmlElement</code> to a class:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.array;
+<span class="d_keyword">import</span> std.random;
+<span class="d_keyword">import</span> std.conv;
+
+string indentationString(<span class="d_keyword">int</span> level) {
+    <span class="d_keyword">return</span> replicate(<span class="d_string">" "</span>, level * 2);
+}
+
+<span class="hilite"><span class="d_keyword">class</span></span> XmlElement {
+    string name;
+    string indentation;
+
+    <span class="d_keyword">this</span>(string name, <span class="d_keyword">int</span> level) {
+        <span class="d_keyword">this</span>.name = name;
+        <span class="d_keyword">this</span>.indentation = indentationString(level);
+
+        writeln(indentation, '&lt;', name, '&gt;');
+    }
+
+    ~<span class="d_keyword">this</span>() {
+        writeln(indentation, <span class="d_string">"&lt;/"</span>, name, '&gt;');
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">const</span> courses = <span class="hilite"><span class="d_keyword">new</span></span> XmlElement(<span class="d_string">"courses"</span>, 0);
+
+    <span class="d_keyword">foreach</span> (courseId; 0 .. 2) {
+        <span class="d_keyword">const</span> courseTag = <span class="d_string">"course"</span> ~ to!string(courseId);
+        <span class="d_keyword">const</span> courseElement = <span class="hilite"><span class="d_keyword">new</span></span> XmlElement(courseTag, 1);
+
+        <span class="d_keyword">foreach</span> (i; 0 .. 3) {
+            <span class="d_keyword">const</span> gradeElement = <span class="hilite"><span class="d_keyword">new</span></span> XmlElement(<span class="d_string">"grade"</span>, 2);
+            <span class="d_keyword">const</span> randomGrade = uniform(50, 101);
+
+            writeln(indentationString(3), randomGrade);
+        }
+    }
+}
+</pre>
+
+<p>As the responsibility of calling the destructors are now left to the garbage collector, the program does not produce the desired output:
+</p>
+
+<pre class="shell">&lt;courses&gt;
+  &lt;course0&gt;
+    &lt;grade&gt;
+      57
+    &lt;grade&gt;
+      98
+    &lt;grade&gt;
+      87
+  &lt;course1&gt;
+    &lt;grade&gt;
+      84
+    &lt;grade&gt;
+      60
+    &lt;grade&gt;
+      99
+    &lt;/grade&gt;   <span class="shell_note">← The closing tags appear at the end</span>
+    &lt;/grade&gt;   <span class="shell_note">← </span>
+    &lt;/grade&gt;   <span class="shell_note">← </span>
+  &lt;/course1&gt;   <span class="shell_note">← </span>
+    &lt;/grade&gt;   <span class="shell_note">← </span>
+    &lt;/grade&gt;   <span class="shell_note">← </span>
+    &lt;/grade&gt;   <span class="shell_note">← </span>
+  &lt;/course0&gt;   <span class="shell_note">← </span>
+&lt;/courses&gt;     <span class="shell_note">← </span>
+</pre>
+
+<p>The destructor is still executed for every object but this time at the end when the program is exiting. (<i>Note: The garbage collector does not guarantee that the destructor will be called for every object. In reality, it is possible that there are no closing tags printed at all.</i>)
+</p>
+
+<p><code class="d_inline">destroy()</code> ensures that the destructor is called at desired points in the program:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> main() {
+    <span class="d_keyword">const</span> courses = <span class="d_keyword">new</span> XmlElement(<span class="d_string">"courses"</span>, 0);
+
+    <span class="d_keyword">foreach</span> (courseId; 0 .. 2) {
+        <span class="d_keyword">const</span> courseTag = <span class="d_string">"course"</span> ~ to!string(courseId);
+        <span class="d_keyword">const</span> courseElement = <span class="d_keyword">new</span> XmlElement(courseTag, 1);
+
+        <span class="d_keyword">foreach</span> (i; 0 .. 3) {
+            <span class="d_keyword">const</span> gradeElement = <span class="d_keyword">new</span> XmlElement(<span class="d_string">"grade"</span>, 2);
+            <span class="d_keyword">const</span> randomGrade = uniform(50, 101);
+
+            writeln(indentationString(3), randomGrade);
+
+            <span class="hilite">destroy(gradeElement)</span>;
+        }
+
+        <span class="hilite">destroy(courseElement)</span>;
+    }
+
+    <span class="hilite">destroy(courses)</span>;
+}
+</pre>
+
+<p>With those changes, the output of the code now matches the output of the code that use structs:
+</p>
+
+<pre class="shell">&lt;courses&gt;
+  &lt;course0&gt;
+    &lt;grade&gt;
+      66
+    &lt;/grade&gt;   <span class="shell_note">← The closing tags appear on correct lines</span>
+    &lt;grade&gt;
+      75
+    &lt;/grade&gt;   <span class="shell_note">← </span>
+    &lt;grade&gt;
+      68
+    &lt;/grade&gt;   <span class="shell_note">← </span>
+  &lt;/course0&gt;   <span class="shell_note">← </span>
+  &lt;course1&gt;
+    &lt;grade&gt;
+      73
+    &lt;/grade&gt;   <span class="shell_note">← </span>
+    &lt;grade&gt;
+      62
+    &lt;/grade&gt;   <span class="shell_note">← </span>
+    &lt;grade&gt;
+      100
+    &lt;/grade&gt;   <span class="shell_note">← </span>
+  &lt;/course1&gt;   <span class="shell_note">← </span>
+&lt;/courses&gt;     <span class="shell_note">← </span>
+</pre>
+
+<h5 class="subsection"><a id="ix_destroy and scoped.scoped" content="scoped"></a> <code class="d_inline">scoped()</code> to call the destructor automatically</h5>
+
+<p>The program above has a weakness: The scopes may be exited before the <code class="d_inline">destroy()</code> lines are executed, commonly by thrown exceptions. If the <code class="d_inline">destroy()</code> lines must be executed even when exceptions are thrown, a solution is to take advantage of <code class="d_inline">scope()</code> and other features that we saw in the <a href="exceptions.html">Exceptions chapter</a>.
+</p>
+
+<p>Another solution is to construct class objects by <code class="d_inline">std.typecons.scoped</code> instead of by the <code class="d_inline">new</code> keyword. <code class="d_inline">scoped()</code> wraps the class object inside a <code class="d_inline">struct</code> and the destructor of that <code class="d_inline">struct</code> object destroys the class object when itself goes out of scope.
+</p>
+
+<p>The effect of <code class="d_inline">scoped()</code> is to make class objects behave similar to struct objects regarding lifetimes.
+</p>
+
+<p>With the following changes, the program produces the expected output as before:
+</p>
+
+<pre class="d_code"><span class="hilite"><span class="d_keyword">import</span> std.typecons;</span>
+<span class="d_comment">// ...
+</span><span class="d_keyword">void</span> main() {
+    <span class="d_keyword">const</span> courses = <span class="hilite">scoped!</span>XmlElement(<span class="d_string">"courses"</span>, 0);
+
+    <span class="d_keyword">foreach</span> (courseId; 0 .. 2) {
+        <span class="d_keyword">const</span> courseTag = <span class="d_string">"course"</span> ~ to!string(courseId);
+        <span class="d_keyword">const</span> courseElement = <span class="hilite">scoped!</span>XmlElement(courseTag, 1);
+
+        <span class="d_keyword">foreach</span> (i; 0 .. 3) {
+            <span class="d_keyword">const</span> gradeElement = <span class="hilite">scoped!</span>XmlElement(<span class="d_string">"grade"</span>, 2);
+            <span class="d_keyword">const</span> randomGrade = uniform(50, 101);
+
+            writeln(indentationString(3), randomGrade);
+        }
+    }
+}
+</pre>
+
+<p>Note that there are no <code class="d_inline">destroy()</code> lines anymore.
+</p>
+
+<p><a id="ix_destroy and scoped.proxy" content="proxy"></a> <a id="ix_destroy and scoped.RAII" content="RAII"></a> <code class="d_inline">scoped()</code> is a function that returns a special <code class="d_inline">struct</code> object encapsulating the actual <code class="d_inline">class</code> object. The returned object acts as a proxy to the encapsulated one. (In fact, the type of <code class="d_inline">courses</code> above is <code class="d_inline">Scoped</code>, not <code class="d_inline">XmlElement</code>.)
+</p>
+
+<p>When the destructor of the <code class="d_inline">struct</code> object is called automatically as its lifetime ends, it calls <code class="d_inline">destroy()</code> on the <code class="d_inline">class</code> object that it encapsulates. (This is an application of the <i>Resource Acquisition Is Initialization</i> (RAII) idiom. <code class="d_inline">scoped()</code> achieves this by the help of <a href="templates.html">templates</a> and <a href="alias_this.html"><code class="d_inline">alias this</code></a>, both of which we will see in later chapters.)
+</p>
+
+<p>It is desirable for a proxy object to be used as conveniently as possible. In fact, the object that <code class="d_inline">scoped()</code> returns can be used exactly like the actual <code class="d_inline">class</code> type. For example, the member functions of the actual type can be called on it:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.typecons;
+
+<span class="d_keyword">class</span> C {
+    <span class="d_keyword">void</span> foo() {
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> p = scoped!C();
+    p<span class="hilite">.foo()</span>;    <span class="d_comment">// Proxy object p is being used as type C
+</span>}
+</pre>
+
+<p>However, that convenience comes with a price: The proxy object may hand out a reference to the actual object right before destroying it. This can happen when the actual <code class="d_inline">class</code> type is specified explicitly on the left hand-side:
+</p>
+
+<pre class="d_code">    <span class="hilite">C</span> c = scoped!C();    <span class="d_comment">// ← <span class="code_note_wrong">BUG</span></span>
+    c.foo();             <span class="d_comment">// ← <span class="code_note_wrong">Accesses a destroyed object</span></span>
+</pre>
+
+<p>In that definition, <code class="d_inline">c</code> is not the proxy object; rather, as defined by the programmer, a <code class="d_inline">class</code> variable referencing the encapsulated object. Unfortunately, the proxy object that is constructed on the right-hand side gets terminated at the end of the expression that constructs it. As a result, using <code class="d_inline">c</code> in the program would be an error, likely causing a runtime error:
+</p>
+
+<pre class="shell">Segmentation fault
+</pre>
+
+<p>For that reason, do not define <code class="d_inline">scoped()</code> variables by the actual type:
+</p>
+
+<pre class="d_code">    <span class="hilite">C</span>         a = scoped!C();    <span class="d_comment">// ← <span class="code_note_wrong">BUG</span></span>
+    <span class="d_keyword">auto</span>      b = scoped!C();    <span class="d_comment">// ← correct</span>
+    <span class="d_keyword">const</span>     c = scoped!C();    <span class="d_comment">// ← correct</span>
+    <span class="d_keyword">immutable</span> d = scoped!C();    <span class="d_comment">// ← correct</span>
+</pre>
+
+<h5 class="subsection">Summary</h5>
+
+<ul>
+<li><code class="d_inline">destroy()</code> is for executing the destructor of a class object explicitly.
+</li>
+
+<li>Objects that are constructed by <code class="d_inline">scoped()</code> are destroyed upon leaving their respective scopes.
+</li>
+
+<li>It is a bug to define <code class="d_inline">scoped()</code> variables by the actual type.</li>
+
+</ul>
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on Mon Jan 29 21:19:12 2024
+</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

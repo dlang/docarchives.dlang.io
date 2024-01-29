@@ -39,3 +39,4 @@
 - [x] [2.102.0](https://docarchives.dlang.io/v2.102.0) ([Phobos](https://docarchives.dlang.io/v2.102.0/phobos))
 - [x] [2.103.0](https://docarchives.dlang.io/v2.103.0) ([Phobos](https://docarchives.dlang.io/v2.103.0/phobos))
 - [x] [2.104.0](https://docarchives.dlang.io/v2.104.0) ([Phobos](https://docarchives.dlang.io/v2.104.0/phobos))
+- [x] [2.105.0](https://docarchives.dlang.io/v2.105.0) ([Phobos](https://docarchives.dlang.io/v2.105.0/phobos))

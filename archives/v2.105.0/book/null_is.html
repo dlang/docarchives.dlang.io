@@ -1,0 +1,354 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>The null Value and the is Operator - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='The null Value and the is Operator' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BThe null Value and the is Operator%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/d.en/null_is.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>The null Value and the is Operator</h1>
+        
+        
+
+
+
+<p>We saw in earlier chapters that a variable of a reference type needs not reference a particular object:
+</p>
+
+<pre class="d_code">    MyClass referencesAnObject = <span class="d_keyword">new</span> MyClass;
+
+    MyClass variable;   <span class="d_comment">// does not reference an object
+</span></pre>
+
+<p>Being a reference type, <code class="d_inline">variable</code> above does have an identity but it does not reference any object yet. Such an object can be imagined to have a place in memory as in the following picture:
+</p>
+
+<pre class="mono">      variable
+   ───┬──────┬───
+      │ null │
+   ───┴──────┴───
+</pre>
+
+<p>A reference that does not reference any value is <code class="d_inline">null</code>. We will expand on this below.
+</p>
+
+<p>Such a variable is in an almost useless state. Since there is no <code class="d_inline">MyClass</code> object that it references, it cannot be used in a context where an actual <code class="d_inline">MyClass</code> object is needed:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">class</span> MyClass {
+    <span class="d_keyword">int</span> member;
+}
+
+<span class="d_keyword">void</span> use(MyClass variable) {
+    writeln(variable.member);    <span class="d_comment">// ← <span class="code_note_wrong">BUG</span></span>
+}
+
+<span class="d_keyword">void</span> main() {
+    MyClass variable;
+    use(variable);
+}
+</pre>
+
+<p>As there is no object that is referenced by the parameter that <code class="d_inline">use()</code> receives, attempting to access a member of a non-existing object results in a program crash:
+</p>
+
+<pre class="shell">$ ./deneme
+<span class="shell_observed">Segmentation fault</span>
+</pre>
+
+<p><a id="ix_The null Value and the is Operator.segmentation fault" content="segmentation fault"></a> "Segmentation fault" is an indication that the program has been terminated by the operating system because of attempting to access an illegal memory address.
+</p>
+
+<h5 class="subsection">The <code class="d_inline">null</code> value</h5>
+
+<p>The special value <code class="d_inline">null</code> can be printed just like any other value.
+</p>
+
+<pre class="d_code">    writeln(<span class="d_keyword">null</span>);
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">null
+</pre>
+
+<p>A <code class="d_inline">null</code> variable can be used only in two contexts:
+</p>
+
+<ol><li>Assigning an object to it
+
+<pre class="d_code">    variable = <span class="d_keyword">new</span> MyClass;  <span class="d_comment">// now references an object
+</span></pre>
+
+<p>The assignment above makes <code class="d_inline">variable</code> provide access to the newly constructed object. From that point on, <code class="d_inline">variable</code> can be used for any valid operation of the <code class="d_inline">MyClass</code> type.
+</p>
+
+</li>
+
+<li>Determining whether it is <code class="d_inline">null</code>
+
+<p>However, because the <code class="d_inline">==</code> operator needs actual objects to compare, the expression below cannot be compiled:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">if</span> (variable == <span class="d_keyword">null</span>)     <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+</pre>
+
+<p>For that reason, whether a variable is <code class="d_inline">null</code> must be determined by the <code class="d_inline">is</code> operator.
+</p>
+
+</li>
+
+</ol>
+
+<h5 class="subsection">The <code class="d_inline">is</code> operator</h5>
+
+<p>This operator answers the question "does have the null value?":
+</p>
+
+<pre class="d_code">    <span class="d_keyword">if</span> (variable <span class="hilite"><span class="d_keyword">is</span></span> <span class="d_keyword">null</span>) {
+        <span class="d_comment">// Does not reference any object
+</span>    }
+</pre>
+
+<p><code class="d_inline">is</code> can be used with other types of variables as well. In the following use, it compares the <code class="d_inline">values</code> of two integers:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">if</span> (speed <span class="d_keyword">is</span> newSpeed) {
+        <span class="d_comment">// Their values are equal
+</span>
+    } <span class="d_keyword">else</span> {
+        <span class="d_comment">// Their values are different
+</span>    }
+</pre>
+
+<p>When used with slices, it determines whether the two slices reference the same set of elements:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">if</span> (slice <span class="d_keyword">is</span> slice2) {
+        <span class="d_comment">// They provide access to the same elements
+</span>    }
+</pre>
+
+<h5 class="subsection">The <code class="d_inline">!is</code> operator</h5>
+
+<p><code class="d_inline">!is</code> is the opposite of <code class="d_inline">is</code>. It produces <code class="d_inline">true</code> when the values are different:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">if</span> (speed !<span class="d_keyword">is</span> newSpeed) {
+        <span class="d_comment">// Their values are different
+</span>    }
+</pre>
+
+<h5 class="subsection">Assigning the <code class="d_inline">null</code> value</h5>
+
+<p>Assigning the <code class="d_inline">null</code> value to a variable of a reference type makes that variable stop referencing its current object.
+</p>
+
+<p>If that assignment happens to be terminating the very last reference to the actual object, then the actual object becomes a candidate for finalization by the garbage collector. After all, not being referenced by any variable means that the object is not being used in the program at all.
+</p>
+
+<p>Let's look at the example from <a href="value_vs_reference.html">an earlier chapter</a> where two variables were referencing the same object:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> variable = <span class="d_keyword">new</span> MyClass;
+    <span class="d_keyword">auto</span> variable2 = variable;
+</pre>
+
+<p>The following is a representation of the state of the memory after executing that code:
+</p>
+
+<pre class="mono">  (anonymous MyClass object)    variable    variable2
+ ───┬───────────────────┬───  ───┬───┬───  ───┬───┬───
+    │        ...        │        │ o │        │ o │
+ ───┴───────────────────┴───  ───┴─│─┴───  ───┴─│─┴───
+              ▲                    │            │
+              │                    │            │
+              └────────────────────┴────────────┘
+</pre>
+
+<p>Assigning the <code class="d_inline">null</code> value to one of these variables breaks its relationship with the object:
+</p>
+
+<pre class="d_code">    variable = <span class="d_keyword">null</span>;
+</pre>
+
+<p>At this point there is only <code class="d_inline">variable2</code> that references the <code class="d_inline">MyClass</code> object:
+</p>
+
+<pre class="mono">  (anonymous MyClass object)    variable    variable2
+ ───┬───────────────────┬───  ───┬────┬───  ───┬───┬───
+    │        ...        │        │null│        │ o │
+ ───┴───────────────────┴───  ───┴────┴───  ───┴─│─┴───
+              ▲                                  │
+              │                                  │
+              └──────────────────────────────────┘
+</pre>
+
+<p>Assigning <code class="d_inline">null</code> to the last reference would make the <code class="d_inline">MyClass</code> object unreachable:
+</p>
+
+<pre class="d_code">    variable2 = <span class="d_keyword">null</span>;
+</pre>
+
+<p>Such unreachable objects are finalized by the garbage collector at some time in the future. From the point of view of the program, the object does not exist:
+</p>
+
+<pre class="mono">                                variable      variable2
+ ───┬───────────────────┬───  ───┬────┬───  ───┬────┬───
+    │                   │        │null│        │null│
+ ───┴───────────────────┴───  ───┴────┴───  ───┴────┴──
+</pre>
+
+<p>We had discussed ways of emptying an associative array in the exercises section of the <a href="aa.html">Associative Arrays chapter</a>. We now know a fourth method: Assigning <code class="d_inline">null</code> to an associative array variable will break the relationship of that variable with the elements:
+</p>
+
+<pre class="d_code">    string[<span class="d_keyword">int</span>] names;
+    <span class="d_comment">// ...
+</span>    names = <span class="d_keyword">null</span>;     <span class="d_comment">// Not providing access to any element
+</span></pre>
+
+<p>Similar to the <code class="d_inline">MyClass</code> examples, if <code class="d_inline">names</code> has been the last reference to the elements of the associative array, those elements would be finalized by the garbage collector.
+</p>
+
+<p>Slices can be assigned <code class="d_inline">null</code> as well:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span>[] slice = otherSlice[ 10 .. 20 ];
+    <span class="d_comment">// ...
+</span>    slice = <span class="d_keyword">null</span>;     <span class="d_comment">// Not providing access to any element
+</span></pre>
+
+<h5 class="subsection">Summary</h5>
+
+<ul>
+<li><code class="d_inline">null</code> is the value indicating that a variable does not provide access to any value</li>
+
+<li>References that have the <code class="d_inline">null</code> value can only be used in two operations: assigning a value to them and determining whether they are <code class="d_inline">null</code> or not</li>
+
+<li>Since the <code class="d_inline">==</code> operator may have to access an actual object, determining whether a variable is <code class="d_inline">null</code> must be performed by the <code class="d_inline">is</code> operator</li>
+
+<li><code class="d_inline">!is</code> is the opposite of <code class="d_inline">is</code></li>
+
+<li>Assigning <code class="d_inline">null</code> to a variable makes that variable provide access to nothing</li>
+
+<li>Objects that are not referenced by any variable are finalized by the garbage collector</li>
+
+</ul>
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on Mon Jan 29 21:19:10 2024
+</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>
