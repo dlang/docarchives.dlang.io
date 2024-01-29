@@ -1,0 +1,574 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Unit Testing - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Unit Testing' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BUnit Testing%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/d.en/unit_testing.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Unit Testing</h1>
+        
+        
+
+
+
+<p>As it should be known by most people, any device that runs some piece of computer program contains software bugs. Software bugs plague computer devices from the simplest to the most complex. Debugging and fixing software bugs is among the less favorable daily activities of a programmer.
+</p>
+
+<h5 class="subsection"><a id="ix_Unit Testing.bug, causes of" content="bug, causes of"></a> Causes of bugs</h5>
+
+<p>There are many reasons why software bugs occur. The following is an incomplete list roughly from the design stage of a program through the actual coding of it:
+</p>
+
+<ul>
+<li>The requirements and the specifications of the program may not be clear. What the program should actually do may not be known at the design stage.
+</li>
+
+<li>The programmer may misunderstand some of the requirements of the program.
+</li>
+
+<li>The programming language may not be expressive enough. Considering that there are confusions even between native speakers of human languages, the unnatural syntax and rules of a programming language may be cause of mistakes.
+</li>
+
+<li>Certain assumptions of the programmer may be incorrect. For example, the programmer may be assuming that 3.14 would be precise enough to represent π.
+</li>
+
+<li>The programmer may have incorrect information on a topic or none at all. For example, the programmer may not know that using a floating point variable in a particular logical expression would not be reliable.
+</li>
+
+<li>The program may encounter an unforeseen situation. For example, one of the files of a directory may be deleted or renamed while the program is using the files of that directory in a <code class="d_inline">foreach</code> loop.
+</li>
+
+<li>The programmer may make silly mistakes. For example, the name of a variable may be mistyped and accidentally matched the name of another variable.
+</li>
+
+<li>etc.</li>
+
+</ul>
+
+<p>Unfortunately, there is still no software development methodology that ensures that a program will always work correctly. This is still a hot software engineering topic where promising solutions emerge every decade or so.
+</p>
+
+<h5 class="subsection">Discovering the bugs</h5>
+
+<p>Software bugs are discovered at various stages of the lifetime of the program by various types of tools and people. The following is a partial list of when a bug may be discovered, from the earliest to the latest:
+</p>
+
+<ul><li>When writing the program
+
+<ul><li>By the programmer
+</li>
+
+<li>By another programmer during <i>pair programming</i>
+</li>
+
+<li>By the compiler through compiler messages
+</li>
+
+<li>By <span class="hilite">unit tests</span> as a part of building the program
+</li>
+
+</ul>
+
+</li>
+
+<li>When reviewing the code
+
+<ul><li>By tools that analyze the code at compile time
+</li>
+
+<li>By other programmers during <i>code reviews</i>
+</li>
+</ul>
+
+</li>
+
+<li>When running the program
+
+<ul><li>By tools that analyze the execution of the program at run time (e.g. by valgrind)
+</li>
+
+<li>During QA testing, either by the failure of <code class="d_inline">assert</code> checks or by the observed behavior of the program
+</li>
+
+<li>By the <i>beta</i> users before the release of the program
+</li>
+
+<li>By the end users after the release of the program</li>
+
+</ul>
+
+</li>
+
+</ul>
+
+<p>Detecting bugs as early as possible reduces loss of money, time, and in some cases human lives. Additionally, identifying the causes of bugs that have been discovered by the end users are harder than identifying the causes of bugs that are discovered early, during development.
+</p>
+
+<h5 class="subsection">Unit testing for catching bugs</h5>
+
+<p>Since programs are written by programmers and D is a compiled language, the programmers and the compiler will always be there to discover bugs. Those two aside, the earliest and partly for that reason the most effective way of catching bugs is unit testing.
+</p>
+
+<p>Unit testing is an indispensable part of modern programming. It is the most effective method of reducing coding errors. According to some development methodologies, code that is not guarded by unit tests is buggy code.
+</p>
+
+<p>Unfortunately, the opposite is not true: Unit tests do not guarantee that the code is free of bugs. Although they are very effective, they can only reduce the risk of bugs.
+</p>
+
+<p>Unit testing also enables refactoring the code (i.e. making improvements to it) with ease and confidence. Otherwise, it is common to accidentally break some of the existing functionality of a program when adding new features to it. Bugs of this type are called <i>regressions</i>. Without unit testing, regressions are sometimes discovered as late as during the QA testing of future releases, or worse, by the end users.
+</p>
+
+<p>Risk of regressions discourage programmers from refactoring the code, sometimes preventing them from performing the simplest of improvements like correcting the name of a variable. This in turn causes <i>code rot</i>, a condition where the code becomes more and more unmaintainable. For example, although some lines of code would better be moved to a newly defined function in order to be called from more than one place, fear of regressions make programmers copy and paste the existing lines to other places instead, leading to the problem of <i>code duplication</i>.
+</p>
+
+<p>Phrases like "if it isn't broken, don't fix it" are related to fear of regressions. Although they seem to be conveying wisdom, such guidelines cause the code to rot slowly and become an untouchable mess.
+</p>
+
+<p>Modern programming rejects such "wisdom". To the contrary, to prevent it from becoming a source of bugs, the code is supposed to be "refactored mercilessly". The most powerful tool of this modern approach is unit testing.
+</p>
+
+<p>Unit testing involves testing the smallest units of code independently. When units of code are tested independently, it is less likely that there are bugs in higher-level code that use those units. When the parts work correctly, it is more likely that the whole will work correctly as well.
+</p>
+
+<p>Unit tests are provided as library solutions in other languages (e.g. JUnit, CppUnit, Unittest++, etc.) In D, unit testing is a core feature of the language. It is debatable whether a library solution or a language feature is better for unit testing. Because D does not provide some of the features that are commonly found in unit testing libraries, it may be worthwhile to consider library solutions as well.
+</p>
+
+<p>The unit testing features of D are as simple as inserting <code class="d_inline">assert</code> checks into <code class="d_inline">unittest</code> blocks.
+</p>
+
+<h5 class="subsection"><a id="ix_Unit Testing.-unittest, compiler switch" content="-unittest, compiler switch"></a> Activating the unit tests</h5>
+
+<p>Unit tests are not a part of the actual execution of the program. They should be activated only during program development when explicitly requested.
+</p>
+
+<p>The <code class="d_inline">dmd</code> compiler switch that activates unit tests is <code class="d_inline">&#8209;unittest</code>.
+</p>
+
+<p>Assuming that the program is written in a single source file named <code class="d_inline">deneme.d</code>, its unit tests can be activated by the following command:
+</p>
+
+<pre class="shell">$ dmd deneme.d -w <span class="hilite">-unittest</span>
+</pre>
+
+<p>When a program that is built by the <code class="d_inline">&#8209;unittest</code> switch is started, its unit test blocks are executed first. Only if all of the unit tests pass then the program execution continues with <code class="d_inline">main()</code>.
+</p>
+
+<h5 class="subsection"><a id="ix_Unit Testing.unittest" content="unittest"></a> <code class="d_inline">unittest</code> blocks</h5>
+
+<p>The lines of code that involve unit tests are written inside <code class="d_inline">unittest</code> blocks. These blocks do not have any significance for the program other than containing the unit tests:
+</p>
+
+<pre class="d_code"><span class="d_keyword">unittest</span> {
+    <span class="d_comment">/* ... the tests and the code that support them ... */</span>
+}
+</pre>
+
+<p>Although <code class="d_inline">unittest</code> blocks can appear anywhere, it is convenient to define them right after the code that they test.
+</p>
+
+<p>As an example, let's test a function that returns the ordinal form of the specified number as in "1st", "2nd", etc. A <code class="d_inline">unittest</code> block of this function can simply contain <code class="d_inline">assert</code> statements that compare the return values of the function to the expected values. The following function is being tested with the four distinct expected outcomes of the function:
+</p>
+
+<pre class="d_code">string ordinal(size_t number) {
+    <span class="d_comment">// ...
+</span>}
+
+<span class="hilite"><span class="d_keyword">unittest</span></span> {
+    <span class="d_keyword">assert</span>(ordinal(1) == <span class="d_string">"1st"</span>);
+    <span class="d_keyword">assert</span>(ordinal(2) == <span class="d_string">"2nd"</span>);
+    <span class="d_keyword">assert</span>(ordinal(3) == <span class="d_string">"3rd"</span>);
+    <span class="d_keyword">assert</span>(ordinal(10) == <span class="d_string">"10th"</span>);
+}
+</pre>
+
+<p>The four tests above test that the function works correctly at least for the values of 1, 2, 3, and 10 by making four separate calls to the function and comparing the returned values to the expected ones.
+</p>
+
+<p>Although unit tests are based on <code class="d_inline">assert</code> checks, <code class="d_inline">unittest</code> blocks can contain any D code. This allows for preparations before actually starting the tests or any other supporting code that the tests may need. For example, the following block first defines a variable to reduce code duplication:
+</p>
+
+<pre class="d_code">dstring toFront(dstring str, <span class="d_keyword">dchar</span> letter) {
+    <span class="d_comment">// ...
+</span>}
+
+<span class="d_keyword">unittest</span> {
+    <span class="d_keyword">immutable</span> str = <span class="d_string">"hello"d</span>;
+
+    <span class="d_keyword">assert</span>(toFront(str, 'h') == <span class="d_string">"hello"</span>);
+    <span class="d_keyword">assert</span>(toFront(str, 'o') == <span class="d_string">"ohell"</span>);
+    <span class="d_keyword">assert</span>(toFront(str, 'l') == <span class="d_string">"llheo"</span>);
+}
+</pre>
+
+<p>The three <code class="d_inline">assert</code> checks above test that <code class="d_inline">toFront()</code> works according to its specification.
+</p>
+
+<p>As these examples show, unit tests are also useful as examples of how particular functions should be called. Usually it is easy to get an idea on what a function does just by reading its unit tests.
+</p>
+
+<h5 class="subsection"><a id="ix_Unit Testing.assertThrown, std.exception" content="assertThrown, std.exception"></a> <a id="ix_Unit Testing.assertNotThrown, std.exception" content="assertNotThrown, std.exception"></a> Testing for exceptions</h5>
+
+<p>It is common to test some code for exception types that it should or should not throw under certain conditions. The <code class="d_inline">std.exception</code> module contains two functions that help with testing for exceptions:
+</p>
+
+<ul>
+<li><code class="d_inline">assertThrown</code>: Ensures that a specific exception type is thrown from an expression</li>
+
+<li><code class="d_inline">assertNotThrown</code>: Ensures that a specific exception type is <i>not</i> thrown from an expression</li>
+
+</ul>
+
+<p>For example, a function that requires that both of its slice parameters have equal lengths and that it works with empty slices can be tested as in the following tests:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.exception;
+
+<span class="d_keyword">int</span>[] average(<span class="d_keyword">int</span>[] a, <span class="d_keyword">int</span>[] b) {
+    <span class="d_comment">// ...
+</span>}
+
+<span class="d_keyword">unittest</span> {
+    <span class="d_comment">/* Must throw for uneven slices */</span>
+    assertThrown(average([1], [1, 2]));
+
+    <span class="d_comment">/* Must not throw for empty slices */</span>
+    assertNotThrown(average([], []));
+}
+</pre>
+
+<p>Normally, <code class="d_inline">assertThrown</code> ensures that some type of exception is thrown without regard to the actual type of that exception. When needed, it can test against a specific exception type as well. Likewise, <code class="d_inline">assertNotThrown</code> ensures that no exception is thrown whatsoever but it can be instructed to test that a specific exception type is not thrown. The specific exception types are specified as template parameters to these functions:
+</p>
+
+<pre class="d_code">    <span class="d_comment">/* Must throw UnequalLengths for uneven slices */</span>
+    assertThrown<span class="hilite">!UnequalLengths</span>(average([1], [1, 2]));
+
+    <span class="d_comment">/* Must not throw RangeError for empty slices (it may
+     * throw other types of exceptions) */</span>
+    assertNotThrown<span class="hilite">!RangeError</span>(average([], []));
+</pre>
+
+<p>We will see templates in a <a href="templates.html">later chapter</a>.
+</p>
+
+<p>The main purpose of these functions is to make code more succinct and more readable. For example, the following <code class="d_inline">assertThrown</code> line is the equivalent of the lengthy code below it:
+</p>
+
+<pre class="d_code">    assertThrown(average([1], [1, 2]));
+
+<span class="d_comment">// ...
+</span>
+    <span class="d_comment">/* The equivalent of the line above */</span>
+    {
+        <span class="d_keyword">auto</span> isThrown = <span class="d_keyword">false</span>;
+
+        <span class="d_keyword">try</span> {
+            average([1], [1, 2]);
+
+        } <span class="d_keyword">catch</span> (Exception exc) {
+            isThrown = <span class="d_keyword">true</span>;
+        }
+
+        <span class="d_keyword">assert</span>(isThrown);
+    }
+</pre>
+
+<h5 class="subsection"><a id="ix_Unit Testing.TDD" content="TDD"></a> <a id="ix_Unit Testing.test driven development" content="test driven development"></a> Test driven development</h5>
+
+<p>Test driven development (TDD) is a software development methodology that prescribes writing unit tests before implementing functionality. In TDD, the focus is on unit testing. Coding is a secondary activity that makes the tests pass.
+</p>
+
+<p>In accordance to TDD, the <code class="d_inline">ordinal()</code> function above can first be implemented intentionally incorrectly:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.string;
+
+string ordinal(size_t number) {
+    <span class="d_keyword">return</span> <span class="d_string">""</span>;    <span class="d_comment">// ← intentionally wrong
+</span>}
+
+<span class="d_keyword">unittest</span> {
+    <span class="d_keyword">assert</span>(ordinal(1) == <span class="d_string">"1st"</span>);
+    <span class="d_keyword">assert</span>(ordinal(2) == <span class="d_string">"2nd"</span>);
+    <span class="d_keyword">assert</span>(ordinal(3) == <span class="d_string">"3rd"</span>);
+    <span class="d_keyword">assert</span>(ordinal(10) == <span class="d_string">"10th"</span>);
+}
+
+<span class="d_keyword">void</span> main() {
+}
+</pre>
+
+<p>Although the function is obviously wrong, the next step would be to run the unit tests to see that the tests do indeed catch problems with the function:
+</p>
+
+<pre class="shell">$ dmd deneme.d -w -unittest
+$ ./deneme 
+<span class="shell_observed">core.exception.AssertError@deneme(10): <span class="hilite">unittest failure</span></span>
+</pre>
+
+<p>The function should be implemented only <i>after</i> seeing the failure, and only to make the tests pass. Here is just one implementation that passes the tests:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.string;
+
+string ordinal(size_t number) {
+    string suffix;
+
+    <span class="d_keyword">switch</span> (number) {
+    <span class="d_keyword">case</span>  1: suffix = <span class="d_string">"st"</span>; <span class="d_keyword">break</span>;
+    <span class="d_keyword">case</span>  2: suffix = <span class="d_string">"nd"</span>; <span class="d_keyword">break</span>;
+    <span class="d_keyword">case</span>  3: suffix = <span class="d_string">"rd"</span>; <span class="d_keyword">break</span>;
+    <span class="d_keyword">default</span>: suffix = <span class="d_string">"th"</span>; <span class="d_keyword">break</span>;
+    }
+
+    <span class="d_keyword">return</span> format(<span class="d_string">"%s%s"</span>, number, suffix);
+}
+
+<span class="d_keyword">unittest</span> {
+    <span class="d_keyword">assert</span>(ordinal(1) == <span class="d_string">"1st"</span>);
+    <span class="d_keyword">assert</span>(ordinal(2) == <span class="d_string">"2nd"</span>);
+    <span class="d_keyword">assert</span>(ordinal(3) == <span class="d_string">"3rd"</span>);
+    <span class="d_keyword">assert</span>(ordinal(10) == <span class="d_string">"10th"</span>);
+}
+
+<span class="d_keyword">void</span> main() {
+}
+</pre>
+
+<p>Since the implementation above does pass the unit tests, there is reason to trust that the <code class="d_inline">ordinal()</code> function is correct. Under the assurance that the tests bring, the implementation of the function can be changed in many ways with confidence.
+</p>
+
+<h6>Unit tests before bug fixes</h6>
+
+<p>Unit tests are not a panacea; there will always be bugs. If a bug is discovered when actually running the program, it can be seen as an indication that the unit tests have been incomplete. For that reason, it is better to <i>first</i> write a unit test that reproduces the bug and only <i>then</i> to fix the bug to pass the new test.
+</p>
+
+<p>Let's have a look at the following function that returns the spelling of the ordinal form of a number specified as a <code class="d_inline">dstring</code>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.exception;
+<span class="d_keyword">import</span> std.string;
+
+dstring ordinalSpelled(dstring number) {
+    enforce(number.length, <span class="d_string">"number cannot be empty"</span>);
+
+    dstring[dstring] exceptions = [
+        <span class="d_string">"one"</span>: <span class="d_string">"first"</span>, <span class="d_string">"two"</span> : <span class="d_string">"second"</span>, <span class="d_string">"three"</span> : <span class="d_string">"third"</span>,
+        <span class="d_string">"five"</span> : <span class="d_string">"fifth"</span>, <span class="d_string">"eight"</span>: <span class="d_string">"eighth"</span>, <span class="d_string">"nine"</span> : <span class="d_string">"ninth"</span>,
+        <span class="d_string">"twelve"</span> : <span class="d_string">"twelfth"</span>
+    ];
+
+    dstring result;
+
+    <span class="d_keyword">if</span> (number <span class="d_keyword">in</span> exceptions) {
+        result = exceptions[number];
+
+    } <span class="d_keyword">else</span> {
+        result = number ~ <span class="d_string">"th"</span>;
+    }
+
+    <span class="d_keyword">return</span> result;
+}
+
+<span class="d_keyword">unittest</span> {
+    <span class="d_keyword">assert</span>(ordinalSpelled(<span class="d_string">"one"</span>) == <span class="d_string">"first"</span>);
+    <span class="d_keyword">assert</span>(ordinalSpelled(<span class="d_string">"two"</span>) == <span class="d_string">"second"</span>);
+    <span class="d_keyword">assert</span>(ordinalSpelled(<span class="d_string">"three"</span>) == <span class="d_string">"third"</span>);
+    <span class="d_keyword">assert</span>(ordinalSpelled(<span class="d_string">"ten"</span>) == <span class="d_string">"tenth"</span>);
+}
+
+<span class="d_keyword">void</span> main() {
+}
+</pre>
+
+<p>The function takes care of exceptional spellings and even includes a unit test for that. Still, the function has a bug yet to be discovered:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main() {
+    writefln(<span class="d_string">"He came the %s in the race."</span>,
+             ordinalSpelled(<span class="d_string">"twenty"</span>));
+}
+</pre>
+
+<p>The spelling error in the output of the program is due to a bug in <code class="d_inline">ordinalSpelled()</code>, which its unit tests fail to catch:
+</p>
+
+<pre class="shell">He came the <span class="hilite">twentyth</span> in the race.
+</pre>
+
+<p>Although it is easy to see that the function does not produce the correct spelling for numbers that end with the letter y, TDD prescribes that first a unit test must be written to reproduce the bug before actually fixing it:
+</p>
+
+<pre class="d_code"><span class="d_keyword">unittest</span> {
+<span class="d_comment">// ...
+</span>    <span class="d_keyword">assert</span>(ordinalSpelled(<span class="d_string">"twenty"</span>) == <span class="d_string">"twentieth"</span>);
+}
+</pre>
+
+<p>With that improvement to the tests, now the bug in the function is being caught during development:
+</p>
+
+<pre class="shell">core.exception.AssertError@deneme(3274338): unittest failure
+</pre>
+
+<p>The function should be fixed only then:
+</p>
+
+<pre class="d_code">dstring ordinalSpelled(dstring number) {
+<span class="d_comment">// ...
+</span>    <span class="d_keyword">if</span> (number <span class="d_keyword">in</span> exceptions) {
+        result = exceptions[number];
+
+    } <span class="d_keyword">else</span> {
+        <span class="d_keyword">if</span> (<span class="hilite">number[$-1] == 'y'</span>) {
+            result = number[0..$-1] ~ <span class="d_string">"ieth"</span>;
+
+        } <span class="d_keyword">else</span> {
+            result = number ~ <span class="d_string">"th"</span>;
+        }
+    }
+
+    <span class="d_keyword">return</span> result;
+}
+</pre>
+
+<h5 class="subsection">Problem</h5>
+    
+<p>Implement <code class="d_inline">toFront()</code> according to TDD. Start with the intentionally incomplete implementation below. Observe that the unit tests fail and provide an implementation that passes the tests.
+</p>
+
+<pre class="d_code">dstring toFront(dstring str, <span class="d_keyword">dchar</span> letter) {
+    dstring result;
+    <span class="d_keyword">return</span> result;
+}
+
+<span class="d_keyword">unittest</span> {
+    <span class="d_keyword">immutable</span> str = <span class="d_string">"hello"d</span>;
+
+    <span class="d_keyword">assert</span>(toFront(str, 'h') == <span class="d_string">"hello"</span>);
+    <span class="d_keyword">assert</span>(toFront(str, 'o') == <span class="d_string">"ohell"</span>);
+    <span class="d_keyword">assert</span>(toFront(str, 'l') == <span class="d_string">"llheo"</span>);
+}
+
+<span class="d_keyword">void</span> main() {
+}
+</pre>
+
+ <div class="cozum_link_tek"><p><a target="ddili_cozum" href="unit_testing.cozum.html"><i>... çözüm</i></a></p></div>
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on Mon Jan 29 20:50:23 2024
+</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

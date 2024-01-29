@@ -1,0 +1,466 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>assert and enforce - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='assert and enforce' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5Bassert and enforce%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/d.en/assert.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>assert and enforce</h1>
+        
+        
+
+
+
+<p>In the previous two chapters we have seen how exceptions and <code class="d_inline">scope</code> statements are used toward program correctness. <code class="d_inline">assert</code> is another powerful tool to achieve the same goal by ensuring that certain assumptions that the program is based on are valid.
+</p>
+
+<p>It may sometimes be difficult to decide whether to throw an exception or to call <code class="d_inline">assert</code>. I will use <code class="d_inline">assert</code> in all of the examples below without much justification. I will explain the differences later in the chapter.
+</p>
+
+<p>Although not always obvious, programs are full of assumptions. For example, the following function is written under the assumption that both age parameters are greater than or equal to zero:
+</p>
+
+<pre class="d_code"><span class="d_keyword">double</span> averageAge(<span class="d_keyword">double</span> first, <span class="d_keyword">double</span> second) {
+    <span class="d_keyword">return</span> (first + second) / 2;
+}
+</pre>
+
+<p>Although it may be invalid for the program to ever have an age value that is negative, the function would still produce an average, which may be used in the program unnoticed, resulting in the program's continuing with incorrect data.
+</p>
+
+<p>As another example, the following function assumes that it will always be called with two commands: "sing" or "dance":
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> applyCommand(string command) {
+    <span class="d_keyword">if</span> (command == <span class="d_string">"sing"</span>) {
+        robotSing();
+
+    } <span class="d_keyword">else</span> {
+        robotDance();
+    }
+}
+</pre>
+
+<p>Because of that assumption, the <code class="d_inline">robotDance()</code> function would be called for every command other than "sing", valid or invalid.
+</p>
+
+<p>When such assumptions are kept only in the programmer's mind, the program may end up working incorrectly. <code class="d_inline">assert</code> statements check assumptions and terminate programs immediately when they are not valid.
+</p>
+
+<h5 class="subsection">Syntax</h5>
+
+<p><code class="d_inline">assert</code> can be used in two ways:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">assert</span>(<i>logical_expression</i>);
+    <span class="d_keyword">assert</span>(<i>logical_expression</i>, <i>message</i>);
+</pre>
+
+<p>The logical expression represents an assumption about the program. <code class="d_inline">assert</code> evaluates that expression to validate that assumption. If the value of the logical expression is <code class="d_inline">true</code> then the assumption is considered to be valid. Otherwise the assumption is invalid and an <code class="d_inline">AssertError</code> is thrown.
+</p>
+
+<p>As its name suggests, this exception is inherited from <code class="d_inline">Error</code>, and as you may remember from the <a href="exceptions.html">Exceptions chapter</a>, exceptions that are inherited from <code class="d_inline">Error</code> must never be caught. It is important for the program to be terminated right away instead of continuing under invalid assumptions.
+</p>
+
+<p>The two implicit assumptions of <code class="d_inline">averageAge()</code> above may be spelled out by two <code class="d_inline">assert</code> calls as in the following function:
+</p>
+
+<pre class="d_code"><span class="d_keyword">double</span> averageAge(<span class="d_keyword">double</span> first, <span class="d_keyword">double</span> second) {
+    <span class="d_keyword">assert</span>(first &gt;= 0);
+    <span class="d_keyword">assert</span>(second &gt;= 0);
+
+    <span class="d_keyword">return</span> (first + second) / 2;
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> result = averageAge(<span class="hilite">-1</span>, 10);
+}
+</pre>
+
+<p>Those <code class="d_inline">assert</code> checks carry the meaning "assuming that both of the ages are greater than or equal to zero". It can also be thought of as meaning "this function can work correctly only if both of the ages are greater than or equal to zero".
+</p>
+
+<p>Each <code class="d_inline">assert</code> checks its assumption and terminates the program with an <code class="d_inline">AssertError</code> when it is not valid:
+</p>
+
+<pre class="shell">core.exception.<span class="hilite">AssertError</span>@deneme(2): Assertion failure
+</pre>
+
+<p>The part after the <code class="d_inline">@</code> character in the message indicates the source file and the line number of the <code class="d_inline">assert</code> check that failed. According to the output above, the <code class="d_inline">assert</code> that failed is on line 2 of file <code class="d_inline">deneme.d</code>.
+</p>
+
+<p>The other syntax of <code class="d_inline">assert</code> allows printing a custom message when the <code class="d_inline">assert</code> check fails:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">assert</span>(first &gt;= 0, <span class="d_string">"Age cannot be negative."</span>);
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">core.exception.AssertError@deneme.d(2): <span class="hilite">Age cannot be negative.</span>
+</pre>
+
+<p>Sometimes it is thought to be impossible for the program to ever enter a code path. In such cases it is common to use the literal <code class="d_inline">false</code> as the logical expression to fail an <code class="d_inline">assert</code> check. For example, to indicate that <code class="d_inline">applyCommand()</code> function is never expected to be called with a command other than "sing" and "dance", and to guard against such a possibility, an <code class="d_inline">assert(false)</code> can be inserted into the <i>impossible</i> branch:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> applyCommand(string command) {
+    <span class="d_keyword">if</span> (command == <span class="d_string">"sing"</span>) {
+        robotSing();
+
+    } <span class="d_keyword">else</span> <span class="d_keyword">if</span> (command == <span class="d_string">"dance"</span>) {
+        robotDance();
+
+    } <span class="d_keyword">else</span> {
+        <span class="hilite"><span class="d_keyword">assert</span>(<span class="d_keyword">false</span>)</span>;
+    }
+}
+</pre>
+
+<p>The function is guaranteed to work with the only two commands that it knows about. (<i><b>Note:</b> An alternative choice here would be to use a <a href="switch_case.html"><code class="d_inline">final switch</code> statement</a>.</i>)
+</p>
+
+<h5 class="subsection"><a id="ix_assert and enforce.static assert" content="static assert"></a> <code class="d_inline">static assert</code></h5>
+
+<p>Since <code class="d_inline">assert</code> checks are for correct execution of programs, they are applied when the program is actually running. There can be other checks that are about the structure of the program, which can be applied even at compile time.
+</p>
+
+<p><code class="d_inline">static assert</code> is the counterpart of <code class="d_inline">assert</code> that is applied at compile time. The advantage is that it does not allow even compiling a program that would have otherwise run incorrectly. A natural requirement is that it must be possible to evaluate the logical expression at compile time.
+</p>
+
+<p>For example, assuming that the title of a menu will be printed on an output device that has limited width, the following <code class="d_inline">static assert</code> ensures that it will never be wider than that limit:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">enum</span> dstring menuTitle = <span class="d_string">"Command Menu"</span>;
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(menuTitle.length &lt;= 16);
+</pre>
+
+<p>Note that the string is defined as <code class="d_inline">enum</code> so that its length can be evaluated at compile time.
+</p>
+
+<p>Let's assume that a programmer changes that title to make it more descriptive:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">enum</span> dstring menuTitle = <span class="d_string">"Directional Commands Menu"</span>;
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(menuTitle.length &lt;= 16);
+</pre>
+
+<p>The <code class="d_inline">static assert</code> check prevents compiling the program:
+</p>
+
+<pre class="shell">Error: static assert  (25u &lt;= 16u) is false
+</pre>
+
+<p>This would remind the programmer of the limitation of the output device.
+</p>
+
+<p><code class="d_inline">static assert</code> is even more useful when used in templates. We will see templates in later chapters.
+</p>
+
+<h5 class="subsection"><code class="d_inline">assert</code> even if <i>absolutely true</i></h5>
+
+<p>I emphasize "absolutely true" because assumptions about the program are never expected to be false anyway. A large set of program errors are caused by assumptions that are thought to be absolutely true.
+</p>
+
+<p>For that reason, take advantage of <code class="d_inline">assert</code> checks even if they feel unnecessary. Let's look at the following function that returns the days of months in a given year:
+</p>
+
+<pre class="d_code"><span class="d_keyword">int</span>[] monthDays(<span class="d_keyword">int</span> year) {
+    <span class="d_keyword">int</span>[] days = [
+        31, februaryDays(year),
+        31, 30, 31, 30, 31, 31, 30, 31, 30, 31
+    ];
+
+    <span class="d_keyword">assert</span>((sum(days) == 365) ||
+           (sum(days) == 366));
+
+    <span class="d_keyword">return</span> days;
+}
+</pre>
+
+<p>That <code class="d_inline">assert</code> check may be seen as unnecessary because the function would naturally return either 365 or 366. However, those checks are guarding against potential mistakes even in the <code class="d_inline">februaryDays()</code> function. For example, the program would be terminated if <code class="d_inline">februaryDays()</code> returned 30.
+</p>
+
+<p>Another seemingly unnecessary check can ensure that the length of the slice would always be 12:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">assert</span>(days.length == 12);
+</pre>
+
+<p>That way, deleting or adding elements to the slice unintentionally would also be caught. Such checks are important tools toward program correctness.
+</p>
+
+<p><code class="d_inline">assert</code> is also the fundamental tool that is used in <i>unit testing</i> and <i>contract programming</i>, both of which will be covered in later chapters.
+</p>
+
+<h5 class="subsection">No value nor side effect</h5>
+
+<p>We have seen that expressions produce values or make side effects. <code class="d_inline">assert</code> checks do not have values nor <i>should</i> they have any side effects.
+</p>
+
+<p>The D language requires that the evaluation of the logical expression must not have any side effect. <code class="d_inline">assert</code> must remain as a passive observer of program state.
+</p>
+
+<h5 class="subsection"><a id="ix_assert and enforce.-release, compiler switch" content="-release, compiler switch"></a> Disabling <code class="d_inline">assert</code> checks</h5>
+
+<p>Since <code class="d_inline">assert</code> is about program correctness, they can be seen as unnecessary once the program has been tested sufficiently. Further, since <code class="d_inline">assert</code> checks produce no values nor they have side effects, removing them from the program should not make any difference.
+</p>
+
+<p>The compiler switch <code class="d_inline">-release</code> causes the <code class="d_inline">assert</code> checks to be ignored as if they have never been included in the program:
+</p>
+
+<pre class="shell">$ dmd deneme.d -release
+</pre>
+
+<p>This would allow programs to run faster by not evaluating potentially slow logical expressions of the <code class="d_inline">assert</code> checks.
+</p>
+
+<p>As an exception, the <code class="d_inline">assert</code> checks that have the literal <code class="d_inline">false</code> (or 0) as the logical expression are not disabled even when the program is compiled with <code class="d_inline">&#8209;release</code>. This is because <code class="d_inline">assert(false)</code> is for ensuring that a block of code is never reached, and that should be prevented even for the <code class="d_inline">&#8209;release</code> compilations.
+</p>
+
+<h5 class="subsection"><code class="d_inline">enforce</code> for throwing exceptions</h5>
+
+<p>Not every unexpected situation is an indication of a program error. Programs may also experience unexpected inputs and unexpected environmental state. For example, the data that is entered by the user should not be validated by an <code class="d_inline">assert</code> check because invalid data has nothing to do with the correctness of the program itself. In such cases it is appropriate to throw exceptions like we have been doing in previous programs.
+</p>
+
+<p><code class="d_inline">std.exception.enforce</code> is a convenient way of throwing exceptions. For example, let's assume that an exception must be thrown when a specific condition is not met:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">if</span> (count &lt; 3) {
+        <span class="d_keyword">throw</span> <span class="d_keyword">new</span> Exception(<span class="d_string">"Must be at least 3."</span>);
+    }
+</pre>
+
+<p><code class="d_inline">enforce()</code> is a wrapper around the condition check and the <code class="d_inline">throw</code> statement. The following is the equivalent of the previous code:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.exception;
+<span class="d_comment">// ...
+</span>    enforce(count &gt;= 3, <span class="d_string">"Must be at least 3."</span>);
+</pre>
+
+<p>Note how the logical expression is negated compared to the <code class="d_inline">if</code> statement. It now spells out what is being <i>enforced</i>.
+</p>
+
+<h5 class="subsection">How to use</h5>
+
+<p><code class="d_inline">assert</code> is for catching programmer errors. The conditions that <code class="d_inline">assert</code> guards against in the <code class="d_inline">monthDays()</code> function and the <code class="d_inline">menuTitle</code> variable above are all about programmer mistakes.
+</p>
+
+<p>Sometimes it is difficult to decide whether to rely on an <code class="d_inline">assert</code> check or to throw an exception. The decision should be based on whether the unexpected situation is due to a problem with how the program has been coded.
+</p>
+
+<p>Otherwise, the program must throw an exception when it is not possible to accomplish a task. <code class="d_inline">enforce()</code> is expressive and convenient when throwing exceptions.
+</p>
+
+<p>Another point to consider is whether the unexpected situation can be remedied in some way. If the program can not do anything special, even by simply printing an error message about the problem with some input data, then it is appropriate to throw an exception. That way, callers of the code that threw the exception can catch it to do something special to recover from the error condition.
+</p>
+
+<h5 class="subsection">Problemler</h5>
+    <ol>
+<li>The following program includes a number of <code class="d_inline">assert</code> checks. Compile and run the program to discover its bugs that are revealed by those <code class="d_inline">assert</code> checks.
+
+<p>The program takes a start time and a duration from the user and calculates the end time by adding the duration to the start time:
+</p>
+
+<pre class="shell">10 hours and 8 minutes after 06:09 is 16:17.
+</pre>
+
+<p>Note that this problem can be written in a much cleaner way by defining <code class="d_inline">struct</code> types. We will refer to this program in later chapters.
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.string;
+<span class="d_keyword">import</span> std.exception;
+
+<span class="d_comment">/* Reads the time as hour and minute after printing a
+ * message. */</span>
+<span class="d_keyword">void</span> readTime(string message,
+              <span class="d_keyword">out</span> <span class="d_keyword">int</span> hour,
+              <span class="d_keyword">out</span> <span class="d_keyword">int</span> minute) {
+    write(message, <span class="d_string">"? (HH:MM) "</span>);
+
+    readf(<span class="d_string">" %s:%s"</span>, &amp;hour, &amp;minute);
+
+    enforce((hour &gt;= 0) &amp;&amp; (hour &lt;= 23) &amp;&amp;
+            (minute &gt;= 0) &amp;&amp; (minute &lt;= 59),
+            <span class="d_string">"Invalid time!"</span>);
+}
+
+<span class="d_comment">/* Returns the time in string format. */</span>
+string timeToString(<span class="d_keyword">int</span> hour, <span class="d_keyword">int</span> minute) {
+    <span class="d_keyword">assert</span>((hour &gt;= 0) &amp;&amp; (hour &lt;= 23));
+    <span class="d_keyword">assert</span>((minute &gt;= 0) &amp;&amp; (minute &lt;= 59));
+
+    <span class="d_keyword">return</span> format(<span class="d_string">"%02s:%02s"</span>, hour, minute);
+}
+
+<span class="d_comment">/* Adds duration to start time and returns the result as the
+ * third pair of parameters. */</span>
+<span class="d_keyword">void</span> addDuration(<span class="d_keyword">int</span> startHour, <span class="d_keyword">int</span> startMinute,
+                 <span class="d_keyword">int</span> durationHour, <span class="d_keyword">int</span> durationMinute,
+                 <span class="d_keyword">out</span> <span class="d_keyword">int</span> resultHour, <span class="d_keyword">out</span> <span class="d_keyword">int</span> resultMinute) {
+    resultHour = startHour + durationHour;
+    resultMinute = startMinute + durationMinute;
+
+    <span class="d_keyword">if</span> (resultMinute &gt; 59) {
+        ++resultHour;
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">int</span> startHour;
+    <span class="d_keyword">int</span> startMinute;
+    readTime(<span class="d_string">"Start time"</span>, startMinute, startHour);
+
+    <span class="d_keyword">int</span> durationHour;
+    <span class="d_keyword">int</span> durationMinute;
+    readTime(<span class="d_string">"Duration"</span>, durationHour, durationMinute);
+
+    <span class="d_keyword">int</span> endHour;
+    <span class="d_keyword">int</span> endMinute;
+    addDuration(startHour, startMinute,
+                durationHour, durationMinute,
+                endHour, endMinute);
+
+    writefln(<span class="d_string">"%s hours and %s minutes after %s is %s."</span>,
+             durationHour, durationMinute,
+             timeToString(startHour, startMinute),
+             timeToString(endHour, endMinute));
+}
+</pre>
+
+<p>Run the program and enter <code class="d_inline">06:09</code> as the start time and <code class="d_inline">1:2</code> as the duration. Observe that the program terminates normally.
+</p>
+
+<p><i><b>Note:</b> You may notice a problem with the output. Ignore that problem for now as you will discover it by the help of <code class="d_inline">assert</code> checks soon.</i>
+</p>
+
+</li>
+
+<li>This time enter <code class="d_inline">06:09</code> and <code class="d_inline">15:2</code>. Observe that the program is terminated by an <code class="d_inline">AssertError</code>. Go to the line of the program that is indicated in the assert message and see which one of the <code class="d_inline">assert</code> checks have failed. It may take a while to discover the cause of this particular failure.
+</li>
+
+<li>Enter <code class="d_inline">06:09</code> and <code class="d_inline">20:0</code> and observe that the same <code class="d_inline">assert</code> check still fails and fix that bug as well.
+</li>
+
+<li>Modify the program to print the times in 12-hour format with an "am" or "pm" indicator.
+</li>
+
+</ol> <div class="cozum_link_cok"><p><a target="ddili_cozum" href="assert.cozum.html"><i>... çözümler</i></a></p></div>
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on Mon Jan 29 20:50:23 2024
+</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

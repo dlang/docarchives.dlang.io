@@ -1,0 +1,868 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Integers and Arithmetic Operations - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Integers and Arithmetic Operations' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BIntegers and Arithmetic Operations%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/d.en/arithmetic.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Integers and Arithmetic Operations</h1>
+        
+        
+
+
+
+<p>We have seen that the <code class="d_inline">if</code> and <code class="d_inline">while</code> statements allow programs to make decisions by using the <code class="d_inline">bool</code> type in the form of logical expressions. In this chapter, we will see arithmetic operations on the <i>integer</i> types of D. These features will allow us to write much more useful programs.
+</p>
+
+<p>Although arithmetic operations are a part of our daily lives and are actually simple, there are very important concepts that a programmer must be aware of in order to produce correct programs: the <i>bit length of a type</i>, <i>overflow</i> (wrap), and <i>truncation</i>.
+</p>
+
+<p>Before going further, I would like to summarize the arithmetic operations in the following table as a reference:
+</p>
+
+<table class="wide" border="1" cellpadding="4" cellspacing="0">
+<tr><th scope="col">Operator</th> <th scope="col">Effect</th> <th scope="col">Sample</th>
+
+</tr>
+<tr align="center"><td>++</td>
+    <td>increments by one</td>
+    <td>++variable</td>
+</tr>
+<tr align="center"><td>--</td>
+    <td>decrements by one</td>
+    <td>--variable</td>
+</tr>
+<tr align="center"><td>+</td>
+    <td>the result of adding two values</td>
+    <td>first&nbsp;+&nbsp;second</td>
+</tr>
+<tr align="center"><td>-</td>
+    <td>the result of subtracting 'second' from 'first'</td>
+    <td>first&nbsp;-&nbsp;second</td>
+</tr>
+<tr align="center"><td>*</td>
+    <td>the result of multiplying two values</td>
+    <td>first&nbsp;*&nbsp;second</td>
+</tr>
+<tr align="center"><td>/</td>
+    <td>the result of dividing 'first' by 'second'</td>
+    <td>first&nbsp;/&nbsp;second</td>
+</tr>
+<tr align="center"><td>%</td>
+    <td>the remainder of dividing 'first' by 'second'</td>
+    <td>first&nbsp;%&nbsp;second</td>
+</tr>
+<tr align="center"><td>^^</td>
+    <td>the result of raising 'first' to the power of 'second'<br/>(multiplying 'first' by itself 'second' times)</td>
+    <td>first&nbsp;^^&nbsp;second</td>
+</tr>
+</table>
+
+<p><a id="ix_Integers and Arithmetic Operations.+=" content="+="></a> <a id="ix_Integers and Arithmetic Operations.-=" content="-="></a> <a id="ix_Integers and Arithmetic Operations.*=" content="*="></a> <a id="ix_Integers and Arithmetic Operations./=" content="/="></a> <a id="ix_Integers and Arithmetic Operations.%=" content="%="></a> <a id="ix_Integers and Arithmetic Operations.^^=" content="^^="></a> Most of those operators have counterparts that have an <code class="d_inline">=</code> sign attached: <code class="d_inline">+=</code>, <code class="d_inline">-=</code>, <code class="d_inline">*=</code>, <code class="d_inline">/=</code>, <code class="d_inline">%=</code>, and <code class="d_inline">^^=</code>. The difference with these operators is that they assign the result to the left-hand side:
+</p>
+
+<pre class="d_code">    variable += 10;
+</pre>
+
+<p>That expression adds the value of <code class="d_inline">variable</code> and 10 and assigns the result to <code class="d_inline">variable</code>. In the end, the value of <code class="d_inline">variable</code> would be increased by 10. It is the equivalent of the following expression:
+</p>
+
+<pre class="d_code">    variable = variable + 10;
+</pre>
+
+<p>I would like also to summarize two important concepts here before elaborating on them below.
+</p>
+
+<p><a id="ix_Integers and Arithmetic Operations.wrap" content="wrap"></a> <b>Overflow:</b> Not all values can fit in a variable of a given type. If the value is too big for the variable we say that the variable <i>overflows</i>. For example, a variable of type <code class="d_inline">ubyte</code> can have values only in the range of 0 to 255; so when assigned 260, the variable overflows, wraps around, and its value becomes 4. (<i><b>Note:</b> Unlike some other languages like C and C++, overflow for signed types is legal in D. It has the same wrap around behavior of unsigned types.</i>)
+</p>
+
+<p>Similarly, a variable cannot have a value that is less than the minimum value of its type.
+</p>
+
+<p><b>Truncation:</b> Integer types cannot have values with fractional parts. For example, the value of the <code class="d_inline">int</code> expression <code class="d_inline">3/2</code> is 1, not 1.5.
+</p>
+
+<p>We encounter arithmetic operations daily without many surprises: if a bagel is &#36;1, two bagels are &#36;2; if four sandwiches are &#36;15, one sandwich is &#36;3.75, etc.
+</p>
+
+<p>Unfortunately, things are not as simple with arithmetic operations in computers. If we don't understand how values are stored in a computer, we may be surprised to see that a company's debt is <i>reduced</i> to &#36;1.7 billion when it borrows &#36;3 billion more on top of its existing debt of &#36;3 billion! Or when a box of ice cream serves 4 kids, an arithmetic operation may claim that 2 boxes would be sufficient for 11 kids!
+</p>
+
+<p>Programmers must understand how integers are stored in computers.</p>
+
+<h6><a id="ix_Integers and Arithmetic Operations.integer" content="integer"></a> Integer types</h6>
+
+<p>Integer types are the types that can have only whole values like -2, 0, 10, etc. These types cannot have fractional parts, as in 2.5. All of the integer types that we saw in the <a href="types.html">Fundamental Types chapter</a> are the following:
+</p>
+
+<table class="narrow" border="1" cellpadding="4" cellspacing="0">
+<tr><th scope="col"><br/>Type</th> <th scope="col">Number of<br/>Bits</th> <th scope="col">Initial<br/>Value</th>
+
+</tr>
+<tr align="right"><td>byte</td>
+    <td>8</td>
+    <td>0</td>
+
+</tr>
+<tr align="right"> <td>ubyte</td>
+    <td>8</td>
+    <td>0</td>
+</tr>
+<tr align="right"> <td>short</td>
+
+    <td>16</td>
+    <td>0</td>
+</tr>
+<tr align="right"> <td>ushort</td>
+    <td>16</td>
+    <td>0</td>
+
+</tr>
+<tr align="right"> <td>int</td>
+    <td>32</td>
+    <td>0</td>
+</tr>
+<tr align="right"> <td>uint</td>
+
+    <td>32</td>
+    <td>0</td>
+</tr>
+<tr align="right"> <td>long</td>
+    <td>64</td>
+    <td>0L</td>
+
+</tr>
+<tr align="right"> <td>ulong</td>
+    <td>64</td>
+    <td>0LU</td>
+</tr>
+</table>
+
+<p>The <code class="d_inline">u</code> at the beginning of the type names stands for "unsigned" and indicates that such types cannot have values less than zero.
+</p>
+
+<p>Although they are equal to <code class="d_inline">0</code>; <code class="d_inline">0L</code> and <code class="d_inline">0LU</code> are <i>manifest constants</i> typed as <code class="d_inline">long</code> and <code class="d_inline">ulong</code>, respectively.
+</p>
+
+<h6><a id="ix_Integers and Arithmetic Operations.bit" content="bit"></a> Number of bits of a type</h6>
+
+<p>In today's computer systems, the smallest unit of information is called a <i>bit</i>. At the physical level, a bit is represented by electrical signals around certain points in the circuitry of a computer. A bit can be in one of two states that correspond to different voltages in the area that defines that particular bit. These two states are arbitrarily defined to have the values 0 and 1. As a result, a bit can have one of these two values.
+</p>
+
+<p>As there aren't many concepts that can be represented by just two states, a bit is not a very useful type. It can only be useful for concepts with two states like heads or tails or whether a light switch is on or off.
+</p>
+
+<p>If we consider two bits together, the total amount of information that can be represented multiplies. Based on each bit having a value of 0 or 1 individually, there are a total of 4 possible states. Assuming that the left and right digits represent the first and second bit respectively, these states are 00, 01, 10, and 11. Let's add one more bit to see this effect better; three bits can be in 8 different states: 000, 001, 010, 011, 100, 101, 110, 111. As can be seen, each added bit doubles the total number of states that can be represented.
+</p>
+
+<p>The values to which these eight states correspond are defined by conventions. The following table shows these values for the signed and unsigned representations of 3 bits:
+</p>
+
+<table class="narrow" border="1" cellpadding="4" cellspacing="0">
+<tr align="right"><th scope="col">Bit State</th> <th scope="col">Unsigned Value</th>  <th scope="col">Signed Value</th></tr>
+<tr align="right"><td>000</td> <td>0</td> <td>0</td> </tr>
+<tr align="right"><td>001</td> <td>1</td> <td>1</td> </tr>
+<tr align="right"><td>010</td> <td>2</td> <td>2</td> </tr>
+<tr align="right"><td>011</td> <td>3</td> <td>3</td> </tr>
+<tr align="right"><td>100</td> <td>4</td> <td>-4</td> </tr>
+<tr align="right"><td>101</td> <td>5</td> <td>-3</td> </tr>
+<tr align="right"><td>110</td> <td>6</td> <td>-2</td> </tr>
+<tr align="right"><td>111</td> <td>7</td> <td>-1</td> </tr>
+</table>
+
+<p>We can construct the following table by adding more bits:
+</p>
+
+<table class="wide" style="font-size:.9em" border="1" cellpadding="4" cellspacing="0">
+<tr align="right"><th scope="col">Bits</th> <th scope="col">Number of Distinct Values</th><th scope="col">D Type</th><th scope="col">Minimum Value</th><th scope="col">Maximum Value</th>  </tr>
+<tr align="right"><td>1</td><td>2</td> <td></td><td></td><td></td></tr>
+<tr align="right"><td>2</td><td>4</td> <td></td><td></td><td></td></tr>
+<tr align="right"><td>3</td><td>8</td> <td></td><td></td><td></td></tr>
+<tr align="right"><td>4</td><td>16</td> <td></td><td></td><td></td></tr>
+<tr align="right"><td>5</td><td>32</td> <td></td><td></td><td></td></tr>
+<tr align="right"><td>6</td><td>64</td> <td></td><td></td><td></td></tr>
+<tr align="right"><td>7</td><td>128</td> <td></td><td></td><td></td></tr>
+<tr align="right"><td>8</td><td>256</td> <td>byte<br/>ubyte</td><td>-128<br/>0</td><td>127<br/>255</td></tr>
+<tr align="right"><td>...</td><td>...</td> <td></td><td></td><td></td></tr>
+<tr align="right"><td>16</td><td>65536</td> <td>short<br/>ushort</td><td>-32768<br/>0</td><td>32767<br/>65535</td></tr>
+<tr align="right"><td>...</td><td>...</td> <td></td><td></td><td></td></tr>
+<tr align="right"><td>32</td><td>4294967296</td> <td>int<br/>uint</td><td>-2147483648<br/>0</td><td>2147483647<br/>4294967295</td></tr>
+<tr align="right"><td>...</td><td>...</td> <td></td><td></td><td></td></tr>
+<tr align="right"><td>64</td><td>18446744073709551616</td> <td>long<br/>ulong</td><td>-9223372036854775808<br/>0</td><td>9223372036854775807<br/>18446744073709551615</td></tr>
+<tr align="right"><td>...</td><td>...</td> <td></td><td></td><td></td></tr>
+</table>
+
+<p>I skipped many rows in the table and indicated the signed and unsigned versions of the D types that have the same number of bits on the same row (e.g. <code class="d_inline">int</code> and <code class="d_inline">uint</code> are both on the 32-bit row).
+</p>
+
+<h6>Choosing a type</h6>
+
+<p>D has no 3-bit type. But such a hypothetical type could only have 8 distinct values. It could only represent concepts such as the value of a die, or the week's day number.
+</p>
+
+<p>On the other hand, although <code class="d_inline">uint</code> is a very large type, it cannot represent the concept of an ID number for each living person, as its maximum value is less than the world population of 7 billion. <code class="d_inline">long</code> and <code class="d_inline">ulong</code> would be more than enough to represent many concepts.
+</p>
+
+<p>As a general rule, as long as there is no specific reason not to, you can use <code class="d_inline">int</code> for integer values.
+</p>
+
+<h6><a id="ix_Integers and Arithmetic Operations.overflow" content="overflow"></a> Overflow</h6>
+
+<p>The fact that types can only hold values within a limited range may cause unexpected results. For example, although adding two <code class="d_inline">uint</code> variables with values of 3 billion each should produce 6 billion, because that sum is greater than the maximum value that a <code class="d_inline">uint</code> variable can hold (about 4 billion), this sum <i>overflows</i>. Without any warning, only the difference of 6 and 4 billion gets stored. (A little more accurately, 6 minus 4.3 billion.)
+</p>
+
+<h6><a id="ix_Integers and Arithmetic Operations.truncation" content="truncation"></a> Truncation</h6>
+
+<p>Since integers cannot have values with fractional parts, they lose the part after the decimal point. For example, assuming that a box of ice cream serves 4 kids, although 11 kids would actually need 2.75 boxes, the fractional part of that value cannot be stored in an integer type, so the value becomes 2.
+</p>
+
+<p>I will show limited techniques to help reduce the risk of overflow and truncation later in the chapter.
+</p>
+
+<h6><code class="d_inline">.min</code> and <code class="d_inline">.max</code></h6>
+
+<p>I will take advantage of the <code class="d_inline">.min</code> and <code class="d_inline">.max</code> properties below, which we have seen in the <a href="types.html">Fundamental Types chapter</a>. These properties provide the minimum and maximum values that an integer type can have.
+</p>
+
+<h6><a id="ix_Integers and Arithmetic Operations.++, pre-increment" content="++, pre-increment"></a> <a id="ix_Integers and Arithmetic Operations.increment" content="increment"></a> Increment: <code class="d_inline">++</code></h6>
+
+<p>This operator is used with a single variable (more generally, with a single expression) and is written before the name of that variable. It increments the value of that variable by 1:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">int</span> number = 10;
+    <span class="hilite">++</span>number;
+    writeln(<span class="d_string">"New value: "</span>, number);
+}
+</pre>
+
+<pre class="shell">New value: 11
+</pre>
+
+<p>The increment operator is the equivalent of using the <i>add-and-assign</i> operator with the value of 1:
+</p>
+
+<pre class="d_code">    number += 1;      <span class="d_comment">// same as ++number
+</span></pre>
+
+<p>If the result of the increment operation is greater than the maximum value of that type, the result <i>overflows</i> and becomes the minimum value. We can see this effect by incrementing a variable that initially has the value <code class="d_inline">int.max</code>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main() {
+    writeln(<span class="d_string">"minimum int value   : "</span>, <span class="d_keyword">int</span>.min);
+    writeln(<span class="d_string">"maximum int value   : "</span>, <span class="d_keyword">int</span>.max);
+
+    <span class="d_keyword">int</span> number = <span class="d_keyword">int</span>.max;
+    writeln(<span class="d_string">"before the increment: "</span>, number);
+    ++number;
+    writeln(<span class="d_string">"after the increment : "</span>, number);
+}
+</pre>
+
+<p>The value becomes <code class="d_inline">int.min</code> after the increment:
+</p>
+
+<pre class="shell">minimum int value   : -2147483648
+maximum int value   : 2147483647
+before the increment: 2147483647
+after the increment : -2147483648
+</pre>
+
+<p>This is a very important observation because the value changes from the maximum to the minimum as a result of <i>incrementing</i> and without any warning! This effect is called <i>overflow</i>. We will see similar effects with other operations.
+</p>
+
+<h6><a id="ix_Integers and Arithmetic Operations.--, pre-decrement" content="--, pre-decrement"></a> <a id="ix_Integers and Arithmetic Operations.decrement" content="decrement"></a> Decrement: <code class="d_inline">--</code></h6>
+
+<p>This operator is similar to the increment operator; the difference is that the value is decreased by 1:
+</p>
+
+<pre class="d_code">    --number;   <span class="d_comment">// the value decreases by 1
+</span></pre>
+
+<p>The decrement operation is the equivalent of using the <i>subtract-and-assign</i> operator with the value of 1:
+</p>
+
+<pre class="d_code">    number -= 1;      <span class="d_comment">// same as --number
+</span></pre>
+
+
+<p>Similar to the <code class="d_inline">++</code> operator, if the value is the minimum value to begin with, it becomes the maximum value. This effect is called <i>overflow</i> as well.
+</p>
+
+<h6><a id="ix_Integers and Arithmetic Operations.+, addition" content="+, addition"></a> <a id="ix_Integers and Arithmetic Operations.addition" content="addition"></a> Addition: +</h6>
+
+<p>This operator is used with two expressions and adds their values:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">int</span> number_1 = 12;
+    <span class="d_keyword">int</span> number_2 = 100;
+
+    writeln(<span class="d_string">"Result: "</span>, number_1 <span class="hilite">+</span> number_2);
+    writeln(<span class="d_string">"With a constant expression: "</span>, 1000 <span class="hilite">+</span> number_2);
+}
+</pre>
+
+<pre class="shell">Result: 112
+With a constant expression: 1100
+</pre>
+
+<p>If the sum of the two expressions is greater than the maximum value of that type, it overflows and becomes a value that is less than both of the expressions:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_comment">// 3 billion each
+</span>    <span class="d_keyword">uint</span> number_1 = 3000000000;
+    <span class="d_keyword">uint</span> number_2 = 3000000000;
+
+    writeln(<span class="d_string">"maximum value of uint: "</span>, <span class="d_keyword">uint</span>.max);
+    writeln(<span class="d_string">"             number_1: "</span>, number_1);
+    writeln(<span class="d_string">"             number_2: "</span>, number_2);
+    writeln(<span class="d_string">"                  sum: "</span>, number_1 + number_2);
+    writeln(<span class="d_string">"OVERFLOW! The result is not 6 billion!"</span>);
+}
+</pre>
+
+<pre class="shell">maximum value of uint: 4294967295
+             number_1: 3000000000
+             number_2: 3000000000
+                  sum: 1705032704
+OVERFLOW! The result is not 6 billion!
+</pre>
+
+<h6><a id="ix_Integers and Arithmetic Operations.-, subtraction" content="-, subtraction"></a> <a id="ix_Integers and Arithmetic Operations.subtraction" content="subtraction"></a> Subtraction: <code class="d_inline">-</code></h6>
+
+<p>This operator is used with two expressions and gives the difference between the first and the second:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">int</span> number_1 = 10;
+    <span class="d_keyword">int</span> number_2 = 20;
+
+    writeln(number_1 <span class="hilite">-</span> number_2);
+    writeln(number_2 <span class="hilite">-</span> number_1);
+}
+</pre>
+
+<pre class="shell">-10
+10
+</pre>
+
+<p>It is again surprising if the actual result is less than zero and is stored in an unsigned type. Let's rewrite the program using the <code class="d_inline">uint</code> type:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">uint</span> number_1 = 10;
+    <span class="d_keyword">uint</span> number_2 = 20;
+
+    writeln(<span class="d_string">"PROBLEM! uint cannot have negative values:"</span>);
+    writeln(number_1 - number_2);
+    writeln(number_2 - number_1);
+}
+</pre>
+
+<pre class="shell">PROBLEM! uint cannot have negative values:
+4294967286
+10
+</pre>
+
+<p>It is a good guideline to use signed types to represent concepts that may ever be subtracted. As long as there is no specific reason not to, you can choose <code class="d_inline">int</code>.
+</p>
+
+<h6><a id="ix_Integers and Arithmetic Operations.*, multiplication" content="*, multiplication"></a> <a id="ix_Integers and Arithmetic Operations.multiplication" content="multiplication"></a> Multiplication: <code class="d_inline">*</code></h6>
+
+<p>This operator multiplies the values of two expressions; the result is again subject to overflow:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">uint</span> number_1 = 6;
+    <span class="d_keyword">uint</span> number_2 = 7;
+
+    writeln(number_1 <span class="hilite">*</span> number_2);
+}
+</pre>
+
+<pre class="shell">42
+</pre>
+
+<h6><a id="ix_Integers and Arithmetic Operations./" content="/"></a> <a id="ix_Integers and Arithmetic Operations.division" content="division"></a> Division: <code class="d_inline">/</code></h6>
+
+<p>This operator divides the first expression by the second expression. Since integer types cannot have fractional values, the fractional part of the value is discarded. This effect is called <i>truncation</i>. As a result, the following program prints 3, not 3.5:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main() {
+    writeln(7 <span class="hilite">/</span> 2);
+}
+</pre>
+
+<pre class="shell">3
+</pre>
+
+<p>For calculations where fractional parts matter, <i>floating point types</i> must be used instead of integers. We will see floating point types in the next chapter.
+</p>
+
+<h6><a id="ix_Integers and Arithmetic Operations.%" content="%"></a> <a id="ix_Integers and Arithmetic Operations.remainder" content="remainder"></a> <a id="ix_Integers and Arithmetic Operations.modulus" content="modulus"></a> Remainder (modulus): %</h6>
+
+<p>This operator divides the first expression by the second expression and produces the remainder of the division:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main() {
+    writeln(10 <span class="hilite">%</span> 6);
+}
+</pre>
+
+<pre class="shell">4
+</pre>
+
+<p>A common application of this operator is to determine whether a value is odd or even. Since the remainder of dividing an even number by 2 is always 0, comparing the result against 0 is sufficient to make that distinction:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">if</span> ((number % 2) == 0) {
+        writeln(<span class="d_string">"even number"</span>);
+
+    } <span class="d_keyword">else</span> {
+        writeln(<span class="d_string">"odd number"</span>);
+    }
+</pre>
+
+<h6><a id="ix_Integers and Arithmetic Operations.^^" content="^^"></a> <a id="ix_Integers and Arithmetic Operations.power of" content="power of"></a> Power: ^^</h6>
+
+<p>This operator raises the first expression to the power of the second expression. For example, raising 3 to the power of 4 is multiplying 3 by itself 4 times:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main() {
+    writeln(3 <span class="hilite">^^</span> 4);
+}
+</pre>
+
+<pre class="shell">81
+</pre>
+
+<h6><a id="ix_Integers and Arithmetic Operations.assignment, operation result" content="assignment, operation result"></a> Arithmetic operations with assignment</h6>
+
+<p>All of the operators that take two expressions have <i>assignment</i> counterparts. These operators assign the result back to the expression that is on the left-hand side:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">int</span> number = 10;
+
+    number += 20;  <span class="d_comment">// same as number = number + 20; now 30
+</span>    number -= 5;   <span class="d_comment">// same as number = number - 5;  now 25
+</span>    number *= 2;   <span class="d_comment">// same as number = number * 2;  now 50
+</span>    number /= 3;   <span class="d_comment">// same as number = number / 3;  now 16
+</span>    number %= 7;   <span class="d_comment">// same as number = number % 7;  now  2
+</span>    number ^^= 6;  <span class="d_comment">// same as number = number ^^ 6; now 64
+</span>
+    writeln(number);
+}
+</pre>
+
+<pre class="shell">64
+</pre>
+
+<h6><a id="ix_Integers and Arithmetic Operations.-, negation" content="-, negation"></a> <a id="ix_Integers and Arithmetic Operations.negation" content="negation"></a> Negation: <code class="d_inline">-</code></h6>
+
+<p>This operator converts the value of the expression from negative to positive or positive to negative:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">int</span> number_1 = 1;
+    <span class="d_keyword">int</span> number_2 = -2;
+
+    writeln(<span class="hilite">-</span>number_1);
+    writeln(<span class="hilite">-</span>number_2);
+}
+</pre>
+
+<pre class="shell">-1
+2
+</pre>
+
+<p>The type of the result of this operation is the same as the type of the expression. Since unsigned types cannot have negative values, the result of using this operator with unsigned types can be surprising:
+</p>
+
+<pre class="d_code">    <span class="hilite"><span class="d_keyword">uint</span></span> number = 1;
+    writeln(<span class="d_string">"negation: "</span>, -number);
+</pre>
+
+<p>The type of <code class="d_inline">-number</code> is <code class="d_inline">uint</code> as well, which cannot have negative values:
+</p>
+
+<pre class="shell">negation: 4294967295
+</pre>
+
+<h6><a id="ix_Integers and Arithmetic Operations.+, plus sign" content="+, plus sign"></a> <a id="ix_Integers and Arithmetic Operations.plus sign" content="plus sign"></a> Plus sign: <code class="d_inline">+</code></h6>
+
+<p>This operator has no effect and exists only for symmetry with the negation operator. Positive values stay positive and negative values stay negative:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">int</span> number_1 = 1;
+    <span class="d_keyword">int</span> number_2 = -2;
+
+    writeln(<span class="hilite">+</span>number_1);
+    writeln(<span class="hilite">+</span>number_2);
+}
+</pre>
+
+<pre class="shell">1
+-2
+</pre>
+
+<h6><a id="ix_Integers and Arithmetic Operations.++, post-increment" content="++, post-increment"></a> <a id="ix_Integers and Arithmetic Operations.post-increment" content="post-increment"></a> <a id="ix_Integers and Arithmetic Operations.increment, post" content="increment, post"></a> Post-increment: <code class="d_inline">++</code></h6>
+
+<p><i><b>Note:</b> Unless there is a strong reason not to, always use the regular increment operator (which is sometimes called the pre-increment operator).</i>
+</p>
+
+<p>Contrary to the regular increment operator, it is written after the expression and still increments the value of the expression by 1. The difference is that the post-increment operation produces the old value of the expression. To see this difference, let's compare it with the regular increment operator:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">int</span> incremented_regularly = 1;
+    writeln(++incremented_regularly);      <span class="d_comment">// prints 2
+</span>    writeln(incremented_regularly);        <span class="d_comment">// prints 2
+</span>
+    <span class="d_keyword">int</span> post_incremented = 1;
+
+    <span class="d_comment">// Gets incremented, but its old value is used:
+</span>    writeln(post_incremented<span class="hilite">++</span>);           <span class="d_comment">// prints 1
+</span>    writeln(post_incremented);             <span class="d_comment">// prints 2
+</span>}
+</pre>
+
+<pre class="shell">2
+2
+1
+2
+</pre>
+
+<p>The <code class="d_inline">writeln(post_incremented++);</code> statement above is the equivalent of the following code:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span> old_value = post_incremented;
+    ++post_incremented;
+    writeln(old_value);                    <span class="d_comment">// prints 1
+</span></pre>
+
+<h6><a id="ix_Integers and Arithmetic Operations.--, post-decrement" content="--, post-decrement"></a> <a id="ix_Integers and Arithmetic Operations.post-decrement" content="post-decrement"></a> <a id="ix_Integers and Arithmetic Operations.decrement, post" content="decrement, post"></a> Post-decrement: <code class="d_inline">--</code></h6>
+
+<p><i><b>Note:</b> Unless there is a strong reason not to, always use the regular decrement operator (which is sometimes called the pre-decrement operator).</i>
+</p>
+
+<p>This operator behaves the same way as the post-increment operator except that it decrements.
+</p>
+
+<h6>Operator precedence</h6>
+
+<p>The operators we've discussed above have all been used in operations on their own with only one or two expressions. However, similar to logical expressions, it is common to combine these operators to form more complex arithmetic expressions:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span> value = 77;
+    <span class="d_keyword">int</span> result = (((value + 8) * 3) / (value - 1)) % 5;
+</pre>
+
+<p>As with logical operators, arithmetic operators also obey operator precedence rules. For example, the <code class="d_inline">*</code> operator has precedence over the <code class="d_inline">+</code> operator. For that reason, when parentheses are not used (e.g. in the <code class="d_inline">value&nbsp;+&nbsp;8&nbsp;*&nbsp;3</code> expression), the <code class="d_inline">*</code> operator is evaluated before the <code class="d_inline">+</code> operator. As a result, that expression becomes the equivalent of <code class="d_inline">value&nbsp;+&nbsp;24</code>, which is quite different from <code class="d_inline">(value&nbsp;+&nbsp;8)&nbsp;*&nbsp;3</code>.
+</p>
+
+<p>Using parentheses is useful both for ensuring correct results and for communicating the intent of the code to programmers who may work on it in the future.
+</p>
+
+<p>The operator precedence table will be presented <a href="operator_precedence.html">later in the book</a>.
+</p>
+
+<h6>Detecting overflow</h6>
+
+<p><a id="ix_Integers and Arithmetic Operations.core.checkedint" content="core.checkedint"></a> <a id="ix_Integers and Arithmetic Operations.checkedint" content="checkedint"></a> <a id="ix_Integers and Arithmetic Operations.adds" content="adds"></a> <a id="ix_Integers and Arithmetic Operations.addu" content="addu"></a> <a id="ix_Integers and Arithmetic Operations.subs" content="subs"></a> <a id="ix_Integers and Arithmetic Operations.subu" content="subu"></a> <a id="ix_Integers and Arithmetic Operations.muls" content="muls"></a> <a id="ix_Integers and Arithmetic Operations.mulu" content="mulu"></a> <a id="ix_Integers and Arithmetic Operations.negs" content="negs"></a> Although it uses <a href="functions.html">functions</a> and <a href="function_parameters.html"><code class="d_inline">ref</code> parameters</a>, which we have not covered yet, I would like to mention here that <a href="http://dlang.org/phobos/core_checkedint.html">the <code class="d_inline">core.checkedint</code> module</a> contains arithmetic functions that detect overflow. Instead of operators like <code class="d_inline">+</code> and <code class="d_inline">-</code>, this module uses functions: <code class="d_inline">adds</code> and <code class="d_inline">addu</code> for signed and unsigned addition, <code class="d_inline">muls</code> and <code class="d_inline">mulu</code> for signed and unsigned multiplication, <code class="d_inline">subs</code> and <code class="d_inline">subu</code> for signed and unsigned subtraction, and <code class="d_inline">negs</code> for negation.
+</p>
+
+<p>For example, assuming that <code class="d_inline">a</code> and <code class="d_inline">b</code> are two <code class="d_inline">int</code> variables, the following code would detect whether adding them has caused an overflow:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> core.checkedint;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_comment">// Let's cause overflow for test purposes
+</span>    <span class="d_keyword">int</span> a = <span class="d_keyword">int</span>.max - 1;
+    <span class="d_keyword">int</span> b = 2;
+
+    <span class="d_comment">// This variable will become 'true' if the addition
+</span>    <span class="d_comment">// operation inside the 'adds' function overflows:
+</span>    <span class="d_keyword">bool</span> hasOverflowed = <span class="d_keyword">false</span>;
+    <span class="d_keyword">int</span> result = adds(a, b, <span class="hilite">hasOverflowed</span>);
+
+    <span class="d_keyword">if</span> (hasOverflowed) {
+        <span class="d_comment">// We must not use 'result' because it has overflowed
+</span>        <span class="d_comment">// ...
+</span>
+    } <span class="d_keyword">else</span> {
+        <span class="d_comment">// We can use 'result'
+</span>        <span class="d_comment">// ...
+</span>    }
+}
+</pre>
+
+<p><a id="ix_Integers and Arithmetic Operations.experimental.checkedint" content="experimental.checkedint"></a> <a id="ix_Integers and Arithmetic Operations.Checked" content="Checked"></a> There is also <a href="https://dlang.org/phobos/std_experimental_checkedint.html">the std.experimental.checkedint</a> module that defines the <code class="d_inline">Checked</code> template but both its usage and its implementation are too advanced at this point in the book.
+</p>
+
+<h6>Preventing overflow</h6>
+
+<p>If the result of an operation cannot fit in the type of the result, then there is nothing that can be done. Sometimes, although the ultimate result would fit in a certain type, the intermediate calculations may overflow and cause incorrect results.
+</p>
+
+<p>As an example, let's assume that we need to plant an apple tree per 1000 square meters of an area that is 40 by 60 kilometers. How many trees are needed?
+</p>
+
+<p>When we solve this problem on paper, we see that the result is 40000 times 60000 divided by 1000, being equal to 2.4 million trees. Let's write a program that executes this calculation:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">int</span> width  = 40000;
+    <span class="d_keyword">int</span> length = 60000;
+    <span class="d_keyword">int</span> areaPerTree = 1000;
+
+    <span class="d_keyword">int</span> treesNeeded = width * length / areaPerTree;
+
+    writeln(<span class="d_string">"Number of trees needed: "</span>, treesNeeded);
+}
+</pre>
+
+<pre class="shell">Number of trees needed: -1894967
+</pre>
+
+<p>Not to mention it is not even close, the result is also less than zero! In this case, the intermediate calculation <code class="d_inline">width&nbsp;*&nbsp;length</code> overflows and the subsequent calculation of <code class="d_inline">/&nbsp;areaPerTree</code> produces an incorrect result.
+</p>
+
+<p>One way of avoiding the overflow in this example is to change the order of operations:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span> treesNeeded = width / areaPerTree * length ;
+</pre>
+
+<p>The result would now be correct:
+</p>
+
+<pre class="shell">Number of trees needed: 2400000
+</pre>
+
+<p>The reason this method works is the fact that all of the steps of the calculation now fit the <code class="d_inline">int</code> type.
+</p>
+
+<p>Please note that this is not a complete solution because this time the intermediate value is prone to truncation, which may affect the result significantly in certain other calculations. Another solution might be to use a floating point type instead of an integer type: <code class="d_inline">float</code>, <code class="d_inline">double</code>, or <code class="d_inline">real</code>.
+</p>
+
+<h6>Preventing truncation</h6>
+
+<p>Changing the order of operations may be a solution to truncation as well. An interesting example of truncation can be seen by dividing and multiplying a value with the same number. We would expect the result of 10/9*9 to be 10, but it comes out as 9:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main() {
+    writeln(10 / 9 * 9);
+}
+</pre>
+
+<pre class="shell">9
+</pre>
+
+<p>The result is correct when truncation is avoided by changing the order of operations:
+</p>
+
+<pre class="d_code">    writeln(10 * 9 / 9);
+</pre>
+
+<pre class="shell">10
+</pre>
+
+<p>This too is not a complete solution: This time the intermediate calculation could be prone to overflow. Using a floating point type may be another solution to truncation in certain calculations.
+</p>
+
+<h5 class="subsection">Problemler</h5>
+    <ol>
+<li>Write a program that takes two integers from the user, prints the integer quotient resulting from the division of the first by the second, and also prints the remainder. For example, when 7 and 3 are entered, have the program print the following equation:
+
+<pre class="shell">7 = 3 * 2 + 1
+</pre>
+
+</li>
+
+<li>Modify the program to print a shorter output when the remainder is 0. For example, when 10 and 5 are entered, it should not print "10 = 5 * 2 + 0" but just the following:
+
+<pre class="shell">10 = 5 * 2
+</pre>
+
+</li>
+
+<li>Write a simple calculator that supports the four basic arithmetic operations. Have the program let the operation to be selected from a menu and apply that operation to the two values that are entered. You can ignore overflow and truncation in this program.
+</li>
+
+<li>Write a program that prints the values from 1 to 10, each on a separate line, with the exception of value 7. Do not use repeated lines as in the following code:
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_comment">// Do not do this!
+</span>    writeln(1);
+    writeln(2);
+    writeln(3);
+    writeln(4);
+    writeln(5);
+    writeln(6);
+    writeln(8);
+    writeln(9);
+    writeln(10);
+}
+</pre>
+
+<p>Instead, imagine a variable whose value is incremented in a loop. You may need to take advantage of the <i>is not equal to</i> operator <code class="d_inline">!=</code> here.
+</p>
+
+</li>
+
+</ol> <div class="cozum_link_cok"><p><a target="ddili_cozum" href="arithmetic.cozum.html"><i>... çözümler</i></a></p></div>
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on Mon Jan 29 20:50:24 2024
+</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

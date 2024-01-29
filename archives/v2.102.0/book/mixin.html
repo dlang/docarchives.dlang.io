@@ -1,0 +1,701 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>mixin - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='mixin' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5Bmixin%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/d.en/mixin.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>mixin</h1>
+        
+        
+
+
+
+<p>Mixins are for <i>mixing in</i> generated code into the source code. The mixed-in code may be generated as a template instance or a <code class="d_inline">string</code>.
+</p>
+
+<p>Code can be inserted into the program as a <i>string import</i> as well.
+</p>
+
+<h5 class="subsection"><a id="ix_mixin.template mixin" content="template mixin"></a> Template mixins</h5>
+
+<p>We have seen in the <a href="templates.html">Templates</a> and <a href="templates_more.html">More Templates</a> chapters that templates define code as a pattern, for the compiler to generate actual instances from that pattern. Templates can generate functions, structs, unions, classes, interfaces, and any other legal D code.
+</p>
+
+<p>Template mixins insert instantiations of templates into the code by the <code class="d_inline">mixin</code> keyword:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">mixin</span> <i>a_template</i>!(<i>template_parameters</i>)
+</pre>
+
+<p>As we will see in the example below, the <code class="d_inline">mixin</code> keyword is used in the definitions of template mixins as well.
+</p>
+
+<p>The instantiation of the template for the specific set of template parameters is inserted into the source code right where the <code class="d_inline">mixin</code> keyword appears.
+</p>
+
+<p>For example, let's have a template that defines both an array of edges and a pair of functions that operate on those edges:
+</p>
+
+<pre class="d_code"><span class="hilite"><span class="d_keyword">mixin</span></span> <span class="d_keyword">template</span> EdgeArrayFeature(T, size_t count) {
+    T[count] edges;
+
+    <span class="d_keyword">void</span> setEdge(size_t index, T edge) {
+        edges[index] = edge;
+    }
+
+    <span class="d_keyword">void</span> printEdges() {
+        writeln(<span class="d_string">"The edges:"</span>);
+
+        <span class="d_keyword">foreach</span> (i, edge; edges) {
+            writef(<span class="d_string">"%s:%s "</span>, i, edge);
+        }
+
+        writeln();
+    }
+}
+</pre>
+
+<p>That template leaves the type and number of array elements flexible. The instantiation of that template for <code class="d_inline">int</code> and <code class="d_inline">2</code> would be mixed in by the following syntax:
+</p>
+
+<pre class="d_code">    <span class="hilite"><span class="d_keyword">mixin</span></span> EdgeArrayFeature!(<span class="d_keyword">int</span>, 2);
+</pre>
+
+<p>For example, the <code class="d_inline">mixin</code> above can insert the two-element <code class="d_inline">int</code> array and the two functions that are generated by the template right inside a <code class="d_inline">struct</code> definition:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Line {
+     <span class="d_keyword">mixin</span> EdgeArrayFeature!(<span class="d_keyword">int</span>, 2);
+}
+</pre>
+
+<p>As a result, <code class="d_inline">Line</code> ends up defining a member array and two member functions:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> line = Line();
+    line.setEdge(0, 100);
+    line.setEdge(1, 200);
+    line.printEdges();
+}
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">The edges:
+0:100 1:200 
+</pre>
+
+<p>Another instantiation of the same template can be used e.g. inside a function:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Point {
+    <span class="d_keyword">int</span> x;
+    <span class="d_keyword">int</span> y;
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="hilite"><span class="d_keyword">mixin</span></span> EdgeArrayFeature!(<span class="hilite">Point</span>, 5);
+
+    setEdge(3, Point(3, 3));
+    printEdges();
+}
+</pre>
+
+<p>That <code class="d_inline">mixin</code> inserts an array and two local functions inside <code class="d_inline">main()</code>. The output:
+</p>
+
+<pre class="shell">The edges:
+0:Point(0, 0) 1:Point(0, 0) 2:Point(0, 0) 3:Point(3, 3) 4:Point(0, 0) 
+</pre>
+
+<h6><a id="ix_mixin.local import" content="local import"></a> <a id="ix_mixin.import, local" content="import, local"></a> Template mixins must use local imports</h6>
+
+<p>Mixing in template instantiations <i>as is</i> can cause problems about the modules that the template itself is making use of: Those modules may not be available at the <code class="d_inline">mixin</code> site.
+</p>
+
+<p>Let's consider the following module named <code class="d_inline">a</code>. Naturally, it would have to import the <code class="d_inline">std.string</code> module that it is making use of:
+</p>
+
+<pre class="d_code"><span class="d_keyword">module</span> a;
+
+<span class="hilite"><span class="d_keyword">import</span> std.string;</span>    <span class="d_comment">// ← wrong place</span>
+
+<span class="d_keyword">mixin</span> <span class="d_keyword">template</span> A(T) {
+    string a() {
+        T[] array;
+        <span class="d_comment">// ...
+</span>        <span class="d_keyword">return</span> format(<span class="d_string">"%(%s, %)"</span>, array);
+    }
+}
+</pre>
+
+<p>However, if <code class="d_inline">std.string</code> is not imported at the actual <code class="d_inline">mixin</code> site, then the compiler would not be able to find the definition of <code class="d_inline">format()</code> at that point. Let's consider the following program that imports <code class="d_inline">a</code> and tries to mix in <code class="d_inline">A!int</code> from that module:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> a;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">mixin</span> A!<span class="d_keyword">int</span>;    <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+}
+</pre>
+
+<pre class="shell">Error: <span class="hilite">undefined identifier format</span>
+Error: mixin deneme.main.A!int error instantiating
+</pre>
+
+<p>For that reason, the modules that template mixins use must be imported in local scopes:
+</p>
+
+<pre class="d_code"><span class="d_keyword">module</span> a;
+
+<span class="d_keyword">mixin</span> <span class="d_keyword">template</span> A(T) {
+    string a() {
+        <span class="hilite"><span class="d_keyword">import</span> std.string;</span>    <span class="d_comment">// ← right place</span>
+
+        T[] array;
+        <span class="d_comment">// ...
+</span>        <span class="d_keyword">return</span> format(<span class="d_string">"%(%s, %)"</span>, array);
+    }
+}
+</pre>
+
+<p>As long as it is inside the template definition, the <code class="d_inline">import</code> directive above can be outside of the <code class="d_inline">a()</code> function as well.
+</p>
+
+<h6><a id="ix_mixin.this, template parameter" content="this, template parameter"></a> Identifying the type that is mixing in</h6>
+
+<p>Sometimes a mixin may need to identify the actual type that is mixing it in. That information is available through <i><code class="d_inline">this</code> template parameters</i> as we have seen in <a href="templates_more.html">the More Templates chapter</a>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">mixin</span> <span class="d_keyword">template</span> MyMixin(T) {
+    <span class="d_keyword">void</span> foo<span class="hilite">(<span class="d_keyword">this</span> MixingType)</span>() {
+        <span class="d_keyword">import</span> std.stdio;
+        writefln(<span class="d_string">"The actual type that is mixing in: %s"</span>,
+                 <span class="hilite">MixingType</span>.stringof);
+    }
+}
+
+<span class="d_keyword">struct</span> MyStruct {
+    <span class="d_keyword">mixin</span> MyMixin!(<span class="d_keyword">int</span>);
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> a = MyStruct();
+    a.foo();
+}
+</pre>
+
+<p>The output of the program shows that the actual type is available inside the template as <code class="d_inline">MyStruct</code>:
+</p>
+
+<pre class="shell">The actual type that is mixing in: MyStruct
+</pre>
+
+<h5 class="subsection"><a id="ix_mixin.string mixin" content="string mixin"></a> String mixins</h5>
+
+<p>Another powerful feature of D is being able to insert code as <code class="d_inline">string</code> as long as that string is known at compile time. The syntax of string mixins requires the use of parentheses:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">mixin</span> <span class="hilite">&#40;</span><i>compile_time_generated_string</i><span class="hilite">&#41;</span>
+</pre>
+
+<p>For example, the <i>hello world</i> program can be written with a <code class="d_inline">mixin</code> as well:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">mixin</span> (<span class="d_string">`writeln("Hello, World!");`</span>);
+}
+</pre>
+
+<p>The string gets inserted as code and the program produces the following output:
+</p>
+
+<pre class="shell">Hello, World!
+</pre>
+
+<p>We can go further and insert all of the program as a string mixin:
+</p>
+
+<pre class="d_code"><span class="d_keyword">mixin</span> (
+<span class="d_string">`import std.stdio; void main() { writeln("Hello, World!"); }`</span>
+);
+</pre>
+
+<p>Obviously, there is no need for mixins in these examples, as the strings could have been written as code as well.
+</p>
+
+<p>The power of string mixins comes from the fact that the code can be generated at compile time. The following example takes advantage of CTFE to generate statements at compile time:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+string printStatement(string message) {
+    <span class="d_keyword">return</span> <span class="d_string">`writeln("`</span> ~ message ~ <span class="d_string">`");`</span>;
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">mixin</span> (printStatement(<span class="d_string">"Hello, World!"</span>));
+    <span class="d_keyword">mixin</span> (printStatement(<span class="d_string">"Hi, World!"</span>));
+}
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">Hello, World!
+Hi, World!
+</pre>
+
+<p>Note that the <code class="d_inline"><span class="d_string">"writeln"</span></code> expressions are not executed inside <code class="d_inline">printStatement()</code>. Rather, <code class="d_inline">printStatement()</code> generates code that includes <code class="d_inline">writeln()</code> expressions that are executed inside <code class="d_inline">main()</code>. The generated code is the equivalent of the following:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main() {
+    writeln(<span class="d_string">"Hello, World!"</span>);
+    writeln(<span class="d_string">"Hi, World!"</span>);
+}
+</pre>
+
+<h6>Multiple <code class="d_inline">mixin</code> arguments</h6>
+
+<p>As long as they are all known at compile time, <code class="d_inline">mixin</code> can take multiple arguments and automatically concatenates their string representations:
+</p>
+
+<pre class="d_code">  <span class="d_keyword">mixin</span> (<span class="d_string">"const a = "</span>, <span class="d_keyword">int</span>.sizeof, <span class="d_string">";"</span>);
+</pre>
+
+<p>This can be more convenient compared to using e.g. a <code class="d_inline">format</code> expression:
+</p>
+
+<pre class="d_code">  <span class="d_keyword">mixin</span> (format!<span class="d_string">"const a = %s;"</span>(<span class="d_keyword">int</span>.sizeof));  <span class="d_comment">// Same as above
+</span></pre>
+
+<h6>Debugging string mixins</h6>
+
+<p><a id="ix_mixin.-mixin, compiler switch" content="-mixin, compiler switch"></a> Because generated code is not readily visible as a whole in source code, it can be difficult to identify causes of compilation errors with <code class="d_inline">mixin</code> expressions. To help with debugging string mixins, there is the <code class="d_inline">dmd</code> compiler switch <code class="d_inline">-mixin</code>, which writes all mixed-in code to a specified file.
+</p>
+
+<p>Let's consider the following program that has a syntax error in code that is being mixed in. It is not obvious from the compiler error that the syntax error is the missing semicolon at the end of the definition of the <code class="d_inline">struct</code> member:
+</p>
+
+<pre class="d_code">string makeStruct(string name, string member) {
+  <span class="d_keyword">import</span> std.format;
+  <span class="d_keyword">return</span> format!<span class="d_string">"struct %s {\n  int %s\n}"</span>(name, member);
+}
+
+<span class="d_keyword">mixin</span> (makeStruct(<span class="d_string">"S"</span>, <span class="d_string">"m"</span>));    <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+
+<span class="d_keyword">void</span> main() {
+}
+</pre>
+
+<p>When compiled with the <code class="d_inline">-mixin</code> switch, the compilation error would point at a line inside the specified file (<code class="d_inline">mixed_in_code</code> in the example below):
+</p>
+
+<pre class="shell"><span class="shell_observed">$</span> dmd <span class="hilite">-mixin=mixed_in_code</span> deneme.d
+mixed_in_code(<span class="hilite">154</span>): Error: semicolon expected, not <span class="d_inlinecode donthyphenate notranslate">}</span>
+</pre>
+
+<p>Along with all other code that are mixed-in by the standard library, there would be the following code at the specified line inside file <code class="d_inline">mixed_in_code</code>:
+</p>
+
+<pre class="shell">[...]
+// expansion at deneme.d(6)
+struct S {
+  int m
+}        <span class="shell_note">← Line 154</span>
+</pre>
+
+
+<p>Another option for debugging string mixins is <a href="pragma.html"><code class="d_inline">pragma(msg)</code></a>, which would print the generated code during compilation. This option is less practical because it requires replacing the <code class="d_inline">mixin</code> keyword with <code class="d_inline">pragma(msg)</code> temporarily for debugging:
+</p>
+
+<pre class="d_code"><span class="d_keyword">pragma</span>(msg, makeStruct(<span class="d_string">"S"</span>, <span class="d_string">"m"</span>));
+</pre>
+
+<h5 class="subsection"><a id="ix_mixin.name space, mixin" content="name space, mixin"></a> Mixin name spaces</h5>
+
+<p>It is possible to avoid and resolve name ambiguities in template mixins.
+</p>
+
+<p>For example, there are two <code class="d_inline">i</code> variables defined inside <code class="d_inline">main()</code> in the following program: one is defined explicitly in <code class="d_inline">main</code> and the other is mixed in. When a mixed-in name is the same as a name that is in the surrounding scope, then the name that is in the surrounding scope gets used:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">template</span> Templ() {
+    <span class="hilite"><span class="d_keyword">int</span> i;</span>
+
+    <span class="d_keyword">void</span> print() {
+        writeln(i);  <span class="d_comment">// Always the 'i' that is defined in Templ
+</span>    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="hilite"><span class="d_keyword">int</span> i;</span>
+    <span class="d_keyword">mixin</span> Templ;
+
+    i = 42;      <span class="d_comment">// Sets the 'i' that is defined explicitly in main
+</span>    writeln(i);  <span class="d_comment">// Prints the 'i' that is defined explicitly in main
+</span>    print();     <span class="d_comment">// Prints the 'i' that is mixed in
+</span>}
+</pre>
+
+<p>As implied in the comments above, template mixins define a name space for their contents and the names that appear in the template code are first looked up in that name space. We can see this in the behavior of <code class="d_inline">print()</code>:
+</p>
+
+<pre class="shell">42
+0     <span class="shell_note">← printed by print()</span>
+</pre>
+
+<p>The compiler cannot resolve name conflicts if the same name is defined by more than one template mixin. Let's see this in a short program that mixes in the same template instance twice:
+</p>
+
+<pre class="d_code"><span class="d_keyword">template</span> Templ() {
+    <span class="d_keyword">int</span> i;
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">mixin</span> Templ;
+    <span class="d_keyword">mixin</span> Templ;
+
+    i = 42;        <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+}
+</pre>
+
+<pre class="shell">Error: deneme.main.Templ!().i at ... <span class="hilite">conflicts with</span>
+deneme.main.Templ!().i at ...
+</pre>
+
+<p>To prevent this, it is possible to assign name space identifiers for template mixins and refer to contained names by those identifiers:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">mixin</span> Templ <span class="hilite">A</span>;    <span class="d_comment">// Defines A.i
+</span>    <span class="d_keyword">mixin</span> Templ <span class="hilite">B</span>;    <span class="d_comment">// Defines B.i
+</span>
+    <span class="hilite">A.</span>i = 42;         <span class="d_comment">// ← not ambiguous anymore
+</span></pre>
+
+<p>String mixins do not have these name space features. However, it is trivial to use a string as a template mixin simply by passing it through a simple wrapper template.
+</p>
+
+<p>Let's first see a similar name conflict with string mixins:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> main() {
+    <span class="d_keyword">mixin</span> (<span class="d_string">"int i;"</span>);
+    <span class="d_keyword">mixin</span> (<span class="d_string">"int i;"</span>);    <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+
+    i = 42;
+}
+</pre>
+
+<pre class="shell">Error: declaration deneme.main.i is <span class="hilite">already defined</span>
+</pre>
+
+<p>One way of resolving this issue is to pass the <code class="d_inline">string</code> through the following trivial template that effectively converts a string mixin to a template mixin:
+</p>
+
+<pre class="d_code"><span class="d_keyword">template</span> Templatize(string str) {
+    <span class="d_keyword">mixin</span> (str);
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">mixin</span> Templatize!(<span class="d_string">"int i;"</span>) A;    <span class="d_comment">// Defines A.i
+</span>    <span class="d_keyword">mixin</span> Templatize!(<span class="d_string">"int i;"</span>) B;    <span class="d_comment">// Defines B.i
+</span>
+    A.i = 42;                         <span class="d_comment">// ← not ambiguous anymore
+</span>}
+</pre>
+
+<h5 class="subsection"><a id="ix_mixin.operator overloading, mixin" content="operator overloading, mixin"></a> String mixins in operator overloading</h5>
+
+<p>We have seen in <a href="operator_overloading.html">the Operator Overloading chapter</a> how <code class="d_inline">mixin</code> expressions helped with the definitions of some of the operators.
+</p>
+
+<p>In fact, the reason why most operator member functions are defined as templates is to make the operators available as <code class="d_inline">string</code> values so that they can be used for code generation. We have seen examples of this both in that chapter and its exercise solutions.
+</p>
+
+<h5 class="subsection"><a id="ix_mixin.destructor, mixin" content="destructor, mixin"></a> Mixed in destructors</h5>
+
+<p>It is possible to mix in multiple destructors to a user defined type. Those destructors are called in the reverse order of the <code class="d_inline">mixin</code> statements that added them. This feature allows mixing in different resources to a type, each introducing its own cleanup code.
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">mixin</span> <span class="d_keyword">template</span> Foo() {
+    ~<span class="d_keyword">this</span>() {
+        writeln(<span class="d_string">"Destructor mixed-in by Foo"</span>);
+    }
+}
+
+<span class="d_keyword">mixin</span> <span class="d_keyword">template</span> Bar() {
+    ~<span class="d_keyword">this</span>() {
+        writeln(<span class="d_string">"Destructor mixed-in by Bar"</span>);
+    }
+}
+
+<span class="d_keyword">struct</span> S {
+    ~<span class="d_keyword">this</span>() {
+        writeln(<span class="d_string">"Actual destructor"</span>);
+    }
+    <span class="d_keyword">mixin</span> Foo;
+    <span class="d_keyword">mixin</span> Bar;
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> s = S();
+}
+</pre>
+
+<pre class="shell">Destructor mixed-in by Bar
+Destructor mixed-in by Foo
+Actual destructor
+</pre>
+
+<p>Due to a bug as of this writing, the same behavior does not apply to other special functions like constructors. Additionally, a destructor mixed in by a string mixin does conflict with the existing destructor of the type.
+</p>
+
+<h5 class="subsection"><a id="ix_mixin.text file import" content="text file import"></a> <a id="ix_mixin.file import" content="file import"></a> <a id="ix_mixin.import, file" content="import, file"></a> <a id="ix_mixin.string import" content="string import"></a> <a id="ix_mixin.import, string" content="import, string"></a> Importing text files</h5>
+
+<p>It is possible to insert contents of text files into code at compile time. The contents are treated as <code class="d_inline">string</code> literals and can be used anywhere strings can be used. For example, they can be mixed in as code.
+</p>
+
+<p>For example, let's assume there are two text files on the file system named <code class="d_inline">file_one</code> and <code class="d_inline">file_two</code> having the following contents.
+</p>
+
+<ul><li><code class="d_inline">file_one</code>:
+
+<pre class="shell">Hello
+</pre>
+</li>
+
+<li><code class="d_inline">file_two</code>:
+
+<pre class="shell">s ~= ", World!";
+import std.stdio;
+writeln(s);
+</pre>
+</li>
+
+</ul>
+
+<p>The two <code class="d_inline">import</code> directives in the following program would correspond to the contents of those files converted to <code class="d_inline">string</code> literals at compile time:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> main() {
+    string s = <span class="d_keyword">import</span> (<span class="d_string">"file_one"</span>);
+    <span class="d_keyword">mixin</span> (<span class="d_keyword">import</span> (<span class="d_string">"file_two"</span>));
+}
+</pre>
+
+<p><a id="ix_mixin.-J, compiler switch" content="-J, compiler switch"></a> Text file imports (a.k.a. string imports) require the <code class="d_inline">-J</code> compiler switch which tells the compiler where to find the text files. For example, if the two files are in the <i>current directory</i> (specified with <code class="d_inline">.</code> in Linux environments), the program can be compiled with the following command:
+</p>
+
+<pre class="shell">$ dmd <span class="hilite">-J.</span> deneme.d
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">Hello, World!
+</pre>
+
+<p>Considering the file contents as <code class="d_inline">string</code> literals, the program is the equivalent of the following one:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> main() {
+    string s = <span class="d_string">`Hello`</span>;         <span class="d_comment">// ← Content of file_one as string</span>
+    <span class="d_keyword">mixin</span> (<span class="d_string">`s ~= ", World!";
+import std.stdio;
+writeln(s);`</span>);                  <span class="d_comment">// ← Content of file_two as string</span>
+}
+</pre>
+
+<p>Further, considering the mixed-in string as well, the program is the equivalent of the following one:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> main() {
+    string s = <span class="d_string">`Hello`</span>;
+    s ~= <span class="d_string">", World!"</span>;
+    <span class="d_keyword">import</span> std.stdio;
+    writeln(s);
+}
+</pre>
+
+<h5 class="subsection">Example</h5>
+
+<p>(<i><b>Note:</b> Specifying predicates as strings was used more commonly before the lambda syntax was added to D. Although string predicates as in this example are still used in Phobos, the <code class="d_inline">=&gt;</code> lambda syntax may be more suitable in most cases.</i>)
+</p>
+
+<p>Let's consider the following function template that takes an array of numbers and returns another array that consists of the elements that satisfy a specific condition:
+</p>
+
+<pre class="d_code"><span class="d_keyword">int</span>[] filter(<span class="hilite">string predicate</span>)(<span class="d_keyword">int</span>[] numbers) {
+    <span class="d_keyword">int</span>[] result;
+
+    <span class="d_keyword">foreach</span> (number; numbers) {
+        <span class="d_keyword">if</span> (<span class="hilite"><span class="d_keyword">mixin</span> (predicate)</span>) {
+            result ~= number;
+        }
+    }
+
+    <span class="d_keyword">return</span> result;
+}
+</pre>
+
+<p>That function template takes the filtering condition as its template parameter and inserts that condition directly into an <code class="d_inline">if</code> statement as is.
+</p>
+
+<p>For that condition to choose numbers that are e.g. less than 7, the <code class="d_inline">if</code> condition should look like the following code:
+</p>
+
+<pre class="d_code">        <span class="d_keyword">if</span> (number &lt; 7) {
+</pre>
+
+<p>The users of <code class="d_inline">filter()</code> template can provide the condition as a <code class="d_inline">string</code>:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span>[] numbers = [ 1, 8, 6, -2, 10 ];
+    <span class="d_keyword">int</span>[] chosen = filter!<span class="hilite"><span class="d_string">"number &lt; 7"</span></span>(numbers);
+</pre>
+
+<p>Importantly, the name used in the template parameter must match the name of the variable used in the implementation of <code class="d_inline">filter()</code>. So, the template must document what that name should be and the users must use that name.
+</p>
+
+<p>Phobos uses names consisting of single letters like a, b, n, etc.
+</p>
+
+macros:
+        TITLE=Mixins
+
+        DESCRIPTION=Template mixins and string mixins.
+
+        KEYWORDS=d programming language tutorial book mixin
+
+SOZLER=
+
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on Mon Jan 29 20:50:22 2024
+</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

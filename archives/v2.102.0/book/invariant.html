@@ -1,0 +1,471 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Contract Programming for Structs and Classes - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Contract Programming for Structs and Classes' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BContract Programming for Structs and Classes%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/d.en/invariant.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Contract Programming for Structs and Classes</h1>
+        
+        
+
+
+
+<p>Contract programming is very effective in reducing coding errors. We have seen two of the contract programming features earlier in <a href="contracts.html">the Contract Programming chapter</a>: The <code class="d_inline">in</code> and <code class="d_inline">out</code> blocks ensure input and output contracts of functions.
+</p>
+
+<p><i><b>Note:</b> It is very important that you consider the guidelines under the "<code class="d_inline">in</code> blocks versus <code class="d_inline">enforce</code> checks" section of that chapter. The examples in this chapter are based on the assumption that problems with object and parameter consistencies are due to programmer errors. Otherwise, you should use <code class="d_inline">enforce</code> checks inside function bodies.</i>
+</p>
+
+<p>As a reminder, let's write a function that calculates the area of a triangle by Heron's formula. We will soon move the <code class="d_inline">in</code> and <code class="d_inline">out</code> blocks of this function to the constructor of a struct.
+</p>
+
+<p>For this calculation to work correctly, the length of every side of the triangle must be greater than zero. Additionally, since it is impossible to have a triangle where one of the sides is greater than the sum of the other two, that condition must also be checked.
+</p>
+
+<p>Once these input conditions are satisfied, the area of the triangle would be greater than zero. The following function ensures that all of these requirements are satisfied:
+</p>
+
+<pre class="d_code"><span class="d_keyword">private</span> <span class="d_keyword">import</span> std.math;
+
+<span class="d_keyword">double</span> triangleArea(<span class="d_keyword">double</span> a, <span class="d_keyword">double</span> b, <span class="d_keyword">double</span> c)
+<span class="d_keyword">in</span> {
+    <span class="d_comment">// Every side must be greated than zero
+</span>    <span class="d_keyword">assert</span>(a &gt; 0);
+    <span class="d_keyword">assert</span>(b &gt; 0);
+    <span class="d_keyword">assert</span>(c &gt; 0);
+
+    <span class="d_comment">// Every side must be less than the sum of the other two
+</span>    <span class="d_keyword">assert</span>(a &lt; (b + c));
+    <span class="d_keyword">assert</span>(b &lt; (a + c));
+    <span class="d_keyword">assert</span>(c &lt; (a + b));
+
+} <span class="d_keyword">out</span> (result) {
+    <span class="d_keyword">assert</span>(result &gt; 0);
+
+} <span class="d_keyword">do</span> {
+    <span class="d_keyword">immutable</span> halfPerimeter = (a + b + c) / 2;
+
+    <span class="d_keyword">return</span> sqrt(halfPerimeter
+                * (halfPerimeter - a)
+                * (halfPerimeter - b)
+                * (halfPerimeter - c));
+}
+</pre>
+
+<h5 class="subsection"><a id="ix_Contract Programming for Structs and Classes.in, contract" content="in, contract"></a> <a id="ix_Contract Programming for Structs and Classes.out, contract" content="out, contract"></a> <a id="ix_Contract Programming for Structs and Classes.precondition" content="precondition"></a> <a id="ix_Contract Programming for Structs and Classes.postcondition" content="postcondition"></a> Preconditions and postconditions for member functions</h5>
+
+<p>The <code class="d_inline">in</code> and <code class="d_inline">out</code> blocks can be used with member functions as well.
+</p>
+
+<p>Let's convert the function above to a member function of a <code class="d_inline">Triangle</code> struct:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.math;
+
+<span class="d_keyword">struct</span> Triangle {
+<span class="d_keyword">private</span>:
+
+    <span class="d_keyword">double</span> a;
+    <span class="d_keyword">double</span> b;
+    <span class="d_keyword">double</span> c;
+
+<span class="d_keyword">public</span>:
+
+    <span class="d_keyword">double</span> area() <span class="d_keyword">const</span>
+    <span class="hilite"><span class="d_keyword">out</span> (result)</span> {
+        <span class="d_keyword">assert</span>(result &gt; 0);
+
+    } <span class="d_keyword">do</span> {
+        <span class="d_keyword">immutable</span> halfPerimeter = (a + b + c) / 2;
+
+        <span class="d_keyword">return</span> sqrt(halfPerimeter
+                    * (halfPerimeter - a)
+                    * (halfPerimeter - b)
+                    * (halfPerimeter - c));
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> threeFourFive = Triangle(3, 4, 5);
+    writeln(threeFourFive.area);
+}
+</pre>
+
+<p>As the sides of the triangle are now member variables, the function does not take parameters anymore. That is why this function does not have an <code class="d_inline">in</code> block. Instead, it assumes that the members already have consistent values.
+</p>
+
+<p>The consistency of objects can be ensured by the following features.
+</p>
+
+<h5 class="subsection">Preconditions and postconditions for object consistency</h5>
+
+<p>The member function above is written under the assumption that the members of the object already have consistent values. One way of ensuring that assumption is to define an <code class="d_inline">in</code> block for the constructor so that the objects are guaranteed to start their lives in consistent states:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Triangle {
+<span class="d_comment">// ...
+</span>
+    <span class="d_keyword">this</span>(<span class="d_keyword">double</span> a, <span class="d_keyword">double</span> b, <span class="d_keyword">double</span> c)
+    <span class="hilite"><span class="d_keyword">in</span></span> {
+        <span class="d_comment">// Every side must be greated than zero
+</span>        <span class="d_keyword">assert</span>(a &gt; 0);
+        <span class="d_keyword">assert</span>(b &gt; 0);
+        <span class="d_keyword">assert</span>(c &gt; 0);
+
+        <span class="d_comment">// Every side must be less than the sum of the other two
+</span>        <span class="d_keyword">assert</span>(a &lt; (b + c));
+        <span class="d_keyword">assert</span>(b &lt; (a + c));
+        <span class="d_keyword">assert</span>(c &lt; (a + b));
+
+    } <span class="d_keyword">do</span> {
+        <span class="d_keyword">this</span>.a = a;
+        <span class="d_keyword">this</span>.b = b;
+        <span class="d_keyword">this</span>.c = c;
+    }
+
+<span class="d_comment">// ...
+</span>}
+</pre>
+
+<p>This prevents creating invalid <code class="d_inline">Triangle</code> objects at run time:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> negativeSide = Triangle(-1, 1, 1);
+    <span class="d_keyword">auto</span> sideTooLong = Triangle(1, 1, 10);
+</pre>
+
+<p>The <code class="d_inline">in</code> block of the constructor would prevent such invalid objects:
+</p>
+
+<pre class="shell">core.exception.AssertError@deneme.d: Assertion failure
+</pre>
+
+<p>Although an <code class="d_inline">out</code> block has not been defined for the constructor above, it is possible to define one to ensure the consistency of members right after construction.
+</p>
+
+<h5 class="subsection"><a id="ix_Contract Programming for Structs and Classes.invariant" content="invariant"></a> <code class="d_inline">invariant()</code> blocks for object consistency</h5>
+
+<p>The <code class="d_inline">in</code> and <code class="d_inline">out</code> blocks of constructors guarantee that the objects start their lives in consistent states and the <code class="d_inline">in</code> and <code class="d_inline">out</code> blocks of member functions guarantee that those functions themselves work correctly.
+</p>
+
+<p>However, these checks are not suitable for guaranteeing that the objects are always in consistent states. Repeating the <code class="d_inline">out</code> blocks for every member function would be excessive and error-prone.
+</p>
+
+<p>The conditions that define the consistency and validity of an object are called the <i>invariants</i> of that object. For example, if there is a one-to-one correspondence between the orders and the invoices of a customer class, then an invariant of that class would be that the lengths of the order and invoice arrays would be equal. When that condition is not satisfied for any object, then the object would be in an inconsistent state.
+</p>
+
+<p>As an example of an invariant, let's consider the <code class="d_inline">School</code> class from <a href="encapsulation.html">the Encapsulation and Protection Attributes chapter</a>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">class</span> School {
+<span class="d_keyword">private</span>:
+
+    Student[] students;
+    size_t femaleCount;
+    size_t maleCount;
+
+<span class="d_comment">// ...
+</span>}
+</pre>
+
+<p>The objects of that class are consistent only if an invariant that involves its three members are satisfied. The length of the student array must be equal to the sum of the female and male students:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">assert</span>(students.length == (femaleCount + maleCount));
+</pre>
+
+<p>If that condition is ever false, then there must be a bug in the implementation of this class.
+</p>
+
+<p><code class="d_inline">invariant()</code> blocks are for guaranteeing the invariants of user-defined types. <code class="d_inline">invariant()</code> blocks are defined inside the body of a <code class="d_inline">struct</code> or a <code class="d_inline">class</code>. They contain <code class="d_inline">assert</code> checks similar to <code class="d_inline">in</code> and <code class="d_inline">out</code> blocks:
+</p>
+
+<pre class="d_code"><span class="d_keyword">class</span> School {
+<span class="d_keyword">private</span>:
+
+    Student[] students;
+    size_t femaleCount;
+    size_t maleCount;
+
+    <span class="hilite"><span class="d_keyword">invariant</span>()</span> {
+        <span class="d_keyword">assert</span>(students.length == (femaleCount + maleCount));
+    }
+
+<span class="d_comment">// ...
+</span>}
+</pre>
+
+<p>As needed, there can be more than one <code class="d_inline">invariant()</code> block in a user-defined type.
+</p>
+
+<p>The <code class="d_inline">invariant()</code> blocks are executed automatically at the following times:
+</p>
+
+<ul>
+<li>After the execution of the constructor: This guarantees that every object starts its life in a consistent state.</li>
+
+<li>Before the execution of the destructor: This guarantees that the destructor will be executed on a consistent object.</li>
+
+<li>Before and after the execution of a <code class="d_inline">public</code> member function: This guarantees that the member functions do not invalidate the consistency of objects.
+
+<p><a id="ix_Contract Programming for Structs and Classes.export" content="export"></a> <i><b>Note:</b> <code class="d_inline">export</code> functions are the same as <code class="d_inline">public</code> functions in this regard. (Very briefly, <code class="d_inline">export</code> functions are functions that are exported on dynamic library interfaces.)</i>
+</p>
+
+</li>
+
+</ul>
+
+<p>If an <code class="d_inline">assert</code> check inside an <code class="d_inline">invariant()</code> block fails, an <code class="d_inline">AssertError</code> is thrown. This ensures that the program does not continue executing with invalid objects.
+</p>
+
+<p><a id="ix_Contract Programming for Structs and Classes.-release, compiler switch" content="-release, compiler switch"></a> As with <code class="d_inline">in</code> and <code class="d_inline">out</code> blocks, the checks inside <code class="d_inline">invariant()</code> blocks can be disabled by the <code class="d_inline">-release</code> command line option:
+</p>
+
+<pre class="shell">$ dmd deneme.d -w -release
+</pre>
+
+<h5 class="subsection"><a id="ix_Contract Programming for Structs and Classes.contract inheritance" content="contract inheritance"></a> <a id="ix_Contract Programming for Structs and Classes.inheritance, contract" content="inheritance, contract"></a> <a id="ix_Contract Programming for Structs and Classes.precondition, inherited" content="precondition, inherited"></a> <a id="ix_Contract Programming for Structs and Classes.postcondition, inherited" content="postcondition, inherited"></a> <a id="ix_Contract Programming for Structs and Classes.in, inherited" content="in, inherited"></a> <a id="ix_Contract Programming for Structs and Classes.out, inherited" content="out, inherited"></a> Contract inheritance</h5>
+
+<p>Interface and class member functions can have <code class="d_inline">in</code> and <code class="d_inline">out</code> blocks as well. This allows an <code class="d_inline">interface</code> or a <code class="d_inline">class</code> to define preconditions for its derived types to depend on, as well as to define postconditions for its users to depend on. Derived types can define further <code class="d_inline">in</code> and <code class="d_inline">out</code> blocks for the overrides of those member functions. Overridden <code class="d_inline">in</code> blocks can loosen preconditions and overridden <code class="d_inline">out</code> blocks can offer more guarantees.
+</p>
+
+<p>User code is commonly <i>abstracted away</i> from the derived types, written in a way to satisfy the preconditions of the topmost type in a hierarchy. The user code does not even know about the derived types. Since user code would be written for the contracts of an interface, it would not be acceptable for a derived type to put stricter preconditions on an overridden member function. However, the preconditions of a derived type can be more permissive than the preconditions of its superclass.
+</p>
+
+<p>Upon entering a function, the <code class="d_inline">in</code> blocks are executed automatically from the topmost type to the bottom-most type in the hierarchy . If <i>any</i> <code class="d_inline">in</code> block succeeds without any <code class="d_inline">assert</code> failure, then the preconditions are considered to be fulfilled.
+</p>
+
+<p>Similarly, derived types can define <code class="d_inline">out</code> blocks as well. Since postconditions are about guarantees that a function provides, the member functions of the derived type must observe the postconditions of its ancestors as well. On the other hand, it can provide additional guarantees.
+</p>
+
+<p>Upon exiting a function, the <code class="d_inline">out</code> blocks are executed automatically from the topmost type to the bottom-most type. The function is considered to have fullfilled its postconditions only if <i>all</i> of the <code class="d_inline">out</code> blocks succeed.
+</p>
+
+<p>The following artificial program demonstrates these features on an <code class="d_inline">interface</code> and a <code class="d_inline">class</code>. The <code class="d_inline">class</code> requires less from its callers while providing more guarantees:
+</p>
+
+<pre class="d_code"><span class="d_keyword">interface</span> Iface {
+    <span class="d_keyword">int</span>[] func(<span class="d_keyword">int</span>[] a, <span class="d_keyword">int</span>[] b)
+    <span class="hilite"><span class="d_keyword">in</span></span> {
+        writeln(<span class="d_string">"Iface.func.in"</span>);
+
+        <span class="d_comment">/* This interface member function requires that the
+         * lengths of the two parameters are equal. */</span>
+        <span class="d_keyword">assert</span>(a.length == b.length);
+
+    } <span class="hilite"><span class="d_keyword">out</span></span> (result) {
+        writeln(<span class="d_string">"Iface.func.out"</span>);
+
+        <span class="d_comment">/* This interface member function guarantees that the
+         * result will have even number of elements.
+         * (Note that an empty slice is considered to have
+         * even number of elements.) */</span>
+        <span class="d_keyword">assert</span>((result.length % 2) == 0);
+    }
+}
+
+<span class="d_keyword">class</span> Class : Iface {
+    <span class="d_keyword">int</span>[] func(<span class="d_keyword">int</span>[] a, <span class="d_keyword">int</span>[] b)
+    <span class="hilite"><span class="d_keyword">in</span></span> {
+        writeln(<span class="d_string">"Class.func.in"</span>);
+
+        <span class="d_comment">/* This class member function loosens the ancestor's
+         * preconditions by allowing parameters with unequal
+         * lengths as long as at least one of them is empty. */</span>
+        <span class="d_keyword">assert</span>((a.length == b.length) ||
+               (a.length == 0) ||
+               (b.length == 0));
+
+    } <span class="hilite"><span class="d_keyword">out</span></span> (result) {
+        writeln(<span class="d_string">"Class.func.out"</span>);
+
+        <span class="d_comment">/* This class member function provides additional
+         * guarantees: The result will not be empty and that
+         * the first and the last elements will be equal. */</span>
+        <span class="d_keyword">assert</span>((result.length != 0) &amp;&amp;
+               (result[0] == result[$ - 1]));
+
+    } <span class="d_keyword">do</span> {
+        writeln(<span class="d_string">"Class.func.do"</span>);
+
+        <span class="d_comment">/* This is just an artificial implementation to
+         * demonstrate how the 'in' and 'out' blocks are
+         * executed. */</span>
+
+        <span class="d_keyword">int</span>[] result;
+
+        <span class="d_keyword">if</span> (a.length == 0) {
+            a = b;
+        }
+
+        <span class="d_keyword">if</span> (b.length == 0) {
+            b = a;
+        }
+
+        <span class="d_keyword">foreach</span> (i; 0 .. a.length) {
+            result ~= a[i];
+            result ~= b[i];
+        }
+
+        result[0] = result[$ - 1] = 42;
+
+        <span class="d_keyword">return</span> result;
+    }
+}
+
+<span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> c = <span class="d_keyword">new</span> Class();
+
+    <span class="d_comment">/* Although the following call fails Iface's precondition,
+     * it is accepted because it fulfills Class' precondition. */</span>
+    writeln(c.func([1, 2, 3], <span class="hilite">[]</span>));
+}
+</pre>
+
+<p>The <code class="d_inline">in</code> block of <code class="d_inline">Class</code> is executed only because the parameters fail to satisfy the preconditions of <code class="d_inline">Iface</code>:
+</p>
+
+<pre class="shell">Iface.func.in
+Class.func.in  <span class="shell_note">← would not be executed if Iface.func.in succeeded</span>
+Class.func.do
+Iface.func.out
+Class.func.out
+[42, 1, 2, 2, 3, 42]
+</pre>
+
+<h5 class="subsection">Summary</h5>
+
+<ul>
+<li><code class="d_inline">in</code> and <code class="d_inline">out</code> blocks are useful in constructors as well. They ensure that objects are constructed in valid states.
+</li>
+
+<li><code class="d_inline">invariant()</code> blocks ensure that objects remain in valid states throughout their lifetimes.
+</li>
+
+<li>Derived types can define <code class="d_inline">in</code> blocks for overridden member functions. Preconditions of a derived type should not be stricter than the preconditions of its superclasses. (<i>Note that not defining an <code class="d_inline">in</code> block means "no precondition at all", which may not be the intent of the programmer.</i>)
+</li>
+
+<li>Derived types can define <code class="d_inline">out</code> blocks for overridden member functions. In addition to its own, a derived member function must observe the postconditions of its superclasses as well.
+</li>
+
+</ul>
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on Mon Jan 29 20:50:24 2024
+</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>
