@@ -1,0 +1,365 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>const ref Parameters and const Member Functions - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='const ref Parameters and const Member Functions' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5Bconst ref Parameters and const Member Functions%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/d.en/const_member_functions.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>const ref Parameters and const Member Functions</h1>
+        
+        
+
+
+
+<p>This chapter is about how parameters and member functions are marked as <code class="d_inline">const</code> so that they can be used with <code class="d_inline">immutable</code> variables as well. As we have already covered <code class="d_inline">const</code> parameters in earlier chapters, some information in this chapter will be a review of some of the features that you already know.
+</p>
+
+<p>Although the examples in this chapter use only structs, <code class="d_inline">const</code> member functions apply to classes as well.
+</p>
+
+<h5 class="subsection"><code class="d_inline">immutable</code> objects</h5>
+
+<p>We have already seen that it is not possible to modify <code class="d_inline">immutable</code> variables:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">immutable</span> readingTime = TimeOfDay(15, 0);
+</pre>
+
+<p><code class="d_inline">readingTime</code> cannot be modified:
+</p>
+
+<pre class="d_code">    readingTime = TimeOfDay(16, 0);    <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+    readingTime.minute += 10;          <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+</pre>
+
+<p>The compiler does not allow modifying <code class="d_inline">immutable</code> objects in any way.
+</p>
+
+<h5 class="subsection"><code class="d_inline">ref</code> parameters that are not <code class="d_inline">const</code></h5>
+
+<p>We have seen this concept earlier in the <a href="function_parameters.html">Function Parameters chapter</a>. Parameters that are marked as <code class="d_inline">ref</code> can freely be modified by the function. For that reason, even if the function does not actually modify the parameter, the compiler does not allow passing <code class="d_inline">immutable</code> objects as that parameter:
+</p>
+
+<pre class="d_code"><span class="d_comment">/* Although not being modified by the function, 'duration'
+ * is not marked as 'const' */</span>
+<span class="d_keyword">int</span> totalSeconds(<span class="d_keyword">ref</span> Duration duration) {
+    <span class="d_keyword">return</span> 60 * duration.minute;
+}
+<span class="d_comment">// ...
+</span>    <span class="hilite"><span class="d_keyword">immutable</span></span> warmUpTime = Duration(3);
+    totalSeconds(warmUpTime);    <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+</pre>
+
+<p>The compiler does not allow passing the <code class="d_inline">immutable</code> <code class="d_inline">warmUpTime</code> to <code class="d_inline">totalSeconds</code> because that function does not guarantee that the parameter will not be modified.
+</p>
+
+<h5 class="subsection"><a id="ix_const ref Parameters and const Member Functions.const ref" content="const ref"></a> <a id="ix_const ref Parameters and const Member Functions.ref const" content="ref const"></a> <a id="ix_const ref Parameters and const Member Functions.parameter, const ref" content="parameter, const ref"></a> <code class="d_inline">const ref</code> parameters</h5>
+
+<p><code class="d_inline">const ref</code> means that the parameter is not modified by the function:
+</p>
+
+<pre class="d_code"><span class="d_keyword">int</span> totalSeconds(<span class="d_keyword">const</span> <span class="d_keyword">ref</span> Duration duration) {
+    <span class="d_keyword">return</span> 60 * duration.minute;
+}
+<span class="d_comment">// ...
+</span>    <span class="d_keyword">immutable</span> warmUpTime = Duration(3);
+    totalSeconds(warmUpTime);    <span class="d_comment">// ← now compiles
+</span></pre>
+
+<p>Such functions can receive <code class="d_inline">immutable</code> objects as parameters because the immutability of the object is enforced by the compiler:
+</p>
+
+<pre class="d_code"><span class="d_keyword">int</span> totalSeconds(<span class="d_keyword">const</span> <span class="d_keyword">ref</span> Duration duration) {
+    duration.minute = 7;    <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+<span class="d_comment">// ...
+</span>}
+</pre>
+
+<p><a id="ix_const ref Parameters and const Member Functions.in ref" content="in ref"></a> <a id="ix_const ref Parameters and const Member Functions.ref in" content="ref in"></a> <a id="ix_const ref Parameters and const Member Functions.parameter, in ref" content="parameter, in ref"></a> An alternative to <code class="d_inline">const ref</code> is <code class="d_inline">in ref</code>. As we will see in <a href="function_parameters.html">a later chapter</a>, <code class="d_inline">in</code> means that the parameter is used only as input to the function, disallowing any modification to it.
+</p>
+
+<pre class="d_code"><span class="d_keyword">int</span> totalSeconds(<span class="hilite"><span class="d_keyword">in</span> <span class="d_keyword">ref</span></span> Duration duration) {
+    <span class="d_comment">// ...
+</span>}
+</pre>
+
+<h5 class="subsection">Non-<code class="d_inline">const</code> member functions</h5>
+
+<p>As we have seen with the <code class="d_inline">TimeOfDay.increment</code> member function, objects can be modified through member functions as well. <code class="d_inline">increment()</code> modifies the members of the object that it is called on:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> TimeOfDay {
+<span class="d_comment">// ...
+</span>    <span class="d_keyword">void</span> increment(Duration duration) {
+        minute += duration.minute;
+
+        hour += minute / 60;
+        minute %= 60;
+        hour %= 24;
+    }
+<span class="d_comment">// ...
+</span>}
+<span class="d_comment">// ...
+</span>    <span class="d_keyword">auto</span> start = TimeOfDay(5, 30);
+    start.increment(Duration(30));          <span class="d_comment">// 'start' gets modified
+</span></pre>
+
+<h5 class="subsection"><a id="ix_const ref Parameters and const Member Functions.const, member function" content="const, member function"></a> <code class="d_inline">const</code> member functions </h5>
+
+<p>Some member functions do not make any modifications to the object that they are called on. An example of such a function is <code class="d_inline">toString()</code>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> TimeOfDay {
+<span class="d_comment">// ...
+</span>    string toString() {
+        <span class="d_keyword">return</span> format(<span class="d_string">"%02s:%02s"</span>, hour, minute);
+    }
+<span class="d_comment">// ...
+</span>}
+</pre>
+
+<p>Since the whole purpose of <code class="d_inline">toString()</code> is to represent the object in string format anyway, it should not modify the object.
+</p>
+
+<p>The fact that a member function does not modify the object is declared by the <code class="d_inline">const</code> keyword after the parameter list:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> TimeOfDay {
+<span class="d_comment">// ...
+</span>    string toString() <span class="hilite"><span class="d_keyword">const</span></span> {
+        <span class="d_keyword">return</span> format(<span class="d_string">"%02s:%02s"</span>, hour, minute);
+    }
+}
+</pre>
+
+<p>That <code class="d_inline">const</code> guarantees that the object itself is not going to be modified by the member function. As a consequence, <code class="d_inline">toString()</code> member function is allowed to be called even on <code class="d_inline">immutable</code> objects. Otherwise, the struct's <code class="d_inline">toString()</code> would not be called:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> TimeOfDay {
+<span class="d_comment">// ...
+</span>    <span class="d_comment">// Inferior design: Not marked as 'const'
+</span>    string toString() {
+        <span class="d_keyword">return</span> format(<span class="d_string">"%02s:%02s"</span>, hour, minute);
+    }
+}
+<span class="d_comment">// ...
+</span>    <span class="hilite"><span class="d_keyword">immutable</span></span> start = TimeOfDay(5, 30);
+    writeln(start);    <span class="d_comment">// TimeOfDay.toString() is not called!
+</span></pre>
+
+<p>The output is not the expected <code class="d_inline">05:30</code>, indicating that a generic function gets called instead of <code class="d_inline">TimeOfDay.toString</code>:
+</p>
+
+<pre class="shell">immutable(TimeOfDay)(5, 30)
+</pre>
+
+<p>Further, calling <code class="d_inline">toString()</code> on an <code class="d_inline">immutable</code> object explicitly would cause a compilation error:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> s = start.toString(); <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+</pre>
+
+<p>Accordingly, the <code class="d_inline">toString()</code> functions that we have defined in the previous chapter have all been designed incorrectly; they should have been marked as <code class="d_inline">const</code>.
+</p>
+
+<p><i><b>Note:</b> The <code class="d_inline">const</code> keyword can be specified before the definition of the function as well:</i>
+</p>
+
+<pre class="d_code">    <span class="d_comment">// The same as above
+</span>    <span class="hilite"><span class="d_keyword">const</span></span> string toString() {
+        <span class="d_keyword">return</span> format(<span class="d_string">"%02s:%02s"</span>, hour, minute);
+    }
+</pre>
+
+<p><i>Since this version may give the incorrect impression that the <code class="d_inline">const</code> is a part of the return type, I recommend that you specify it after the parameter list.</i>
+</p>
+
+<h5 class="subsection"><a id="ix_const ref Parameters and const Member Functions.inout, member function" content="inout, member function"></a> <code class="d_inline">inout</code> member functions</h5>
+
+<p>As we have seen in <a href="function_parameters.html">the Function Parameters chapter</a>, <code class="d_inline">inout</code> transfers the mutability of a parameter to the return type.
+</p>
+
+<p>Similarly, an <code class="d_inline">inout</code> member function transfers the mutability of the <i>object</i> to the function's return type:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">struct</span> Container {
+    <span class="d_keyword">int</span>[] elements;
+
+    <span class="hilite"><span class="d_keyword">inout</span></span>(<span class="d_keyword">int</span>)[] firstPart(size_t n) <span class="hilite"><span class="d_keyword">inout</span></span> {
+        <span class="d_keyword">return</span> elements[0 .. n];
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    {
+        <span class="d_comment">// An immutable container
+</span>        <span class="d_keyword">auto</span> container = <span class="hilite"><span class="d_keyword">immutable</span></span>(Container)([ 1, 2, 3 ]);
+        <span class="d_keyword">auto</span> slice = container.firstPart(2);
+        writeln(<span class="d_keyword">typeof</span>(slice).stringof);
+    }
+    {
+        <span class="d_comment">// A const container
+</span>        <span class="d_keyword">auto</span> container = <span class="hilite"><span class="d_keyword">const</span></span>(Container)([ 1, 2, 3 ]);
+        <span class="d_keyword">auto</span> slice = container.firstPart(2);
+        writeln(<span class="d_keyword">typeof</span>(slice).stringof);
+    }
+    {
+        <span class="d_comment">// A mutable container
+</span>        <span class="d_keyword">auto</span> container = Container([ 1, 2, 3 ]);
+        <span class="d_keyword">auto</span> slice = container.firstPart(2);
+        writeln(<span class="d_keyword">typeof</span>(slice).stringof);
+    }
+}
+</pre>
+
+<p>The three slices that are returned by the three objects of different mutability are consistent with the objects that returned them:
+</p>
+
+<pre class="shell"><span class="hilite">immutable</span>(int)[]
+<span class="hilite">const</span>(int)[]
+int[]
+</pre>
+
+<p>Because it must be called on <code class="d_inline">const</code> and <code class="d_inline">immutable</code> objects as well, an <code class="d_inline">inout</code> member function is compiled as if it were <code class="d_inline">const</code>.
+</p>
+
+<h5 class="subsection">How to use</h5>
+
+<ul>
+<li>To give the guarantee that a parameter is not modified by the function, mark that parameter as <code class="d_inline">in</code>, <code class="d_inline">const</code>, or <code class="d_inline">const ref</code>.
+</li>
+
+<li>Mark member functions that do not modify the object as <code class="d_inline">const</code>:
+
+<pre class="d_code"><span class="d_keyword">struct</span> TimeOfDay {
+<span class="d_comment">// ...
+</span>    string toString() <span class="hilite"><span class="d_keyword">const</span></span> {
+        <span class="d_keyword">return</span> format(<span class="d_string">"%02s:%02s"</span>, hour, minute);
+    }
+}
+</pre>
+
+<p>This would make the struct (or class) more useful by removing an unnecessary limitation. The examples in the rest of the book will observe this guideline.
+</p>
+
+</li>
+
+</ul>
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on Mon Jan 29 20:41:02 2024
+</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

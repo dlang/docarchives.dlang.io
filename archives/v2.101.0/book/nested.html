@@ -1,0 +1,372 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Nested functions, structs, and classes - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Nested functions, structs, and classes' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BNested functions, structs, and classes%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/d.en/nested.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Nested functions, structs, and classes</h1>
+        
+        
+
+
+
+<p>Up to this point, we have been defining functions, structs, and classes in the outermost scopes (i.e. the module scope). They can be defined in inner scopes as well. Defining them in inner scopes helps with encapsulation by narrowing the visibility of their symbols, as well as creating <i>closures</i> that we saw in <a href="lambda.html">the Function Pointers, Delegates, and Lambdas chapter</a>.
+</p>
+
+<p>As an example, the following <code class="d_inline">outerFunc()</code> function contains definitions of a nested function, a nested <code class="d_inline">struct</code>, and a nested <code class="d_inline">class</code>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> outerFunc(<span class="d_keyword">int</span> parameter) {
+    <span class="d_keyword">int</span> local;
+
+    <span class="hilite"><span class="d_keyword">void</span> nestedFunc()</span> {
+        local = parameter * 2;
+    }
+
+    <span class="hilite"><span class="d_keyword">struct</span> NestedStruct</span> {
+        <span class="d_keyword">void</span> memberFunc() {
+            local /= parameter;
+        }
+    }
+
+    <span class="hilite"><span class="d_keyword">class</span> NestedClass</span> {
+        <span class="d_keyword">void</span> memberFunc() {
+            local += parameter;
+        }
+    }
+
+    <span class="d_comment">// Using the nested definitions inside this scope:
+</span>
+    nestedFunc();
+
+    <span class="d_keyword">auto</span> s = NestedStruct();
+    s.memberFunc();
+
+    <span class="d_keyword">auto</span> c = <span class="d_keyword">new</span> NestedClass();
+    c.memberFunc();
+}
+
+<span class="d_keyword">void</span> main() {
+    outerFunc(42);
+}
+</pre>
+
+<p>Like any other variable, nested definitions can access symbols that are defined in their outer scopes. For example, all three of the nested definitions above are able to use the variables named <code class="d_inline">parameter</code> and <code class="d_inline">local</code>.
+</p>
+
+<p>As usual, the names of the nested definitions are valid only in the scopes that they are defined in. For example, <code class="d_inline">nestedFunc()</code>, <code class="d_inline">NestedStruct</code>, and <code class="d_inline">NestedClass</code> are not accessible from <code class="d_inline">main()</code>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> a = NestedStruct();              <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+    <span class="d_keyword">auto</span> b = outerFunc.NestedStruct();    <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+}
+</pre>
+
+<p>Although their names cannot be accessed, nested definitions can still be used in other scopes. For example, many Phobos algorithms handle their tasks by nested structs that are defined inside Phobos functions.
+</p>
+
+<p>To see an example of this, let's design a function that consumes a slice from both ends in alternating order:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.array;
+
+<span class="d_keyword">auto</span> alternatingEnds(T)(T[] slice) {
+    <span class="d_keyword">bool</span> isFromFront = <span class="d_keyword">true</span>;
+
+    <span class="hilite"><span class="d_keyword">struct</span> EndAlternatingRange</span> {
+        <span class="d_keyword">bool</span> empty() <span class="d_keyword">const</span> {
+            <span class="d_keyword">return</span> slice.empty;
+        }
+
+        T front() <span class="d_keyword">const</span> {
+            <span class="d_keyword">return</span> isFromFront ? slice.front : slice.back;
+        }
+
+        <span class="d_keyword">void</span> popFront() {
+            <span class="d_keyword">if</span> (isFromFront) {
+                slice.popFront();
+                isFromFront = <span class="d_keyword">false</span>;
+
+            } <span class="d_keyword">else</span> {
+                slice.popBack();
+                isFromFront = <span class="d_keyword">true</span>;
+            }
+        }
+    }
+
+    <span class="d_keyword">return</span> EndAlternatingRange();
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> a = alternatingEnds([ 1, 2, 3, 4, 5 ]);
+    writeln(a);
+}
+</pre>
+
+<p>Even though the nested <code class="d_inline">struct</code> cannot be named inside <code class="d_inline">main()</code>, it is still usable:
+</p>
+
+<pre class="shell">[1, 5, 2, 4, 3]
+</pre>
+
+<p><a id="ix_Nested functions, structs, and classes.Voldemort" content="Voldemort"></a> <i><b>Note:</b> Because their names cannot be mentioned outside of their scopes, such types are called <i>Voldemort types</i> due to analogy to a Harry Potter character.</i>
+</p>
+
+<p><a id="ix_Nested functions, structs, and classes.closure" content="closure"></a> <a id="ix_Nested functions, structs, and classes.context" content="context"></a> Note that the nested <code class="d_inline">struct</code> that <code class="d_inline">alternatingEnds()</code> returns does not have any member variables. That <code class="d_inline">struct</code> handles its task using merely the function parameter <code class="d_inline">slice</code> and the local function variable <code class="d_inline">isFromFront</code>. The fact that the returned object can safely use those variables even after leaving the context that it was created in is due to a <i>closure</i> that has been created automatically. We have seen closures in <a href="lambda.html">the Function Pointers, Delegates, and Lambdas chapter</a>.
+</p>
+
+<h6><code class="d_inline">static</code> when a closure is not needed</h6>
+
+<p><a id="ix_Nested functions, structs, and classes.static, nested definition" content="static, nested definition"></a> Since they keep their contexts alive, nested definitions are more expensive than their regular counterparts. Additionally, as they must include a <i>context pointer</i> to determine the context that they are associated with, objects of nested definitions occupy more space as well. For example, although the following two structs have exactly the same member variables, their sizes are different:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="hilite"><span class="d_keyword">struct</span> ModuleStruct</span> {
+    <span class="d_keyword">int</span> i;
+
+    <span class="d_keyword">void</span> memberFunc() {
+    }
+}
+
+<span class="d_keyword">void</span> moduleFunc() {
+    <span class="hilite"><span class="d_keyword">struct</span> NestedStruct</span> {
+        <span class="d_keyword">int</span> i;
+
+        <span class="d_keyword">void</span> memberFunc() {
+        }
+    }
+
+    writefln(<span class="d_string">"OuterStruct: %s bytes, NestedStruct: %s bytes."</span>,
+             ModuleStruct.sizeof, NestedStruct.sizeof);
+}
+
+<span class="d_keyword">void</span> main() {
+    moduleFunc();
+}
+</pre>
+
+<p>The sizes of the two structs may be different on other environments:
+</p>
+
+<pre class="shell">OuterStruct: <span class="hilite">4</span> bytes, NestedStruct: <span class="hilite">16</span> bytes.
+</pre>
+
+<p><a id="ix_Nested functions, structs, and classes.static class" content="static class"></a> <a id="ix_Nested functions, structs, and classes.static struct" content="static struct"></a> However, some nested definitions are merely for keeping them as local as possible, with no need to access variables from the outer contexts. In such cases, the associated cost would be unnecessary. The <code class="d_inline">static</code> keyword removes the context pointer from nested definitions, making them equivalents of their module counterparts. As a result, <code class="d_inline">static</code> nested definitions cannot access their outer contexts:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> outerFunc(<span class="d_keyword">int</span> parameter) {
+    <span class="hilite"><span class="d_keyword">static</span></span> <span class="d_keyword">class</span> NestedClass {
+        <span class="d_keyword">int</span> i;
+
+        <span class="d_keyword">this</span>() {
+            i = parameter;    <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+        }
+    }
+}
+</pre>
+
+<p><a id="ix_Nested functions, structs, and classes..outer, void*" content=".outer, void*"></a> The context pointer of a nested <code class="d_inline">class</code> object is available as a <code class="d_inline">void*</code> through its <code class="d_inline">.outer</code> property. For example, because they are defined in the same scope, the context pointers of the following two objects are equal:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> foo() {
+    <span class="d_keyword">class</span> C {
+    }
+
+    <span class="d_keyword">auto</span> a = <span class="d_keyword">new</span> C();
+    <span class="d_keyword">auto</span> b = <span class="d_keyword">new</span> C();
+
+    <span class="d_keyword">assert</span>(a<span class="hilite">.outer</span> <span class="d_keyword">is</span> b<span class="hilite">.outer</span>);
+}
+</pre>
+
+<p>As we will see below, for <i>classes nested inside classes</i>, the type of the context pointer is the type of the outer class, not <code class="d_inline">void*</code>.
+</p>
+
+<h6>Classes nested inside classes</h6>
+
+<p><a id="ix_Nested functions, structs, and classes.class, nested in class" content="class, nested in class"></a> When a <code class="d_inline">class</code> is nested inside another one, the context that the nested object is associated with is the outer object itself.
+</p>
+
+<p><a id="ix_Nested functions, structs, and classes..new" content=".new"></a> <a id="ix_Nested functions, structs, and classes..outer, class type" content=".outer, class type"></a> Such nested classes are constructed by the <code class="d_inline">this.new</code> syntax. When necessary, the outer object of a nested object can be accessed by <code class="d_inline">this.outer</code>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">class</span> OuterClass {
+    <span class="d_keyword">int</span> outerMember;
+
+    <span class="hilite"><span class="d_keyword">class</span> NestedClass</span> {
+        <span class="d_keyword">int</span> func() {
+            <span class="d_comment">/* A nested class can access members of the outer
+             * class. */</span>
+            <span class="d_keyword">return</span> outerMember * 2;
+        }
+
+        OuterClass context() {
+            <span class="d_comment">/* A nested class can access its outer object
+             * (i.e. its context) by '.outer'. */</span>
+            <span class="d_keyword">return</span> <span class="hilite"><span class="d_keyword">this</span>.outer</span>;
+        }
+    }
+
+    NestedClass algorithm() {
+        <span class="d_comment">/* An outer class can construct a nested object by
+         * '.new'. */</span>
+        <span class="d_keyword">return</span> <span class="hilite"><span class="d_keyword">this</span>.<span class="d_keyword">new</span></span> NestedClass();
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> outerObject = <span class="d_keyword">new</span> OuterClass();
+
+    <span class="d_comment">/* A member function of an outer class is returning a
+     * nested object: */</span>
+    <span class="d_keyword">auto</span> nestedObject = outerObject.algorithm();
+
+    <span class="d_comment">/* The nested object gets used in the program: */</span>
+    nestedObject.func();
+
+    <span class="d_comment">/* Naturally, the context of nestedObject is the same as
+     * outerObject: */</span>
+    <span class="d_keyword">assert</span>(nestedObject.context() <span class="d_keyword">is</span> outerObject);
+}
+</pre>
+
+<p>Instead of <code class="d_inline">this.new</code> and <code class="d_inline">this.outer</code>, <code class="d_inline">.new</code> and <code class="d_inline">.outer</code> can be used on existing objects as well:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> var = <span class="d_keyword">new</span> OuterClass();
+    <span class="d_keyword">auto</span> nestedObject = <span class="hilite">var.<span class="d_keyword">new</span></span> OuterClass.NestedClass();
+    <span class="d_keyword">auto</span> var2 = <span class="hilite">nestedObject.outer</span>;
+</pre>
+
+<h5 class="subsection">Summary</h5>
+
+<ul>
+<li>Functions, structs, and classes that are defined in inner scopes can access those scopes as their contexts.</li>
+
+<li>Nested definitions keep their contexts alive to form closures.</li>
+
+<li>Nested definitions are more costly than their module counterparts. When a nested definition does not need to access its context, this cost can be avoided by the <code class="d_inline">static</code> keyword.</li>
+
+<li>Classes can be nested inside other classes. The context of such a nested object is the outer object itself. Nested class objects are constructed by <code class="d_inline">this.new</code> or <code class="d_inline">variable.new</code> and their contexts are available by <code class="d_inline">this.outer</code> or <code class="d_inline">variable.outer</code>.</li>
+
+</ul>
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on Mon Jan 29 20:41:01 2024
+</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

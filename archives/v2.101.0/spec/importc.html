@@ -1,0 +1,931 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>ImportC - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='ImportC' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href=".."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option selected value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+<div class="subnav-helper"></div> <div class="subnav">    <div class="head"><h2>Language Reference</h2> <p class="subnav-duplicate"><a href="../spec/spec.html">table of contents</a></p></div>
+    <ul>        <li><a href='            ../spec/intro.html'>Introduction</a></li><li><a href='            ../spec/lex.html'>Lexical</a></li><li><a href='            ../spec/grammar.html'>Grammar</a></li><li><a href='            ../spec/module.html'>Modules</a></li><li><a href='            ../spec/declaration.html'>Declarations</a></li><li><a href='            ../spec/type.html'>Types</a></li><li><a href='            ../spec/property.html'>Properties</a></li><li><a href='            ../spec/attribute.html'>Attributes</a></li><li><a href='            ../spec/pragma.html'>Pragmas</a></li><li><a href='            ../spec/expression.html'>Expressions</a></li><li><a href='            ../spec/statement.html'>Statements</a></li><li><a href='            ../spec/arrays.html'>Arrays</a></li><li><a href='            ../spec/hash-map.html'>Associative Arrays</a></li><li><a href='            ../spec/struct.html'>Structs and Unions</a></li><li><a href='            ../spec/class.html'>Classes</a></li><li><a href='            ../spec/interface.html'>Interfaces</a></li><li><a href='            ../spec/enum.html'>Enums</a></li><li><a href='            ../spec/const3.html'>Type Qualifiers</a></li><li><a href='            ../spec/function.html'>Functions</a></li><li><a href='            ../spec/operatoroverloading.html'>Operator Overloading</a></li><li><a href='            ../spec/template.html'>Templates</a></li><li><a href='            ../spec/template-mixin.html'>Template Mixins</a></li><li><a href='            ../spec/contracts.html'>Contract Programming</a></li><li><a href='            ../spec/version.html'>Conditional Compilation</a></li><li><a href='            ../spec/traits.html'>Traits</a></li><li><a href='            ../spec/errors.html'>Error Handling</a></li><li><a href='            ../spec/unittest.html'>Unit Tests</a></li><li><a href='            ../spec/garbage.html'>Garbage Collection</a></li><li><a href='            ../spec/float.html'>Floating Point</a></li><li><a href='            ../spec/iasm.html'>D x86 Inline Assembler</a></li><li><a href='            ../spec/ddoc.html'>Embedded Documentation</a></li><li><a href='            ../spec/interfaceToC.html'>Interfacing to C</a></li><li><a href='            ../spec/cpp_interface.html'>Interfacing to C++</a></li><li><a href='            ../spec/objc_interface.html'>Interfacing to Objective-C</a></li><li><a href='            ../spec/portability.html'>Portability Guide</a></li><li><a href='            ../spec/entity.html'>Named Character Entities</a></li><li><a href='            ../spec/memory-safe-d.html'>Memory Safety</a></li><li><a href='            ../spec/abi.html'>Application Binary Interface</a></li><li><a href='            ../spec/simd.html'>Vector Extensions</a></li><li><a href='            ../spec/betterc.html'>Better C</a></li><li><a href='            ../spec/importc.html'>ImportC</a></li><li><a href='            ../spec/ob.html'>Live Functions
+        </a></li>
+    </ul>
+</div>
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BImportC%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/spec/importc.dd">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>ImportC</h1>
+        
+<style>    body { counter-reset: h1 41; counter-increment: h1 -1; }
+    h1 { counter-reset: h2 h3 p; }
+    h2 { counter-reset: h3 h4 p; }
+    h3 { counter-reset: h4 p; }
+    h4 { counter-reset: p; }
+    h1::before {
+        counter-increment: h1;
+        content: counter(h1) ". ";
+    }
+    .hyphenate h2::before {
+        counter-increment: h2;
+        content: counter(h1) "." counter(h2) " ";
+    }
+    h3::before {
+        counter-increment: h3;
+        content: counter(h1) "." counter(h2) "." counter(h3) " ";
+    }
+    h4::before {
+        counter-increment: h4;
+        content: counter(h1) "." counter(h2) "." counter(h3) "." counter(h4) " ";
+    }
+    p::before, .spec-boxes::before {
+        counter-increment: p;
+        content: counter(p) ". ";
+    }
+    h1::before, h2::before, h3::before, h4::before, p::before, .spec-boxes::before
+    {
+        color: #999;
+        font-size: 80%;
+        margin-right: 0.25em;
+    }
+</style>
+        <div class="blankline"></div>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<div class="page-contents quickindex">    <div class="page-contents-header">        <b>Contents</b>
+    </div>
+    <ol>    <li><a href="#examples">Quick Examples</a></li>
+    <li><a href="#dialect">ImportC Dialect</a></li>
+    <li><a href="#command-line">Invoking ImportC</a><ol>        <li><a href="#command-line">ImportC Files on the Command Line</a></li>
+        <li><a href="#importing">Importing C Files from D Code</a></li>
+    </ol></li>
+    <li><a href="#preprocessor">Preprocessor</a><ol>        <li><a href="#auto-cpp">Running the Preprocessor Automatically</a></li>
+        <li><a href="#manual-cpp">Running the Preprocessor Manually</a></li>
+        <li><a href="#defines">Preprocessor Macros</a></li>
+    </ol></li>
+    <li><a href="#predefined-macros">Predefined Macros</a></li>
+    <li><a href="#preprocessor-directives">Preprocessor Directives</a><ol>        <li><a href="#line-control">Line control</a></li>
+        <li><a href="#linemarker">Linemarker</a></li>
+        <li><a href="#pragma">pragma</a></li>
+    </ol></li>
+    <li><a href="#implementation">Implementation</a><ol>        <li><a href="#enums">Enums</a></li>
+        <li><a href="#bitfields">Bit Fields</a></li>
+        <li><a href="#implicit-function-declaration">Implicit Function Declarations</a></li>
+        <li><a href="#pragma-STDC-FENV_ACCESS">#pragma STDC FENV_ACCESS</a></li>
+    </ol></li>
+    <li><a href="#limitations">Limitations</a><ol>        <li><a href="#exceptions">Exception Handling</a></li>
+        <li><a href="#const">Const</a></li>
+        <li><a href="#volatile">Volatile</a></li>
+        <li><a href="#restrict">Restrict</a></li>
+        <li><a href="#_atomic">_Atomic</a></li>
+        <li><a href="#compatible_types">Compatible Types</a></li>
+        <li><a href="#same_only_different">Same only Different Types</a></li>
+        <li><a href="#_generic">_Generic</a></li>
+    </ol></li>
+    <li><a href="#extensions">Extensions</a><ol>        <li><a href="#forward-references">Forward References</a></li>
+        <li><a href="#ctfe">Compile Time Function Execution</a></li>
+        <li><a href="#inlining">Function Inlining</a></li>
+        <li><a href="#enumbasetype">Enum Base Types</a></li>
+        <li><a href="#register">Register Storage Class</a></li>
+        <li><a href="#typeof">typeof Operator</a></li>
+        <li><a href="#__import">Import Declarations</a></li>
+    </ol></li>
+    <li><a href="#gnu-clang-extensions">Gnu and Clang Extensions</a><ol>        <li><a href="#noreturn"><span class="d_inlinecode donthyphenate notranslate">__attribute__((noreturn))</span></a></li>
+    </ol></li>
+    <li><a href="#visualc-extensions">Visual C Extensions</a></li>
+    <li><a href="#digital-mars-extensions">Digital Mars C Extensions</a></li>
+    <li><a href="#d-side">ImportC from D's Point of View</a><ol>        <li><a href="#module-name">Module Name</a></li>
+        <li><a href="#extern-C"><span class="d_inlinecode donthyphenate notranslate">extern (C)</span></a></li>
+        <li><a href="#enums">Enums</a></li>
+        <li><a href="#tag-symbols">Tag Symbols</a></li>
+    </ol></li>
+    <li><a href="#wrapping">Wrapping C Code</a></li>
+    <li><a href="#warnings">Warnings</a></li>
+    <li><a href="#importcpp">ImportC++</a></li>
+    <li><a href="#other-solutions">Other Solutions</a><ol>        <li><a href="#dpp">dpp by Atila Neves</a></li>
+        <li><a href="#dstep">DStep by Jacob Carlborg</a></li>
+        <li><a href="#htod">htod by Walter Bright</a></li>
+    </ol></li>
+    <li><a href="#internals">How ImportC Works</a></li>
+</ol>
+</div>
+<div class="blankline"></div>
+    <p>ImportC is a C compiler embedded into the D implementation.
+    It enables direct importation of C files, without
+    needing to manually prepare a D file corresponding to the declarations
+    in the C file. It directly compiles C files into modules that can be
+    linked in with D code to form an executable. It can be used
+    as a C compiler to compile and link 100% C programs.
+    </p>
+<div class="blankline"></div>
+    <div class="spec-boxes note"><b>Note:</b> ImportC and <a href="https://dlang.org/spec/betterc.html">BetterC</a> are very different.
+    ImportC is an actual C compiler. BetterC is a subset of D that relies only on the
+    existence of the C Standard library. BetterC code can be linked with ImportC code, too.</div>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="examples" href="#examples">Quick Examples</a></h2>
+<div class="blankline"></div>
+    <p>C code in file <em class="tt">hello.c</em>:</p>
+<div class="blankline"></div>
+    <pre class="ccode notranslate">    #include &lt;stdio.h&gt;
+    int main()
+    {
+        printf("hello world\n");
+        return 0;
+    }
+    </pre>
+<div class="blankline"></div>
+    <p>Compile and run:</p>
+<div class="blankline"></div>
+    <pre class="console notranslate">    dmd hello.c
+    ./hello
+    hello world
+    </pre>
+<div class="blankline"></div>
+    <p>C function in file <em class="tt">square.c</em>:</p>
+<div class="blankline"></div>
+    <pre class="ccode notranslate">    int square(int i)
+    {
+        return i * i;
+    }
+    </pre>
+<div class="blankline"></div>
+    <p>D program in file <em class="tt">demo.d</em>:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> square;
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">int</span> i = 7;
+    writefln(<span class="d_string">"The square of %s is %s"</span>, i, square(i));
+}
+</pre>
+<div class="blankline"></div>
+    <p>Compile and run:</p>
+<div class="blankline"></div>
+    <pre class="console notranslate">    dmd demo.d square.c
+    ./demo
+    The square of 7 is 49
+    </pre>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="dialect" href="#dialect">ImportC Dialect</a></h2>
+<div class="blankline"></div>
+    <p>There are many versions of C. ImportC is an
+    implementation of <a href="https://en.wikipedia.org/wiki/C11_(C_standard_revision)">ISO/IEC 9899:2011</a>,
+    which will be referred to as <b>C11</b>.
+    References to the C11 Standard will be C11 followed by the paragraph number.
+    Prior versions, such as C99, C89, and K+R C, are not supported.
+    </p>
+<div class="blankline"></div>
+    <div class="spec-boxes implementation-defined"><b>Implementation Defined:</b> Adjustment to the ImportC dialect is made to match the
+    behavior of the C compiler that the D compiler is matched to,
+    i.e. the <a href="../glossary.html#acc">Associated C Compiler</a>.
+    </div>
+
+
+<div class="blankline"></div>
+    <p>Further adjustment is made to take advantage of some of the D
+    implementation's capabilities.</p>
+<div class="blankline"></div>
+    <div class="spec-boxes note"><b>Note:</b> This is not a C reference manual nor programming tutorial.
+    It describes the specifics of the dialect of C that
+    ImportC is, and how to use it effectively.</div>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="command-line" href="#command-line">Invoking ImportC</a></h2>
+<div class="blankline"></div>
+    <p>The ImportC compiler can be invoked:</p>
+<div class="blankline"></div>
+    <ul>    <li>directly via the command line</li>
+    <li>indirectly via importing a C file</li>
+    </ul>
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="command-line" href="#command-line">ImportC Files on the Command Line</a></h3>
+<div class="blankline"></div>
+    <p>ImportC files have one of the extensions <span class="d_inlinecode donthyphenate notranslate">.i</span>, or <span class="d_inlinecode donthyphenate notranslate">.c</span>. If no
+    extension is given, <span class="d_inlinecode donthyphenate notranslate">.i</span> is tried first, then <span class="d_inlinecode donthyphenate notranslate">.c</span>.
+    </p>
+<div class="blankline"></div>
+    <pre class="console notranslate">    dmd hello.c
+    </pre>
+<div class="blankline"></div>
+    <p>will compile <span class="d_inlinecode donthyphenate notranslate">hello.c</span> with ImportC and link it to create the executable
+    file <span class="d_inlinecode donthyphenate notranslate">hello</span> (<span class="d_inlinecode donthyphenate notranslate">hello.exe</span> on Windows) which can be run
+    </p>
+<div class="blankline"></div>
+    <div class="spec-boxes best-practice"><b>Best Practices:</b> explicitly use a <span class="d_inlinecode donthyphenate notranslate">.i</span> or <span class="d_inlinecode donthyphenate notranslate">.c</span> extension when
+    specifying C files on the command line.</div>
+
+
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="importing" href="#importing">Importing C Files from D Code</a></h3>
+<div class="blankline"></div>
+    <p>Use the D <a href="../spec/module.html#ImportDeclaration"><i>ImportDeclaration</i></a>:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">import</span> hello;
+</pre>
+<div class="blankline"></div>
+    <p>which will, if <span class="d_inlinecode donthyphenate notranslate">hello</span> is not a D file, and has an extension <span class="d_inlinecode donthyphenate notranslate">.i</span> or <span class="d_inlinecode donthyphenate notranslate">.c</span>,
+    compile <span class="d_inlinecode donthyphenate notranslate">hello</span> with ImportC.
+    </p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="preprocessor" href="#preprocessor">Preprocessor</a></h2>
+<div class="blankline"></div>
+    <p>ImportC does not have a preprocessor. It is designed to compile C
+    files after they have been first run through the C preprocessor.
+    ImportC can automatically run the C preprocessor associated with the
+    Associated C Compiler, or a preprocessor can be run manually.
+    </p>
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="auto-cpp" href="#auto-cpp">Running the Preprocessor Automatically</a></h3>
+<div class="blankline"></div>
+    <p>If the C file has a <em class="tt">.c</em> extension, ImportC will run the preprocessor
+    for it automatically.</p>
+<div class="blankline"></div>
+    <ol>    <li>When compiling for Windows with the <a href="../dmd.html#switch-m32omf"><em class="tt">-m32omf</em></a> switch,
+    <em class="tt">sppn.exe</em> will be used as the preprocessor.</li>
+    <li>When compiling for Windows with the <a href="../dmd.html#switch-m32mscoff"><em class="tt">-m32mscoff</em></a>
+    or the <a href="../dmd.html#switch-m64"><em class="tt">-m64</em></a> switch, <em class="tt">cl.exe /P /Zc:preprocessor</em> will be used
+    as the preprocessor.</li>
+    <li>When compiling for OSX, the <em class="tt">clang -E</em> preprocessor will be used.</li>
+    <li>Otherwise the <em class="tt">cpp</em> preprocessor will be used.</li>
+    </ol>
+<div class="blankline"></div>
+    <p>The druntime file <em class="tt">src/importc.h</em> will automatically be <em class="tt">#include</em>d.</p>
+<div class="blankline"></div>
+    <p>The <a href="../dmd.html#switch-v"><em class="tt">-v</em></a> switch can be used to observe the command
+    that invokes the preprocessor.
+    </p>
+<div class="blankline"></div>
+    <p>The <a href="../dmd.html#switch-P"><em class="tt">-P<i>preprocessorflag</i></em></a> switch passes <em class="tt"><i>preprocessorflag</i></em>
+    to the preprocessor.
+    </p>
+<div class="blankline"></div>
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="manual-cpp" href="#manual-cpp">Running the Preprocessor Manually</a></h3>
+<div class="blankline"></div>
+    <p>If the C file has a <em class="tt">.i</em> extension, the file
+    is presumed to be already preprocessed.
+    Preprocessing can be run manually:
+    </p>
+<div class="blankline"></div>
+    <h4><a class="anchor" title="Permalink to this section" id="spp" href="#spp">Digital Mars C Preprocessor sppn.exe</a></h4>
+<div class="blankline"></div>
+    <p><a href="https://www.digitalmars.com/ctg/sc.html"><em class="tt">sppn.exe</em></a> runs on Win32 and is invoked as:</p>
+<div class="blankline"></div>
+    <pre class="console notranslate">    sppn file.c
+    </pre>
+<div class="blankline"></div>
+    <p>and the preprocessed output is written to <em class="tt">file.i</em>.</p>
+<div class="blankline"></div>
+    <h4><a class="anchor" title="Permalink to this section" id="gcc-preprocessor" href="#gcc-preprocessor">Gnu C Preprocessor</a></h4>
+<div class="blankline"></div>
+    <p>The <a href="https://gcc.gnu.org/onlinedocs/gcc/Preprocessor-Options.html">Gnu C Preprocessor</a> can be invoked as:</p>
+<div class="blankline"></div>
+    <pre class="console notranslate">    gcc -E file.c &gt; file.i
+    </pre>
+<div class="blankline"></div>
+    <h4><a class="anchor" title="Permalink to this section" id="clang-preprocessor" href="#clang-preprocessor">Clang C Preprocessor</a></h4>
+<div class="blankline"></div>
+    <p>The <a href="https://freecompilercamp.org/clang-basics/">Clang Preprocessor</a> can be invoked as:</p>
+<div class="blankline"></div>
+    <pre class="console notranslate">    clang -E file.c -o file.i
+    </pre>
+<div class="blankline"></div>
+    <h4><a class="anchor" title="Permalink to this section" id="vc-preprocessor" href="#vc-preprocessor">Microsoft VC Preprocessor</a></h4>
+<div class="blankline"></div>
+    <p>The <a href="https://docs.microsoft.com/en-us/cpp/preprocessor/c-cpp-preprocessor-reference?view=msvc-170">    VC Preprocessor</a> can be invoked as:</p>
+<div class="blankline"></div>
+    <pre class="console notranslate">    cl /P /Zc:preprocessor file.c -Fifile.i
+    </pre>
+<div class="blankline"></div>
+    <p>and the preprocessed output is written to <em class="tt">file.i</em>.</p>
+<div class="blankline"></div>
+    <h4><a class="anchor" title="Permalink to this section" id="dmpp" href="#dmpp">dmpp C Preprocessor</a></h4>
+<div class="blankline"></div>
+    <p>The <a href="https://www.DigitalMars/dmpp">dmpp C Preprocessor</a> can be invoked as:</p>
+<div class="blankline"></div>
+    <pre class="console notranslate">    dmpp file.c
+    </pre>
+<div class="blankline"></div>
+    <p>and the preprocessed output is written to <em class="tt">file.i</em>.</p>
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="defines" href="#defines">Preprocessor Macros</a></h3>
+<div class="blankline"></div>
+    <p>ImportC collects all the <em class="tt">#define</em> macros from the preprocessor run when it is run automatically.
+    The macros that look like manifest constants, such as:</p>
+<div class="blankline"></div>
+    <pre class="ccode notranslate">    #define COLOR 0x123456
+    </pre>
+<div class="blankline"></div>
+    <p>are interpreted as D manifest constant declarations of the form:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">enum</span> COLOR = 0x123456;
+</pre>
+<div class="blankline"></div>
+    <p>The variety of macros that can be interpreted as D declarations may be expanded,
+    but will never encompass all the metaprogramming uses of C macros.
+    </p>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="predefined-macros" href="#predefined-macros">Predefined Macros</a></h2>
+<div class="blankline"></div>
+    <p>ImportC does not predefine any macros.</p>
+<div class="blankline"></div>
+    <p>To distinguish an ImportC compile vs some other C compiler, use:</p>
+<div class="blankline"></div>
+<pre class="ccode notranslate">#if __IMPORTC__
+</pre>
+<div class="blankline"></div>
+    <p><em class="tt">__IMPORTC__</em> is defined in <em class="tt">src/importc.h</em> which is automatically
+    included when the preprocessor is run.</p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="preprocessor-directives" href="#preprocessor-directives">Preprocessor Directives</a></h2>
+<div class="blankline"></div>
+    <p>ImportC supports these preprocessor directives:</p>
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="line-control" href="#line-control">Line control</a></h3>
+<div class="blankline"></div>
+    <p>C11 6.10.4</p>
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="linemarker" href="#linemarker">Linemarker</a></h3>
+<div class="blankline"></div>
+    <p><a href="https://gcc.gnu.org/onlinedocs/gcc-11.1.0/cpp/Preprocessor-Output.html">linemarker</a>
+    directives are normally embedded in the output of C preprocessors.</p>
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="pragma" href="#pragma">pragma</a></h3>
+<div class="blankline"></div>
+    <p>The following pragmas are supported:</p>
+<div class="blankline"></div>
+    <ul>    <li><em class="tt">#pragma pack ( )</em></li>
+    <li><em class="tt">#pragma pack ( show )</em></li>
+    <li><em class="tt">#pragma pack ( push )</em></li>
+    <li><em class="tt">#pragma pack ( push , identifier )</em></li>
+    <li><em class="tt">#pragma pack ( push , integer )</em></li>
+    <li><em class="tt">#pragma pack ( push , identifier , integer )</em></li>
+    <li><em class="tt">#pragma pack ( pop )</em></li>
+    <li><em class="tt">#pragma pack ( pop PopList )</em></li>
+    </ul>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="implementation" href="#implementation">Implementation</a></h2>
+<div class="blankline"></div>
+    <p>The implementation defined characteristics of ImportC are:</p>
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="enums" href="#enums">Enums</a></h3>
+<div class="blankline"></div>
+    <p><i>enumeration-constants</i> are always typed as <span class="d_inlinecode donthyphenate notranslate">int</span>.</p>
+<div class="blankline"></div>
+    <p>The expression that defines the value of an <i>enumeration-constant</i> must
+    be an integral type and evaluate to an integer value that fits in an <span class="d_inlinecode donthyphenate notranslate">int</span>.</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">enum</span> E { -10, 0x81231234 }; <span class="d_comment">// ok
+</span><span class="d_keyword">enum</span> F {  0x812312345678 }; <span class="d_comment">// error, doesn't fit in int
+</span><span class="d_keyword">enum</span> G { 1.0 };             <span class="d_comment">// error, not integral type
+</span></pre>
+<div class="blankline"></div>
+    <p>The enumerated type is <span class="d_inlinecode donthyphenate notranslate">int</span>.</p>
+<div class="blankline"></div>
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="bitfields" href="#bitfields">Bit Fields</a></h3>
+<div class="blankline"></div>
+    <p>There are many implementation defined aspects of C11 bit fields.
+    ImportC's behavior adjusts to match the behavior of the <i>associated
+    C compiler</i> on the target platform.
+    </p>
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="implicit-function-declaration" href="#implicit-function-declaration">Implicit Function Declarations</a></h3>
+<div class="blankline"></div>
+    <p>Implicit function declarations:</p>
+<div class="blankline"></div>
+    <pre class="ccode notranslate">    int main()
+    {
+        func();  // implicit declaration of func()
+    }
+    </pre>
+<div class="blankline"></div>
+    <p>were allowed in K+R C and C89, but were invalidated in C99 and C11. Although many
+    C compilers still support them, ImportC does not.
+    </p>
+<div class="blankline"></div>
+    <div class="spec-boxes rationale"><b>Rationale:</b> Implicit function declarations are very error-prone and cause hard
+    to find bugs.</div>
+
+
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="pragma-STDC-FENV_ACCESS" href="#pragma-STDC-FENV_ACCESS">#pragma STDC FENV_ACCESS</a></h3>
+<div class="blankline"></div>
+    <p>This is described in C11 7.6.1</p>
+<div class="blankline"></div>
+<pre class="bnf notranslate">#pragma STDC FENV_ACCESS on-off-switch
+<div class="blankline"></div>
+on-off-switch:
+    ON
+    OFF
+    DEFAULT
+</pre>
+<div class="blankline"></div>
+    <p>It is completely ignored.</p>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="limitations" href="#limitations">Limitations</a></h2>
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="exceptions" href="#exceptions">Exception Handling</a></h3>
+<div class="blankline"></div>
+    <p>ImportC is assumed to never throw exceptions. <span class="d_inlinecode donthyphenate notranslate">setjmp</span> and <span class="d_inlinecode donthyphenate notranslate">longjmp</span> are not supported.</p>
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="const" href="#const">Const</a></h3>
+<div class="blankline"></div>
+    <p>C11 specifies that <span class="d_inlinecode donthyphenate notranslate">const</span> only applies locally. <span class="d_inlinecode donthyphenate notranslate">const</span> in ImportC applies transitively,
+    meaning that although <pre class="ccode notranslate">int *const p;</pre> means in C11 that p is a const pointer to int,
+    in ImportC it means p is a const pointer to a const int.</p>
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="volatile" href="#volatile">Volatile</a></h3>
+<div class="blankline"></div>
+    <p>The <span class="d_inlinecode donthyphenate notranslate">volatile</span> type-qualifier (C11 6.7.3) is ignored. Use of <span class="d_inlinecode donthyphenate notranslate">volatile</span> to implement shared
+    memory access is unlikely to work anyway, <a href="#_atomic">_Atomic</a> is for that.
+    To use <span class="d_inlinecode donthyphenate notranslate">volatile</span> as a device register, call a function to do it that is compiled separately,
+    or use inline assembler.
+    </p>
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="restrict" href="#restrict">Restrict</a></h3>
+<div class="blankline"></div>
+    <p>The <span class="d_inlinecode donthyphenate notranslate">restrict</span> type-qualifier (C11 6.7.3) is ignored.</p>
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="_atomic" href="#_atomic">_Atomic</a></h3>
+<div class="blankline"></div>
+    <p>The <span class="d_inlinecode donthyphenate notranslate">_Atomic</span> type-qualifier (C11 6.7.3) is ignored.
+    To do atomic operations, use an externally compiled function for that, or the inline assembler.</p>
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="compatible_types" href="#compatible_types">Compatible Types</a></h3>
+<div class="blankline"></div>
+    <p><i>Compatible Types</i> (C11 6.7.2) are identical types in ImportC.</p>
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="same_only_different" href="#same_only_different">Same only Different Types</a></h3>
+<div class="blankline"></div>
+    <p>On some platforms, C <span class="d_inlinecode donthyphenate notranslate">long</span> and <span class="d_inlinecode donthyphenate notranslate">unsigned long</span> are the same size as <span class="d_inlinecode donthyphenate notranslate">int</span> and <span class="d_inlinecode donthyphenate notranslate">unsigned int</span>, respectively.
+    On other platforms, C <span class="d_inlinecode donthyphenate notranslate">long</span> and <span class="d_inlinecode donthyphenate notranslate">unsigned long</span> are the same size as <span class="d_inlinecode donthyphenate notranslate">long long</span> and <span class="d_inlinecode donthyphenate notranslate">unsigned long long</span>.
+    <span class="d_inlinecode donthyphenate notranslate">long double</span> and <span class="d_inlinecode donthyphenate notranslate">long  double _Complex</span> can be same size as <span class="d_inlinecode donthyphenate notranslate">double</span> and <span class="d_inlinecode donthyphenate notranslate">double _Complex</span>.
+    In ImportC, these types that are the same size and signed-ness are treated as the same types.
+    </p>
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="_generic" href="#_generic">_Generic</a></h3>
+<div class="blankline"></div>
+    <p><b>Generic selection</b> expressions (C11 6.5.1.1) differ from ImportC.
+    The types in <a href="#same_only_different">Same only Different Types</a> are
+    indistinguishable in the <i>type-name</i> parts of <i>generic-association</i>.
+    Instead of giving an error for duplicate types per C11 6.5.1.1-2, ImportC
+    will select the first compatible <i>type-name</i> in the <i>generic-assoc-list</i>.
+    </p>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="extensions" href="#extensions">Extensions</a></h2>
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="forward-references" href="#forward-references">Forward References</a></h3>
+<div class="blankline"></div>
+    <p>Any declarations in scope can be accessed, not just
+    declarations that lexically precede a reference.</p>
+<div class="blankline"></div>
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="ctfe" href="#ctfe">Compile Time Function Execution</a></h3>
+<div class="blankline"></div>
+    <p>Evaluating constant expressions includes executing functions in the
+    same manner as D's CTFE can.</p>
+<div class="blankline"></div>
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="inlining" href="#inlining">Function Inlining</a></h3>
+<div class="blankline"></div>
+    <p>Functions for which the function body is present can
+    be inlined by ImportC as well as by the D code that calls them.</p>
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="enumbasetype" href="#enumbasetype">Enum Base Types</a></h3>
+<div class="blankline"></div>
+    <p>Enums are extended with an optional <i>EnumBaseType</i>:</p>
+<div class="blankline"></div>
+<pre class="bnf notranslate"><a id="EnumDeclaration"><span class="gname">EnumDeclaration</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">enum</span> <a href="#Identifier"><i>Identifier</i></a> <span class="d_inlinecode donthyphenate notranslate">:</span> <a href="#EnumBaseType"><i>EnumBaseType</i></a> <a href="#EnumBody"><i>EnumBody</i></a>
+<div class="blankline"></div>
+<a id="EnumBaseType"><span class="gname">EnumBaseType</span></a>:
+    <a href="#Type"><i>Type</i></a>
+</pre>
+<div class="blankline"></div>
+    <p>which, when supplied, causes the enum members to be implicitly cast to the
+    <i>EnumBaseType</i>.
+    </p>
+<div class="blankline"></div>
+<pre class="ccode notranslate">enum S : byte { A };
+_Static_assert(sizeof(A) == 1, "A should be size 1");
+</pre>
+<div class="blankline"></div>
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="register" href="#register">Register Storage Class</a></h3>
+<div class="blankline"></div>
+    <p>Objects with <span class="d_inlinecode donthyphenate notranslate">register</span> storage class are treated as <span class="d_inlinecode donthyphenate notranslate">auto</span> declarations.</p>
+<div class="blankline"></div>
+    <p>Objects with <span class="d_inlinecode donthyphenate notranslate">register</span> storage class may have their address taken. C11 6.3.2.1-2</p>
+<div class="blankline"></div>
+    <p>Arrays can have <span class="d_inlinecode donthyphenate notranslate">register</span> storage class, and may be enregistered by the compiler. C11 6.3.2.1-3</p>
+<div class="blankline"></div>
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="typeof" href="#typeof">typeof Operator</a></h3>
+<div class="blankline"></div>
+    <p>The <span class="d_inlinecode donthyphenate notranslate">typeof</span> operator may be used as a type specifier:</p>
+<pre class="bnf notranslate"><a id="type-specifier"><span class="gname">type-specifier</span></a>:
+    <a id="typeof-specifier"><span class="gname">typeof-specifier</span></a>
+<div class="blankline"></div>
+<a id="typeof-specifier"><span class="gname">typeof-specifier</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">typeof (</span> <a id="expression"><span class="gname">expression</span></a> <span class="d_inlinecode donthyphenate notranslate">)</span>
+    <span class="d_inlinecode donthyphenate notranslate">typeof (</span> <a id="type-name"><span class="gname">type-name</span></a> <span class="d_inlinecode donthyphenate notranslate">)</span>
+</pre>
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="__import" href="#__import">Import Declarations</a></h3>
+<div class="blankline"></div>
+    <p>Modules can be imported with a <i>CImportDeclaration</i>:</p>
+<div class="blankline"></div>
+<pre class="bnf notranslate"><a id="CImportDeclaration"><span class="gname">CImportDeclaration</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">__import</span> <a href="../spec/module.html#ImportList"><i>ImportList</i></a> <span class="d_inlinecode donthyphenate notranslate">;</span>
+</pre>
+<div class="blankline"></div>
+    <p>Imports enable ImportC code to directly access D declarations and functions
+    without the necessity of creating a <em class="tt">.h</em> file representing those declarations.
+    The tedium and brittleness of keeping the <em class="tt">.h</em> file up-to-date with the D
+    declarations is eliminated.
+    D functions are available to be inlined.
+    </p>
+<div class="blankline"></div>
+    <p>Imports also enable ImportC code to directly import other C files without
+    needing to create a .h file for them, either.
+    Imported C functions become available to be inlined.
+    </p>
+<div class="blankline"></div>
+    <p>The <i>ImportList</i> works the same as it does for D.</p>
+<div class="blankline"></div>
+    <p>The ordering of <i>CImportDeclaration</i>s has no significance.</p>
+<div class="blankline"></div>
+    <p>An ImportC file can be imported, the name of the C file to be
+    imported is derived from the module name.</p>
+<div class="blankline"></div>
+    <p>All the global symbols in the ImportC file become available to the
+    importing module.</p>
+<div class="blankline"></div>
+    <p>If a name is referred to in the importing file is not found,
+    the global symbols in each imported file are searched for the name.
+    If it is found in exactly one module, that becomes the resolution of the
+    name. If it is found in multiple modules, it is an error.</p>
+<div class="blankline"></div>
+    <div class="spec-boxes note"><b>Note:</b> Since ImportC has no scope resolution operator, only global symbols
+    can be found, and a qualification cannot be added to specifiy which module
+    a symbols is in.</div>
+<div class="blankline"></div>
+    <p>Preprocessor symbols in the imported module are not available to the
+    importing module, and preprocessing symbols in the importing file are not
+    available to the imported module.</p>
+<div class="blankline"></div>
+    <p>A D module can be imported, in the same manner as that
+    of a <a href="../spec/module.html#ImportDeclaration"><i>ImportDeclaration</i></a>.</p>
+<div class="blankline"></div>
+    <p>Imports can be circular.</p>
+<div class="blankline"></div>
+<pre class="ccode notranslate">__import core.stdc.stdarg; // get D declaration of va_list
+__import mycode;           // import mycode.c
+<div class="blankline"></div>
+int foo()
+{
+    va_list x;    // picks up va_list from core.stdc.stdarg
+    return 1 + A; // returns 4
+}</pre>
+<div class="blankline"></div>
+    <p><em class="tt">mycode.c</em> looks like:</p>
+<div class="blankline"></div>
+<pre class="ccode notranslate">enum E { A = 3; }
+</pre>
+<div class="blankline"></div>
+    <div class="spec-boxes best-practice"><b>Best Practices:</b> Avoid using preprocessor <em class="tt">#define</em>s like <em class="tt">#define A 3</em>.
+    Use the enum form shown in the above example.
+    Prefer <em class="tt">const</em> declarations over <em class="tt">#define</em>s.
+    Rewrite function-style preprocessor macros as inline functions.
+    </div>
+
+
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="gnu-clang-extensions" href="#gnu-clang-extensions">Gnu and Clang Extensions</a></h2>
+<div class="blankline"></div>
+    <p><span class="d_inlinecode donthyphenate notranslate">gcc</span> and <span class="d_inlinecode donthyphenate notranslate">clang</span> are presumed to have the same behavior w.r.t. extensions,
+    so <span class="d_inlinecode donthyphenate notranslate">gcc</span> as used here refers to both.</p>
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="noreturn" href="#noreturn"><span class="d_inlinecode donthyphenate notranslate">__attribute__((noreturn))</span></a></h3>
+<div class="blankline"></div>
+    <p><span class="d_inlinecode donthyphenate notranslate">__attribute__((noreturn))</span> marks a function as never returning.
+    <span class="d_inlinecode donthyphenate notranslate">gcc</span> set this as an attribute of the function, it is
+    not part of the function's type. In D, a function that never returns
+    has the return type <a href="../spec/type.html#noreturn"><i>noreturn</i></a>. The difference can be
+    seen with the code:</p>
+    <pre class="ccode notranslate">    attribute((noreturn)) int foo();
+    size_t x = sizeof(foo());
+    </pre>
+    <p>This code is accepted by <span class="d_inlinecode donthyphenate notranslate">gcc</span>, but makes no sense for D. Hence,
+    although it works in ImportC, it is not representable as D code,
+    meaning one must use judgement in creating a .di file to interface
+    with C <span class="d_inlinecode donthyphenate notranslate">noreturn</span> functions.</p>
+<div class="blankline"></div>
+    <p>Furthermore, the D compiler takes advantage of <span class="d_inlinecode donthyphenate notranslate">noreturn</span> functions
+    by issuing compile time errors for unreachable code. Such unreachable
+    code, however, is valid C11, and the ImportC compiler will accept it.</p>
+<div class="blankline"></div>
+    <div class="spec-boxes best-practice"><b>Best Practices:</b> C code that uses the <span class="d_inlinecode donthyphenate notranslate">noreturn</span> attribute should at the
+    very least set the return type to <span class="d_inlinecode donthyphenate notranslate">void</span>.</div>
+
+
+<div class="blankline"></div>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="visualc-extensions" href="#visualc-extensions">Visual C Extensions</a></h2>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="digital-mars-extensions" href="#digital-mars-extensions">Digital Mars C Extensions</a></h2>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="d-side" href="#d-side">ImportC from D's Point of View</a></h2>
+<div class="blankline"></div>
+    <p>There is no one-to-one mapping of C constructs to D constructs, although
+    it is very close. What follows is a description of how the D side views
+    the C declarations that are imported.</p>
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="module-name" href="#module-name">Module Name</a></h3>
+<div class="blankline"></div>
+    <p>The module name assigned to the ImportC file is the filename stripped
+    of its path and extension. This is just like the default module name assigned
+    to a D module that does not have a module declaration.</p>
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="extern-C" href="#extern-C"><span class="d_inlinecode donthyphenate notranslate">extern (C)</span></a></h3>
+<div class="blankline"></div>
+    <p>All C symbols are <span class="d_inlinecode donthyphenate notranslate">extern (C)</span>.</p>
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="enums" href="#enums">Enums</a></h3>
+<div class="blankline"></div>
+    <p>The C enum:</p>
+<div class="blankline"></div>
+    <pre class="ccode notranslate">enum E { A, B = 2 };</pre>
+<div class="blankline"></div>
+    <p>appears to D code as:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">enum</span> E : <span class="d_keyword">int</span> { A, B = 2 }
+<span class="d_keyword">alias</span> A = E.A;
+<span class="d_keyword">alias</span> B = E.B;
+</pre>
+<div class="blankline"></div>
+    <p>The <span class="d_inlinecode donthyphenate notranslate">.min</span> and <span class="d_inlinecode donthyphenate notranslate">.max</span> properties are available:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">static</span> <span class="d_keyword">assert</span>(E.min == 0 &amp;&amp; E.max == 2);
+</pre>
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="tag-symbols" href="#tag-symbols">Tag Symbols</a></h3>
+<div class="blankline"></div>
+    <p>Tag symbols are the identifiers that appear after the <span class="d_inlinecode donthyphenate notranslate">struct</span>, <span class="d_inlinecode donthyphenate notranslate">union</span>, and <span class="d_inlinecode donthyphenate notranslate">enum</span>
+    keywords, (C11 6.7.2.3). In C, they are placed in a different symbol table from other
+    identifiers. This means two different symbols can use the same name:</p>
+<div class="blankline"></div>
+    <pre class="ccode notranslate">    int S;
+    struct S { int a, b; };
+    S = 3;
+    struct S *ps;
+    </pre>
+<div class="blankline"></div>
+    <p>D does not make this distinction. Given a tag symbol that is the only declaration of an
+    identifier, that's what the D compiler recognizes. Given a tag symbol and a non-tag symbol
+    that share an identifier, the D compiler recognizes the non-tag symbol. This is normally
+    not a problem due to the common C practice of applying <span class="d_inlinecode donthyphenate notranslate">typedef</span>, as in:</p>
+<div class="blankline"></div>
+    <pre class="ccode notranslate">    typedef struct S { int a, b; } S;
+    </pre>
+<div class="blankline"></div>
+    <p>The D compiler recognizes the <span class="d_inlinecode donthyphenate notranslate">typedef</span> applied to <span class="d_inlinecode donthyphenate notranslate">S</span>, and the code compiles as expected. But when <span class="d_inlinecode donthyphenate notranslate">typedef</span> is absent, as in:</p>
+<div class="blankline"></div>
+    <pre class="ccode notranslate">    int S;
+    struct S { int a, b; };
+    </pre>
+<div class="blankline"></div>
+    <p>the most pragmatic workaround is to add a <span class="d_inlinecode donthyphenate notranslate">typedef</span> to the C code:</p>
+<div class="blankline"></div>
+    <pre class="ccode notranslate">    int S;
+    struct S { int a, b; };
+    typedef struct S S_t;    // add this typedef
+    </pre>
+<div class="blankline"></div>
+    <p>Then the D compiler can access the struct tag symbol via <span class="d_inlinecode donthyphenate notranslate">S_t</span>.</p>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="wrapping" href="#wrapping">Wrapping C Code</a></h2>
+<div class="blankline"></div>
+    <p>Many difficulties with adapting C code to ImportC can be done without
+    editing the C code itself. Wrap the C code in another C file and then
+    <pre class="ccode notranslate">#include</pre> it. Consider the following problematic C file <em class="tt">file.c</em>:</p>
+<div class="blankline"></div>
+    <pre class="ccode notranslate">    void func(int *__restrict p);
+    int S;
+    struct S { int a, b; };
+    </pre>
+<div class="blankline"></div>
+    <p>The problems are that <pre class="ccode notranslate">__restrict</pre> is not a type qualifier recognized by ImportC
+    (or C11),
+    and the struct <span class="d_inlinecode donthyphenate notranslate">S</span> is hidden from D by the declaration <pre class="ccode notranslate">int S;</pre>.
+    To wrap <em class="tt">file.c</em> with a fix, create the file <em class="tt">file_ic.c</em> with the contents:</p>
+<div class="blankline"></div>
+    <pre class="ccode notranslate">    #define __restrict restrict
+    #include "file.c"
+    typedef struct S S_t;
+    </pre>
+<div class="blankline"></div>
+    <p>Then, <span class="d_inlinecode donthyphenate notranslate">import file_ic;</span> instead of <span class="d_inlinecode donthyphenate notranslate">import file;</span>, and use <span class="d_inlinecode donthyphenate notranslate">S_t</span> when <pre class="ccode notranslate">struct S</pre> is desired.</p>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="warnings" href="#warnings">Warnings</a></h2>
+<div class="blankline"></div>
+    <p>Many suspicious C constructs normally cause warnings to be emitted by default by
+    typical compilers, such as:</p>
+<div class="blankline"></div>
+    <pre class="ccode notranslate">int *p = 3; // Warning: integer implicitly converted to pointer</pre>
+<div class="blankline"></div>
+    <p>ImportC does not emit warnings. The presumption is the user will be importing existing C
+    code developed using another C compiler, and it is written as intended.
+    If C11 says it is legal, ImportC accepts it.</p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="importcpp" href="#importcpp">ImportC++</a></h2>
+<div class="blankline"></div>
+    <p>ImportC will not compile C++ code. For that, use <em class="tt">dpp</em>.</p>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="other-solutions" href="#other-solutions">Other Solutions</a></h2>
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="dpp" href="#dpp">dpp by Atila Neves</a></h3>
+<div class="blankline"></div>
+    <p><a href="https://code.dlang.org/packages/dpp/0.2.1">dpp code</a></p>
+<div class="blankline"></div>
+    <p><a href="https://dlang.org/blog/2019/04/08/project-highlight-dpp/">dpp Article</a></p>
+<div class="blankline"></div>
+    <p>From the Article:</p>
+<div class="blankline"></div>
+    <blockquote><p>dpp is a compiler wrapper that will parse a D source
+    file with the .dpp extension and expand in place any #include directives
+    it encounters, translating all of the C or C++ symbols to D, and then
+    pass the result to a D compiler (DMD by default).</p></blockquote>
+<div class="blankline"></div>
+    <p>Like DStep, dpp relies on libclang.</p>
+<div class="blankline"></div>
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="dstep" href="#dstep">DStep by Jacob Carlborg</a></h3>
+<div class="blankline"></div>
+    <p><a href="https://code.dlang.org/packages/dstep">DStep code</a></p>
+<div class="blankline"></div>
+    <p><a href="https://dlang.org/blog/2019/04/22/dstep-1-0-0/">DStep Article</a></p>
+<div class="blankline"></div>
+    <p>From the Article:</p>
+<div class="blankline"></div>
+    <blockquote><p>DStep is a tool for automatically generating D
+    bindings for C and Objective-C libraries. This is implemented by
+    processing C or Objective-C header files and outputting D modules.
+    DStep uses the Clang compiler as a library (libclang) to process the header files.</p></blockquote>
+<div class="blankline"></div>
+<div class="blankline"></div>
+    <h3><a class="anchor" title="Permalink to this section" id="htod" href="#htod">htod by Walter Bright</a></h3>
+<div class="blankline"></div>
+    <p><a href="https://dlang.org/htod.html">htod</a> converts a C <em class="tt">.h</em> file
+    to a D source file, suitable for importing into D code.
+    <b>htod</b> is built from the front end of the Digital Mars C and C++ compiler.
+    It works just like a C or C++ compiler except that its output is source
+    code for a D module rather than object code.</p>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="internals" href="#internals">How ImportC Works</a></h2>
+<div class="blankline"></div>
+    <p>ImportC's implementation is based on the idea that D's semantics are very similar
+    to C's. ImportC gets its own parser, which converts the C syntax into the same AST
+    (Abstract Syntax Tree) that D uses. The lexer for ImportC is the same as for D, but with
+    some modifications here and there, such as the keywords and integer literals being different.
+    Where the semantics of C differ from D, there are adjustments in the semantic analysis
+    code in the D compiler.</p>
+<div class="blankline"></div>
+    <p>This co-opting of the D semantic implementation allows ImportC to be able to do things
+    like handle forward references, CTFE (Compile Time Function Execution), and inlining of C functions
+    into D code. Being able to handle forward references means it is not necessary to even
+    write a .h file to be able to import C declarations into D. Being able to perform CTFE is
+    very handy for testing that ImportC is working without needing to generate an executable.
+    But, in general, the strong temptation to add D features to ImportC has been resisted.</p>
+<div class="blankline"></div>
+    <p>The optimizer and code generator are, of course, the same as D uses.</p>
+<div class="blankline"></div>
+
+<div style="float: left"><i class="fa fa-angle-left" aria-hidden="true"></i> <a href="../spec/betterc.html">Better C</a></div>
+<div style="float: right"><a href="../spec/ob.html">Live Functions</a> <i class="fa fa-angle-right" aria-hidden="true"></i></div>
+<div style="clear:both"></div>
+
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on (no date time)</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<script type="text/javascript" src="../js/listanchors.js"></script>
+<script type="text/javascript">jQuery(document).ready(addVersionSelector);</script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>
