@@ -1,6 +1,6 @@
 #!/usr/bin/env rdmd
 
-import std.algorithm, std.conv, std.file, std.path, std.process, std.range, std.stdio;
+import std.conv, std.file, std.path, std.process, std.range, std.stdio;
 
 auto digger = "dub run digger -- ";
 auto dlangOrgFolder = "dlang.org";
@@ -32,6 +32,13 @@ string tagVersion(int minor)
 
 void main(string[] args)
 {
+    if (args.length < 2)
+    {
+        console("\033[1;33mbuilder.d: missing git tag argument");
+        console("\033[1;33musage: ./builder.d tags...");
+        return;
+    }
+
     auto outFolder = "archives";
     outFolder.mkdirRecurse;
 
@@ -39,7 +46,7 @@ void main(string[] args)
     executeOrFail("dub fetch digger");
 
     auto cwd = getcwd();
-    auto tags = iota(78, 79).map!(e => tagVersion(e));
+    auto tags = args[1 .. $];
     foreach (tag; tags)
     {
         auto diggerWorkRepo = cwd.buildPath("work", "repo");
