@@ -1,0 +1,1507 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Pointers - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Pointers' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BPointers%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/d.en/pointers.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Pointers</h1>
+        
+        
+
+
+
+<p>Pointers are variables that provide access to other variables. The value of a pointer is the address of the variable that it provides access to.
+</p>
+
+<p>Pointers can point at any type of variable, object, and even other pointers. In this chapter, I will refer to all of these simply as <i>variables</i>.
+</p>
+
+<p>Pointers are low level features of microprocessors. They are an important part of system programming.
+</p>
+
+<p>The syntax and semantics of pointers in D are inherited directly from C. Although pointers are notoriously the most difficult feature of C to comprehend, they should not be as difficult in D. This is because other features of D that are semantically close to pointers are more useful in situations where pointers would have to be used in other languages. When the ideas behind pointers are already understood from those other features of D, pointers should be easier to grasp.
+</p>
+
+<p>The short examples throughout the most of this chapter are decidedly simple. The programs at the end of the chapter will be more realistic.
+</p>
+
+<p>The names like <code class="d_inline">ptr</code> (short for "pointer") that I have used in these examples should not be considered as useful names in general. As always, names must be chosen to be more meaningful and explanatory in actual programs.
+</p>
+
+<h5 class="subsection"><a id="ix_Pointers.reference, concept" content="reference, concept"></a> The concept of a reference</h5>
+
+<p>Although we have encountered references many times in the previous chapters, let's summarize this concept one more time.
+</p>
+
+<h6>The <code class="d_inline">ref</code> variables in <code class="d_inline">foreach</code> loops</h6>
+
+<p>As we have seen in <a href="foreach.html">the <code class="d_inline">foreach</code> Loop chapter</a>, normally the loop variables are <i>copies</i> of elements:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">int</span>[] numbers = [ 1, 11, 111 ];
+
+    <span class="d_keyword">foreach</span> (number; numbers) {
+        number = 0;     <span class="d_comment">// ← the copy changes, not the element
+</span>    }
+
+    writeln(<span class="d_string">"After the loop: "</span>, numbers);
+}
+</pre>
+
+<p>The <code class="d_inline">number</code> that gets assigned 0 each time is a copy of one of the elements of the array. Modifying that copy does not modify the element:
+</p>
+
+<pre class="shell">After the loop: [1, 11, 111]
+</pre>
+
+<p>When the actual elements need to be modified, the <code class="d_inline">foreach</code> variable must be defined as <code class="d_inline">ref</code>:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">foreach</span> (<span class="hilite"><span class="d_keyword">ref</span></span> number; numbers) {
+        number = 0;     <span class="d_comment">// ← the actual element changes
+</span>    }
+</pre>
+
+<p>This time <code class="d_inline">number</code> is a reference to an actual element in the array:
+</p>
+
+<pre class="shell">After the loop: [0, 0, 0]
+</pre>
+
+<h6><code class="d_inline">ref</code> function parameters</h6>
+
+<p>As we have seen in <a href="function_parameters.html">the Function Parameters chapter</a>, the parameters of <i>value types</i> are normally copies of the arguments:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> addHalf(<span class="d_keyword">double</span> value) {
+    value += 0.5;        <span class="d_comment">// ← Does not affect 'value' in main
+</span>}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">double</span> value = 1.5;
+
+    addHalf(value);
+
+    writeln(<span class="d_string">"The value after calling the function: "</span>, value);
+}
+</pre>
+
+<p>Because the function parameter is not defined as <code class="d_inline">ref</code>, the assignment inside the function affects only the local variable there. The variable in <code class="d_inline">main()</code> is not affected:
+</p>
+
+<pre class="shell">The value after calling the function: 1.5
+</pre>
+
+<p>The <code class="d_inline">ref</code> keyword would make the function parameter a reference to the argument:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> addHalf(<span class="hilite"><span class="d_keyword">ref</span></span> <span class="d_keyword">double</span> value) {
+    value += 0.5;
+}
+</pre>
+
+<p>This time the variable in <code class="d_inline">main()</code> gets modified:
+</p>
+
+<pre class="shell">The value after calling the function: 2
+</pre>
+
+<h6>Reference types</h6>
+
+<p>Some types are reference types. Variables of such types provide access to separate variables:
+</p>
+
+<ul><li>Class variables</li>
+<li>Slices</li>
+<li>Associative arrays</li>
+</ul>
+
+<p>We have seen this distinction in <a href="value_vs_reference.html">the Value Types and Reference Types chapter</a>. The following example demonstrates reference types by two <code class="d_inline">class</code> variables:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">class</span> Pen {
+    <span class="d_keyword">double</span> ink;
+
+    <span class="d_keyword">this</span>() {
+        ink = 15;
+    }
+
+    <span class="d_keyword">void</span> use(<span class="d_keyword">double</span> amount) {
+        ink -= amount;
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> pen = <span class="d_keyword">new</span> Pen;
+    <span class="d_keyword">auto</span> otherPen = pen;  <span class="d_comment">// ← Now both variables provide
+</span>                          <span class="d_comment">//   access to the same object
+</span>
+    writefln(<span class="d_string">"Before: %s %s"</span>, pen.ink, otherPen.ink);
+
+    pen.use(1);          <span class="d_comment">// ← the same object is used
+</span>    otherPen.use(2);     <span class="d_comment">// ← the same object is used
+</span>
+    writefln(<span class="d_string">"After : %s %s"</span>, pen.ink, otherPen.ink);
+}
+</pre>
+
+<p>Because classes are reference types, the class variables <code class="d_inline">pen</code> and <code class="d_inline">otherPen</code> provide access to the same <code class="d_inline">Pen</code> object. As a result, using either of those class variables affects the same object:
+</p>
+
+<pre class="shell">Before: 15 15
+After : 12 12
+</pre>
+
+<p>That single object and the two class variables would be laid out in memory similar to the following figure:
+</p>
+
+<pre class="mono">      (The Pen object)            pen        otherPen
+ ───┬───────────────────┬───  ───┬───┬───  ───┬───┬───
+    │        ink        │        │ o │        │ o │
+ ───┴───────────────────┴───  ───┴─│─┴───  ───┴─│─┴───
+              ▲                    │            │
+              │                    │            │
+              └────────────────────┴────────────┘
+</pre>
+
+<p>References <i>point at</i> actual variables as <code class="d_inline">pen</code> and <code class="d_inline">otherPen</code> do above.
+</p>
+
+<p>Programming languages implement the reference and pointer concepts by special registers of the microprocessor, which are specifically for <i>pointing at</i> memory locations.
+</p>
+
+<p>Behind the scenes, D's higher-level concepts (class variables, slices, associative arrays, etc.) are all implemented by pointers. As these higher-level features are already efficient and convenient, pointers are rarely needed in D programming. Still, it is important for D programmers to understand pointers well.
+</p>
+
+<h5 class="subsection"><a id="ix_Pointers.*, pointer definition" content="*, pointer definition"></a> Syntax</h5>
+
+<p>The pointer syntax of D is mostly the same as in C. Although this can be seen as an advantage, the peculiarities of C's pointer syntax are necessarily inherited by D as well. For example, the different meanings of the <code class="d_inline">*</code> character may be confusing.
+</p>
+
+<p>With the exception of <code class="d_inline">void</code> pointers, every pointer is associated with a certain type and can point at only variables of that specific type. For example, an <code class="d_inline">int</code> pointer can only point at variables of type <code class="d_inline">int</code>.
+</p>
+
+<p>The pointer definition syntax consists of the associated type and a <code class="d_inline">*</code> character:
+</p>
+
+<pre class="d_code">    <i><span class="d_keyword">type_to_point_at</span></i> * <i>name_of_the_pointer_variable</i>;
+</pre>
+
+<p>Accordingly, a pointer variable that would be pointing at <code class="d_inline">int</code> variables would be defined like this:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span> * myPointer;
+</pre>
+
+<p>The <code class="d_inline">*</code> character in that syntax may be pronounced as "pointer". So, the type of <code class="d_inline">myPointer</code> above is an "int pointer". The spaces before and after the <code class="d_inline">*</code> character are optional. The following syntaxes are common as well:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span>* myPointer;
+    <span class="d_keyword">int</span> *myPointer;
+</pre>
+
+<p>When it is specifically a pointer type that is being mentioned as in "int pointer", it is common to write the type without any spaces as in <code class="d_inline">int*</code>.
+</p>
+
+<h5 class="subsection"><a id="ix_Pointers.&amp;, address of" content="&amp;, address of"></a> Pointer value and the address-of operator&nbsp;<code class="d_inline">&amp;</code></h5>
+
+<p>Being variables themselves pointers have values as well. The default value of a pointer is the special value <code class="d_inline">null</code>, which means that the pointer is not <i>pointing at</i> any variable yet (i.e. does not provide access to any variable).
+</p>
+
+<p>To make a pointer provide access to a variable, the value of the pointer must be set to the address of that variable. The pointer starts pointing at the variable that is at that specific address. From now on, I will call that variable <i>the pointee</i>.
+</p>
+
+<p>The <code class="d_inline">&amp;</code> operator which we have used many times before with <code class="d_inline">readf</code> has also been briefly mentioned in <a href="value_vs_reference.html">the Value Types and Reference Types chapter</a>. This operator produces the address of the variable that is written after it. Its value can be used when initializing a pointer:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span> myVariable = 180;
+    <span class="d_keyword">int</span> * myPointer = <span class="hilite">&amp;</span>myVariable;
+</pre>
+
+<p>Initializing <code class="d_inline">myPointer</code> by the address of <code class="d_inline">myVariable</code> makes <code class="d_inline">myPointer</code> point at <code class="d_inline">myVariable</code>.
+</p>
+
+<p>The value of the pointer is the same as the address of <code class="d_inline">myVariable</code>:
+</p>
+
+<pre class="d_code">    writeln(<span class="d_string">"The address of myVariable: "</span>, &amp;myVariable);
+    writeln(<span class="d_string">"The value of myPointer   : "</span>, myPointer);
+</pre>
+
+<pre class="shell">The address of myVariable: 7FFF2CE73F10
+The value of myPointer   : 7FFF2CE73F10
+</pre>
+
+<p><i><b>Note:</b> The address value is likely to be different every time the program is started.</i>
+</p>
+
+<p>The following figure is a representation of these two variables in memory:
+</p>
+
+<pre class="mono">      myVariable at                myPointer at
+  address 7FFF2CE73F10          some other address
+───┬────────────────┬───     ───┬────────────────┬───
+   │      180       │           │  7FFF2CE73F10  │
+───┴────────────────┴───     ───┴────────│───────┴───
+           ▲                             │
+           │                             │
+           └─────────────────────────────┘
+</pre>
+
+<p>The value of <code class="d_inline">myPointer</code> is the address of <code class="d_inline">myVariable</code>, conceptually <i>pointing at</i> the variable that is at that location.
+</p>
+
+<p>Since pointers are variables as well, the <code class="d_inline">&amp;</code> operator can produce the address of the  pointer as well:
+</p>
+
+<pre class="d_code">    writeln(<span class="d_string">"The address of myPointer : "</span>, &amp;myPointer);
+</pre>
+
+<pre class="shell">The address of myPointer : 7FFF2CE73F18
+</pre>
+
+<p>Since the difference between the two addresses above is 8, remembering that an <code class="d_inline">int</code> takes up 4 bytes, we can deduce that <code class="d_inline">myVariable</code> and <code class="d_inline">myPointer</code> are 4 bytes apart in memory.
+</p>
+
+<p>After removing the arrow that represented the concept of <i>pointing at</i>, we can picture the contents of memory around these addresses like this:
+</p>
+
+<pre class="mono">    7FFF2CE73F10     7FFF2CE73F14     7FFF2CE73F18
+    :                :                :                :
+ ───┬────────────────┬────────────────┬────────────────┬───
+    │      180       │    (unused)    │  7FFF2CE73F10  │
+ ───┴────────────────┴────────────────┴────────────────┴───
+</pre>
+
+<p>The names of variables, functions, classes, etc. and keywords are not parts of programs of compiled languages like D. The variables that have been defined by the programmer in the source code are converted to bytes that occupy memory or registers of the microprocessor.
+</p>
+
+<p><i><b>Note:</b> The names (a.k.a. symbols) may actually be included in programs to help with debugging but those names do not affect the operation of the program.</i>
+</p>
+
+<h5 class="subsection"><a id="ix_Pointers.*, pointee access" content="*, pointee access"></a> The access operator&nbsp;<code class="d_inline">*</code></h5>
+
+<p>We have seen above that the <code class="d_inline">*</code> character which normally represents multiplication is also used when defining pointers. A difficulty with the syntax of pointers is that the same character has a third meaning: It is also used when accessing the pointee through the pointer.
+</p>
+
+<p>When it is written before the name of a pointer, it means <i>the variable that the pointer is pointing at</i> (i.e. the pointee):
+</p>
+
+<pre class="d_code">    writeln(<span class="d_string">"The value that it is pointing at: "</span>, <span class="hilite">*</span>myPointer);
+</pre>
+
+<pre class="shell">The value that it is pointing at: 180
+</pre>
+
+<h5 class="subsection"><a id="ix_Pointers.., pointer" content="., pointer"></a> The <code class="d_inline">.</code> (dot) operator to access a member of the pointee</h5>
+
+<p>If you know pointers from C, this operator is the same as the <code class="d_inline">-&gt;</code> operator in that language.
+</p>
+
+<p>We have seen above that the <code class="d_inline">*</code> operator is used for accessing the pointee. That is sufficiently useful for pointers of fundamental types like <code class="d_inline">int*</code>: The value of a fundamental type is accessed simply by writing <code class="d_inline">*myPointer</code>.
+</p>
+
+<p>However, when the pointee is a struct or a class object, the same syntax becomes inconvenient. To see why, let's consider the following struct:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Coordinate {
+    <span class="d_keyword">int</span> x;
+    <span class="d_keyword">int</span> y;
+
+    string toString() <span class="d_keyword">const</span> {
+        <span class="d_keyword">return</span> format(<span class="d_string">"(%s,%s)"</span>, x, y);
+    }
+}
+</pre>
+
+<p>The following code defines an object and a pointer of that type:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> center = Coordinate(0, 0);
+    Coordinate * ptr = <span class="hilite">&amp;</span>center;    <span class="d_comment">// pointer definition
+</span>    writeln(<span class="hilite">*</span>ptr);                 <span class="d_comment">// object access
+</span></pre>
+
+<p>That syntax is convenient when accessing the value of the entire <code class="d_inline">Coordinate</code> object:
+</p>
+
+<pre class="shell">(0,0)
+</pre>
+
+<p>However, the code becomes complicated when accessing a member of an object through a pointer and the <code class="d_inline">*</code> operator:
+</p>
+
+<pre class="d_code">    <span class="d_comment">// Adjust the x coordinate
+</span>    (*ptr).x += 10;
+</pre>
+
+<p>That expression modifies the value of the <code class="d_inline">x</code> member of the <code class="d_inline">center</code> object. The left-hand side of that expression can be explained by the following steps:
+</p>
+
+<ul><li><code class="d_inline">ptr</code>: The pointer that points at <code class="d_inline">center</code></li>
+
+<li><code class="d_inline"><span class="hilite">*</span>ptr</code>: Accessing the object (i.e. <code class="d_inline">center</code> itself)</li>
+
+<li><code class="d_inline"><span class="hilite">&#40;</span>*ptr<span class="hilite">&#41;</span></code>: Parentheses so that the <code class="d_inline">.</code> (dot) operator is applied to the object, not to the pointer</li>
+
+<li><code class="d_inline">(*ptr)<span class="hilite">.x</span></code>: The <code class="d_inline">x</code> member of the object that <code class="d_inline">ptr</code> is pointing at</li>
+
+</ul>
+
+<p>To reduce the complexity of pointer syntax in D, the <code class="d_inline">.</code> (dot) operator is transferred to the pointee and provides access to the member of the object. (The exceptions to this rule are at the end of this section.)
+</p>
+
+<p>So, the previous expression is normally written as:
+</p>
+
+<pre class="d_code">    <span class="hilite">ptr.x</span> += 10;
+</pre>
+
+<p>Since the pointer itself does not have a member named <code class="d_inline">x</code>, <code class="d_inline">.x</code> is applied to the pointee and the <code class="d_inline">x</code> member of <code class="d_inline">center</code> gets modified:
+</p>
+
+<pre class="shell">(10,0)
+</pre>
+
+<p>Note that this is the same as the use of the <code class="d_inline">.</code> (dot) operator with classes. When the <code class="d_inline">.</code> (dot) operator is applied to a class <i>variable</i>, it provides access to a member of the class <i>object</i>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">class</span> ClassType {
+    <span class="d_keyword">int</span> member;
+}
+
+<span class="d_comment">// ...
+</span>
+    <span class="d_comment">// Variable on the left, object on the right
+</span>    ClassType variable = <span class="d_keyword">new</span> ClassType;
+
+    <span class="d_comment">// Applied to the variable but accesses the member of
+</span>    <span class="d_comment">// the object
+</span>    variable.member = 42;
+</pre>
+
+<p>As you remember from <a href="class.html">the Classes chapter</a>, the class object is constructed by the <code class="d_inline">new</code> keyword on the right-hand side. <code class="d_inline">variable</code> is a class variable that provides access to it.
+</p>
+
+<p>Realizing that it is the same with pointers is an indication that class variables and pointers are implemented similarly by the compiler.
+</p>
+
+<p>There is an exception to this rule both for class variables and for pointers. Type properties like <code class="d_inline">.sizeof</code> are applied to the type of the pointer, not to the type of the pointee:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">char</span> c;
+    <span class="d_keyword">char</span> * p = &amp;c;
+
+    writeln(p.sizeof);  <span class="d_comment">// size of the pointer, not the pointee
+</span></pre>
+
+<p><code class="d_inline">.sizeof</code> produces the size of <code class="d_inline">p</code>, which is a <code class="d_inline">char*</code>, not the size of <code class="d_inline">c</code>, which is a <code class="d_inline">char</code>. On a 64-bit system pointers are 8-byte long:
+</p>
+
+<pre class="shell">8
+</pre>
+
+<h5 class="subsection"><a id="ix_Pointers.arithmetic, pointer" content="arithmetic, pointer"></a> Modifying the value of a pointer</h5>
+
+<p>The values of pointers can be incremented or decremented and they can be used in addition and subtraction:
+</p>
+
+<pre class="d_code">    ++ptr;
+    --ptr;
+    ptr += 2;
+    ptr -= 2;
+    writeln(ptr + 3);
+    writeln(ptr - 3);
+</pre>
+
+<p>Different from their arithmetic counterparts, these operations do not modify the actual value by the specified amount. Rather, the value of the pointer gets modified so that it now points at the variable that is a certain number of variables beyond the current one. The amount of the increment or the decrement specifies <i>how many variables away</i> should the pointer now point at.
+</p>
+
+<p>For example, incrementing the value of a pointer makes it point at the next variable:
+</p>
+
+<pre class="d_code">    ++ptr;  <span class="d_comment">// Starts pointing at a variable that is next in
+</span>            <span class="d_comment">// memory from the old variable
+</span></pre>
+
+<p>For that to work correctly, the actual value of the pointer must be incremented by the size of the variable. For example, because the size of <code class="d_inline">int</code> is 4, incrementing a pointer of type <code class="d_inline">int*</code> changes its value by 4. The programmer need not pay attention to this detail; the pointer value is modified by the correct amount automatically.
+</p>
+
+<p><b>Warning</b>: It is undefined behavior to point at a location that is not a valid byte that belongs to the program. Even if it is not actually used to access any variable there, it is invalid for a pointer to point at a nonexistent variable. (The only exception to this rule is that it is valid to point at the imaginary element one past the end of an array. This will be explained later below.)
+</p>
+
+<p>For example, it is invalid to increment a pointer that points at <code class="d_inline">myVariable</code>, because <code class="d_inline">myVariable</code> is defined as a single <code class="d_inline">int</code>:
+</p>
+
+<pre class="d_code">    ++myPointer;       <span class="d_comment">// ← <span class="code_note_wrong">undefined behavior</span></span>
+</pre>
+
+<p>Undefined behavior means that it cannot be known what the behavior of the program will be after that operation. There may be systems where the program crashes after incrementing that pointer. However, on most modern systems the pointer is likely to point at the unused memory location that has been shown as being between <code class="d_inline">myVariable</code> and <code class="d_inline">myPointer</code> in the previous figure.
+</p>
+
+<p>For that reason, the value of a pointer must be incremented or decremented only if there is a valid object at the new location. (As we will see below, pointing at the element one past the end of an array is valid as well). Arrays (and slices) have that property: The elements of an array are side by side in memory.
+</p>
+
+<p>A pointer that is pointing at an element of a slice can be incremented safely as long as it is not used to access an element beyond the end of the slice. Incrementing such a pointer by the <code class="d_inline">++</code> operator makes it point at the next element:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.string;
+<span class="d_keyword">import</span> std.conv;
+
+<span class="d_keyword">enum</span> Color { red, yellow, blue }
+
+<span class="d_keyword">struct</span> Crayon {
+    Color color;
+    <span class="d_keyword">double</span> length;
+
+    string toString() <span class="d_keyword">const</span> {
+        <span class="d_keyword">return</span> format(<span class="d_string">"%scm %s crayon"</span>, length, color);
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    writefln(<span class="d_string">"Crayon objects are %s bytes each."</span>, Crayon.sizeof);
+
+    Crayon[] crayons = [ Crayon(Color.red, 11),
+                         Crayon(Color.yellow, 12),
+                         Crayon(Color.blue, 13) ];
+
+    <span class="hilite">Crayon * ptr</span> = <span class="hilite">&amp;</span>crayons[0];                   <span class="d_comment">// (1)
+</span>
+    <span class="d_keyword">for</span> (<span class="d_keyword">int</span> i = 0; i != crayons.length; ++i) {
+        writeln(<span class="d_string">"Pointer value: "</span>, <span class="hilite">ptr</span>);          <span class="d_comment">// (2)
+</span>
+        writeln(<span class="d_string">"Crayon: "</span>, <span class="hilite">*ptr</span>);                <span class="d_comment">// (3)
+</span>        <span class="hilite">++ptr</span>;                                    <span class="d_comment">// (4)
+</span>    }
+}
+</pre>
+
+<ol><li>Definition: The pointer is initialized by the address of the first element.</li>
+<li>Using its value: The value of the pointer is the address of the element that it is pointing at.</li>
+<li>Accessing the element that is being pointed at.</li>
+<li>Pointing at the next element.</li>
+</ol>
+
+<p>The output:
+</p>
+
+<pre class="shell">Crayon objects are 16 bytes each.
+Pointer value: 7F37AC9E6FC0
+Crayon: 11cm red crayon
+Pointer value: 7F37AC9E6FD0
+Crayon: 12cm yellow crayon
+Pointer value: 7F37AC9E6FE0
+Crayon: 13cm blue crayon
+</pre>
+
+<p>Note that the loop above is iterated a total of <code class="d_inline">crayons.length</code> times so that the pointer is always used for accessing a valid element.
+</p>
+
+<h5 class="subsection">Pointers are risky</h5>
+
+<p>The compiler and the D runtime environment cannot guarantee that the pointers are always used correctly. It is the programmer's responsibility to ensure that a pointer is either <code class="d_inline">null</code> or points at a valid memory location (at a variable, at an element of an array, etc.).
+</p>
+
+<p>For that reason, it is always better to consider higher-level features of D before thinking about using pointers.
+</p>
+
+<h5 class="subsection"><a id="ix_Pointers.element one past the end" content="element one past the end"></a> The element one past the end of an array</h5>
+
+<p>It is valid to point at the imaginary element one past the end of an array.
+</p>
+
+<p>This is a useful idiom that is similar to number ranges. When defining a slice with a number range, the second index is one past the elements of the slice:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span>[] values = [ 0, 1, 2, 3 ];
+    writeln(values[1 .. 3]);   <span class="d_comment">// 1 and 2 included, 3 excluded
+</span></pre>
+
+<p>This idiom can be used with pointers as well. It is a common function design in C and C++ where a function parameter points at the first element and another one points at the element after the last element:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> tenTimes(<span class="d_keyword">int</span> * begin, <span class="d_keyword">int</span> * end) {
+    <span class="d_keyword">while</span> (begin != end) {
+        *begin *= 10;
+        ++begin;
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">int</span>[] values = [ 0, 1, 2, 3 ];
+
+    <span class="d_comment">// The address of the second element:
+</span>    <span class="d_keyword">int</span> * begin = &amp;values[1];
+
+    <span class="d_comment">// The address of two elements beyond that one
+</span>    tenTimes(begin, begin + 2);
+
+    writeln(values);
+}
+</pre>
+
+<p>The value <code class="d_inline">begin + 2</code> means two elements after the one that <code class="d_inline">begin</code> is pointing at (i.e. the element at index 3).
+</p>
+
+<p>The <code class="d_inline">tenTimes()</code> function takes two pointer parameters. It uses the element that the first one is pointing at but it never accesses the element that the second one is pointing at. As a result, only the elements at indexes 1 and 2 get modified:
+</p>
+
+<pre class="shell">[0, 10, 20, 3]
+</pre>
+
+<p>Such functions can be implemented by a <code class="d_inline">for</code> loop as well:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">for</span> ( ; begin != end; ++begin) {
+        *begin *= 10;
+    }
+</pre>
+
+<p>Two pointers that define a range can also be used with <code class="d_inline">foreach</code> loops:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">foreach</span> (ptr; begin .. end) {
+        *ptr *= 10;
+    }
+</pre>
+
+<p>For these methods to be applicable to <i>all of the elements</i> of a slice, the second pointer must necessarily point after the last element:
+</p>
+
+<pre class="d_code">    <span class="d_comment">// The second pointer is pointing at the imaginary element
+</span>    <span class="d_comment">// past the end of the array:
+</span>    tenTimes(begin, begin + values.length);
+</pre>
+
+<p>That is the reason why it is legal to point at the imaginary element one beyond the last element of an array.
+</p>
+
+<h5 class="subsection"><a id="ix_Pointers.[]" content="[]"></a> Using pointers with the array indexing operator <code class="d_inline">[]</code></h5>
+
+<p>Although it is not absolutely necessary in D, pointers can directly be used for accessing the elements of an array by an index value:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">double</span>[] floats = [ 0.0, 1.1, 2.2, 3.3, 4.4 ];
+
+    <span class="d_keyword">double</span> * ptr = &amp;floats[2];
+
+    *ptr = -100;      <span class="d_comment">// direct access to what it points at
+</span>    ptr<span class="hilite">[1]</span> = -200;    <span class="d_comment">// access by indexing
+</span>
+    writeln(floats);
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">[0, 1.1, -100, -200, 4.4]
+</pre>
+
+<p>In that syntax, the element that the pointer is pointing at is thought of being the first element of an imaginary slice. The <code class="d_inline">[]</code> operator provides access to the specified element of that slice. The <code class="d_inline">ptr</code> above initially points at the element at index 2 of the original <code class="d_inline">floats</code> slice. <code class="d_inline">ptr[1]</code> is a reference to the element 1 of the imaginary slice that starts at <code class="d_inline">ptr</code> (i.e. index 3 of the original slice).
+</p>
+
+<p>Although this behavior may seem complicated, there is a very simple conversion behind that syntax. Behind the scenes, the compiler converts the <code class="d_inline">pointer[index]</code> syntax to the <code class="d_inline">*(pointer&nbsp;+&nbsp;index)</code> expression:
+</p>
+
+<pre class="d_code">    ptr[1] = -200;      <span class="d_comment">// slice syntax
+</span>    *(ptr + 1) = -200;  <span class="d_comment">// the equivalent of the previous line
+</span></pre>
+
+<p>As I have mentioned earlier, the compiler may not guarantee that this expression refers to a valid element. D's slices provide a much safer alternative and should be considered instead:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">double</span>[] slice = floats[2 .. 4];
+    slice[0] = -100;
+    slice[1] = -200;
+</pre>
+
+<p>Normally, index values are checked for slices at run time:
+</p>
+
+<pre class="d_code">    slice[2] = -300;  <span class="d_comment">// Runtime error: accessing outside of the slice
+</span></pre>
+
+<p>Because the slice above does not have an element at index 2, an exception would be thrown at run time (unless the program has been compiled with the <code class="d_inline">-release</code> compiler switch):
+</p>
+
+<pre class="shell">core.exception.RangeError@deneme(8391): Range violation
+</pre>
+
+<h5 class="subsection"><a id="ix_Pointers.slice from pointer" content="slice from pointer"></a> Producing a slice from a pointer</h5>
+
+<p>Pointers are not as safe or as useful as slices because although they can be used with the slice indexing operator, they are not aware of the valid range of elements.
+</p>
+
+<p>However, when the number of valid elements is known, a pointer can be used to construct a slice.
+</p>
+
+<p>Let's assume that the <code class="d_inline">makeObjects()</code> function below is inside a C library. Let's assume that <code class="d_inline">makeObjects</code> makes specified number of <code class="d_inline">Struct</code> objects and returns a pointer to the first one of those objects:
+</p>
+
+<pre class="d_code">    Struct * ptr = makeObjects(10);
+</pre>
+
+<p>The syntax that produces a slice from a pointer is the following:
+</p>
+
+<pre class="d_code">    <span class="d_comment">/* ... */</span> slice = pointer[0 .. count];
+</pre>
+
+<p>Accordingly, a slice to the 10 objects that are returned by <code class="d_inline">makeObjects()</code> can be constructed by the following code:
+</p>
+
+<pre class="d_code">    Struct[] slice = ptr[0 .. 10];
+</pre>
+
+<p>After that definition, <code class="d_inline">slice</code> is ready to be used safely in the program just like any other slice:
+</p>
+
+<pre class="d_code">    writeln(slice[1]);    <span class="d_comment">// prints the second element
+</span></pre>
+
+<h5 class="subsection"><a id="ix_Pointers.void*" content="void*"></a> <code class="d_inline">void*</code> can point at any type</h5>
+
+<p>Although it is almost never needed in D, C's special pointer type <code class="d_inline">void*</code> is available in D as well. <code class="d_inline">void*</code> can point at any type:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span> number = 42;
+    <span class="d_keyword">double</span> otherNumber = 1.25;
+    <span class="d_keyword">void</span> * canPointAtAnything;
+
+    canPointAtAnything = &amp;number;
+    canPointAtAnything = &amp;otherNumber;
+</pre>
+
+<p>The <code class="d_inline">void*</code> above is able to point at variables of two different types: <code class="d_inline">int</code> and <code class="d_inline">double</code>.
+</p>
+
+<p><code class="d_inline">void*</code> pointers are limited in functionality. As a consequence of their flexibility, they cannot provide access to the pointee. When the actual type is unknown, its size is not known either:
+</p>
+
+<pre class="d_code">    *canPointAtAnything = 43;     <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+</pre>
+
+<p>Instead, its value must first be converted to a pointer of the correct type:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span> number = 42;                                  <span class="d_comment">// (1)
+</span>    <span class="d_keyword">void</span> * canPointAtAnything = &amp;number;              <span class="d_comment">// (2)
+</span>
+    <span class="d_comment">// ...
+</span>
+    <span class="d_keyword">int</span> * intPointer = <span class="d_keyword">cast</span>(<span class="d_keyword">int</span>*)canPointAtAnything;  <span class="d_comment">// (3)
+</span>    *intPointer = 43;                                 <span class="d_comment">// (4)
+</span></pre>
+
+<ol><li>The actual variable</li>
+<li>Storing the address of the variable in a <code class="d_inline">void*</code></li>
+<li>Assigning that address to a pointer of the correct type</li>
+<li>Modifying the variable through the new pointer</li>
+</ol>
+
+<p>It is possible to increment or decrement values of <code class="d_inline">void*</code> pointers, in which case their values are modified as if they are pointers of 1-byte types like <code class="d_inline">ubyte</code>:
+</p>
+
+<pre class="d_code">    ++canPointAtAnything;    <span class="d_comment">// incremented by 1
+</span></pre>
+
+<p><code class="d_inline">void*</code> is sometimes needed when interacting with libraries that are written in C. Since C does not have higher level features like interfaces, classes, templates, etc. C libraries must rely on the <code class="d_inline">void*</code> type.
+</p>
+
+<h5 class="subsection">Using pointers in logical expressions</h5>
+
+<p>Pointers can automatically be converted to <code class="d_inline">bool</code>. Pointers that have the value <code class="d_inline">null</code> produce <code class="d_inline">false</code> and the others produce <code class="d_inline">true</code>. In other words, pointers that do not point at any variable are <code class="d_inline">false</code>.
+</p>
+
+<p>Let's consider a function that prints objects to the standard output. Let's design this function so that it also provides the number of bytes that it has just output. However, let's have it produce this information only when specifically requested.
+</p>
+
+<p>It is possible to make this behavior optional by checking whether the value of a pointer is <code class="d_inline">null</code> or not:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> print(Crayon crayon, size_t * numberOfBytes) {
+    <span class="d_keyword">immutable</span> info = format(<span class="d_string">"Crayon: %s"</span>, crayon);
+    writeln(info);
+
+    <span class="hilite"><span class="d_keyword">if</span> (numberOfBytes)</span> {
+        *numberOfBytes = info.length;
+    }
+}
+</pre>
+
+<p>When the caller does not need this special information, they can pass <code class="d_inline">null</code> as the argument:
+</p>
+
+<pre class="d_code">    print(Crayon(Color.yellow, 7), <span class="hilite"><span class="d_keyword">null</span></span>);
+</pre>
+
+<p>When the number of bytes is indeed important, then a non-<code class="d_inline">null</code> pointer value must be passed:
+</p>
+
+<pre class="d_code">    size_t numberOfBytes;
+    print(Crayon(Color.blue, 8), <span class="hilite">&amp;numberOfBytes</span>);
+    writefln(<span class="d_string">"%s bytes written to the output"</span>, numberOfBytes);
+</pre>
+
+<p>Note that this is just an example. Otherwise, it would be better for a function like <code class="d_inline">print()</code> to return the number of bytes unconditionally:
+</p>
+
+<pre class="d_code">size_t print(Crayon crayon) {
+    <span class="d_keyword">immutable</span> info = format(<span class="d_string">"Crayon: %s"</span>, crayon);
+    writeln(info);
+
+    <span class="d_keyword">return</span> info.length;
+}
+</pre>
+
+<h5 class="subsection"><a id="ix_Pointers.new" content="new"></a> <code class="d_inline">new</code> returns a pointer for some types</h5>
+
+<p><code class="d_inline">new</code>, which we have been using only for constructing class objects can be used with other types as well: structs, arrays, and fundamental types. The variables that are constructed by <code class="d_inline">new</code> are called dynamic variables.
+</p>
+
+<p><code class="d_inline">new</code> first allocates space from the memory for the variable and then constructs the variable in that space. The variable itself does not have a symbolic name in the compiled program; it would be accessed through the reference that is returned by <code class="d_inline">new</code>.
+</p>
+
+<p>The reference that <code class="d_inline">new</code> returns is a different kind depending on the type of the variable:
+</p>
+
+<ul>
+<li>For class objects, it is a <i>class variable</i>:
+
+<pre class="d_code">    Class classVariable = <span class="d_keyword">new</span> Class;
+</pre>
+
+</li>
+
+<li>For struct objects and variables of fundamental types, it is a <i>pointer</i>:
+
+<pre class="d_code">    Struct <span class="hilite">*</span> structPointer = <span class="d_keyword">new</span> Struct;
+    <span class="d_keyword">int</span> <span class="hilite">*</span> intPointer = <span class="d_keyword">new</span> <span class="d_keyword">int</span>;
+</pre>
+
+</li>
+
+<li>For arrays, it is a <i>slice</i>:
+
+<pre class="d_code">    <span class="d_keyword">int</span>[] slice = <span class="d_keyword">new</span> <span class="d_keyword">int</span>[100];
+</pre>
+
+</li>
+
+</ul>
+
+<p>This distinction is usually not obvious when the type is not spelled-out on the left-hand side:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> classVariable = <span class="d_keyword">new</span> Class;
+    <span class="d_keyword">auto</span> structPointer = <span class="d_keyword">new</span> Struct;
+    <span class="d_keyword">auto</span> intPointer = <span class="d_keyword">new</span> <span class="d_keyword">int</span>;
+    <span class="d_keyword">auto</span> slice = <span class="d_keyword">new</span> <span class="d_keyword">int</span>[100];
+</pre>
+
+<p>The following program prints the return type of <code class="d_inline">new</code> for different kinds of variables:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">struct</span> Struct {
+}
+
+<span class="d_keyword">class</span> Class {
+}
+
+<span class="d_keyword">void</span> main() {
+    writeln(<span class="d_keyword">typeof</span>(<span class="d_keyword">new</span> <span class="d_keyword">int</span>   ).stringof);
+    writeln(<span class="d_keyword">typeof</span>(<span class="d_keyword">new</span> <span class="d_keyword">int</span>[5]).stringof);
+    writeln(<span class="d_keyword">typeof</span>(<span class="d_keyword">new</span> Struct).stringof);
+    writeln(<span class="d_keyword">typeof</span>(<span class="d_keyword">new</span> Class ).stringof);
+}
+</pre>
+
+<p><code class="d_inline">new</code> returns pointers for structs and fundamental types:
+</p>
+
+<pre class="shell">int*
+int[]
+Struct*
+Class
+</pre>
+
+<p>When <code class="d_inline">new</code> is used for constructing a dynamic variable of a <a href="value_vs_reference.html">value type</a>, then the lifetime of that variable is extended as long as there is still a reference (e.g. a pointer) to that object in the program. (This is the default situation for reference types.)
+</p>
+
+<h5 class="subsection"><a id="ix_Pointers..ptr, array element" content=".ptr, array element"></a> <a id="ix_Pointers.pointer, array element" content="pointer, array element"></a> The <code class="d_inline">.ptr</code> property of arrays</h5>
+
+<p>The <code class="d_inline">.ptr</code> property of arrays and slices is the address of the first element. The type of this value is a pointer to the type of the elements:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span>[] numbers = [ 7, 12 ];
+
+    <span class="d_keyword">int</span> * addressOfFirstElement = numbers<span class="hilite">.ptr</span>;
+    writeln(<span class="d_string">"First element: "</span>, *addressOfFirstElement);
+</pre>
+
+<p>This property is useful especially when interacting with C libraries. Some C functions take the address of the first of a number of consecutive elements in memory.
+</p>
+
+<p>Remembering that strings are also arrays, the <code class="d_inline">.ptr</code> property can be used with strings as well. However, note that the first element of a string need not be the first <i>letter</i> of the string; rather, the first Unicode code unit of that letter. As an example, the letter é is stored as two code units in a <code class="d_inline">char</code> string.
+</p>
+
+<p>When accessed through the <code class="d_inline">.ptr</code> property, the code units of strings can be accessed individually. We will see this in the examples section below.
+</p>
+
+<h5 class="subsection"><a id="ix_Pointers.in, operator" content="in, operator"></a> The <code class="d_inline">in</code> operator of associative arrays</h5>
+
+<p>Actually, we have used pointers earlier in <a href="aa.html">the Associative Arrays chapter</a>. In that chapter, I had intentionally not mentioned the exact type of the <code class="d_inline">in</code> operator and had used it only in logical expressions:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">if</span> (<span class="d_string">"purple"</span> <span class="d_keyword">in</span> colorCodes) {
+        <span class="d_comment">// there is an element for key "purple"
+</span>
+    } <span class="d_keyword">else</span> {
+        <span class="d_comment">// no element for key "purple"
+</span>    }
+</pre>
+
+<p>In fact, the <code class="d_inline">in</code> operator returns the address of the element if there is an element for the specified key; otherwise, it returns <code class="d_inline">null</code>. The <code class="d_inline">if</code> statement above actually relies on the automatic conversion of the pointer value to <code class="d_inline">bool</code>.
+</p>
+
+<p>When the return value of <code class="d_inline">in</code> is stored in a pointer, the element can be accessed efficiently through that pointer:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main() {
+    string[<span class="d_keyword">int</span>] numbers =
+        [ 0 : <span class="d_string">"zero"</span>, 1 : <span class="d_string">"one"</span>, 2 : <span class="d_string">"two"</span>, 3 : <span class="d_string">"three"</span> ];
+
+    <span class="d_keyword">int</span> number = 2;
+    <span class="d_keyword">auto</span> <span class="hilite">element</span> = number <span class="d_keyword">in</span> numbers;             <span class="d_comment">// (1)
+</span>
+    <span class="d_keyword">if</span> (<span class="hilite">element</span>) {                                <span class="d_comment">// (2)
+</span>        writefln(<span class="d_string">"I know: %s."</span>, <span class="hilite">*element</span>);        <span class="d_comment">// (3)
+</span>
+    } <span class="d_keyword">else</span> {
+        writefln(<span class="d_string">"I don't know the spelling of %s."</span>, number);
+    }
+}
+</pre>
+
+<p>The pointer variable <code class="d_inline">element</code> is initialized by the value of the <code class="d_inline">in</code> operator (1) and its value is used in a logical expression (2). The value of the element is accessed through that pointer (3) only if the pointer is not <code class="d_inline">null</code>.
+</p>
+
+<p>The actual type of <code class="d_inline">element</code> above is a pointer to the same type of the elements (i.e. values) of the associative array. Since the elements of <code class="d_inline">numbers</code> above are of type <code class="d_inline">string</code>, <code class="d_inline">in</code> returns a <code class="d_inline">string*</code>. Accordingly, the type could have been spelled out explicitly:
+</p>
+
+<pre class="d_code">    <span class="hilite">string *</span> element = number <span class="d_keyword">in</span> numbers;
+</pre>
+
+<h5 class="subsection">When to use pointers</h5>
+
+<p>Pointers are rare in D. As we have seen in <a href="input.html">the Reading from the Standard Input chapter</a>, <code class="d_inline">readf</code> can in fact be used without explicit pointers.
+</p>
+
+<h6>When required by libraries</h6>
+
+<p>Pointers can appear on C and C++ library bindings. For example, the following function from the GtkD library takes a pointer:
+</p>
+
+<pre class="d_code">    GdkGeometry geometry;
+    <span class="d_comment">// ... set the members of 'geometry' ...
+</span>
+    window.setGeometryHints(<span class="d_comment">/* ... */</span>, <span class="hilite">&amp;</span>geometry, <span class="d_comment">/* ... */</span>);
+</pre>
+
+<h6>When referencing variables of value types</h6>
+
+<p>Pointers can be used for referring to local variables. The following program counts the outcomes of flipping a coin. It takes advantage of a pointer when referring to one of two local variables:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.random;
+
+<span class="d_keyword">void</span> main() {
+    size_t headsCount = 0;
+    size_t tailsCount = 0;
+
+    <span class="d_keyword">foreach</span> (i; 0 .. 100) {
+        size_t * theCounter = (uniform(0, 2) == 1)
+                               ? &amp;headsCount
+                               : &amp;tailsCount;
+        ++(*theCounter);
+    }
+
+    writefln(<span class="d_string">"heads: %s  tails: %s"</span>, headsCount, tailsCount);
+}
+</pre>
+
+<p>Obviously, there are other ways of achieving the same goal. For example, using the ternary operator in a different way:
+</p>
+
+<pre class="d_code">        uniform(0, 2) ? ++headsCount : ++tailsCount;
+</pre>
+
+<p>By using an <code class="d_inline">if</code> statement:
+</p>
+
+<pre class="d_code">        <span class="d_keyword">if</span> (uniform(0, 2)) {
+            ++headsCount;
+
+        } <span class="d_keyword">else</span> {
+            ++tailsCount;
+        }
+</pre>
+
+<h6>As member variables of data structures</h6>
+
+<p>Pointers are essential when implementing many data structures.
+</p>
+
+<p>Unlike the elements of an array being next to each other in memory, elements of many other data structures are apart. Such data structures are based on the concept of their elements <i>pointing at</i> other elements.
+</p>
+
+<p>For example, each node of a linked list <i>points at</i> the next node. Similarly, each node of a binary tree <i>points at</i> the left and right branches under that node. Pointers are encountered in most other data structures as well.
+</p>
+
+<p>Although it is possible to take advantage of D's reference types, pointers may be more natural and efficient in some cases.
+</p>
+
+<p>We will see examples of pointer members below.
+</p>
+
+<h6>When accessing memory directly</h6>
+
+<p>Being low-level microprocessor features, pointers provide byte-level access to memory locations. Note that such locations must still belong to valid variables. It is undefined behavior to attempt to access a random memory location.
+</p>
+
+<h5 class="subsection">Examples</h5>
+
+<h6>A simple linked list</h6>
+
+<p>The elements of linked lists are stored in <i>nodes</i>. The concept of a linked list is based on each node pointing at the node that comes after it. The last node has no other node to point at, so it is set to <code class="d_inline">null</code>:
+</p>
+
+<pre class="mono">   first node           next node                 last node
+ ┌─────────┬───┐     ┌─────────┬───┐          ┌─────────┬──────┐
+ │ element │ o────▶  │ element │ o────▶  ...  │ element │ null │
+ └─────────┴───┘     └─────────┴───┘          └─────────┴──────┘
+</pre>
+
+<p>The figure above may be misleading: In reality, the nodes are not side-by-side in memory. Each node does point to the next node but the next node may be at a completely different location.
+</p>
+
+<p>The following <code class="d_inline">struct</code> can be used for representing the nodes of such a linked list of <code class="d_inline">int</code>s:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Node {
+    <span class="d_keyword">int</span> element;
+    Node * next;
+
+    <span class="d_comment">// ...
+</span>}
+</pre>
+
+<p><i><b>Note:</b> Because it contains a reference to the same type as itself, <code class="d_inline">Node</code> is a <a id="ix_Pointers.recursive type" content="recursive type"></a> recursive type.</i>
+</p>
+
+<p>The entire list can be represented by a single pointer that points at the first node, which is commonly called <i>the head</i>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> List {
+    Node * head;
+
+    <span class="d_comment">// ...
+</span>}
+</pre>
+
+<p>To keep the example short, let's define just one function that adds an element to the head of the list:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> List {
+    Node * head;
+
+    <span class="d_keyword">void</span> insertAtHead(<span class="d_keyword">int</span> element) {
+        head = <span class="d_keyword">new</span> Node(element, head);
+    }
+
+    <span class="d_comment">// ...
+</span>}
+</pre>
+
+<p>The line inside <code class="d_inline">insertAtHead()</code> keeps the nodes <i>linked</i> by adding a new node to the head of the list. (A function that adds to the end of the list would be more natural and more useful. We will see that function later in one of the problems.)
+</p>
+
+<p>The right-hand side expression of that line constructs a <code class="d_inline">Node</code> object. When this new object is constructed, its <code class="d_inline">next</code> member is initialized by the current head of the list. When the <code class="d_inline">head</code> member of the list is assigned to this newly linked node, the new element ends up being the first element.
+</p>
+
+<p>The following program tests these two structs:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.conv;
+<span class="d_keyword">import</span> std.string;
+
+<span class="d_keyword">struct</span> Node {
+    <span class="d_keyword">int</span> element;
+    Node * next;
+
+    string toString() <span class="d_keyword">const</span> {
+        string result = to!string(element);
+
+        <span class="d_keyword">if</span> (next) {
+            result ~= <span class="d_string">" -&gt; "</span> ~ to!string(*next);
+        }
+
+        <span class="d_keyword">return</span> result;
+    }
+}
+
+<span class="d_keyword">struct</span> List {
+    Node * head;
+
+    <span class="d_keyword">void</span> insertAtHead(<span class="d_keyword">int</span> element) {
+        head = <span class="d_keyword">new</span> Node(element, head);
+    }
+
+    string toString() <span class="d_keyword">const</span> {
+        <span class="d_keyword">return</span> format(<span class="d_string">"(%s)"</span>, head ? to!string(*head) : <span class="d_string">""</span>);
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    List numbers;
+
+    writeln(<span class="d_string">"before: "</span>, numbers);
+
+    <span class="d_keyword">foreach</span> (number; 0 .. 10) {
+        numbers.insertAtHead(number);
+    }
+
+    writeln(<span class="d_string">"after : "</span>, numbers);
+}
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">before: ()
+after : (9 -&gt; 8 -&gt; 7 -&gt; 6 -&gt; 5 -&gt; 4 -&gt; 3 -&gt; 2 -&gt; 1 -&gt; 0)
+</pre>
+
+<h6><a id="ix_Pointers.memory access, pointer" content="memory access, pointer"></a> Observing the contents of memory by <code class="d_inline">ubyte*</code></h6>
+
+<p>The data stored at each memory address is a byte. Every variable is constructed on a piece of memory that consists of as many bytes as the size of the type of that variable.
+</p>
+
+<p>A suitable pointer type to observe the content of a memory location is <code class="d_inline">ubyte*</code>. Once the address of a variable is assigned to a <code class="d_inline">ubyte</code> pointer, then all of the bytes of that variable can be observed by incrementing the pointer.
+</p>
+
+<p>Let's consider the following integer that is initialized by the hexadecimal notation so that it will be easy to understand how its bytes are placed in memory:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span> variable = 0x01_02_03_04;
+</pre>
+
+<p>A pointer that points at that variable can be defined like this:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span> * address = &amp;variable;
+</pre>
+
+<p>The value of that pointer can be assigned to a <code class="d_inline">ubyte</code> pointer by the <code class="d_inline">cast</code> operator:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">ubyte</span> * bytePointer = <span class="d_keyword">cast</span>(<span class="d_keyword">ubyte</span>*)address;
+</pre>
+
+<p>Such a pointer allows accessing the four bytes of the <code class="d_inline">int</code> variable individually:
+</p>
+
+<pre class="d_code">    writeln(bytePointer[0]);
+    writeln(bytePointer[1]);
+    writeln(bytePointer[2]);
+    writeln(bytePointer[3]);
+</pre>
+
+<p>If your microprocessor is <i>little-endian</i> like mine, you should see the bytes of the value <code class="d_inline">0x01_02_03_04</code> in reverse:
+</p>
+
+<pre class="shell">4
+3
+2
+1
+</pre>
+
+<p>Let's use that idea in a function that will be useful when observing the bytes of all types of variables:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> printBytes(T)(<span class="d_keyword">ref</span> T variable) {
+    <span class="d_keyword">const</span> <span class="d_keyword">ubyte</span> * begin = <span class="d_keyword">cast</span>(<span class="d_keyword">ubyte</span>*)&amp;variable;    <span class="d_comment">// (1)
+</span>
+    writefln(<span class="d_string">"type   : %s"</span>, T.stringof);
+    writefln(<span class="d_string">"value  : %s"</span>, variable);
+    writefln(<span class="d_string">"address: %s"</span>, begin);                 <span class="d_comment">// (2)
+</span>    writef  (<span class="d_string">"bytes  : "</span>);
+
+    writefln(<span class="d_string">"%(%02x %)"</span>, begin[0 .. T.sizeof]);    <span class="d_comment">// (3)
+</span>
+    writeln();
+}
+</pre>
+
+<ol><li>Assigning the address of the variable to a <code class="d_inline">ubyte</code> pointer.</li>
+<li>Printing the value of the pointer.</li>
+<li>Obtaining the size of the type by <code class="d_inline">.sizeof</code> and printing the bytes of the variable. (Note how a slice is produced from the <code class="d_inline">begin</code> pointer and then that slice is printed directly by <code class="d_inline">writefln()</code>.)</li>
+</ol>
+
+<p>Another way of printing the bytes would be to apply the <code class="d_inline">*</code> operator individually:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">foreach</span> (bytePointer; begin .. begin + T.sizeof) {
+        writef(<span class="d_string">"%02x "</span>, *bytePointer);
+    }
+</pre>
+
+<p>The value of <code class="d_inline">bytePointer</code> would change from <code class="d_inline">begin</code> to <code class="d_inline">begin&nbsp;+&nbsp;T.sizeof</code> to visit all of the bytes of the variable. Note that the value <code class="d_inline">begin&nbsp;+&nbsp;T.sizeof</code> is outside of the range and is never accessed.
+</p>
+
+<p>The following program calls <code class="d_inline">printBytes()</code> with various types of variables:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Struct {
+    <span class="d_keyword">int</span> first;
+    <span class="d_keyword">int</span> second;
+}
+
+<span class="d_keyword">class</span> Class {
+    <span class="d_keyword">int</span> i;
+    <span class="d_keyword">int</span> j;
+    <span class="d_keyword">int</span> k;
+
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> i, <span class="d_keyword">int</span> j, <span class="d_keyword">int</span> k) {
+        <span class="d_keyword">this</span>.i = i;
+        <span class="d_keyword">this</span>.j = j;
+        <span class="d_keyword">this</span>.k = k;
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">int</span> integerVariable = 0x11223344;
+    printBytes(integerVariable);
+
+    <span class="d_keyword">double</span> doubleVariable = <span class="d_keyword">double</span>.nan;
+    printBytes(doubleVariable);
+
+    string slice = <span class="d_string">"a bright and charming façade"</span>;
+    printBytes(slice);
+
+    <span class="d_keyword">int</span>[3] array = [ 1, 2, 3 ];
+    printBytes(array);
+
+    <span class="d_keyword">auto</span> structObject = Struct(0xaa, 0xbb);
+    printBytes(structObject);
+
+    <span class="d_keyword">auto</span> classVariable = <span class="d_keyword">new</span> Class(1, 2, 3);
+    printBytes(classVariable);
+}
+</pre>
+
+<p>The output of the program is informative:
+</p>
+
+<pre class="shell">type   : int
+value  : 287454020
+address: 7FFF19A83FB0
+bytes  : 44 33 22 11                             <span class="shell_note">← (1)</span>
+
+type   : double
+value  : nan
+address: 7FFF19A83FB8
+bytes  : 00 00 00 00 00 00 f8 7f                 <span class="shell_note">← (2)</span>
+
+type   : string
+value  : a bright and charming façade
+address: 7FFF19A83FC0
+bytes  : 1d 00 00 00 00 00 00 00 e0 68 48 00 00 00 00 00
+                                                 <span class="shell_note">← (3)</span>
+type   : int[3LU]
+value  : [1, 2, 3]
+address: 7FFF19A83FD0
+bytes  : 01 00 00 00 02 00 00 00 03 00 00 00     <span class="shell_note">← (1)</span>
+
+type   : Struct
+value  : Struct(170, 187)
+address: 7FFF19A83FE8
+bytes  : aa 00 00 00 bb 00 00 00                 <span class="shell_note">← (1)</span>
+
+type   : Class
+value  : deneme.Class
+address: 7FFF19A83FF0
+bytes  : 80 df 79 d5 97 7f 00 00                 <span class="shell_note">← (4)</span>
+</pre>
+
+<p><b>Observations:</b>
+</p>
+
+<ol>
+<li>Although in reverse order on little-endian systems, the bytes of some of the types are as one would expect: The bytes are laid out in memory side by side for <code class="d_inline">int</code>s, fixed-length arrays (<code class="d_inline">int[3]</code>), and struct objects.</li>
+
+<li>Considering that the bytes of the special value of <code class="d_inline">double.nan</code> are also in reverse order in memory, we can see that it is represented by the special bit pattern 0x7ff8000000000000.</li>
+
+<li><code class="d_inline">string</code> is reported to be consisting of 16 bytes but it is impossible to fit the letters <code class="d_inline"><span class="d_string">"a bright and charming façade"</span></code> into so few bytes. This is due to the fact that behind the scenes <code class="d_inline">string</code> is actually implemented as a struct. Prefixing its name by <code class="d_inline">__</code> to stress the fact that it is an internal type used by the compiler, that struct is similar to the following one:
+
+<pre class="d_code"><span class="d_keyword">struct</span> __string {
+    size_t length;
+    <span class="d_keyword">char</span> * ptr;    <span class="d_comment">// the actual characters
+</span>}
+</pre>
+
+<p>The evidence of this fact is hidden in the bytes that are printed for <code class="d_inline">string</code> above. Note that because ç is made up of two UTF-8 code units, the 28 letters of the string <code class="d_inline"><span class="d_string">"a bright and charming façade"</span></code> consists of a total of 29 bytes. The value 0x000000000000001d, the first 8 of the bytes of the string in the output above, is also 29. This is a strong indicator that strings are indeed laid out in memory as in the struct above.
+</p>
+
+</li>
+
+<li>Similarly, it is not possible to fit the three <code class="d_inline">int</code> members of the class object in 8 bytes. The output above hints at the possibility that behind the scenes a class variable is implemented as a single pointer that points at the actual class object:
+
+<pre class="d_code"><span class="d_keyword">struct</span> __Class_VariableType {
+    __Class_ActualObjecType * object;
+}
+</pre>
+
+</li>
+
+</ol>
+
+<p>Let's now consider a more flexible function. Instead of printing the bytes of a variable, let's define a function that prints specified number of bytes at a specified location:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.ascii;
+
+<span class="d_keyword">void</span> printMemory(T)(T * location, size_t length) {
+    <span class="d_keyword">const</span> <span class="d_keyword">ubyte</span> * begin = <span class="d_keyword">cast</span>(<span class="d_keyword">ubyte</span>*)location;
+
+    <span class="d_keyword">foreach</span> (address; begin .. begin + length) {
+        <span class="d_keyword">char</span> c = (isPrintable(*address) ? *address : '.');
+
+        writefln(<span class="d_string">"%s:  %02x  %s"</span>, address, *address, c);
+    }
+}
+</pre>
+
+<p>Since some of the UTF-8 code units may correspond to control characters of the terminal and disrupt its output, we print only the printable characters by first checking them individually by <code class="d_inline">std.ascii.isPrintable()</code>. The non-printable characters are printed as a dot.
+</p>
+
+<p>We can use that function to print the UTF-8 code units of a <code class="d_inline">string</code> through its <code class="d_inline">.ptr</code> property:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main() {
+    string s = <span class="d_string">"a bright and charming façade"</span>;
+    printMemory(s.ptr, s.length);
+}
+</pre>
+
+<p>As seen in the output, the letter ç consists of two bytes:
+</p>
+
+<pre class="shell">47B4F0:  61  a
+47B4F1:  20   
+47B4F2:  62  b
+47B4F3:  72  r
+47B4F4:  69  i
+47B4F5:  67  g
+47B4F6:  68  h
+47B4F7:  74  t
+47B4F8:  20   
+47B4F9:  61  a
+47B4FA:  6e  n
+47B4FB:  64  d
+47B4FC:  20   
+47B4FD:  63  c
+47B4FE:  68  h
+47B4FF:  61  a
+47B500:  72  r
+47B501:  6d  m
+47B502:  69  i
+47B503:  6e  n
+47B504:  67  g
+47B505:  20   
+47B506:  66  f
+47B507:  61  a
+47B508:  c3  .
+47B509:  a7  .
+47B50A:  61  a
+47B50B:  64  d
+47B50C:  65  e
+</pre>
+
+<h5 class="subsection">Problemler</h5>
+    <ol>
+<li>Fix the following function so that the values of the arguments that are passed to it are swapped. For this exercise, do not specify the parameters as <code class="d_inline">ref</code> but take them as pointers:
+
+<pre class="d_code"><span class="d_keyword">void</span> swap(<span class="d_keyword">int</span> lhs, <span class="d_keyword">int</span> rhs) {
+    <span class="d_keyword">int</span> temp = lhs;
+    lhs = rhs;
+    rhs = temp;
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">int</span> i = 1;
+    <span class="d_keyword">int</span> j = 2;
+
+    swap(i, j);
+
+    <span class="d_comment">// Their values should be swapped
+</span>    <span class="d_keyword">assert</span>(i == 2);
+    <span class="d_keyword">assert</span>(j == 1);
+}
+</pre>
+
+<p>When you start the program you will notice that the <code class="d_inline">assert</code> checks currently fail.
+</p>
+
+</li>
+
+<li>Convert the linked list that we have defined above to a template so that it can be used for storing elements of any type.
+</li>
+
+<li>It is more natural to add elements to the end of a linked list. Modify <code class="d_inline">List</code> so that it is possible to add elements to the end as well.
+
+<p>For this exercise, an additional pointer member variable that points at the last element will be useful.
+</p>
+
+</li>
+
+</ol> <div class="cozum_link_cok"><p><a target="ddili_cozum" href="pointers.cozum.html"><i>... çözümler</i></a></p></div>
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on Mon Jan 29 20:59:48 2024
+</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

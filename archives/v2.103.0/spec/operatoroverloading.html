@@ -1,0 +1,1334 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Operator Overloading - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Operator Overloading' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href=".."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Google Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option selected value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+<div class="subnav-helper"></div> <div class="subnav">    <div class="head"><h2>Language Reference</h2> <p class="subnav-duplicate"><a href="../spec/spec.html">table of contents</a></p></div>
+    <ul>        <li><a href='            ../spec/intro.html'>Introduction</a></li><li><a href='            ../spec/lex.html'>Lexical</a></li><li><a href='            ../spec/grammar.html'>Grammar</a></li><li><a href='            ../spec/module.html'>Modules</a></li><li><a href='            ../spec/declaration.html'>Declarations</a></li><li><a href='            ../spec/type.html'>Types</a></li><li><a href='            ../spec/property.html'>Properties</a></li><li><a href='            ../spec/attribute.html'>Attributes</a></li><li><a href='            ../spec/pragma.html'>Pragmas</a></li><li><a href='            ../spec/expression.html'>Expressions</a></li><li><a href='            ../spec/statement.html'>Statements</a></li><li><a href='            ../spec/arrays.html'>Arrays</a></li><li><a href='            ../spec/hash-map.html'>Associative Arrays</a></li><li><a href='            ../spec/struct.html'>Structs and Unions</a></li><li><a href='            ../spec/class.html'>Classes</a></li><li><a href='            ../spec/interface.html'>Interfaces</a></li><li><a href='            ../spec/enum.html'>Enums</a></li><li><a href='            ../spec/const3.html'>Type Qualifiers</a></li><li><a href='            ../spec/function.html'>Functions</a></li><li><a href='            ../spec/operatoroverloading.html'>Operator Overloading</a></li><li><a href='            ../spec/template.html'>Templates</a></li><li><a href='            ../spec/template-mixin.html'>Template Mixins</a></li><li><a href='            ../spec/contracts.html'>Contract Programming</a></li><li><a href='            ../spec/version.html'>Conditional Compilation</a></li><li><a href='            ../spec/traits.html'>Traits</a></li><li><a href='            ../spec/errors.html'>Error Handling</a></li><li><a href='            ../spec/unittest.html'>Unit Tests</a></li><li><a href='            ../spec/garbage.html'>Garbage Collection</a></li><li><a href='            ../spec/float.html'>Floating Point</a></li><li><a href='            ../spec/iasm.html'>D x86 Inline Assembler</a></li><li><a href='            ../spec/ddoc.html'>Embedded Documentation</a></li><li><a href='            ../spec/interfaceToC.html'>Interfacing to C</a></li><li><a href='            ../spec/cpp_interface.html'>Interfacing to C++</a></li><li><a href='            ../spec/objc_interface.html'>Interfacing to Objective-C</a></li><li><a href='            ../spec/portability.html'>Portability Guide</a></li><li><a href='            ../spec/entity.html'>Named Character Entities</a></li><li><a href='            ../spec/memory-safe-d.html'>Memory Safety</a></li><li><a href='            ../spec/abi.html'>Application Binary Interface</a></li><li><a href='            ../spec/simd.html'>Vector Extensions</a></li><li><a href='            ../spec/betterc.html'>Better C</a></li><li><a href='            ../spec/importc.html'>ImportC</a></li><li><a href='            ../spec/ob.html'>Live Functions
+        </a></li>
+    </ul>
+</div>
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BOperator Overloading%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/spec/operatoroverloading.dd">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Operator Overloading</h1>
+        
+<style>    body { counter-reset: h1 20; counter-increment: h1 -1; }
+    h1 { counter-reset: h2 h3 p; }
+    h2 { counter-reset: h3 h4 p; }
+    h3 { counter-reset: h4 p; }
+    h4 { counter-reset: p; }
+    h1::before {
+        counter-increment: h1;
+        content: counter(h1) ". ";
+    }
+    .hyphenate h2::before {
+        counter-increment: h2;
+        content: counter(h1) "." counter(h2) " ";
+    }
+    h3::before {
+        counter-increment: h3;
+        content: counter(h1) "." counter(h2) "." counter(h3) " ";
+    }
+    h4::before {
+        counter-increment: h4;
+        content: counter(h1) "." counter(h2) "." counter(h3) "." counter(h4) " ";
+    }
+    p::before, .spec-boxes::before {
+        counter-increment: p;
+        content: counter(p) ". ";
+    }
+    h1::before, h2::before, h3::before, h4::before, p::before, .spec-boxes::before
+    {
+        color: #999;
+        font-size: 80%;
+        margin-right: 0.25em;
+    }
+</style>
+        <div class="blankline"></div>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<div class="page-contents quickindex">    <div class="page-contents-header">        <b>Contents</b>
+    </div>
+    <ol>    <li><a href="#unary">Unary Operator Overloading</a><ol>        <li><a href="#postincrement_postdecrement_operators">Postincrement <i>e</i><span class="d_inlinecode donthyphenate notranslate">++</span> and Postdecrement <i>e</i><span class="d_inlinecode donthyphenate notranslate">--</span> Operators</a></li>
+        <li><a href="#index_unary_operators">Overloading Index Unary Operators</a></li>
+        <li><a href="#slice_unary_operators">Overloading Slice Unary Operators</a></li>
+    </ol></li>
+    <li><a href="#cast">Cast Operator Overloading</a><ol>        <li><a href="#boolean_operators">Boolean Operations</a></li>
+    </ol></li>
+    <li><a href="#binary">Binary Operator Overloading</a></li>
+    <li><a href="#eqcmp">Overloading the Comparison Operators</a><ol>        <li><a href="#equals">Overloading <span class="d_inlinecode donthyphenate notranslate">==</span> and <span class="d_inlinecode donthyphenate notranslate">!=</span></a></li>
+        <li><a href="#compare">Overloading <span class="d_inlinecode donthyphenate notranslate">&lt;</span>, <span class="d_inlinecode donthyphenate notranslate">&lt;</span><span class="d_inlinecode donthyphenate notranslate">=</span>, <span class="d_inlinecode donthyphenate notranslate">&gt;</span>, and <span class="d_inlinecode donthyphenate notranslate">&gt;</span><span class="d_inlinecode donthyphenate notranslate">=</span></a></li>
+    </ol></li>
+    <li><a href="#function-call">Function Call Operator Overloading <span class="d_inlinecode donthyphenate notranslate">f()</span></a><ol>        <li><a href="#static-opcall">Static opCall</a></li>
+    </ol></li>
+    <li><a href="#assignment">Assignment Operator Overloading</a><ol>        <li><a href="#index_assignment_operator">Index Assignment Operator Overloading</a></li>
+        <li><a href="#slice_assignment_operator">Slice Assignment Operator Overloading</a></li>
+    </ol></li>
+    <li><a href="#op-assign">Op Assignment Operator Overloading</a><ol>        <li><a href="#index_op_assignment">Index Op Assignment Operator Overloading</a></li>
+        <li><a href="#slice_op_assignment">Slice Op Assignment Operator Overloading</a></li>
+    </ol></li>
+    <li><a href="#array-ops">Array Indexing and Slicing Operators Overloading</a><ol>        <li><a href="#array">Index Operator Overloading</a></li>
+        <li><a href="#slice">Slice Operator Overloading</a></li>
+        <li><a href="#dollar">Dollar Operator Overloading</a></li>
+        <li><a href="#index-slicing-example">Complete Example</a></li>
+    </ol></li>
+    <li><a href="#dispatch">Forwarding</a></li>
+    <li><a href="#old-style">D1 style operator overloading</a></li>
+</ol>
+</div>
+<div class="blankline"></div>
+        <p>Operator overloading is accomplished by rewriting operators whose
+        operands are class or struct objects into calls to specially named
+        members. No additional syntax is used.
+        </p>
+<div class="blankline"></div>
+        <ul>        <li><a href="#unary">Unary Operator Overloading</a></li>
+        <li><a href="#cast">Cast Operator Overloading</a></li>
+        <li><a href="#binary">Binary Operator Overloading</a></li>
+        <li><a href="#eqcmp">Overloading the Comparison Operators</a>
+                <ul>                <li><a href="#equals">Overloading <span class="d_inlinecode donthyphenate notranslate">==</span> and <span class="d_inlinecode donthyphenate notranslate">!=</span></a></li>
+                <li><a href="#compare">Overloading <span class="d_inlinecode donthyphenate notranslate">&lt;</span>, <span class="d_inlinecode donthyphenate notranslate">&lt;=</span>,
+                <span class="d_inlinecode donthyphenate notranslate">&gt;</span>, and <span class="d_inlinecode donthyphenate notranslate">&gt;=</span></a></li>
+                </ul>
+        </li>
+        <li><a href="#function-call">Function Call Operator Overloading</a></li>
+        <li><a href="#assignment">Assignment Operator Overloading</a></li>
+        <li><a href="#op-assign">Op Assignment Operator Overloading</a></li>
+        <li><a href="#array-ops">Array Indexing and Slicing Operators Overloading</a>
+                <ul>                <li><a href="#array">Index Operator Overloading</a></li>
+                <li><a href="#slice">Slice Operator Overloading</a></li>
+                <li><a href="#dollar">Dollar Operator Overloading</a></li>
+                </ul>
+        </li>
+        <li><a href="#dispatch">Forwarding</a></li>
+        <li><a href="#old-style">D1 style operator overloading</a></li>
+        </ul>
+<div class="blankline"></div>
+<h2><span id="Unary"><a class="anchor" title="Permalink to this section" id="unary" href="#unary">Unary Operator Overloading</a></span></h2>
+<div class="blankline"></div>
+        <center><table><caption>Overloadable Unary Operators</caption>        <tr><th class="donthyphenate"><b><i>op</i></b></th><th class="donthyphenate"><b><i>rewrite</i></b></th></tr>
+        <tr><td>        <span class="d_inlinecode donthyphenate notranslate">-</span><i>e</i></td><td>        <i>e</i><span class="d_inlinecode donthyphenate notranslate">.opUnary!("-")()</span>
+        </td></tr>
+        <tr><td>        <span class="d_inlinecode donthyphenate notranslate">+</span><i>e</i></td><td>        <i>e</i><span class="d_inlinecode donthyphenate notranslate">.opUnary!("+")()</span>
+        </td></tr>
+        <tr><td>        <span class="d_inlinecode donthyphenate notranslate">~</span><i>e</i></td><td>        <i>e</i><span class="d_inlinecode donthyphenate notranslate">.opUnary!("~")()</span>
+        </td></tr>
+<div class="blankline"></div>
+        <tr><td>        <span class="d_inlinecode donthyphenate notranslate">*</span><i>e</i></td><td>        <i>e</i><span class="d_inlinecode donthyphenate notranslate">.opUnary!("*")()</span>
+        </td></tr>
+<div class="blankline"></div>
+        <tr><td>        <span class="d_inlinecode donthyphenate notranslate">++</span><i>e</i></td><td>        <i>e</i><span class="d_inlinecode donthyphenate notranslate">.opUnary!("++")()</span>
+        </td></tr>
+<div class="blankline"></div>
+        <tr><td>        <span class="d_inlinecode donthyphenate notranslate">--</span><i>e</i></td><td>        <i>e</i><span class="d_inlinecode donthyphenate notranslate">.opUnary!("--")()</span>
+        </td></tr>
+        </table></center>
+<div class="blankline"></div>
+        <p>For example, in order to overload the <span class="d_inlinecode donthyphenate notranslate">-</span> (negation) operator for struct S, and
+        no other operator:</p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span> m;
+
+    <span class="d_keyword">int</span> opUnary(string s)() <span class="d_keyword">if</span> (s == <span class="d_string">"-"</span>)
+    {
+        <span class="d_keyword">return</span> -m;
+    }
+}
+
+<span class="d_keyword">void</span> main()
+{
+    S s = {2};
+    <span class="d_keyword">assert</span>(-s == -2);
+}
+</pre>
+
+</div>
+<div class="blankline"></div>
+<div class="spec-boxes note"><b>Note:</b> <em>opUnary</em> above can also be declared using a template parameter specialization:</div>
+<pre class="d_code notranslate">    <span class="d_keyword">int</span> opUnary(string s : <span class="d_string">"-"</span>)()
+</pre>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="postincrement_postdecrement_operators" href="#postincrement_postdecrement_operators">Postincrement <i>e</i><span class="d_inlinecode donthyphenate notranslate">++</span> and Postdecrement <i>e</i><span class="d_inlinecode donthyphenate notranslate">--</span> Operators</a></h3>
+<div class="blankline"></div>
+        <p>These are not directly overloadable, but instead are rewritten
+        in terms of the ++<i>e</i> and --<i>e</i> prefix operators:
+        </p>
+<div class="blankline"></div>
+        <center><table><caption>Postfix Operator Rewrites</caption>        <tr><th class="donthyphenate"><b><i>op</i></b></th><th class="donthyphenate"><b><i>rewrite</i></b></th></tr>
+        <tr><td>        <i>e</i><span class="d_inlinecode donthyphenate notranslate">--</span></td><td>        <span class="d_inlinecode donthyphenate notranslate">(auto t =</span> <i>e</i><span class="d_inlinecode donthyphenate notranslate">, </span><i>e</i><span class="d_inlinecode donthyphenate notranslate">.opUnary!"--"</span><span class="d_inlinecode donthyphenate notranslate">, t)</span></td></tr>
+        <tr><td>        <i>e</i><span class="d_inlinecode donthyphenate notranslate">++</span></td><td>        <span class="d_inlinecode donthyphenate notranslate">(auto t =</span> <i>e</i><span class="d_inlinecode donthyphenate notranslate">, </span><i>e</i><span class="d_inlinecode donthyphenate notranslate">.opUnary!"++"</span><span class="d_inlinecode donthyphenate notranslate">, t)</span></td></tr>
+        </table></center>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="index_unary_operators" href="#index_unary_operators">Overloading Index Unary Operators</a></h3>
+<div class="blankline"></div>
+        <p>Indexing can be <a href="#array">overloaded</a>.
+        A unary operation on an index expression can also be overloaded independently.
+        This works for multidimensional indexing.</p>
+<div class="blankline"></div>
+        <center><table><caption>Overloadable Index Unary Operators</caption>        <tr><th class="donthyphenate"><b><i>op</i></b></th><th class="donthyphenate"><b><i>rewrite</i></b></th></tr>
+        <tr><td>        <span class="d_inlinecode donthyphenate notranslate">-</span><i>a</i><span class="d_inlinecode donthyphenate notranslate">[</span><i>b</i><sub>1</sub>, <i>b</i><sub>2</sub>, ... <i>b</i><sub>n</sub><span class="d_inlinecode donthyphenate notranslate">]</span></td><td>        <i>a</i><span class="d_inlinecode donthyphenate notranslate">.opIndexUnary!("-")(</span><i>b</i><sub>1</sub>, <i>b</i><sub>2</sub>, ... <i>b</i><sub>n</sub><span class="d_inlinecode donthyphenate notranslate">)</span></td></tr>
+        <tr><td>        <span class="d_inlinecode donthyphenate notranslate">+</span><i>a</i><span class="d_inlinecode donthyphenate notranslate">[</span><i>b</i><sub>1</sub>, <i>b</i><sub>2</sub>, ... <i>b</i><sub>n</sub><span class="d_inlinecode donthyphenate notranslate">]</span></td><td>        <i>a</i><span class="d_inlinecode donthyphenate notranslate">.opIndexUnary!("+")(</span><i>b</i><sub>1</sub>, <i>b</i><sub>2</sub>, ... <i>b</i><sub>n</sub><span class="d_inlinecode donthyphenate notranslate">)</span>
+        </td></tr>
+        <tr><td>        <span class="d_inlinecode donthyphenate notranslate">~</span><i>a</i><span class="d_inlinecode donthyphenate notranslate">[</span><i>b</i><sub>1</sub>, <i>b</i><sub>2</sub>, ... <i>b</i><sub>n</sub><span class="d_inlinecode donthyphenate notranslate">]</span></td><td>        <i>a</i><span class="d_inlinecode donthyphenate notranslate">.opIndexUnary!("~")(</span><i>b</i><sub>1</sub>, <i>b</i><sub>2</sub>, ... <i>b</i><sub>n</sub><span class="d_inlinecode donthyphenate notranslate">)</span>
+        </td></tr>
+        <tr><td>        <span class="d_inlinecode donthyphenate notranslate">*</span><i>a</i><span class="d_inlinecode donthyphenate notranslate">[</span><i>b</i><sub>1</sub>, <i>b</i><sub>2</sub>, ... <i>b</i><sub>n</sub><span class="d_inlinecode donthyphenate notranslate">]</span></td><td>        <i>a</i><span class="d_inlinecode donthyphenate notranslate">.opIndexUnary!("*")(</span><i>b</i><sub>1</sub>, <i>b</i><sub>2</sub>, ... <i>b</i><sub>n</sub><span class="d_inlinecode donthyphenate notranslate">)</span>
+        </td></tr>
+        <tr><td>        <span class="d_inlinecode donthyphenate notranslate">++</span><i>a</i><span class="d_inlinecode donthyphenate notranslate">[</span><i>b</i><sub>1</sub>, <i>b</i><sub>2</sub>, ... <i>b</i><sub>n</sub><span class="d_inlinecode donthyphenate notranslate">]</span></td><td>        <i>a</i><span class="d_inlinecode donthyphenate notranslate">.opIndexUnary!("++")(</span><i>b</i><sub>1</sub>, <i>b</i><sub>2</sub>, ... <i>b</i><sub>n</sub><span class="d_inlinecode donthyphenate notranslate">)</span>
+        </td></tr>
+        <tr><td>        <span class="d_inlinecode donthyphenate notranslate">--</span><i>a</i><span class="d_inlinecode donthyphenate notranslate">[</span><i>b</i><sub>1</sub>, <i>b</i><sub>2</sub>, ... <i>b</i><sub>n</sub><span class="d_inlinecode donthyphenate notranslate">]</span></td><td>        <i>a</i><span class="d_inlinecode donthyphenate notranslate">.opIndexUnary!("--")(</span><i>b</i><sub>1</sub>, <i>b</i><sub>2</sub>, ... <i>b</i><sub>n</sub><span class="d_inlinecode donthyphenate notranslate">)</span>
+        </td></tr>
+        </table></center>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">private</span> <span class="d_keyword">int</span>[] a;
+
+    <span class="d_keyword">void</span> opIndexUnary(string s: <span class="d_string">"++"</span>)(size_t i) { ++a[i]; }
+}
+
+S s = {[4]};
+++s[0];
+<span class="d_keyword">assert</span>(s.a[0] == 5);
+</pre>
+
+</div>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="slice_unary_operators" href="#slice_unary_operators">Overloading Slice Unary Operators</a></h3>
+<div class="blankline"></div>
+        <p>Slicing can be <a href="#slice">overloaded</a>.
+        A unary operation on a slice can also be overloaded independently.
+        <span class="d_inlinecode donthyphenate notranslate">opIndexUnary</span> is defined either with no function arguments for a full slice,
+        or with two arguments for the start and end indices of the slice.</p>
+<div class="blankline"></div>
+        <center><table><caption>Overloadable Slice Unary Operators</caption>        <tr><th class="donthyphenate"><b><i>op</i></b></th><th class="donthyphenate"><b><i>rewrite</i></b></th></tr>
+        <tr><td>        <span class="d_inlinecode donthyphenate notranslate">-</span><i>a</i><span class="d_inlinecode donthyphenate notranslate">[</span><i>i</i>..<i>j</i><span class="d_inlinecode donthyphenate notranslate">]</span></td><td>        <i>a</i><span class="d_inlinecode donthyphenate notranslate">.opIndexUnary!("-")(</span><i>a</i><span class="d_inlinecode donthyphenate notranslate">.opSlice(</span><i>i</i>, <i>j</i><span class="d_inlinecode donthyphenate notranslate">))</span>
+        </td></tr>
+<div class="blankline"></div>
+        <tr><td>        <span class="d_inlinecode donthyphenate notranslate">+</span><i>a</i><span class="d_inlinecode donthyphenate notranslate">[</span><i>i</i>..<i>j</i><span class="d_inlinecode donthyphenate notranslate">]</span></td><td>        <i>a</i><span class="d_inlinecode donthyphenate notranslate">.opIndexUnary!("+")(</span><i>a</i><span class="d_inlinecode donthyphenate notranslate">.opSlice(</span><i>i</i>, <i>j</i><span class="d_inlinecode donthyphenate notranslate">))</span>
+        </td></tr>
+<div class="blankline"></div>
+        <tr><td>        <span class="d_inlinecode donthyphenate notranslate">~</span><i>a</i><span class="d_inlinecode donthyphenate notranslate">[</span><i>i</i>..<i>j</i><span class="d_inlinecode donthyphenate notranslate">]</span></td><td>        <i>a</i><span class="d_inlinecode donthyphenate notranslate">.opIndexUnary!("~")(</span><i>a</i><span class="d_inlinecode donthyphenate notranslate">.opSlice(</span><i>i</i>, <i>j</i><span class="d_inlinecode donthyphenate notranslate">))</span>
+        </td></tr>
+<div class="blankline"></div>
+        <tr><td>        <span class="d_inlinecode donthyphenate notranslate">*</span><i>a</i><span class="d_inlinecode donthyphenate notranslate">[</span><i>i</i>..<i>j</i><span class="d_inlinecode donthyphenate notranslate">]</span></td><td>        <i>a</i><span class="d_inlinecode donthyphenate notranslate">.opIndexUnary!("*")(</span><i>a</i><span class="d_inlinecode donthyphenate notranslate">.opSlice(</span><i>i</i>, <i>j</i><span class="d_inlinecode donthyphenate notranslate">))</span>
+        </td></tr>
+<div class="blankline"></div>
+        <tr><td>        <span class="d_inlinecode donthyphenate notranslate">++</span><i>a</i><span class="d_inlinecode donthyphenate notranslate">[</span><i>i</i>..<i>j</i><span class="d_inlinecode donthyphenate notranslate">]</span></td><td>        <i>a</i><span class="d_inlinecode donthyphenate notranslate">.opIndexUnary!("++")(</span><i>a</i><span class="d_inlinecode donthyphenate notranslate">.opSlice(</span><i>i</i>, <i>j</i><span class="d_inlinecode donthyphenate notranslate">))</span>
+        </td></tr>
+<div class="blankline"></div>
+        <tr><td>        <span class="d_inlinecode donthyphenate notranslate">--</span><i>a</i><span class="d_inlinecode donthyphenate notranslate">[</span><i>i</i>..<i>j</i><span class="d_inlinecode donthyphenate notranslate">]</span></td><td>        <i>a</i><span class="d_inlinecode donthyphenate notranslate">.opIndexUnary!("--")(</span><i>a</i><span class="d_inlinecode donthyphenate notranslate">.opSlice(</span><i>i</i>, <i>j</i><span class="d_inlinecode donthyphenate notranslate">))</span>
+        </td></tr>
+<div class="blankline"></div>
+        <tr><td>        <span class="d_inlinecode donthyphenate notranslate">-</span><i>a</i><span class="d_inlinecode donthyphenate notranslate">[ ]</span></td><td>        <i>a</i><span class="d_inlinecode donthyphenate notranslate">.opIndexUnary!("-")()</span>
+        </td></tr>
+<div class="blankline"></div>
+        <tr><td>        <span class="d_inlinecode donthyphenate notranslate">+</span><i>a</i><span class="d_inlinecode donthyphenate notranslate">[ ]</span></td><td>        <i>a</i><span class="d_inlinecode donthyphenate notranslate">.opIndexUnary!("+")()</span>
+        </td></tr>
+<div class="blankline"></div>
+        <tr><td>        <span class="d_inlinecode donthyphenate notranslate">~</span><i>a</i><span class="d_inlinecode donthyphenate notranslate">[ ]</span></td><td>        <i>a</i><span class="d_inlinecode donthyphenate notranslate">.opIndexUnary!("~")()</span>
+        </td></tr>
+<div class="blankline"></div>
+        <tr><td>        <span class="d_inlinecode donthyphenate notranslate">*</span><i>a</i><span class="d_inlinecode donthyphenate notranslate">[ ]</span></td><td>        <i>a</i><span class="d_inlinecode donthyphenate notranslate">.opIndexUnary!("*")()</span>
+        </td></tr>
+<div class="blankline"></div>
+        <tr><td>        <span class="d_inlinecode donthyphenate notranslate">++</span><i>a</i><span class="d_inlinecode donthyphenate notranslate">[ ]</span></td><td>        <i>a</i><span class="d_inlinecode donthyphenate notranslate">.opIndexUnary!("++")()</span>
+        </td></tr>
+<div class="blankline"></div>
+        <tr><td>        <span class="d_inlinecode donthyphenate notranslate">--</span><i>a</i><span class="d_inlinecode donthyphenate notranslate">[ ]</span></td><td>        <i>a</i><span class="d_inlinecode donthyphenate notranslate">.opIndexUnary!("--")()</span>
+        </td></tr>
+        </table></center>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">private</span> <span class="d_keyword">int</span>[] a;
+
+    <span class="d_keyword">void</span> opIndexUnary(string s: <span class="d_string">"--"</span>)() { --a[]; }
+}
+
+S s = {[1, 2]};
+--s[];
+<span class="d_keyword">assert</span>(s.a == [0, 1]);
+</pre>
+
+</div>
+<div class="blankline"></div>
+        <div class="spec-boxes note"><b>Note:</b> For backward compatibility, if the above rewrites fail to compile and
+        <span class="d_inlinecode donthyphenate notranslate">opSliceUnary</span> is defined, then the rewrites
+        <span class="d_inlinecode donthyphenate notranslate">a.opSliceUnary!(op)(i, j)</span> and
+        <span class="d_inlinecode donthyphenate notranslate">a.opSliceUnary!(op)</span> are tried instead, respectively.</div>
+<div class="blankline"></div>
+<h2><span id="Cast"><a class="anchor" title="Permalink to this section" id="cast" href="#cast">Cast Operator Overloading</a></span></h2>
+<div class="blankline"></div>
+    <p>To define how one type can be cast to another, define the
+      <span class="d_inlinecode donthyphenate notranslate">opCast</span> template method, which is used as follows:</p>
+        <center><table><caption>Cast Operators</caption>        <tr><th class="donthyphenate"><b><i>op</i></b></th><th class="donthyphenate"><b><i>rewrite</i></b></th></tr>
+        <tr><td>        <span class="d_inlinecode donthyphenate notranslate">cast(</span><i>type</i><span class="d_inlinecode donthyphenate notranslate">)</span> <i>e</i></td><td>        <i>e</i><span class="d_inlinecode donthyphenate notranslate">.opCast!(</span><i>type</i><span class="d_inlinecode donthyphenate notranslate">)()</span>
+        </td></tr>
+        </table></center>
+<div class="blankline"></div>
+    <p>Note that <span class="d_inlinecode donthyphenate notranslate">opCast</span> is only ever used with an explicit <span class="d_inlinecode donthyphenate notranslate">cast</span>
+        expression, except in the case of boolean operations (see next
+        section).</p>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="boolean_operators" href="#boolean_operators">Boolean Operations</a></h3>
+<div class="blankline"></div>
+        <p>Notably absent from the list of overloaded unary operators is the !
+        logical negation operator. More obscurely absent is a unary operator
+        to convert to a bool result.
+        Instead, these are covered by a rewrite to:
+        </p>
+<pre class="d_code notranslate">opCast!(<span class="d_keyword">bool</span>)(e)
+</pre>
+<div class="blankline"></div>
+        <p>So,</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">if</span> (e)   =&gt;  <span class="d_keyword">if</span> (e.opCast!(<span class="d_keyword">bool</span>))
+<span class="d_keyword">if</span> (!e)  =&gt;  <span class="d_keyword">if</span> (!e.opCast!(<span class="d_keyword">bool</span>))
+</pre>
+<div class="blankline"></div>
+        <p>etc., whenever a bool result is expected. This only happens, however, for
+        instances of structs. Class references are converted to bool by checking to
+        see if the class reference is null or not.
+        </p>
+<div class="blankline"></div>
+<h2><span id="Binary"><a class="anchor" title="Permalink to this section" id="binary" href="#binary">Binary Operator Overloading</a></span></h2>
+<div class="blankline"></div>
+        <p>The following binary operators are overloadable:</p>
+<div class="blankline"></div>
+        <center><table><caption>Overloadable Binary Operators</caption>        <tr><td><span class="d_inlinecode donthyphenate notranslate">+</span></td><td><span class="d_inlinecode donthyphenate notranslate">-</span></td><td><span class="d_inlinecode donthyphenate notranslate">*</span></td><td><span class="d_inlinecode donthyphenate notranslate">/</span></td><td><span class="d_inlinecode donthyphenate notranslate">%</span></td><td><span class="d_inlinecode donthyphenate notranslate">^^</span></td><td><span class="d_inlinecode donthyphenate notranslate">&amp;</span></td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">|</span></td><td><span class="d_inlinecode donthyphenate notranslate">^</span></td><td><span class="d_inlinecode donthyphenate notranslate">&lt;</span><span class="d_inlinecode donthyphenate notranslate">&lt;</span></td><td><span class="d_inlinecode donthyphenate notranslate">&gt;</span><span class="d_inlinecode donthyphenate notranslate">&gt;</span></td><td><span class="d_inlinecode donthyphenate notranslate">&gt;</span><span class="d_inlinecode donthyphenate notranslate">&gt;</span><span class="d_inlinecode donthyphenate notranslate">&gt;</span></td><td><span class="d_inlinecode donthyphenate notranslate">~</span></td><td><a href="../spec/expression.html#InExpression"><span class="d_inlinecode donthyphenate notranslate">in</span></a></td></tr>
+        </table></center>
+<div class="blankline"></div>
+        <p>The expression:</p>
+<pre class="d_code notranslate">a <span class="metacode">op</span> b
+</pre>
+        <p>is rewritten as one of:</p>
+<pre class="d_code notranslate">a.opBinary!(<span class="metacode"><span class="d_string">"op"</span></span>)(b)
+b.opBinaryRight!(<span class="metacode"><span class="d_string">"op"</span></span>)(a)
+</pre>
+<div class="blankline"></div>
+        <p>and the one with the &lsquo;better&rsquo; match is selected.
+        It is an error for both to equally match. Example:
+        </p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span>[] data;
+
+    <span class="d_comment">// this ~ rhs
+</span>    <span class="d_keyword">int</span>[] opBinary(string op : <span class="d_string">"~"</span>)(<span class="d_keyword">int</span> rhs)
+    {
+        <span class="d_keyword">return</span> data ~ rhs;
+    }
+    <span class="d_comment">// lhs ~ this
+</span>    <span class="d_keyword">int</span>[] opBinaryRight(string op : <span class="d_string">"~"</span>)(<span class="d_keyword">int</span> lhs)
+    {
+        <span class="d_keyword">return</span> lhs ~ data;
+    }
+}
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">auto</span> s = S([2,3]);
+    <span class="d_keyword">assert</span>(s ~ 4 == [2,3,4]); <span class="d_comment">// opBinary
+</span>    <span class="d_keyword">assert</span>(1 ~ s == [1,2,3]); <span class="d_comment">// opBinaryRight
+</span>}
+</pre>
+
+</div>
+<div class="blankline"></div>
+        <p>Operator overloading for a number of operators can be done at the same time.
+        For example, if only the + or - operators are supported:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate">T opBinary(string op)(T rhs)
+{
+    <span class="d_keyword">static</span> <span class="d_keyword">if</span> (op == <span class="d_string">"+"</span>) <span class="d_keyword">return</span> data + rhs.data;
+    <span class="d_keyword">else</span> <span class="d_keyword">static</span> <span class="d_keyword">if</span> (op == <span class="d_string">"-"</span>) <span class="d_keyword">return</span> data - rhs.data;
+    <span class="d_keyword">else</span> <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(0, <span class="d_string">"Operator "</span>~op~<span class="d_string">" not implemented"</span>);
+}
+</pre>
+<div class="blankline"></div>
+        <p>To do them all en masse:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate">T opBinary(string op)(T rhs)
+{
+    <span class="d_keyword">return</span> <span class="d_keyword">mixin</span>(<span class="d_string">"data "</span>~op~<span class="d_string">" rhs.data"</span>);
+}
+</pre>
+<div class="blankline"></div>
+        <p>Note that <span class="d_inlinecode donthyphenate notranslate">opIn</span> and <span class="d_inlinecode donthyphenate notranslate">opIn_r</span> have been deprecated in favor of
+        <span class="d_inlinecode donthyphenate notranslate">opBinary!"in"</span> and <span class="d_inlinecode donthyphenate notranslate">opBinaryRight!"in"</span> respectively.</p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="eqcmp" href="#eqcmp">Overloading the Comparison Operators</a></h2>
+<div class="blankline"></div>
+        <p>D allows overloading of the comparison operators <span class="d_inlinecode donthyphenate notranslate">==</span>, <span class="d_inlinecode donthyphenate notranslate">!=</span>,
+        <span class="d_inlinecode donthyphenate notranslate">&lt;</span>, <span class="d_inlinecode donthyphenate notranslate">&lt;=</span>, <span class="d_inlinecode donthyphenate notranslate">&gt;=</span>, <span class="d_inlinecode donthyphenate notranslate">&gt;</span> via two functions, <span class="d_inlinecode donthyphenate notranslate">opEquals</span> and
+        <span class="d_inlinecode donthyphenate notranslate">opCmp</span>.</p>
+<div class="blankline"></div>
+        <p>The equality and inequality operators are treated separately
+        from comparison operators
+        because while practically all user-defined types can be compared for
+        equality, only a subset of types have a meaningful ordering. For
+        example, while it makes sense to determine if two RGB color vectors are
+        equal, it is not meaningful to say that one color is greater than
+        another, because colors do not have an ordering. Thus, one would define
+        <span class="d_inlinecode donthyphenate notranslate">opEquals</span> for a <span class="d_inlinecode donthyphenate notranslate">Color</span> type, but not <span class="d_inlinecode donthyphenate notranslate">opCmp</span>.</p>
+<div class="blankline"></div>
+        <p>Furthermore, even with orderable types, the order relation may not
+        be linear. For example, one may define an ordering on sets via the
+        subset relation, such that <span class="d_inlinecode donthyphenate notranslate">x &lt; y</span> is true if <span class="d_inlinecode donthyphenate notranslate">x</span> is a (strict)
+        subset of <span class="d_inlinecode donthyphenate notranslate">y</span>. If <span class="d_inlinecode donthyphenate notranslate">x</span> and <span class="d_inlinecode donthyphenate notranslate">y</span> are disjoint sets, then neither
+        <span class="d_inlinecode donthyphenate notranslate">x &lt; y</span> nor <span class="d_inlinecode donthyphenate notranslate">y &lt; x</span> holds, but that does not imply that
+        <span class="d_inlinecode donthyphenate notranslate">x == y</span>. Thus, it is insufficient to determine equality purely based on
+        <span class="d_inlinecode donthyphenate notranslate">opCmp</span> alone. For this reason, <span class="d_inlinecode donthyphenate notranslate">opCmp</span> is only used for the
+        inequality operators <span class="d_inlinecode donthyphenate notranslate">&lt;</span>, <span class="d_inlinecode donthyphenate notranslate">&lt;=</span>, <span class="d_inlinecode donthyphenate notranslate">&gt;=</span>, and <span class="d_inlinecode donthyphenate notranslate">&gt;</span>. The equality
+        operators <span class="d_inlinecode donthyphenate notranslate">==</span> and <span class="d_inlinecode donthyphenate notranslate">!=</span> always employ <span class="d_inlinecode donthyphenate notranslate">opEquals</span> instead.</p>
+<div class="blankline"></div>
+        <p>Therefore, it is the programmer's responsibility to ensure that
+        <span class="d_inlinecode donthyphenate notranslate">opCmp</span> and <span class="d_inlinecode donthyphenate notranslate">opEquals</span> are consistent with each other. If
+        <span class="d_inlinecode donthyphenate notranslate">opEquals</span> is not specified, the compiler provides a default version
+        that does member-wise comparison. If this suffices, one may define only
+        <span class="d_inlinecode donthyphenate notranslate">opCmp</span> to customize the behaviour of the inequality operators.  But
+        if not, then a custom version of <span class="d_inlinecode donthyphenate notranslate">opEquals</span> should be defined as
+        well, in order to preserve consistent semantics between the two kinds
+        of comparison operators.</p>
+<div class="blankline"></div>
+        <p>Finally, if the user-defined type is to be used as a key in the
+        built-in associative arrays, then the programmer must ensure that the
+        semantics of <span class="d_inlinecode donthyphenate notranslate">opEquals</span> and <span class="d_inlinecode donthyphenate notranslate">toHash</span> are consistent. If not, the
+        associative array may not work in the expected manner.</p>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="equals" href="#equals">Overloading <span class="d_inlinecode donthyphenate notranslate">==</span> and <span class="d_inlinecode donthyphenate notranslate">!=</span></a></h3>
+<div class="blankline"></div>
+        <p>Expressions of the form <span class="d_inlinecode donthyphenate notranslate">a != b</span> are rewritten as <span class="d_inlinecode donthyphenate notranslate">!(a == b)</span>.</p>
+<div class="blankline"></div>
+        <p>Given <span class="d_inlinecode donthyphenate notranslate">a == b</span> :</p>
+<div class="blankline"></div>
+<ol>        <li>If a and b are both class objects, then the expression is rewritten as:
+<pre class="d_code notranslate">.object.opEquals(a, b)
+</pre>
+        <p>and that function is implemented as:</p>
+<pre class="d_code notranslate"><span class="d_keyword">bool</span> opEquals(Object a, Object b)
+{
+    <span class="d_keyword">if</span> (a <span class="d_keyword">is</span> b) <span class="d_keyword">return</span> <span class="d_keyword">true</span>;
+    <span class="d_keyword">if</span> (a <span class="d_keyword">is</span> <span class="d_keyword">null</span> || b <span class="d_keyword">is</span> <span class="d_keyword">null</span>) <span class="d_keyword">return</span> <span class="d_keyword">false</span>;
+    <span class="d_keyword">if</span> (<span class="d_keyword">typeid</span>(a) == <span class="d_keyword">typeid</span>(b)) <span class="d_keyword">return</span> a.opEquals(b);
+    <span class="d_keyword">return</span> a.opEquals(b) &amp;&amp; b.opEquals(a);
+}
+</pre>
+        </li>
+        <li>Otherwise the expressions <span class="d_inlinecode donthyphenate notranslate">a.opEquals(b)</span> and
+        <span class="d_inlinecode donthyphenate notranslate">b.opEquals(a)</span> are tried. If both resolve to the same <span class="d_inlinecode donthyphenate notranslate">opEquals</span> function, then the expression is rewritten to be <span class="d_inlinecode donthyphenate notranslate">a.opEquals(b)</span>.
+        </li>
+        <li>If one is a better match than the other, or one compiles and the other
+        does not, the first is selected.</li>
+        <li>Otherwise, an error results.</li>
+</ol>
+<div class="blankline"></div>
+        <p>If overridding <span class="d_inlinecode donthyphenate notranslate">Object.opEquals()</span> for classes, the class member
+        function signature should look like:</p>
+<pre class="d_code notranslate"><span class="d_keyword">class</span> C
+{
+    <span class="d_keyword">override</span> <span class="d_keyword">bool</span> opEquals(Object o) { ... }
+}
+</pre>
+<div class="blankline"></div>
+        <p>If structs declare an <span class="d_inlinecode donthyphenate notranslate">opEquals</span> member function for the
+        identity comparison, it could have several forms, such as:</p>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_comment">// lhs should be mutable object
+</span>    <span class="d_keyword">bool</span> opEquals(<span class="d_keyword">const</span> S s) { ... }        <span class="d_comment">// for r-values (e.g. temporaries)
+</span>    <span class="d_keyword">bool</span> opEquals(<span class="d_keyword">ref</span> <span class="d_keyword">const</span> S s) { ... }    <span class="d_comment">// for l-values (e.g. variables)
+</span>
+    <span class="d_comment">// both hand side can be const object
+</span>    <span class="d_keyword">bool</span> opEquals(<span class="d_keyword">const</span> S s) <span class="d_keyword">const</span> { ... }  <span class="d_comment">// for r-values (e.g. temporaries)
+</span>}
+</pre>
+<div class="blankline"></div>
+        <p>Alternatively, declare a single templated <span class="d_inlinecode donthyphenate notranslate">opEquals</span>
+        function with an <a href="../spec/template.html#auto-ref-parameters">auto ref</a>
+        parameter:</p>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_comment">// for l-values and r-values,
+</span>    <span class="d_comment">// with converting both hand side implicitly to const
+</span>    <span class="d_keyword">bool</span> opEquals()(<span class="d_keyword">auto</span> <span class="d_keyword">ref</span> <span class="d_keyword">const</span> S s) <span class="d_keyword">const</span> { ... }
+}
+</pre>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="compare" href="#compare">Overloading <span class="d_inlinecode donthyphenate notranslate">&lt;</span>, <span class="d_inlinecode donthyphenate notranslate">&lt;</span><span class="d_inlinecode donthyphenate notranslate">=</span>, <span class="d_inlinecode donthyphenate notranslate">&gt;</span>, and <span class="d_inlinecode donthyphenate notranslate">&gt;</span><span class="d_inlinecode donthyphenate notranslate">=</span></a></h3>
+<div class="blankline"></div>
+        <p>Comparison operations are rewritten as follows:</p>
+<div class="blankline"></div>
+        <center><table><caption>Rewriting of comparison operations</caption>        <tr><th class="donthyphenate"><b>comparison</b></th><th class="donthyphenate"><b>rewrite 1</b></th><th class="donthyphenate"><b>rewrite 2</b></th></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">a</span> <span class="d_inlinecode donthyphenate notranslate">&lt;</span> <span class="d_inlinecode donthyphenate notranslate">b</span></td><td><span class="d_inlinecode donthyphenate notranslate">a.opCmp(b)</span> <span class="d_inlinecode donthyphenate notranslate">&lt;</span>
+        <span class="d_inlinecode donthyphenate notranslate">0</span></td><td><span class="d_inlinecode donthyphenate notranslate">b.opCmp(a)</span> <span class="d_inlinecode donthyphenate notranslate">&gt;</span> <span class="d_inlinecode donthyphenate notranslate">0</span></td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">a</span> <span class="d_inlinecode donthyphenate notranslate">&lt;</span><span class="d_inlinecode donthyphenate notranslate">= b</span></td><td><span class="d_inlinecode donthyphenate notranslate">a.opCmp(b)</span>
+        <span class="d_inlinecode donthyphenate notranslate">&lt;</span><span class="d_inlinecode donthyphenate notranslate">= 0</span></td><td><span class="d_inlinecode donthyphenate notranslate">b.opCmp(a)</span> <span class="d_inlinecode donthyphenate notranslate">&gt;</span><span class="d_inlinecode donthyphenate notranslate">= 0</span></td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">a</span> <span class="d_inlinecode donthyphenate notranslate">&gt;</span> <span class="d_inlinecode donthyphenate notranslate">b</span></td><td><span class="d_inlinecode donthyphenate notranslate">a.opCmp(b)</span>
+        <span class="d_inlinecode donthyphenate notranslate">&gt;</span> <span class="d_inlinecode donthyphenate notranslate">0</span></td><td><span class="d_inlinecode donthyphenate notranslate">b.opCmp(a)</span> <span class="d_inlinecode donthyphenate notranslate">&lt;</span> <span class="d_inlinecode donthyphenate notranslate">0</span></td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">a</span> <span class="d_inlinecode donthyphenate notranslate">&gt;</span><span class="d_inlinecode donthyphenate notranslate">= b</span></td><td><span class="d_inlinecode donthyphenate notranslate">a.opCmp(b)</span>
+        <span class="d_inlinecode donthyphenate notranslate">&gt;</span><span class="d_inlinecode donthyphenate notranslate">= 0</span></td><td><span class="d_inlinecode donthyphenate notranslate">b.opCmp(a)</span> <span class="d_inlinecode donthyphenate notranslate">&lt;</span><span class="d_inlinecode donthyphenate notranslate">= 0</span></td></tr>
+        </table></center>
+<div class="blankline"></div>
+        <p>Both rewrites are tried. If only one compiles, that one is taken.
+        If they both resolve to the same function, the first rewrite is done.
+        If they resolve to different functions, the best matching one is used.
+        If they both match the same, but are different functions, an ambiguity
+        error results.</p>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> B
+{
+    <span class="d_keyword">int</span> opCmp(<span class="d_keyword">int</span>)         { <span class="d_keyword">return</span> -1; }
+    <span class="d_keyword">int</span> opCmp(<span class="d_keyword">ref</span> <span class="d_keyword">const</span> S) { <span class="d_keyword">return</span> -1; }
+    <span class="d_keyword">int</span> opCmp(<span class="d_keyword">ref</span> <span class="d_keyword">const</span> C) { <span class="d_keyword">return</span> -1; }
+}
+
+<span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span> opCmp(<span class="d_keyword">ref</span> <span class="d_keyword">const</span> S) { <span class="d_keyword">return</span> 1; }
+    <span class="d_keyword">int</span> opCmp(<span class="d_keyword">ref</span> B)       { <span class="d_keyword">return</span> 0; }
+}
+
+<span class="d_keyword">struct</span> C
+{
+    <span class="d_keyword">int</span> opCmp(<span class="d_keyword">ref</span> <span class="d_keyword">const</span> B) { <span class="d_keyword">return</span> 0; }
+}
+
+<span class="d_keyword">void</span> main()
+{
+    S s;
+    <span class="d_keyword">const</span> S cs;
+    B b;
+    C c;
+    <span class="d_keyword">assert</span>(s &gt; s);      <span class="d_comment">// s.opCmp(s) &gt; 0
+</span>    <span class="d_keyword">assert</span>(!(s &lt; b));   <span class="d_comment">// s.opCmp(b) &gt; 0  - S.opCmp(ref B) is exact match
+</span>    <span class="d_keyword">assert</span>(!(b &lt; s));   <span class="d_comment">// s.opCmp(b) &lt; 0  - S.opCmp(ref B) is exact match
+</span>    <span class="d_keyword">assert</span>(b &lt; cs);     <span class="d_comment">// b.opCmp(s) &lt; 0  - B.opCmp(ref const S) is  exact match
+</span>    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(!<span class="d_keyword">__traits</span>(compiles, b &lt; c)); <span class="d_comment">// both C.opCmp and B.opcmp match exactly
+</span>}
+</pre>
+        <p>If overriding <span class="d_inlinecode donthyphenate notranslate">Object.opCmp()</span> for classes, the class member
+        function signature should look like:</p>
+<pre class="d_code notranslate"><span class="d_keyword">class</span> C
+{
+    <span class="d_keyword">override</span> <span class="d_keyword">int</span> opCmp(Object o) { ... }
+}
+</pre>
+<div class="blankline"></div>
+        <p>If structs declare an <span class="d_inlinecode donthyphenate notranslate">opCmp</span> member function, it should have
+        the following form:</p>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span> opCmp(<span class="d_keyword">ref</span> <span class="d_keyword">const</span> S s) <span class="d_keyword">const</span> { ... }
+}
+</pre>
+        <p>Note that <span class="d_inlinecode donthyphenate notranslate">opCmp</span> is only used for the inequality operators;
+        expressions like <span class="d_inlinecode donthyphenate notranslate">a == b</span> always uses <span class="d_inlinecode donthyphenate notranslate">opEquals</span>. If <span class="d_inlinecode donthyphenate notranslate">opCmp</span>
+        is defined but <span class="d_inlinecode donthyphenate notranslate">opEquals</span> isn't, the compiler will supply a default
+        version of <span class="d_inlinecode donthyphenate notranslate">opEquals</span> that performs member-wise comparison. If this
+        member-wise comparison is not consistent with the user-defined
+        <span class="d_inlinecode donthyphenate notranslate">opCmp</span>, then it is up to the programmer to supply an appropriate
+        version of <span class="d_inlinecode donthyphenate notranslate">opEquals</span>.  Otherwise, inequalities like <span class="d_inlinecode donthyphenate notranslate">a &lt;= b</span>
+        will behave inconsistently with equalities like <span class="d_inlinecode donthyphenate notranslate">a == b</span>.</p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span> i, j;
+    <span class="d_keyword">int</span> opCmp(<span class="d_keyword">ref</span> <span class="d_keyword">const</span> S s) <span class="d_keyword">const</span> { <span class="d_keyword">return</span> (i &gt; s.i) - (i &lt; s.i); } <span class="d_comment">// ignore j
+</span>}
+
+S a = {2, 3};
+S b = {2, 1};
+S c = {3, 0};
+<span class="d_keyword">assert</span>(a &lt; c);
+<span class="d_keyword">assert</span>(a &lt;= b);
+<span class="d_keyword">assert</span>(!(a &lt; b)); <span class="d_comment">// opCmp ignores j
+</span><span class="d_keyword">assert</span>(a != b);   <span class="d_comment">// generated opEquals tests both i and j members
+</span></pre>
+
+</div>
+<div class="blankline"></div>
+<div class="spec-boxes best-practice"><b>Best Practices:</b> Using <span class="d_inlinecode donthyphenate notranslate">(i &gt; s.i) - (i &lt; s.i)</span> instead of <span class="d_inlinecode donthyphenate notranslate">i - s.i</span> to
+compare integers avoids overflow.</div>
+
+
+<div class="blankline"></div>
+<div class="blankline"></div>
+<h2><span id="FunctionCall"><a class="anchor" title="Permalink to this section" id="function-call" href="#function-call">Function Call Operator Overloading <span class="d_inlinecode donthyphenate notranslate">f()</span></a></span></h2>
+<div class="blankline"></div>
+        <p>The function call operator, <span class="d_inlinecode donthyphenate notranslate">()</span>, can be overloaded by
+        declaring a function named <span class="d_inlinecode donthyphenate notranslate">opCall</span>:
+        </p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> F
+{
+    <span class="d_keyword">int</span> <b><i>opCall</i></b>();
+    <span class="d_keyword">int</span> <b><i>opCall</i></b>(<span class="d_keyword">int</span> x, <span class="d_keyword">int</span> y, <span class="d_keyword">int</span> z);
+}
+
+<span class="d_keyword">void</span> test()
+{
+    F f;
+    <span class="d_keyword">int</span> i;
+
+    i = f();      <span class="d_comment">// same as i = f.opCall();
+</span>    i = f(3,4,5); <span class="d_comment">// same as i = f.opCall(3,4,5);
+</span>}
+</pre>
+<div class="blankline"></div>
+        <p>In this way a struct or class object can behave as if it
+        were a function.
+        </p>
+<div class="blankline"></div>
+        <p>Note that merely declaring <span class="d_inlinecode donthyphenate notranslate">opCall</span> automatically disables
+        <a href="../spec/struct.html#StructLiteral">struct literal</a> syntax.
+        To avoid the limitation, declare a
+        <a href="../spec/struct.html#Struct-Constructor">constructor</a>
+        so that it takes priority over <span class="d_inlinecode donthyphenate notranslate">opCall</span> in <span class="d_inlinecode donthyphenate notranslate">Type(...)</span> syntax.
+        </p>
+<div class="blankline"></div>
+    <div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> Multiplier
+{
+    <span class="d_keyword">int</span> factor;
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> num) { factor = num; }
+    <span class="d_keyword">int</span> opCall(<span class="d_keyword">int</span> value) { <span class="d_keyword">return</span> value * factor; }
+}
+
+<span class="d_keyword">void</span> main()
+{
+    Multiplier m = Multiplier(10);  <span class="d_comment">// invoke constructor
+</span>    <span class="d_keyword">assert</span>(m.factor == 10);
+    <span class="d_keyword">int</span> result = m(5);              <span class="d_comment">// invoke opCall
+</span>    <span class="d_keyword">assert</span>(result == 50);
+}
+</pre>
+    
+</div>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="static-opcall" href="#static-opcall">Static opCall</a></h3>
+<div class="blankline"></div>
+        <p><span class="d_inlinecode donthyphenate notranslate">static opCall</span> also works as expected for a function call operator with
+        type names.
+        </p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> Double
+{
+    <b><i><span class="d_keyword">static</span></i></b> <span class="d_keyword">int</span> <b><i>opCall</i></b>(<span class="d_keyword">int</span> x) { <span class="d_keyword">return</span> x * 2; }
+}
+<span class="d_keyword">void</span> test()
+{
+    <span class="d_keyword">int</span> i = Double(2);
+    <span class="d_keyword">assert</span>(i == 4);
+}
+</pre>
+<div class="blankline"></div>
+        <p>Mixing struct constructors and <span class="d_inlinecode donthyphenate notranslate">static opCall</span> is not allowed.</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> i) {}
+    <span class="d_keyword">static</span> S opCall()  <span class="d_comment">// disallowed due to constructor
+</span>    {
+        <span class="d_keyword">return</span> S.init;
+    }
+}
+</pre>
+<div class="blankline"></div>
+        <p>Note: <span class="d_inlinecode donthyphenate notranslate">static opCall</span> can be used to simulate struct
+        constructors with no arguments, but this is not recommended
+        practice. Instead, the preferred solution is to use a factory
+        function to create struct instances.
+        </p>
+<div class="blankline"></div>
+<h2><span id="Assignment"><a class="anchor" title="Permalink to this section" id="assignment" href="#assignment">Assignment Operator Overloading</a></span></h2>
+<div class="blankline"></div>
+        <p>The assignment operator <span class="d_inlinecode donthyphenate notranslate">=</span> can be overloaded if the
+        left hand side is a struct aggregate, and <span class="d_inlinecode donthyphenate notranslate">opAssign</span>
+        is a member function of that aggregate.</p>
+<div class="blankline"></div>
+        For struct types, operator overloading for the identity assignment
+        is allowed.
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_comment">// identity assignment, allowed.
+</span>    <span class="d_keyword">void</span> <b><i>opAssign</i></b>(S rhs);
+
+    <span class="d_comment">// not identity assignment, also allowed.
+</span>    <span class="d_keyword">void</span> <b><i>opAssign</i></b>(<span class="d_keyword">int</span>);
+}
+S s;
+s = S();      <span class="d_comment">// Rewritten to s.opAssign(S());
+</span>s = 1;        <span class="d_comment">// Rewritten to s.opAssign(1);
+</span></pre>
+<div class="blankline"></div>
+        However for class types, identity assignment is not allowed. All class
+        types have reference semantics, so identity assignment by default rebinds
+        the left-hand-side to the argument at the right, and this is not overridable.
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">class</span> C
+{
+    <span class="d_comment">// If X is the same type as C or the type which is
+</span>    <span class="d_comment">// implicitly convertible to C, then opAssign would
+</span>    <span class="d_comment">// accept identity assignment, which is disallowed.
+</span>    <span class="d_comment">// C opAssign(...);
+</span>    <span class="d_comment">// C opAssign(X);
+</span>    <span class="d_comment">// C opAssign(X, ...);
+</span>    <span class="d_comment">// C opAssign(X ...);
+</span>    <span class="d_comment">// C opAssign(X, U = defaultValue, etc.);
+</span>
+    <span class="d_comment">// not an identity assignment - allowed
+</span>    <span class="d_keyword">void</span> <b><i>opAssign</i></b>(<span class="d_keyword">int</span>);
+}
+C c = <span class="d_keyword">new</span> C();
+c = <span class="d_keyword">new</span> C();  <span class="d_comment">// Rebinding referencee
+</span>c = 1;        <span class="d_comment">// Rewritten to c.opAssign(1);
+</span></pre>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="index_assignment_operator" href="#index_assignment_operator">Index Assignment Operator Overloading</a></h3>
+<div class="blankline"></div>
+        <p>If the left hand side of an assignment is an index operation
+        on a struct or class instance,
+        it can be overloaded by providing an <span class="d_inlinecode donthyphenate notranslate">opIndexAssign</span> member function.
+        Expressions of the form <span class="d_inlinecode donthyphenate notranslate">a[</span><i>b</i><sub>1</sub>, <i>b</i><sub>2</sub>, ... <i>b</i><sub>n</sub><span class="d_inlinecode donthyphenate notranslate">] = c</span> are rewritten
+        as <span class="d_inlinecode donthyphenate notranslate">a.opIndexAssign(c,</span> <i>b</i><sub>1</sub>, <i>b</i><sub>2</sub>, ... <i>b</i><sub>n</sub><span class="d_inlinecode donthyphenate notranslate">)</span>.
+        </p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> A
+{
+    <span class="d_keyword">int</span> <b><i>opIndexAssign</i></b>(<span class="d_keyword">int</span> value, size_t i1, size_t i2);
+}
+
+<span class="d_keyword">void</span> test()
+{
+    A a;
+    a<b><i>[</i></b>i,3<b><i>]</i></b> = 7;  <span class="d_comment">// same as a.opIndexAssign(7,i,3);
+</span>}
+</pre>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="slice_assignment_operator" href="#slice_assignment_operator">Slice Assignment Operator Overloading</a></h3>
+<div class="blankline"></div>
+        <p>If the left hand side of an assignment is a slice operation on a
+        struct or class instance, it can be overloaded by implementing an
+        <span class="d_inlinecode donthyphenate notranslate">opIndexAssign</span> member function that takes the return value of the
+        <span class="d_inlinecode donthyphenate notranslate">opSlice</span> function as parameter(s).
+        Expressions of the form <span class="d_inlinecode donthyphenate notranslate">a[</span><i>i</i>..<i>j</i><span class="d_inlinecode donthyphenate notranslate">] = c</span> are rewritten as
+        <span class="d_inlinecode donthyphenate notranslate">a.opIndexAssign(c,</span> <span class="d_inlinecode donthyphenate notranslate">a.opSlice!0(</span><i>i</i>, <i>j</i><span class="d_inlinecode donthyphenate notranslate">))</span>,
+        and <span class="d_inlinecode donthyphenate notranslate">a[] = c</span> as <span class="d_inlinecode donthyphenate notranslate">a.opIndexAssign(c)</span>.
+        </p>
+<div class="blankline"></div>
+        <p>See <a href="#array-ops">Array
+        Indexing and Slicing Operators Overloading</a> for more details.
+        </p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> A
+{
+    <span class="d_keyword">int</span> opIndexAssign(<span class="d_keyword">int</span> v);  <span class="d_comment">// overloads a[] = v
+</span>    <span class="d_keyword">int</span> opIndexAssign(<span class="d_keyword">int</span> v, size_t[2] slice);  <span class="d_comment">// overloads a[i .. j] = v
+</span>    size_t[2] opSlice(size_t dim)(size_t i, size_t j);  <span class="d_comment">// overloads i .. j
+</span>}
+
+<span class="d_keyword">void</span> test()
+{
+    A a;
+    <span class="d_keyword">int</span> v;
+
+    a[] = v;  <span class="d_comment">// same as a.opIndexAssign(v);
+</span>    a[3..4] = v;  <span class="d_comment">// same as a.opIndexAssign(v, a.opSlice!0(3,4));
+</span>}
+</pre>
+<div class="blankline"></div>
+        <p>For backward compatibility, if rewriting <span class="d_inlinecode donthyphenate notranslate">a[</span><i>i</i>..<i>j</i><span class="d_inlinecode donthyphenate notranslate">]</span> as
+        <span class="d_inlinecode donthyphenate notranslate">a.opIndexAssign(a.opSlice!0(</span><i>i</i>, <i>j</i><span class="d_inlinecode donthyphenate notranslate">))</span>
+        fails to compile, the legacy rewrite
+        <span class="d_inlinecode donthyphenate notranslate">opSliceAssign(c,</span> <i>i</i>, <i>j</i><span class="d_inlinecode donthyphenate notranslate">)</span> is used instead.
+        </p>
+<div class="blankline"></div>
+<h2><span id="OpAssign"><a class="anchor" title="Permalink to this section" id="op-assign" href="#op-assign">Op Assignment Operator Overloading</a></span></h2>
+<div class="blankline"></div>
+        <p>The following op assignment operators are overloadable:</p>
+<div class="blankline"></div>
+        <center><table><caption>Overloadable Op Assignment Operators</caption>        <tr><td><span class="d_inlinecode donthyphenate notranslate">+=</span></td><td><span class="d_inlinecode donthyphenate notranslate">-=</span></td><td><span class="d_inlinecode donthyphenate notranslate">*=</span></td><td><span class="d_inlinecode donthyphenate notranslate">/=</span></td><td><span class="d_inlinecode donthyphenate notranslate">%</span><span class="d_inlinecode donthyphenate notranslate">=</span></td><td><span class="d_inlinecode donthyphenate notranslate">^^=</span></td><td><span class="d_inlinecode donthyphenate notranslate">&amp;</span><span class="d_inlinecode donthyphenate notranslate">=</span></td></tr>
+        <tr><td><span class="d_inlinecode donthyphenate notranslate">|</span><span class="d_inlinecode donthyphenate notranslate">=</span></td><td><span class="d_inlinecode donthyphenate notranslate">^=</span></td><td><span class="d_inlinecode donthyphenate notranslate">&lt;</span><span class="d_inlinecode donthyphenate notranslate">&lt;</span><span class="d_inlinecode donthyphenate notranslate">=</span></td><td>        <span class="d_inlinecode donthyphenate notranslate">&gt;</span><span class="d_inlinecode donthyphenate notranslate">&gt;</span><span class="d_inlinecode donthyphenate notranslate">=</span></td><td><span class="d_inlinecode donthyphenate notranslate">&gt;</span><span class="d_inlinecode donthyphenate notranslate">&gt;</span><span class="d_inlinecode donthyphenate notranslate">&gt;</span><span class="d_inlinecode donthyphenate notranslate">=</span></td><td><span class="d_inlinecode donthyphenate notranslate">~=</span></td><td>&nbsp;</td></tr>
+        </table></center>
+<div class="blankline"></div>
+        <p>The expression:</p>
+<pre class="d_code notranslate">a <span class="metacode">op</span>= b
+</pre>
+<div class="blankline"></div>
+        <p>is rewritten as:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate">a.opOpAssign!(<span class="metacode"><span class="d_string">"op"</span></span>)(b)
+</pre>
+<div class="blankline"></div>
+Example:
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span> i;
+    <span class="d_keyword">void</span> opOpAssign(string op: <span class="d_string">"+"</span>)(<span class="d_keyword">int</span> rhs) { i += rhs; }
+}
+
+S s = {2};
+s += 3;
+<span class="d_keyword">assert</span>(s.i == 5);
+</pre>
+
+</div>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="index_op_assignment" href="#index_op_assignment">Index Op Assignment Operator Overloading</a></h3>
+<div class="blankline"></div>
+        <p>If the left hand side of an <i>op</i>= is an index expression on
+        a struct or class instance and <span class="d_inlinecode donthyphenate notranslate">opIndexOpAssign</span> is a member:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate">a[<span class="metacode"><i>b</i><sub>1</sub>, <i>b</i><sub>2</sub>, ... <i>b</i><sub>n</sub></span>] <span class="metacode">op</span>= c
+</pre>
+<div class="blankline"></div>
+        <p>it is rewritten as:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate">a.opIndexOpAssign!(<span class="metacode"><span class="d_string">"op"</span></span>)(c, <span class="metacode"><i>b</i><sub>1</sub>, <i>b</i><sub>2</sub>, ... <i>b</i><sub>n</sub></span>)
+</pre>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="slice_op_assignment" href="#slice_op_assignment">Slice Op Assignment Operator Overloading</a></h3>
+<div class="blankline"></div>
+        <p>If the left hand side of an <i>op</i>= is a slice expression on
+        a struct or class instance and <span class="d_inlinecode donthyphenate notranslate">opIndexOpAssign</span> is a member:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate">a[<span class="metacode"><i>i</i>..<i>j</i></span>] <span class="metacode">op</span>= c
+</pre>
+<div class="blankline"></div>
+        <p>it is rewritten as:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate">a.opIndexOpAssign!(<span class="metacode"><span class="d_string">"op"</span></span>)(c, a.opSlice(<span class="metacode"><i>i</i>, <i>j</i></span>))
+</pre>
+<div class="blankline"></div>
+        <p>and</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate">a[] <span class="metacode">op</span>= c
+</pre>
+<div class="blankline"></div>
+        <p>it is rewritten as:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate">a.opIndexOpAssign!(<span class="metacode"><span class="d_string">"op"</span></span>)(c)
+</pre>
+<div class="blankline"></div>
+        <p>For backward compatibility, if the above rewrites fail and
+        <span class="d_inlinecode donthyphenate notranslate">opSliceOpAssign</span> is defined, then the rewrites
+        <span class="d_inlinecode donthyphenate notranslate">a.opSliceOpAssign(c, i, j)</span> and <span class="d_inlinecode donthyphenate notranslate">a.opSliceOpAssign(c)</span> are
+        tried, respectively.
+        </p>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<h2><span id="ArrayOps"><a class="anchor" title="Permalink to this section" id="array-ops" href="#array-ops">Array Indexing and Slicing Operators Overloading</a></span></h2>
+<div class="blankline"></div>
+        <p>The array indexing and slicing operators are overloaded by
+        implementing the <span class="d_inlinecode donthyphenate notranslate">opIndex</span>, <span class="d_inlinecode donthyphenate notranslate">opSlice</span>, and <span class="d_inlinecode donthyphenate notranslate">opDollar</span> methods.
+        These may be combined to implement multidimensional arrays.
+        </p>
+<div class="blankline"></div>
+<h3><span id="Array"><a class="anchor" title="Permalink to this section" id="array" href="#array">Index Operator Overloading</a></span></h3>
+<div class="blankline"></div>
+        <p>Expressions of the form <span class="d_inlinecode donthyphenate notranslate">arr[</span><i>b</i><sub>1</sub>, <i>b</i><sub>2</sub>, ... <i>b</i><sub>n</sub><span class="d_inlinecode donthyphenate notranslate">]</span> are translated
+        into <span class="d_inlinecode donthyphenate notranslate">arr.opIndex(</span><i>b</i><sub>1</sub>, <i>b</i><sub>2</sub>, ... <i>b</i><sub>n</sub><span class="d_inlinecode donthyphenate notranslate">)</span>. For example:
+        </p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> A
+{
+    <span class="d_keyword">int</span> <b><i>opIndex</i></b>(size_t i1, size_t i2, size_t i3);
+}
+
+<span class="d_keyword">void</span> test()
+{
+    A a;
+    <span class="d_keyword">int</span> i;
+    i = a[5,6,7];  <span class="d_comment">// same as i = a.opIndex(5,6,7);
+</span>}
+</pre>
+<div class="blankline"></div>
+        <p>In this way a struct or class object can behave as if it
+        were an array.
+        </p>
+<div class="blankline"></div>
+        <p>If an index expression can be rewritten using <span class="d_inlinecode donthyphenate notranslate">opIndexAssign</span> or
+        <span class="d_inlinecode donthyphenate notranslate">opIndexOpAssign</span>, those are preferred over <span class="d_inlinecode donthyphenate notranslate">opIndex</span>.
+        </p>
+<div class="blankline"></div>
+<h3><span id="Slice"><a class="anchor" title="Permalink to this section" id="slice" href="#slice">Slice Operator Overloading</a></span></h3>
+<div class="blankline"></div>
+        <p>Overloading the slicing operator means overloading expressions
+        like <span class="d_inlinecode donthyphenate notranslate">a[]</span> or <span class="d_inlinecode donthyphenate notranslate">a[</span><i>i</i>..<i>j</i><span class="d_inlinecode donthyphenate notranslate">]</span>, where the expressions inside
+        the square brackets contain slice expressions of the form <i>i</i>..<i>j</i>.
+        </p>
+<div class="blankline"></div>
+        <p>To overload <span class="d_inlinecode donthyphenate notranslate">a[]</span>, simply define <span class="d_inlinecode donthyphenate notranslate">opIndex</span> with no parameters:
+        </p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span>[] impl;
+    <span class="d_keyword">int</span>[] opIndex()
+    {
+        <span class="d_keyword">return</span> impl[];
+    }
+}
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">auto</span> s = S([1,2,3]);
+    <span class="d_keyword">int</span>[] t = s[]; <span class="d_comment">// calls s.opIndex()
+</span>    <span class="d_keyword">assert</span>(t == [1,2,3]);
+}
+</pre>
+
+</div>
+<div class="blankline"></div>
+        <p>To overload array slicing of the form <span class="d_inlinecode donthyphenate notranslate">a[</span><i>i</i>..<i>j</i><span class="d_inlinecode donthyphenate notranslate">]</span>,
+        two steps are needed.  First, the expressions of the form <i>i</i>..<i>j</i> are
+        translated via <span class="d_inlinecode donthyphenate notranslate">opSlice!0</span> into objects that encapsulate
+        the endpoints <i>i</i> and <i>j</i>. Then these objects are
+        passed to <span class="d_inlinecode donthyphenate notranslate">opIndex</span> to perform the actual slicing.</p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">int</span>[] impl;
+
+    <span class="d_keyword">int</span>[] opSlice(size_t dim: 0)(size_t i, size_t j)
+    {
+        <span class="d_keyword">return</span> impl[i..j];
+    }
+    <span class="d_keyword">int</span>[] opIndex()(<span class="d_keyword">int</span>[] slice) { <span class="d_keyword">return</span> slice; }
+}
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">auto</span> s = S([1, 2, 3]);
+    <span class="d_keyword">int</span>[] t = s[0..2]; <span class="d_comment">// calls s.opIndex(s.opSlice(0, 2))
+</span>    <span class="d_keyword">assert</span>(t == [1, 2]);
+}
+</pre>
+
+</div>
+<div class="blankline"></div>
+        <p>This design was
+        chosen in order to support mixed indexing and slicing in
+        multidimensional arrays; for example, in translating expressions like
+        <span class="d_inlinecode donthyphenate notranslate">arr[1, 2..3, 4]</span>.
+        More precisely, an expression of the form <span class="d_inlinecode donthyphenate notranslate">arr[</span><i>b</i><sub>1</sub>, <i>b</i><sub>2</sub>, ... <i>b</i><sub>n</sub><span class="d_inlinecode donthyphenate notranslate">]</span>
+        is translated into <span class="d_inlinecode donthyphenate notranslate">arr.opIndex(</span><i>c</i><sub>1</sub>, <i>c</i><sub>2</sub>, ... <i>c</i><sub>n</sub><span class="d_inlinecode donthyphenate notranslate">)</span>.
+        Each argument <i>b</i><sub>i</sub> can be either a single expression,
+        in which case it is passed directly as the corresponding argument <i>        c</i><sub>i</sub> to <span class="d_inlinecode donthyphenate notranslate">opIndex</span>; or it can be a slice expression of
+        the form <i>x</i><sub>i</sub><span class="d_inlinecode donthyphenate notranslate">..</span><i>y</i><sub>i</sub>, in which case
+        the corresponding argument <i>c</i><sub>i</sub> to <span class="d_inlinecode donthyphenate notranslate">opIndex</span> is
+        <span class="d_inlinecode donthyphenate notranslate">arr.opSlice!i(</span><i>x</i><sub>i</sub><span class="d_inlinecode donthyphenate notranslate">, </span><i>y</i><sub>i</sub><span class="d_inlinecode donthyphenate notranslate">)</span>. Namely:
+        </p>
+<div class="blankline"></div>
+        <center><table><caption></caption>                <tr><th class="donthyphenate"><b><i>op</i></b></th><th class="donthyphenate"><b><i>rewrite</i></b></th></tr>
+                <tr><td>                        <span class="d_inlinecode donthyphenate notranslate">arr[1, 2, 3]</span></td><td>                        <span class="d_inlinecode donthyphenate notranslate">arr.opIndex(1, 2, 3)</span>
+                </td></tr>
+                <tr><td>                        <span class="d_inlinecode donthyphenate notranslate">arr[1..2, 3..4, 5..6]</span></td><td>                        <span class="d_inlinecode donthyphenate notranslate">arr.opIndex(arr.opSlice!0(1,2), arr.opSlice!1(3,4), arr.opSlice!2(5,6))</span>
+                </td></tr>
+                <tr><td>                        <span class="d_inlinecode donthyphenate notranslate">arr[1, 2..3, 4]</span></td><td>                        <span class="d_inlinecode donthyphenate notranslate">arr.opIndex(1, arr.opSlice!1(2,3), 4)</span>
+                </td></tr>
+        </table></center>
+<div class="blankline"></div>
+        <p>Similar translations are done for assignment operators involving
+        slicing, for example:
+        </p>
+<div class="blankline"></div>
+        <center><table><caption></caption>                <tr><th class="donthyphenate"><b><i>op</i></b></th><th class="donthyphenate"><b><i>rewrite</i></b></th></tr>
+                <tr><td>                        <span class="d_inlinecode donthyphenate notranslate">arr[1, 2..3, 4] = c</span></td><td>                        <span class="d_inlinecode donthyphenate notranslate">arr.opIndexAssign(c, 1, arr.opSlice!1(2, 3), 4)</span>
+                </td></tr>
+                <tr><td>                        <span class="d_inlinecode donthyphenate notranslate">arr[2, 3..4] += c</span></td><td>                        <span class="d_inlinecode donthyphenate notranslate">arr.opIndexOpAssign!"+"(c, 2, arr.opSlice!1(2, 3))</span>
+                </td></tr>
+        </table></center>
+<div class="blankline"></div>
+        <p>The intention is that <span class="d_inlinecode donthyphenate notranslate">opSlice!i</span> should return a user-defined
+        object that represents an interval of indices along the <span class="d_inlinecode donthyphenate notranslate">i</span>'th
+        dimension of the array. This object is then passed to <span class="d_inlinecode donthyphenate notranslate">opIndex</span> to
+        perform the actual slicing operation.  If only one-dimensional slicing
+        is desired, <span class="d_inlinecode donthyphenate notranslate">opSlice</span> may be declared without the compile-time
+        parameter <span class="d_inlinecode donthyphenate notranslate">i</span>.
+        </p>
+<div class="blankline"></div>
+        <p>Note that in all cases, <span class="d_inlinecode donthyphenate notranslate">arr</span> is only evaluated once. Thus, an
+        expression like <span class="d_inlinecode donthyphenate notranslate">getArray()[1, 2..3, $-1]=c</span> has the effect of:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">auto</span> __tmp = getArray();
+__tmp.opIndexAssign(c, 1, __tmp.opSlice!1(2,3), __tmp.opDollar!2 - 1);
+</pre>
+        <p>where the initial function call to <span class="d_inlinecode donthyphenate notranslate">getArray</span> is only executed
+        once.
+        </p>
+<div class="blankline"></div>
+        <div class="spec-boxes note"><b>Note:</b> For backward compatibility, <span class="d_inlinecode donthyphenate notranslate">a[]</span> and <span class="d_inlinecode donthyphenate notranslate">a[</span><i>i</i>..<i>j</i><span class="d_inlinecode donthyphenate notranslate">]</span> can
+        also be overloaded by implementing <span class="d_inlinecode donthyphenate notranslate">opSlice()</span> with no arguments and
+        <span class="d_inlinecode donthyphenate notranslate">opSlice(</span><i>i</i>, <i>j</i><span class="d_inlinecode donthyphenate notranslate">)</span> with two arguments,
+        respectively.  This only applies for one-dimensional slicing, and dates
+        from when D did not have full support for multidimensional arrays. This
+        usage of <span class="d_inlinecode donthyphenate notranslate">opSlice</span> is discouraged.
+        </div>
+<div class="blankline"></div>
+<h3><span id="Dollar"><a class="anchor" title="Permalink to this section" id="dollar" href="#dollar">Dollar Operator Overloading</a></span></h3>
+<div class="blankline"></div>
+        <p>Within the arguments to array index and slicing operators, <span class="d_inlinecode donthyphenate notranslate">$</span>
+        gets translated to <span class="d_inlinecode donthyphenate notranslate">opDollar!i</span>, where <span class="d_inlinecode donthyphenate notranslate">i</span> is the position of the
+        expression <span class="d_inlinecode donthyphenate notranslate">$</span> appears in. For example:
+        </p>
+<div class="blankline"></div>
+        <center><table><caption></caption>                <tr><th class="donthyphenate"><b><i>op</i></b></th><th class="donthyphenate"><b><i>rewrite</i></b></th></tr>
+                <tr><td>                        <span class="d_inlinecode donthyphenate notranslate">arr[$-1, $-2, 3]</span></td><td>                        <span class="d_inlinecode donthyphenate notranslate">arr.opIndex(arr.opDollar!0 - 1, arr.opDollar!1 - 2, 3)</span>
+                </td></tr>
+                <tr><td>                        <span class="d_inlinecode donthyphenate notranslate">arr[1, 2, 3..$]</span></td><td>                        <span class="d_inlinecode donthyphenate notranslate">arr.opIndex(1, 2, arr.opSlice!2(3, arr.opDollar!2))</span>
+                </td></tr>
+        </table></center>
+<div class="blankline"></div>
+        <p>The intention is that <span class="d_inlinecode donthyphenate notranslate">opDollar!i</span> should return the length of
+        the array along its <span class="d_inlinecode donthyphenate notranslate">i</span>'th dimension, or a user-defined object
+        representing the end of the array along that dimension, that is
+        understood by <span class="d_inlinecode donthyphenate notranslate">opSlice</span> and <span class="d_inlinecode donthyphenate notranslate">opIndex</span>.
+        </p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> Rectangle
+{
+    <span class="d_keyword">int</span> width, height;
+    <span class="d_keyword">int</span>[][] impl;
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> w, <span class="d_keyword">int</span> h)
+    {
+        width = w;
+        height = h;
+        impl = <span class="d_keyword">new</span> <span class="d_keyword">int</span>[w][h];
+    }
+    <span class="d_keyword">int</span> opIndex(size_t i1, size_t i2)
+    {
+        <span class="d_keyword">return</span> impl[i1][i2];
+    }
+    <span class="d_keyword">int</span> opDollar(size_t pos)()
+    {
+        <span class="d_keyword">static</span> <span class="d_keyword">if</span> (pos==0)
+            <span class="d_keyword">return</span> width;
+        <span class="d_keyword">else</span>
+            <span class="d_keyword">return</span> height;
+    }
+}
+
+<span class="d_keyword">void</span> test()
+{
+    <span class="d_keyword">auto</span> r = Rectangle(10,20);
+    <span class="d_keyword">int</span> i = r[$-1, 0];    <span class="d_comment">// same as: r.opIndex(r.opDollar!0, 0),
+</span>                          <span class="d_comment">// which is r.opIndex(r.width-1, 0)
+</span>    <span class="d_keyword">int</span> j = r[0, $-1];    <span class="d_comment">// same as: r.opIndex(0, r.opDollar!1)
+</span>                          <span class="d_comment">// which is r.opIndex(0, r.height-1)
+</span>}
+</pre>
+<div class="blankline"></div>
+        <p>As the above example shows, a different compile-time argument is
+        passed to <span class="d_inlinecode donthyphenate notranslate">opDollar</span> depending on which argument it appears in. A
+        <span class="d_inlinecode donthyphenate notranslate">$</span> appearing in the first argument gets translated to <span class="d_inlinecode donthyphenate notranslate">opDollar!0</span>,
+    a <span class="d_inlinecode donthyphenate notranslate">$</span> appearing in the second argument gets translated
+        to <span class="d_inlinecode donthyphenate notranslate">opDollar!1</span>, and so on. Thus, the appropriate value for <span class="d_inlinecode donthyphenate notranslate">$</span>
+        can be returned to implement multidimensional arrays.
+        </p>
+<div class="blankline"></div>
+        <p>Note that <span class="d_inlinecode donthyphenate notranslate">opDollar!i</span> is only evaluated once for each <span class="d_inlinecode donthyphenate notranslate">i</span>
+        where <span class="d_inlinecode donthyphenate notranslate">$</span> occurs in the corresponding position in the indexing
+        operation.  Thus, an expression like <span class="d_inlinecode donthyphenate notranslate">arr[$-sqrt($), 0, $-1]</span> has
+        the effect of:
+        </p>
+<pre class="d_code notranslate"><span class="d_keyword">auto</span> __tmp1 = arr.opDollar!0;
+<span class="d_keyword">auto</span> __tmp2 = arr.opDollar!2;
+arr.opIndex(__tmp1 - sqrt(__tmp1), 0, __tmp2 - 1);
+</pre>
+<div class="blankline"></div>
+        <p>If <span class="d_inlinecode donthyphenate notranslate">opIndex</span> is declared with only one argument, the
+        compile-time argument to <span class="d_inlinecode donthyphenate notranslate">opDollar</span> may be omitted. In this case, it
+        is illegal to use <span class="d_inlinecode donthyphenate notranslate">$</span> inside an array indexing expression with more
+        than one argument.
+        </p>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="index-slicing-example" href="#index-slicing-example">Complete Example</a></h3>
+<div class="blankline"></div>
+        <p>The code example below shows a simple implementation of a
+        2-dimensional array with overloaded indexing and slicing operators. The
+        explanations of the various constructs employed are given in the
+        sections following.</p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">struct</span> Array2D(E)
+{
+    E[] impl;
+    <span class="d_keyword">int</span> stride;
+    <span class="d_keyword">int</span> width, height;
+
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> width, <span class="d_keyword">int</span> height, E[] initialData = [])
+    {
+        impl = initialData;
+        <span class="d_keyword">this</span>.stride = <span class="d_keyword">this</span>.width = width;
+        <span class="d_keyword">this</span>.height = height;
+        impl.length = width * height;
+    }
+
+    <span class="d_comment">// Index a single element, e.g., arr[0, 1]
+</span>    <span class="d_keyword">ref</span> E opIndex(<span class="d_keyword">int</span> i, <span class="d_keyword">int</span> j) { <span class="d_keyword">return</span> impl[i + stride*j]; }
+
+    <span class="d_comment">// Array slicing, e.g., arr[1..2, 1..2], arr[2, 0..&dollar;], arr[0..&dollar;, 1].
+</span>    Array2D opIndex(<span class="d_keyword">int</span>[2] r1, <span class="d_keyword">int</span>[2] r2)
+    {
+        Array2D result;
+
+        <span class="d_keyword">auto</span> startOffset = r1[0] + r2[0]*stride;
+        <span class="d_keyword">auto</span> endOffset = r1[1] + (r2[1] - 1)*stride;
+        result.impl = <span class="d_keyword">this</span>.impl[startOffset .. endOffset];
+
+        result.stride = <span class="d_keyword">this</span>.stride;
+        result.width = r1[1] - r1[0];
+        result.height = r2[1] - r2[0];
+
+        <span class="d_keyword">return</span> result;
+    }
+    <span class="d_keyword">auto</span> opIndex(<span class="d_keyword">int</span>[2] r1, <span class="d_keyword">int</span> j) { <span class="d_keyword">return</span> opIndex(r1, [j, j+1]); }
+    <span class="d_keyword">auto</span> opIndex(<span class="d_keyword">int</span> i, <span class="d_keyword">int</span>[2] r2) { <span class="d_keyword">return</span> opIndex([i, i+1], r2); }
+
+    <span class="d_comment">// Support for `x..y` notation in slicing operator for the given dimension.
+</span>    <span class="d_keyword">int</span>[2] opSlice(size_t dim)(<span class="d_keyword">int</span> start, <span class="d_keyword">int</span> end)
+        <span class="d_keyword">if</span> (dim &gt;= 0 &amp;&amp; dim &lt; 2)
+    <span class="d_keyword">in</span> { <span class="d_keyword">assert</span>(start &gt;= 0 &amp;&amp; end &lt;= <span class="d_keyword">this</span>.opDollar!dim); }
+    <span class="d_keyword">do</span>
+    {
+        <span class="d_keyword">return</span> [start, end];
+    }
+
+    <span class="d_comment">// Support `&dollar;` in slicing notation, e.g., arr[1..&dollar;, 0..&dollar;-1].
+</span>    @property <span class="d_keyword">int</span> opDollar(size_t dim : 0)() { <span class="d_keyword">return</span> width; }
+    @property <span class="d_keyword">int</span> opDollar(size_t dim : 1)() { <span class="d_keyword">return</span> height; }
+}
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">auto</span> arr = Array2D!<span class="d_keyword">int</span>(4, 3, [
+        0, 1, 2,  3,
+        4, 5, 6,  7,
+        8, 9, 10, 11
+    ]);
+
+    <span class="d_comment">// Basic indexing
+</span>    <span class="d_keyword">assert</span>(arr[0, 0] == 0);
+    <span class="d_keyword">assert</span>(arr[1, 0] == 1);
+    <span class="d_keyword">assert</span>(arr[0, 1] == 4);
+
+    <span class="d_comment">// Use of opDollar
+</span>    <span class="d_keyword">assert</span>(arr[$-1, 0] == 3);
+    <span class="d_keyword">assert</span>(arr[0, $-1] == 8);   <span class="d_comment">// Note the value of &dollar; differs by dimension
+</span>    <span class="d_keyword">assert</span>(arr[$-1, $-1] == 11);
+
+    <span class="d_comment">// Slicing
+</span>    <span class="d_keyword">auto</span> slice1 = arr[1..$, 0..$];
+    <span class="d_keyword">assert</span>(slice1[0, 0] == 1 &amp;&amp; slice1[1, 0] == 2  &amp;&amp; slice1[2, 0] == 3 &amp;&amp;
+           slice1[0, 1] == 5 &amp;&amp; slice1[1, 1] == 6  &amp;&amp; slice1[2, 1] == 7 &amp;&amp;
+           slice1[0, 2] == 9 &amp;&amp; slice1[1, 2] == 10 &amp;&amp; slice1[2, 2] == 11);
+
+    <span class="d_keyword">auto</span> slice2 = slice1[0..2, 1..$];
+    <span class="d_keyword">assert</span>(slice2[0, 0] == 5 &amp;&amp; slice2[1, 0] == 6 &amp;&amp;
+           slice2[0, 1] == 9 &amp;&amp; slice2[1, 1] == 10);
+
+    <span class="d_comment">// Thin slices
+</span>    <span class="d_keyword">auto</span> slice3 = arr[2, 0..$];
+    <span class="d_keyword">assert</span>(slice3[0, 0] == 2 &amp;&amp;
+           slice3[0, 1] == 6 &amp;&amp;
+           slice3[0, 2] == 10);
+
+    <span class="d_keyword">auto</span> slice4 = arr[0..3, 2];
+    <span class="d_keyword">assert</span>(slice4[0, 0] == 8 &amp;&amp; slice4[1, 0] == 9 &amp;&amp; slice4[2, 0] == 10);
+}
+</pre>
+
+</div>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<h2><span id="Dispatch"><a class="anchor" title="Permalink to this section" id="dispatch" href="#dispatch">Forwarding</a></span></h2>
+<div class="blankline"></div>
+        <p>Member names not found in a class or struct can be forwarded
+        to a template function named <span class="d_inlinecode donthyphenate notranslate">opDispatch</span> for resolution.
+        </p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">struct</span> S
+{
+    <span class="d_keyword">void</span> opDispatch(string s, T)(T i)
+    {
+        writefln(<span class="d_string">"S.opDispatch('%s', %s)"</span>, s, i);
+    }
+}
+
+<span class="d_keyword">class</span> C
+{
+    <span class="d_keyword">void</span> opDispatch(string s)(<span class="d_keyword">int</span> i)
+    {
+        writefln(<span class="d_string">"C.opDispatch('%s', %s)"</span>, s, i);
+    }
+}
+
+<span class="d_keyword">struct</span> D
+{
+    <span class="d_keyword">template</span> opDispatch(string s)
+    {
+        <span class="d_keyword">enum</span> <span class="d_keyword">int</span> opDispatch = 8;
+    }
+}
+
+<span class="d_keyword">void</span> main()
+{
+    S s;
+    s.opDispatch!(<span class="d_string">"hello"</span>)(7);
+    s.foo(7);
+
+    <span class="d_keyword">auto</span> c = <span class="d_keyword">new</span> C();
+    c.foo(8);
+
+    D d;
+    writefln(<span class="d_string">"d.foo = %s"</span>, d.foo);
+    <span class="d_keyword">assert</span>(d.foo == 8);
+}
+</pre>
+
+</div>
+<div class="blankline"></div>
+<h2><span id="Old-Style"><a class="anchor" title="Permalink to this section" id="old-style" href="#old-style">D1 style operator overloading</a></span></h2>
+<div class="blankline"></div>
+        <p>        The <a href="http://digitalmars.com/d/1.0/operatoroverloading.html">D1 operator overload mechanisms</a>
+        are deprecated.
+        </p>
+
+<div style="float: left"><i class="fa fa-angle-left" aria-hidden="true"></i> <a href="../spec/function.html">Functions</a></div>
+<div style="float: right"><a href="../spec/template.html">Templates</a> <i class="fa fa-angle-right" aria-hidden="true"></i></div>
+<div style="clear:both"></div>
+
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on (no date time)</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<script type="text/javascript" src="../js/listanchors.js"></script>
+<script type="text/javascript">jQuery(document).ready(addVersionSelector);</script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

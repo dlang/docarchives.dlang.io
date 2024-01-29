@@ -1,0 +1,485 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>foreach Loop - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='foreach Loop' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5Bforeach Loop%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/d.en/foreach.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>foreach Loop</h1>
+        
+        
+
+
+
+<p>One of the most common statements in D is the <code class="d_inline">foreach</code> loop. It is used for applying the same operations to every element of a container (or a <i>range</i>).
+</p>
+
+<p>Operations that are applied to elements of containers are very common in programming. We have seen in the <a href="for.html"><code class="d_inline">for</code> Loop chapter</a> that elements of an array are accessed in a <code class="d_inline">for</code> loop by an index value that is incremented at each iteration:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">for</span> (<span class="d_keyword">int</span> i = 0; i != array.length; ++i) {
+        writeln(array[i]);
+    }
+</pre>
+
+<p>The following steps are involved in iterating over all the elements:
+</p>
+
+<ul><li>Defining a variable as a counter, which is conventionally named as <code class="d_inline">i</code></li>
+
+<li>Iterating the loop up to the value of the <code class="d_inline">.length</code> property of the array</li>
+
+<li>Incrementing <code class="d_inline">i</code></li>
+
+<li>Accessing the element</li>
+</ul>
+
+<p><code class="d_inline">foreach</code> has essentially the same behavior but it simplifies the code by handling those steps automatically:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">foreach</span> (element; array) {
+        writeln(element);
+    }
+</pre>
+
+<p>Part of the power of <code class="d_inline">foreach</code> comes from the fact that it can be used the same way regardless of the type of the container. As we have seen in the previous chapter, one way of iterating over the values of an associative array in a <code class="d_inline">for</code> loop is by first calling the array's <code class="d_inline">.values</code> property:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> values = aa<span class="hilite">.values</span>;
+    <span class="d_keyword">for</span> (<span class="d_keyword">int</span> i = 0; i != values.length; ++i) {
+        writeln(values[i]);
+    }
+</pre>
+
+<p><code class="d_inline">foreach</code> does not require anything special for associative arrays; it is used exactly the same as with arrays:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">foreach</span> (value; aa) {
+        writeln(value);
+    }
+</pre>
+
+<h5 class="subsection">The <code class="d_inline">foreach</code> syntax</h5>
+
+<p><code class="d_inline">foreach</code> consists of three sections:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">foreach</span> (<i>names</i>; <i>container_or_range</i>) {
+        <i>operations</i>
+    }
+</pre>
+
+<ul><li><b><i>container_or_range</i></b> specifies where the elements are.
+</li>
+
+<li><b><i>operations</i></b> specifies the operations to apply to each element.
+</li>
+
+<li><b><i>names</i></b> specifies the name of the element and potentially other variables depending on the type of the container or the range. Although the choice of names is up to the programmer, the number of and the types of these names depend on the type of the container.
+</li>
+</ul>
+
+<h5 class="subsection"><code class="d_inline">continue</code> and <code class="d_inline">break</code></h5>
+
+<p>These keywords have the same meaning as they do for the <code class="d_inline">for</code> loop: <code class="d_inline">continue</code> moves to the next iteration before completing the rest of the operations for the current element, and <code class="d_inline">break</code> terminates the loop altogether.
+</p>
+
+<h5 class="subsection"><code class="d_inline">foreach</code> with arrays</h5>
+
+<p>When using <code class="d_inline">foreach</code> with plain arrays and there is a single name specified in the <i>names</i> section, that name represents the value of the element at each iteration:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">foreach</span> (element; array) {
+        writeln(element);
+    }
+</pre>
+
+<p>When two names are specified in the <i>names</i> section, they represent an automatic counter and the value of the element, respectively:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">foreach</span> (i, element; array) {
+        writeln(i, <span class="d_string">": "</span>, element);
+    }
+</pre>
+
+<p>The counter is incremented automatically by <code class="d_inline">foreach</code>. Although it can be named anything else, <code class="d_inline">i</code> is a very common name for the automatic counter.
+</p>
+
+<h5 class="subsection"><a id="ix_foreach Loop.stride, std.range" content="stride, std.range"></a> <code class="d_inline">foreach</code> with strings and <code class="d_inline">std.range.stride</code></h5>
+
+<p>Since strings are arrays of characters, <code class="d_inline">foreach</code> works with strings the same way as it does with arrays: A single name refers to the character, two names refer to the counter and the character, respectively:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">foreach</span> (c; <span class="d_string">"hello"</span>) {
+        writeln(c);
+    }
+
+    <span class="d_keyword">foreach</span> (i, c; <span class="d_string">"hello"</span>) {
+        writeln(i, <span class="d_string">": "</span>, c);
+    }
+</pre>
+
+<p>However, being UTF code units, <code class="d_inline">char</code> and <code class="d_inline">wchar</code> iterate over UTF code units, not Unicode code points:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">foreach</span> (i, code; <span class="d_string">"abcçd"</span>) {
+        writeln(i, <span class="d_string">": "</span>, code);
+    }
+</pre>
+
+<p>The two UTF-8 code units that make up ç would be accessed as separate elements:
+</p>
+
+<pre class="shell">0: a
+1: b
+2: c
+3: 
+4: �
+5: d
+</pre>
+
+<p>One way of iterating over Unicode characters of strings in a <code class="d_inline">foreach</code> loop is <code class="d_inline">stride</code> from the <code class="d_inline">std.range</code> module. <code class="d_inline">stride</code> presents the string as a container that consists of Unicode characters. Its second parameter is the number of steps that it should take as it <i>strides</i> over the characters:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.range;
+
+<span class="d_comment">// ...
+</span>
+    <span class="d_keyword">foreach</span> (c; stride(<span class="d_string">"abcçd"</span>, 1)) {
+        writeln(c);
+    }
+</pre>
+
+<p>Regardless of the character type of the string, <code class="d_inline">stride</code> always presents its elements as Unicode characters:
+</p>
+
+<pre class="shell">a
+b
+c
+ç
+d
+</pre>
+
+<p>I will explain below why this loop could not include an automatic counter.
+</p>
+
+<h5 class="subsection"><code class="d_inline">foreach</code> with associative arrays</h5>
+
+<p>When using <code class="d_inline">foreach</code> with associative arrays, a single name refers to the value, while two names refer to the key and the value, respectively:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">foreach</span> (value; aa) {
+        writeln(value);
+    }
+
+    <span class="d_keyword">foreach</span> (key, value; aa) {
+        writeln(key, <span class="d_string">": "</span>, value);
+    }
+</pre>
+
+<p><a id="ix_foreach Loop..byKey, foreach" content=".byKey, foreach"></a> <a id="ix_foreach Loop..byValue, foreach" content=".byValue, foreach"></a> <a id="ix_foreach Loop..byKeyValue, foreach" content=".byKeyValue, foreach"></a> Associative arrays can provide their keys and values as <i>ranges</i> as well. We will see ranges in <a href="ranges.html">a later chapter</a>. <code class="d_inline">.byKey</code>, <code class="d_inline">.byValue</code>, and <code class="d_inline">.byKeyValue</code> return efficient range objects that are useful in contexts other than <code class="d_inline">foreach</code> loops as well.
+</p>
+
+<p><code class="d_inline">.byValue</code> does not bring any benefit in <code class="d_inline">foreach</code> loops over the regular value iteration above. On the other hand, <code class="d_inline">.byKey</code> is the only efficient way of iterating over <i>just</i> the keys of an associative array:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">foreach</span> (key; aa<span class="hilite">.byKey</span>) {
+        writeln(key);
+    }
+</pre>
+
+<p><code class="d_inline">.byKeyValue</code> provides each key-value element through a variable that is similar to a <a href="tuples.html">tuple</a>. The key and the value are accessed separately through the <code class="d_inline">.key</code> and <code class="d_inline">.value</code> properties of that variable:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">foreach</span> (element; aa<span class="hilite">.byKeyValue</span>) {
+        writefln(<span class="d_string">"The value for key %s is %s"</span>,
+                 element<span class="hilite">.key</span>, element<span class="hilite">.value</span>);
+    }
+</pre>
+
+<h5 class="subsection"><a id="ix_foreach Loop.number range" content="number range"></a> <a id="ix_foreach Loop..., number range" content=".., number range"></a> <code class="d_inline">foreach</code> with number ranges</h5>
+
+<p>We have seen number ranges before, in the <a href="slices.html">Slices and Other Array Features chapter</a>. It is possible to specify a number range in the <i>container_or_range</i> section:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">foreach</span> (number; 10..15) {
+        writeln(number);
+    }
+</pre>
+
+<p>Remember that 10 would be included in the range but 15 would not be.
+</p>
+
+<h5 class="subsection"><code class="d_inline">foreach</code> with structs, classes, and ranges</h5>
+
+<p><code class="d_inline">foreach</code> can also be used with objects of user-defined types that define their own iteration in <code class="d_inline">foreach</code> loops. Structs and classes provide support for <code class="d_inline">foreach</code> iteration either by their <code class="d_inline">opApply()</code> member functions, or by a set of <i>range</i> member functions. We will see these features in later chapters.
+</p>
+
+<h5 class="subsection"><a id="ix_foreach Loop.counter, foreach" content="counter, foreach"></a> The counter is automatic only for arrays</h5>
+
+<p>The automatic counter is provided only when iterating over arrays. There are two options for other containers
+</p>
+<ul><li>Taking advantage of <code class="d_inline">std.range.enumerate</code> as we will see later in <a href="foreach_opapply.html">the <code class="d_inline">foreach</code> with Structs and Classes chapter</a>.</li>
+
+<li>Defining and incrementing a counter variable explicitly:
+
+<pre class="d_code">    size_t <span class="hilite">i</span> = 0;
+    <span class="d_keyword">foreach</span> (element; container) {
+        <span class="d_comment">// ...
+</span>        ++i;
+    }
+</pre>
+</li>
+</ul>
+
+<p>Such a variable is needed when counting a specific condition as well. For example, the following code counts only the values that are divisible by 10:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> numbers = [ 1, 0, 15, 10, 3, 5, 20, 30 ];
+
+    size_t count = 0;
+    <span class="d_keyword">foreach</span> (number; numbers) {
+        <span class="d_keyword">if</span> ((number % 10) == 0) {
+            <span class="hilite">++count</span>;
+            write(count);
+
+        } <span class="d_keyword">else</span> {
+            write(' ');
+        }
+
+        writeln(<span class="d_string">": "</span>, number);
+    }
+}
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">
+ : 1
+1: 0
+ : 15
+2: 10
+ : 3
+ : 5
+3: 20
+4: 30
+</pre>
+
+<h5 class="subsection">The copy of the element, not the element itself</h5>
+
+<p>The <code class="d_inline">foreach</code> loop normally provides a copy of the element, not the actual element that is stored in the container. This may be a cause of bugs.
+</p>
+
+<p>To see an example of this, let's have a look at the following program that is trying to double the values of the elements of an array:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">double</span>[] numbers = [ 1.2, 3.4, 5.6 ];
+
+    writefln(<span class="d_string">"Before: %s"</span>, numbers);
+
+    <span class="d_keyword">foreach</span> (number; numbers) {
+        number *= 2;
+    }
+
+    writefln(<span class="d_string">"After : %s"</span>, numbers);
+}
+</pre>
+
+<p>The output of the program indicates that the assignment made to each element inside the <code class="d_inline">foreach</code> body does not have any effect on the elements of the container:
+</p>
+
+<pre class="shell">Before: [1.2, 3.4, 5.6]
+After : [1.2, 3.4, 5.6]
+</pre>
+
+<p><a id="ix_foreach Loop.ref, foreach" content="ref, foreach"></a> That is because <code class="d_inline">number</code> is not an actual element of the array, but a copy of each element. When the actual elements need to be operated on, the name must be defined as a <i>reference</i> of the actual element, by using the <code class="d_inline">ref</code> keyword:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">foreach</span> (<span class="hilite"><span class="d_keyword">ref</span></span> number; numbers) {
+        number *= 2;
+    }
+</pre>
+
+<p>The new output shows that the assignments now modify the actual elements of the array:
+</p>
+
+<pre class="shell">Before: [1.2, 3.4, 5.6]
+After : [2.4, 6.8, 11.2]
+</pre>
+
+<p>The <code class="d_inline">ref</code> keyword makes <code class="d_inline">number</code> an <i>alias</i> of the actual element at each iteration. As a result, the modifications through <code class="d_inline">number</code> modify that actual element of the container.
+</p>
+
+<h5 class="subsection">The integrity of the container must be preserved</h5>
+
+<p>Although it is fine to modify the elements of a container through <code class="d_inline">ref</code> variables, the structure of a container must not be changed during its iteration. For example, elements must not be removed nor added to the container during a <code class="d_inline">foreach</code> loop.
+</p>
+
+<p>Such modifications may confuse the inner workings of the loop iteration and result in incorrect program states.
+</p>
+
+<h5 class="subsection"><a id="ix_foreach Loop.foreach_reverse" content="foreach_reverse"></a> <a id="ix_foreach Loop.loop, foreach_reverse" content="loop, foreach_reverse"></a> <code class="d_inline">foreach_reverse</code> to iterate in the reverse direction</h5>
+
+<p><code class="d_inline">foreach_reverse</code> works the same way as <code class="d_inline">foreach</code> except it iterates in the reverse direction:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> container = [ 1, 2, 3 ];
+
+    <span class="d_keyword">foreach_reverse</span> (element; container) {
+        writefln(<span class="d_string">"%s "</span>, element);
+    }
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">3 
+2 
+1 
+</pre>
+
+<p>The use of <code class="d_inline">foreach_reverse</code> is not common because the range function <code class="d_inline">retro()</code> achieves the same goal. We will see <code class="d_inline">retro()</code> in a later chapter.
+</p>
+
+<h5 class="subsection">Problem</h5>
+    
+<p>We know that associative arrays provide a mapping from keys to values. This mapping is unidirectional: values are accessed by keys but not the other way around.
+</p>
+
+<p>Assume that there is already the following associative array:
+</p>
+
+<pre class="d_code">    string[<span class="d_keyword">int</span>] names = [ 1:<span class="d_string">"one"</span>, 7:<span class="d_string">"seven"</span>, 20:<span class="d_string">"twenty"</span> ];
+</pre>
+
+<p>Use that associative array and a <code class="d_inline">foreach</code> loop to fill another associative array named <code class="d_inline">values</code>. The new associative array should provide values that correspond to names. For example, the following line should print 20:
+</p>
+
+<pre class="d_code">    writeln(values[<span class="d_string">"twenty"</span>]);
+</pre>
+
+ <div class="cozum_link_tek"><p><a target="ddili_cozum" href="foreach.cozum.html"><i>... çözüm</i></a></p></div>
+
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on Mon Jan 29 20:59:47 2024
+</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>
