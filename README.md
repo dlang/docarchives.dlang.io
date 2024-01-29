@@ -64,5 +64,6 @@ Building documentation assumes the following is set-up:
 The provided [Dockerfile](contrib/Dockerfile) can be used as build environment in the following way:
 ```bash
 # docker build -t docarchives.dlang.io contrib
-# docker run -v $PWD:/build -it docarchives.dlang.io bash -c 'source /root/dlang/*/activate; cd /build; ./builder.d v2.098.0'
+# docker run -v $PWD:/build -it docarchives.dlang.io \
+    bash -c 'source /root/dlang/*/activate; cd /build; ./builder.d v2.098.0'
 ```
