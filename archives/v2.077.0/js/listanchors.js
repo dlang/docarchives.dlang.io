@@ -101,7 +101,11 @@ function listanchors()
       // build list of versions available in the docarchives
       var archivedVersions = [];
       while (currentArchivedVersion >= 66) {
-        archivedVersions.push("2.0" + currentArchivedVersion--);
+        if (currentArchivedVersion < 100) {
+          archivedVersions.push("2.0" + currentArchivedVersion--);
+        } else {
+          archivedVersions.push("2." + currentArchivedVersion--);
+        }
       }
       archivedVersions = archivedVersions.map(function(e) {
           return {
