@@ -1,0 +1,1176 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>parallelism - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='parallelism' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5Bparallelism%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/d.en/parallelism.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>parallelism</h1>
+        
+        
+
+
+
+<p><a id="ix_parallelism.core" content="core"></a> Most modern microprocessors consist of more than one <i>core</i>, each of which can operate as an individual processing unit. They can execute different parts of different programs at the same time. The features of the <code class="d_inline">std.parallelism</code> module make it possible for programs to take advantage of all of the cores in order to run faster.
+</p>
+
+<p>This chapter covers the following range algorithms. These algorithms should be used only when the operations that are to be executed <i>in parallel</i> are truly independent from each other. <i>In parallel</i> means that operations are executed on multiple cores at the same time:
+</p>
+
+<ul>
+<li><code class="d_inline">parallel</code>: Accesses the elements of a range in parallel.</li>
+
+<li><code class="d_inline">task</code>: Creates tasks that are executed in parallel.</li>
+
+<li><code class="d_inline">asyncBuf</code>: Iterates the elements of an <code class="d_inline">InputRange</code> semi-eagerly in parallel.</li>
+
+<li><code class="d_inline">map</code>: Calls functions with the elements of an <code class="d_inline">InputRange</code> semi-eagerly in parallel.</li>
+
+<li><code class="d_inline">amap</code>: Calls functions with the elements of a <code class="d_inline">RandomAccessRange</code> fully-eagerly in parallel.</li>
+
+<li><code class="d_inline">reduce</code>: Makes calculations over the elements of a <code class="d_inline">RandomAccessRange</code> in parallel.</li>
+
+</ul>
+
+<p>In the programs that we have written so far we have been assuming that the expressions of a program are executed in a certain order, at least in general line-by-line:
+</p>
+
+<pre class="d_code">    ++i;
+    ++j;
+</pre>
+
+<p>In the code above, we expect that the value of <code class="d_inline">i</code> is incremented before the value of <code class="d_inline">j</code> is incremented. Although that is semantically correct, it is rarely the case in reality: microprocessors and compilers use optimization techniques to have some variables reside in microprocessor's registers that are independent from each other. When that is the case, the microprocessor would execute operations like the increments above in parallel.
+</p>
+
+<p>Although these optimizations are effective, they cannot be applied automatically to layers higher than the very low-level operations. Only the programmer can determine that certain high-level operations are independent and that they can be executed in parallel.
+</p>
+
+<p>In a loop, the elements of a range are normally processed one after the other, operations of each element following the operations of previous elements:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> students =
+        [ Student(1), Student(2), Student(3), Student(4) ];
+
+    <span class="d_keyword">foreach</span> (student; students) {
+        student.aSlowOperation();
+    }
+</pre>
+
+<p>Normally, a program would be executed on one of the cores of the microprocessor, which has been assigned by the operating system to execute the program. As the <code class="d_inline">foreach</code> loop normally operates on elements one after the other, <code class="d_inline">aSlowOperation()</code> would be called for each student sequentially. However, in many cases it is not necessary for the operations of preceding students to be completed before starting the operations of successive students. If the operations on the <code class="d_inline">Student</code> objects were truly independent, it would be wasteful to ignore the other microprocessor cores, which might potentially be waiting idle on the system.
+</p>
+
+<p><a id="ix_parallelism.Thread.sleep" content="Thread.sleep"></a> To simulate long-lasting operations, the following examples call <code class="d_inline">Thread.sleep()</code> from the <code class="d_inline">core.thread</code> module. <code class="d_inline">Thread.sleep()</code> suspends the operations for the specified amount of time. <code class="d_inline">Thread.sleep</code> is admittedly an artifical method to use in the following examples because it takes time without ever busying any core. Despite being an unrealistic tool, it is still useful in this chapter to demonstrate the power of parallelism.
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> core.thread;
+
+<span class="d_keyword">struct</span> Student {
+    <span class="d_keyword">int</span> number;
+
+    <span class="d_keyword">void</span> aSlowOperation() {
+        writefln(<span class="d_string">"The work on student %s has begun"</span>, number);
+
+        <span class="d_comment">// Wait for a while to simulate a long-lasting operation
+</span>        Thread.sleep(1.seconds);
+
+        writefln(<span class="d_string">"The work on student %s has ended"</span>, number);
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> students =
+        [ Student(1), Student(2), Student(3), Student(4) ];
+
+    <span class="d_keyword">foreach</span> (student; students) {
+        student.aSlowOperation();
+    }
+}
+</pre>
+
+<p>The execution time of the program can be measured in a terminal by <code class="d_inline">time</code>:
+</p>
+
+<pre class="shell">$ <span class="hilite">time</span> ./deneme
+<span class="shell_observed">The work on student 1 has begun
+The work on student 1 has ended
+The work on student 2 has begun
+The work on student 2 has ended
+The work on student 3 has begun
+The work on student 3 has ended
+The work on student 4 has begun
+The work on student 4 has ended
+
+real    0m4.005s    <span class="shell_note">← 4 seconds total</span>
+user    0m0.004s
+sys     0m0.000s
+</span>
+</pre>
+
+<p>Since the students are iterated over in sequence and since the work of each student takes 1 second, the total execution time comes out to be 4 seconds. However, if these operations were executed in an environment that had 4 cores, they could be operated on at the same time and the total time would be reduced to about 1 second.
+</p>
+
+<p><a id="ix_parallelism.totalCPUs" content="totalCPUs"></a> Before seeing how this is done, let's first determine the number of cores that are available on the system by <code class="d_inline">std.parallelism.totalCPUs</code>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.parallelism;
+
+<span class="d_keyword">void</span> main() {
+    writefln(<span class="d_string">"There are %s cores on this system."</span>, totalCPUs);
+}
+</pre>
+
+<p>The output of the program in the environment that this chapter has been written is the following:
+</p>
+
+<pre class="shell">There are 4 cores on this system.
+</pre>
+
+<h5 class="subsection"><a id="ix_parallelism.parallel" content="parallel"></a> <code class="d_inline">taskPool.parallel()</code></h5>
+
+<p>This function can also be called simply as <code class="d_inline">parallel()</code>.
+</p>
+
+<p><a id="ix_parallelism.foreach, parallel" content="foreach, parallel"></a> <code class="d_inline">parallel()</code> accesses the elements of a range in parallel. An effective usage is with <code class="d_inline">foreach</code> loops. Merely importing the <code class="d_inline">std.parallelism</code> module and replacing <code class="d_inline">students</code> with <code class="d_inline">parallel(students)</code> in the program above is sufficient to take advantage of all of the cores of the system:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.parallelism;
+<span class="d_comment">// ...
+</span>    <span class="d_keyword">foreach</span> (student; <span class="hilite">parallel(students)</span>) {
+</pre>
+
+<p>We have seen earlier in the <a href="foreach_opapply.html"><code class="d_inline">foreach</code> for structs and classes chapter</a> that the expressions that are in <code class="d_inline">foreach</code> blocks are passed to <code class="d_inline">opApply()</code> member functions as delegates. <code class="d_inline">parallel()</code> returns a range object that knows how to distribute the execution of the <code class="d_inline">delegate</code> to a separate core for each element.
+</p>
+
+<p>As a result, passing the <code class="d_inline">Student</code> range through <code class="d_inline">parallel()</code> makes the program above finish in 1 second on a system that has 4 cores:
+</p>
+
+<pre class="shell">$ time ./deneme
+<span class="shell_observed">The work on student 2 has begun
+The work on student 1 has begun
+The work on student 4 has begun
+The work on student 3 has begun
+The work on student 1 has ended
+The work on student 2 has ended
+The work on student 4 has ended
+The work on student 3 has ended
+
+real    0m1.005s    <span class="shell_note">← now only 1 second</span>
+user    0m0.004s
+sys     0m0.004s</span>
+</pre>
+
+<p><i><b>Note:</b> The execution time of the program may be different on other systems but it is expected to be roughly "4 seconds divided by the number of cores".</i>
+</p>
+
+<p><a id="ix_parallelism.thread" content="thread"></a> A flow of execution through certain parts of a program is called a a <i>thread of execution</i> or a <i>thread</i>. Programs can consist of multiple threads that are being actively executed at the same time. The operating system starts and executes each thread on a core and then suspends it to execute other threads. The execution of each thread may involve many cycles of starting and suspending.
+</p>
+
+<p>All of the threads of all of the programs that are active at a given time are executed on the very cores of the microprocessor. The operating system decides when and under what condition to start and suspend each thread. That is the reason why the messages that are printed by <code class="d_inline">aSlowOperation()</code> are in mixed order in the output above. This undeterministic order of thread execution may not matter if the operations of the <code class="d_inline">Student</code> objects are truly independent from each other.
+</p>
+
+<p>It is the responsibility of the programmer to call <code class="d_inline">parallel()</code> only when the operations applied to each element are independent for each iteration. For example, if it were important that the messages appear in a certain order in the output, calling <code class="d_inline">parallel()</code> should be considered an error in the program above. The programming model that supports threads that depend on other threads is called <i>concurrency</i>. Concurrency is the topic of the next chapter.
+</p>
+
+<p>By the time parallel <code class="d_inline">foreach</code> ends, all of the operations inside the loop have been completed for all of the elements. The program can safely continue after the <code class="d_inline">foreach</code> loop.
+</p>
+
+<h6><a id="ix_parallelism.work unit size" content="work unit size"></a> Work unit size</h6>
+
+<p>The second parameter of <code class="d_inline">parallel()</code> has an overloaded meaning and is ignored in some cases:
+</p>
+
+<pre class="d_code">    <span class="d_comment">/* ... */</span> = parallel(<i>range</i>, <i>work_unit_size</i> = 100);
+</pre>
+
+<ul>
+<li>When iterating over <code class="d_inline">RandomAccessRange</code> ranges:
+
+<p>The distribution of threads to cores has some minimal cost. This cost may sometimes be significant especially when the operations of the loop are completed in a very short time. In such cases, it may be faster to have each thread execute more than one iteration of the loop. The work unit size determines the number of elements that each thread should execute at each of its iterations:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">foreach</span> (student; parallel(students, <span class="hilite">2</span>)) {
+        <span class="d_comment">// ...
+</span>    }
+</pre>
+
+<p>The default value of work unit size is 100 and is suitable for most cases.
+</p>
+
+</li>
+
+<li>When iterating over non-<code class="d_inline">RandomAccessRange</code> ranges:
+
+<p><code class="d_inline">parallel()</code> does not start parallel executions until <i>work unit size</i> number of elements of a non-<code class="d_inline">RandomAccessRange</code> have been executed serially first. Due to the relatively high value of 100, <code class="d_inline">parallel()</code> may give the wrong impression that it is not effective when tried on short non-<code class="d_inline">RandomAccessRange</code> ranges.
+</p>
+
+</li>
+
+<li>When iterating over the result ranges of <code class="d_inline">asyncBuf()</code> or parallel <code class="d_inline">map()</code> (both are explained later in this chapter):
+
+<p>When <code class="d_inline">parallel()</code> works on the results of <code class="d_inline">asyncBuf()</code> or <code class="d_inline">map()</code>, it ignores the work unit size parameter. Instead, <code class="d_inline">parallel()</code> reuses the internal buffer of the result range.
+</p>
+
+</li>
+
+</ul>
+
+<h5 class="subsection"><a id="ix_parallelism.Task" content="Task"></a> <code class="d_inline">Task</code></h5>
+
+<p>Operations that are executed in parallel with other operations of a program are called <i>tasks</i>. Tasks are represented by the type <code class="d_inline">std.parallelism.Task</code>.
+</p>
+
+<p>In fact, <code class="d_inline">parallel()</code> constructs a new <code class="d_inline">Task</code> object for every worker thread and starts that task automatically. <code class="d_inline">parallel()</code> then waits for all of the tasks to be completed before finally exiting the loop. <code class="d_inline">parallel()</code> is very convenient as it <i>constructs</i>, <i>starts</i>, and <i>waits for</i> the tasks automatically.
+</p>
+
+<p><a id="ix_parallelism.task" content="task"></a> <a id="ix_parallelism.executeInNewThread" content="executeInNewThread"></a> <a id="ix_parallelism.yieldForce" content="yieldForce"></a> When tasks do not correspond to or cannot be represented by elements of a range, these three steps can be handled explicitly by the programmer. <code class="d_inline">task()</code> constructs, <code class="d_inline">executeInNewThread()</code> starts, and <code class="d_inline">yieldForce()</code> waits for a task object. These three functions are explained further in the comments of the following program.
+</p>
+
+<p>The <code class="d_inline">anOperation()</code> function is started twice in the following program. It prints the first letter of <code class="d_inline">id</code> to indicate which task it is working for.
+</p>
+
+<p><a id="ix_parallelism.flush, std.stdio" content="flush, std.stdio"></a> <i><b>Note:</b> Normally, the characters that are printed to output streams like <code class="d_inline">stdout</code> do not appear on the output right away. They are instead stored in an output buffer until a line of output is completed. Since <code class="d_inline">write</code> does not output a new-line character, in order to observe the parallel execution of the following program, <code class="d_inline">stdout.flush()</code> is called to send the contents of the buffer to <code class="d_inline">stdout</code> even before reaching the end of a line.</i>
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.parallelism;
+<span class="d_keyword">import</span> std.array;
+<span class="d_keyword">import</span> core.thread;
+
+<span class="d_comment">/* Prints the first letter of 'id' every half a second. It
+ * arbitrarily returns the value 1 to simulate functions that
+ * do calculations. This result will be used later in main. */</span>
+<span class="d_keyword">int</span> anOperation(string id, <span class="d_keyword">int</span> duration) {
+    writefln(<span class="d_string">"%s will take %s seconds"</span>, id, duration);
+
+    <span class="d_keyword">foreach</span> (i; 0 .. (duration * 2)) {
+        Thread.sleep(500.msecs);  <span class="d_comment">/* half a second */</span>
+        write(id.front);
+        stdout.flush();
+    }
+
+    <span class="d_keyword">return</span> 1;
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_comment">/* Construct a task object that will execute
+     * anOperation(). The function parameters that are
+     * specified here are passed to the task function as its
+     * function parameters. */</span>
+    <span class="d_keyword">auto</span> theTask = <span class="hilite">task!anOperation</span>(<span class="d_string">"theTask"</span>, 5);
+
+    <span class="d_comment">/* Start the task object */</span>
+    theTask.<span class="hilite">executeInNewThread()</span>;
+
+    <span class="d_comment">/* As 'theTask' continues executing, 'anOperation()' is
+     * being called again, this time directly in main. */</span>
+    <span class="d_keyword">immutable</span> result = anOperation(<span class="d_string">"main's call"</span>, 3);
+
+    <span class="d_comment">/* At this point we are sure that the operation that has
+     * been started directly from within main has been
+     * completed, because it has been started by a regular
+     * function call, not as a task. */</span>
+
+    <span class="d_comment">/* On the other hand, it is not certain at this point
+     * whether 'theTask' has completed its operations
+     * yet. yieldForce() waits for the task to complete its
+     * operations; it returns only when the task has been
+     * completed. Its return value is the return value of
+     * the task function, i.e. anOperation(). */</span>
+    <span class="d_keyword">immutable</span> taskResult = theTask.<span class="hilite">yieldForce()</span>;
+
+    writeln();
+    writefln(<span class="d_string">"All finished; the result is %s."</span>,
+             result + taskResult);
+}
+</pre>
+
+<p>The output of the program should be similar to the following. The fact that the <code class="d_inline">m</code> and <code class="d_inline">t</code> letters are printed in mixed order indicates that the operations are executed in parallel:
+</p>
+
+<pre class="shell">main's call will take 3 seconds
+theTask will take 5 seconds
+mtmttmmttmmttttt
+All finished; the result is 2.
+</pre>
+
+<p>The task function above has been specified as a template parameter to <code class="d_inline">task()</code> as <code class="d_inline">task!anOperation</code>. Although this method works well in most cases, as we have seen in <a href="templates.html">the Templates chapter</a>, each different instantiation of a template is a different type. This distinction may be undesirable in certain situations where seemingly <i>equivalent</i> task objects would actually have different types.
+</p>
+
+<p>For example, although the following two functions have the same signature, the two <code class="d_inline">Task</code> instantiations that are produced through calls to the <code class="d_inline">task()</code> function template would have different types. As a result, they cannot be members of the same array:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.parallelism;
+
+<span class="d_keyword">double</span> foo(<span class="d_keyword">int</span> i) {
+    <span class="d_keyword">return</span> i * 1.5;
+}
+
+<span class="d_keyword">double</span> bar(<span class="d_keyword">int</span> i) {
+    <span class="d_keyword">return</span> i * 2.5;
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> tasks = [ task<span class="hilite">!</span>foo(1),
+                   task<span class="hilite">!</span>bar(2) ];    <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+}
+</pre>
+
+<pre class="shell">Error: <span class="hilite">incompatible types</span> for ((task(1)) : (task(2))):
+'Task!(<span class="hilite">foo</span>, int)*' and 'Task!(<span class="hilite">bar</span>, int)*'
+</pre>
+
+<p>Another overload of <code class="d_inline">task()</code> takes the function as its first function parameter instead:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">void</span> someFunction(<span class="d_keyword">int</span> value) {
+        <span class="d_comment">// ...
+</span>    }
+
+    <span class="d_keyword">auto</span> theTask = task(<span class="hilite">&amp;someFunction</span>, 42);
+</pre>
+
+<p>As this method does not involve different instantiations of the <code class="d_inline">Task</code> template, it makes it possible to put such objects in the same array:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.parallelism;
+
+<span class="d_keyword">double</span> foo(<span class="d_keyword">int</span> i) {
+    <span class="d_keyword">return</span> i * 1.5;
+}
+
+<span class="d_keyword">double</span> bar(<span class="d_keyword">int</span> i) {
+    <span class="d_keyword">return</span> i * 2.5;
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> tasks = [ task(<span class="hilite">&amp;</span>foo, 1),
+                   task(<span class="hilite">&amp;</span>bar, 2) ];    <span class="d_comment">// ← compiles</span>
+}
+</pre>
+
+<p>A lambda function or an object of a type that defines the <code class="d_inline">opCall</code> member can also be used as the task function. The following example starts a task that executes a lambda:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> theTask = task((<span class="d_keyword">int</span> value) <span class="hilite">{</span>
+                            <span class="d_comment">/* ... */</span>
+                        <span class="hilite">}</span>, 42);
+</pre>
+
+<h6><a id="ix_parallelism.exception, parallelism" content="exception, parallelism"></a> Exceptions</h6>
+
+<p>As tasks are executed on separate threads, the exceptions that they throw cannot be caught by the thread that started them. For that reason, the exceptions that are thrown are automatically caught by the tasks themselves, to be rethrown later when <code class="d_inline">Task</code> member functions like <code class="d_inline">yieldForce()</code> are called. This makes it possible for the main thread to catch exceptions that are thrown by a task.
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.parallelism;
+<span class="d_keyword">import</span> core.thread;
+
+<span class="d_keyword">void</span> mayThrow() {
+    writeln(<span class="d_string">"mayThrow() is started"</span>);
+    Thread.sleep(1.seconds);
+    writeln(<span class="d_string">"mayThrow() is throwing an exception"</span>);
+    <span class="d_keyword">throw</span> <span class="d_keyword">new</span> Exception(<span class="d_string">"Error message"</span>);
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> theTask = task!mayThrow();
+    theTask.executeInNewThread();
+
+    writeln(<span class="d_string">"main is continuing"</span>);
+    Thread.sleep(3.seconds);
+
+    writeln(<span class="d_string">"main is waiting for the task"</span>);
+    theTask.yieldForce();
+}
+</pre>
+
+<p>The output of the program shows that the uncaught exception that has been thrown by the task does not terminate the entire program right away (it terminates only the task):
+</p>
+
+<pre class="shell">main is continuing
+mayThrow() is started
+mayThrow() is throwing an exception                 <span class="shell_note">← thrown</span>
+main is waiting for the task
+object.Exception@deneme.d(10): Error message        <span class="shell_note">← terminated</span>
+</pre>
+
+<p><code class="d_inline">yieldForce()</code> can be called in a <code class="d_inline">try-catch</code> block to catch the exceptions that are thrown by the task. Note that this is different from single threads: In single-threaded programs like the samples that we have been writing until this chapter, <code class="d_inline">try-catch</code> wraps the code that may throw. In parallelism, it wraps <code class="d_inline">yieldForce()</code>:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">try</span> {
+        theTask.yieldForce();
+
+    } <span class="d_keyword">catch</span> (Exception exc) {
+        writefln(<span class="d_string">"Detected an error in the task: '%s'"</span>, exc.msg);
+    }
+</pre>
+
+<p>This time the exception is caught by the main thread instead of terminating the program:
+</p>
+
+<pre class="shell">main is continuing
+mayThrow() is started
+mayThrow() is throwing an exception                 <span class="shell_note">← thrown</span>
+main is waiting for the task
+Detected an error in the task: 'Error message'      <span class="shell_note">← caught</span>
+</pre>
+
+<h6>Member functions of <code class="d_inline">Task</code></h6>
+
+<ul>
+<li><code class="d_inline">done</code>: Specifies whether the task has been completed; rethrows the exception if the task has been terminated with an exception.
+
+<pre class="d_code">    <span class="d_keyword">if</span> (theTask.done) {
+        writeln(<span class="d_string">"Yes, the task has been completed"</span>);
+
+    } <span class="d_keyword">else</span> {
+        writeln(<span class="d_string">"No, the task is still going on"</span>);
+    }
+</pre>
+
+</li>
+
+<li><code class="d_inline">executeInNewThread()</code>: Starts the task in a new thread.</li>
+
+<li><code class="d_inline">executeInNewThread(int priority)</code>: Starts the task in a new thread with the specified priority. (Priority is an operating system concept that determines execution priorities of threads.)</li>
+
+</ul>
+
+<p>There are three functions to wait for the completion of a task:
+</p>
+
+<ul>
+<li><code class="d_inline">yieldForce()</code>: Starts the task if it has not been started yet; if it has already been completed, returns its return value; if it is still running, waits for its completion without making the microprocessor busy; if an exception has been thrown, rethrows that exception.</li>
+
+<li><a id="ix_parallelism.spinForce" content="spinForce"></a> <code class="d_inline">spinForce()</code>: Works similarly to <code class="d_inline">yieldForce()</code>, except that it makes the microprocessor busy while waiting, in order to catch the completion as early as possible.</li>
+
+<li><a id="ix_parallelism.workForce" content="workForce"></a> <code class="d_inline">workForce()</code>: Works similarly to <code class="d_inline">yieldForce()</code>, except that it starts a new task in the current thread while waiting for the task to be completed.</li>
+
+</ul>
+
+<p>In most cases <code class="d_inline">yieldForce()</code> is the most suitable function to call when waiting for a task to complete; it suspends the thread that calls <code class="d_inline">yieldForce()</code> until the task is completed. Although <code class="d_inline">spinForce()</code> makes the microprocessor busy while waiting, it is suitable when the task is expected to be completed in a very short time. <code class="d_inline">workForce()</code> can be called when starting other tasks is preferred over suspending the current thread.
+</p>
+
+<p>Please see the online documentation of Phobos for the other member functions of <code class="d_inline">Task</code>.
+</p>
+
+<h5 class="subsection"><a id="ix_parallelism.asyncBuf" content="asyncBuf"></a> <code class="d_inline">taskPool.asyncBuf()</code></h5>
+
+<p>Similarly to <code class="d_inline">parallel()</code>, <code class="d_inline">asyncBuf()</code> iterates <code class="d_inline">InputRange</code> ranges in parallel. It stores the elements in a buffer as they are produced by the range, and serves the elements from that buffer to its user.
+</p>
+
+<p>In order to avoid making a potentially fully-lazy input range a fully-eager range, it iterates the elements in <i>waves</i>. Once it prepares certain number of elements in parallel, it waits until those elements are consumed by <code class="d_inline">popFront()</code> before producing the elements of the next wave.
+</p>
+
+<p><code class="d_inline">asyncBuf()</code> takes a range and an optional <i>buffer size</i> that determines how many elements to be made available during each wave:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> elements = taskPool.asyncBuf(<i>range</i>, <i>buffer_size</i>);
+</pre>
+
+<p>To see the effects of <code class="d_inline">asyncBuf()</code>, let's use a range that takes half a second to iterate and half a second to process each element. This range simply produces integers up to the specified limit:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> core.thread;
+
+<span class="d_keyword">struct</span> Range {
+    <span class="d_keyword">int</span> limit;
+    <span class="d_keyword">int</span> i;
+
+    <span class="d_keyword">bool</span> empty() <span class="d_keyword">const</span> {
+        <span class="d_keyword">return</span> i &gt;= limit;
+    }
+
+    <span class="d_keyword">int</span> front() <span class="d_keyword">const</span> {
+        <span class="d_keyword">return</span> i;
+    }
+
+    <span class="d_keyword">void</span> popFront() {
+        writefln(<span class="d_string">"Producing the element after %s"</span>, i);
+        Thread.sleep(500.msecs);
+        ++i;
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> range = Range(10);
+
+    <span class="d_keyword">foreach</span> (element; range) {
+        writefln(<span class="d_string">"Using element %s"</span>, element);
+        Thread.sleep(500.msecs);
+    }
+}
+</pre>
+
+<p>The elements are produced and used lazily. Since it takes one second for each element, the whole range takes ten seconds to process in this program:
+</p>
+
+<pre class="shell">$ time ./deneme
+<span class="shell_observed">Using element 0
+Producing the element after 0
+Using element 1
+Producing the element after 1
+Using element 2
+...
+Producing the element after 8
+Using element 9
+Producing the element after 9
+
+real    0m10.007s    <span class="shell_note">← 10 seconds total</span>
+user    0m0.004s
+sys     0m0.000s</span>
+</pre>
+
+<p>According to that output, the elements are produced and used sequentially.
+</p>
+
+<p>On the other hand, it may not be necessary to wait for preceding elements to be processed before starting to produce the successive elements. The program would take less time if other elements could be produced while the front element is in use:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.parallelism;
+<span class="d_comment">//...
+</span>    <span class="d_keyword">foreach</span> (element; <span class="hilite">taskPool.asyncBuf</span>(range, <span class="hilite">2</span>)) {
+</pre>
+
+<p>In the call above, <code class="d_inline">asyncBuf()</code> makes two elements ready in its buffer. Elements are produced in parallel while they are being used:
+</p>
+
+<pre class="shell">$ time ./deneme
+<span class="shell_observed">Producing the element after 0
+Producing the element after 1
+Using element 0
+Producing the element after 2
+Using element 1
+Producing the element after 3
+Using element 2
+Producing the element after 4
+Using element 3
+Producing the element after 5
+Using element 4
+Producing the element after 6
+Producing the element after 7
+Using element 5
+Using element 6
+Producing the element after 8
+Producing the element after 9
+Using element 7
+Using element 8
+Using element 9
+
+real    0m6.007s    <span class="shell_note">← now 6 seconds</span>
+user    0m0.000s
+sys     0m0.004s</span>
+</pre>
+
+<p>The default value of buffer size is 100. The buffer size that produces the best performance would be different under different situations.
+</p>
+
+<p><code class="d_inline">asyncBuf()</code> can be used outside of <code class="d_inline">foreach</code> loops as well. For example, the following code uses the return value of <code class="d_inline">asyncBuf()</code> as an <code class="d_inline">InputRange</code> which operates semi-eagerly:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> range = Range(10);
+    <span class="d_keyword">auto</span> asyncRange = taskPool.asyncBuf(range, 2);
+    writeln(<span class="hilite">asyncRange.front</span>);
+</pre>
+
+<h5 class="subsection"><a id="ix_parallelism.map, parallel" content="map, parallel"></a> <code class="d_inline">taskPool.map()</code></h5>
+
+<p><a id="ix_parallelism.map, std.algorithm" content="map, std.algorithm"></a> It helps to explain <code class="d_inline">map()</code> from the <code class="d_inline">std.algorithm</code> module before explaining <code class="d_inline">taskPool.map()</code>. <code class="d_inline">std.algorithm.map</code> is an algorithm commonly found in many functional languages. It calls a function with the elements of a range one-by-one and returns a range that consists of the results of calling that function with each element. It is a lazy algorithm: It calls the function as needed. (There is also <code class="d_inline">std.algorithm.each</code>, which is for generating side effects for each element, as opposed to producing a result from it.)
+</p>
+
+<p>The fact that <code class="d_inline">std.algorithm.map</code> operates lazily is very powerful in many programs. However, if the function needs to be called with every element anyway and the operations on each element are independent from each other, laziness may be unnecessarily slower than parallel execution. <code class="d_inline">taskPool.map()</code> and <code class="d_inline">taskPool.amap()</code> from the <code class="d_inline">std.parallelism</code> module take advantage of multiple cores and run faster in many cases.
+</p>
+
+<p>Let's compare these three algorithms using the <code class="d_inline">Student</code> example. Let's assume that <code class="d_inline">Student</code> has a member function that returns the average grade of the student. To demonstrate how parallel algorithms are faster, let's again slow this function down with <code class="d_inline">Thread.sleep()</code>.
+</p>
+
+<p><code class="d_inline">std.algorithm.map</code> takes the function as its template parameter, and the range as its function parameter. It returns a range that consists of the results of applying that function to the elements of the range:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> <i>result_range</i> = map!<i>func</i>(<i>range</i>);
+</pre>
+
+<p>The function may be specified by the <code class="d_inline">=&gt;</code> syntax as a <i>lambda expression</i> as we have seen in earlier chapters. The following program uses <code class="d_inline">map()</code> to call the <code class="d_inline">averageGrade()</code> member function on each element:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.algorithm;
+<span class="d_keyword">import</span> core.thread;
+
+<span class="d_keyword">struct</span> Student {
+    <span class="d_keyword">int</span> number;
+    <span class="d_keyword">int</span>[] grades;
+
+    <span class="d_keyword">double</span> averageGrade() {
+        writefln(<span class="d_string">"Started working on student %s"</span>,
+                 number);
+        Thread.sleep(1.seconds);
+
+        <span class="d_keyword">const</span> average = grades.sum / grades.length;
+
+        writefln(<span class="d_string">"Finished working on student %s"</span>, number);
+        <span class="d_keyword">return</span> average;
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    Student[] students;
+
+    <span class="d_keyword">foreach</span> (i; 0 .. 10) {
+        <span class="d_comment">/* Two grades for each student */</span>
+        students ~= Student(i, [80 + i, 90 + i]);
+    }
+
+    <span class="d_keyword">auto</span> results = <span class="hilite">map</span>!(a =&gt; a.averageGrade)(students);
+
+    <span class="d_keyword">foreach</span> (result; results) {
+        writeln(result);
+    }
+}
+</pre>
+
+<p>The output of the program demonstrates that <code class="d_inline">map()</code> operates lazily; <code class="d_inline">averageGrade()</code> is called for each result as the <code class="d_inline">foreach</code> loop iterates:
+</p>
+
+<pre class="shell">$ time ./deneme
+<span class="shell_observed">Started working on student 0
+Finished working on student 0
+85                   <span class="shell_note">← calculated as foreach iterates</span>
+Started working on student 1
+Finished working on student 1
+86
+...
+Started working on student 9
+Finished working on student 9
+94
+
+real    0m10.006s    <span class="shell_note">← 10 seconds total</span>
+user    0m0.000s
+sys     0m0.004s</span>
+</pre>
+
+<p>If <code class="d_inline">std.algorithm.map</code> were an eager algorithm, the messages about the starts and finishes of the operations would be printed altogether at the top.
+</p>
+
+<p><code class="d_inline">taskPool.map()</code> from the <code class="d_inline">std.parallelism</code> module works essentially the same as <code class="d_inline">std.algorithm.map</code>. The only difference is that it executes the function calls semi-eagerly and stores the results in a buffer to be served from as needed. The size of this buffer is determined by the second parameter. For example, the following code would make ready the results of the function calls for three elements at a time:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.parallelism;
+<span class="d_comment">// ...
+</span><span class="d_keyword">double</span> averageGrade(Student student) {
+    <span class="d_keyword">return</span> student.averageGrade;
+}
+<span class="d_comment">// ...
+</span>    <span class="d_keyword">auto</span> results = <span class="hilite">taskPool.map</span>!averageGrade(students, <span class="hilite">3</span>);
+</pre>
+
+<p><i><b>Note:</b> The free-standing <code class="d_inline">averageGrade()</code> function above is needed due to a limitation that involves using local delegates with member function templates like <code class="d_inline">TaskPool.map</code>. There would be a compilation error without that free-standing function:
+</i></p>
+
+<pre class="d_code"><span class="d_keyword">auto</span> results =
+    taskPool.map!(a =&gt; a.averageGrade)(students, 3);  <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+</pre>
+
+<p>This time the operations are executed in waves of three elements:
+</p>
+
+<pre class="shell">$ time ./deneme
+<span class="shell_observed">Started working on student 1  <span class="shell_note">← in parallel</span>
+Started working on student 2  <span class="shell_note">← but in unpredictable order</span>
+Started working on student 0
+Finished working on student 1
+Finished working on student 2
+Finished working on student 0
+85
+86
+87
+Started working on student 4
+Started working on student 5
+Started working on student 3
+Finished working on student 4
+Finished working on student 3
+Finished working on student 5
+88
+89
+90
+Started working on student 7
+Started working on student 8
+Started working on student 6
+Finished working on student 7
+Finished working on student 6
+Finished working on student 8
+91
+92
+93
+Started working on student 9
+Finished working on student 9
+94
+
+real    0m4.007s    <span class="shell_note">← 4 seconds total</span>
+user    0m0.000s
+sys     0m0.004s</span>
+</pre>
+
+<p>The second parameter of <code class="d_inline">map()</code> has the same meaning as <code class="d_inline">asyncBuf()</code>: It determines the size of the buffer that <code class="d_inline">map()</code> uses to store the results in. The third parameter is the work unit size as in <code class="d_inline">parallel()</code>; the difference being its default value, which is <code class="d_inline">size_t.max</code>:
+</p>
+
+<pre class="d_code">    <span class="d_comment">/* ... */</span> = taskPool.map!<i>func</i>(<i>range</i>,
+                                  <i>buffer_size</i> = 100
+                                  <i>work_unit_size</i> = size_t.max);
+</pre>
+
+<h5 class="subsection"><a id="ix_parallelism.amap" content="amap"></a> <code class="d_inline">taskPool.amap()</code></h5>
+
+<p>Parallel <code class="d_inline">amap()</code> works the same as parallel <code class="d_inline">map()</code> with two differences:
+</p>
+
+<ul>
+<li>It is fully eager.
+</li>
+
+<li>It works with <code class="d_inline">RandomAccessRange</code> ranges.
+</li>
+
+</ul>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> results = <span class="hilite">taskPool.amap</span>!averageGrade(students);
+</pre>
+
+<p>Since it is eager, all of the results are ready by the time <code class="d_inline">amap()</code> returns:
+</p>
+
+<pre class="shell">$ time ./deneme
+<span class="shell_observed">Started working on student 1    <span class="shell_note">← all are executed up front</span>
+Started working on student 0
+Started working on student 2
+Started working on student 3
+Finished working on student 1
+Started working on student 4
+Finished working on student 2
+Finished working on student 3
+Started working on student 6
+Finished working on student 0
+Started working on student 7
+Started working on student 5
+Finished working on student 4
+Started working on student 8
+Finished working on student 6
+Started working on student 9
+Finished working on student 7
+Finished working on student 5
+Finished working on student 8
+Finished working on student 9
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+
+real    0m3.005s    <span class="shell_note">← 3 seconds total</span>
+user    0m0.000s
+sys     0m0.004s</span>
+</pre>
+
+<p><code class="d_inline">amap()</code> works faster than <code class="d_inline">map()</code> at the expense of using an array that is large enough to store all of the results. It consumes more memory to gain speed.
+</p>
+
+<p>The optional second parameter of <code class="d_inline">amap()</code> is the work unit size as well:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> results = taskPool.amap!averageGrade(students, <span class="hilite">2</span>);
+</pre>
+
+<p>The results can also be stored in a <code class="d_inline">RandomAccessRange</code> that is passed to <code class="d_inline">amap()</code> as its third parameter:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">double</span>[] results;
+    results.length = students.length;
+    taskPool.amap!averageGrade(students, 2, <span class="hilite">results</span>);
+</pre>
+
+<h5 class="subsection"><a id="ix_parallelism.reduce, parallel" content="reduce, parallel"></a> <code class="d_inline">taskPool.reduce()</code></h5>
+
+<p><a id="ix_parallelism.reduce, std.algorithm" content="reduce, std.algorithm"></a> As with <code class="d_inline">map()</code>, it helps to explain <code class="d_inline">reduce()</code> from the <code class="d_inline">std.algorithm</code> module first.
+</p>
+
+<p><a id="ix_parallelism.fold, std.algorithm" content="fold, std.algorithm"></a> <code class="d_inline">reduce()</code> is the equivalent of <code class="d_inline">std.algorithm.fold</code>, which we have seen before in the <a href="ranges.html">Ranges chapter</a>. The main difference between the two is that their function parameters are reversed. (For that reason, I recommend that you prefer <code class="d_inline">fold()</code> for non-parallel code as it can take advantage of <a href="ufcs.html">UFCS</a> in chained range expressions.)
+</p>
+
+<p><code class="d_inline">reduce()</code> is another high-level algorithm commonly found in many functional languages. Just like <code class="d_inline">map()</code>, it takes one or more functions as template parameters. As its function parameters, it takes a value to be used as the initial value of the result, and a range. <code class="d_inline">reduce()</code> calls the functions with the current value of the result and each element of the range. When no initial value is specified, the first element of the range is used instead.
+</p>
+
+<p>Assuming that it defines a variable named <code class="d_inline">result</code> in its implementation, the way that <code class="d_inline">reduce()</code> works can be described by the following steps:
+</p>
+
+<ol>
+<li>Assigns the initial value to <code class="d_inline">result</code></li>
+
+<li>Executes the expression <code class="d_inline">result = func(result, element)</code> for every element</li>
+
+<li>Returns the final value of <code class="d_inline">result</code></li>
+
+</ol>
+
+<p>For example, the sum of the squares of the elements of an array can be calculated as in the following program:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.algorithm;
+
+<span class="d_keyword">void</span> main() {
+    writeln(reduce!((a, b) =&gt; a + b * b)(0, [5, 10]));
+}
+</pre>
+
+<p>When the function is specified by the <code class="d_inline">=&gt;</code> syntax as in the program above, the first parameter (here <code class="d_inline">a</code>) represents the current value of the result (initialized by the parameter <code class="d_inline">0</code> above) and the second parameter (here <code class="d_inline">b</code>) represents the current element.
+</p>
+
+<p>The program outputs the sum of 25 and 100, the squares of 5 and 10:
+</p>
+
+<pre class="shell">125
+</pre>
+
+<p>As obvious from its behavior, <code class="d_inline">reduce()</code> uses a loop in its implementation. Because that loop is normally executed on a single core, it may be unnecessarily slow when the function calls for each element are independent from each other. In such cases <code class="d_inline">taskPool.reduce()</code> from the <code class="d_inline">std.parallelism</code> module can be used for taking advantage of all of the cores.
+</p>
+
+<p>To see an example of this let's use <code class="d_inline">reduce()</code> with a function that is slowed down again artificially:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.algorithm;
+<span class="d_keyword">import</span> core.thread;
+
+<span class="d_keyword">int</span> aCalculation(<span class="d_keyword">int</span> result, <span class="d_keyword">int</span> element) {
+    writefln(<span class="d_string">"started  - element: %s, result: %s"</span>,
+             element, result);
+
+    Thread.sleep(1.seconds);
+    result += element;
+
+    writefln(<span class="d_string">"finished - element: %s, result: %s"</span>,
+             element, result);
+
+    <span class="d_keyword">return</span> result;
+}
+
+<span class="d_keyword">void</span> main() {
+    writeln(<span class="d_string">"Result: "</span>, <span class="hilite">reduce</span>!aCalculation(0, [1, 2, 3, 4]));
+}
+</pre>
+
+<p><code class="d_inline">reduce()</code> uses the elements in sequence to reach the final value of the result:
+</p>
+
+<pre class="shell">$ time ./deneme
+<span class="shell_observed">started  - element: 1, result: 0
+finished - element: 1, result: 1
+started  - element: 2, result: 1
+finished - element: 2, result: 3
+started  - element: 3, result: 3
+finished - element: 3, result: 6
+started  - element: 4, result: 6
+finished - element: 4, result: 10
+Result: 10
+
+real    0m4.003s    <span class="shell_note">← 4 seconds total</span>
+user    0m0.000s
+sys     0m0.000s</span>
+</pre>
+
+<p>As in the <code class="d_inline">parallel()</code> and <code class="d_inline">map()</code> examples, importing the <code class="d_inline">std.parallelism</code> module and calling <code class="d_inline">taskPool.reduce()</code> is sufficient to take advantage of all of the cores:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.parallelism;
+<span class="d_comment">// ...
+</span>    writeln(<span class="d_string">"Result: "</span>, <span class="hilite">taskPool.reduce</span>!aCalculation(0, [1, 2, 3, 4]));
+</pre>
+
+<p>However, there are important differences in the way <code class="d_inline">taskPool.reduce()</code> works.
+</p>
+
+<p>Like the other parallel algorithms, <code class="d_inline">taskPool.reduce()</code> executes the functions in parallel by using elements in different tasks. Each task works on the elements that it is assigned to and calculates a <code class="d_inline">result</code> that corresponds to the elements of that task. Since <code class="d_inline">reduce()</code> is called with only a single initial value, every task must use that same initial value to initialize its own <code class="d_inline">result</code> (the parameter <code class="d_inline">0</code> above).
+</p>
+
+<p>The final values of the results that each task produces are themselves used in the same <code class="d_inline">result</code> calculation one last time. These final calculations are executed sequentially, not in parallel. For that reason, <code class="d_inline">taskPool.reduce()</code> may execute slower in short examples as in this chapter as will be observed in the following output.
+</p>
+
+<p>The fact that the same initial value is used for all of the tasks, effectively being used in the calculations multiple times, <code class="d_inline">taskPool.reduce()</code> may calculate a result that is different from what <code class="d_inline">std.algorithm.reduce()</code> calculates. For that reason, the initial value must be the <i>identity value</i> for the calculation that is being performed, e.g. the <code class="d_inline">0</code> in this example which does not have any effect in addition.
+</p>
+
+<p>Additionally, as the results are used by the same functions one last time in the sequential calculations, the types of the parameters that the functions take must be compatible with the types of the values that the functions return.
+</p>
+
+<p><code class="d_inline">taskPool.reduce()</code> should be used only under these considerations.
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.parallelism;
+<span class="d_comment">// ...
+</span>    writeln(<span class="d_string">"Result: "</span>, <span class="hilite">taskPool.reduce</span>!aCalculation(0, [1, 2, 3, 4]));
+</pre>
+
+<p>The output of the program indicates that first the calculations are performed in parallel, and then their results are calculated sequentially. The calculations that are performed sequentially are highlighted:
+</p>
+
+<pre class="shell">$ time ./deneme
+<span class="shell_observed">started  - element: 3, result: 0 <span class="shell_note">← first, the tasks in parallel</span>
+started  - element: 2, result: 0
+started  - element: 1, result: 0
+started  - element: 4, result: 0
+finished - element: 3, result: 3
+finished - element: 1, result: 1
+<span class="hilite">started  - element: 1, result: 0</span> <span class="shell_note">← then, their results sequentially</span>
+finished - element: 4, result: 4
+finished - element: 2, result: 2
+<span class="hilite">finished - element: 1, result: 1</span>
+<span class="hilite">started  - element: 2, result: 1</span>
+<span class="hilite">finished - element: 2, result: 3</span>
+<span class="hilite">started  - element: 3, result: 3</span>
+<span class="hilite">finished - element: 3, result: 6</span>
+<span class="hilite">started  - element: 4, result: 6</span>
+<span class="hilite">finished - element: 4, result: 10</span>
+Result: 10
+
+real    0m5.006s    <span class="shell_note">← parallel reduce is slower in this example</span>
+user    0m0.004s
+sys     0m0.000s</span>
+</pre>
+
+<p>Parallel <code class="d_inline">reduce()</code> is faster in many other calculations like the calculation of the math constant <i>pi</i> (π) by quadrature.
+</p>
+
+<h5 class="subsection">Multiple functions and tuple results</h5>
+
+<p><code class="d_inline">std.algorithm.map()</code>, <code class="d_inline">taskPool.map()</code>, <code class="d_inline">taskPool.amap()</code>, and <code class="d_inline">taskPool.reduce()</code> can all take more than one function, in which case the results are returned as a <code class="d_inline">Tuple</code>. We have seen the <code class="d_inline">Tuple</code> type in the <a href="tuples.html">Tuples chapter</a> before. The results of individual functions correspond to the elements of the tuple in the order that the functions are specified. For example, the result of the first function is the first member of the tuple.
+</p>
+
+<p>The following program demonstrates multiple functions with <code class="d_inline">std.algorithm.map</code>. Note that the return types of the functions need not be the same, as seen in the <code class="d_inline">quarterOf()</code> and <code class="d_inline">tenTimes()</code> functions below. In that case, the types of the members of the tuples would be different as well:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.algorithm;
+<span class="d_keyword">import</span> std.conv;
+
+<span class="d_keyword">double</span> quarterOf(<span class="d_keyword">double</span> value) {
+    <span class="d_keyword">return</span> value / 4;
+}
+
+string tenTimes(<span class="d_keyword">double</span> value) {
+    <span class="d_keyword">return</span> to!string(value * 10);
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> values = [10, 42, 100];
+    <span class="d_keyword">auto</span> results = map!(<span class="hilite">quarterOf, tenTimes</span>)(values);
+
+    writefln(<span class="d_string">" Quarters  Ten Times"</span>);
+
+    <span class="d_keyword">foreach</span> (quarterResult, tenTimesResult; results) {
+        writefln(<span class="d_string">"%8.2f%8s"</span>, quarterResult, tenTimesResult);
+    }
+}
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell"> Quarters  Ten Times
+    2.50     100
+   10.50     420
+   25.00    1000
+</pre>
+
+<p>In the case of <code class="d_inline">taskPool.reduce()</code>, the initial values of the results must be specified as a tuple:
+</p>
+
+<pre class="d_code">    taskPool.reduce!(foo, bar)(<span class="hilite">tuple(0, 1)</span>, [1, 2, 3, 4]);
+</pre>
+
+<h5 class="subsection"><a id="ix_parallelism.TaskPool" content="TaskPool"></a> <code class="d_inline">TaskPool</code></h5>
+
+<p>Behind the scenes, the parallel algorithms from the <code class="d_inline">std.parallelism</code> module all use task objects that are elements of a <code class="d_inline">TaskPool</code> container. Normally, all of the algorithms use the same container object named <code class="d_inline">taskPool</code>.
+</p>
+
+<p><code class="d_inline">taskPool</code> contains appropriate number of tasks depending on the environment that the program runs under. For that reason, usually there is no need to create any other <code class="d_inline">TaskPool</code> object. Even so, explicit <code class="d_inline">TaskPool</code> objects may be created and used as needed.
+</p>
+
+<p>The <code class="d_inline">TaskPool</code> constructor takes the number of threads to use during the parallel operations that are later started through it. The default value of the number of threads is one less than the number of cores on the system. All of the features that we have seen in this chapter can be applied to a separate <code class="d_inline">TaskPool</code> object.
+</p>
+
+<p>The following example calls <code class="d_inline">parallel()</code> on a local <code class="d_inline">TaskPool</code> object:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.parallelism;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> workers = <span class="d_keyword">new</span> <span class="hilite">TaskPool(2)</span>;
+
+    <span class="d_keyword">foreach</span> (i; <span class="hilite">workers</span>.parallel([1, 2, 3, 4])) {
+        writefln(<span class="d_string">"Working on %s"</span>, i);
+    }
+
+    <span class="hilite">workers</span>.finish();
+}
+</pre>
+
+<p><code class="d_inline">TaskPool.finish()</code> tells the object to stop processing when all of its current tasks are completed.
+</p>
+
+<h5 class="subsection">Summary</h5>
+
+
+<ul>
+<li>It is an error to execute operations in parallel unless those operations are independent from each other.</li>
+
+<li><code class="d_inline">parallel()</code> accesses the elements of a range in parallel.</li>
+
+<li>Tasks can explicitly be created, started, and waited for by <code class="d_inline">task()</code>, <code class="d_inline">executeInNewThread()</code>, and <code class="d_inline">yieldForce()</code>, respectively.</li>
+
+<li>The exceptions that are escaped from tasks can be caught later by most of the parallelism functions like <code class="d_inline">yieldForce()</code>.</li>
+
+<li><code class="d_inline">asyncBuf()</code> iterates the elements of an <code class="d_inline">InputRange</code> semi-eagerly in parallel.</li>
+
+<li><code class="d_inline">map()</code> calls functions with the elements of an <code class="d_inline">InputRange</code> semi-eagerly in parallel.</li>
+
+<li><code class="d_inline">amap()</code> calls functions with the elements of a <code class="d_inline">RandomAccessRange</code> fully-eagerly in parallel.</li>
+
+<li><code class="d_inline">reduce()</code> makes calculations over the elements of a <code class="d_inline">RandomAccessRange</code> in parallel.</li>
+
+<li><code class="d_inline">map()</code>, <code class="d_inline">amap()</code>, and <code class="d_inline">reduce()</code> can take multiple functions and return the results as tuples.</li>
+
+<li>When needed, <code class="d_inline">TaskPool</code> objects other than <code class="d_inline">taskPool</code> can be used.</li>
+
+</ul>
+
+macros:
+        TITLE=Parallelism
+
+        DESCRIPTION=Parallel programming that enables taking advantage of microprocessor cores
+
+        KEYWORDS=d programming language tutorial book parallel programming
+
+MINI_SOZLUK=
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on Fri Feb  2 10:24:02 2024
+</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>
