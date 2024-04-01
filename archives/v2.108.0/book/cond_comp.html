@@ -1,0 +1,694 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Conditional Compilation - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Conditional Compilation' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BConditional Compilation%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/d.en/cond_comp.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Conditional Compilation</h1>
+        
+        
+
+
+
+<p>Conditional compilation is for compiling parts of programs in special ways depending on certain compile time conditions. Sometimes, entire sections of a program may need to be taken out and not compiled at all.
+</p>
+
+<p>Conditional compilation involves condition checks that are evaluable at compile time. Runtime conditional statements like <code class="d_inline">if</code>, <code class="d_inline">for</code>, <code class="d_inline">while</code> are not conditional compilation features.
+</p>
+
+<p>We have already encountered some features in the previous chapters, which can be seen as conditional compilation:
+</p>
+
+<ul>
+<li><code class="d_inline">unittest</code> blocks are compiled and run only if the <code class="d_inline">-unittest</code> compiler switch is enabled.
+</li>
+
+<li>The contract programming blocks <code class="d_inline">in</code>, <code class="d_inline">out</code>, and <code class="d_inline">invariant</code> are activated only if the <code class="d_inline">-release</code> compiler switch is <i>not</i> enabled.
+</li>
+
+</ul>
+
+<p>Unit tests and contracts are about program correctness; whether they are included in the program should not change the behavior of the program.
+</p>
+
+<p>The following are the features of D that are specifically for conditional compilation:
+</p>
+
+<ul><li><code class="d_inline">debug</code></li>
+<li><code class="d_inline">version</code></li>
+<li><code class="d_inline">static if</code></li>
+<li><code class="d_inline">is</code> expression</li>
+<li><code class="d_inline">__traits</code></li>
+</ul>
+
+<p>We will see the <code class="d_inline">is</code> expression in the next chapter.
+</p>
+
+<h5 class="subsection"><a id="ix_Conditional Compilation.debug" content="debug"></a> debug</h5>
+
+<p><a id="ix_Conditional Compilation.-debug, compiler switch" content="-debug, compiler switch"></a> <code class="d_inline">debug</code> is useful during program development. The expressions and statements that are marked as <code class="d_inline">debug</code> are compiled into the program only when the <code class="d_inline">-debug</code> compiler switch is enabled:
+</p>
+
+<pre class="d_code"><span class="d_keyword">debug</span> <i>a_conditionally_compiled_expression</i>;
+
+<span class="d_keyword">debug</span> {
+    <span class="d_comment">// ... conditionally compiled code ...
+</span>
+} <span class="d_keyword">else</span> {
+    <span class="d_comment">// ... code that is compiled otherwise ...
+</span>}
+</pre>
+
+<p>The <code class="d_inline">else</code> clause is optional.
+</p>
+
+<p>Both the single expression and the code block above are compiled only when the <code class="d_inline">-debug</code> compiler switch is enabled.
+</p>
+
+<p>We have been adding statements into the programs, which printed messages like "adding", "subtracting", etc. to the output. Such messages (aka <i>logs</i> and <i>log</i> messages) are helpful in finding errors by visualizing the steps that are taken by the program.
+</p>
+
+<p>Remember the <code class="d_inline">binarySearch()</code> function from <a href="templates.html">the Templates chapter</a>. The following version of the function is intentionally incorrect:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_comment">// WARNING! This algorithm is wrong
+</span>size_t binarySearch(<span class="d_keyword">const</span> <span class="d_keyword">int</span>[] values, <span class="d_keyword">int</span> value) {
+    <span class="d_keyword">if</span> (values.length == 0) {
+        <span class="d_keyword">return</span> size_t.max;
+    }
+
+    <span class="d_keyword">immutable</span> midPoint = values.length / 2;
+
+    <span class="d_keyword">if</span> (value == values[midPoint]) {
+        <span class="d_keyword">return</span> midPoint;
+
+    } <span class="d_keyword">else</span> <span class="d_keyword">if</span> (value &lt; values[midPoint]) {
+        <span class="d_keyword">return</span> binarySearch(values[0 .. midPoint], value);
+
+    } <span class="d_keyword">else</span> {
+        <span class="d_keyword">return</span> binarySearch(values[midPoint + 1 .. $], value);
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> numbers = [ -100, 0, 1, 2, 7, 10, 42, 365, 1000 ];
+
+    <span class="d_keyword">auto</span> index = binarySearch(numbers, 42);
+    writeln(<span class="d_string">"Index: "</span>, index);
+}
+</pre>
+
+<p>Although the index of 42 is 6, the program incorrectly reports 1:
+</p>
+
+<pre class="shell">Index: 1
+</pre>
+
+<p>One way of locating the bug in the program is to insert lines that would print messages to the output:
+</p>
+
+<pre class="d_code">size_t binarySearch(<span class="d_keyword">const</span> <span class="d_keyword">int</span>[] values, <span class="d_keyword">int</span> value) {
+    <span class="hilite">writefln</span>(<span class="d_string">"searching %s among %s"</span>, value, values);
+
+    <span class="d_keyword">if</span> (values.length == 0) {
+        <span class="hilite">writefln</span>(<span class="d_string">"%s not found"</span>, value);
+        <span class="d_keyword">return</span> size_t.max;
+    }
+
+    <span class="d_keyword">immutable</span> midPoint = values.length / 2;
+
+    <span class="hilite">writefln</span>(<span class="d_string">"considering index %s"</span>, midPoint);
+
+    <span class="d_keyword">if</span> (value == values[midPoint]) {
+        <span class="hilite">writefln</span>(<span class="d_string">"found %s at index %s"</span>, value, midPoint);
+        <span class="d_keyword">return</span> midPoint;
+
+    } <span class="d_keyword">else</span> <span class="d_keyword">if</span> (value &lt; values[midPoint]) {
+        <span class="hilite">writefln</span>(<span class="d_string">"must be in the first half"</span>);
+        <span class="d_keyword">return</span> binarySearch(values[0 .. midPoint], value);
+
+    } <span class="d_keyword">else</span> {
+        <span class="hilite">writefln</span>(<span class="d_string">"must be in the second half"</span>);
+        <span class="d_keyword">return</span> binarySearch(values[midPoint + 1 .. $], value);
+    }
+}
+</pre>
+
+<p>The output of the program now includes steps that the program takes:
+</p>
+
+<pre class="shell">searching 42 among [-100, 0, 1, 2, 7, 10, 42, 365, 1000]
+considering index 4
+must be in the second half
+searching 42 among [10, 42, 365, 1000]
+considering index 2
+must be in the first half
+searching 42 among [10, 42]
+considering index 1
+found 42 at index 1
+Index: 1
+</pre>
+
+<p>Let's assume that the previous output does indeed help the programmer locate the bug. It is obvious that the <code class="d_inline">writefln()</code> expressions are not needed anymore once the bug has been located and fixed. However, removing those lines can also be seen as wasteful, because they might be useful again in the future.
+</p>
+
+<p>Instead of being removed altogether, the lines can be marked as <code class="d_inline">debug</code> instead:
+</p>
+
+<pre class="d_code">        <span class="hilite"><span class="d_keyword">debug</span></span> writefln(<span class="d_string">"%s not found"</span>, value);
+</pre>
+
+<p>Such lines are included in the program only when the <code class="d_inline">-debug</code> compiler switch is enabled:
+</p>
+
+<pre class="shell">$ dmd deneme.d -ofdeneme -w <span class="hilite">-debug</span>
+</pre>
+
+<h6><code class="d_inline">debug(<i>tag</i>)</code></h6>
+
+<p>If there are many <code class="d_inline">debug</code> keywords in the program, possibly in unrelated parts, the output may become too crowded. To avoid that, the <code class="d_inline">debug</code> statements can be given names (tags) to be included in the program selectively:
+</p>
+
+<pre class="d_code">        <span class="hilite"><span class="d_keyword">debug</span>(binarySearch)</span> writefln(<span class="d_string">"%s not found"</span>, value);
+</pre>
+
+<p>The tagged <code class="d_inline">debug</code> statements are enabled by the <code class="d_inline">-debug=<i>tag</i></code> compiler switch:
+</p>
+
+<pre class="shell">$ dmd deneme.d -ofdeneme -w <span class="hilite">-debug=binarySearch</span>
+</pre>
+
+<p><code class="d_inline">debug</code> blocks can have tags as well:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">debug</span>(binarySearch) {
+        <span class="d_comment">// ...
+</span>    }
+</pre>
+
+<p>It is possible to enable more than one <code class="d_inline">debug</code> tag at a time:
+</p>
+
+<pre class="shell">$ dmd deneme.d -w <span class="hilite">-debug=binarySearch</span> <span class="hilite">-debug=stackContainer</span>
+</pre>
+
+<p>In that case both the <code class="d_inline">binarySearch</code> and the <code class="d_inline">stackContainer</code> debug statements and blocks would be included.
+</p>
+
+<h6><code class="d_inline">debug(<i>level</i>)</code></h6>
+
+<p>Sometimes it is more useful to associate <code class="d_inline">debug</code> statements by numerical levels. Increasing levels can provide more detailed information:
+</p>
+
+<pre class="d_code"><span class="hilite"><span class="d_keyword">debug</span></span> <span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> myFunction(string fileName, <span class="d_keyword">int</span>[] values) {
+    <span class="hilite"><span class="d_keyword">debug</span>(1)</span> writeln(<span class="d_string">"entered myFunction"</span>);
+
+    <span class="hilite"><span class="d_keyword">debug</span>(2)</span> {
+        writeln(<span class="d_string">"the arguments:"</span>);
+        writeln(<span class="d_string">"  file name: "</span>, fileName);
+
+        <span class="d_keyword">foreach</span> (i, value; values) {
+            writefln(<span class="d_string">"  %4s: %s"</span>, i, value);
+        }
+    }
+
+    <span class="d_comment">// ... the implementation of the function ...
+</span>}
+
+<span class="d_keyword">void</span> main() {
+    myFunction(<span class="d_string">"deneme.txt"</span>, [ 10, 4, 100 ]);
+}
+</pre>
+
+<p>The <code class="d_inline">debug</code> expressions and blocks that are lower than or equal to the specified level would be compiled:
+</p>
+
+<pre class="shell">$ dmd deneme.d -w <span class="hilite">-debug=1</span>
+$ ./deneme 
+<span class="shell_observed">entered myFunction</span>
+</pre>
+
+<p>The following compilation would provide more information:
+</p>
+
+<pre class="shell">$ dmd deneme.d -w <span class="hilite">-debug=2</span>
+$ ./deneme 
+<span class="shell_observed">entered myFunction
+the arguments:
+  file name: deneme.txt
+     0: 10
+     1: 4
+     2: 100</span>
+</pre>
+
+<h5 class="subsection"><a id="ix_Conditional Compilation.version" content="version"></a> <code class="d_inline">version(<i>tag</i>)</code> and <code class="d_inline">version(<i>level</i>)</code></h5>
+
+<p><code class="d_inline">version</code> is similar to <code class="d_inline">debug</code> and is used in the same way:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">version</span>(testRelease) <span class="d_comment">/* ... an expression ... */</span>;
+
+    <span class="d_keyword">version</span>(schoolRelease) {
+        <span class="d_comment">/* ... expressions that are related to the version of
+         *     this program that is presumably shipped to schools ... */</span>
+
+    } <span class="d_keyword">else</span> {
+        <span class="d_comment">// ... code compiled otherwise ...
+</span>    }
+
+    <span class="d_keyword">version</span>(1) aVariable = 5;
+
+    <span class="d_keyword">version</span>(2) {
+        <span class="d_comment">// ... a feature of version 2 ...
+</span>    }
+</pre>
+
+<p>The <code class="d_inline">else</code> clause is optional.
+</p>
+
+<p>Although <code class="d_inline">version</code> works essentially the same as <code class="d_inline">debug</code>, having separate keywords helps distinguish their unrelated uses.
+</p>
+
+<p><a id="ix_Conditional Compilation.-version, compiler switch" content="-version, compiler switch"></a> As with <code class="d_inline">debug</code>, more than one <code class="d_inline">version</code> can be enabled:
+</p>
+
+<pre class="shell">$ dmd deneme.d -w <span class="hilite">-version=record</span> <span class="hilite">-version=precise_calculation</span>
+</pre>
+
+<p>There are many predefined <code class="d_inline">version</code> tags, the complete list of which is available at the <a href="http://dlang.org/version.html">Conditional Compilation specification</a>. The following short list is just a sampling:
+</p>
+
+<table class="full" border="1" cellpadding="4" cellspacing="0"><caption>Predefined <code class="d_inline">version</code> tags</caption>
+
+<tr><td>The compiler</td> <td><b>DigitalMars GNU LDC SDC</b></td></tr>
+
+<tr><td>The operating system</td> <td><b>Windows Win32 Win64 linux OSX Posix FreeBSD
+OpenBSD
+NetBSD
+DragonFlyBSD
+BSD
+Solaris
+AIX
+Haiku
+SkyOS
+SysV3
+SysV4
+Hurd</b></td></tr>
+
+<tr><td>CPU endianness</td><td><b>LittleEndian BigEndian</b></td></tr>
+<tr><td>Enabled compiler switches</td> <td> <b>D_Coverage D_Ddoc D_InlineAsm_X86 D_InlineAsm_X86_64 D_LP64 D_PIC D_X32
+D_HardFloat
+D_SoftFloat
+D_SIMD
+D_Version2
+D_NoBoundsChecks
+unittest
+assert
+</b></td></tr>
+
+<tr><td>CPU architecture</td> <td><b>X86 X86_64</b></td></tr>
+<tr><td>Platform</td> <td><b>Android
+Cygwin
+MinGW
+ARM
+ARM_Thumb
+ARM_Soft
+ARM_SoftFP
+ARM_HardFP
+ARM64
+PPC
+PPC_SoftFP
+PPC_HardFP
+PPC64
+IA64
+MIPS
+MIPS32
+MIPS64
+MIPS_O32
+MIPS_N32
+MIPS_O64
+MIPS_N64
+MIPS_EABI
+MIPS_NoFloat
+MIPS_SoftFloat
+MIPS_HardFloat
+SPARC
+SPARC_V8Plus
+SPARC_SoftFP
+SPARC_HardFP
+SPARC64
+S390
+S390X
+HPPA
+HPPA64
+SH
+SH64
+Alpha
+Alpha_SoftFP
+Alpha_HardFP
+</b></td></tr>
+<tr><td>...</td> <td>...</td></tr>
+</table>
+
+<p>In addition, there are the following two special <code class="d_inline">version</code> tags:
+</p>
+
+<ul><li><a id="ix_Conditional Compilation.none, version" content="none, version"></a> <code class="d_inline">none</code>: This tag is never defined; it is useful for disabling code blocks.</li>
+<li><a id="ix_Conditional Compilation.all, version" content="all, version"></a> <code class="d_inline">all</code>: This tag is always defined; it is useful for enabling code blocks.</li>
+</ul>
+
+<p>As an example of how predefined <code class="d_inline">version</code> tags are used, the following is an excerpt (formatted differently here) from the <code class="d_inline">std.ascii</code> module, which is for determining the newline character sequence for the system (<code class="d_inline">static assert</code> will be explained later below):
+</p>
+
+<pre class="d_code"><span class="d_keyword">version</span>(Windows) {
+    <span class="d_keyword">immutable</span> newline = <span class="d_string">"\r\n"</span>;
+
+} <span class="d_keyword">else</span> <span class="d_keyword">version</span>(Posix) {
+    <span class="d_keyword">immutable</span> newline = <span class="d_string">"\n"</span>;
+
+} <span class="d_keyword">else</span> {
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(0, <span class="d_string">"Unsupported OS"</span>);
+}
+</pre>
+
+<h5 class="subsection">Assigning identifiers to <code class="d_inline">debug</code> and <code class="d_inline">version</code></h5>
+
+<p>Similar to variables, <code class="d_inline">debug</code> and <code class="d_inline">version</code> can be assigned identifiers. Unlike variables, this assignment does not change any value, it activates the specified identifier <i>as well</i>.
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">debug</span>(everything) {
+    <span class="d_keyword">debug</span> <span class="hilite">=</span> binarySearch;
+    <span class="d_keyword">debug</span> <span class="hilite">=</span> stackContainer;
+    <span class="d_keyword">version</span> <span class="hilite">=</span> testRelease;
+    <span class="d_keyword">version</span> <span class="hilite">=</span> schoolRelease;
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">debug</span>(binarySearch) writeln(<span class="d_string">"binarySearch is active"</span>);
+    <span class="d_keyword">debug</span>(stackContainer) writeln(<span class="d_string">"stackContainer is active"</span>);
+
+    <span class="d_keyword">version</span>(testRelease) writeln(<span class="d_string">"testRelease is active"</span>);
+    <span class="d_keyword">version</span>(schoolRelease) writeln(<span class="d_string">"schoolRelease is active"</span>);
+}
+</pre>
+
+<p>The assignments inside the <code class="d_inline">debug(everything)</code> block above activates all of the specified identifiers:
+</p>
+
+<pre class="shell">$ dmd deneme.d -w -debug=everything
+$ ./deneme 
+<span class="shell_observed">binarySearch is active
+stackContainer is active
+testRelease is active
+schoolRelease is active</span>
+</pre>
+
+<h5 class="subsection"><a id="ix_Conditional Compilation.static if" content="static if"></a> <a id="ix_Conditional Compilation.if, static" content="if, static"></a> <code class="d_inline">static if</code></h5>
+
+<p><code class="d_inline">static if</code> is the compile time equivalent of the <code class="d_inline">if</code> statement.
+</p>
+
+<p>Just like the <code class="d_inline">if</code> statement, <code class="d_inline">static if</code> takes a logical expression and evaluates it. Unlike the <code class="d_inline">if</code> statement, <code class="d_inline">static if</code> is not about execution flow; rather, it determines whether a piece of code should be included in the program or not.
+</p>
+
+<p>The logical expression must be evaluable at compile time. If the logical expression evaluates to <code class="d_inline">true</code>, the code inside the <code class="d_inline">static if</code> gets compiled. If the condition is <code class="d_inline">false</code>, the code is not included in the program as if it has never been written. The logical expressions commonly take advantage of the <code class="d_inline">is</code> expression and <code class="d_inline">__traits</code>.
+</p>
+
+<p><code class="d_inline">static if</code> can appear at module scope or inside definitions of <code class="d_inline">struct</code>, <code class="d_inline">class</code>, template, etc. Optionally, there may be <code class="d_inline">else</code> clauses as well.
+</p>
+
+<p>Let's use <code class="d_inline">static if</code> with a simple template, making use of the <code class="d_inline">is</code> expression. We will see other examples of <code class="d_inline">static if</code> in the next chapter:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">struct</span> MyType(T) {
+    <span class="d_keyword">static</span> <span class="d_keyword">if</span> (<span class="d_keyword">is</span> (T == <span class="d_keyword">float</span>)) {
+        <span class="d_keyword">alias</span> ResultType = <span class="d_keyword">double</span>;
+
+    } <span class="hilite"><span class="d_keyword">else</span> <span class="d_keyword">static</span> <span class="d_keyword">if</span></span> (<span class="d_keyword">is</span> (T == <span class="d_keyword">double</span>)) {
+        <span class="d_keyword">alias</span> ResultType = <span class="d_keyword">real</span>;
+
+    } <span class="d_keyword">else</span> {
+        <span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">false</span>, T.stringof ~ <span class="d_string">" is not supported"</span>);
+    }
+
+    ResultType doWork() {
+        writefln(<span class="d_string">"The return type for %s is %s."</span>,
+                 T.stringof, ResultType.stringof);
+        ResultType result;
+        <span class="d_comment">// ...
+</span>        <span class="d_keyword">return</span> result;
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> f = MyType!<span class="d_keyword">float</span>();
+    f.doWork();
+
+    <span class="d_keyword">auto</span> d = MyType!<span class="d_keyword">double</span>();
+    d.doWork();
+}
+</pre>
+
+<p>According to the code, <code class="d_inline">MyType</code> can be used only with two types: <code class="d_inline">float</code> or <code class="d_inline">double</code>. The return type of <code class="d_inline">doWork()</code> is chosen depending on whether the template is instantiated for <code class="d_inline">float</code> or <code class="d_inline">double</code>:
+</p>
+
+<pre class="shell">The return type for float is double.
+The return type for double is real.
+</pre>
+
+<p>Note that one must write <code class="d_inline">else static if</code> when chaining <code class="d_inline">static if</code> clauses. Otherwise, writing <code class="d_inline">else if</code> would result in inserting that <code class="d_inline">if</code> conditional into the code, which would naturally be executed at run time.
+</p>
+
+<h5 class="subsection"><a id="ix_Conditional Compilation.static assert" content="static assert"></a> <code class="d_inline">static assert</code></h5>
+
+<p>Although it is not a conditional compilation feature, I have decided to introduce <code class="d_inline">static assert</code> here.
+</p>
+
+<p><code class="d_inline">static assert</code> is the compile time equivalent of <code class="d_inline">assert</code>. If the conditional expression is <code class="d_inline">false</code>, the compilation gets aborted due to that assertion failure.
+</p>
+
+<p>Similar to <code class="d_inline">static if</code>, <code class="d_inline">static assert</code> can appear in any scope in the program.
+</p>
+
+<p>We have seen an example of <code class="d_inline">static assert</code> in the program above: There, compilation gets aborted if <code class="d_inline">T</code> is any type other than <code class="d_inline">float</code> or <code class="d_inline">double</code>:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> i = MyType!<span class="hilite"><span class="d_keyword">int</span></span>();
+</pre>
+
+<p>The compilation is aborted with the message that was given to <code class="d_inline">static assert</code>:
+</p>
+
+<pre class="shell">Error: static assert  "int is not supported"
+</pre>
+
+<p>As another example, let's assume that a specific algorithm can work only with types that are a multiple of a certain size. Such a condition can be ensured at compile time by a <code class="d_inline">static assert</code>:
+</p>
+
+<pre class="d_code">T myAlgorithm(T)(T value) {
+    <span class="d_comment">/* This algorithm requires that the size of type T is a
+     * multiple of 4. */</span>
+    <span class="d_keyword">static</span> <span class="d_keyword">assert</span>((T.sizeof % 4) == 0);
+
+    <span class="d_comment">// ...
+</span>}
+</pre>
+
+<p>If the function was called with a <code class="d_inline">char</code>, the compilation would be aborted with the following error message:
+</p>
+
+<pre class="shell">Error: static assert  (1LU == 0LU) is false
+</pre>
+
+<p>Such a test prevents the function from working with an incompatible type, potentially producing incorrect results.
+</p>
+
+<p><code class="d_inline">static assert</code> can be used with any logical expression that is evaluable at compile time.
+</p>
+
+<h5 class="subsection"><a id="ix_Conditional Compilation.type trait" content="type trait"></a> <a id="ix_Conditional Compilation.traits" content="traits"></a> Type traits</h5>
+
+<p><a id="ix_Conditional Compilation.__traits" content="__traits"></a> <a id="ix_Conditional Compilation.std.traits" content="std.traits"></a> The <code class="d_inline">__traits</code> keyword and the <code class="d_inline">std.traits</code> module provide information about types and expressions at compile time.
+</p>
+
+<p>Some information that is collected by the compiler is made available to the program by <code class="d_inline">__traits</code>. Its syntax includes a traits <i>keyword</i> and <i>parameters</i> that are relevant to that keyword:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">__traits</span>(<i>keyword</i>, <i>parameters</i>)
+</pre>
+
+<p><i>keyword</i> specifies the information that is being queried. The <i>parameters</i> are either types or expressions, meanings of which are determined by each particular keyword.
+</p>
+
+<p>The information that can be gathered by <code class="d_inline">__traits</code> is especially useful in templates. For example, the <code class="d_inline">isArithmetic</code> keyword can determine whether a particular template parameter <code class="d_inline">T</code> is an arithmetic type:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">static</span> <span class="d_keyword">if</span> (<span class="d_keyword">__traits</span>(<span class="hilite">isArithmetic</span>, T)) {
+        <span class="d_comment">// ... an arithmetic type ...
+</span>
+    } <span class="d_keyword">else</span> {
+        <span class="d_comment">// ... not an arithmetic type ...
+</span>    }
+</pre>
+
+<p>Similarly, the <code class="d_inline">std.traits</code> module provides information at compile time through its templates. For example, <code class="d_inline">std.traits.isSomeChar</code> returns <code class="d_inline">true</code> if its template parameter is a character type:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.traits;
+
+<span class="d_comment">// ...
+</span>
+    <span class="d_keyword">static</span> <span class="d_keyword">if</span> (<span class="hilite">isSomeChar</span>!T) {
+        <span class="d_comment">// ... char, wchar, or dchar ...
+</span>
+    } <span class="d_keyword">else</span> {
+        <span class="d_comment">// ... not a character type ...
+</span>    }
+</pre>
+
+<p>Please refer to <a href="http://dlang.org/traits.html">the <code class="d_inline">__traits</code> documentation</a> and <a href="http://dlang.org/phobos/std_traits.html">the <code class="d_inline">std.traits</code> documentation</a> for more information.
+</p>
+
+<h5 class="subsection">Summary</h5>
+
+<ul>
+<li>Code that is defined as <code class="d_inline">debug</code> is included to the program only if the <code class="d_inline">-debug</code> compiler switch is used.
+</li>
+
+<li>Code that is defined as <code class="d_inline">version</code> is included to the program only if a corresponding <code class="d_inline">-version</code> compiler switch is used.
+</li>
+
+<li><code class="d_inline">static if</code> is similar to an <code class="d_inline">if</code> statement that is executed at compile time. It introduces code to the program depending on certain compile-time conditions.
+</li>
+
+<li><code class="d_inline">static assert</code> validates assumptions about code at compile time.
+</li>
+
+<li><code class="d_inline">__traits</code> and <code class="d_inline">std.traits</code> provide information about types at compile time.</li>
+
+</ul>
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on Mon Apr  1 20:41:04 2024
+</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

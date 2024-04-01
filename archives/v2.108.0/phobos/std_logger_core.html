@@ -1,0 +1,1059 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>std.logger.core - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='std.logger.core' class='std'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href=".."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../spec/glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Google Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option selected value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+<div class="subnav-helper"></div> <div class="subnav">    <div class="head">        <h2>Library Reference</h2>
+        <p><span class="smallprint">version 2.108.0 <span class="separator"><br></span>
+            </span>
+        </p>
+        <p><a href="index.html">overview</a></p>
+    </div>
+    <ul>
+
+<li><a href='object.html'><span><em class="tt">object</em></span></a></li>
+
+<li class='expand-container modlist-submenu-std'><a class='expand-toggle' href='#'><span><em class="tt">std</em></span></a>
+<ul><li>  <a href="std_algorithm.html" title="std.algorithm"><span class="d_inlinecode donthyphenate notranslate">algorithm</span></a><ul><li>    <a href="std_algorithm_comparison.html" title="std.algorithm.comparison"><span class="d_inlinecode donthyphenate notranslate">comparison</span></a></li><li>    <a href="std_algorithm_iteration.html" title="std.algorithm.iteration"><span class="d_inlinecode donthyphenate notranslate">iteration</span></a></li><li>    <a href="std_algorithm_mutation.html" title="std.algorithm.mutation"><span class="d_inlinecode donthyphenate notranslate">mutation</span></a></li><li>    <a href="std_algorithm_searching.html" title="std.algorithm.searching"><span class="d_inlinecode donthyphenate notranslate">searching</span></a></li><li>    <a href="std_algorithm_setops.html" title="std.algorithm.setops"><span class="d_inlinecode donthyphenate notranslate">setops</span></a></li><li>    <a href="std_algorithm_sorting.html" title="std.algorithm.sorting"><span class="d_inlinecode donthyphenate notranslate">sorting</span></a>
+  </li></ul></li><li>  <a href="std_array.html" title="std.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>  <a href="std_ascii.html" title="std.ascii"><span class="d_inlinecode donthyphenate notranslate">ascii</span></a></li><li>  <a href="std_base64.html" title="std.base64"><span class="d_inlinecode donthyphenate notranslate">base64</span></a></li><li>  <a href="std_bigint.html" title="std.bigint"><span class="d_inlinecode donthyphenate notranslate">bigint</span></a></li><li>  <a href="std_bitmanip.html" title="std.bitmanip"><span class="d_inlinecode donthyphenate notranslate">bitmanip</span></a></li><li>  <a href="std_checkedint.html" title="std.checkedint"><span class="d_inlinecode donthyphenate notranslate">checkedint</span></a></li><li>  <a href="std_compiler.html" title="std.compiler"><span class="d_inlinecode donthyphenate notranslate">compiler</span></a></li><li>  <a href="std_complex.html" title="std.complex"><span class="d_inlinecode donthyphenate notranslate">complex</span></a></li><li>  <a href="std_concurrency.html" title="std.concurrency"><span class="d_inlinecode donthyphenate notranslate">concurrency</span></a></li><li>  <a href="std_container.html" title="std.container"><span class="d_inlinecode donthyphenate notranslate">container</span></a><ul><li>    <a href="std_container_array.html" title="std.container.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>    <a href="std_container_binaryheap.html" title="std.container.binaryheap"><span class="d_inlinecode donthyphenate notranslate">binaryheap</span></a></li><li>    <a href="std_container_dlist.html" title="std.container.dlist"><span class="d_inlinecode donthyphenate notranslate">dlist</span></a></li><li>    <a href="std_container_rbtree.html" title="std.container.rbtree"><span class="d_inlinecode donthyphenate notranslate">rbtree</span></a></li><li>    <a href="std_container_slist.html" title="std.container.slist"><span class="d_inlinecode donthyphenate notranslate">slist</span></a></li><li>    <a href="std_container_util.html" title="std.container.util"><span class="d_inlinecode donthyphenate notranslate">util</span></a>
+  </li></ul></li><li>  <a href="std_conv.html" title="std.conv"><span class="d_inlinecode donthyphenate notranslate">conv</span></a></li><li>  <a href="std_csv.html" title="std.csv"><span class="d_inlinecode donthyphenate notranslate">csv</span></a></li><li>  <a href="std_datetime.html" title="std.datetime"><span class="d_inlinecode donthyphenate notranslate">datetime</span></a><ul><li>    <a href="std_datetime_date.html" title="std.datetime.date"><span class="d_inlinecode donthyphenate notranslate">date</span></a></li><li>    <a href="std_datetime_interval.html" title="std.datetime.interval"><span class="d_inlinecode donthyphenate notranslate">interval</span></a></li><li>    <a href="std_datetime_stopwatch.html" title="std.datetime.stopwatch"><span class="d_inlinecode donthyphenate notranslate">stopwatch</span></a></li><li>    <a href="std_datetime_systime.html" title="std.datetime.systime"><span class="d_inlinecode donthyphenate notranslate">systime</span></a></li><li>    <a href="std_datetime_timezone.html" title="std.datetime.timezone"><span class="d_inlinecode donthyphenate notranslate">timezone</span></a>
+  </li></ul></li><li>  <a href="std_demangle.html" title="std.demangle"><span class="d_inlinecode donthyphenate notranslate">demangle</span></a></li><li>  <a href="std_digest.html" title="std.digest"><span class="d_inlinecode donthyphenate notranslate">digest</span></a><ul><li>    <a href="std_digest_crc.html" title="std.digest.crc"><span class="d_inlinecode donthyphenate notranslate">crc</span></a></li><li>    <a href="std_digest_hmac.html" title="std.digest.hmac"><span class="d_inlinecode donthyphenate notranslate">hmac</span></a></li><li>    <a href="std_digest_md.html" title="std.digest.md"><span class="d_inlinecode donthyphenate notranslate">md</span></a></li><li>    <a href="std_digest_murmurhash.html" title="std.digest.murmurhash"><span class="d_inlinecode donthyphenate notranslate">murmurhash</span></a></li><li>    <a href="std_digest_ripemd.html" title="std.digest.ripemd"><span class="d_inlinecode donthyphenate notranslate">ripemd</span></a></li><li>    <a href="std_digest_sha.html" title="std.digest.sha"><span class="d_inlinecode donthyphenate notranslate">sha</span></a>
+  </li></ul></li><li>  <a href="std_encoding.html" title="std.encoding"><span class="d_inlinecode donthyphenate notranslate">encoding</span></a></li><li>  <a href="std_exception.html" title="std.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">experimental</span></h7><ul><li>    <a href="std_experimental_allocator.html" title="std.experimental.allocator"><span class="d_inlinecode donthyphenate notranslate">allocator</span></a><ul><li>      <a href="std_experimental_allocator_building_blocks.html" title="std.experimental.allocator.building_blocks"><span class="d_inlinecode donthyphenate notranslate">building_blocks</span></a><ul><li>        <a href="std_experimental_allocator_building_blocks_affix_allocator.html" title="std.experimental.allocator.building_blocks.affix_allocator"><span class="d_inlinecode donthyphenate notranslate">affix_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_aligned_block_list.html" title="std.experimental.allocator.building_blocks.aligned_block_list"><span class="d_inlinecode donthyphenate notranslate">aligned_block_list</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_allocator_list.html" title="std.experimental.allocator.building_blocks.allocator_list"><span class="d_inlinecode donthyphenate notranslate">allocator_list</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_ascending_page_allocator.html" title="std.experimental.allocator.building_blocks.ascending_page_allocator"><span class="d_inlinecode donthyphenate notranslate">ascending_page_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_bitmapped_block.html" title="std.experimental.allocator.building_blocks.bitmapped_block"><span class="d_inlinecode donthyphenate notranslate">bitmapped_block</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_bucketizer.html" title="std.experimental.allocator.building_blocks.bucketizer"><span class="d_inlinecode donthyphenate notranslate">bucketizer</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_fallback_allocator.html" title="std.experimental.allocator.building_blocks.fallback_allocator"><span class="d_inlinecode donthyphenate notranslate">fallback_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_free_list.html" title="std.experimental.allocator.building_blocks.free_list"><span class="d_inlinecode donthyphenate notranslate">free_list</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_free_tree.html" title="std.experimental.allocator.building_blocks.free_tree"><span class="d_inlinecode donthyphenate notranslate">free_tree</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_kernighan_ritchie.html" title="std.experimental.allocator.building_blocks.kernighan_ritchie"><span class="d_inlinecode donthyphenate notranslate">kernighan_ritchie</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_null_allocator.html" title="std.experimental.allocator.building_blocks.null_allocator"><span class="d_inlinecode donthyphenate notranslate">null_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_quantizer.html" title="std.experimental.allocator.building_blocks.quantizer"><span class="d_inlinecode donthyphenate notranslate">quantizer</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_region.html" title="std.experimental.allocator.building_blocks.region"><span class="d_inlinecode donthyphenate notranslate">region</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_scoped_allocator.html" title="std.experimental.allocator.building_blocks.scoped_allocator"><span class="d_inlinecode donthyphenate notranslate">scoped_allocator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_segregator.html" title="std.experimental.allocator.building_blocks.segregator"><span class="d_inlinecode donthyphenate notranslate">segregator</span></a></li><li>        <a href="std_experimental_allocator_building_blocks_stats_collector.html" title="std.experimental.allocator.building_blocks.stats_collector"><span class="d_inlinecode donthyphenate notranslate">stats_collector</span></a>
+      </li></ul></li><li>      <a href="std_experimental_allocator_common.html" title="std.experimental.allocator.common"><span class="d_inlinecode donthyphenate notranslate">common</span></a></li><li>      <a href="std_experimental_allocator_gc_allocator.html" title="std.experimental.allocator.gc_allocator"><span class="d_inlinecode donthyphenate notranslate">gc_allocator</span></a></li><li>      <a href="std_experimental_allocator_mallocator.html" title="std.experimental.allocator.mallocator"><span class="d_inlinecode donthyphenate notranslate">mallocator</span></a></li><li>      <a href="std_experimental_allocator_mmap_allocator.html" title="std.experimental.allocator.mmap_allocator"><span class="d_inlinecode donthyphenate notranslate">mmap_allocator</span></a></li><li>      <a href="std_experimental_allocator_showcase.html" title="std.experimental.allocator.showcase"><span class="d_inlinecode donthyphenate notranslate">showcase</span></a></li><li>      <a href="std_experimental_allocator_typed.html" title="std.experimental.allocator.typed"><span class="d_inlinecode donthyphenate notranslate">typed</span></a>
+    </li></ul></li><li>    <a href="std_experimental_checkedint.html" title="std.experimental.checkedint"><span class="d_inlinecode donthyphenate notranslate">checkedint</span></a></li><li>    <a href="std_experimental_logger.html" title="std.experimental.logger"><span class="d_inlinecode donthyphenate notranslate">logger</span></a><ul><li>      <a href="std_experimental_logger_core.html" title="std.experimental.logger.core"><span class="d_inlinecode donthyphenate notranslate">core</span></a></li><li>      <a href="std_experimental_logger_filelogger.html" title="std.experimental.logger.filelogger"><span class="d_inlinecode donthyphenate notranslate">filelogger</span></a></li><li>      <a href="std_experimental_logger_multilogger.html" title="std.experimental.logger.multilogger"><span class="d_inlinecode donthyphenate notranslate">multilogger</span></a></li><li>      <a href="std_experimental_logger_nulllogger.html" title="std.experimental.logger.nulllogger"><span class="d_inlinecode donthyphenate notranslate">nulllogger</span></a>
+    </li></ul>
+  </li></ul></li><li>  <a href="std_file.html" title="std.file"><span class="d_inlinecode donthyphenate notranslate">file</span></a></li><li>  <a href="std_format.html" title="std.format"><span class="d_inlinecode donthyphenate notranslate">format</span></a><ul><li>    <h7><span class="d_inlinecode donthyphenate notranslate">internal</span></h7><ul><li>      <a href="std_format_internal_floats.html" title="std.format.internal.floats"><span class="d_inlinecode donthyphenate notranslate">floats</span></a></li><li>      <a href="std_format_internal_read.html" title="std.format.internal.read"><span class="d_inlinecode donthyphenate notranslate">read</span></a></li><li>      <a href="std_format_internal_write.html" title="std.format.internal.write"><span class="d_inlinecode donthyphenate notranslate">write</span></a>
+    </li></ul></li><li>    <a href="std_format_read.html" title="std.format.read"><span class="d_inlinecode donthyphenate notranslate">read</span></a></li><li>    <a href="std_format_spec.html" title="std.format.spec"><span class="d_inlinecode donthyphenate notranslate">spec</span></a></li><li>    <a href="std_format_write.html" title="std.format.write"><span class="d_inlinecode donthyphenate notranslate">write</span></a>
+  </li></ul></li><li>  <a href="std_functional.html" title="std.functional"><span class="d_inlinecode donthyphenate notranslate">functional</span></a></li><li>  <a href="std_getopt.html" title="std.getopt"><span class="d_inlinecode donthyphenate notranslate">getopt</span></a></li><li>  <a href="std_int128.html" title="std.int128"><span class="d_inlinecode donthyphenate notranslate">int128</span></a></li><li>  <a href="std_json.html" title="std.json"><span class="d_inlinecode donthyphenate notranslate">json</span></a></li><li>  <a href="std_logger.html" title="std.logger"><span class="d_inlinecode donthyphenate notranslate">logger</span></a><ul><li>    <a href="std_logger_core.html" title="std.logger.core"><span class="d_inlinecode donthyphenate notranslate">core</span></a></li><li>    <a href="std_logger_filelogger.html" title="std.logger.filelogger"><span class="d_inlinecode donthyphenate notranslate">filelogger</span></a></li><li>    <a href="std_logger_multilogger.html" title="std.logger.multilogger"><span class="d_inlinecode donthyphenate notranslate">multilogger</span></a></li><li>    <a href="std_logger_nulllogger.html" title="std.logger.nulllogger"><span class="d_inlinecode donthyphenate notranslate">nulllogger</span></a>
+  </li></ul></li><li>  <a href="std_math.html" title="std.math"><span class="d_inlinecode donthyphenate notranslate">math</span></a><ul><li>    <a href="std_math_algebraic.html" title="std.math.algebraic"><span class="d_inlinecode donthyphenate notranslate">algebraic</span></a></li><li>    <a href="std_math_constants.html" title="std.math.constants"><span class="d_inlinecode donthyphenate notranslate">constants</span></a></li><li>    <a href="std_math_exponential.html" title="std.math.exponential"><span class="d_inlinecode donthyphenate notranslate">exponential</span></a></li><li>    <a href="std_math_hardware.html" title="std.math.hardware"><span class="d_inlinecode donthyphenate notranslate">hardware</span></a></li><li>    <a href="std_math_operations.html" title="std.math.operations"><span class="d_inlinecode donthyphenate notranslate">operations</span></a></li><li>    <a href="std_math_remainder.html" title="std.math.remainder"><span class="d_inlinecode donthyphenate notranslate">remainder</span></a></li><li>    <a href="std_math_rounding.html" title="std.math.rounding"><span class="d_inlinecode donthyphenate notranslate">rounding</span></a></li><li>    <a href="std_math_traits.html" title="std.math.traits"><span class="d_inlinecode donthyphenate notranslate">traits</span></a></li><li>    <a href="std_math_trigonometry.html" title="std.math.trigonometry"><span class="d_inlinecode donthyphenate notranslate">trigonometry</span></a>
+  </li></ul></li><li>  <a href="std_mathspecial.html" title="std.mathspecial"><span class="d_inlinecode donthyphenate notranslate">mathspecial</span></a></li><li>  <a href="std_meta.html" title="std.meta"><span class="d_inlinecode donthyphenate notranslate">meta</span></a></li><li>  <a href="std_mmfile.html" title="std.mmfile"><span class="d_inlinecode donthyphenate notranslate">mmfile</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">net</span></h7><ul><li>    <a href="std_net_curl.html" title="std.net.curl"><span class="d_inlinecode donthyphenate notranslate">curl</span></a></li><li>    <a href="std_net_isemail.html" title="std.net.isemail"><span class="d_inlinecode donthyphenate notranslate">isemail</span></a>
+  </li></ul></li><li>  <a href="std_numeric.html" title="std.numeric"><span class="d_inlinecode donthyphenate notranslate">numeric</span></a></li><li>  <a href="std_outbuffer.html" title="std.outbuffer"><span class="d_inlinecode donthyphenate notranslate">outbuffer</span></a></li><li>  <a href="std_parallelism.html" title="std.parallelism"><span class="d_inlinecode donthyphenate notranslate">parallelism</span></a></li><li>  <a href="std_path.html" title="std.path"><span class="d_inlinecode donthyphenate notranslate">path</span></a></li><li>  <a href="std_process.html" title="std.process"><span class="d_inlinecode donthyphenate notranslate">process</span></a></li><li>  <a href="std_random.html" title="std.random"><span class="d_inlinecode donthyphenate notranslate">random</span></a></li><li>  <a href="std_range.html" title="std.range"><span class="d_inlinecode donthyphenate notranslate">range</span></a><ul><li>    <a href="std_range_interfaces.html" title="std.range.interfaces"><span class="d_inlinecode donthyphenate notranslate">interfaces</span></a></li><li>    <a href="std_range_primitives.html" title="std.range.primitives"><span class="d_inlinecode donthyphenate notranslate">primitives</span></a>
+  </li></ul></li><li>  <a href="std_regex.html" title="std.regex"><span class="d_inlinecode donthyphenate notranslate">regex</span></a></li><li>  <a href="std_signals.html" title="std.signals"><span class="d_inlinecode donthyphenate notranslate">signals</span></a></li><li>  <a href="std_socket.html" title="std.socket"><span class="d_inlinecode donthyphenate notranslate">socket</span></a></li><li>  <a href="std_stdint.html" title="std.stdint"><span class="d_inlinecode donthyphenate notranslate">stdint</span></a></li><li>  <a href="std_stdio.html" title="std.stdio"><span class="d_inlinecode donthyphenate notranslate">stdio</span></a></li><li>  <a href="std_string.html" title="std.string"><span class="d_inlinecode donthyphenate notranslate">string</span></a></li><li>  <a href="std_sumtype.html" title="std.sumtype"><span class="d_inlinecode donthyphenate notranslate">sumtype</span></a></li><li>  <a href="std_system.html" title="std.system"><span class="d_inlinecode donthyphenate notranslate">system</span></a></li><li>  <a href="std_traits.html" title="std.traits"><span class="d_inlinecode donthyphenate notranslate">traits</span></a></li><li>  <a href="std_typecons.html" title="std.typecons"><span class="d_inlinecode donthyphenate notranslate">typecons</span></a></li><li>  <a href="std_uni.html" title="std.uni"><span class="d_inlinecode donthyphenate notranslate">uni</span></a></li><li>  <a href="std_uri.html" title="std.uri"><span class="d_inlinecode donthyphenate notranslate">uri</span></a></li><li>  <a href="std_utf.html" title="std.utf"><span class="d_inlinecode donthyphenate notranslate">utf</span></a></li><li>  <a href="std_uuid.html" title="std.uuid"><span class="d_inlinecode donthyphenate notranslate">uuid</span></a></li><li>  <a href="std_variant.html" title="std.variant"><span class="d_inlinecode donthyphenate notranslate">variant</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">windows</span></h7><ul><li>    <a href="std_windows_charset.html" title="std.windows.charset"><span class="d_inlinecode donthyphenate notranslate">charset</span></a></li><li>    <a href="std_windows_syserror.html" title="std.windows.syserror"><span class="d_inlinecode donthyphenate notranslate">syserror</span></a>
+  </li></ul></li><li>  <a href="std_zip.html" title="std.zip"><span class="d_inlinecode donthyphenate notranslate">zip</span></a></li><li>  <a href="std_zlib.html" title="std.zlib"><span class="d_inlinecode donthyphenate notranslate">zlib</span></a>
+</li></ul>
+</li>
+
+<li class='expand-container modlist-submenu-etc'><a class='expand-toggle' href='#'><span><em class="tt">etc</em></span></a>
+<ul><li>  <h7><span class="d_inlinecode donthyphenate notranslate">c</span></h7><ul><li>    <a href="etc_c_curl.html" title="etc.c.curl"><span class="d_inlinecode donthyphenate notranslate">curl</span></a></li><li>    <h7><span class="d_inlinecode donthyphenate notranslate">odbc</span></h7><ul><li>      <a href="etc_c_odbc_sql.html" title="etc.c.odbc.sql"><span class="d_inlinecode donthyphenate notranslate">sql</span></a></li><li>      <a href="etc_c_odbc_sqlext.html" title="etc.c.odbc.sqlext"><span class="d_inlinecode donthyphenate notranslate">sqlext</span></a></li><li>      <a href="etc_c_odbc_sqltypes.html" title="etc.c.odbc.sqltypes"><span class="d_inlinecode donthyphenate notranslate">sqltypes</span></a></li><li>      <a href="etc_c_odbc_sqlucode.html" title="etc.c.odbc.sqlucode"><span class="d_inlinecode donthyphenate notranslate">sqlucode</span></a>
+    </li></ul></li><li>    <a href="etc_c_sqlite3.html" title="etc.c.sqlite3"><span class="d_inlinecode donthyphenate notranslate">sqlite3</span></a></li><li>    <a href="etc_c_zlib.html" title="etc.c.zlib"><span class="d_inlinecode donthyphenate notranslate">zlib</span></a>
+  </li></ul></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">valgrind</span></h7><ul><li>    <a href="etc_valgrind_valgrind.html" title="etc.valgrind.valgrind"><span class="d_inlinecode donthyphenate notranslate">valgrind</span></a>
+  </li></ul>
+</li></ul>
+</li>
+
+<li class='expand-container modlist-submenu-core'><a class='expand-toggle' href='#'><span><em class="tt">core</em></span></a>
+<ul><li>  <a href="core_atomic.html" title="core.atomic"><span class="d_inlinecode donthyphenate notranslate">atomic</span></a></li><li>  <a href="core_attribute.html" title="core.attribute"><span class="d_inlinecode donthyphenate notranslate">attribute</span></a></li><li>  <a href="core_bitop.html" title="core.bitop"><span class="d_inlinecode donthyphenate notranslate">bitop</span></a></li><li>  <a href="core_builtins.html" title="core.builtins"><span class="d_inlinecode donthyphenate notranslate">builtins</span></a></li><li>  <a href="core_checkedint.html" title="core.checkedint"><span class="d_inlinecode donthyphenate notranslate">checkedint</span></a></li><li>  <a href="core_cpuid.html" title="core.cpuid"><span class="d_inlinecode donthyphenate notranslate">cpuid</span></a></li><li>  <a href="core_demangle.html" title="core.demangle"><span class="d_inlinecode donthyphenate notranslate">demangle</span></a></li><li>  <a href="core_exception.html" title="core.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>  <a href="core_factory.html" title="core.factory"><span class="d_inlinecode donthyphenate notranslate">factory</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">gc</span></h7><ul><li>    <a href="core_gc_config.html" title="core.gc.config"><span class="d_inlinecode donthyphenate notranslate">config</span></a></li><li>    <a href="core_gc_gcinterface.html" title="core.gc.gcinterface"><span class="d_inlinecode donthyphenate notranslate">gcinterface</span></a></li><li>    <a href="core_gc_registry.html" title="core.gc.registry"><span class="d_inlinecode donthyphenate notranslate">registry</span></a>
+  </li></ul></li><li>  <a href="core_int128.html" title="core.int128"><span class="d_inlinecode donthyphenate notranslate">int128</span></a></li><li>  <a href="core_interpolation.html" title="core.interpolation"><span class="d_inlinecode donthyphenate notranslate">interpolation</span></a></li><li>  <a href="core_lifetime.html" title="core.lifetime"><span class="d_inlinecode donthyphenate notranslate">lifetime</span></a></li><li>  <a href="core_math.html" title="core.math"><span class="d_inlinecode donthyphenate notranslate">math</span></a></li><li>  <a href="core_memory.html" title="core.memory"><span class="d_inlinecode donthyphenate notranslate">memory</span></a></li><li>  <a href="core_runtime.html" title="core.runtime"><span class="d_inlinecode donthyphenate notranslate">runtime</span></a></li><li>  <a href="core_simd.html" title="core.simd"><span class="d_inlinecode donthyphenate notranslate">simd</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">stdc</span></h7><ul><li>    <a href="core_stdc_assert_.html" title="core.stdc.assert_"><span class="d_inlinecode donthyphenate notranslate">assert_</span></a></li><li>    <a href="core_stdc_complex.html" title="core.stdc.complex"><span class="d_inlinecode donthyphenate notranslate">complex</span></a></li><li>    <a href="core_stdc_ctype.html" title="core.stdc.ctype"><span class="d_inlinecode donthyphenate notranslate">ctype</span></a></li><li>    <a href="core_stdc_errno.html" title="core.stdc.errno"><span class="d_inlinecode donthyphenate notranslate">errno</span></a></li><li>    <a href="core_stdc_fenv.html" title="core.stdc.fenv"><span class="d_inlinecode donthyphenate notranslate">fenv</span></a></li><li>    <a href="core_stdc_float_.html" title="core.stdc.float_"><span class="d_inlinecode donthyphenate notranslate">float_</span></a></li><li>    <a href="core_stdc_inttypes.html" title="core.stdc.inttypes"><span class="d_inlinecode donthyphenate notranslate">inttypes</span></a></li><li>    <a href="core_stdc_limits.html" title="core.stdc.limits"><span class="d_inlinecode donthyphenate notranslate">limits</span></a></li><li>    <a href="core_stdc_locale.html" title="core.stdc.locale"><span class="d_inlinecode donthyphenate notranslate">locale</span></a></li><li>    <a href="core_stdc_math.html" title="core.stdc.math"><span class="d_inlinecode donthyphenate notranslate">math</span></a></li><li>    <a href="core_stdc_signal.html" title="core.stdc.signal"><span class="d_inlinecode donthyphenate notranslate">signal</span></a></li><li>    <a href="core_stdc_stdarg.html" title="core.stdc.stdarg"><span class="d_inlinecode donthyphenate notranslate">stdarg</span></a></li><li>    <a href="core_stdc_stdatomic.html" title="core.stdc.stdatomic"><span class="d_inlinecode donthyphenate notranslate">stdatomic</span></a></li><li>    <a href="core_stdc_stddef.html" title="core.stdc.stddef"><span class="d_inlinecode donthyphenate notranslate">stddef</span></a></li><li>    <a href="core_stdc_stdint.html" title="core.stdc.stdint"><span class="d_inlinecode donthyphenate notranslate">stdint</span></a></li><li>    <a href="core_stdc_stdio.html" title="core.stdc.stdio"><span class="d_inlinecode donthyphenate notranslate">stdio</span></a></li><li>    <a href="core_stdc_stdlib.html" title="core.stdc.stdlib"><span class="d_inlinecode donthyphenate notranslate">stdlib</span></a></li><li>    <a href="core_stdc_string.html" title="core.stdc.string"><span class="d_inlinecode donthyphenate notranslate">string</span></a></li><li>    <a href="core_stdc_tgmath.html" title="core.stdc.tgmath"><span class="d_inlinecode donthyphenate notranslate">tgmath</span></a></li><li>    <a href="core_stdc_time.html" title="core.stdc.time"><span class="d_inlinecode donthyphenate notranslate">time</span></a></li><li>    <a href="core_stdc_wchar_.html" title="core.stdc.wchar_"><span class="d_inlinecode donthyphenate notranslate">wchar_</span></a></li><li>    <a href="core_stdc_wctype.html" title="core.stdc.wctype"><span class="d_inlinecode donthyphenate notranslate">wctype</span></a>
+  </li></ul></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">stdcpp</span></h7><ul><li>    <a href="core_stdcpp_allocator.html" title="core.stdcpp.allocator"><span class="d_inlinecode donthyphenate notranslate">allocator</span></a></li><li>    <a href="core_stdcpp_array.html" title="core.stdcpp.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>    <a href="core_stdcpp_exception.html" title="core.stdcpp.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>    <a href="core_stdcpp_memory.html" title="core.stdcpp.memory"><span class="d_inlinecode donthyphenate notranslate">memory</span></a></li><li>    <a href="core_stdcpp_new_.html" title="core.stdcpp.new_"><span class="d_inlinecode donthyphenate notranslate">new_</span></a></li><li>    <a href="core_stdcpp_string.html" title="core.stdcpp.string"><span class="d_inlinecode donthyphenate notranslate">string</span></a></li><li>    <a href="core_stdcpp_string_view.html" title="core.stdcpp.string_view"><span class="d_inlinecode donthyphenate notranslate">string_view</span></a></li><li>    <a href="core_stdcpp_type_traits.html" title="core.stdcpp.type_traits"><span class="d_inlinecode donthyphenate notranslate">type_traits</span></a></li><li>    <a href="core_stdcpp_typeinfo.html" title="core.stdcpp.typeinfo"><span class="d_inlinecode donthyphenate notranslate">typeinfo</span></a></li><li>    <a href="core_stdcpp_utility.html" title="core.stdcpp.utility"><span class="d_inlinecode donthyphenate notranslate">utility</span></a></li><li>    <a href="core_stdcpp_vector.html" title="core.stdcpp.vector"><span class="d_inlinecode donthyphenate notranslate">vector</span></a></li><li>    <a href="core_stdcpp_xutility.html" title="core.stdcpp.xutility"><span class="d_inlinecode donthyphenate notranslate">xutility</span></a>
+  </li></ul></li><li>  <a href="core_sync.html" title="core.sync"><span class="d_inlinecode donthyphenate notranslate">sync</span></a><ul><li>    <a href="core_sync_barrier.html" title="core.sync.barrier"><span class="d_inlinecode donthyphenate notranslate">barrier</span></a></li><li>    <a href="core_sync_condition.html" title="core.sync.condition"><span class="d_inlinecode donthyphenate notranslate">condition</span></a></li><li>    <a href="core_sync_config.html" title="core.sync.config"><span class="d_inlinecode donthyphenate notranslate">config</span></a></li><li>    <a href="core_sync_event.html" title="core.sync.event"><span class="d_inlinecode donthyphenate notranslate">event</span></a></li><li>    <a href="core_sync_exception.html" title="core.sync.exception"><span class="d_inlinecode donthyphenate notranslate">exception</span></a></li><li>    <a href="core_sync_mutex.html" title="core.sync.mutex"><span class="d_inlinecode donthyphenate notranslate">mutex</span></a></li><li>    <a href="core_sync_rwmutex.html" title="core.sync.rwmutex"><span class="d_inlinecode donthyphenate notranslate">rwmutex</span></a></li><li>    <a href="core_sync_semaphore.html" title="core.sync.semaphore"><span class="d_inlinecode donthyphenate notranslate">semaphore</span></a>
+  </li></ul></li><li>  <a href="core_thread.html" title="core.thread"><span class="d_inlinecode donthyphenate notranslate">thread</span></a><ul><li>    <a href="core_thread_context.html" title="core.thread.context"><span class="d_inlinecode donthyphenate notranslate">context</span></a></li><li>    <a href="core_thread_fiber.html" title="core.thread.fiber"><span class="d_inlinecode donthyphenate notranslate">fiber</span></a></li><li>    <a href="core_thread_osthread.html" title="core.thread.osthread"><span class="d_inlinecode donthyphenate notranslate">osthread</span></a></li><li>    <a href="core_thread_threadbase.html" title="core.thread.threadbase"><span class="d_inlinecode donthyphenate notranslate">threadbase</span></a></li><li>    <a href="core_thread_threadgroup.html" title="core.thread.threadgroup"><span class="d_inlinecode donthyphenate notranslate">threadgroup</span></a></li><li>    <a href="core_thread_types.html" title="core.thread.types"><span class="d_inlinecode donthyphenate notranslate">types</span></a>
+  </li></ul></li><li>  <a href="core_time.html" title="core.time"><span class="d_inlinecode donthyphenate notranslate">time</span></a></li><li>  <a href="core_vararg.html" title="core.vararg"><span class="d_inlinecode donthyphenate notranslate">vararg</span></a></li><li>  <a href="core_volatile.html" title="core.volatile"><span class="d_inlinecode donthyphenate notranslate">volatile</span></a>
+</li></ul>
+</li>
+<div class="modlist-internal-separator">Internal API</div>
+
+<li class='expand-container modlist-submenu-core'><a class='expand-toggle' href='#'><span><em class="tt">core</em></span></a>
+<ul><li>  <h7><span class="d_inlinecode donthyphenate notranslate">internal</span></h7><ul><li>    <h7><span class="d_inlinecode donthyphenate notranslate">array</span></h7><ul><li>      <a href="core_internal_array_appending.html" title="core.internal.array.appending"><span class="d_inlinecode donthyphenate notranslate">appending</span></a></li><li>      <a href="core_internal_array_arrayassign.html" title="core.internal.array.arrayassign"><span class="d_inlinecode donthyphenate notranslate">arrayassign</span></a></li><li>      <a href="core_internal_array_capacity.html" title="core.internal.array.capacity"><span class="d_inlinecode donthyphenate notranslate">capacity</span></a></li><li>      <a href="core_internal_array_casting.html" title="core.internal.array.casting"><span class="d_inlinecode donthyphenate notranslate">casting</span></a></li><li>      <a href="core_internal_array_comparison.html" title="core.internal.array.comparison"><span class="d_inlinecode donthyphenate notranslate">comparison</span></a></li><li>      <a href="core_internal_array_concatenation.html" title="core.internal.array.concatenation"><span class="d_inlinecode donthyphenate notranslate">concatenation</span></a></li><li>      <a href="core_internal_array_construction.html" title="core.internal.array.construction"><span class="d_inlinecode donthyphenate notranslate">construction</span></a></li><li>      <a href="core_internal_array_duplication.html" title="core.internal.array.duplication"><span class="d_inlinecode donthyphenate notranslate">duplication</span></a></li><li>      <a href="core_internal_array_equality.html" title="core.internal.array.equality"><span class="d_inlinecode donthyphenate notranslate">equality</span></a></li><li>      <a href="core_internal_array_operations.html" title="core.internal.array.operations"><span class="d_inlinecode donthyphenate notranslate">operations</span></a></li><li>      <a href="core_internal_array_utils.html" title="core.internal.array.utils"><span class="d_inlinecode donthyphenate notranslate">utils</span></a>
+    </li></ul></li><li>    <h7><span class="d_inlinecode donthyphenate notranslate">util</span></h7><ul><li>      <a href="core_internal_util_array.html" title="core.internal.util.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>      <a href="core_internal_util_math.html" title="core.internal.util.math"><span class="d_inlinecode donthyphenate notranslate">math</span></a>
+    </li></ul>
+  </li></ul>
+</li></ul>
+</li>
+
+<li class='expand-container modlist-submenu-dmd'><a class='expand-toggle' href='#'><span><em class="tt">dmd</em></span></a>
+<ul><li>  <a href="dmd_access.html" title="dmd.access"><span class="d_inlinecode donthyphenate notranslate">access</span></a></li><li>  <a href="dmd_aggregate.html" title="dmd.aggregate"><span class="d_inlinecode donthyphenate notranslate">aggregate</span></a></li><li>  <a href="dmd_aliasthis.html" title="dmd.aliasthis"><span class="d_inlinecode donthyphenate notranslate">aliasthis</span></a></li><li>  <a href="dmd_argtypes_aarch64.html" title="dmd.argtypes_aarch64"><span class="d_inlinecode donthyphenate notranslate">argtypes_aarch64</span></a></li><li>  <a href="dmd_argtypes_sysv_x64.html" title="dmd.argtypes_sysv_x64"><span class="d_inlinecode donthyphenate notranslate">argtypes_sysv_x64</span></a></li><li>  <a href="dmd_argtypes_x86.html" title="dmd.argtypes_x86"><span class="d_inlinecode donthyphenate notranslate">argtypes_x86</span></a></li><li>  <a href="dmd_arrayop.html" title="dmd.arrayop"><span class="d_inlinecode donthyphenate notranslate">arrayop</span></a></li><li>  <a href="dmd_arraytypes.html" title="dmd.arraytypes"><span class="d_inlinecode donthyphenate notranslate">arraytypes</span></a></li><li>  <a href="dmd_ast_node.html" title="dmd.ast_node"><span class="d_inlinecode donthyphenate notranslate">ast_node</span></a></li><li>  <a href="dmd_astbase.html" title="dmd.astbase"><span class="d_inlinecode donthyphenate notranslate">astbase</span></a></li><li>  <a href="dmd_astcodegen.html" title="dmd.astcodegen"><span class="d_inlinecode donthyphenate notranslate">astcodegen</span></a></li><li>  <a href="dmd_astenums.html" title="dmd.astenums"><span class="d_inlinecode donthyphenate notranslate">astenums</span></a></li><li>  <a href="dmd_asttypename.html" title="dmd.asttypename"><span class="d_inlinecode donthyphenate notranslate">asttypename</span></a></li><li>  <a href="dmd_attrib.html" title="dmd.attrib"><span class="d_inlinecode donthyphenate notranslate">attrib</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">backend</span></h7><ul><li>    <a href="dmd_backend_aarray.html" title="dmd.backend.aarray"><span class="d_inlinecode donthyphenate notranslate">aarray</span></a></li><li>    <a href="dmd_backend_backconfig.html" title="dmd.backend.backconfig"><span class="d_inlinecode donthyphenate notranslate">backconfig</span></a></li><li>    <a href="dmd_backend_backend.html" title="dmd.backend.backend"><span class="d_inlinecode donthyphenate notranslate">backend</span></a></li><li>    <a href="dmd_backend_barray.html" title="dmd.backend.barray"><span class="d_inlinecode donthyphenate notranslate">barray</span></a></li><li>    <a href="dmd_backend_bcomplex.html" title="dmd.backend.bcomplex"><span class="d_inlinecode donthyphenate notranslate">bcomplex</span></a></li><li>    <a href="dmd_backend_blockopt.html" title="dmd.backend.blockopt"><span class="d_inlinecode donthyphenate notranslate">blockopt</span></a></li><li>    <a href="dmd_backend_cc.html" title="dmd.backend.cc"><span class="d_inlinecode donthyphenate notranslate">cc</span></a></li><li>    <a href="dmd_backend_cdef.html" title="dmd.backend.cdef"><span class="d_inlinecode donthyphenate notranslate">cdef</span></a></li><li>    <a href="dmd_backend_cg.html" title="dmd.backend.cg"><span class="d_inlinecode donthyphenate notranslate">cg</span></a></li><li>    <a href="dmd_backend_cg87.html" title="dmd.backend.cg87"><span class="d_inlinecode donthyphenate notranslate">cg87</span></a></li><li>    <a href="dmd_backend_cgcod.html" title="dmd.backend.cgcod"><span class="d_inlinecode donthyphenate notranslate">cgcod</span></a></li><li>    <a href="dmd_backend_cgcs.html" title="dmd.backend.cgcs"><span class="d_inlinecode donthyphenate notranslate">cgcs</span></a></li><li>    <a href="dmd_backend_cgcse.html" title="dmd.backend.cgcse"><span class="d_inlinecode donthyphenate notranslate">cgcse</span></a></li><li>    <a href="dmd_backend_cgcv.html" title="dmd.backend.cgcv"><span class="d_inlinecode donthyphenate notranslate">cgcv</span></a></li><li>    <a href="dmd_backend_cgelem.html" title="dmd.backend.cgelem"><span class="d_inlinecode donthyphenate notranslate">cgelem</span></a></li><li>    <a href="dmd_backend_cgen.html" title="dmd.backend.cgen"><span class="d_inlinecode donthyphenate notranslate">cgen</span></a></li><li>    <a href="dmd_backend_cgobj.html" title="dmd.backend.cgobj"><span class="d_inlinecode donthyphenate notranslate">cgobj</span></a></li><li>    <a href="dmd_backend_cgreg.html" title="dmd.backend.cgreg"><span class="d_inlinecode donthyphenate notranslate">cgreg</span></a></li><li>    <a href="dmd_backend_cgsched.html" title="dmd.backend.cgsched"><span class="d_inlinecode donthyphenate notranslate">cgsched</span></a></li><li>    <a href="dmd_backend_cgxmm.html" title="dmd.backend.cgxmm"><span class="d_inlinecode donthyphenate notranslate">cgxmm</span></a></li><li>    <a href="dmd_backend_cod1.html" title="dmd.backend.cod1"><span class="d_inlinecode donthyphenate notranslate">cod1</span></a></li><li>    <a href="dmd_backend_cod2.html" title="dmd.backend.cod2"><span class="d_inlinecode donthyphenate notranslate">cod2</span></a></li><li>    <a href="dmd_backend_cod3.html" title="dmd.backend.cod3"><span class="d_inlinecode donthyphenate notranslate">cod3</span></a></li><li>    <a href="dmd_backend_cod4.html" title="dmd.backend.cod4"><span class="d_inlinecode donthyphenate notranslate">cod4</span></a></li><li>    <a href="dmd_backend_cod5.html" title="dmd.backend.cod5"><span class="d_inlinecode donthyphenate notranslate">cod5</span></a></li><li>    <a href="dmd_backend_code.html" title="dmd.backend.code"><span class="d_inlinecode donthyphenate notranslate">code</span></a></li><li>    <a href="dmd_backend_code_x86.html" title="dmd.backend.code_x86"><span class="d_inlinecode donthyphenate notranslate">code_x86</span></a></li><li>    <a href="dmd_backend_codebuilder.html" title="dmd.backend.codebuilder"><span class="d_inlinecode donthyphenate notranslate">codebuilder</span></a></li><li>    <a href="dmd_backend_compress.html" title="dmd.backend.compress"><span class="d_inlinecode donthyphenate notranslate">compress</span></a></li><li>    <a href="dmd_backend_cv4.html" title="dmd.backend.cv4"><span class="d_inlinecode donthyphenate notranslate">cv4</span></a></li><li>    <a href="dmd_backend_cv8.html" title="dmd.backend.cv8"><span class="d_inlinecode donthyphenate notranslate">cv8</span></a></li><li>    <a href="dmd_backend_dcgcv.html" title="dmd.backend.dcgcv"><span class="d_inlinecode donthyphenate notranslate">dcgcv</span></a></li><li>    <a href="dmd_backend_dcode.html" title="dmd.backend.dcode"><span class="d_inlinecode donthyphenate notranslate">dcode</span></a></li><li>    <a href="dmd_backend_debugprint.html" title="dmd.backend.debugprint"><span class="d_inlinecode donthyphenate notranslate">debugprint</span></a></li><li>    <a href="dmd_backend_disasm86.html" title="dmd.backend.disasm86"><span class="d_inlinecode donthyphenate notranslate">disasm86</span></a></li><li>    <a href="dmd_backend_divcoeff.html" title="dmd.backend.divcoeff"><span class="d_inlinecode donthyphenate notranslate">divcoeff</span></a></li><li>    <a href="dmd_backend_dlist.html" title="dmd.backend.dlist"><span class="d_inlinecode donthyphenate notranslate">dlist</span></a></li><li>    <a href="dmd_backend_dout.html" title="dmd.backend.dout"><span class="d_inlinecode donthyphenate notranslate">dout</span></a></li><li>    <a href="dmd_backend_drtlsym.html" title="dmd.backend.drtlsym"><span class="d_inlinecode donthyphenate notranslate">drtlsym</span></a></li><li>    <a href="dmd_backend_dt.html" title="dmd.backend.dt"><span class="d_inlinecode donthyphenate notranslate">dt</span></a></li><li>    <a href="dmd_backend_dtype.html" title="dmd.backend.dtype"><span class="d_inlinecode donthyphenate notranslate">dtype</span></a></li><li>    <a href="dmd_backend_dvarstats.html" title="dmd.backend.dvarstats"><span class="d_inlinecode donthyphenate notranslate">dvarstats</span></a></li><li>    <a href="dmd_backend_dvec.html" title="dmd.backend.dvec"><span class="d_inlinecode donthyphenate notranslate">dvec</span></a></li><li>    <a href="dmd_backend_dwarf.html" title="dmd.backend.dwarf"><span class="d_inlinecode donthyphenate notranslate">dwarf</span></a></li><li>    <a href="dmd_backend_dwarf2.html" title="dmd.backend.dwarf2"><span class="d_inlinecode donthyphenate notranslate">dwarf2</span></a></li><li>    <a href="dmd_backend_dwarfdbginf.html" title="dmd.backend.dwarfdbginf"><span class="d_inlinecode donthyphenate notranslate">dwarfdbginf</span></a></li><li>    <a href="dmd_backend_dwarfeh.html" title="dmd.backend.dwarfeh"><span class="d_inlinecode donthyphenate notranslate">dwarfeh</span></a></li><li>    <a href="dmd_backend_ee.html" title="dmd.backend.ee"><span class="d_inlinecode donthyphenate notranslate">ee</span></a></li><li>    <a href="dmd_backend_eh.html" title="dmd.backend.eh"><span class="d_inlinecode donthyphenate notranslate">eh</span></a></li><li>    <a href="dmd_backend_el.html" title="dmd.backend.el"><span class="d_inlinecode donthyphenate notranslate">el</span></a></li><li>    <a href="dmd_backend_elem.html" title="dmd.backend.elem"><span class="d_inlinecode donthyphenate notranslate">elem</span></a></li><li>    <a href="dmd_backend_elfobj.html" title="dmd.backend.elfobj"><span class="d_inlinecode donthyphenate notranslate">elfobj</span></a></li><li>    <a href="dmd_backend_elpicpie.html" title="dmd.backend.elpicpie"><span class="d_inlinecode donthyphenate notranslate">elpicpie</span></a></li><li>    <a href="dmd_backend_evalu8.html" title="dmd.backend.evalu8"><span class="d_inlinecode donthyphenate notranslate">evalu8</span></a></li><li>    <a href="dmd_backend_filespec.html" title="dmd.backend.filespec"><span class="d_inlinecode donthyphenate notranslate">filespec</span></a></li><li>    <a href="dmd_backend_fp.html" title="dmd.backend.fp"><span class="d_inlinecode donthyphenate notranslate">fp</span></a></li><li>    <a href="dmd_backend_gdag.html" title="dmd.backend.gdag"><span class="d_inlinecode donthyphenate notranslate">gdag</span></a></li><li>    <a href="dmd_backend_gflow.html" title="dmd.backend.gflow"><span class="d_inlinecode donthyphenate notranslate">gflow</span></a></li><li>    <a href="dmd_backend_global.html" title="dmd.backend.global"><span class="d_inlinecode donthyphenate notranslate">global</span></a></li><li>    <a href="dmd_backend_glocal.html" title="dmd.backend.glocal"><span class="d_inlinecode donthyphenate notranslate">glocal</span></a></li><li>    <a href="dmd_backend_gloop.html" title="dmd.backend.gloop"><span class="d_inlinecode donthyphenate notranslate">gloop</span></a></li><li>    <a href="dmd_backend_go.html" title="dmd.backend.go"><span class="d_inlinecode donthyphenate notranslate">go</span></a></li><li>    <a href="dmd_backend_goh.html" title="dmd.backend.goh"><span class="d_inlinecode donthyphenate notranslate">goh</span></a></li><li>    <a href="dmd_backend_gother.html" title="dmd.backend.gother"><span class="d_inlinecode donthyphenate notranslate">gother</span></a></li><li>    <a href="dmd_backend_gsroa.html" title="dmd.backend.gsroa"><span class="d_inlinecode donthyphenate notranslate">gsroa</span></a></li><li>    <a href="dmd_backend_iasm.html" title="dmd.backend.iasm"><span class="d_inlinecode donthyphenate notranslate">iasm</span></a></li><li>    <a href="dmd_backend_inliner.html" title="dmd.backend.inliner"><span class="d_inlinecode donthyphenate notranslate">inliner</span></a></li><li>    <a href="dmd_backend_mach.html" title="dmd.backend.mach"><span class="d_inlinecode donthyphenate notranslate">mach</span></a></li><li>    <a href="dmd_backend_machobj.html" title="dmd.backend.machobj"><span class="d_inlinecode donthyphenate notranslate">machobj</span></a></li><li>    <a href="dmd_backend_melf.html" title="dmd.backend.melf"><span class="d_inlinecode donthyphenate notranslate">melf</span></a></li><li>    <a href="dmd_backend_mem.html" title="dmd.backend.mem"><span class="d_inlinecode donthyphenate notranslate">mem</span></a></li><li>    <a href="dmd_backend_mscoff.html" title="dmd.backend.mscoff"><span class="d_inlinecode donthyphenate notranslate">mscoff</span></a></li><li>    <a href="dmd_backend_mscoffobj.html" title="dmd.backend.mscoffobj"><span class="d_inlinecode donthyphenate notranslate">mscoffobj</span></a></li><li>    <a href="dmd_backend_nteh.html" title="dmd.backend.nteh"><span class="d_inlinecode donthyphenate notranslate">nteh</span></a></li><li>    <a href="dmd_backend_obj.html" title="dmd.backend.obj"><span class="d_inlinecode donthyphenate notranslate">obj</span></a></li><li>    <a href="dmd_backend_oper.html" title="dmd.backend.oper"><span class="d_inlinecode donthyphenate notranslate">oper</span></a></li><li>    <a href="dmd_backend_pdata.html" title="dmd.backend.pdata"><span class="d_inlinecode donthyphenate notranslate">pdata</span></a></li><li>    <a href="dmd_backend_ptrntab.html" title="dmd.backend.ptrntab"><span class="d_inlinecode donthyphenate notranslate">ptrntab</span></a></li><li>    <a href="dmd_backend_rtlsym.html" title="dmd.backend.rtlsym"><span class="d_inlinecode donthyphenate notranslate">rtlsym</span></a></li><li>    <a href="dmd_backend_symbol.html" title="dmd.backend.symbol"><span class="d_inlinecode donthyphenate notranslate">symbol</span></a></li><li>    <a href="dmd_backend_symtab.html" title="dmd.backend.symtab"><span class="d_inlinecode donthyphenate notranslate">symtab</span></a></li><li>    <a href="dmd_backend_ty.html" title="dmd.backend.ty"><span class="d_inlinecode donthyphenate notranslate">ty</span></a></li><li>    <a href="dmd_backend_type.html" title="dmd.backend.type"><span class="d_inlinecode donthyphenate notranslate">type</span></a></li><li>    <a href="dmd_backend_util2.html" title="dmd.backend.util2"><span class="d_inlinecode donthyphenate notranslate">util2</span></a></li><li>    <a href="dmd_backend_var.html" title="dmd.backend.var"><span class="d_inlinecode donthyphenate notranslate">var</span></a></li><li>    <a href="dmd_backend_xmm.html" title="dmd.backend.xmm"><span class="d_inlinecode donthyphenate notranslate">xmm</span></a>
+  </li></ul></li><li>  <a href="dmd_basicmangle.html" title="dmd.basicmangle"><span class="d_inlinecode donthyphenate notranslate">basicmangle</span></a></li><li>  <a href="dmd_blockexit.html" title="dmd.blockexit"><span class="d_inlinecode donthyphenate notranslate">blockexit</span></a></li><li>  <a href="dmd_builtin.html" title="dmd.builtin"><span class="d_inlinecode donthyphenate notranslate">builtin</span></a></li><li>  <a href="dmd_canthrow.html" title="dmd.canthrow"><span class="d_inlinecode donthyphenate notranslate">canthrow</span></a></li><li>  <a href="dmd_chkformat.html" title="dmd.chkformat"><span class="d_inlinecode donthyphenate notranslate">chkformat</span></a></li><li>  <a href="dmd_cli.html" title="dmd.cli"><span class="d_inlinecode donthyphenate notranslate">cli</span></a></li><li>  <a href="dmd_clone.html" title="dmd.clone"><span class="d_inlinecode donthyphenate notranslate">clone</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">common</span></h7><ul><li>    <a href="dmd_common_bitfields.html" title="dmd.common.bitfields"><span class="d_inlinecode donthyphenate notranslate">bitfields</span></a></li><li>    <a href="dmd_common_file.html" title="dmd.common.file"><span class="d_inlinecode donthyphenate notranslate">file</span></a></li><li>    <a href="dmd_common_int128.html" title="dmd.common.int128"><span class="d_inlinecode donthyphenate notranslate">int128</span></a></li><li>    <a href="dmd_common_md5.html" title="dmd.common.md5"><span class="d_inlinecode donthyphenate notranslate">md5</span></a></li><li>    <a href="dmd_common_outbuffer.html" title="dmd.common.outbuffer"><span class="d_inlinecode donthyphenate notranslate">outbuffer</span></a></li><li>    <a href="dmd_common_smallbuffer.html" title="dmd.common.smallbuffer"><span class="d_inlinecode donthyphenate notranslate">smallbuffer</span></a>
+  </li></ul></li><li>  <a href="dmd_compiler.html" title="dmd.compiler"><span class="d_inlinecode donthyphenate notranslate">compiler</span></a></li><li>  <a href="dmd_cond.html" title="dmd.cond"><span class="d_inlinecode donthyphenate notranslate">cond</span></a></li><li>  <a href="dmd_console.html" title="dmd.console"><span class="d_inlinecode donthyphenate notranslate">console</span></a></li><li>  <a href="dmd_constfold.html" title="dmd.constfold"><span class="d_inlinecode donthyphenate notranslate">constfold</span></a></li><li>  <a href="dmd_cparse.html" title="dmd.cparse"><span class="d_inlinecode donthyphenate notranslate">cparse</span></a></li><li>  <a href="dmd_cppmangle.html" title="dmd.cppmangle"><span class="d_inlinecode donthyphenate notranslate">cppmangle</span></a></li><li>  <a href="dmd_cppmanglewin.html" title="dmd.cppmanglewin"><span class="d_inlinecode donthyphenate notranslate">cppmanglewin</span></a></li><li>  <a href="dmd_cpreprocess.html" title="dmd.cpreprocess"><span class="d_inlinecode donthyphenate notranslate">cpreprocess</span></a></li><li>  <a href="dmd_ctfeexpr.html" title="dmd.ctfeexpr"><span class="d_inlinecode donthyphenate notranslate">ctfeexpr</span></a></li><li>  <a href="dmd_ctorflow.html" title="dmd.ctorflow"><span class="d_inlinecode donthyphenate notranslate">ctorflow</span></a></li><li>  <a href="dmd_cxxfrontend.html" title="dmd.cxxfrontend"><span class="d_inlinecode donthyphenate notranslate">cxxfrontend</span></a></li><li>  <a href="dmd_dcast.html" title="dmd.dcast"><span class="d_inlinecode donthyphenate notranslate">dcast</span></a></li><li>  <a href="dmd_dclass.html" title="dmd.dclass"><span class="d_inlinecode donthyphenate notranslate">dclass</span></a></li><li>  <a href="dmd_declaration.html" title="dmd.declaration"><span class="d_inlinecode donthyphenate notranslate">declaration</span></a></li><li>  <a href="dmd_delegatize.html" title="dmd.delegatize"><span class="d_inlinecode donthyphenate notranslate">delegatize</span></a></li><li>  <a href="dmd_denum.html" title="dmd.denum"><span class="d_inlinecode donthyphenate notranslate">denum</span></a></li><li>  <a href="dmd_dimport.html" title="dmd.dimport"><span class="d_inlinecode donthyphenate notranslate">dimport</span></a></li><li>  <a href="dmd_dinifile.html" title="dmd.dinifile"><span class="d_inlinecode donthyphenate notranslate">dinifile</span></a></li><li>  <a href="dmd_dinterpret.html" title="dmd.dinterpret"><span class="d_inlinecode donthyphenate notranslate">dinterpret</span></a></li><li>  <a href="dmd_dmacro.html" title="dmd.dmacro"><span class="d_inlinecode donthyphenate notranslate">dmacro</span></a></li><li>  <a href="dmd_dmangle.html" title="dmd.dmangle"><span class="d_inlinecode donthyphenate notranslate">dmangle</span></a></li><li>  <a href="dmd_dmdparams.html" title="dmd.dmdparams"><span class="d_inlinecode donthyphenate notranslate">dmdparams</span></a></li><li>  <a href="dmd_dmodule.html" title="dmd.dmodule"><span class="d_inlinecode donthyphenate notranslate">dmodule</span></a></li><li>  <a href="dmd_dmsc.html" title="dmd.dmsc"><span class="d_inlinecode donthyphenate notranslate">dmsc</span></a></li><li>  <a href="dmd_doc.html" title="dmd.doc"><span class="d_inlinecode donthyphenate notranslate">doc</span></a></li><li>  <a href="dmd_dscope.html" title="dmd.dscope"><span class="d_inlinecode donthyphenate notranslate">dscope</span></a></li><li>  <a href="dmd_dstruct.html" title="dmd.dstruct"><span class="d_inlinecode donthyphenate notranslate">dstruct</span></a></li><li>  <a href="dmd_dsymbol.html" title="dmd.dsymbol"><span class="d_inlinecode donthyphenate notranslate">dsymbol</span></a></li><li>  <a href="dmd_dsymbolsem.html" title="dmd.dsymbolsem"><span class="d_inlinecode donthyphenate notranslate">dsymbolsem</span></a></li><li>  <a href="dmd_dtemplate.html" title="dmd.dtemplate"><span class="d_inlinecode donthyphenate notranslate">dtemplate</span></a></li><li>  <a href="dmd_dtoh.html" title="dmd.dtoh"><span class="d_inlinecode donthyphenate notranslate">dtoh</span></a></li><li>  <a href="dmd_dversion.html" title="dmd.dversion"><span class="d_inlinecode donthyphenate notranslate">dversion</span></a></li><li>  <a href="dmd_e2ir.html" title="dmd.e2ir"><span class="d_inlinecode donthyphenate notranslate">e2ir</span></a></li><li>  <a href="dmd_entity.html" title="dmd.entity"><span class="d_inlinecode donthyphenate notranslate">entity</span></a></li><li>  <a href="dmd_enumsem.html" title="dmd.enumsem"><span class="d_inlinecode donthyphenate notranslate">enumsem</span></a></li><li>  <a href="dmd_errors.html" title="dmd.errors"><span class="d_inlinecode donthyphenate notranslate">errors</span></a></li><li>  <a href="dmd_errorsink.html" title="dmd.errorsink"><span class="d_inlinecode donthyphenate notranslate">errorsink</span></a></li><li>  <a href="dmd_escape.html" title="dmd.escape"><span class="d_inlinecode donthyphenate notranslate">escape</span></a></li><li>  <a href="dmd_expression.html" title="dmd.expression"><span class="d_inlinecode donthyphenate notranslate">expression</span></a></li><li>  <a href="dmd_expressionsem.html" title="dmd.expressionsem"><span class="d_inlinecode donthyphenate notranslate">expressionsem</span></a></li><li>  <a href="dmd_file_manager.html" title="dmd.file_manager"><span class="d_inlinecode donthyphenate notranslate">file_manager</span></a></li><li>  <a href="dmd_foreachvar.html" title="dmd.foreachvar"><span class="d_inlinecode donthyphenate notranslate">foreachvar</span></a></li><li>  <a href="dmd_frontend.html" title="dmd.frontend"><span class="d_inlinecode donthyphenate notranslate">frontend</span></a></li><li>  <a href="dmd_func.html" title="dmd.func"><span class="d_inlinecode donthyphenate notranslate">func</span></a></li><li>  <a href="dmd_funcsem.html" title="dmd.funcsem"><span class="d_inlinecode donthyphenate notranslate">funcsem</span></a></li><li>  <a href="dmd_globals.html" title="dmd.globals"><span class="d_inlinecode donthyphenate notranslate">globals</span></a></li><li>  <a href="dmd_glue.html" title="dmd.glue"><span class="d_inlinecode donthyphenate notranslate">glue</span></a></li><li>  <a href="dmd_gluelayer.html" title="dmd.gluelayer"><span class="d_inlinecode donthyphenate notranslate">gluelayer</span></a></li><li>  <a href="dmd_hdrgen.html" title="dmd.hdrgen"><span class="d_inlinecode donthyphenate notranslate">hdrgen</span></a></li><li>  <a href="dmd_iasm.html" title="dmd.iasm"><span class="d_inlinecode donthyphenate notranslate">iasm</span></a></li><li>  <a href="dmd_iasmdmd.html" title="dmd.iasmdmd"><span class="d_inlinecode donthyphenate notranslate">iasmdmd</span></a></li><li>  <a href="dmd_iasmgcc.html" title="dmd.iasmgcc"><span class="d_inlinecode donthyphenate notranslate">iasmgcc</span></a></li><li>  <a href="dmd_id.html" title="dmd.id"><span class="d_inlinecode donthyphenate notranslate">id</span></a></li><li>  <a href="dmd_identifier.html" title="dmd.identifier"><span class="d_inlinecode donthyphenate notranslate">identifier</span></a></li><li>  <a href="dmd_impcnvtab.html" title="dmd.impcnvtab"><span class="d_inlinecode donthyphenate notranslate">impcnvtab</span></a></li><li>  <a href="dmd_imphint.html" title="dmd.imphint"><span class="d_inlinecode donthyphenate notranslate">imphint</span></a></li><li>  <a href="dmd_importc.html" title="dmd.importc"><span class="d_inlinecode donthyphenate notranslate">importc</span></a></li><li>  <a href="dmd_init.html" title="dmd.init"><span class="d_inlinecode donthyphenate notranslate">init</span></a></li><li>  <a href="dmd_initsem.html" title="dmd.initsem"><span class="d_inlinecode donthyphenate notranslate">initsem</span></a></li><li>  <a href="dmd_inline.html" title="dmd.inline"><span class="d_inlinecode donthyphenate notranslate">inline</span></a></li><li>  <a href="dmd_inlinecost.html" title="dmd.inlinecost"><span class="d_inlinecode donthyphenate notranslate">inlinecost</span></a></li><li>  <a href="dmd_intrange.html" title="dmd.intrange"><span class="d_inlinecode donthyphenate notranslate">intrange</span></a></li><li>  <a href="dmd_json.html" title="dmd.json"><span class="d_inlinecode donthyphenate notranslate">json</span></a></li><li>  <a href="dmd_lambdacomp.html" title="dmd.lambdacomp"><span class="d_inlinecode donthyphenate notranslate">lambdacomp</span></a></li><li>  <a href="dmd_lexer.html" title="dmd.lexer"><span class="d_inlinecode donthyphenate notranslate">lexer</span></a></li><li>  <a href="dmd_lib.html" title="dmd.lib"><span class="d_inlinecode donthyphenate notranslate">lib</span></a></li><li>  <a href="dmd_libelf.html" title="dmd.libelf"><span class="d_inlinecode donthyphenate notranslate">libelf</span></a></li><li>  <a href="dmd_libomf.html" title="dmd.libomf"><span class="d_inlinecode donthyphenate notranslate">libomf</span></a></li><li>  <a href="dmd_link.html" title="dmd.link"><span class="d_inlinecode donthyphenate notranslate">link</span></a></li><li>  <a href="dmd_location.html" title="dmd.location"><span class="d_inlinecode donthyphenate notranslate">location</span></a></li><li>  <a href="dmd_main.html" title="dmd.main"><span class="d_inlinecode donthyphenate notranslate">main</span></a></li><li>  <a href="dmd_mars.html" title="dmd.mars"><span class="d_inlinecode donthyphenate notranslate">mars</span></a></li><li>  <a href="dmd_mtype.html" title="dmd.mtype"><span class="d_inlinecode donthyphenate notranslate">mtype</span></a></li><li>  <a href="dmd_mustuse.html" title="dmd.mustuse"><span class="d_inlinecode donthyphenate notranslate">mustuse</span></a></li><li>  <a href="dmd_nogc.html" title="dmd.nogc"><span class="d_inlinecode donthyphenate notranslate">nogc</span></a></li><li>  <a href="dmd_nspace.html" title="dmd.nspace"><span class="d_inlinecode donthyphenate notranslate">nspace</span></a></li><li>  <a href="dmd_ob.html" title="dmd.ob"><span class="d_inlinecode donthyphenate notranslate">ob</span></a></li><li>  <a href="dmd_objc.html" title="dmd.objc"><span class="d_inlinecode donthyphenate notranslate">objc</span></a></li><li>  <a href="dmd_objc_glue.html" title="dmd.objc_glue"><span class="d_inlinecode donthyphenate notranslate">objc_glue</span></a></li><li>  <a href="dmd_opover.html" title="dmd.opover"><span class="d_inlinecode donthyphenate notranslate">opover</span></a></li><li>  <a href="dmd_optimize.html" title="dmd.optimize"><span class="d_inlinecode donthyphenate notranslate">optimize</span></a></li><li>  <a href="dmd_parse.html" title="dmd.parse"><span class="d_inlinecode donthyphenate notranslate">parse</span></a></li><li>  <a href="dmd_parsetimevisitor.html" title="dmd.parsetimevisitor"><span class="d_inlinecode donthyphenate notranslate">parsetimevisitor</span></a></li><li>  <a href="dmd_permissivevisitor.html" title="dmd.permissivevisitor"><span class="d_inlinecode donthyphenate notranslate">permissivevisitor</span></a></li><li>  <a href="dmd_postordervisitor.html" title="dmd.postordervisitor"><span class="d_inlinecode donthyphenate notranslate">postordervisitor</span></a></li><li>  <a href="dmd_pragmasem.html" title="dmd.pragmasem"><span class="d_inlinecode donthyphenate notranslate">pragmasem</span></a></li><li>  <a href="dmd_printast.html" title="dmd.printast"><span class="d_inlinecode donthyphenate notranslate">printast</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">root</span></h7><ul><li>    <a href="dmd_root_aav.html" title="dmd.root.aav"><span class="d_inlinecode donthyphenate notranslate">aav</span></a></li><li>    <a href="dmd_root_array.html" title="dmd.root.array"><span class="d_inlinecode donthyphenate notranslate">array</span></a></li><li>    <a href="dmd_root_bitarray.html" title="dmd.root.bitarray"><span class="d_inlinecode donthyphenate notranslate">bitarray</span></a></li><li>    <a href="dmd_root_complex.html" title="dmd.root.complex"><span class="d_inlinecode donthyphenate notranslate">complex</span></a></li><li>    <a href="dmd_root_ctfloat.html" title="dmd.root.ctfloat"><span class="d_inlinecode donthyphenate notranslate">ctfloat</span></a></li><li>    <a href="dmd_root_env.html" title="dmd.root.env"><span class="d_inlinecode donthyphenate notranslate">env</span></a></li><li>    <a href="dmd_root_file.html" title="dmd.root.file"><span class="d_inlinecode donthyphenate notranslate">file</span></a></li><li>    <a href="dmd_root_filename.html" title="dmd.root.filename"><span class="d_inlinecode donthyphenate notranslate">filename</span></a></li><li>    <a href="dmd_root_hash.html" title="dmd.root.hash"><span class="d_inlinecode donthyphenate notranslate">hash</span></a></li><li>    <a href="dmd_root_longdouble.html" title="dmd.root.longdouble"><span class="d_inlinecode donthyphenate notranslate">longdouble</span></a></li><li>    <a href="dmd_root_man.html" title="dmd.root.man"><span class="d_inlinecode donthyphenate notranslate">man</span></a></li><li>    <a href="dmd_root_optional.html" title="dmd.root.optional"><span class="d_inlinecode donthyphenate notranslate">optional</span></a></li><li>    <a href="dmd_root_port.html" title="dmd.root.port"><span class="d_inlinecode donthyphenate notranslate">port</span></a></li><li>    <a href="dmd_root_region.html" title="dmd.root.region"><span class="d_inlinecode donthyphenate notranslate">region</span></a></li><li>    <a href="dmd_root_response.html" title="dmd.root.response"><span class="d_inlinecode donthyphenate notranslate">response</span></a></li><li>    <a href="dmd_root_rmem.html" title="dmd.root.rmem"><span class="d_inlinecode donthyphenate notranslate">rmem</span></a></li><li>    <a href="dmd_root_speller.html" title="dmd.root.speller"><span class="d_inlinecode donthyphenate notranslate">speller</span></a></li><li>    <a href="dmd_root_string.html" title="dmd.root.string"><span class="d_inlinecode donthyphenate notranslate">string</span></a></li><li>    <a href="dmd_root_stringtable.html" title="dmd.root.stringtable"><span class="d_inlinecode donthyphenate notranslate">stringtable</span></a></li><li>    <a href="dmd_root_strtold.html" title="dmd.root.strtold"><span class="d_inlinecode donthyphenate notranslate">strtold</span></a></li><li>    <a href="dmd_root_utf.html" title="dmd.root.utf"><span class="d_inlinecode donthyphenate notranslate">utf</span></a>
+  </li></ul></li><li>  <a href="dmd_rootobject.html" title="dmd.rootobject"><span class="d_inlinecode donthyphenate notranslate">rootobject</span></a></li><li>  <a href="dmd_s2ir.html" title="dmd.s2ir"><span class="d_inlinecode donthyphenate notranslate">s2ir</span></a></li><li>  <a href="dmd_safe.html" title="dmd.safe"><span class="d_inlinecode donthyphenate notranslate">safe</span></a></li><li>  <a href="dmd_sapply.html" title="dmd.sapply"><span class="d_inlinecode donthyphenate notranslate">sapply</span></a></li><li>  <a href="dmd_scanelf.html" title="dmd.scanelf"><span class="d_inlinecode donthyphenate notranslate">scanelf</span></a></li><li>  <a href="dmd_scanomf.html" title="dmd.scanomf"><span class="d_inlinecode donthyphenate notranslate">scanomf</span></a></li><li>  <a href="dmd_semantic2.html" title="dmd.semantic2"><span class="d_inlinecode donthyphenate notranslate">semantic2</span></a></li><li>  <a href="dmd_semantic3.html" title="dmd.semantic3"><span class="d_inlinecode donthyphenate notranslate">semantic3</span></a></li><li>  <a href="dmd_sideeffect.html" title="dmd.sideeffect"><span class="d_inlinecode donthyphenate notranslate">sideeffect</span></a></li><li>  <a href="dmd_statement.html" title="dmd.statement"><span class="d_inlinecode donthyphenate notranslate">statement</span></a></li><li>  <a href="dmd_statement_rewrite_walker.html" title="dmd.statement_rewrite_walker"><span class="d_inlinecode donthyphenate notranslate">statement_rewrite_walker</span></a></li><li>  <a href="dmd_statementsem.html" title="dmd.statementsem"><span class="d_inlinecode donthyphenate notranslate">statementsem</span></a></li><li>  <a href="dmd_staticassert.html" title="dmd.staticassert"><span class="d_inlinecode donthyphenate notranslate">staticassert</span></a></li><li>  <a href="dmd_staticcond.html" title="dmd.staticcond"><span class="d_inlinecode donthyphenate notranslate">staticcond</span></a></li><li>  <a href="dmd_stmtstate.html" title="dmd.stmtstate"><span class="d_inlinecode donthyphenate notranslate">stmtstate</span></a></li><li>  <a href="dmd_strictvisitor.html" title="dmd.strictvisitor"><span class="d_inlinecode donthyphenate notranslate">strictvisitor</span></a></li><li>  <a href="dmd_target.html" title="dmd.target"><span class="d_inlinecode donthyphenate notranslate">target</span></a></li><li>  <a href="dmd_templateparamsem.html" title="dmd.templateparamsem"><span class="d_inlinecode donthyphenate notranslate">templateparamsem</span></a></li><li>  <a href="dmd_templatesem.html" title="dmd.templatesem"><span class="d_inlinecode donthyphenate notranslate">templatesem</span></a></li><li>  <a href="dmd_tocsym.html" title="dmd.tocsym"><span class="d_inlinecode donthyphenate notranslate">tocsym</span></a></li><li>  <a href="dmd_toctype.html" title="dmd.toctype"><span class="d_inlinecode donthyphenate notranslate">toctype</span></a></li><li>  <a href="dmd_tocvdebug.html" title="dmd.tocvdebug"><span class="d_inlinecode donthyphenate notranslate">tocvdebug</span></a></li><li>  <a href="dmd_todt.html" title="dmd.todt"><span class="d_inlinecode donthyphenate notranslate">todt</span></a></li><li>  <a href="dmd_toir.html" title="dmd.toir"><span class="d_inlinecode donthyphenate notranslate">toir</span></a></li><li>  <a href="dmd_tokens.html" title="dmd.tokens"><span class="d_inlinecode donthyphenate notranslate">tokens</span></a></li><li>  <a href="dmd_toobj.html" title="dmd.toobj"><span class="d_inlinecode donthyphenate notranslate">toobj</span></a></li><li>  <a href="dmd_traits.html" title="dmd.traits"><span class="d_inlinecode donthyphenate notranslate">traits</span></a></li><li>  <a href="dmd_transitivevisitor.html" title="dmd.transitivevisitor"><span class="d_inlinecode donthyphenate notranslate">transitivevisitor</span></a></li><li>  <a href="dmd_typesem.html" title="dmd.typesem"><span class="d_inlinecode donthyphenate notranslate">typesem</span></a></li><li>  <a href="dmd_typinf.html" title="dmd.typinf"><span class="d_inlinecode donthyphenate notranslate">typinf</span></a></li><li>  <a href="dmd_utils.html" title="dmd.utils"><span class="d_inlinecode donthyphenate notranslate">utils</span></a></li><li>  <a href="dmd_visitor.html" title="dmd.visitor"><span class="d_inlinecode donthyphenate notranslate">visitor</span></a></li><li>  <a href="dmd_vsoptions.html" title="dmd.vsoptions"><span class="d_inlinecode donthyphenate notranslate">vsoptions</span></a>
+</li></ul>
+</li>
+
+<li class='expand-container modlist-submenu-rt'><a class='expand-toggle' href='#'><span><em class="tt">rt</em></span></a>
+<ul><li>  <a href="rt_aApply.html" title="rt.aApply"><span class="d_inlinecode donthyphenate notranslate">aApply</span></a></li><li>  <a href="rt_aApplyR.html" title="rt.aApplyR"><span class="d_inlinecode donthyphenate notranslate">aApplyR</span></a></li><li>  <a href="rt_aaA.html" title="rt.aaA"><span class="d_inlinecode donthyphenate notranslate">aaA</span></a></li><li>  <a href="rt_adi.html" title="rt.adi"><span class="d_inlinecode donthyphenate notranslate">adi</span></a></li><li>  <a href="rt_alloca.html" title="rt.alloca"><span class="d_inlinecode donthyphenate notranslate">alloca</span></a></li><li>  <a href="rt_arraycat.html" title="rt.arraycat"><span class="d_inlinecode donthyphenate notranslate">arraycat</span></a></li><li>  <a href="rt_cast_.html" title="rt.cast_"><span class="d_inlinecode donthyphenate notranslate">cast_</span></a></li><li>  <a href="rt_cmath2.html" title="rt.cmath2"><span class="d_inlinecode donthyphenate notranslate">cmath2</span></a></li><li>  <a href="rt_config.html" title="rt.config"><span class="d_inlinecode donthyphenate notranslate">config</span></a></li><li>  <a href="rt_cover.html" title="rt.cover"><span class="d_inlinecode donthyphenate notranslate">cover</span></a></li><li>  <a href="rt_critical_.html" title="rt.critical_"><span class="d_inlinecode donthyphenate notranslate">critical_</span></a></li><li>  <a href="rt_deh.html" title="rt.deh"><span class="d_inlinecode donthyphenate notranslate">deh</span></a></li><li>  <a href="rt_deh_win32.html" title="rt.deh_win32"><span class="d_inlinecode donthyphenate notranslate">deh_win32</span></a></li><li>  <a href="rt_deh_win64_posix.html" title="rt.deh_win64_posix"><span class="d_inlinecode donthyphenate notranslate">deh_win64_posix</span></a></li><li>  <a href="rt_dmain2.html" title="rt.dmain2"><span class="d_inlinecode donthyphenate notranslate">dmain2</span></a></li><li>  <a href="rt_dwarfeh.html" title="rt.dwarfeh"><span class="d_inlinecode donthyphenate notranslate">dwarfeh</span></a></li><li>  <a href="rt_ehalloc.html" title="rt.ehalloc"><span class="d_inlinecode donthyphenate notranslate">ehalloc</span></a></li><li>  <a href="rt_invariant.html" title="rt.invariant"><span class="d_inlinecode donthyphenate notranslate">invariant</span></a></li><li>  <a href="rt_lifetime.html" title="rt.lifetime"><span class="d_inlinecode donthyphenate notranslate">lifetime</span></a></li><li>  <a href="rt_llmath.html" title="rt.llmath"><span class="d_inlinecode donthyphenate notranslate">llmath</span></a></li><li>  <a href="rt_memory.html" title="rt.memory"><span class="d_inlinecode donthyphenate notranslate">memory</span></a></li><li>  <a href="rt_memset.html" title="rt.memset"><span class="d_inlinecode donthyphenate notranslate">memset</span></a></li><li>  <a href="rt_minfo.html" title="rt.minfo"><span class="d_inlinecode donthyphenate notranslate">minfo</span></a></li><li>  <a href="rt_monitor_.html" title="rt.monitor_"><span class="d_inlinecode donthyphenate notranslate">monitor_</span></a></li><li>  <a href="rt_msvc.html" title="rt.msvc"><span class="d_inlinecode donthyphenate notranslate">msvc</span></a></li><li>  <a href="rt_msvc_math.html" title="rt.msvc_math"><span class="d_inlinecode donthyphenate notranslate">msvc_math</span></a></li><li>  <a href="rt_profilegc.html" title="rt.profilegc"><span class="d_inlinecode donthyphenate notranslate">profilegc</span></a></li><li>  <a href="rt_sections.html" title="rt.sections"><span class="d_inlinecode donthyphenate notranslate">sections</span></a></li><li>  <a href="rt_sections_android.html" title="rt.sections_android"><span class="d_inlinecode donthyphenate notranslate">sections_android</span></a></li><li>  <a href="rt_sections_darwin_64.html" title="rt.sections_darwin_64"><span class="d_inlinecode donthyphenate notranslate">sections_darwin_64</span></a></li><li>  <a href="rt_sections_elf_shared.html" title="rt.sections_elf_shared"><span class="d_inlinecode donthyphenate notranslate">sections_elf_shared</span></a></li><li>  <a href="rt_sections_osx_x86.html" title="rt.sections_osx_x86"><span class="d_inlinecode donthyphenate notranslate">sections_osx_x86</span></a></li><li>  <a href="rt_sections_osx_x86_64.html" title="rt.sections_osx_x86_64"><span class="d_inlinecode donthyphenate notranslate">sections_osx_x86_64</span></a></li><li>  <a href="rt_sections_solaris.html" title="rt.sections_solaris"><span class="d_inlinecode donthyphenate notranslate">sections_solaris</span></a></li><li>  <a href="rt_sections_win32.html" title="rt.sections_win32"><span class="d_inlinecode donthyphenate notranslate">sections_win32</span></a></li><li>  <a href="rt_sections_win64.html" title="rt.sections_win64"><span class="d_inlinecode donthyphenate notranslate">sections_win64</span></a></li><li>  <a href="rt_tlsgc.html" title="rt.tlsgc"><span class="d_inlinecode donthyphenate notranslate">tlsgc</span></a></li><li>  <a href="rt_trace.html" title="rt.trace"><span class="d_inlinecode donthyphenate notranslate">trace</span></a></li><li>  <a href="rt_tracegc.html" title="rt.tracegc"><span class="d_inlinecode donthyphenate notranslate">tracegc</span></a></li><li>  <h7><span class="d_inlinecode donthyphenate notranslate">util</span></h7><ul><li>    <a href="rt_util_typeinfo.html" title="rt.util.typeinfo"><span class="d_inlinecode donthyphenate notranslate">typeinfo</span></a></li><li>    <a href="rt_util_utility.html" title="rt.util.utility"><span class="d_inlinecode donthyphenate notranslate">utility</span></a>
+  </li></ul>
+</li></ul>
+</li></ul>
+</div>
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/phobos/&amp;component=phobos&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5Bstd.logger.core%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/phobos/edit/master/std/logger/core.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1><span class="d_title">std.logger.core</span></h1>
+        <div class="quickindex" id="quickindex"></div>
+        <div class="val"><p class="keyval Section"><span class="key keySection">Source</span>
+<span class="phobos_src"><a class="https" href="https://github.com/dlang/phobos/blob/master/std/logger/core.d">std/logger/core.d</a></span></p></div>
+
+<dl><dt class="d_decl"><div ><span class="def-anchor" id=".isLoggingEnabled"></span><div class="quickindex" id="quickindex.isLoggingEnabled"></div>@safe bool <span class="def-anchor" id="isLoggingEnabled"></span><code class="ddoc_psymbol">isLoggingEnabled</code><span class="template_param_list" title="Template parameter list">()</span>(LogLevel <code class="ddoc_param">ll</code>, LogLevel <code class="ddoc_param">loggerLL</code>, LogLevel <code class="ddoc_param">globalLL</code>, lazy bool <code class="ddoc_param">condition</code> = true);
+<br></div></dt>
+<dd><div class="summary">This functions is used at runtime to determine if a <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> is
+active. The same previously defined version statements are used to disable
+certain levels. Again the version statements are associated with a compile
+unit and can therefore not disable logging in other compile units.
+pure bool isLoggingEnabled()(LogLevel ll) @safe nothrow @nogc</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".log"></span><div class="quickindex" id="quickindex.log"></div>void <span class="def-anchor" id="log"></span><code class="ddoc_psymbol">log</code><span class="template_param_list" title="Template parameter list">(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)</span>(const LogLevel <code class="ddoc_param">ll</code>, lazy bool <code class="ddoc_param">condition</code>, lazy A <code class="ddoc_param">args</code>)<br><span class="constraint">if (<code class="ddoc_param">args</code>.length != 1)</span>;
+<br><br>void <span class="def-anchor" id="log"></span><code class="ddoc_psymbol">log</code><span class="template_param_list" title="Template parameter list">(T, string moduleName = __MODULE__)</span>(const LogLevel <code class="ddoc_param">ll</code>, lazy bool <code class="ddoc_param">condition</code>, lazy T <code class="ddoc_param">arg</code>, int <code class="ddoc_param">line</code> = __LINE__, string <code class="ddoc_param">file</code> = __FILE__, string <code class="ddoc_param">funcName</code> = __FUNCTION__, string <code class="ddoc_param">prettyFuncName</code> = __PRETTY_FUNCTION__);
+<br></div></dt>
+<dd><div class="summary">This function logs data.
+</div><div class="description">In order for the data to be processed, the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> of the log call must
+be greater or equal to the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> of the <span class="d_inlinecode donthyphenate notranslate">sharedLog</span> and the
+<span class="d_inlinecode donthyphenate notranslate">defaultLogLevel</span>; additionally the condition passed must be <span class="d_inlinecode donthyphenate notranslate">true</span>.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">LogLevel <code class="ddoc_param">ll</code></td>
+<td class="param_desc">The <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> used by this log call.</td></tr>
+<tr class="param"><td class="param_id">bool <code class="ddoc_param">condition</code></td>
+<td class="param_desc">The condition must be <span class="d_inlinecode donthyphenate notranslate">true</span> for the data to be logged.</td></tr>
+<tr class="param"><td class="param_id">A <code class="ddoc_param">args</code></td>
+<td class="param_desc">The data that should be logged.</td></tr>
+</table></div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example</span>
+<pre class="d_code notranslate"><span class="d_psymbol">log</span>(LogLevel.warning, <span class="d_keyword">true</span>, <span class="d_string">"Hello World"</span>, 3.1415);
+</pre>
+</p></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".log.2"></span><div class="quickindex" id="quickindex.log.2"></div>void <span class="def-anchor" id="log"></span><code class="ddoc_psymbol">log</code><span class="template_param_list" title="Template parameter list">(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)</span>(const LogLevel <code class="ddoc_param">ll</code>, lazy A <code class="ddoc_param">args</code>)<br><span class="constraint">if (<code class="ddoc_param">args</code>.length &gt; 1 &amp;&amp; !is(Unqual!(A[0]) : bool))</span>;
+<br><br>void <span class="def-anchor" id="log"></span><code class="ddoc_psymbol">log</code><span class="template_param_list" title="Template parameter list">(T, string moduleName = __MODULE__)</span>(const LogLevel <code class="ddoc_param">ll</code>, lazy T <code class="ddoc_param">arg</code>, int <code class="ddoc_param">line</code> = __LINE__, string <code class="ddoc_param">file</code> = __FILE__, string <code class="ddoc_param">funcName</code> = __FUNCTION__, string <code class="ddoc_param">prettyFuncName</code> = __PRETTY_FUNCTION__);
+<br></div></dt>
+<dd><div class="summary">This function logs data.
+</div><div class="description">In order for the data to be processed the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> of the log call must
+be greater or equal to the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> of the <span class="d_inlinecode donthyphenate notranslate">sharedLog</span>.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">LogLevel <code class="ddoc_param">ll</code></td>
+<td class="param_desc">The <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> used by this log call.</td></tr>
+<tr class="param"><td class="param_id">A <code class="ddoc_param">args</code></td>
+<td class="param_desc">The data that should be logged.</td></tr>
+</table></div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example</span>
+<pre class="d_code notranslate"><span class="d_psymbol">log</span>(LogLevel.warning, <span class="d_string">"Hello World"</span>, 3.1415);
+</pre>
+</p></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".log.3"></span><div class="quickindex" id="quickindex.log.3"></div>void <span class="def-anchor" id="log"></span><code class="ddoc_psymbol">log</code><span class="template_param_list" title="Template parameter list">(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)</span>(lazy bool <code class="ddoc_param">condition</code>, lazy A <code class="ddoc_param">args</code>)<br><span class="constraint">if (<code class="ddoc_param">args</code>.length != 1)</span>;
+<br><br>void <span class="def-anchor" id="log"></span><code class="ddoc_psymbol">log</code><span class="template_param_list" title="Template parameter list">(T, string moduleName = __MODULE__)</span>(lazy bool <code class="ddoc_param">condition</code>, lazy T <code class="ddoc_param">arg</code>, int <code class="ddoc_param">line</code> = __LINE__, string <code class="ddoc_param">file</code> = __FILE__, string <code class="ddoc_param">funcName</code> = __FUNCTION__, string <code class="ddoc_param">prettyFuncName</code> = __PRETTY_FUNCTION__);
+<br></div></dt>
+<dd><div class="summary">This function logs data.
+</div><div class="description">In order for the data to be processed the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> of the
+<span class="d_inlinecode donthyphenate notranslate">sharedLog</span> must be greater or equal to the <span class="d_inlinecode donthyphenate notranslate">defaultLogLevel</span>
+add the condition passed must be <span class="d_inlinecode donthyphenate notranslate">true</span>.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">bool <code class="ddoc_param">condition</code></td>
+<td class="param_desc">The condition must be <span class="d_inlinecode donthyphenate notranslate">true</span> for the data to be logged.</td></tr>
+<tr class="param"><td class="param_id">A <code class="ddoc_param">args</code></td>
+<td class="param_desc">The data that should be logged.</td></tr>
+</table></div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example</span>
+<pre class="d_code notranslate"><span class="d_psymbol">log</span>(<span class="d_keyword">true</span>, <span class="d_string">"Hello World"</span>, 3.1415);
+</pre>
+</p></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".log.4"></span><div class="quickindex" id="quickindex.log.4"></div>void <span class="def-anchor" id="log"></span><code class="ddoc_psymbol">log</code><span class="template_param_list" title="Template parameter list">(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)</span>(lazy A <code class="ddoc_param">args</code>)<br><span class="constraint">if (<code class="ddoc_param">args</code>.length &gt; 1 &amp;&amp; !is(Unqual!(A[0]) : bool) &amp;&amp; !is(Unqual!(A[0]) == LogLevel) || <code class="ddoc_param">args</code>.length == 0)</span>;
+<br></div></dt>
+<dd><div class="summary">This function logs data.
+</div><div class="description">In order for the data to be processed the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> of the
+<span class="d_inlinecode donthyphenate notranslate">sharedLog</span> must be greater or equal to the <span class="d_inlinecode donthyphenate notranslate">defaultLogLevel</span>.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">A <code class="ddoc_param">args</code></td>
+<td class="param_desc">The data that should be logged.</td></tr>
+</table></div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example</span>
+<pre class="d_code notranslate"><span class="d_psymbol">log</span>(<span class="d_string">"Hello World"</span>, 3.1415);
+</pre>
+</p></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".logf"></span><div class="quickindex" id="quickindex.logf"></div>void <span class="def-anchor" id="logf"></span><code class="ddoc_psymbol">logf</code><span class="template_param_list" title="Template parameter list">(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)</span>(const LogLevel <code class="ddoc_param">ll</code>, lazy bool <code class="ddoc_param">condition</code>, lazy string <code class="ddoc_param">msg</code>, lazy A <code class="ddoc_param">args</code>);
+<br></div></dt>
+<dd><div class="summary">This function logs data in a <span class="d_inlinecode donthyphenate notranslate">printf</span>-style manner.
+</div><div class="description">In order for the data to be processed the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> of the log call must
+be greater or equal to the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> of the <span class="d_inlinecode donthyphenate notranslate">sharedLog</span> and the
+<span class="d_inlinecode donthyphenate notranslate">defaultLogLevel</span> additionally the condition passed must be <span class="d_inlinecode donthyphenate notranslate">true</span>.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">LogLevel <code class="ddoc_param">ll</code></td>
+<td class="param_desc">The <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> used by this log call.</td></tr>
+<tr class="param"><td class="param_id">bool <code class="ddoc_param">condition</code></td>
+<td class="param_desc">The condition must be <span class="d_inlinecode donthyphenate notranslate">true</span> for the data to be logged.</td></tr>
+<tr class="param"><td class="param_id">string <code class="ddoc_param">msg</code></td>
+<td class="param_desc">The <span class="d_inlinecode donthyphenate notranslate">printf</span>-style string.</td></tr>
+<tr class="param"><td class="param_id">A <code class="ddoc_param">args</code></td>
+<td class="param_desc">The data that should be logged.</td></tr>
+</table></div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example</span>
+<pre class="d_code notranslate"><span class="d_psymbol">logf</span>(LogLevel.warning, <span class="d_keyword">true</span>, <span class="d_string">"Hello World %f"</span>, 3.1415);
+</pre>
+</p></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".logf.2"></span><div class="quickindex" id="quickindex.logf.2"></div>void <span class="def-anchor" id="logf"></span><code class="ddoc_psymbol">logf</code><span class="template_param_list" title="Template parameter list">(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)</span>(const LogLevel <code class="ddoc_param">ll</code>, lazy string <code class="ddoc_param">msg</code>, lazy A <code class="ddoc_param">args</code>);
+<br></div></dt>
+<dd><div class="summary">This function logs data in a <span class="d_inlinecode donthyphenate notranslate">printf</span>-style manner.
+</div><div class="description">In order for the data to be processed the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> of the log call must
+be greater or equal to the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> of the <span class="d_inlinecode donthyphenate notranslate">sharedLog</span> and the
+<span class="d_inlinecode donthyphenate notranslate">defaultLogLevel</span>.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">LogLevel <code class="ddoc_param">ll</code></td>
+<td class="param_desc">The <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> used by this log call.</td></tr>
+<tr class="param"><td class="param_id">string <code class="ddoc_param">msg</code></td>
+<td class="param_desc">The <span class="d_inlinecode donthyphenate notranslate">printf</span>-style string.</td></tr>
+<tr class="param"><td class="param_id">A <code class="ddoc_param">args</code></td>
+<td class="param_desc">The data that should be logged.</td></tr>
+</table></div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example</span>
+<pre class="d_code notranslate"><span class="d_psymbol">logf</span>(LogLevel.warning, <span class="d_string">"Hello World %f"</span>, 3.1415);
+</pre>
+</p></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".logf.3"></span><div class="quickindex" id="quickindex.logf.3"></div>void <span class="def-anchor" id="logf"></span><code class="ddoc_psymbol">logf</code><span class="template_param_list" title="Template parameter list">(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)</span>(lazy bool <code class="ddoc_param">condition</code>, lazy string <code class="ddoc_param">msg</code>, lazy A <code class="ddoc_param">args</code>);
+<br></div></dt>
+<dd><div class="summary">This function logs data in a <span class="d_inlinecode donthyphenate notranslate">printf</span>-style manner.
+</div><div class="description">In order for the data to be processed the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> of the log call must
+be greater or equal to the <span class="d_inlinecode donthyphenate notranslate">defaultLogLevel</span> additionally the condition
+passed must be <span class="d_inlinecode donthyphenate notranslate">true</span>.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">bool <code class="ddoc_param">condition</code></td>
+<td class="param_desc">The condition must be <span class="d_inlinecode donthyphenate notranslate">true</span> for the data to be logged.</td></tr>
+<tr class="param"><td class="param_id">string <code class="ddoc_param">msg</code></td>
+<td class="param_desc">The <span class="d_inlinecode donthyphenate notranslate">printf</span>-style string.</td></tr>
+<tr class="param"><td class="param_id">A <code class="ddoc_param">args</code></td>
+<td class="param_desc">The data that should be logged.</td></tr>
+</table></div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example</span>
+<pre class="d_code notranslate"><span class="d_psymbol">logf</span>(<span class="d_keyword">true</span>, <span class="d_string">"Hello World %f"</span>, 3.1415);
+</pre>
+</p></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".logf.4"></span><div class="quickindex" id="quickindex.logf.4"></div>void <span class="def-anchor" id="logf"></span><code class="ddoc_psymbol">logf</code><span class="template_param_list" title="Template parameter list">(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)</span>(lazy string <code class="ddoc_param">msg</code>, lazy A <code class="ddoc_param">args</code>);
+<br></div></dt>
+<dd><div class="summary">This function logs data in a <span class="d_inlinecode donthyphenate notranslate">printf</span>-style manner.
+</div><div class="description">In order for the data to be processed the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> of the log call must
+be greater or equal to the <span class="d_inlinecode donthyphenate notranslate">defaultLogLevel</span>.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">string <code class="ddoc_param">msg</code></td>
+<td class="param_desc">The <span class="d_inlinecode donthyphenate notranslate">printf</span>-style string.</td></tr>
+<tr class="param"><td class="param_id">A <code class="ddoc_param">args</code></td>
+<td class="param_desc">The data that should be logged.</td></tr>
+</table></div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example</span>
+<pre class="d_code notranslate"><span class="d_psymbol">logf</span>(<span class="d_string">"Hello World %f"</span>, 3.1415);
+</pre>
+</p></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".defaultLogFunction"></span><div class="quickindex" id="quickindex.defaultLogFunction"></div>template <span class="def-anchor" id="defaultLogFunction"></span><code class="ddoc_psymbol">defaultLogFunction</code>(LogLevel ll)<br></div></dt>
+<dd><div class="summary">This template provides the global log functions with the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span>
+is encoded in the function name.
+</div><div class="description">The aliases following this template create the public names of these log
+functions.</div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".trace"></span><div class="quickindex" id="quickindex.trace"></div>alias <span class="def-anchor" id="trace"></span><code class="ddoc_psymbol">trace</code> = defaultLogFunction!LogLevel.<span class="def-anchor" id="trace"></span><code class="ddoc_psymbol">trace</code>.defaultLogFunction(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)(lazy A args) if (args.length &gt; 0 &amp;&amp; !is(Unqual!(A[0]) : bool) || args.length == 0);
+<br><br><span class="def-anchor" id=".info"></span><div class="quickindex" id="quickindex.info"></div>alias <span class="def-anchor" id="info"></span><code class="ddoc_psymbol">info</code> = defaultLogFunction!LogLevel.<span class="def-anchor" id="info"></span><code class="ddoc_psymbol">info</code>.defaultLogFunction(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)(lazy A args) if (args.length &gt; 0 &amp;&amp; !is(Unqual!(A[0]) : bool) || args.length == 0);
+<br><br><span class="def-anchor" id=".warning"></span><div class="quickindex" id="quickindex.warning"></div>alias <span class="def-anchor" id="warning"></span><code class="ddoc_psymbol">warning</code> = defaultLogFunction!LogLevel.<span class="def-anchor" id="warning"></span><code class="ddoc_psymbol">warning</code>.defaultLogFunction(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)(lazy A args) if (args.length &gt; 0 &amp;&amp; !is(Unqual!(A[0]) : bool) || args.length == 0);
+<br><br><span class="def-anchor" id=".error"></span><div class="quickindex" id="quickindex.error"></div>alias <span class="def-anchor" id="error"></span><code class="ddoc_psymbol">error</code> = defaultLogFunction!LogLevel.<span class="def-anchor" id="error"></span><code class="ddoc_psymbol">error</code>.defaultLogFunction(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)(lazy A args) if (args.length &gt; 0 &amp;&amp; !is(Unqual!(A[0]) : bool) || args.length == 0);
+<br><br><span class="def-anchor" id=".critical"></span><div class="quickindex" id="quickindex.critical"></div>alias <span class="def-anchor" id="critical"></span><code class="ddoc_psymbol">critical</code> = defaultLogFunction!LogLevel.<span class="def-anchor" id="critical"></span><code class="ddoc_psymbol">critical</code>.defaultLogFunction(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)(lazy A args) if (args.length &gt; 0 &amp;&amp; !is(Unqual!(A[0]) : bool) || args.length == 0);
+<br><br><span class="def-anchor" id=".fatal"></span><div class="quickindex" id="quickindex.fatal"></div>alias <span class="def-anchor" id="fatal"></span><code class="ddoc_psymbol">fatal</code> = defaultLogFunction!LogLevel.<span class="def-anchor" id="fatal"></span><code class="ddoc_psymbol">fatal</code>.defaultLogFunction(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)(lazy A args) if (args.length &gt; 0 &amp;&amp; !is(Unqual!(A[0]) : bool) || args.length == 0);
+<br></div></dt>
+<dd><div class="summary">This function logs data to the <span class="d_inlinecode donthyphenate notranslate">stdThreadLocalLog</span>, optionally depending
+on a condition.
+</div><div class="description">In order for the resulting log message to be logged the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> must
+be greater or equal than the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> of the <span class="d_inlinecode donthyphenate notranslate">stdThreadLocalLog</span> and
+must be greater or equal than the global <span class="d_inlinecode donthyphenate notranslate">LogLevel</span>.
+Additionally the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> must be greater or equal than the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span>
+of the <span class="d_inlinecode donthyphenate notranslate">stdSharedLogger</span>.
+If a condition is given, it must evaluate to <span class="d_inlinecode donthyphenate notranslate">true</span>.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">bool condition</td>
+<td class="param_desc">The condition must be <span class="d_inlinecode donthyphenate notranslate">true</span> for the data to be logged.</td></tr>
+<tr class="param"><td class="param_id">A args</td>
+<td class="param_desc">The data that should be logged.</td></tr>
+</table></div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example</span>
+<pre class="d_code notranslate"><span class="d_psymbol">trace</span>(1337, <span class="d_string">"is number"</span>);
+<span class="d_psymbol">info</span>(1337, <span class="d_string">"is number"</span>);
+<span class="d_psymbol">error</span>(1337, <span class="d_string">"is number"</span>);
+<span class="d_psymbol">critical</span>(1337, <span class="d_string">"is number"</span>);
+<span class="d_psymbol">fatal</span>(1337, <span class="d_string">"is number"</span>);
+<span class="d_psymbol">trace</span>(<span class="d_keyword">true</span>, 1337, <span class="d_string">"is number"</span>);
+<span class="d_psymbol">info</span>(<span class="d_keyword">false</span>, 1337, <span class="d_string">"is number"</span>);
+<span class="d_psymbol">error</span>(<span class="d_keyword">true</span>, 1337, <span class="d_string">"is number"</span>);
+<span class="d_psymbol">critical</span>(<span class="d_keyword">false</span>, 1337, <span class="d_string">"is number"</span>);
+<span class="d_psymbol">fatal</span>(<span class="d_keyword">true</span>, 1337, <span class="d_string">"is number"</span>);
+</pre>
+</p></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".defaultLogFunctionf"></span><div class="quickindex" id="quickindex.defaultLogFunctionf"></div>template <span class="def-anchor" id="defaultLogFunctionf"></span><code class="ddoc_psymbol">defaultLogFunctionf</code>(LogLevel ll)<br></div></dt>
+<dd><div class="summary">This template provides the global <span class="d_inlinecode donthyphenate notranslate">printf</span>-style log functions with
+the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> is encoded in the function name.
+</div><div class="description">The aliases following this template create the public names of the log
+functions.</div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".tracef"></span><div class="quickindex" id="quickindex.tracef"></div>alias <span class="def-anchor" id="tracef"></span><code class="ddoc_psymbol">tracef</code> = defaultLogFunctionf!LogLevel.trace.defaultLogFunctionf(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)(lazy string msg, lazy A args);
+<br><br><span class="def-anchor" id=".infof"></span><div class="quickindex" id="quickindex.infof"></div>alias <span class="def-anchor" id="infof"></span><code class="ddoc_psymbol">infof</code> = defaultLogFunctionf!LogLevel.info.defaultLogFunctionf(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)(lazy string msg, lazy A args);
+<br><br><span class="def-anchor" id=".warningf"></span><div class="quickindex" id="quickindex.warningf"></div>alias <span class="def-anchor" id="warningf"></span><code class="ddoc_psymbol">warningf</code> = defaultLogFunctionf!LogLevel.warning.defaultLogFunctionf(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)(lazy string msg, lazy A args);
+<br><br><span class="def-anchor" id=".errorf"></span><div class="quickindex" id="quickindex.errorf"></div>alias <span class="def-anchor" id="errorf"></span><code class="ddoc_psymbol">errorf</code> = defaultLogFunctionf!LogLevel.error.defaultLogFunctionf(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)(lazy string msg, lazy A args);
+<br><br><span class="def-anchor" id=".criticalf"></span><div class="quickindex" id="quickindex.criticalf"></div>alias <span class="def-anchor" id="criticalf"></span><code class="ddoc_psymbol">criticalf</code> = defaultLogFunctionf!LogLevel.critical.defaultLogFunctionf(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)(lazy string msg, lazy A args);
+<br><br><span class="def-anchor" id=".fatalf"></span><div class="quickindex" id="quickindex.fatalf"></div>alias <span class="def-anchor" id="fatalf"></span><code class="ddoc_psymbol">fatalf</code> = defaultLogFunctionf!LogLevel.fatal.defaultLogFunctionf(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)(lazy string msg, lazy A args);
+<br></div></dt>
+<dd><div class="summary">This function logs data to the <span class="d_inlinecode donthyphenate notranslate">sharedLog</span> in a <span class="d_inlinecode donthyphenate notranslate">printf</span>-style
+manner.
+</div><div class="description">In order for the resulting log message to be logged the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> must
+be greater or equal than the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> of the <span class="d_inlinecode donthyphenate notranslate">sharedLog</span> and
+must be greater or equal than the global <span class="d_inlinecode donthyphenate notranslate">LogLevel</span>.
+Additionally the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> must be greater or equal than the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span>
+of the <span class="d_inlinecode donthyphenate notranslate">stdSharedLogger</span>.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">string msg</td>
+<td class="param_desc">The <span class="d_inlinecode donthyphenate notranslate">printf</span>-style string.</td></tr>
+<tr class="param"><td class="param_id">A args</td>
+<td class="param_desc">The data that should be logged.</td></tr>
+</table></div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example</span>
+<pre class="d_code notranslate"><span class="d_psymbol">tracef</span>(<span class="d_string">"is number %d"</span>, 1);
+<span class="d_psymbol">infof</span>(<span class="d_string">"is number %d"</span>, 2);
+<span class="d_psymbol">errorf</span>(<span class="d_string">"is number %d"</span>, 3);
+<span class="d_psymbol">criticalf</span>(<span class="d_string">"is number %d"</span>, 4);
+<span class="d_psymbol">fatalf</span>(<span class="d_string">"is number %d"</span>, 5);
+</pre>
+<div class="blankline"></div>
+
+The second version of the function logs data to the <span class="d_inlinecode donthyphenate notranslate">sharedLog</span> in a <span class="d_inlinecode donthyphenate notranslate">printf</span>-style manner.
+<div class="blankline"></div>
+
+In order for the resulting log message to be logged the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> must
+be greater or equal than the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> of the <span class="d_inlinecode donthyphenate notranslate">sharedLog</span> and
+must be greater or equal than the global <span class="d_inlinecode donthyphenate notranslate">LogLevel</span>.
+Additionally the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> must be greater or equal than the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span>
+of the <span class="d_inlinecode donthyphenate notranslate">stdSharedLogger</span>.
+
+</p></div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">bool condition</td>
+<td class="param_desc">The condition must be <span class="d_inlinecode donthyphenate notranslate">true</span> for the data to be logged.</td></tr>
+<tr class="param"><td class="param_id">string msg</td>
+<td class="param_desc">The <span class="d_inlinecode donthyphenate notranslate">printf</span>-style string.</td></tr>
+<tr class="param"><td class="param_id">A args</td>
+<td class="param_desc">The data that should be logged.</td></tr>
+</table></div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example</span>
+<pre class="d_code notranslate"><span class="d_psymbol">tracef</span>(<span class="d_keyword">false</span>, <span class="d_string">"is number %d"</span>, 1);
+<span class="d_psymbol">infof</span>(<span class="d_keyword">false</span>, <span class="d_string">"is number %d"</span>, 2);
+<span class="d_psymbol">errorf</span>(<span class="d_keyword">true</span>, <span class="d_string">"is number %d"</span>, 3);
+<span class="d_psymbol">criticalf</span>(<span class="d_keyword">true</span>, <span class="d_string">"is number %d"</span>, 4);
+<span class="d_psymbol">fatalf</span>(someFunct(), <span class="d_string">"is number %d"</span>, 5);
+</pre>
+</p></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".LogLevel"></span><div class="quickindex" id="quickindex.LogLevel"></div>enum <span class="def-anchor" id="LogLevel"></span><code class="ddoc_psymbol">LogLevel</code>: ubyte;
+<br></div></dt>
+<dd><div class="summary">There are eight usable logging level. These level are <i>all</i>, <i>trace</i>,
+<i>info</i>, <i>warning</i>, <i>error</i>, <i>critical</i>, <i>fatal</i>, and <i>off</i>.
+If a log function with <span class="d_inlinecode donthyphenate notranslate"><span class="def-anchor" id="LogLevel"></span><code class="ddoc_psymbol">LogLevel</code>.fatal</span> is called the shutdown handler of
+that logger is called.</div>
+<dl><dt class="d_decl"><div ><span class="def-anchor" id=".LogLevel.all"></span><div class="quickindex" id="quickindex.LogLevel.all"></div><span class="def-anchor" id="all"></span><code class="ddoc_psymbol">all</code><br></div></dt>
+<dd><div class="summary">Lowest possible assignable <span class="d_inlinecode donthyphenate notranslate">LogLevel</span>.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".LogLevel.trace"></span><div class="quickindex" id="quickindex.LogLevel.trace"></div><span class="def-anchor" id="trace"></span><code class="ddoc_psymbol">trace</code><br></div></dt>
+<dd><div class="summary"><span class="d_inlinecode donthyphenate notranslate">LogLevel</span> for tracing the execution of the program.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".LogLevel.info"></span><div class="quickindex" id="quickindex.LogLevel.info"></div><span class="def-anchor" id="info"></span><code class="ddoc_psymbol">info</code><br></div></dt>
+<dd><div class="summary">This level is used to display information about the
+                program.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".LogLevel.warning"></span><div class="quickindex" id="quickindex.LogLevel.warning"></div><span class="def-anchor" id="warning"></span><code class="ddoc_psymbol">warning</code><br></div></dt>
+<dd><div class="summary">warnings about the program should be displayed with this
+                   level.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".LogLevel.error"></span><div class="quickindex" id="quickindex.LogLevel.error"></div><span class="def-anchor" id="error"></span><code class="ddoc_psymbol">error</code><br></div></dt>
+<dd><div class="summary">Information about errors should be logged with this
+                   level.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".LogLevel.critical"></span><div class="quickindex" id="quickindex.LogLevel.critical"></div><span class="def-anchor" id="critical"></span><code class="ddoc_psymbol">critical</code><br></div></dt>
+<dd><div class="summary">Messages that inform about critical errors should be
+                    logged with this level.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".LogLevel.fatal"></span><div class="quickindex" id="quickindex.LogLevel.fatal"></div><span class="def-anchor" id="fatal"></span><code class="ddoc_psymbol">fatal</code><br></div></dt>
+<dd><div class="summary">Log messages that describe fatal errors should use this
+                  level.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".LogLevel.off"></span><div class="quickindex" id="quickindex.LogLevel.off"></div><span class="def-anchor" id="off"></span><code class="ddoc_psymbol">off</code><br></div></dt>
+<dd><div class="summary">Highest possible <span class="d_inlinecode donthyphenate notranslate">LogLevel</span>.</div>
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Logger"></span><div class="quickindex" id="quickindex.Logger"></div>abstract class <span class="def-anchor" id="Logger"></span><code class="ddoc_psymbol">Logger</code>;
+<br></div></dt>
+<dd><div class="summary">This class is the base of every logger. In order to create a new kind of
+logger a deriving class needs to implement the <span class="d_inlinecode donthyphenate notranslate">writeLogMsg</span> method. By
+default this is not thread-safe.
+</div><div class="description">It is also possible to <span class="d_inlinecode donthyphenate notranslate">override</span> the three methods <span class="d_inlinecode donthyphenate notranslate">beginLogMsg</span>,
+<span class="d_inlinecode donthyphenate notranslate">logMsgPart</span> and <span class="d_inlinecode donthyphenate notranslate">finishLogMsg</span> together, this option gives more
+flexibility.</div>
+
+<dl><dt class="d_decl"><div ><span class="def-anchor" id=".Logger.LogEntry"></span><div class="quickindex" id="quickindex.Logger.LogEntry"></div>struct <span class="def-anchor" id="LogEntry"></span><code class="ddoc_psymbol">LogEntry</code>;
+<br></div></dt>
+<dd><div class="summary">LogEntry is a aggregation combining all information associated
+    with a log message. This aggregation will be passed to the method
+    writeLogMsg.</div>
+<dl><dt class="d_decl"><div ><span class="def-anchor" id=".Logger.LogEntry.file"></span><div class="quickindex" id="quickindex.Logger.LogEntry.file"></div>string <span class="def-anchor" id="file"></span><code class="ddoc_psymbol">file</code>;
+<br></div></dt>
+<dd><div class="summary">the filename the log function was called from</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Logger.LogEntry.line"></span><div class="quickindex" id="quickindex.Logger.LogEntry.line"></div>int <span class="def-anchor" id="line"></span><code class="ddoc_psymbol">line</code>;
+<br></div></dt>
+<dd><div class="summary">the line number the log function was called from</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Logger.LogEntry.funcName"></span><div class="quickindex" id="quickindex.Logger.LogEntry.funcName"></div>string <span class="def-anchor" id="funcName"></span><code class="ddoc_psymbol">funcName</code>;
+<br></div></dt>
+<dd><div class="summary">the name of the function the log function was called from</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Logger.LogEntry.prettyFuncName"></span><div class="quickindex" id="quickindex.Logger.LogEntry.prettyFuncName"></div>string <span class="def-anchor" id="prettyFuncName"></span><code class="ddoc_psymbol">prettyFuncName</code>;
+<br></div></dt>
+<dd><div class="summary">the pretty formatted name of the function the log function was
+called from</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Logger.LogEntry.moduleName"></span><div class="quickindex" id="quickindex.Logger.LogEntry.moduleName"></div>string <span class="def-anchor" id="moduleName"></span><code class="ddoc_psymbol">moduleName</code>;
+<br></div></dt>
+<dd><div class="summary">the name of the module the log message is coming from</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Logger.LogEntry.logLevel"></span><div class="quickindex" id="quickindex.Logger.LogEntry.logLevel"></div>LogLevel <span class="def-anchor" id="logLevel"></span><code class="ddoc_psymbol">logLevel</code>;
+<br></div></dt>
+<dd><div class="summary">the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> associated with the log message</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Logger.LogEntry.threadId"></span><div class="quickindex" id="quickindex.Logger.LogEntry.threadId"></div>Tid <span class="def-anchor" id="threadId"></span><code class="ddoc_psymbol">threadId</code>;
+<br></div></dt>
+<dd><div class="summary">thread id of the log message</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Logger.LogEntry.timestamp"></span><div class="quickindex" id="quickindex.Logger.LogEntry.timestamp"></div>SysTime <span class="def-anchor" id="timestamp"></span><code class="ddoc_psymbol">timestamp</code>;
+<br></div></dt>
+<dd><div class="summary">the time the message was logged</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Logger.LogEntry.msg"></span><div class="quickindex" id="quickindex.Logger.LogEntry.msg"></div>string <span class="def-anchor" id="msg"></span><code class="ddoc_psymbol">msg</code>;
+<br></div></dt>
+<dd><div class="summary">the message of the log message</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Logger.LogEntry.logger"></span><div class="quickindex" id="quickindex.Logger.LogEntry.logger"></div>Logger <span class="def-anchor" id="logger"></span><code class="ddoc_psymbol">logger</code>;
+<br></div></dt>
+<dd><div class="summary">A refernce to the <span class="d_inlinecode donthyphenate notranslate">Logger</span> used to create this <span class="d_inlinecode donthyphenate notranslate">LogEntry</span></div>
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Logger.this"></span><div class="quickindex" id="quickindex.Logger.this"></div>this<span class="template_param_list" title="Template parameter list">(this This)</span>(LogLevel <code class="ddoc_param">lv</code>);
+<br></div></dt>
+<dd><div class="summary">Every subclass of <span class="d_inlinecode donthyphenate notranslate">Logger</span> has to call this constructor from their
+    constructor. It sets the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span>, and creates a fatal handler. The fatal
+    handler will throw an <span class="d_inlinecode donthyphenate notranslate">Error</span> if a log call is made with level
+    <span class="d_inlinecode donthyphenate notranslate">LogLevel.fatal</span>.
+</div><div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">LogLevel <code class="ddoc_param">lv</code></td>
+<td class="param_desc"><span class="d_inlinecode donthyphenate notranslate">LogLevel</span> to use for this <span class="d_inlinecode donthyphenate notranslate">Logger</span> instance.</td></tr>
+</table></div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Logger.writeLogMsg"></span><div class="quickindex" id="quickindex.Logger.writeLogMsg"></div>protected abstract @safe void <span class="def-anchor" id="writeLogMsg"></span><code class="ddoc_psymbol">writeLogMsg</code>(ref LogEntry <code class="ddoc_param">payload</code>);
+<br></div></dt>
+<dd><div class="summary">A custom logger must implement this method in order to work in a
+    <span class="d_inlinecode donthyphenate notranslate">MultiLogger</span> and <span class="d_inlinecode donthyphenate notranslate">ArrayLogger</span>.
+</div><div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">LogEntry <code class="ddoc_param">payload</code></td>
+<td class="param_desc">All information associated with call to log function.</td></tr>
+</table></div></div>
+<div class="keyval SeeAlso"><span class="key keySeeAlso">See Also:</span> <div class="val valSeeAlso">beginLogMsg, logMsgPart, finishLogMsg</div></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Logger.logMsgPart"></span><div class="quickindex" id="quickindex.Logger.logMsgPart"></div>protected @safe void <span class="def-anchor" id="logMsgPart"></span><code class="ddoc_psymbol">logMsgPart</code>(scope const(char)[] <code class="ddoc_param">msg</code>);
+<br></div></dt>
+<dd><div class="summary">Logs a part of the log message.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Logger.finishLogMsg"></span><div class="quickindex" id="quickindex.Logger.finishLogMsg"></div>protected @safe void <span class="def-anchor" id="finishLogMsg"></span><code class="ddoc_psymbol">finishLogMsg</code>();
+<br></div></dt>
+<dd><div class="summary">Signals that the message has been written and no more calls to
+    <span class="d_inlinecode donthyphenate notranslate">logMsgPart</span> follow.</div>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Logger.logLevel"></span><div class="quickindex" id="quickindex.Logger.logLevel"></div>final const pure @nogc @property @safe LogLevel <span class="def-anchor" id="logLevel"></span><code class="ddoc_psymbol">logLevel</code>();
+<br><br>final @nogc @property @safe void <span class="def-anchor" id="logLevel"></span><code class="ddoc_psymbol">logLevel</code>(const LogLevel <code class="ddoc_param">lv</code>);
+<br></div></dt>
+<dd><div class="summary">The <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> determines if the log call are processed or dropped
+    by the <span class="d_inlinecode donthyphenate notranslate">Logger</span>. In order for the log call to be processed the
+    <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> of the log call must be greater or equal to the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span>
+    of the <span class="d_inlinecode donthyphenate notranslate">logger</span>.
+</div><div class="description">These two methods set and get the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> of the used <span class="d_inlinecode donthyphenate notranslate">Logger</span>.
+
+</div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example</span>
+<pre class="d_code notranslate"><span class="d_keyword">auto</span> f = <span class="d_keyword">new</span> FileLogger(stdout);
+f.<span class="d_psymbol">logLevel</span> = LogLevel.info;
+<span class="d_keyword">assert</span>(f.<span class="d_psymbol">logLevel</span> == LogLevel.info);
+</pre>
+</p></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Logger.fatalHandler"></span><div class="quickindex" id="quickindex.Logger.fatalHandler"></div>final @nogc @property @safe void delegate() <span class="def-anchor" id="fatalHandler"></span><code class="ddoc_psymbol">fatalHandler</code>();
+<br><br>final @nogc @property @safe void <span class="def-anchor" id="fatalHandler"></span><code class="ddoc_psymbol">fatalHandler</code>(void delegate() @safe <code class="ddoc_param">fh</code>);
+<br></div></dt>
+<dd><div class="summary">This <span class="d_inlinecode donthyphenate notranslate">delegate</span> is called in case a log message with
+    <span class="d_inlinecode donthyphenate notranslate">LogLevel.fatal</span> gets logged.
+</div><div class="description">By default an <span class="d_inlinecode donthyphenate notranslate">Error</span> will be thrown.</div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Logger.forwardMsg"></span><div class="quickindex" id="quickindex.Logger.forwardMsg"></div>@trusted void <span class="def-anchor" id="forwardMsg"></span><code class="ddoc_psymbol">forwardMsg</code>(ref LogEntry <code class="ddoc_param">payload</code>);
+<br></div></dt>
+<dd><div class="summary">This method allows forwarding log entries from one logger to another.
+</div><div class="description"><span class="d_inlinecode donthyphenate notranslate"><span class="def-anchor" id="forwardMsg"></span><code class="ddoc_psymbol">forwardMsg</code></span> will ensure proper synchronization and then call
+    <span class="d_inlinecode donthyphenate notranslate">writeLogMsg</span>. This is an API for implementing your own loggers and
+    should not be called by normal user code. A notable difference from other
+    logging functions is that the <span class="d_inlinecode donthyphenate notranslate">globalLogLevel</span> wont be evaluated again
+    since it is assumed that the caller already checked that.</div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Logger.memLogFunctions"></span><div class="quickindex" id="quickindex.Logger.memLogFunctions"></div>template <span class="def-anchor" id="memLogFunctions"></span><code class="ddoc_psymbol">memLogFunctions</code>(LogLevel ll)<br><br><span class="def-anchor" id=".Logger.trace"></span><div class="quickindex" id="quickindex.Logger.trace"></div>alias <span class="def-anchor" id="trace"></span><code class="ddoc_psymbol">trace</code> = .Logger.memLogFunctions!LogLevel.<span class="def-anchor" id="trace"></span><code class="ddoc_psymbol">trace</code>.logImpl(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)(lazy A args) if (args.length == 0 || args.length &gt; 0 &amp;&amp; !is(A[0] : bool));
+<br><br><span class="def-anchor" id=".Logger.tracef"></span><div class="quickindex" id="quickindex.Logger.tracef"></div>alias <span class="def-anchor" id="tracef"></span><code class="ddoc_psymbol">tracef</code> = .Logger.memLogFunctions!LogLevel.trace.logImplf(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)(lazy bool condition, lazy string msg, lazy A args);
+<br><br><span class="def-anchor" id=".Logger.info"></span><div class="quickindex" id="quickindex.Logger.info"></div>alias <span class="def-anchor" id="info"></span><code class="ddoc_psymbol">info</code> = .Logger.memLogFunctions!LogLevel.<span class="def-anchor" id="info"></span><code class="ddoc_psymbol">info</code>.logImpl(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)(lazy A args) if (args.length == 0 || args.length &gt; 0 &amp;&amp; !is(A[0] : bool));
+<br><br><span class="def-anchor" id=".Logger.infof"></span><div class="quickindex" id="quickindex.Logger.infof"></div>alias <span class="def-anchor" id="infof"></span><code class="ddoc_psymbol">infof</code> = .Logger.memLogFunctions!LogLevel.info.logImplf(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)(lazy bool condition, lazy string msg, lazy A args);
+<br><br><span class="def-anchor" id=".Logger.warning"></span><div class="quickindex" id="quickindex.Logger.warning"></div>alias <span class="def-anchor" id="warning"></span><code class="ddoc_psymbol">warning</code> = .Logger.memLogFunctions!LogLevel.<span class="def-anchor" id="warning"></span><code class="ddoc_psymbol">warning</code>.logImpl(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)(lazy A args) if (args.length == 0 || args.length &gt; 0 &amp;&amp; !is(A[0] : bool));
+<br><br><span class="def-anchor" id=".Logger.warningf"></span><div class="quickindex" id="quickindex.Logger.warningf"></div>alias <span class="def-anchor" id="warningf"></span><code class="ddoc_psymbol">warningf</code> = .Logger.memLogFunctions!LogLevel.warning.logImplf(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)(lazy bool condition, lazy string msg, lazy A args);
+<br><br><span class="def-anchor" id=".Logger.error"></span><div class="quickindex" id="quickindex.Logger.error"></div>alias <span class="def-anchor" id="error"></span><code class="ddoc_psymbol">error</code> = .Logger.memLogFunctions!LogLevel.<span class="def-anchor" id="error"></span><code class="ddoc_psymbol">error</code>.logImpl(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)(lazy A args) if (args.length == 0 || args.length &gt; 0 &amp;&amp; !is(A[0] : bool));
+<br><br><span class="def-anchor" id=".Logger.errorf"></span><div class="quickindex" id="quickindex.Logger.errorf"></div>alias <span class="def-anchor" id="errorf"></span><code class="ddoc_psymbol">errorf</code> = .Logger.memLogFunctions!LogLevel.error.logImplf(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)(lazy bool condition, lazy string msg, lazy A args);
+<br><br><span class="def-anchor" id=".Logger.critical"></span><div class="quickindex" id="quickindex.Logger.critical"></div>alias <span class="def-anchor" id="critical"></span><code class="ddoc_psymbol">critical</code> = .Logger.memLogFunctions!LogLevel.<span class="def-anchor" id="critical"></span><code class="ddoc_psymbol">critical</code>.logImpl(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)(lazy A args) if (args.length == 0 || args.length &gt; 0 &amp;&amp; !is(A[0] : bool));
+<br><br><span class="def-anchor" id=".Logger.criticalf"></span><div class="quickindex" id="quickindex.Logger.criticalf"></div>alias <span class="def-anchor" id="criticalf"></span><code class="ddoc_psymbol">criticalf</code> = .Logger.memLogFunctions!LogLevel.critical.logImplf(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)(lazy bool condition, lazy string msg, lazy A args);
+<br><br><span class="def-anchor" id=".Logger.fatal"></span><div class="quickindex" id="quickindex.Logger.fatal"></div>alias <span class="def-anchor" id="fatal"></span><code class="ddoc_psymbol">fatal</code> = .Logger.memLogFunctions!LogLevel.<span class="def-anchor" id="fatal"></span><code class="ddoc_psymbol">fatal</code>.logImpl(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)(lazy A args) if (args.length == 0 || args.length &gt; 0 &amp;&amp; !is(A[0] : bool));
+<br><br><span class="def-anchor" id=".Logger.fatalf"></span><div class="quickindex" id="quickindex.Logger.fatalf"></div>alias <span class="def-anchor" id="fatalf"></span><code class="ddoc_psymbol">fatalf</code> = .Logger.memLogFunctions!LogLevel.fatal.logImplf(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)(lazy bool condition, lazy string msg, lazy A args);
+<br></div></dt>
+<dd><div class="summary">This template provides the log functions for the <span class="d_inlinecode donthyphenate notranslate">Logger</span> <span class="d_inlinecode donthyphenate notranslate">class</span>
+    with the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> encoded in the function name.
+</div><div class="description">For further information see the two functions defined inside of this
+    template.
+<div class="blankline"></div>
+
+    The aliases following this template create the public names of these log
+    functions.</div>
+
+<dl><dt class="d_decl"><div ><span class="def-anchor" id=".Logger.memLogFunctions.logImpl"></span><div class="quickindex" id="quickindex.Logger.memLogFunctions.logImpl"></div>void <span class="def-anchor" id="logImpl"></span><code class="ddoc_psymbol">logImpl</code><span class="template_param_list" title="Template parameter list">(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)</span>(lazy A <code class="ddoc_param">args</code>)<br><span class="constraint">if (<code class="ddoc_param">args</code>.length == 0 || <code class="ddoc_param">args</code>.length &gt; 0 &amp;&amp; !is(A[0] : bool))</span>;
+<br></div></dt>
+<dd><div class="summary">This function logs data to the used <span class="d_inlinecode donthyphenate notranslate">Logger</span>.
+</div><div class="description">In order for the resulting log message to be logged the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span>
+        must be greater or equal than the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> of the used <span class="d_inlinecode donthyphenate notranslate">Logger</span>
+        and must be greater or equal than the global <span class="d_inlinecode donthyphenate notranslate">LogLevel</span>.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">A <code class="ddoc_param">args</code></td>
+<td class="param_desc">The data that should be logged.</td></tr>
+</table></div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example</span>
+<pre class="d_code notranslate"><span class="d_keyword">auto</span> s = <span class="d_keyword">new</span> FileLogger(stdout);
+s.trace(1337, <span class="d_string">"is number"</span>);
+s.info(1337, <span class="d_string">"is number"</span>);
+s.error(1337, <span class="d_string">"is number"</span>);
+s.critical(1337, <span class="d_string">"is number"</span>);
+s.fatal(1337, <span class="d_string">"is number"</span>);
+</pre>
+</p></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Logger.memLogFunctions.logImpl.2"></span><div class="quickindex" id="quickindex.Logger.memLogFunctions.logImpl.2"></div>void <span class="def-anchor" id="logImpl"></span><code class="ddoc_psymbol">logImpl</code><span class="template_param_list" title="Template parameter list">(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)</span>(lazy bool <code class="ddoc_param">condition</code>, lazy A <code class="ddoc_param">args</code>);
+<br></div></dt>
+<dd><div class="summary">This function logs data to the used <span class="d_inlinecode donthyphenate notranslate">Logger</span> depending on a
+        condition.
+</div><div class="description">In order for the resulting log message to be logged the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> must
+        be greater or equal than the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> of the used <span class="d_inlinecode donthyphenate notranslate">Logger</span> and
+        must be greater or equal than the global <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> additionally the
+        condition passed must be <span class="d_inlinecode donthyphenate notranslate">true</span>.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">bool <code class="ddoc_param">condition</code></td>
+<td class="param_desc">The condition must be <span class="d_inlinecode donthyphenate notranslate">true</span> for the data to be logged.</td></tr>
+<tr class="param"><td class="param_id">A <code class="ddoc_param">args</code></td>
+<td class="param_desc">The data that should be logged.</td></tr>
+</table></div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example</span>
+<pre class="d_code notranslate"><span class="d_keyword">auto</span> s = <span class="d_keyword">new</span> FileLogger(stdout);
+s.trace(<span class="d_keyword">true</span>, 1337, <span class="d_string">"is number"</span>);
+s.info(<span class="d_keyword">false</span>, 1337, <span class="d_string">"is number"</span>);
+s.error(<span class="d_keyword">true</span>, 1337, <span class="d_string">"is number"</span>);
+s.critical(<span class="d_keyword">false</span>, 1337, <span class="d_string">"is number"</span>);
+s.fatal(<span class="d_keyword">true</span>, 1337, <span class="d_string">"is number"</span>);
+</pre>
+</p></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Logger.memLogFunctions.logImplf"></span><div class="quickindex" id="quickindex.Logger.memLogFunctions.logImplf"></div>void <span class="def-anchor" id="logImplf"></span><code class="ddoc_psymbol">logImplf</code><span class="template_param_list" title="Template parameter list">(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)</span>(lazy bool <code class="ddoc_param">condition</code>, lazy string <code class="ddoc_param">msg</code>, lazy A <code class="ddoc_param">args</code>);
+<br></div></dt>
+<dd><div class="summary">This function logs data to the used <span class="d_inlinecode donthyphenate notranslate">Logger</span> in a
+        <span class="d_inlinecode donthyphenate notranslate">printf</span>-style manner.
+</div><div class="description">In order for the resulting log message to be logged the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span>
+        must be greater or equal than the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> of the used <span class="d_inlinecode donthyphenate notranslate">Logger</span>
+        and must be greater or equal than the global <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> additionally
+           the passed condition must be <span class="d_inlinecode donthyphenate notranslate">true</span>.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">bool <code class="ddoc_param">condition</code></td>
+<td class="param_desc">The condition must be <span class="d_inlinecode donthyphenate notranslate">true</span> for the data to be logged.</td></tr>
+<tr class="param"><td class="param_id">string <code class="ddoc_param">msg</code></td>
+<td class="param_desc">The <span class="d_inlinecode donthyphenate notranslate">printf</span>-style string.</td></tr>
+<tr class="param"><td class="param_id">A <code class="ddoc_param">args</code></td>
+<td class="param_desc">The data that should be logged.</td></tr>
+</table></div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example</span>
+<pre class="d_code notranslate"><span class="d_keyword">auto</span> s = <span class="d_keyword">new</span> FileLogger(stderr);
+s.tracef(<span class="d_keyword">true</span>, <span class="d_string">"is number %d"</span>, 1);
+s.infof(<span class="d_keyword">true</span>, <span class="d_string">"is number %d"</span>, 2);
+s.errorf(<span class="d_keyword">false</span>, <span class="d_string">"is number %d"</span>, 3);
+s.criticalf(someFunc(), <span class="d_string">"is number %d"</span>, 4);
+s.fatalf(<span class="d_keyword">true</span>, <span class="d_string">"is number %d"</span>, 5);
+</pre>
+</p></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Logger.memLogFunctions.logImplf.2"></span><div class="quickindex" id="quickindex.Logger.memLogFunctions.logImplf.2"></div>void <span class="def-anchor" id="logImplf"></span><code class="ddoc_psymbol">logImplf</code><span class="template_param_list" title="Template parameter list">(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)</span>(lazy string <code class="ddoc_param">msg</code>, lazy A <code class="ddoc_param">args</code>);
+<br></div></dt>
+<dd><div class="summary">This function logs data to the used <span class="d_inlinecode donthyphenate notranslate">Logger</span> in a
+        <span class="d_inlinecode donthyphenate notranslate">printf</span>-style manner.
+</div><div class="description">In order for the resulting log message to be logged the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> must
+        be greater or equal than the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> of the used <span class="d_inlinecode donthyphenate notranslate">Logger</span> and
+        must be greater or equal than the global <span class="d_inlinecode donthyphenate notranslate">LogLevel</span>.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">string <code class="ddoc_param">msg</code></td>
+<td class="param_desc">The <span class="d_inlinecode donthyphenate notranslate">printf</span>-style string.</td></tr>
+<tr class="param"><td class="param_id">A <code class="ddoc_param">args</code></td>
+<td class="param_desc">The data that should be logged.</td></tr>
+</table></div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example</span>
+<pre class="d_code notranslate"><span class="d_keyword">auto</span> s = <span class="d_keyword">new</span> FileLogger(stderr);
+s.tracef(<span class="d_string">"is number %d"</span>, 1);
+s.infof(<span class="d_string">"is number %d"</span>, 2);
+s.errorf(<span class="d_string">"is number %d"</span>, 3);
+s.criticalf(<span class="d_string">"is number %d"</span>, 4);
+s.fatalf(<span class="d_string">"is number %d"</span>, 5);
+</pre>
+</p></div>
+
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Logger.log"></span><div class="quickindex" id="quickindex.Logger.log"></div>void <span class="def-anchor" id="log"></span><code class="ddoc_psymbol">log</code><span class="template_param_list" title="Template parameter list">(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)</span>(const LogLevel <code class="ddoc_param">ll</code>, lazy bool <code class="ddoc_param">condition</code>, lazy A <code class="ddoc_param">args</code>)<br><span class="constraint">if (<code class="ddoc_param">args</code>.length != 1)</span>;
+<br><br>void <span class="def-anchor" id="log"></span><code class="ddoc_psymbol">log</code><span class="template_param_list" title="Template parameter list">(T, string moduleName = __MODULE__)</span>(const LogLevel <code class="ddoc_param">ll</code>, lazy bool <code class="ddoc_param">condition</code>, lazy T <code class="ddoc_param">args</code>, int <code class="ddoc_param">line</code> = __LINE__, string <code class="ddoc_param">file</code> = __FILE__, string <code class="ddoc_param">funcName</code> = __FUNCTION__, string <code class="ddoc_param">prettyFuncName</code> = __PRETTY_FUNCTION__);
+<br></div></dt>
+<dd><div class="summary">This method logs data with the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> of the used <span class="d_inlinecode donthyphenate notranslate">Logger</span>.
+</div><div class="description">This method takes a <span class="d_inlinecode donthyphenate notranslate">bool</span> as first argument. In order for the
+    data to be processed the <span class="d_inlinecode donthyphenate notranslate">bool</span> must be <span class="d_inlinecode donthyphenate notranslate">true</span> and the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span>
+    of the Logger must be greater or equal to the global <span class="d_inlinecode donthyphenate notranslate">LogLevel</span>.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">A <code class="ddoc_param">args</code></td>
+<td class="param_desc">The data that should be logged.</td></tr>
+<tr class="param"><td class="param_id">bool <code class="ddoc_param">condition</code></td>
+<td class="param_desc">The condition must be <span class="d_inlinecode donthyphenate notranslate">true</span> for the data to be logged.</td></tr>
+<tr class="param"><td class="param_id">A <code class="ddoc_param">args</code></td>
+<td class="param_desc">The data that is to be logged.</td></tr>
+</table></div></div>
+<div class="keyval Returns"><span class="key keyReturns">Returns:</span> <div class="val valReturns">The logger used by the logging function as reference.
+
+</div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example</span>
+<pre class="d_code notranslate"><span class="d_keyword">auto</span> l = <span class="d_keyword">new</span> StdioLogger();
+l.<span class="d_psymbol">log</span>(1337);
+</pre>
+</p></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Logger.log.2"></span><div class="quickindex" id="quickindex.Logger.log.2"></div>void <span class="def-anchor" id="log"></span><code class="ddoc_psymbol">log</code><span class="template_param_list" title="Template parameter list">(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)</span>(const LogLevel <code class="ddoc_param">ll</code>, lazy A <code class="ddoc_param">args</code>)<br><span class="constraint">if (<code class="ddoc_param">args</code>.length &gt; 1 &amp;&amp; !is(Unqual!(A[0]) : bool) || <code class="ddoc_param">args</code>.length == 0)</span>;
+<br><br>void <span class="def-anchor" id="log"></span><code class="ddoc_psymbol">log</code><span class="template_param_list" title="Template parameter list">(T)</span>(const LogLevel <code class="ddoc_param">ll</code>, lazy T <code class="ddoc_param">args</code>, int <code class="ddoc_param">line</code> = __LINE__, string <code class="ddoc_param">file</code> = __FILE__, string <code class="ddoc_param">funcName</code> = __FUNCTION__, string <code class="ddoc_param">prettyFuncName</code> = __PRETTY_FUNCTION__, string <code class="ddoc_param">moduleName</code> = __MODULE__);
+<br></div></dt>
+<dd><div class="summary">This function logs data to the used <span class="d_inlinecode donthyphenate notranslate">Logger</span> with a specific
+    <span class="d_inlinecode donthyphenate notranslate">LogLevel</span>.
+</div><div class="description">In order for the resulting log message to be logged the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span>
+    must be greater or equal than the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> of the used <span class="d_inlinecode donthyphenate notranslate">Logger</span>
+    and must be greater or equal than the global <span class="d_inlinecode donthyphenate notranslate">LogLevel</span>.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">LogLevel <code class="ddoc_param">ll</code></td>
+<td class="param_desc">The specific <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> used for logging the log message.</td></tr>
+<tr class="param"><td class="param_id">A <code class="ddoc_param">args</code></td>
+<td class="param_desc">The data that should be logged.</td></tr>
+</table></div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example</span>
+<pre class="d_code notranslate"><span class="d_keyword">auto</span> s = <span class="d_keyword">new</span> FileLogger(stdout);
+s.<span class="d_psymbol">log</span>(LogLevel.trace, 1337, <span class="d_string">"is number"</span>);
+s.<span class="d_psymbol">log</span>(LogLevel.info, 1337, <span class="d_string">"is number"</span>);
+s.<span class="d_psymbol">log</span>(LogLevel.warning, 1337, <span class="d_string">"is number"</span>);
+s.<span class="d_psymbol">log</span>(LogLevel.error, 1337, <span class="d_string">"is number"</span>);
+s.<span class="d_psymbol">log</span>(LogLevel.fatal, 1337, <span class="d_string">"is number"</span>);
+</pre>
+</p></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Logger.log.3"></span><div class="quickindex" id="quickindex.Logger.log.3"></div>void <span class="def-anchor" id="log"></span><code class="ddoc_psymbol">log</code><span class="template_param_list" title="Template parameter list">(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)</span>(lazy bool <code class="ddoc_param">condition</code>, lazy A <code class="ddoc_param">args</code>)<br><span class="constraint">if (<code class="ddoc_param">args</code>.length != 1)</span>;
+<br><br>void <span class="def-anchor" id="log"></span><code class="ddoc_psymbol">log</code><span class="template_param_list" title="Template parameter list">(T)</span>(lazy bool <code class="ddoc_param">condition</code>, lazy T <code class="ddoc_param">args</code>, int <code class="ddoc_param">line</code> = __LINE__, string <code class="ddoc_param">file</code> = __FILE__, string <code class="ddoc_param">funcName</code> = __FUNCTION__, string <code class="ddoc_param">prettyFuncName</code> = __PRETTY_FUNCTION__, string <code class="ddoc_param">moduleName</code> = __MODULE__);
+<br></div></dt>
+<dd><div class="summary">This function logs data to the used <span class="d_inlinecode donthyphenate notranslate">Logger</span> depending on a
+    explicitly passed condition with the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> of the used
+    <span class="d_inlinecode donthyphenate notranslate">Logger</span>.
+</div><div class="description">In order for the resulting log message to be logged the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span>
+    of the used <span class="d_inlinecode donthyphenate notranslate">Logger</span> must be greater or equal than the global
+    <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> and the condition must be <span class="d_inlinecode donthyphenate notranslate">true</span>.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">bool <code class="ddoc_param">condition</code></td>
+<td class="param_desc">The condition must be <span class="d_inlinecode donthyphenate notranslate">true</span> for the data to be logged.</td></tr>
+<tr class="param"><td class="param_id">A <code class="ddoc_param">args</code></td>
+<td class="param_desc">The data that should be logged.</td></tr>
+</table></div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example</span>
+<pre class="d_code notranslate"><span class="d_keyword">auto</span> s = <span class="d_keyword">new</span> FileLogger(stdout);
+s.<span class="d_psymbol">log</span>(<span class="d_keyword">true</span>, 1337, <span class="d_string">"is number"</span>);
+s.<span class="d_psymbol">log</span>(<span class="d_keyword">true</span>, 1337, <span class="d_string">"is number"</span>);
+s.<span class="d_psymbol">log</span>(<span class="d_keyword">true</span>, 1337, <span class="d_string">"is number"</span>);
+s.<span class="d_psymbol">log</span>(<span class="d_keyword">false</span>, 1337, <span class="d_string">"is number"</span>);
+s.<span class="d_psymbol">log</span>(<span class="d_keyword">false</span>, 1337, <span class="d_string">"is number"</span>);
+</pre>
+</p></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Logger.log.4"></span><div class="quickindex" id="quickindex.Logger.log.4"></div>void <span class="def-anchor" id="log"></span><code class="ddoc_psymbol">log</code><span class="template_param_list" title="Template parameter list">(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)</span>(lazy A <code class="ddoc_param">args</code>)<br><span class="constraint">if (<code class="ddoc_param">args</code>.length &gt; 1 &amp;&amp; !is(Unqual!(A[0]) : bool) &amp;&amp; !is(immutable(A[0]) == immutable(LogLevel)) || <code class="ddoc_param">args</code>.length == 0)</span>;
+<br><br>void <span class="def-anchor" id="log"></span><code class="ddoc_psymbol">log</code><span class="template_param_list" title="Template parameter list">(T)</span>(lazy T <code class="ddoc_param">arg</code>, int <code class="ddoc_param">line</code> = __LINE__, string <code class="ddoc_param">file</code> = __FILE__, string <code class="ddoc_param">funcName</code> = __FUNCTION__, string <code class="ddoc_param">prettyFuncName</code> = __PRETTY_FUNCTION__, string <code class="ddoc_param">moduleName</code> = __MODULE__);
+<br></div></dt>
+<dd><div class="summary">This function logs data to the used <span class="d_inlinecode donthyphenate notranslate">Logger</span> with the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span>
+    of the used <span class="d_inlinecode donthyphenate notranslate">Logger</span>.
+</div><div class="description">In order for the resulting log message to be logged the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span>
+    of the used <span class="d_inlinecode donthyphenate notranslate">Logger</span> must be greater or equal than the global
+    <span class="d_inlinecode donthyphenate notranslate">LogLevel</span>.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">A <code class="ddoc_param">args</code></td>
+<td class="param_desc">The data that should be logged.</td></tr>
+</table></div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example</span>
+<pre class="d_code notranslate"><span class="d_keyword">auto</span> s = <span class="d_keyword">new</span> FileLogger(stdout);
+s.<span class="d_psymbol">log</span>(1337, <span class="d_string">"is number"</span>);
+s.<span class="d_psymbol">log</span>(info, 1337, <span class="d_string">"is number"</span>);
+s.<span class="d_psymbol">log</span>(1337, <span class="d_string">"is number"</span>);
+s.<span class="d_psymbol">log</span>(1337, <span class="d_string">"is number"</span>);
+s.<span class="d_psymbol">log</span>(1337, <span class="d_string">"is number"</span>);
+</pre>
+</p></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Logger.logf"></span><div class="quickindex" id="quickindex.Logger.logf"></div>void <span class="def-anchor" id="logf"></span><code class="ddoc_psymbol">logf</code><span class="template_param_list" title="Template parameter list">(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)</span>(const LogLevel <code class="ddoc_param">ll</code>, lazy bool <code class="ddoc_param">condition</code>, lazy string <code class="ddoc_param">msg</code>, lazy A <code class="ddoc_param">args</code>);
+<br></div></dt>
+<dd><div class="summary">This function logs data to the used <span class="d_inlinecode donthyphenate notranslate">Logger</span> with a specific
+    <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> and depending on a condition in a <span class="d_inlinecode donthyphenate notranslate">printf</span>-style manner.
+</div><div class="description">In order for the resulting log message to be logged the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span>
+    must be greater or equal than the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> of the used <span class="d_inlinecode donthyphenate notranslate">Logger</span>
+    and must be greater or equal than the global <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> and the
+    condition must be <span class="d_inlinecode donthyphenate notranslate">true</span>.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">LogLevel <code class="ddoc_param">ll</code></td>
+<td class="param_desc">The specific <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> used for logging the log message.</td></tr>
+<tr class="param"><td class="param_id">bool <code class="ddoc_param">condition</code></td>
+<td class="param_desc">The condition must be <span class="d_inlinecode donthyphenate notranslate">true</span> for the data to be logged.</td></tr>
+<tr class="param"><td class="param_id">string <code class="ddoc_param">msg</code></td>
+<td class="param_desc">The format string used for this log call.</td></tr>
+<tr class="param"><td class="param_id">A <code class="ddoc_param">args</code></td>
+<td class="param_desc">The data that should be logged.</td></tr>
+</table></div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example</span>
+<pre class="d_code notranslate"><span class="d_keyword">auto</span> s = <span class="d_keyword">new</span> FileLogger(stdout);
+s.<span class="d_psymbol">logf</span>(LogLevel.trace, <span class="d_keyword">true</span> ,<span class="d_string">"%d %s"</span>, 1337, <span class="d_string">"is number"</span>);
+s.<span class="d_psymbol">logf</span>(LogLevel.info, <span class="d_keyword">true</span> ,<span class="d_string">"%d %s"</span>, 1337, <span class="d_string">"is number"</span>);
+s.<span class="d_psymbol">logf</span>(LogLevel.warning, <span class="d_keyword">true</span> ,<span class="d_string">"%d %s"</span>, 1337, <span class="d_string">"is number"</span>);
+s.<span class="d_psymbol">logf</span>(LogLevel.error, <span class="d_keyword">false</span> ,<span class="d_string">"%d %s"</span>, 1337, <span class="d_string">"is number"</span>);
+s.<span class="d_psymbol">logf</span>(LogLevel.fatal, <span class="d_keyword">true</span> ,<span class="d_string">"%d %s"</span>, 1337, <span class="d_string">"is number"</span>);
+</pre>
+</p></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Logger.logf.2"></span><div class="quickindex" id="quickindex.Logger.logf.2"></div>void <span class="def-anchor" id="logf"></span><code class="ddoc_psymbol">logf</code><span class="template_param_list" title="Template parameter list">(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)</span>(const LogLevel <code class="ddoc_param">ll</code>, lazy string <code class="ddoc_param">msg</code>, lazy A <code class="ddoc_param">args</code>);
+<br></div></dt>
+<dd><div class="summary">This function logs data to the used <span class="d_inlinecode donthyphenate notranslate">Logger</span> with a specific
+    <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> in a <span class="d_inlinecode donthyphenate notranslate">printf</span>-style manner.
+</div><div class="description">In order for the resulting log message to be logged the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span>
+    must be greater or equal than the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> of the used <span class="d_inlinecode donthyphenate notranslate">Logger</span>
+    and must be greater or equal than the global <span class="d_inlinecode donthyphenate notranslate">LogLevel</span>.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">LogLevel <code class="ddoc_param">ll</code></td>
+<td class="param_desc">The specific <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> used for logging the log message.</td></tr>
+<tr class="param"><td class="param_id">string <code class="ddoc_param">msg</code></td>
+<td class="param_desc">The format string used for this log call.</td></tr>
+<tr class="param"><td class="param_id">A <code class="ddoc_param">args</code></td>
+<td class="param_desc">The data that should be logged.</td></tr>
+</table></div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example</span>
+<pre class="d_code notranslate"><span class="d_keyword">auto</span> s = <span class="d_keyword">new</span> FileLogger(stdout);
+s.<span class="d_psymbol">logf</span>(LogLevel.trace, <span class="d_string">"%d %s"</span>, 1337, <span class="d_string">"is number"</span>);
+s.<span class="d_psymbol">logf</span>(LogLevel.info, <span class="d_string">"%d %s"</span>, 1337, <span class="d_string">"is number"</span>);
+s.<span class="d_psymbol">logf</span>(LogLevel.warning, <span class="d_string">"%d %s"</span>, 1337, <span class="d_string">"is number"</span>);
+s.<span class="d_psymbol">logf</span>(LogLevel.error, <span class="d_string">"%d %s"</span>, 1337, <span class="d_string">"is number"</span>);
+s.<span class="d_psymbol">logf</span>(LogLevel.fatal, <span class="d_string">"%d %s"</span>, 1337, <span class="d_string">"is number"</span>);
+</pre>
+</p></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Logger.logf.3"></span><div class="quickindex" id="quickindex.Logger.logf.3"></div>void <span class="def-anchor" id="logf"></span><code class="ddoc_psymbol">logf</code><span class="template_param_list" title="Template parameter list">(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)</span>(lazy bool <code class="ddoc_param">condition</code>, lazy string <code class="ddoc_param">msg</code>, lazy A <code class="ddoc_param">args</code>);
+<br></div></dt>
+<dd><div class="summary">This function logs data to the used <span class="d_inlinecode donthyphenate notranslate">Logger</span> depending on a
+    condition with the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> of the used <span class="d_inlinecode donthyphenate notranslate">Logger</span> in a
+    <span class="d_inlinecode donthyphenate notranslate">printf</span>-style manner.
+</div><div class="description">In order for the resulting log message to be logged the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span>
+    of the used <span class="d_inlinecode donthyphenate notranslate">Logger</span> must be greater or equal than the global
+    <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> and the condition must be <span class="d_inlinecode donthyphenate notranslate">true</span>.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">bool <code class="ddoc_param">condition</code></td>
+<td class="param_desc">The condition must be <span class="d_inlinecode donthyphenate notranslate">true</span> for the data to be logged.</td></tr>
+<tr class="param"><td class="param_id">string <code class="ddoc_param">msg</code></td>
+<td class="param_desc">The format string used for this log call.</td></tr>
+<tr class="param"><td class="param_id">A <code class="ddoc_param">args</code></td>
+<td class="param_desc">The data that should be logged.</td></tr>
+</table></div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example</span>
+<pre class="d_code notranslate"><span class="d_keyword">auto</span> s = <span class="d_keyword">new</span> FileLogger(stdout);
+s.<span class="d_psymbol">logf</span>(<span class="d_keyword">true</span> ,<span class="d_string">"%d %s"</span>, 1337, <span class="d_string">"is number"</span>);
+s.<span class="d_psymbol">logf</span>(<span class="d_keyword">true</span> ,<span class="d_string">"%d %s"</span>, 1337, <span class="d_string">"is number"</span>);
+s.<span class="d_psymbol">logf</span>(<span class="d_keyword">true</span> ,<span class="d_string">"%d %s"</span>, 1337, <span class="d_string">"is number"</span>);
+s.<span class="d_psymbol">logf</span>(<span class="d_keyword">false</span> ,<span class="d_string">"%d %s"</span>, 1337, <span class="d_string">"is number"</span>);
+s.<span class="d_psymbol">logf</span>(<span class="d_keyword">true</span> ,<span class="d_string">"%d %s"</span>, 1337, <span class="d_string">"is number"</span>);
+</pre>
+</p></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".Logger.logf.4"></span><div class="quickindex" id="quickindex.Logger.logf.4"></div>void <span class="def-anchor" id="logf"></span><code class="ddoc_psymbol">logf</code><span class="template_param_list" title="Template parameter list">(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, string moduleName = __MODULE__, A...)</span>(lazy string <code class="ddoc_param">msg</code>, lazy A <code class="ddoc_param">args</code>);
+<br></div></dt>
+<dd><div class="summary">This method logs data to the used <span class="d_inlinecode donthyphenate notranslate">Logger</span> with the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span>
+    of the this <span class="d_inlinecode donthyphenate notranslate">Logger</span> in a <span class="d_inlinecode donthyphenate notranslate">printf</span>-style manner.
+</div><div class="description">In order for the data to be processed the <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> of the <span class="d_inlinecode donthyphenate notranslate">Logger</span>
+    must be greater or equal to the global <span class="d_inlinecode donthyphenate notranslate">LogLevel</span>.
+
+</div>
+<div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">string <code class="ddoc_param">msg</code></td>
+<td class="param_desc">The format string used for this log call.</td></tr>
+<tr class="param"><td class="param_id">A <code class="ddoc_param">args</code></td>
+<td class="param_desc">The data that should be logged.</td></tr>
+</table></div></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Example</span>
+<pre class="d_code notranslate"><span class="d_keyword">auto</span> s = <span class="d_keyword">new</span> FileLogger(stdout);
+s.<span class="d_psymbol">logf</span>(<span class="d_string">"%d %s"</span>, 1337, <span class="d_string">"is number"</span>);
+s.<span class="d_psymbol">logf</span>(<span class="d_string">"%d %s"</span>, 1337, <span class="d_string">"is number"</span>);
+s.<span class="d_psymbol">logf</span>(<span class="d_string">"%d %s"</span>, 1337, <span class="d_string">"is number"</span>);
+s.<span class="d_psymbol">logf</span>(<span class="d_string">"%d %s"</span>, 1337, <span class="d_string">"is number"</span>);
+s.<span class="d_psymbol">logf</span>(<span class="d_string">"%d %s"</span>, 1337, <span class="d_string">"is number"</span>);
+</pre>
+</p></div>
+
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".sharedLog"></span><div class="quickindex" id="quickindex.sharedLog"></div>@property @safe shared(Logger) <span class="def-anchor" id="sharedLog"></span><code class="ddoc_psymbol">sharedLog</code>();
+<br><br>@property @safe void <span class="def-anchor" id="sharedLog"></span><code class="ddoc_psymbol">sharedLog</code>(shared(Logger) <code class="ddoc_param">logger</code>);
+<br></div></dt>
+<dd><div class="summary">This property sets and gets the default <span class="d_inlinecode donthyphenate notranslate">Logger</span>. Unless set to another
+logger by the user, the default logger's log level is LogLevel.info.
+</div><div class="val"><p class="keyval Section"><span class="key keySection">Example</span>
+<pre class="d_code notranslate"><span class="d_psymbol">sharedLog</span> = <span class="d_keyword">new</span> FileLogger(yourFile);
+</pre>
+The example sets a new <span class="d_inlinecode donthyphenate notranslate">FileLogger</span> as new <span class="d_inlinecode donthyphenate notranslate"><span class="def-anchor" id="sharedLog"></span><code class="ddoc_psymbol">sharedLog</code></span>.
+<div class="blankline"></div>
+
+If at some point you want to use the original default logger again, you can
+use <span class="d_inlinecode donthyphenate notranslate">sharedLog = null;</span>. This will put back the original.
+
+</p></div>
+<div class="val"><p class="keyval Section"><span class="key keySection">Note</span>
+While getting and setting <span class="d_inlinecode donthyphenate notranslate"><span class="def-anchor" id="sharedLog"></span><code class="ddoc_psymbol">sharedLog</code></span> is thread-safe, it has to be considered
+that the returned reference is only a current snapshot and in the following
+code, you must make sure no other thread reassigns to it between reading and
+writing <span class="d_inlinecode donthyphenate notranslate"><span class="def-anchor" id="sharedLog"></span><code class="ddoc_psymbol">sharedLog</code></span>.
+<div class="blankline"></div>
+
+<span class="d_inlinecode donthyphenate notranslate"><span class="def-anchor" id="sharedLog"></span><code class="ddoc_psymbol">sharedLog</code></span> is only thread-safe if the used <span class="d_inlinecode donthyphenate notranslate">Logger</span> is thread-safe.
+The default <span class="d_inlinecode donthyphenate notranslate">Logger</span> is thread-safe.
+<pre class="d_code notranslate"><span class="d_keyword">if</span> (<span class="d_psymbol">sharedLog</span> !<span class="d_keyword">is</span> myLogger)
+    <span class="d_psymbol">sharedLog</span> = <span class="d_keyword">new</span> myLogger;
+</pre>
+</p></div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".globalLogLevel"></span><div class="quickindex" id="quickindex.globalLogLevel"></div>@nogc @property @safe LogLevel <span class="def-anchor" id="globalLogLevel"></span><code class="ddoc_psymbol">globalLogLevel</code>();
+<br><br>@property @safe void <span class="def-anchor" id="globalLogLevel"></span><code class="ddoc_psymbol">globalLogLevel</code>(LogLevel <code class="ddoc_param">ll</code>);
+<br></div></dt>
+<dd><div class="summary">This methods get and set the global <span class="d_inlinecode donthyphenate notranslate">LogLevel</span>.
+</div><div class="description">Every log message with a <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> lower as the global <span class="d_inlinecode donthyphenate notranslate">LogLevel</span>
+will be discarded before it reaches <span class="d_inlinecode donthyphenate notranslate">writeLogMessage</span> method of any
+<span class="d_inlinecode donthyphenate notranslate">Logger</span>.</div>
+
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".StdForwardLogger"></span><div class="quickindex" id="quickindex.StdForwardLogger"></div>class <span class="def-anchor" id="StdForwardLogger"></span><code class="ddoc_psymbol">StdForwardLogger</code>: <span class="ddoc_psuper_symbol">std.logger.core.Logger</span>;
+<br></div></dt>
+<dd><div class="summary">The <span class="d_inlinecode donthyphenate notranslate"><span class="def-anchor" id="StdForwardLogger"></span><code class="ddoc_psymbol">StdForwardLogger</code></span> will always forward anything to the sharedLog.
+</div><div class="description">The <span class="d_inlinecode donthyphenate notranslate"><span class="def-anchor" id="StdForwardLogger"></span><code class="ddoc_psymbol">StdForwardLogger</code></span> will not throw if data is logged with <span class="d_inlinecode donthyphenate notranslate">LogLevel.fatal</span>.</div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples"><pre class="d_code notranslate"><span class="d_keyword">auto</span> nl1 = <span class="d_keyword">new</span> <span class="d_psymbol">StdForwardLogger</span>(LogLevel.all);
+</pre>
+</div></div>
+
+<dl><dt class="d_decl"><div ><span class="def-anchor" id=".StdForwardLogger.this"></span><div class="quickindex" id="quickindex.StdForwardLogger.this"></div>@safe this(const LogLevel <code class="ddoc_param">lv</code> = LogLevel.all);
+<br></div></dt>
+<dd><div class="summary">The default constructor for the <span class="d_inlinecode donthyphenate notranslate">StdForwardLogger</span>.
+</div><div class="keyval Parameters"><span class="key keyParameters">Parameters:</span> <div class="val valParameters"><table class="params"><tr class="param"><td class="param_id">LogLevel <code class="ddoc_param">lv</code></td>
+<td class="param_desc">The <span class="d_inlinecode donthyphenate notranslate">LogLevel</span> for the <span class="d_inlinecode donthyphenate notranslate">MultiLogger</span>. By default the <span class="d_inlinecode donthyphenate notranslate">          LogLevel</span> is <span class="d_inlinecode donthyphenate notranslate">all</span>.</td></tr>
+</table></div></div>
+
+</dd>
+</dl>
+</dd>
+<dt class="d_decl"><div ><span class="def-anchor" id=".stdThreadLocalLog"></span><div class="quickindex" id="quickindex.stdThreadLocalLog"></div>@property @safe Logger <span class="def-anchor" id="stdThreadLocalLog"></span><code class="ddoc_psymbol">stdThreadLocalLog</code>();
+<br><br>@property @safe void <span class="def-anchor" id="stdThreadLocalLog"></span><code class="ddoc_psymbol">stdThreadLocalLog</code>(Logger <code class="ddoc_param">logger</code>);
+<br></div></dt>
+<dd><div class="summary">This function returns a thread unique <span class="d_inlinecode donthyphenate notranslate">Logger</span>, that by default
+propagates all data logged to it to the <span class="d_inlinecode donthyphenate notranslate">sharedLog</span>.
+</div><div class="description">These properties can be used to set and get this <span class="d_inlinecode donthyphenate notranslate">Logger</span>. Every
+modification to this <span class="d_inlinecode donthyphenate notranslate">Logger</span> will only be visible in the thread the
+modification has been done from.
+<div class="blankline"></div>
+
+This <span class="d_inlinecode donthyphenate notranslate">Logger</span> is called by the free standing log functions. This allows to
+create thread local redirections and still use the free standing log
+functions.</div>
+<span class="dlang_runnable"></span><div class="keyval Examples"><span class="key keyExamples">Examples:</span> <div class="val valExamples">Ditto
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.<span class="d_param">logger</span>.filelogger : FileLogger;
+<span class="d_keyword">import</span> std.file : deleteme, remove;
+Logger l = <span class="d_psymbol">stdThreadLocalLog</span>;
+<span class="d_psymbol">stdThreadLocalLog</span> = <span class="d_keyword">new</span> FileLogger(deleteme ~ <span class="d_string">"-someFile.log"</span>);
+<span class="d_keyword">scope</span>(exit) remove(deleteme ~ <span class="d_string">"-someFile.log"</span>);
+
+<span class="d_keyword">auto</span> tempLog = <span class="d_psymbol">stdThreadLocalLog</span>;
+<span class="d_psymbol">stdThreadLocalLog</span> = l;
+destroy(tempLog);
+</pre>
+</div></div>
+
+</dd>
+</dl>
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on (no date time)</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+<script type="text/javascript" src="../js/run_examples.js"></script>
+
+<script type="text/javascript" src="../js/listanchors.js"></script>
+<script type="text/javascript" src="../js/show_contributors.js"></script>
+<script type="text/javascript">jQuery(document).ready(listanchors);</script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

@@ -1,0 +1,490 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Contract Programming - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Contract Programming' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BContract Programming%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/d.en/contracts.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Contract Programming</h1>
+        
+        
+
+
+
+<p>Contract programming is a software design approach that treats parts of software as individual entities that provide services to each other. This approach realizes that software can work according to its specification as long as the provider and the consumer of the service both obey a <i>contract</i>.
+</p>
+
+<p>D's contract programming features involve functions as the units of software services. Like in unit testing, contract programming is also based on <code class="d_inline">assert</code> checks.
+</p>
+
+<p>Contract programming in D is implemented by three types of code blocks:
+</p>
+
+<ul><li>Function <code class="d_inline">in</code> blocks</li>
+<li>Function <code class="d_inline">out</code> blocks</li>
+<li>Struct and class <code class="d_inline">invariant</code> blocks</li>
+</ul>
+
+<p>We will see <code class="d_inline">invariant</code> blocks and <i>contract inheritance</i> in <a href="invariant.html">a later chapter</a> after covering structs and classes.
+</p>
+
+<h5 class="subsection"><a id="ix_Contract Programming.in, contract" content="in, contract"></a> <a id="ix_Contract Programming.precondition" content="precondition"></a> <code class="d_inline">in</code> blocks for preconditions</h5>
+
+<p>Correct execution of functions usually depend on whether the values of their parameters are valid. For example, a square root function may require that its parameter cannot be negative. A function that deals with dates may require that the number of the month must be between 1 and 12. Such requirements of a function are called its <i>preconditions</i>.
+</p>
+
+<p>We have already seen such condition checks in the <a href="assert.html"><code class="d_inline">assert</code> and <code class="d_inline">enforce</code> chapter</a>. Conditions on parameter values can be enforced by <code class="d_inline">assert</code> checks within function definitions:
+</p>
+
+<pre class="d_code">string timeToString(<span class="d_keyword">int</span> hour, <span class="d_keyword">int</span> minute) {
+    <span class="d_keyword">assert</span>((hour &gt;= 0) &amp;&amp; (hour &lt;= 23));
+    <span class="d_keyword">assert</span>((minute &gt;= 0) &amp;&amp; (minute &lt;= 59));
+
+    <span class="d_keyword">return</span> format(<span class="d_string">"%02s:%02s"</span>, hour, minute);
+}
+</pre>
+
+<p><a id="ix_Contract Programming.do, contract programming" content="do, contract programming"></a> In contract programming, the same checks are written inside the <code class="d_inline">in</code> blocks of functions. When an <code class="d_inline">in</code> or <code class="d_inline">out</code> block is used, the actual body of the function must be specified as a <code class="d_inline">do</code> block:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.string;
+
+string timeToString(<span class="d_keyword">int</span> hour, <span class="d_keyword">int</span> minute)
+<span class="hilite"><span class="d_keyword">in</span></span> {
+    <span class="d_keyword">assert</span>((hour &gt;= 0) &amp;&amp; (hour &lt;= 23));
+    <span class="d_keyword">assert</span>((minute &gt;= 0) &amp;&amp; (minute &lt;= 59));
+
+} <span class="hilite"><span class="d_keyword">do</span></span> {
+    <span class="d_keyword">return</span> format(<span class="d_string">"%02s:%02s"</span>, hour, minute);
+}
+
+<span class="d_keyword">void</span> main() {
+    writeln(timeToString(12, 34));
+}
+</pre>
+
+<p><a id="ix_Contract Programming.body" content="body"></a> <i><b>Note:</b> In earlier versions of D, the <code class="d_inline">body</code> keyword was used for this purpose instead of <code class="d_inline">do</code>.</i>
+</p>
+
+<p>A benefit of an <code class="d_inline">in</code> block is that all of the preconditions can be kept together and separate from the actual body of the function. This way, the function body would be free of <code class="d_inline">assert</code> checks about the preconditions. As needed, it is still possible and advisable to have other <code class="d_inline">assert</code> checks inside the function body as unrelated checks that guard against potential programming errors in the function body.
+</p>
+
+<p>The code that is inside the <code class="d_inline">in</code> block is executed automatically every time the function is called. The actual execution of the function starts only if all of the <code class="d_inline">assert</code> checks inside the <code class="d_inline">in</code> block pass. This prevents executing the function with invalid preconditions and as a consequence, avoids producing incorrect results.
+</p>
+
+<p>An <code class="d_inline">assert</code> check that fails inside the <code class="d_inline">in</code> block indicates that the contract has been violated by the caller.
+</p>
+
+<h5 class="subsection"><a id="ix_Contract Programming.out, contract" content="out, contract"></a> <a id="ix_Contract Programming.postcondition" content="postcondition"></a> <code class="d_inline">out</code> blocks for postconditions</h5>
+
+<p>The other side of the contract involves guarantees that the function provides. Such guarantees are called the function's <i>postconditions</i>. An example of a function with a postcondition would be a function that returns the number of days in February: The function can guarantee that the returned value would always be either 28 or 29.
+</p>
+
+<p>The postconditions are checked inside the <code class="d_inline">out</code> blocks of functions.
+</p>
+
+<p>Because the value that a function returns by the <code class="d_inline">return</code> statement need not be defined as a variable inside the function, there is usually no name to refer to the return value. This can be seen as a problem because the <code class="d_inline">assert</code> checks inside the <code class="d_inline">out</code> block cannot refer to the returned variable by name.
+</p>
+
+<p>D solves this problem by providing a way of naming the return value right after the <code class="d_inline">out</code> keyword. That name represents the very value that the function is in the process of returning:
+</p>
+
+<pre class="d_code"><span class="d_keyword">int</span> daysInFebruary(<span class="d_keyword">int</span> year)
+<span class="hilite"><span class="d_keyword">out</span> (result)</span> {
+    <span class="d_keyword">assert</span>((result == 28) || (result == 29));
+
+} <span class="d_keyword">do</span> {
+    <span class="d_keyword">return</span> isLeapYear(year) ? 29 : 28;
+}
+</pre>
+
+<p>Although <code class="d_inline">result</code> is a reasonable name for the returned value, other valid names may also be used.
+</p>
+
+<p>Some functions do not have return values or the return value need not be checked. In that case the <code class="d_inline">out</code> block does not specify a name:
+</p>
+
+<pre class="d_code"><span class="d_keyword">out</span> {
+    <span class="d_comment">// ...
+</span>}
+</pre>
+
+<p>Similar to <code class="d_inline">in</code> blocks, the <code class="d_inline">out</code> blocks are executed automatically after the body of the function is executed.
+</p>
+
+<p>An <code class="d_inline">assert</code> check that fails inside the <code class="d_inline">out</code> block indicates that the contract has been violated by the function.
+</p>
+
+<p>As it has been obvious, <code class="d_inline">in</code> and <code class="d_inline">out</code> blocks are optional. Considering the <code class="d_inline">unittest</code> blocks as well, which are also optional, D functions may consist of up to four blocks of code:
+</p>
+
+<ul><li><code class="d_inline">in</code>: Optional</li>
+
+<li><code class="d_inline">out</code>: Optional</li>
+
+<li><code class="d_inline">do</code>: Mandatory but the <code class="d_inline">do</code> keyword may be skipped if no <code class="d_inline">in</code> or <code class="d_inline">out</code> block is defined.</li>
+
+<li><code class="d_inline">unittest</code>: Optional and technically not a part of a function's definition but commonly defined right after the function.</li>
+</ul>
+
+<p>Here is an example that uses all of these blocks:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_comment">/* Distributes the sum between two variables.
+ *
+ * Distributes to the first variable first, but never gives
+ * more than 7 to it. The rest of the sum is distributed to
+ * the second variable. */</span>
+<span class="d_keyword">void</span> distribute(<span class="d_keyword">int</span> sum, <span class="d_keyword">out</span> <span class="d_keyword">int</span> first, <span class="d_keyword">out</span> <span class="d_keyword">int</span> second)
+<span class="d_keyword">in</span> {
+    <span class="d_keyword">assert</span>(sum &gt;= 0, <span class="d_string">"sum cannot be negative"</span>);
+
+} <span class="d_keyword">out</span> {
+    <span class="d_keyword">assert</span>(sum == (first + second));
+
+} <span class="d_keyword">do</span> {
+    first = (sum &gt;= 7) ? 7 : sum;
+    second = sum - first;
+}
+
+<span class="d_keyword">unittest</span> {
+    <span class="d_keyword">int</span> first;
+    <span class="d_keyword">int</span> second;
+
+    <span class="d_comment">// Both must be 0 if the sum is 0
+</span>    distribute(0, first, second);
+    <span class="d_keyword">assert</span>(first == 0);
+    <span class="d_keyword">assert</span>(second == 0);
+
+    <span class="d_comment">// If the sum is less than 7, then all of it must be given
+</span>    <span class="d_comment">// to first
+</span>    distribute(3, first, second);
+    <span class="d_keyword">assert</span>(first == 3);
+    <span class="d_keyword">assert</span>(second == 0);
+
+    <span class="d_comment">// Testing a boundary condition
+</span>    distribute(7, first, second);
+    <span class="d_keyword">assert</span>(first == 7);
+    <span class="d_keyword">assert</span>(second == 0);
+
+    <span class="d_comment">// If the sum is more than 7, then the first must get 7
+</span>    <span class="d_comment">// and the rest must be given to second
+</span>    distribute(8, first, second);
+    <span class="d_keyword">assert</span>(first == 7);
+    <span class="d_keyword">assert</span>(second == 1);
+
+    <span class="d_comment">// A random large value
+</span>    distribute(1_000_007, first, second);
+    <span class="d_keyword">assert</span>(first == 7);
+    <span class="d_keyword">assert</span>(second == 1_000_000);
+}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">int</span> first;
+    <span class="d_keyword">int</span> second;
+
+    distribute(123, first, second);
+    writeln(<span class="d_string">"first: "</span>, first, <span class="d_string">" second: "</span>, second);
+}
+</pre>
+
+<p>The program can be compiled and run on the terminal by the following commands:
+</p>
+
+<pre class="shell">$ dmd deneme.d -w -unittest
+$ ./deneme
+<span class="shell_observed">first: 7 second: 116</span>
+</pre>
+
+<p>Although the actual work of the function consists of only two lines, there are a total of 19 nontrivial lines that support its functionality. It may be argued that so much extra code is too much for such a short function. However, bugs are never intentional. The programmer always writes code that is <i>expected to work correctly</i>, which commonly ends up containing various types of bugs.
+</p>
+
+<p>When expectations are laid out explicitly by unit tests and contracts, functions that are initially correct have a greater chance of staying correct. I recommend that you take full advantage of any feature that improves program correctness. Both unit tests and contracts are effective tools toward that goal. They help reduce time spent for debugging, effectively increasing time spent for actually writing code.
+</p>
+
+<h5 class="subsection"><a id="ix_Contract Programming.expression-based contracts" content="expression-based contracts"></a> Expression-based contracts</h5>
+
+<p>Although <code class="d_inline">in</code> and <code class="d_inline">out</code> blocks are useful for allowing any D code, precondition and postcondition checks are usually not more than simple <code class="d_inline">assert</code> expressions. As a convenience in such cases, there is a shorter expression-based contract syntax. Let's consider the following function:
+</p>
+
+<pre class="d_code"><span class="d_keyword">int</span> func(<span class="d_keyword">int</span> a, <span class="d_keyword">int</span> b)
+<span class="d_keyword">in</span> {
+    <span class="d_keyword">assert</span>(a &gt;= 7, <span class="d_string">"a cannot be less than 7"</span>);
+    <span class="d_keyword">assert</span>(b &lt; 10);
+
+} <span class="d_keyword">out</span> (result) {
+    <span class="d_keyword">assert</span>(result &gt; 1000);
+
+} <span class="d_keyword">do</span> {
+    <span class="d_comment">// ...
+</span>}
+</pre>
+
+<p>The expression-based contract obviates curly brackets, explicit <code class="d_inline">assert</code> calls, and the <code class="d_inline">do</code> keyword:
+</p>
+
+<pre class="d_code"><span class="d_keyword">int</span> func(<span class="d_keyword">int</span> a, <span class="d_keyword">int</span> b)
+<span class="d_keyword">in</span> (a &gt;= 7, <span class="d_string">"a cannot be less than 7"</span>)
+<span class="d_keyword">in</span> (b &lt; 10)
+<span class="d_keyword">out</span> (<span class="hilite">result;</span> result &gt; 1000) {
+    <span class="d_comment">// ...
+</span>}
+</pre>
+
+<p>Note how the return value of the function is named before a semicolon in the <code class="d_inline">out</code> contract. When there is no return value or when the <code class="d_inline">out</code> contract does not refer to the return value, the semicolon must still be present:
+</p>
+
+<pre class="d_code"><span class="d_keyword">out</span> (<span class="hilite">;</span> <span class="d_comment">/* ... */</span>)
+</pre>
+
+<h5 class="subsection"><a id="ix_Contract Programming.-release, compiler switch" content="-release, compiler switch"></a> Disabling contract programming</h5>
+
+<p>Contrary to unit testing, contract programming features are enabled by default. The <code class="d_inline">&#8209;release</code> compiler switch disables contract programming:
+</p>
+
+<pre class="shell">$ dmd deneme.d -w -release
+</pre>
+
+<p>When the program is compiled with the <code class="d_inline">&#8209;release</code> switch, the contents of <code class="d_inline">in</code>, <code class="d_inline">out</code>, and <code class="d_inline">invariant</code> blocks are ignored.
+</p>
+
+<h5 class="subsection"><a id="ix_Contract Programming.in vs. enforce" content="in vs. enforce"></a> <a id="ix_Contract Programming.enforce vs. in" content="enforce vs. in"></a> <a id="ix_Contract Programming.assert vs. enforce" content="assert vs. enforce"></a> <a id="ix_Contract Programming.enforce vs. assert" content="enforce vs. assert"></a> <code class="d_inline">in</code> blocks versus <code class="d_inline">enforce</code> checks</h5>
+
+<p>We have seen in the <a href="assert.html"><code class="d_inline">assert</code> and <code class="d_inline">enforce</code> chapter</a> that sometimes it is difficult to decide whether to use <code class="d_inline">assert</code> or <code class="d_inline">enforce</code> checks. Similarly, sometimes it is difficult to decide whether to use <code class="d_inline">assert</code> checks within <code class="d_inline">in</code> blocks versus <code class="d_inline">enforce</code> checks within function bodies.
+</p>
+
+<p>The fact that it is possible to disable contract programming is an indication that contract programming is for protecting against programmer errors. For that reason, the decision here should be based on the same guidelines that we saw in the <a href="assert.html"><code class="d_inline">assert</code> and <code class="d_inline">enforce</code> chapter</a>:
+</p>
+
+<ul>
+<li>If the check is guarding against a coding error, then it should be in the <code class="d_inline">in</code> block. For example, if the function is called only from other parts of the program, likely to help with achieving a functionality of it, then the parameter values are entirely the responsibility of the programmer. For that reason, the preconditions of such a function should be checked in its <code class="d_inline">in</code> block.
+</li>
+
+<li>If the function cannot achieve some task for any other reason, including invalid parameter values, then it must throw an exception, conveniently by <code class="d_inline">enforce</code>.
+
+<p>To see an example of this, let's define a function that returns a slice of the middle of another slice. Let's assume that this function is for the consumption of the users of the module, as opposed to being an internal function used by the module itself. Since the users of this module can call this function by various and potentially invalid parameter values, it would be appropriate to check the parameter values every time the function is called. It would be insufficient to only check them at program development time, after which contracts can be disabled by <code class="d_inline">&#8209;release</code>.
+</p>
+
+<p>For that reason, the following function validates its parameters by calling <code class="d_inline">enforce</code> in the function body instead of an <code class="d_inline">assert</code> check in the <code class="d_inline">in</code> block:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.exception;
+
+<span class="d_keyword">inout</span>(<span class="d_keyword">int</span>)[] middle(<span class="d_keyword">inout</span>(<span class="d_keyword">int</span>)[] originalSlice, size_t width)
+<span class="d_keyword">out</span> (result) {
+    <span class="d_keyword">assert</span>(result.length == width);
+
+} <span class="d_keyword">do</span> {
+    <span class="hilite">enforce</span>(originalSlice.length &gt;= width);
+
+    <span class="d_keyword">immutable</span> start = (originalSlice.length - width) / 2;
+    <span class="d_keyword">immutable</span> end = start + width;
+
+    <span class="d_keyword">return</span> originalSlice[start .. end];
+}
+
+<span class="d_keyword">unittest</span> {
+    <span class="d_keyword">auto</span> slice = [1, 2, 3, 4, 5];
+
+    <span class="d_keyword">assert</span>(middle(slice, 3) == [2, 3, 4]);
+    <span class="d_keyword">assert</span>(middle(slice, 2) == [2, 3]);
+    <span class="d_keyword">assert</span>(middle(slice, 5) == slice);
+}
+
+<span class="d_keyword">void</span> main() {
+}
+</pre>
+
+<p>There isn't a similar problem with the <code class="d_inline">out</code> blocks. Since the return value of every function is the responsibility of the programmer, postconditions must always be checked in the <code class="d_inline">out</code> blocks. The function above follows this guideline.
+</p>
+
+</li>
+
+<li>Another criterion to consider when deciding between <code class="d_inline">in</code> blocks versus <code class="d_inline">enforce</code> is to consider whether the condition is recoverable. If it is recoverable by the higher layers of code, then it may be more appropriate to throw an exception, conveniently by <code class="d_inline">enforce</code>.
+</li>
+
+</ul>
+
+<h5 class="subsection">Problem</h5>
+    
+<p>Write a program that increases the total points of two football (soccer) teams according to the result of a game.
+</p>
+
+<p>The first two parameters of this function are the goals that each team has scored. The other two parameters are the points of each team before the game. This function should adjust the points of the teams according to the goals that they have scored. As a reminder, the winner takes 3 points and the loser takes no point. In the event of a draw, both teams get 1 point each.
+</p>
+
+<p>Additionally, the function should indicate which team has been the winner: 1 if the first team has won, 2 if the second team has won, and 0 if the game has ended in a draw.
+</p>
+
+<p>Start with the following program and fill in the four blocks of the function appropriately. Do not remove the <code class="d_inline">assert</code> checks in <code class="d_inline">main()</code>; they demonstrate how this function is expected to work.
+</p>
+
+<pre class="d_code"><span class="d_keyword">int</span> addPoints(<span class="d_keyword">int</span> goals1, <span class="d_keyword">int</span> goals2,
+              <span class="d_keyword">ref</span> <span class="d_keyword">int</span> points1, <span class="d_keyword">ref</span> <span class="d_keyword">int</span> points2)
+<span class="d_keyword">in</span> {
+    <span class="d_comment">// ...
+</span>
+} <span class="d_keyword">out</span> (result) {
+    <span class="d_comment">// ...
+</span>
+} <span class="d_keyword">do</span> {
+    <span class="d_keyword">int</span> winner;
+
+    <span class="d_comment">// ...
+</span>
+    <span class="d_keyword">return</span> winner;
+}
+
+<span class="d_keyword">unittest</span> {
+    <span class="d_comment">// ...
+</span>}
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">int</span> points1 = 10;
+    <span class="d_keyword">int</span> points2 = 7;
+    <span class="d_keyword">int</span> winner;
+
+    winner = addPoints(3, 1, points1, points2);
+    <span class="d_keyword">assert</span>(points1 == 13);
+    <span class="d_keyword">assert</span>(points2 == 7);
+    <span class="d_keyword">assert</span>(winner == 1);
+
+    winner = addPoints(2, 2, points1, points2);
+    <span class="d_keyword">assert</span>(points1 == 14);
+    <span class="d_keyword">assert</span>(points2 == 8);
+    <span class="d_keyword">assert</span>(winner == 0);
+}
+</pre>
+
+<p>Although I chose to return an <code class="d_inline">int</code>, it would be better to return an <code class="d_inline">enum</code> value from this function:
+</p>
+
+<pre class="d_code"><span class="d_keyword">enum</span> GameResult {
+    draw, firstWon, secondWon
+}
+
+<span class="hilite">GameResult</span> addPoints(<span class="d_keyword">int</span> goals1, <span class="d_keyword">int</span> goals2,
+                     <span class="d_keyword">ref</span> <span class="d_keyword">int</span> points1, <span class="d_keyword">ref</span> <span class="d_keyword">int</span> points2)
+<span class="d_comment">// ...
+</span></pre>
+
+ <div class="cozum_link_tek"><p><a target="ddili_cozum" href="contracts.cozum.html"><i>... çözüm</i></a></p></div>
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on Mon Apr  1 20:41:02 2024
+</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

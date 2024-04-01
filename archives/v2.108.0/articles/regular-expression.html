@@ -1,0 +1,455 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Regular Expressions - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Regular Expressions' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='https://github.com/dlang'>GitHub</a></li>
+    <li><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='https://wiki.dlang.org/Get_involved'>Get involved</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../spec/glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Google Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+<div class="subnav-helper"></div> <div class="subnav">    
+    <div class="head">        <h2>Articles</h2>
+        <p class="Articles, ../articles/index.html, overview">            <a href="../articles/index.html">overview</a></p>
+    </div>
+    <ul><li><a href='        ../articles/faq.html'>FAQ</a></li><li><a href='        ../articles/const-faq.html'>const(FAQ)</a></li><li><a href='        ../articles/d-floating-point.html'>Floating Point</a></li><li><a href='        ../articles/warnings.html'>Warnings</a></li><li><a href='        ../articles/rationale.html'>Rationale</a></li><li><a href='        ../articles/builtin.html'>Builtin Rationale</a></li><li><a href='        ../articles/ctod.html'>C to D</a></li><li><a href='        ../articles/cpptod.html'>C++ to D</a></li><li><a href='        ../articles/pretod.html'>C Preprocessor vs D</a></li><li><a href='        ../articles/code_coverage.html'>Code coverage analysis</a></li><li><a href='        ../articles/exception-safe.html'>Exception Safety</a></li><li><a href='        ../articles/hijack.html'>Hijacking</a></li><li><a href='        ../articles/intro-to-datetime.html'>Introduction to std.datetime</a></li><li><a href='        ../articles/lazy-evaluation.html'>Lazy Evaluation</a></li><li><a href='        ../articles/migrate-to-shared.html'>Migrating to Shared</a></li><li><a href='        ../articles/mixin.html'>String Mixins</a></li><li><a href='        ../articles/regular-expression.html'>Regular Expressions</a></li><li><a href='        ../articles/safed.html'>SafeD</a></li><li><a href='        ../articles/templates-revisited.html'>Templates Revisited</a></li><li><a href='        ../articles/constraints.html'>Template Constraints</a></li><li><a href='        ../articles/ctarguments.html'>Compile-time Sequences</a></li><li><a href='        ../articles/variadic-function-templates.html'>Variadic Templates</a></li><li><a href='        ../articles/template-comparison.html'>Template Comparison</a></li><li><a href='        ../articles/d-array-article.html'>D Slices</a></li><li><a href='        ../articles/cppcontracts.html'>D's Contract Programming</a></li><li><a href='        ../articles/dll-linux.html'>Writing Shared Libraries for Linux</a></li><li><a href='        ../articles/RefReturnScope.html'>Coralling Wild Pointers With ref return scope</a></li><li><a href='        ../articles/dll-windows.html'>Creating Windows DLLs
+    </a></li></ul>
+</div>
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BRegular Expressions%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/articles/regular-expression.dd">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Regular Expressions</h1>
+        
+        
+
+
+    <div class="page-contents quickindex">    <div class="page-contents-header">        <b>Contents</b>
+    </div>
+    <ol>    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#warm-up">A warm up</a></li>
+    <li><a href="#search-replace">Search and replace</a><ol>        <li><a href="#replacing">Replacing</a></li>
+    </ol></li>
+    <li><a href="#split-up">Split it up</a></li>
+    <li><a href="#static-regex">Static regex</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+</ol>
+</div>
+
+    <p>    <small>by Dmitry Olshansky, the author of std.regex </small>
+    </p>
+    <h2><a class="anchor" title="Permalink to this section" id="introduction" href="#introduction">Introduction</a></h2>
+    <p>String processing is a daily routine that most applications have to deal with in a one way or another.
+    It should come as no surprise that many programming languages have standard libraries equipped
+    with a variety of specialized functions for common string manipulation needs.
+    The D programming language standard library among others offers a nice assortment in <a href="/phobos/std_string.html">std.string</a>,
+     as well as generic functions  from <a href="/phobos/std_algorithm.html">std.algorithm</a> that work with strings.
+    Still no amount of fixed functionality could cover all needs, as naturally flexible text data
+    needs flexible solutions.
+    </p>
+    <p>This is where <a href="https://google.com/search?btnI=I%27m+Feeling+Lucky&amp;ie=UTF-8&amp;oe=UTF-8&amp;q=regular expressions">regular expressions</a>, often succinctly called regexes, come in handy.
+     Regexes are simple yet powerful language for defining patterns for sets of strings.
+     Combined with pattern matching, data extraction and substitution, they form a Swiss Army knife of text processing.
+     They are considered so important that a number of programming languages provide built-in support for regular expressions.  Being built-in  however does <b>not</b> necessary
+     imply <b>faster processing</b> or having more features. It's just a matter of providing
+     <b>convenient and friendly syntax</b> for typical operations, and integrating it well.
+    </p>
+    <p>The D programming language provides a standard library module <a href="/phobos/std_regex.html">std.regex</a>.
+     Being a highly expressive systems language, D allows regexes to be <i>implemented efficiently</i>
+     within the language itself, yet have good level of readability and usability.
+     And there a few things a pure D implementation brings to the table that are completely unbelievable
+     in a traditional compiled language, more on that at the end of article.
+    </p>
+    <p>By the end of article you'll have a good understanding of regular expression capabilities in this library,
+     and how to utilize its API in a most straightforward and efficient way. Examples in this article assume
+     that the reader has fair understanding of regex elements, but it's not required.
+    </p>
+
+    <h2><a class="anchor" title="Permalink to this section" id="warm-up" href="#warm-up">A warm up</a></h2>
+
+    <p>How do you check if something is a phone number by looking at it? </p>
+    <p>Yes, it's something with numbers, and there may be a country code in front of that...
+    Sticking to an international format should make it more strict. As this is the first time, let's
+    put together a full program:</p>
+    <div class="runnable-examples">
+    <code class="runnable-examples-stdin">+1 555 123 4567</code>
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.stdio, std.regex;
+
+<span class="d_keyword">void</span> main()
+{
+    string phone = readln();  <span class="d_comment">// assume phone is passed as the first line of stdin
+</span>    <span class="d_keyword">if</span> (matchFirst(phone, <span class="d_string">r"^\+[1-9][0-9]* [0-9 ]*$"</span>))
+        writeln(<span class="d_string">"It looks like a phone number."</span>);
+    <span class="d_keyword">else</span>
+        writeln(<span class="d_string">"Nope, it's not a phone number."</span>);
+}
+</pre>
+    
+</div>
+    <p>    And that's it! Let us however keep in mind the boundaries of regular expressions power - to truly establish a
+    validness of a phone number, one has to try dialing it or contact the authority.
+    </p>
+    <p>Let's drill down into this tiny example because it actually showcases a lot of interesting things:</p>
+        <ul>        <li>A raw string literal of form <span class="d_inlinecode donthyphenate notranslate">r"..."</span>, that allows writing a regex pattern in its natural notation. </li>
+        <li><span class="d_inlinecode donthyphenate notranslate">matchFirst</span> function to find the first match in a string if any. To check if there was a match just
+        test the return value explicitly in a boolean context, such as an <span class="d_inlinecode donthyphenate notranslate">if</span> statement. </li>
+        <li>When matching special regex characters like  +, *, (, ), [, ] and $ don't forget to use escaping with backslash, e.g. <span class="d_inlinecode donthyphenate notranslate">\+</span>. </li>
+        <li>Unless there is a lot of text processing going on, it's perfectly fine to pass a plain string as a pattern.
+        The internal representation used to do the actual work is cached, to speed up subsequent calls. </li>
+        </ul>
+    <p>Continuing with the phone number example, it would be useful to get the exact value of
+    the country code, as well as the whole number. For the sake of experiment let's also explicitly obtain
+    compiled regex pattern via <span class="d_inlinecode donthyphenate notranslate">regex</span> to see how it works.
+    </p>
+    <div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.regex;
+
+string phone = <span class="d_string">"+31 650 903 7158"</span>;  <span class="d_comment">// fictional, any coincidence is just that
+</span><span class="d_keyword">auto</span> phoneReg = regex(<span class="d_string">r"^\+([1-9][0-9]*) [0-9 ]*$"</span>);
+<span class="d_keyword">auto</span> m = matchFirst(phone, phoneReg);
+<span class="d_keyword">assert</span>(m); <span class="d_comment">// also boolean context - test for non-empty
+</span><span class="d_keyword">assert</span>(!m.empty); <span class="d_comment">// same as the line above
+</span><span class="d_keyword">assert</span>(m[0] == <span class="d_string">"+31 650 903 7158"</span>);
+<span class="d_keyword">assert</span>(m[1] == <span class="d_string">"31"</span>);
+<span class="d_comment">// you shouldn't need the regex object type all too often
+</span><span class="d_comment">// but here it is for the curious
+</span><span class="d_keyword">static</span> <span class="d_keyword">assert</span>(<span class="d_keyword">is</span>(<span class="d_keyword">typeof</span>(phoneReg) : Regex!<span class="d_keyword">char</span>));
+</pre>
+    
+</div>
+    <h2><a class="anchor" title="Permalink to this section" id="search-replace" href="#search-replace">Search and replace</a></h2>
+
+    <p>While getting first match is a common theme in string validation, another frequent need is
+    to extract all matches found in a piece of text.  Picking an easy task, let's see how to
+    filter out all white space-only lines. There is no special routine for looping over input
+    like <span class="d_inlinecode donthyphenate notranslate">search()</span> or similar as found in some libraries.
+    Instead <span class="d_inlinecode donthyphenate notranslate">std.regex</span> provides a natural syntax for looping via plain foreach.
+    </p>
+<pre class="d_code notranslate"><span class="d_keyword">auto</span> buffer = std.file.readText(<span class="d_string">"regex.d"</span>);
+<span class="d_keyword">foreach</span> (m; matchAll(buffer, regex(<span class="d_string">r"^.*[^\p{WhiteSpace}]+.*$"</span>,<span class="d_string">"m"</span>)))
+{
+    writeln(m.hit);  <span class="d_comment">// hit is an alias for m[0]
+</span>}
+</pre>
+    <p>It may look and feel like a built-in but it just follows the common conventions to do that.
+    In this case <span class="d_inlinecode donthyphenate notranslate">matchAll</span> returns an object that follows the right "protocol" of an input range
+    simply by having the right set of methods. An input range is a lot like an iterator found
+    in other languages. Likewise the result of <span class="d_inlinecode donthyphenate notranslate">matchFirst</span> and each element of <span class="d_inlinecode donthyphenate notranslate">matchAll</span>
+    is a random access range, a thing that behaves like a "view" of an array.
+    </p>
+    <div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.regex;
+
+<span class="d_keyword">auto</span> m = matchAll(<span class="d_string">"Ranges are hot!"</span>, <span class="d_string">r"(\w)\w+(\w)"</span>);  <span class="d_comment">// at least 3 "word" symbols
+</span><span class="d_keyword">assert</span>(m.front[0] == <span class="d_string">"Ranges"</span>); <span class="d_comment">// front - first of input range
+</span><span class="d_comment">// m.captures is a historical alias for the first element of match range (.front).
+</span><span class="d_keyword">assert</span>(m.captures[1] == m.front[1]);
+<span class="d_keyword">auto</span> sub = m.front;
+<span class="d_keyword">assert</span>(sub[2] == <span class="d_string">"s"</span>);
+<span class="d_keyword">foreach</span> (item; sub)
+    writeln(item);  <span class="d_comment">// will show lines: Ranges, R, s
+</span></pre>
+    
+</div>
+    <p>By playing by the rules <a href="/phobos/std_regex.html">std.regex</a> gets some nice benefits in interaction with other modules e.g.
+    this is how one could count non-empty lines in a text buffer:
+    </p>
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.algorithm, std.file, std.regex;
+
+<span class="d_keyword">auto</span> buffer = std.file.readText(<span class="d_string">r"std\typecons.d"</span>);
+<span class="d_keyword">int</span> count = count(matchAll(buffer, regex(<span class="d_string">r"^.*\P{WhiteSpace}+.*$"</span>, <span class="d_string">"m"</span>)));
+</pre>
+    <p>    A seasoned regex user catches instantly that Unicode properties are supported with perl-style \p{xxx},
+    to spice that all of Scripts and Blocks are supported as well. Let us duly note that \P{xxx} means not
+    having an xxx property, i.e. here not a white space character. Unicode is a vital subject to know, and it won't suffice
+    to try to cover it here. For details see the accessible <a href="/phobos/std_uni.html">std.uni</a> documentation and level 1 of conformance
+    as per Unicode standard  <a href="http://Unicode.org/reports/tr18/">UTS 18</a>.
+    </p>
+
+    <p>Another thing of importance is the option string - "m",  where m stands for multi-line mode.
+    Historically utilities that supported regex patterns (unix grep, sed, etc.) processed text line by line.
+    At that time anchors like ^, $ meant the start of the whole input buffer that has been same as that of the line.
+    As regular expressions got more ubiquitous the need to recognize multiple lines in a chunk of text became apparent.
+    In such a mode with anchors ^ &amp; $ were defined to match before and after line break literally.
+    For the curious, modern (Unicode) line break is defined as (\n | \v | \r | \f | \u0085 | \u2028 | \u2029 | \r\n).
+    Needless to say, one need not turn on multi-line mode if not using any of ^, $.
+    </p>
+
+<h3><a class="anchor" title="Permalink to this section" id="replacing" href="#replacing">Replacing</a></h3>
+
+    <p>Now that search was covered, let's do some replacements.
+    For instance, to replace all dates with "MM/dd/YYYY" format in a text to a sortable format of "YYYY-MM-dd":
+    </p>
+    <div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.regex;
+
+<span class="d_keyword">auto</span> text = <span class="d_string">"2/31/1998"</span>;
+<span class="d_keyword">auto</span> replaced = replaceAll(text, <span class="d_string">r"([0-9]{1,2})/([0-9]{1,2})/([0-9]{4})"</span>.regex, <span class="d_string">"$3-$1-$2"</span>);
+<span class="d_keyword">assert</span>(replaced == <span class="d_string">"1998-2-31"</span>);
+</pre>
+    
+</div>
+    <p><span class="d_inlinecode donthyphenate notranslate">r"pattern".regex</span> is just another notation of writing <span class="d_inlinecode donthyphenate notranslate">regex("pattern")</span> called
+    <a href="../spec/function.html#pseudo-member">UFCS</a> that some may find more
+    slick.
+    As can be seen the replacement is controlled by a format string not unlike one in C's famous <span class="d_inlinecode donthyphenate notranslate">printf</span>.
+    The <span class="d_inlinecode donthyphenate notranslate">$1</span>, <span class="d_inlinecode donthyphenate notranslate">$2</span>, <span class="d_inlinecode donthyphenate notranslate">$3</span> are substituted with the content of sub-expressions.
+    Aside from referencing sub-matches, one can include the whole part of input preceding the match via <span class="d_inlinecode donthyphenate notranslate">$`</span> and <span class="d_inlinecode donthyphenate notranslate">$'</span> for the content following right after the match.
+    </p>
+    <p>Now let's aim for something bigger, this time to show that <a href="/phobos/std_regex.html">std.regex</a> can do things that
+    are unattainable by classic textual substitution alone. Imagine you want to translate a web shop catalog so
+    that it displays prices in your currency. Yes, one can use calculator or estimate it in his/her head,
+    given the current ratio.  Being programmers we can do better, so let's wrap up a simple program that
+    converts text to use correct prices everywhere.  For example, UK pounds to US dollars.
+    </p>
+    <div class="runnable-examples">
+    <code class="runnable-examples-stdin">Bottles for £1, or £3 for 4.</code>
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.conv, std.regex, std.range, std.stdio;
+<span class="d_keyword">import</span> std.string : format;
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">immutable</span> ratio = 1.5824;  <span class="d_comment">// UK pounds to US dollar as of this writing
+</span>    <span class="d_keyword">auto</span> toDollars(Captures!string price)
+    {
+        <span class="d_keyword">real</span> value = to!<span class="d_keyword">real</span>(price[<span class="d_string">"integer"</span>]);
+        <span class="d_keyword">if</span> (!price[<span class="d_string">"fraction"</span>].empty)
+            value += 0.01 * to!<span class="d_keyword">real</span>(price[<span class="d_string">"fraction"</span>]);
+        <span class="d_keyword">return</span> format(<span class="d_string">"$%.2f"</span>, value * ratio);
+    }
+    string text = readln();
+    <span class="d_keyword">auto</span> converted = replaceAll!toDollars(text,
+        regex(<span class="d_string">r"£\s*(?P&lt;integer&gt;[0-9]+)(\.(?P&lt;fraction&gt;[0-9]{2}))?"</span>, <span class="d_string">"g"</span>));
+    write(converted);
+}
+</pre>
+    
+</div>
+    <p>Getting current conversion rates and supporting more currencies is left as an exercise for the reader.
+    What's at work here is called <em>replace with delegate</em>, which is analogous to a callout ability found in other languages
+    and regex libraries. The magic is simple: whenever <span class="d_inlinecode donthyphenate notranslate">replaceAll</span> finds a match it calls a user supplied callback <span class="d_inlinecode donthyphenate notranslate">toDollars</span>
+    on the captured piece, then it uses the return value to make the replacement.
+    </p>
+
+    <p>And I just couldn't resist spicing that example up with yet another feature - named groups.
+    The syntax for a named group is <span class="d_inlinecode donthyphenate notranslate">(?P&lt;name&gt;regex)</span>.
+    Names work just like aliases for numbers of captured subexpressions,
+    meaning that with the exact same regular expression one could just as well change the affected lines to:</p>
+<pre class="d_code notranslate"><span class="d_keyword">real</span> value = to!<span class="d_keyword">real</span>(price[1]);
+<span class="d_keyword">if</span> (!price[3].empty)
+    value += 0.01*to!<span class="d_keyword">real</span>(price[3]);
+</pre>
+    <p>    Though that lacks readability and is not as future proof.
+    </p>
+
+    <p>Also note that optional captures are still represented, it's just they can be an empty string if not matched.
+    </p>
+
+    <h2><a class="anchor" title="Permalink to this section" id="split-up" href="#split-up">Split it up</a></h2>
+
+    <p>Now core functionality has been presented, let's move on to some extras.
+    Sometimes it's useful to do almost the opposite of searching - split up input using a regex as separator.
+    The following sample outputs text by sentences:
+    </p>
+    <div class="runnable-examples">
+    <code class="runnable-examples-stdin">This is sample text! It has several sentences. Did it work?!</code>
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.regex, std.stdio;
+
+<span class="d_keyword">auto</span> text = readln('\0'); <span class="d_comment">// read all stdin
+</span><span class="d_keyword">foreach</span> (sentence; splitter(text, regex(<span class="d_string">r"(?&lt;=[.?!]+(?![?!]))\s*"</span>)))
+    writeln(sentence);
+</pre>
+    
+</div>
+    <p>Again the type <span class="d_inlinecode donthyphenate notranslate">splitter</span> returns is a range, thus allowing foreach iteration.
+    Notice the usage of lookaround in the regex, it's a neat trick here as stripping off final punctuation is
+    not our intention. <span class="d_inlinecode donthyphenate notranslate">(?=regex)</span> is lookahead and <span class="d_inlinecode donthyphenate notranslate">(?&lt;=regex)</span> is lookbehind.</p>
+    <p>    Breaking down this example, the <span class="d_inlinecode donthyphenate notranslate">(?&lt;=[.?!])</span> part looks behind for first <span class="d_inlinecode donthyphenate notranslate">.</span>, <span class="d_inlinecode donthyphenate notranslate">?</span> or <span class="d_inlinecode donthyphenate notranslate">!</span>.
+    This gets us halfway to our goal because <span class="d_inlinecode donthyphenate notranslate">\s*</span> also matches between elements of punctuation like "?!",
+    so a negative lookahead <span class="d_inlinecode donthyphenate notranslate">(?!regex)</span> is introduced <i>inside a lookbehind</i> to make sure there are no more punctuation marks.</p>
+    <p>    Admittedly, the barrage of ? and ! makes this regex rather obscure, more then it actually is.
+    Observe that there are no restrictions on the contents of lookaround expressions,
+    one can go for lookahead inside lookbehind and so on.
+    However in general it's recommended to use them sparingly, keeping them as the weapon of last resort.
+    </p>
+
+    <h2><a class="anchor" title="Permalink to this section" id="static-regex" href="#static-regex">Static regex</a></h2>
+
+    <p>Let's stop going for features and start thinking performance. D has something to offer here.
+    For one, there is an ability to precompile a constant regex at compile-time:
+    </p>
+    <div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.regex;
+
+<span class="d_keyword">static</span> r = regex(<span class="d_string">"Boo-hoo"</span>);
+<span class="d_keyword">assert</span>(match(<span class="d_string">"What was that? Boo-hoo?"</span>, r));
+</pre>
+    
+</div>
+    <p>Importantly it's the exact same <span class="d_inlinecode donthyphenate notranslate">Regex</span> object that works through all of the API we've seen so far.
+    It takes next to no time to initialize, just copy over a ready-made structure from the data segment -
+    roughly 1 μs of run-time to initialize on my machine. Conversely, compiling the regex at run-time took around 10-20 μs - and keep in mind that it was a trivial pattern.
+    </p>
+
+    <p>Now stepping further in this direction there is an ability to construct specialized
+    D code to match a given regex instead of using the default run-time engine.
+    Isn't it so often the case that code starts with regular expressions only to be later re-written
+    to heaps of scary-looking code to match speed requirements? No need to rewrite - we got you covered.
+    </p>
+    <p>Recalling the phone number example:
+    </p>
+    <div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.regex;
+
+string phone = <span class="d_string">"+31 650 903 7158"</span>;
+<span class="d_comment">// It's only a 5 characters difference!
+</span><span class="d_keyword">auto</span> phoneReg = ctRegex!<span class="d_string">r"^\+([1-9][0-9]*) [0-9 ]*$"</span>;
+<span class="d_keyword">auto</span> m = match(phone, phoneReg);
+<span class="d_keyword">assert</span>(m);
+<span class="d_keyword">assert</span>(m.captures[0] == <span class="d_string">"+31 650 903 7158"</span>);
+<span class="d_keyword">assert</span>(m.captures[1] == <span class="d_string">"31"</span>);
+</pre>
+    
+</div>
+    <p>Interestingly, the code looks almost exactly the same (a total of 5 letters changed), yet it does all of
+    the hard work, generating equivalent D code for the regex pattern. <span class="d_inlinecode donthyphenate notranslate">ctRegex</span> produces a <span class="d_inlinecode donthyphenate notranslate">StaticRegex</span> object which supports the same API as the runtime <span class="d_inlinecode donthyphenate notranslate">Regex</span>.
+    This is the key point - the API stays consistent, yet gets us the significant speed up we sought after.
+    This fosters quick development speed using the regex engine, and then, if desired, a decent runtime speed by switching to <span class="d_inlinecode donthyphenate notranslate">ctRegex</span> in the release build (at the cost of slower builds).
+    </p>
+    <p>In this particular case it matched roughly 50% faster for me though I haven't
+    done comprehensive analysis of this case.
+    That being said, there is no doubt <span class="d_inlinecode donthyphenate notranslate">ctRegex</span> is going to improve immensely over time.
+    We only scratched the surface of exciting new possibilities.
+    More data on real-world patterns, performance of CT-regex and other benchmarks is
+    <a href="https://github.com/DmitryOlshansky/FReD">here</a>.
+    </p>
+
+    <h2><a class="anchor" title="Permalink to this section" id="conclusion" href="#conclusion">Conclusion</a></h2>
+
+    <p>The article represents a walk-through of <span class="d_inlinecode donthyphenate notranslate">std.regex</span> focused on showcasing the API.
+    By following a series of easy yet meaningful tasks, its features were exposed in combination,
+    that underline the elegance and flexibility of this library solution.
+    The good thing is not only that the API is natural, but it also follows established
+    standards and integrates well with the rest of Phobos.
+    Putting its major features together, <a href="/phobos/std_regex.html">std.regex</a> is:
+    </p>
+     <ul>     <li>Fully Unicode-aware, qualifies to standard full level 1 Unicode support</li>
+     <li>Replete with lots of modern extensions, including unlimited generalized lookaround.
+     That makes porting regexes from other libraries a breeze.</li>
+     <li>Designed with a lean API that consists of a few flexible tools: <span class="d_inlinecode donthyphenate notranslate">matchFirst</span>/<span class="d_inlinecode donthyphenate notranslate">matchAll</span>, <span class="d_inlinecode donthyphenate notranslate">replaceFirst</span>/<span class="d_inlinecode donthyphenate notranslate">replaceAll</span> and <span class="d_inlinecode donthyphenate notranslate">splitter</span>.</li>
+     <li>Uniform and powerful, with unique abilities like precompiling a regex or generating
+     specially tailored code at compile-time with ctRegex. All of this fits within the common interface without a hitch.</li>
+     </ul>
+    <p>The format of this article is intentionally more of an overview, it doesn't stop to talk in-depth about
+     certain capabilities like case-insensitive matching (simple casefolding rules of Unicode),
+     backreferences, lazy quantifiers. And even more features are coming to add more expressive power
+     and reach greater performance.
+    </p>
+
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on (no date time)</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>
