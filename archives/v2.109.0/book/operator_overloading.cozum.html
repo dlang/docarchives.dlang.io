@@ -1,0 +1,409 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Operator Overloading Solution - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Operator Overloading Solution' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='../contributing.html'>Contributing</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BOperator Overloading Solution%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/d.en/operator_overloading.cozum.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Operator Overloading Solution</h1>
+        
+        
+
+<h4>Operator Overloading Dersi Problem Çözümleri</h4>
+
+<p>The following implementation passes all of the unit tests. The design decisions have been included as code comments.
+</p>
+
+<p>Some of the functions of this struct can be implemented to run more efficiently. Additionally, it would be beneficial to also <i>normalize</i> the numerator and denominator. For example, instead of keeping the values 20 and 60, the values could be divided by their <i>greatest common divisor</i> and the numerator and the denominator can be stored as 1 and 3 instead. Otherwise, most of the operations on the object would cause the values of the numerator and the denominator to increase.
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.exception;
+<span class="d_keyword">import</span> std.conv;
+
+<span class="d_keyword">struct</span> Fraction {
+    <span class="d_keyword">long</span> num;  <span class="d_comment">// numerator
+</span>    <span class="d_keyword">long</span> den;  <span class="d_comment">// denominator
+</span>
+    <span class="d_comment">/* As a convenience, the constructor uses the default
+     * value of 1 for the denominator. */</span>
+    <span class="d_keyword">this</span>(<span class="d_keyword">long</span> num, <span class="d_keyword">long</span> den = 1) {
+        enforce(den != 0, <span class="d_string">"The denominator cannot be zero"</span>);
+
+        <span class="d_keyword">this</span>.num = num;
+        <span class="d_keyword">this</span>.den = den;
+
+        <span class="d_comment">/* Ensuring that the denominator is always positive
+         * will simplify the definitions of some of the
+         * operator functions. */</span>
+        <span class="d_keyword">if</span> (<span class="d_keyword">this</span>.den &lt; 0) {
+            <span class="d_keyword">this</span>.num = -<span class="d_keyword">this</span>.num;
+            <span class="d_keyword">this</span>.den = -<span class="d_keyword">this</span>.den;
+        }
+    }
+
+    <span class="d_comment">/* Unary -: Returns the negative of this fraction. */</span>
+    Fraction opUnary(string op)() <span class="d_keyword">const</span>
+            <span class="d_keyword">if</span> (op == <span class="d_string">"-"</span>) {
+        <span class="d_comment">/* Simply constructs and returns an anonymous
+         * object. */</span>
+        <span class="d_keyword">return</span> Fraction(-num, den);
+    }
+
+    <span class="d_comment">/* ++: Increments the value of the fraction by one. */</span>
+    <span class="d_keyword">ref</span> Fraction opUnary(string op)()
+            <span class="d_keyword">if</span> (op == <span class="d_string">"++"</span>) {
+        <span class="d_comment">/* We could have used 'this += Fraction(1)' here. */</span>
+        num += den;
+        <span class="d_keyword">return</span> <span class="d_keyword">this</span>;
+    }
+
+    <span class="d_comment">/* --: Decrements the value of the fraction by one. */</span>
+    <span class="d_keyword">ref</span> Fraction opUnary(string op)()
+            <span class="d_keyword">if</span> (op == <span class="d_string">"--"</span>) {
+        <span class="d_comment">/* We could have used 'this -= Fraction(1)' here. */</span>
+        num -= den;
+        <span class="d_keyword">return</span> <span class="d_keyword">this</span>;
+    }
+
+    <span class="d_comment">/* +=: Adds the right-hand fraction to this one. */</span>
+    <span class="d_keyword">ref</span> Fraction opOpAssign(string op)(Fraction rhs)
+            <span class="d_keyword">if</span> (op == <span class="d_string">"+"</span>) {
+        <span class="d_comment">/* Addition formula: a/b + c/d = (a*d + c*b)/(b*d) */</span>
+        num = (num * rhs.den) + (rhs.num * den);
+        den *= rhs.den;
+        <span class="d_keyword">return</span> <span class="d_keyword">this</span>;
+    }
+
+    <span class="d_comment">/* -=: Subtracts the right-hand fraction from this one. */</span>
+    <span class="d_keyword">ref</span> Fraction opOpAssign(string op)(Fraction rhs)
+            <span class="d_keyword">if</span> (op == <span class="d_string">"-"</span>) {
+        <span class="d_comment">/* We make use of the already-defined operators += and
+         * unary - here. Alternatively, the subtraction
+         * formula could explicitly be applied similar to the
+         * += operator above.
+         *
+         * Subtraction formula: a/b - c/d = (a*d - c*b)/(b*d)
+         */</span>
+        <span class="d_keyword">this</span> += -rhs;
+        <span class="d_keyword">return</span> <span class="d_keyword">this</span>;
+    }
+
+    <span class="d_comment">/* *=: Multiplies the fraction by the right-hand side. */</span>
+    <span class="d_keyword">ref</span> Fraction opOpAssign(string op)(Fraction rhs)
+            <span class="d_keyword">if</span> (op == <span class="d_string">"*"</span>) {
+        <span class="d_comment">/* Multiplication formula: a/b * c/d = (a*c)/(b*d) */</span>
+        num *= rhs.num;
+        den *= rhs.den;
+        <span class="d_keyword">return</span> <span class="d_keyword">this</span>;
+    }
+
+    <span class="d_comment">/* /=: Divides the fraction by the right-hand side. */</span>
+    <span class="d_keyword">ref</span> Fraction opOpAssign(string op)(Fraction rhs)
+            <span class="d_keyword">if</span> (op == <span class="d_string">"/"</span>) {
+        enforce(rhs.num != 0, <span class="d_string">"Cannot divide by zero"</span>);
+
+        <span class="d_comment">/* Division formula: (a/b) / (c/d) = (a*d)/(b*c) */</span>
+        num *= rhs.den;
+        den *= rhs.num;
+        <span class="d_keyword">return</span> <span class="d_keyword">this</span>;
+    }
+
+    <span class="d_comment">/* Binary +: Produces the result of adding this and the
+     * right-hand side fractions. */</span>
+    Fraction opBinary(string op)(Fraction rhs) <span class="d_keyword">const</span>
+            <span class="d_keyword">if</span> (op == <span class="d_string">"+"</span>) {
+        <span class="d_comment">/* Takes a copy of this fraction and adds the
+         * right-hand side fraction to that copy. */</span>
+        Fraction result = <span class="d_keyword">this</span>;
+        result += rhs;
+        <span class="d_keyword">return</span> result;
+    }
+
+    <span class="d_comment">/* Binary -: Produces the result of subtracting the
+     * right-hand side fraction from this one. */</span>
+    Fraction opBinary(string op)(Fraction rhs) <span class="d_keyword">const</span>
+            <span class="d_keyword">if</span> (op == <span class="d_string">"-"</span>) {
+        <span class="d_comment">/* Uses the already-defined -= operator. */</span>
+        Fraction result = <span class="d_keyword">this</span>;
+        result -= rhs;
+        <span class="d_keyword">return</span> result;
+    }
+
+    <span class="d_comment">/* Binary *: Produces the result of multiplying this
+     * fraction with the right-hand side fraction. */</span>
+    Fraction opBinary(string op)(Fraction rhs) <span class="d_keyword">const</span>
+            <span class="d_keyword">if</span> (op == <span class="d_string">"*"</span>) {
+        <span class="d_comment">/* Uses the already-defined *= operator. */</span>
+        Fraction result = <span class="d_keyword">this</span>;
+        result *= rhs;
+        <span class="d_keyword">return</span> result;
+    }
+
+    <span class="d_comment">/* Binary /: Produces the result of dividing this fraction
+     * by the right-hand side fraction. */</span>
+    Fraction opBinary(string op)(Fraction rhs) <span class="d_keyword">const</span>
+            <span class="d_keyword">if</span> (op == <span class="d_string">"/"</span>) {
+        <span class="d_comment">/* Uses the already-defined /= operator. */</span>
+        Fraction result = <span class="d_keyword">this</span>;
+        result /= rhs;
+        <span class="d_keyword">return</span> result;
+    }
+
+    <span class="d_comment">/* Returns the value of the fraction as double. */</span>
+    <span class="d_keyword">double</span> opCast(T : <span class="d_keyword">double</span>)() <span class="d_keyword">const</span> {
+        <span class="d_comment">/* A simple division. However, as dividing values of
+         * type long would lose the part of the value after
+         * the decimal point, we could not have written
+         * 'num/den' here. */</span>
+        <span class="d_keyword">return</span> to!<span class="d_keyword">double</span>(num) / den;
+    }
+
+    <span class="d_comment">/* Sort order operator: Returns a negative value if this
+     * fraction is before, a positive value if this fraction
+     * is after, and zero if both fractions have the same sort
+     * order. */</span>
+    <span class="d_keyword">int</span> opCmp(<span class="d_keyword">const</span> Fraction rhs) <span class="d_keyword">const</span> {
+        <span class="d_keyword">immutable</span> result = <span class="d_keyword">this</span> - rhs;
+        <span class="d_comment">/* Being a long, num cannot be converted to int
+         * automatically; it must be converted explicitly by
+         * 'to' (or cast). */</span>
+        <span class="d_keyword">return</span> to!<span class="d_keyword">int</span>(result.num);
+    }
+
+    <span class="d_comment">/* Equality comparison: Returns true if the fractions are
+     * equal.
+     *
+     * The equality comparison had to be defined for this type
+     * because the compiler-generated one would be comparing
+     * the members one-by-one, without regard to the actual
+     * values that the objects represent.
+     *
+     * For example, although the values of both Fraction(1,2)
+     * and Fraction(2,4) are 0.5, the compiler-generated
+     * opEquals would decide that they were not equal on
+     * account of having members of different values. */</span>
+    <span class="d_keyword">bool</span> opEquals(<span class="d_keyword">const</span> Fraction rhs) <span class="d_keyword">const</span> {
+        <span class="d_comment">/* Checking whether the return value of opCmp is zero
+         * is sufficient here. */</span>
+        <span class="d_keyword">return</span> opCmp(rhs) == 0;
+    }
+}
+
+<span class="d_keyword">unittest</span> {
+    <span class="d_comment">/* Must throw when denominator is zero. */</span>
+    assertThrown(Fraction(42, 0));
+
+    <span class="d_comment">/* Let's start with 1/3. */</span>
+    <span class="d_keyword">auto</span> a = Fraction(1, 3);
+
+    <span class="d_comment">/* -1/3 */</span>
+    <span class="d_keyword">assert</span>(-a == Fraction(-1, 3));
+
+    <span class="d_comment">/* 1/3 + 1 == 4/3 */</span>
+    ++a;
+    <span class="d_keyword">assert</span>(a == Fraction(4, 3));
+
+    <span class="d_comment">/* 4/3 - 1 == 1/3 */</span>
+    --a;
+    <span class="d_keyword">assert</span>(a == Fraction(1, 3));
+
+    <span class="d_comment">/* 1/3 + 2/3 == 3/3 */</span>
+    a += Fraction(2, 3);
+    <span class="d_keyword">assert</span>(a == Fraction(1));
+
+    <span class="d_comment">/* 3/3 - 2/3 == 1/3 */</span>
+    a -= Fraction(2, 3);
+    <span class="d_keyword">assert</span>(a == Fraction(1, 3));
+
+    <span class="d_comment">/* 1/3 * 8 == 8/3 */</span>
+    a *= Fraction(8);
+    <span class="d_keyword">assert</span>(a == Fraction(8, 3));
+
+    <span class="d_comment">/* 8/3 / 16/9 == 3/2 */</span>
+    a /= Fraction(16, 9);
+    <span class="d_keyword">assert</span>(a == Fraction(3, 2));
+
+    <span class="d_comment">/* Must produce the equivalent value in type 'double'.
+     *
+     * Note that although double cannot represent every value
+     * precisely, 1.5 is an exception. That is why this test
+     * is being applied at this point. */</span>
+    <span class="d_keyword">assert</span>(to!<span class="d_keyword">double</span>(a) == 1.5);
+
+    <span class="d_comment">/* 1.5 + 2.5 == 4 */</span>
+    <span class="d_keyword">assert</span>(a + Fraction(5, 2) == Fraction(4, 1));
+
+    <span class="d_comment">/* 1.5 - 0.75 == 0.75 */</span>
+    <span class="d_keyword">assert</span>(a - Fraction(3, 4) == Fraction(3, 4));
+
+    <span class="d_comment">/* 1.5 * 10 == 15 */</span>
+    <span class="d_keyword">assert</span>(a * Fraction(10) == Fraction(15, 1));
+
+    <span class="d_comment">/* 1.5 / 4 == 3/8 */</span>
+    <span class="d_keyword">assert</span>(a / Fraction(4) == Fraction(3, 8));
+
+    <span class="d_comment">/* Must throw when dividing by zero. */</span>
+    assertThrown(Fraction(42, 1) / Fraction(0));
+
+    <span class="d_comment">/* The one with lower numerator is before. */</span>
+    <span class="d_keyword">assert</span>(Fraction(3, 5) &lt; Fraction(4, 5));
+
+    <span class="d_comment">/* The one with larger denominator is before. */</span>
+    <span class="d_keyword">assert</span>(Fraction(3, 9) &lt; Fraction(3, 8));
+    <span class="d_keyword">assert</span>(Fraction(1, 1_000) &gt; Fraction(1, 10_000));
+
+    <span class="d_comment">/* The one with lower value is before. */</span>
+    <span class="d_keyword">assert</span>(Fraction(10, 100) &lt; Fraction(1, 2));
+
+    <span class="d_comment">/* The one with negative value is before. */</span>
+    <span class="d_keyword">assert</span>(Fraction(-1, 2) &lt; Fraction(0));
+    <span class="d_keyword">assert</span>(Fraction(1, -2) &lt; Fraction(0));
+
+    <span class="d_comment">/* The ones with equal values must be both &lt;= and &gt;=.  */</span>
+    <span class="d_keyword">assert</span>(Fraction(-1, -2) &lt;= Fraction(1, 2));
+    <span class="d_keyword">assert</span>(Fraction(1, 2) &lt;= Fraction(-1, -2));
+    <span class="d_keyword">assert</span>(Fraction(3, 7) &lt;= Fraction(9, 21));
+    <span class="d_keyword">assert</span>(Fraction(3, 7) &gt;= Fraction(9, 21));
+
+    <span class="d_comment">/* The ones with equal values must be equal. */</span>
+    <span class="d_keyword">assert</span>(Fraction(1, 3) == Fraction(20, 60));
+
+    <span class="d_comment">/* The ones with equal values with sign must be equal. */</span>
+    <span class="d_keyword">assert</span>(Fraction(-1, 2) == Fraction(1, -2));
+    <span class="d_keyword">assert</span>(Fraction(1, 2) == Fraction(-1, -2));
+}
+
+<span class="d_keyword">void</span> main() {
+}
+</pre>
+
+<p>As has been mentioned in the chapter, string mixins can be used to combine the definitions of some of the operators. For example, the following definition covers the four arithmetic operators:
+</p>
+
+<pre class="d_code">    <span class="d_comment">/* Binary arithmetic operators. */</span>
+    Fraction opBinary(string op)(Fraction rhs) <span class="d_keyword">const</span>
+        <span class="d_keyword">if</span> ((op == <span class="d_string">"+"</span>) || (op == <span class="d_string">"-"</span>) ||
+            (op == <span class="d_string">"*"</span>) || (op == <span class="d_string">"/"</span>)) {
+       <span class="d_comment">/* Takes a copy of this fraction and applies the
+        * right-hand side fraction to that copy. */</span>
+        Fraction result = <span class="d_keyword">this</span>;
+        <span class="d_keyword">mixin</span> (<span class="d_string">"result "</span> ~ op ~ <span class="d_string">"= rhs;"</span>);
+        <span class="d_keyword">return</span> result;
+    }
+</pre>
+
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on Sun Jun  2 09:00:33 2024
+</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

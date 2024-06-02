@@ -1,0 +1,1019 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>DMD Compiler for FreeBSD - D Programming Language</title>
+
+<link rel="stylesheet" href="css/codemirror.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/print.css" media="print">
+<link rel="shortcut icon" href="favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='DMD Compiler for FreeBSD' class='std dcompiler'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="images/dlogo.svg"></a></div>
+    <a href="menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='spec/spec.html'>Language Reference</a></li>
+    <li><a href='phobos/index.html'>Library Reference</a></li>
+    <li><a href='dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='comparison.html'>Feature Overview</a></li>
+    <li><a href='articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='bugstats.html'>Issues</a></li>
+    <li><a href='contributing.html'>Contributing</a></li>
+    <li class="menu-divider"><a href='foundation/contributors.html'>Contributors</a></li>
+    <li><a href='foundation/index.html'>Foundation</a></li>
+    <li><a href='/security.html'>Security Team</a></li>
+    <li><a href='foundation/donate.html'>Donate</a></li>
+    <li><a href='foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='dstyle.html'>D Style</a></li>
+    <li><a href='spec/glossary.html'>Glossary</a></li>
+    <li><a href='sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Google Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+<div class="subnav-helper"></div> <div class="subnav">    
+    <div class="head">        <h2>Command-line Reference</h2>
+        <p class="Command-line Reference, http://wiki.dlang.org/Development_tools, overview">            <a href="http://wiki.dlang.org/Development_tools">overview</a></p>
+    </div>
+    <ul><li><a href='        dmd-windows.html'>dmd (Windows)</a></li><li><a href='        dmd-linux.html'>dmd (Linux)</a></li><li><a href='        dmd-osx.html'>dmd (OSX)</a></li><li><a href='        dmd-freebsd.html'>dmd (FreeBSD)</a></li><li><a href='        rdmd.html'>rdmd</a></li><li><a href='        install.html'>install.sh</a></li><li><a href='        htod.html'>htod
+    </a></li></ul>
+</div>
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BDMD Compiler for FreeBSD%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/dcompiler.dd">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>DMD Compiler for FreeBSD</h1>
+        
+        
+
+
+    <ul>    <li><a href="#requirements">Requirements and Downloads</a></li>
+    <li><a href="#installation">Installation</a></li>
+    
+    <li><a href="#switches">Compiler Arguments and Switches</a></li>
+    <li><a href="#files">Files</a></li>
+    <li><a href="#linking">Linking</a></li>
+    <li><a href="#environment">Environment Variables</a></li>
+    
+    <li><a href="#dmd-conf">dmd.conf</a> Initialization File</li>
+    
+    <li><a href="#differences">Differences between Windows and Linux versions</a></li>
+    <li><a href="#interface-files">D Interface Files</a></li>
+    <li><a href="#library">Building Libraries</a></li>
+    <li><a href="#compiling-dmd">Compiling dmd</a></li>
+    <li><a href="#compiling-phobos">Compiling Phobos</a></li>
+    </ul>
+
+<h2><a class="anchor" title="Permalink to this section" id="requirements" href="#requirements">Requirements and Downloads</a></h2>
+
+    <ol>    <li><a href="https://dlang.org/download.html">DMD Compiler</a></li>
+
+    
+    
+    
+        <li>32 bit x86 and 64 bit x86-64 FreeBSD operating system (11 or later)</li>
+
+    <li>Gnu C compiler (gcc)</li>
+    
+    </ol>
+
+<h2><a class="anchor" title="Permalink to this section" id="installation" href="#installation">Installation</a></h2>
+
+    
+    
+
+    
+    
+<p><div class="message-box message-box-gray"><b>Hint</b> - The official <a href="download.html">packages</a>
+performs these steps automatically.
+Alternatively, you can install DMD in your user directory with
+the <a href="install.html">install script</a>.
+</div>
+</p>
+
+    <p><ul>
+    <li>Unzip the archive into your home directory.
+    It will create
+    a <span class="d_inlinecode donthyphenate notranslate">~/dmd</span> directory with all the files in it.
+    All the tools are command line tools, which means
+    they are run from a console window.</li>
+
+    <li>Create a configuration file in <span class="d_inlinecode donthyphenate notranslate">/etc/dmd.conf</span>:
+
+<pre class="d_code notranslate">[Environment64]
+DFLAGS=-I/usr/local/include/d/dmd -L-L/usr/local/lib -L--<span class="d_keyword">export</span>-dynamic -fPIC
+</pre>
+
+    </li>
+
+
+    <li>Put <span class="d_inlinecode donthyphenate notranslate">dmd2/freebsd/bin</span> on your <b>PATH</b>,
+    or copy the FreeBSD executables
+    to <span class="d_inlinecode donthyphenate notranslate">/usr/local/bin</span>:</li>
+
+<pre class="console notranslate">sudo cp dmd2/linux/bin64/{dmd,<a href="http://digitalmars.com/ctg/dumpobj.html">dumpobj</a>,<a href="http://digitalmars.com/ctg/obj2asm.html">obj2asm</a>,rdmd,ddemangle,dub,dustmite} /usr/local/bin
+</pre>
+
+    <li>Copy the library to <span class="d_inlinecode donthyphenate notranslate">/usr/lib</span>:
+
+<pre class="console notranslate">sudo cp dmd2/freebsd/lib/libphobos2.a /usr/lib
+</pre>
+    </li>
+
+    <li>Copy the standard library and runtime sources to <span class="d_inlinecode donthyphenate notranslate">/usr/include/d/dmd</span>:
+
+<pre class="console notranslate">sudo mkdir -p /usr/include/d/dmd
+sudo cp dmd2/{phobos/std,phobos/etc,druntime/import} /usr/include/d/dmd
+</pre>
+    </li>
+    </ul></p>
+    
+    
+
+
+
+
+<h2><a class="anchor" title="Permalink to this section" id="switches" href="#switches">Compiler Arguments and Switches</a></h2>
+
+    <dl>      <dt><b>dmd</b> <i>files</i>... -<i>switches</i>...
+        <dd></dd>
+      </dt>
+
+      <dt><i>files</i>...
+        <dd>        <center><table><caption>File Extensions</caption>        <tr>        <th scope="col">Extension</th>
+        <th scope="col">File Type</th>
+        </tr>
+        <tr>        <td><i>none</i></td>
+        <td>D source files</td>
+        </tr>
+        <tr>        <td><b>.c</b></td>
+        <td>C source files</td>
+        </tr>
+        <tr>        <td><b>.d</b></td>
+        <td>D source files</td>
+        </tr>
+        <tr>        <td><b>.dd</b></td>
+        <td><a href="spec/ddoc.html">Ddoc</a> source files</td>
+        </tr>
+        <tr>        <td><b>.di</b></td>
+        <td><a href="#interface-files">D interface files</a></td>
+        </tr>
+        <tr>        <td><b>.i</b></td>
+        <td>preprocessed C source files</td>
+        </tr>
+        <tr>        <td><b>.o</b></td>
+        <td>Object files to link in</td>
+        </tr>
+        <tr>        <td><b>.a</b></td>
+        <td>Object code libraries to search</td>
+        </tr>
+
+        </table></center>
+        </dd>
+      </dt>
+
+      <dt><b>@</b><i>cmdfile</i></dt><dd>        If <i>cmdfile</i> is an environment variable,
+        read the compiler arguments and switches from
+        the value of that variable.
+        Otherwise, read compiler arguments and switches from
+        the text file <i>cmdfile</i>.
+        The file may contain single-line comments starting
+        with the hash symbol (<span class="d_inlinecode donthyphenate notranslate">#</span>).
+      </dd>
+
+      <dt><a class="anchor" title="Permalink to this section" id="switch-allinst" href="#switch-allinst"><b>-allinst</b></a></dt><dd>
+            Generate code for all template instantiations
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-betterC" href="#switch-betterC"><b>-betterC</b></a></dt><dd>
+            Adjusts the compiler to implement D as a <a href="spec/betterc.html">better C</a>:
+            <ul>                <li>Predefines <span class="d_inlinecode donthyphenate notranslate">D_BetterC</span> <a href="spec/version.html#predefined-versions">version</a>.</li>
+                <li><a href="spec/expression.html#AssertExpression">Assert Expressions</a>, when they fail,
+                call the C runtime library assert failure function
+                rather than a function in the D runtime.</li>
+                <li><a href="spec/arrays.html#bounds">Array overflows</a>
+                call the C runtime library assert failure function
+                rather than a function in the D runtime.</li>
+                <li><a href="spec/statement.html#final-switch-statement/">Final switch errors</a>
+                call the C runtime library assert failure function
+                rather than a function in the D runtime.</li>
+                <li>Does not automatically link with phobos runtime library.</li>
+                                <li>Does not generate Dwarf <span class="d_inlinecode donthyphenate notranslate">eh_frame</span> with full unwinding information, i.e. exception tables
+                are not inserted into <span class="d_inlinecode donthyphenate notranslate">eh_frame</span>.</li>
+                
+                <li>Module constructors and destructors are not generated meaning that
+                <a href="spec/class.html#StaticConstructor">static</a> and
+                <a href="spec/class.html#SharedStaticConstructor">shared static constructors</a> and
+                <a href="spec/class.html#StaticDestructor">destructors</a>
+                will not get called.</li>
+                <li><span class="d_inlinecode donthyphenate notranslate">ModuleInfo</span> is not generated.</li>
+                <li><a href="phobos/object.html#.TypeInfo"><span class="d_inlinecode donthyphenate notranslate">TypeInfo</span></a>
+                instances will not be generated for structs.</li>
+            </ul>
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-boundscheck" href="#switch-boundscheck"><b>-boundscheck</b></a>=[<i>on|safeonly|off </i>]</dt><dd>
+            Controls if bounds checking is enabled.
+                <ul>                    <li><i>on</i>: Bounds checks are enabled for all code. This is the default.</li>
+                    <li><i>safeonly</i>: Bounds checks are enabled only in <span class="d_inlinecode donthyphenate notranslate">@safe</span> code.
+                                        This is the default for <a href="#switch-release"><b>-release</b></a> builds.</li>
+                    <li><i>off</i>: Bounds checks are disabled completely (even in <span class="d_inlinecode donthyphenate notranslate">@safe</span>
+                                   code). This option should be used with caution and as a
+                                   last resort to improve performance. Confirm turning off
+                                   <span class="d_inlinecode donthyphenate notranslate">@safe</span> bounds checks is worthwhile by benchmarking.</li>
+                </ul>
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-c" href="#switch-c"><b>-c</b></a></dt><dd>
+            Compile only, do not link
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-check" href="#switch-check"><b>-check</b></a>=[<i>assert|bounds|in|invariant|out|switch </i>][=[on|off]]</dt><dd>
+            Overrides default, -boundscheck, -release and -unittest options to enable or disable specific checks.
+                <ul>                    <li><b>assert</b>: assertion checking</li>
+                    <li><b>bounds</b>: array bounds</li>
+                    <li><b>in</b>: in contracts</li>
+                    <li><b>invariant</b>: class/struct invariants</li>
+                    <li><b>out</b>: out contracts</li>
+                    <li><b>switch</b>: <span class="d_inlinecode donthyphenate notranslate">final switch</span> failure checking</li>
+                </ul>
+                <ul>                    <li><b>on</b> or not specified: specified check is enabled.</li>
+                    <li><b>off</b>: specified check is disabled.</li>
+                </ul>
+        </dd><dt><b>-check</b>=[<i>h|help|? </i>]</dt><dd>
+            List information on all available checks
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-checkaction" href="#switch-checkaction"><b>-checkaction</b></a>=[<i>D|C|halt|context </i>]</dt><dd>
+            Sets behavior when an assert or an array bounds check fails,
+             or a <span class="d_inlinecode donthyphenate notranslate">final switch</span> errors.
+                <ul>                    <li><b>D</b>: Default behavior, which throws an unrecoverable <span class="d_inlinecode donthyphenate notranslate">AssertError</span>.</li>
+                    <li><b>C</b>: Calls the C runtime library assert failure function.</li>
+                    <li><b>halt</b>: Executes a halt instruction, terminating the program.</li>
+                    <li><b>context</b>: Prints the error context as part of the unrecoverable <span class="d_inlinecode donthyphenate notranslate">AssertError</span>.</li>
+                </ul>
+        </dd><dt><b>-checkaction</b>=[<i>h|help|? </i>]</dt><dd>
+            List information on all available check actions
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-color" href="#switch-color"><b>-color</b></a></dt><dd>
+            Turn colored console output on
+        </dd><dt><b>-color</b>=[<i>on|off|auto </i>]</dt><dd>
+            Show colored console output. The default depends on terminal capabilities.
+            <ul>                <li><b>auto</b>: use colored output if a tty is detected (default)</li>
+                <li><b>on</b>: always use colored output.</li>
+                <li><b>off</b>: never use colored output.</li>
+            </ul>
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-conf" href="#switch-conf"><b>-conf</b></a>=<i>filename </i></dt><dd>
+            Use config file at <i>filename </i>
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-cov" href="#switch-cov"><b>-cov</b></a></dt><dd>
+            Do code coverage analysis
+        </dd><dt><b>-cov</b>=ctfe</dt><dd>
+            Include code executed during CTFE in coverage report
+        </dd><dt><b>-cov</b>=<i>nnn </i></dt><dd>
+            Perform <a href="code_coverage.html">code coverage analysis</a> and generate
+            <em class="tt">.lst</em> file with report.</dd>
+<pre class="d_code notranslate">dmd -cov -<span class="d_keyword">unittest</span> myprog.d
+</pre>
+            
+        <dt><a class="anchor" title="Permalink to this section" id="switch-cpp" href="#switch-cpp"><b>-cpp</b></a>=<i>filename </i></dt><dd>
+            Normally the C preprocessor used by the associated C compiler is used to
+            preprocess ImportC files,
+            this is overridden by the <em class="tt">-cpp</em> switch.
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-D" href="#switch-D"><b>-D</b></a></dt><dd>
+            <p>Generate <a href="spec/ddoc.html">documentation</a> from source.</p>
+            <p>Note: mind the <a href="spec/ddoc.html#security">security considerations</a>.</p>
+            
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-Dd" href="#switch-Dd"><b>-Dd</b></a><i>directory </i></dt><dd>
+            Write documentation file to <i>directory</i> . <a href="#switch-op"><b>-op</b></a>
+            can be used if the original package hierarchy should
+            be retained
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-Df" href="#switch-Df"><b>-Df</b></a><i>filename </i></dt><dd>
+            Write documentation file to <i>filename </i>
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-d" href="#switch-d"><b>-d</b></a></dt><dd>
+            Silently allow <a href="deprecate.html">deprecated features</a> and use of symbols with
+            <a href="spec/attribute.html#deprecated">deprecated attributes</a>.
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-de" href="#switch-de"><b>-de</b></a></dt><dd>
+            Issue an error when deprecated features or symbols are used (halt compilation)
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-dw" href="#switch-dw"><b>-dw</b></a></dt><dd>
+            Issue a message when deprecated features or symbols are used (default)
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-debug" href="#switch-debug"><b>-debug</b></a></dt><dd>
+            Compile in <a href="spec/version.html#debug">debug</a> code
+        </dd><dt><b>-debug</b>=<i>level </i></dt><dd>
+            Compile in <a href="spec/version.html#debug">debug level</a> &lt;= <i>level</i>
+        </dd><dt><b>-debug</b>=<i>ident </i></dt><dd>
+            Compile in <a href="spec/version.html#debug">debug identifier</a> <i>ident</i>
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-debuglib" href="#switch-debuglib"><b>-debuglib</b></a>=<i>name </i></dt><dd>
+            Link in <i>libname</i> as the default library when
+            compiling for symbolic debugging instead of <b>libphobos2.a</b>.
+            If <i>libname</i> is not supplied, then no default library is linked in.
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-defaultlib" href="#switch-defaultlib"><b>-defaultlib</b></a>=<i>name </i></dt><dd>
+            Link in <i>libname</i> as the default library when
+            not compiling for symbolic debugging instead of <b>libphobos2.a</b>.
+            If <i>libname</i> is not supplied, then no default library is linked in.
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-deps" href="#switch-deps"><b>-deps</b></a></dt><dd>
+            Print module dependencies (imports/file/version/debug/lib)
+        </dd><dt><b>-deps</b>=<i>filename </i></dt><dd>
+            Without <i>filename</i>, print module dependencies
+            (imports/file/version/debug/lib).
+            With <i>filename</i>, write module dependencies as text to <i>filename</i>
+            (only imports).
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-dllimport" href="#switch-dllimport"><b>-dllimport</b></a>=<i>value </i></dt><dd>
+            Which global variables to dllimport implicitly if not defined in a root module
+            <ul>                <li><i>none</i>: None</li>
+                <li><i>defaultLibsOnly</i>: Only druntime/Phobos symbols</li>
+                <li><i>all</i>: All</li>
+            </ul>
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-extern-std" href="#switch-extern-std"><b>-extern-std</b></a>=<i>standard </i></dt><dd>
+            Standards supported are:
+            <ul>                <li><i>c++98</i>: Use C++98 name mangling,
+                    Sets <span class="d_inlinecode donthyphenate notranslate">__traits(getTargetInfo, "cppStd")</span> to <span class="d_inlinecode donthyphenate notranslate">199711</span></li>
+                <li><i>c++11</i> (default): Use C++11 name mangling,
+                    Sets <span class="d_inlinecode donthyphenate notranslate">__traits(getTargetInfo, "cppStd")</span> to <span class="d_inlinecode donthyphenate notranslate">201103</span></li>
+                <li><i>c++14</i>: Use C++14 name mangling,
+                    Sets <span class="d_inlinecode donthyphenate notranslate">__traits(getTargetInfo, "cppStd")</span> to <span class="d_inlinecode donthyphenate notranslate">201402</span></li>
+                <li><i>c++17</i>: Use C++17 name mangling,
+                    Sets <span class="d_inlinecode donthyphenate notranslate">__traits(getTargetInfo, "cppStd")</span> to <span class="d_inlinecode donthyphenate notranslate">201703</span></li>
+                <li><i>c++20</i>: Use C++20 name mangling,
+                    Sets <span class="d_inlinecode donthyphenate notranslate">__traits(getTargetInfo, "cppStd")</span> to <span class="d_inlinecode donthyphenate notranslate">202002</span></li>
+            </ul>
+        </dd><dt><b>-extern-std</b>=[<i>h|help|? </i>]</dt><dd>
+            List all supported standards
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-fIBT" href="#switch-fIBT"><b>-fIBT</b></a></dt><dd>
+            Generate Indirect Branch Tracking code
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-fPIC" href="#switch-fPIC"><b>-fPIC</b></a></dt><dd>
+            Generate position independent code
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-fPIE" href="#switch-fPIE"><b>-fPIE</b></a></dt><dd>
+            Generate position independent executables
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-g" href="#switch-g"><b>-g</b></a></dt><dd>
+            
+                            Add symbolic debug info in DWARF format
+                for debuggers such as
+                <span class="d_inlinecode donthyphenate notranslate">gdb</span>
+            
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-gdwarf" href="#switch-gdwarf"><b>-gdwarf</b></a>=<i>version </i></dt><dd>
+            The value of <i>version </i> may be 3, 4 or 5, defaulting to 3.
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-gf" href="#switch-gf"><b>-gf</b></a></dt><dd>
+            Symbolic debug info is emitted for all types referenced by the compiled code,
+             even if the definition is in an imported file not currently being compiled.
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-gs" href="#switch-gs"><b>-gs</b></a></dt><dd>
+            Always emit stack frame
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-gx" href="#switch-gx"><b>-gx</b></a></dt><dd>
+            Adds stack stomp code, which overwrites the stack frame memory upon function exit.
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-H" href="#switch-H"><b>-H</b></a></dt><dd>
+            Generate <a href="#interface-files">D interface file</a>
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-Hd" href="#switch-Hd"><b>-Hd</b></a>=<i>directory </i></dt><dd>
+            Write D interface file to <i>directory</i>. <a href="#switch-op"><b>-op</b></a>
+            can be used if the original package hierarchy should
+            be retained.
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-Hf" href="#switch-Hf"><b>-Hf</b></a>=<i>filename </i></dt><dd>
+            Write 'header' file to <i>filename </i>
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-HC[" href="#switch-HC["><b>-HC[</b></a><i>=[?|h|help|silent|verbose </i>]]</dt><dd>
+            Write C++ 'header' equivalent to stdout configured with:",
+            <dl>            <dt>?|h|help</dt><dd>list available options for C++ 'header' file generation</dd>
+            <dt>silent</dt><dd>only list extern(C[++]) declarations (default)</dd>
+            <dt>verbose</dt><dd>also add comments for ignored declarations (e.g. extern(D))</dd>
+            </dl>
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-HCd" href="#switch-HCd"><b>-HCd</b></a>=<i>directory </i></dt><dd>
+            Write C++ 'header' file to directory, ignored if -HCf=<filename> is not present
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-HCf" href="#switch-HCf"><b>-HCf</b></a>=<i>filename </i></dt><dd>
+            Write C++ 'header' file to <i>filename </i> instead of stdout
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch--help" href="#switch--help"><b>--help</b></a></dt><dd>
+            Print help and exit
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-I" href="#switch-I"><b>-I</b></a>=<i>directory </i></dt><dd>
+            Look for imports also in <i>directory </i>
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-i[" href="#switch-i["><b>-i[</b></a><i>=<i>pattern </i> </i>]</dt><dd>
+            <p>Enables "include imports" mode, where the compiler will include imported
+             modules in the compilation, as if they were given on the command line. By default, when
+             this option is enabled, all imported modules are included except those in
+             druntime/phobos. This behavior can be overridden by providing patterns via <span class="d_inlinecode donthyphenate notranslate">-i=&lt;pattern&gt;</span>.
+             A pattern of the form <span class="d_inlinecode donthyphenate notranslate">-i=&lt;package&gt;</span> is an "inclusive pattern", whereas a pattern
+             of the form <span class="d_inlinecode donthyphenate notranslate">-i=-&lt;package&gt;</span> is an "exclusive pattern". Inclusive patterns will include
+             all module's whose names match the pattern, whereas exclusive patterns will exclude them.
+             For example. all modules in the package <span class="d_inlinecode donthyphenate notranslate">foo.bar</span> can be included using <span class="d_inlinecode donthyphenate notranslate">-i=foo.bar</span> or excluded
+             using <span class="d_inlinecode donthyphenate notranslate">-i=-foo.bar</span>. Note that each component of the fully qualified name must match the
+             pattern completely, so the pattern <span class="d_inlinecode donthyphenate notranslate">foo.bar</span> would not match a module named <span class="d_inlinecode donthyphenate notranslate">foo.barx</span>.</p>
+
+             <p>The default behavior of excluding druntime/phobos is accomplished by internally adding a
+             set of standard exclusions, namely, <span class="d_inlinecode donthyphenate notranslate">-i=-std -i=-core -i=-etc -i=-object</span>. Note that these
+             can be overridden with <span class="d_inlinecode donthyphenate notranslate">-i=std -i=core -i=etc -i=object</span>.</p>
+
+             <p>When a module matches multiple patterns, matches are prioritized by their component length, where
+             a match with more components takes priority (i.e. pattern <span class="d_inlinecode donthyphenate notranslate">foo.bar.baz</span> has priority over <span class="d_inlinecode donthyphenate notranslate">foo.bar</span>).</p>
+
+             <p>By default modules that don't match any pattern will be included. However, if at
+             least one inclusive pattern is given, then modules not matching any pattern will
+             be excluded. This behavior can be overridden by usig <span class="d_inlinecode donthyphenate notranslate">-i=.</span> to include by default or <span class="d_inlinecode donthyphenate notranslate">-i=-.</span> to
+             exclude by default.</p>
+
+             <p>Note that multiple <span class="d_inlinecode donthyphenate notranslate">-i=...</span> options are allowed, each one adds a pattern.</p>
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-identifiers" href="#switch-identifiers"><b>-identifiers</b></a>=<i>table </i></dt><dd>
+            Set the identifier <i>table </i> to use for the non-ASCII values.
+                <ul>                    <li><i>UAX31</i>: UAX31</li>
+                    <li><i>c99</i>: C99</li>
+                    <li><i>c11</i>: C11</li>
+                    <li><i>all</i>: All, the least restrictive set, which comes with all others (default)</li>
+                </ul>
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-identifiers-importc" href="#switch-identifiers-importc"><b>-identifiers-importc</b></a>=<i>table </i></dt><dd>
+            Set the identifier <i>table </i> to use for the non-ASCII values.
+                <ul>                    <li><i>UAX31</i>: UAX31</li>
+                    <li><i>c99</i>: C99</li>
+                    <li><i>c11</i>: C11 (default)</li>
+                    <li><i>all</i>: All, the least restrictive set, which comes with all others</li>
+                </ul>
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-ignore" href="#switch-ignore"><b>-ignore</b></a></dt><dd>
+            Deprecated flag, unsupported pragmas are always ignored now
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-inline" href="#switch-inline"><b>-inline</b></a></dt><dd>
+            Inline functions at the discretion of the compiler.
+            This can improve performance, at the expense of making
+            it more difficult to use a debugger on it.
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-J" href="#switch-J"><b>-J</b></a>=<i>directory </i></dt><dd>
+            Where to look for files for
+            <a href="spec/expression.html#ImportExpression"><i>ImportExpression</i></a>s.
+            This switch is required in order to use <i>ImportExpression</i>s.
+            <i>path</i> is a ; separated
+            list of paths. Multiple <b>-J</b>'s can be used, and the paths
+            are searched in the same order.
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-L" href="#switch-L"><b>-L</b></a>=<i>linkerflag </i></dt><dd>
+            Pass <i>linkerflag</i> to the
+            
+            linker, for example, ld
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-lib" href="#switch-lib"><b>-lib</b></a></dt><dd>
+            Generate library file as output instead of object file(s).
+            All compiled source files, as well as object files and library
+            files specified on the command line, are inserted into
+            the output library.
+            Compiled source modules may be partitioned into several object
+            modules to improve granularity.
+            The name of the library is taken from the name of the first
+            source module to be compiled. This name can be overridden with
+            the <a href="#switch-of"><b>-of</b></a> switch.
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-lowmem" href="#switch-lowmem"><b>-lowmem</b></a></dt><dd>
+            Enable the garbage collector for the compiler, reducing the
+            compiler memory requirements but increasing compile times.
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-m32" href="#switch-m32"><b>-m32</b></a></dt><dd>
+            Compile a 32 bit executable. This is the default for the 32 bit dmd.
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-m64" href="#switch-m64"><b>-m64</b></a></dt><dd>
+            Compile a 64 bit executable. This is the default for the 64 bit dmd.
+            <dt><a class="anchor" title="Permalink to this section" id="switch-main" href="#switch-main"><b>-main</b></a></dt><dd>
+            Add a default <span class="d_inlinecode donthyphenate notranslate">main()</span> function when compiling. This is useful when
+            unittesting a library, as it enables running the unittests
+            in a library without having to manually define an entry-point function.
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-makedeps[" href="#switch-makedeps["><b>-makedeps[</b></a><i>=<i>filename </i> </i>]</dt><dd>
+            Print dependencies in Makefile compatible format.
+            If filename is omitted, it prints to stdout.
+            The emitted targets are the compiled artifacts (executable, object files, libraries).
+            The emitted dependencies are imported modules and imported string files (via <b>-J</b> switch).
+            Special characters in a dependency or target filename are escaped in the GNU Make manner.
+            
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-man" href="#switch-man"><b>-man</b></a></dt><dd>
+            
+            
+                            Open browser specified by the <b>BROWSER</b>
+                environment variable on this page. If <b>BROWSER</b> is
+                undefined, <b>x-www-browser</b> is assumed.
+            
+            
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-map" href="#switch-map"><b>-map</b></a></dt><dd>
+            Generate a <em class="tt">.map</em> file
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-mcpu" href="#switch-mcpu"><b>-mcpu</b></a>=<i>id </i></dt><dd>
+            Set the target architecture for code generation,
+            where:
+            <dl>            <dt>help</dt><dd>list alternatives</dd>
+            <dt>baseline</dt><dd>the minimum architecture for the target platform (default)</dd>
+            <dt>avx</dt><dd>            generate <a href="https://en.wikipedia.org/wiki/Advanced_Vector_Extensions">AVX</a>
+            instructions instead of <a href="https://en.wikipedia.org/wiki/Streaming_SIMD_Extensions">SSE</a>
+            instructions for vector and floating point operations.
+            Not available for 32 bit memory models other than OSX32.
+            </dd>
+            <dt>native</dt><dd>use the architecture the compiler is running on</dd>
+            </dl>
+        </dd><dt><b>-mcpu</b>=[<i>h|help|? </i>]</dt><dd>
+            List all architecture options
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-mixin" href="#switch-mixin"><b>-mixin</b></a>=<i>filename </i></dt><dd>
+            Expand and save mixins to file specified by <i>filename </i>
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-mv" href="#switch-mv"><b>-mv</b></a>=<i>package.module </i>=<filespec></dt><dd>
+            Use <i>path/filename</i> as the source file for <i>package.module</i>.
+            This is used when the source file path and names are not the same
+            as the package and module hierarchy.
+            The rightmost components of the  <i>path/filename</i> and <i>package.module</i>
+            can be omitted if they are the same.
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-noboundscheck" href="#switch-noboundscheck"><b>-noboundscheck</b></a></dt><dd>
+            Turns off all array bounds checking, even for safe functions. <span class="red">Deprecated
+            (use <em class="tt"><a href="#switch-boundscheck"><b>-boundscheck</b></a>=off</em> instead).</span>
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-nothrow" href="#switch-nothrow"><b>-nothrow</b></a></dt><dd>
+            Turns off generation of exception stack unwinding code, enables
+            more efficient code for RAII objects.
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-O" href="#switch-O"><b>-O</b></a></dt><dd>
+            Optimize generated code. For fastest executables, compile
+            with the <em class="tt"><a href="#switch-O"><b>-O</b></a> <a href="#switch-release"><b>-release</b></a> <a href="#switch-inline"><b>-inline</b></a> <a href="#switch-boundscheck"><b>-boundscheck</b></a>=off</em>
+            switches together.
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-o-" href="#switch-o-"><b>-o-</b></a></dt><dd>
+            Suppress generation of object file. Useful in
+            conjuction with <a href="#switch-D"><b>-D</b></a> or <a href="#switch-H"><b>-H</b></a> flags.
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-od" href="#switch-od"><b>-od</b></a>=<i>directory </i></dt><dd>
+            Write object files relative to <i>directory </i> <i>objdir</i>
+            instead of to the current directory. <a href="#switch-op"><b>-op</b></a>
+            can be used if the original package hierarchy should
+            be retained
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-of" href="#switch-of"><b>-of</b></a>=<i>filename </i></dt><dd>
+            Set output file name to <i>filename</i> in the output
+            directory. The output file can be an object file,
+            executable file, or library file depending on the other
+            switches.
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-op" href="#switch-op"><b>-op</b></a></dt><dd>
+            Normally the path for <b>.d</b> source files is stripped
+            off when generating an object, interface, or Ddoc file
+            name. <a href="#switch-op"><b>-op</b></a> will leave it on.
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-os" href="#switch-os"><b>-os</b></a>=<i>os </i></dt><dd>
+            Set the target operating system as other than the host.
+                <ul>                    <li><i>host</i>: Target the host operating system (default).</li>
+                    <li><i>dragonflybsd</i>: DragonFlyBSD</li>
+                    <li><i>freebsd</i>: FreeBSD</li>
+                    <li><i>linux</i>: Linux</li>
+                    <li><i>openbsd</i>: OpenBSD</li>
+                    <li><i>osx</i>: OSX</li>
+                    <li><i>solaris</i>: Solaris</li>
+                    <li><i>windows</i>: Windows</li>
+                </ul>
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-P" href="#switch-P"><b>-P</b></a>=<i>preprocessorflag </i></dt><dd>
+            Pass <i>preprocessorflag</i> to
+            
+            cpp
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-preview" href="#switch-preview"><b>-preview</b></a>=<i>name </i></dt><dd>
+            Preview an upcoming language change identified by <i>id</i>
+        </dd><dt><b>-preview</b>=[<i>h|help|? </i>]</dt><dd>
+            List all upcoming language changes
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-profile" href="#switch-profile"><b>-profile</b></a></dt><dd>
+            Instrument the generated code so that runtime performance data is collected
+            when the generated program is run.
+            Upon completion of the generated program, the files <em class="tt">trace.log</em> and <em class="tt">trace.def</em>
+            are generated. <em class="tt">trace.log</em> has two sections,
+            <ol>            <li>Fan in and fan out for each profiled function. The name of the function is left-justified,
+            the functions immediately preceding it are the other functions that call it (fan in) and how many times
+            it is called. The functions immediately following are the functions that are called (fan out) and how
+            many times it calls that function. The function itself has 3 numbers appended: the aggregate of the fan in counts,
+            the tree time used by the function which is the function time plus the tree times of all the functions it calls,
+            and the time used excluding
+            the time used by fan out.
+            </li>
+            <li>Timing data for each function, sorted from most used to least.</li>
+            </ol>
+            The <em class="tt">trace.def</em> file contains linker commands to associate functions which are strongly coupled
+            so they appear adjacent in the resulting executable file.
+            For more information see <a href="https://www.digitalmars.com/ctg/trace.html">profile</a>
+            
+        </dd><dt><b>-profile</b>=gc</dt><dd>
+            <ul>                <li><b>gc</b>: Instrument calls to GC memory allocation and
+                write a report to the file <em class="tt">profilegc.log</em> upon program
+                termination.  <b>Note:</b> Only instrumented calls will be
+                logged. These include:
+                   <ul>                       <li>Language constructs that allocate memory</li>
+                       <li>Phobos functions that allocate GC memory</li>
+                       <li>GC allocations via core.memory.GC</li>
+                   </ul>
+                   Allocations made by other means will not be logged,
+                   including direct calls to the GC's C API.</li>
+            </ul>
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-release" href="#switch-release"><b>-release</b></a></dt><dd>
+            Compile release version, which means not emitting run-time
+            checks for contracts and asserts. Array bounds checking is not
+            done for system and trusted functions, and assertion failures
+            are undefined behaviour.
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-revert" href="#switch-revert"><b>-revert</b></a>=<i>name </i></dt><dd>
+            Revert language change identified by <i>id</i>
+        </dd><dt><b>-revert</b>=[<i>h|help|? </i>]</dt><dd>
+            List all revertable language changes
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-run " href="#switch-run "><b>-run </b></a><i>srcfile </i></dt><dd>
+            Compile, link, and run the program <i>srcfile</i> with the
+            rest of the
+            command line, <i>args...</i>, as the arguments to the program.
+            No .o or executable file is left behind.
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-shared" href="#switch-shared"><b>-shared</b></a></dt><dd>
+            Generate shared library
+             
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-target" href="#switch-target"><b>-target</b></a>=<i>triple </i></dt><dd>
+            <i>arch</i> is the architecture: either <span class="d_inlinecode donthyphenate notranslate">x86</span>, <span class="d_inlinecode donthyphenate notranslate">x64</span>, <span class="d_inlinecode donthyphenate notranslate">x86_64</span> or <span class="d_inlinecode donthyphenate notranslate">x32</span>,
+               <i>vendor</i> is always ignored, but supported for easier interoperability,
+               <i>os</i> is the operating system, this may have a trailing version number:
+               <span class="d_inlinecode donthyphenate notranslate">freestanding</span> for no operating system,
+               <span class="d_inlinecode donthyphenate notranslate">darwin</span> or <span class="d_inlinecode donthyphenate notranslate">osx</span> for MacOS, <span class="d_inlinecode donthyphenate notranslate">dragonfly</span> or <span class="d_inlinecode donthyphenate notranslate">dragonflybsd</span> for DragonflyBSD,
+               <span class="d_inlinecode donthyphenate notranslate">freebsd</span>, <span class="d_inlinecode donthyphenate notranslate">openbsd</span>, <span class="d_inlinecode donthyphenate notranslate">linux</span>, <span class="d_inlinecode donthyphenate notranslate">solaris</span> or <span class="d_inlinecode donthyphenate notranslate">windows</span> for their respective operating systems.
+               <i>cenv</i> is the C runtime environment and is optional: <span class="d_inlinecode donthyphenate notranslate">musl</span> for musl-libc,
+               <span class="d_inlinecode donthyphenate notranslate">msvc</span> for the MSVC runtime (the default for windows with this option),
+               <span class="d_inlinecode donthyphenate notranslate">bionic</span> for the Andriod libc, <span class="d_inlinecode donthyphenate notranslate">digital_mars</span> for the Digital Mars runtime for Windows
+               <span class="d_inlinecode donthyphenate notranslate">gnu</span> or <span class="d_inlinecode donthyphenate notranslate">glibc</span> for the GCC C runtime, <span class="d_inlinecode donthyphenate notranslate">newlib</span> or <span class="d_inlinecode donthyphenate notranslate">uclibc</span> for their respective C runtimes.
+               ($ I cppenv) is the C++ runtime environment: <span class="d_inlinecode donthyphenate notranslate">clang</span> for the LLVM C++ runtime
+               <span class="d_inlinecode donthyphenate notranslate">gcc</span> for GCC's C++ runtime, <span class="d_inlinecode donthyphenate notranslate">msvc</span> for microsoft's MSVC C++ runtime (the default for windows with this switch),
+               <span class="d_inlinecode donthyphenate notranslate">sun</span> for Sun's C++ runtime and <span class="d_inlinecode donthyphenate notranslate">digital_mars</span> for the Digital Mars C++ runtime for windows.
+               
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-transition" href="#switch-transition"><b>-transition</b></a>=<i>name </i></dt><dd>
+            Show additional info about language change identified by <i>id</i>
+        </dd><dt><b>-transition</b>=[<i>h|help|? </i>]</dt><dd>
+            List all language changes
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-unittest" href="#switch-unittest"><b>-unittest</b></a></dt><dd>
+            Compile in <a href="spec/unittest.html">unittest</a> code, turns on asserts, and sets the
+             <span class="d_inlinecode donthyphenate notranslate">unittest</span> <a href="spec/version.html#PredefinedVersions">version identifier</a>
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-v" href="#switch-v"><b>-v</b></a></dt><dd>
+            Enable verbose output for each compiler pass
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-vasm" href="#switch-vasm"><b>-vasm</b></a></dt><dd>
+            List generated assembler for each function
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-vcolumns" href="#switch-vcolumns"><b>-vcolumns</b></a></dt><dd>
+            Print character (column) numbers in diagnostics
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-verror-style" href="#switch-verror-style"><b>-verror-style</b></a>=[<i>digitalmars|gnu </i>]</dt><dd>
+            Set the style for file/line number annotations on compiler messages,
+            where:
+            <dl>            <dt>digitalmars</dt><dd>'file(line[,column]): message'. This is the default.</dd>
+            <dt>gnu</dt><dd>'file:line[:column]: message', conforming to the GNU standard used by gcc and clang.</dd>
+            </dl>
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-verror-supplements" href="#switch-verror-supplements"><b>-verror-supplements</b></a>=<i>num </i></dt><dd>
+            Limit the number of supplemental messages for each error (0 means unlimited)
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-verrors" href="#switch-verrors"><b>-verrors</b></a>=<i>num </i></dt><dd>
+            Limit the number of error/deprecation messages (0 means unlimited)
+        </dd><dt><b>-verrors</b>=context</dt><dd>
+            Show error messages with the context of the erroring source line
+        </dd><dt><b>-verrors</b>=spec</dt><dd>
+            Show errors from speculative compiles such as __traits(compiles,...)
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch--version" href="#switch--version"><b>--version</b></a></dt><dd>
+            Print compiler version and exit
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-version" href="#switch-version"><b>-version</b></a>=<i>level </i></dt><dd>
+            Compile in <a href="spec/version.html#version">version level</a> &gt;= <i>level</i>
+        </dd><dt><b>-version</b>=<i>ident </i></dt><dd>
+            Compile in <a href="spec/version.html#version">version identifier</a> <i>ident</i>
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-vgc" href="#switch-vgc"><b>-vgc</b></a></dt><dd>
+            List all gc allocations including hidden ones
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-visibility" href="#switch-visibility"><b>-visibility</b></a>=<i>value </i></dt><dd>
+            <ul>               <li><i>default</i>: Hidden for Windows targets without -shared, otherwise public</li>
+               <li><i>hidden</i>:  Only export symbols marked with 'export'</li>
+               <li><i>public</i>:  Export all symbols</li>
+            </ul>
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-vtls" href="#switch-vtls"><b>-vtls</b></a></dt><dd>
+            List all variables going into thread local storage
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-vtemplates" href="#switch-vtemplates"><b>-vtemplates</b></a>=[<i>list-instances </i>]</dt><dd>
+            An optional argument determines extra diagnostics,
+            where:
+            <dl>            <dt>list-instances</dt><dd>Also shows all instantiation contexts for each template.</dd>
+            </dl>
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-w" href="#switch-w"><b>-w</b></a></dt><dd>
+            Enable <a href="articles/warnings.html">warnings</a>
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-wi" href="#switch-wi"><b>-wi</b></a></dt><dd>
+            Enable <a href="articles/warnings.html">informational warnings (i.e. compilation
+            still proceeds normally)</a>
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-wo" href="#switch-wo"><b>-wo</b></a></dt><dd>
+            Enable warnings about use of obsolete features that may be problematic (compilation
+            still proceeds normally)
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-X" href="#switch-X"><b>-X</b></a></dt><dd>
+            Generate JSON file
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-Xf" href="#switch-Xf"><b>-Xf</b></a>=<i>filename </i></dt><dd>
+            Write JSON file to <i>filename </i>
+        </dd><dt><a class="anchor" title="Permalink to this section" id="switch-Xcc" href="#switch-Xcc"><b>-Xcc</b></a>=<i>driverflag </i></dt><dd>
+            Pass <i>driverflag</i> to the linker driver (<span class="d_inlinecode donthyphenate notranslate">$CC</span> or <span class="d_inlinecode donthyphenate notranslate">cc</span>)
+        </dd></dd>
+    </dl>
+
+    
+
+<h2><a class="anchor" title="Permalink to this section" id="files" href="#files">Files</a></h2>
+
+    <dl>
+    <dt><span class="d_inlinecode donthyphenate notranslate">dmd2/src/phobos/</span>
+    <dd>D runtime library source</dd>
+    </dt>
+
+    <dt><span class="d_inlinecode donthyphenate notranslate">dmd2/src/dmd/</span>
+    <dd>D compiler front end source under dual (GPL and Artistic) license</dd>
+    </dt>
+
+    <dt><span class="d_inlinecode donthyphenate notranslate">dmd2/html/d/</span>
+    <dd>Documentation</dd>
+    </dt>
+
+    <dt><span class="d_inlinecode donthyphenate notranslate">dmd2/samples/d/</span>
+    <dd>Sample D programs</dd>
+    </dt>
+    
+    
+        <dt><span class="d_inlinecode donthyphenate notranslate">dmd2/freesd/bin/ddemangle</span>
+    <dd>D symbol demangler</dd>
+    </dt>
+
+    <dt><span class="d_inlinecode donthyphenate notranslate">dmd2/freebsd/bin/dman</span>
+    <dd>D manual lookup tool</dd>
+    </dt>
+
+    <dt><span class="d_inlinecode donthyphenate notranslate">dmd2/freebsd/bin/dmd</span>
+    <dd>D compiler executable</dd>
+    </dt>
+
+    <dt><span class="d_inlinecode donthyphenate notranslate">dmd2/freebsd/bin/<a href="#dmd-conf">dmd.conf</a></span>
+    <dd>Global compiler settings (copy to <span class="d_inlinecode donthyphenate notranslate">/etc/dmd.conf</span>)</dd>
+    </dt>
+
+    <dt><span class="d_inlinecode donthyphenate notranslate">dmd2/freebsd/bin/<a href="https://github.com/dlang/dub">dub</a></span>
+    <dd>D's package manager</dd>
+    </dt>
+
+    <dt><span class="d_inlinecode donthyphenate notranslate">dmd2/freebsd/bin/<a href="http://digitalmars.com/ctg/dumpobj.html">dumpobj</a></span>
+    <dd>ELF file dumper</dd>
+    </dt>
+
+    <dt><span class="d_inlinecode donthyphenate notranslate">dmd2/freebsd/bin/<a href="https://github.com/CyberShadow/DustMite">dustmite</a></span>
+    <dd>D source code minimizer</dd>
+    </dt>
+
+    <dt><span class="d_inlinecode donthyphenate notranslate">dmd2/freebsd/bin/<a href="http://digitalmars.com/ctg/obj2asm.html">obj2asm</a></span>
+    <dd>ELF file disassembler</dd>
+    </dt>
+
+    <dt><span class="d_inlinecode donthyphenate notranslate">dmd2/freebsd/bin/<a href="rdmd.html">rdmd</a></span>
+    <dd>D build tool for script-like D code execution</dd>
+    </dt>
+
+    <dt><span class="d_inlinecode donthyphenate notranslate">dmd2/freebsd/bin/<a href="http://digitalmars.com/ctg/shell.html">shell</a></span>
+    <dd>Simple command line shell</dd>
+    </dt>
+
+    <dt><span class="d_inlinecode donthyphenate notranslate">dmd2/freebsd/lib/libphobos2.a</span>
+    <dd>D runtime library (copy to <span class="d_inlinecode donthyphenate notranslate">/usr/lib/libphobos2.a</span>)</dd>
+    </dt>
+    
+    
+
+    </dl>
+
+
+
+<h2><a class="anchor" title="Permalink to this section" id="linking" href="#linking">Linking</a></h2>
+
+    <p>Linking is done directly by the <b>dmd</b> compiler after a successful
+    compile. To prevent <b>dmd</b> from running the linker, use the
+    <a href="#switch-c"><b>-c</b></a> switch.
+    </p>
+
+    
+         <p>The actual linking is done by running <b>gcc</b>.
+    This ensures compatibility with modules compiled with <b>gcc</b>.
+    </p>
+     
+
+<h2><a class="anchor" title="Permalink to this section" id="environment" href="#environment">Environment Variables</a></h2>
+
+    <p>The D compiler dmd uses the following environment variables:
+    </p>
+
+    <dl>
+    
+        <dt><b>CC</b></dt>
+    <dd> <b>dmd</b> normally runs the linker by looking for <b>gcc</b>
+    along the <b>PATH</b>. To use a specific linker instead, set the
+    <b>CC</b> environment variable to it. For example:</dd>
+
+<pre class="console notranslate">set CC=gcc
+</pre>
+    <dt><b>BROWSER</b>
+        <dd>This sets the browser used to open the manual page with
+        the <a href="#switch-man"><b>-man</b></a> switch. It defaults to <span class="d_inlinecode donthyphenate notranslate">x-www-browser</span>.
+        </dd>
+    </dt>
+
+    <dt><b>DFLAGS</b></dt>
+    <dd>The value of <b>DFLAGS</b> is treated as if it were appended to the
+    command line to <b>dmd</b>.</dd>
+    
+    </dl>
+
+
+<h2><span id="dmd_conf"><a class="anchor" title="Permalink to this section" id="dmd-conf" href="#dmd-conf">dmd.conf Initialization File</a></span></h2>
+
+    <p>The dmd file <span class="d_inlinecode donthyphenate notranslate">dmd.conf</span> is the same as <span class="d_inlinecode donthyphenate notranslate">sc.ini</span>
+    for Windows, it's just that the file has a different name,
+    enabling a setup common to both Windows and this system to be created
+    without having to re-edit the file.</p>
+
+    <p><b>dmd</b> will look for the initialization file <span class="d_inlinecode donthyphenate notranslate">dmd.conf</span> in the
+    following sequence of directories:</p>
+
+    <ol>    <li>current working directory</li>
+    <li>directory specified by the <b>HOME</b> environment variable</li>
+    <li>as dotfile <span class="d_inlinecode donthyphenate notranslate">.dmd.conf</span> in the directory specified by the <b>HOME</b> environment variable</li>
+    <li>directory <b>dmd</b> resides in</li>
+    <li><span class="d_inlinecode donthyphenate notranslate">/etc/</span></li>
+    </ol>
+
+    <p>If found, environment variable
+    settings in the file will override any existing settings.
+    This is handy to make <b>dmd</b> independent of programs with
+    conflicting use of environment variables.
+    </p>
+
+    <p>Environment variables follow the <span class="d_inlinecode donthyphenate notranslate">[Environment]</span> section
+    heading, in <i>NAME</i>=<i>value</i> pairs.
+    The <i>NAME</i>s are treated as upper case.
+    Comments are lines that start with ;.
+    For example:
+    </p>
+
+<pre class="scini notranslate">; dmd.conf file for dmd
+; Names enclosed by %% are searched for in the existing environment
+; and inserted. The special name %@P% is replaced with the path
+; to this file.
+[Environment]
+
+DFLAGS=-I%@P%/../src/phobos -I%@P%/../src/druntime/import
+</pre>
+
+
+
+
+<hr>
+<h2><a class="anchor" title="Permalink to this section" id="differences" href="#differences">Differences between Windows and Linux versions</a></h2>
+
+    <ul>    <li>String literals are read-only under Linux.
+    Attempting to write to them
+    will cause a segment violation.</li>
+    </ul>
+<hr>
+<h2><span id="interface_files"><a class="anchor" title="Permalink to this section" id="interface-files" href="#interface-files">D Interface Files</a></span></h2>
+
+    <p>When an import declaration is processed in a D source file,
+    the compiler searches for the D source file corresponding to
+    the import, and processes that source file to extract the
+    information needed from it. Alternatively, the compiler can
+    instead look for a corresponding <i>D interface file</i>.
+    A D interface file contains only what an import of the module
+    needs, rather than the whole implementation of that module.
+    </p>
+
+    <p>The advantages of using a D interface file for imports rather
+    than a D source file are:
+    </p>
+
+    <ul>    <li>D interface files are often significantly smaller and much
+    faster to process than the corresponding D source file.</li>
+    <li>They can be used to hide the source code, for example,
+    one can ship an object code library along with D interface files
+    rather than the complete source code.</li>
+    </ul>
+
+    <p>D interface files can be created by the compiler from a
+    D source file by using the <a href="#switch-H"><b>-H</b></a> switch to the compiler.
+    D interface files have the <b>.di</b> file extension.
+    When the compiler resolves an import declaration, it first looks
+    for a <b>.di</b> D interface file, then it looks for a D source
+    file.
+    </p>
+
+    <p>D interface files bear some analogous similarities to C++
+    header files. But they are not required in the way that C++
+    header files are, and they are not part of the D language.
+    They are a feature of the compiler, and serve only as an optimization
+    of the build process.
+    </p>
+
+<h2><a class="anchor" title="Permalink to this section" id="executable" href="#executable">Building Executables</a></h2>
+
+    <p><b>dmd</b> can build an executable much faster if as many of the
+    source files as possible are put on the command line.</p>
+
+    <p>Another advantage to putting multiple source files on the same
+    invocation of <b>dmd</b> is that <b>dmd</b> will be able to do some level
+    of cross-module optimizations, such as function inlining across modules.
+    </p>
+    <p>The <span class="d_inlinecode donthyphenate notranslate">-i</span> flag can be used to automatically compile imported modules</p>
+
+<h2><a class="anchor" title="Permalink to this section" id="library" href="#library">Building Libraries</a></h2>
+
+    <p>There are three ways to build a library. For example,
+    given <span class="d_inlinecode donthyphenate notranslate">foo.d</span> and <span class="d_inlinecode donthyphenate notranslate">bar.d</span> which are to be compiled, and existing
+    object file <span class="d_inlinecode donthyphenate notranslate">abc.o</span> and existing library
+    <span class="d_inlinecode donthyphenate notranslate">def.a</span> which are
+    all to be combined into a library <span class="d_inlinecode donthyphenate notranslate">foo.a</span>:</p>
+
+    <ol>    <li>Compile modules separately and then run the librarian on them:
+
+<pre class="console notranslate">dmd -c foo.d
+dmd -c bar.d
+rm -f foo.a
+ar -r foo.a foo.o bar.o abc.o def.a
+rm foo.o bar.o
+</pre>
+
+    This option is typical when using a makefile to avoid compiling
+    modules that have already been compiled.
+    </li>
+    <li>Compile modules together and then run the librarian on them:
+
+<pre class="console notranslate">dmd -c foo.d bar.d
+rm -f foo.a
+ar -r foo.a foo.o bar.o abc.o def.a
+rm foo.o bar.o
+</pre>
+
+    </li>
+    <li>Use <b>dmd</b> to compile and build library in one operation:
+<pre class="console notranslate">dmd -lib foo.d bar.d abc.o def.a
+</pre>
+    No object files are written to disk, it's all done in memory.
+    Using <a href="#switch-lib"><b>-lib</b></a> also has the advantage that modules may be compiled
+    into multiple object files rather than exactly one per module.
+    This improves granularity of the library without having to break
+    up the modules.
+    </li>
+    </ol>
+
+<h2><span id="compiling_dmd"><a class="anchor" title="Permalink to this section" id="compiling-dmd" href="#compiling-dmd">Compiling dmd</a></span></h2>
+
+    <p>Complete source code is provided to build the compiler.
+    Follow these steps:</p>
+
+
+<pre class="console notranslate">cd ~/dmd2/src/dmd
+make -f posix.mak
+</pre>
+
+
+<h2><span id="compiling_phobos"><a class="anchor" title="Permalink to this section" id="compiling-phobos" href="#compiling-phobos">Compiling Phobos</a></span></h2>
+
+    <p>Complete source code is provided to build Phobos, the D runtime library.
+    Follow these steps:</p>
+
+
+
+<pre class="console notranslate">cd ../phobos
+make -f posix.mak
+</pre>
+
+
+
+
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="spec/ddoc.html">Ddoc</a> on (no date time)</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="js/dlang.js"></script>
+    
+    <script type="text/javascript" src="js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

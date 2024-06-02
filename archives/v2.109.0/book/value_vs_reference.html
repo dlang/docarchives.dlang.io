@@ -1,0 +1,724 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Value Types and Reference Types - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Value Types and Reference Types' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='../contributing.html'>Contributing</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BValue Types and Reference Types%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/d.en/value_vs_reference.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Value Types and Reference Types</h1>
+        
+        
+
+
+
+<p>This chapter introduces the concepts of value types and reference types. These concepts are particularly important to understand the differences between structs and classes.
+</p>
+
+<p>This chapter also gets into more detail with the <code class="d_inline">&amp;</code> operator.
+</p>
+
+<p>The chapter ends with a table that contains the outcomes of the following two concepts for different types of variables:
+</p>
+
+<ul><li>Value comparison</li>
+<li>Address comparison</li>
+</ul>
+
+<h5 class="subsection">Value types</h5>
+
+<p>Value types are easy to describe: Variables of value types carry values. For example, all of the integer and floating point types are values types. Although not immediately obvious, fixed-length arrays are value types as well.
+</p>
+
+<p>For example, a variable of type <code class="d_inline">int</code> has an integer value:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span> speed = 123;
+</pre>
+
+<p>The number of bytes that the variable <code class="d_inline">speed</code> occupies is the size of an <code class="d_inline">int</code>. If we visualize the memory as a ribbon going from left to right, we can imagine the variable living on some part of it:
+</p>
+
+<pre class="mono">       speed
+   ───┬─────┬───
+      │ 123 │
+   ───┴─────┴───
+</pre>
+
+<p>When variables of value types are copied, they get their own values:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span> newSpeed = speed;
+</pre>
+
+<p>The new variable would have a place and a value of its own:
+</p>
+
+<pre class="mono">       speed          newSpeed
+   ───┬─────┬───   ───┬─────┬───
+      │ 123 │         │ 123 │
+   ───┴─────┴───   ───┴─────┴───
+</pre>
+
+<p>Naturally, modifications that are made to these variables are independent:
+</p>
+
+<pre class="d_code">    speed = 200;
+</pre>
+
+<p>The value of the other variable does not change:
+</p>
+
+<pre class="mono">       speed          newSpeed
+   ───┬─────┬───   ───┬─────┬───
+      │ 200 │         │ 123 │
+   ───┴─────┴───   ───┴─────┴───
+</pre>
+
+<h6>The use of <code class="d_inline">assert</code> checks below</h6>
+
+<p>The following examples contain <code class="d_inline">assert</code> checks to indicate that their conditions are true. In other words, they are not checks in the normal sense, rather my way of telling to the reader that "this is true".
+</p>
+
+<p>For example, the check <code class="d_inline">assert(speed == newSpeed)</code> below means "speed is equal to newSpeed".
+</p>
+
+<h6>Value identity</h6>
+
+<p>As the memory representations above indicate, there are two types of equality that concern variables:
+</p>
+
+<ul>
+<li><b>Value equality</b>: The <code class="d_inline">==</code> operator that appears in many examples throughout the book compares variables by their values. When two variables are said to be <i>equal</i> in that sense, their values are equal.
+</li>
+<li><b>Value identity</b>: In the sense of owning separate values, <code class="d_inline">speed</code> and <code class="d_inline">newSpeed</code> have separate identities. Even when their values are equal, they are different variables.
+</li>
+
+</ul>
+
+<pre class="d_code">    <span class="d_keyword">int</span> speed = 123;
+    <span class="d_keyword">int</span> newSpeed = speed;
+    <span class="d_keyword">assert</span>(speed == newSpeed);
+    speed = 200;
+    <span class="d_keyword">assert</span>(speed != newSpeed);
+</pre>
+
+<h6>Address-of operator, <code class="d_inline">&amp;</code></h6>
+
+<p>We have been using the <code class="d_inline">&amp;</code> operator so far with <code class="d_inline">readf()</code>. The <code class="d_inline">&amp;</code> operator tells <code class="d_inline">readf()</code> where to put the input data.
+</p>
+
+<p><i><b>Note:</b> As we have seen in <a href="input.html">the Reading from the Standard Input chapter</a>, <code class="d_inline">readf()</code> can be used without explicit pointers as well.
+</i></p>
+
+<p>The addresses of variables can be used for other purposes as well. The following code simply prints the addresses of two variables:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span> speed = 123;
+    <span class="d_keyword">int</span> newSpeed = speed;
+
+    writeln(<span class="d_string">"speed   : "</span>, speed,    <span class="d_string">" address: "</span>, <span class="hilite">&amp;</span>speed);
+    writeln(<span class="d_string">"newSpeed: "</span>, newSpeed, <span class="d_string">" address: "</span>, <span class="hilite">&amp;</span>newSpeed);
+</pre>
+
+<p><code class="d_inline">speed</code> and <code class="d_inline">newSpeed</code> have the same value but their addresses are different:
+</p>
+
+<pre class="shell">speed   : 123 address: 7FFF4B39C738
+newSpeed: 123 address: 7FFF4B39C73C
+</pre>
+
+<p><i><b>Note:</b> It is normal for the addresses to have different values every time the program is run. Variables live at parts of memory that happen to be available during that particular execution of the program.</i>
+</p>
+
+<p>Addresses are normally printed in hexadecimal format.
+</p>
+
+<p>Additionally, the fact that the two addresses are 4 apart indicates that those two integers are placed next to each other in memory. (Note that the value of hexadecimal C is 12, so the difference between 8 and 12 is 4.)
+</p>
+
+<h5 class="subsection"><a id="ix_Value Types and Reference Types.variable, reference" content="variable, reference"></a> Reference variables</h5>
+
+<p>Before getting to reference types let's first define reference variables.
+</p>
+
+<p><b>Terminology:</b> We have been using the phrase <i>to provide access to</i> so far in several contexts throughout the book. For example, slices and associative arrays do not own any elements but provide access to elements that are owned by the D runtime. Another phrase that is identical in meaning is <i>being a reference of</i> as in "slices are references of zero or more elements", which is sometimes used even shorter as <i>to reference</i> as in "this slice references two elements". Finally, the act of accessing a value through a reference is called <i>dereferencing</i>.
+</p>
+
+<p>Reference variables are variables that act like aliases of other variables. Although they look and are used like variables, they do not have values themselves. Modifications made on a reference variable change the value of the actual variable.
+</p>
+
+<p>We have already used reference variables so far in two contexts:
+</p>
+
+<ul>
+<li><b><code class="d_inline">ref</code> in <code class="d_inline">foreach</code> loops</b>: The <code class="d_inline">ref</code> keyword makes the loop variable the <i>actual</i> element that corresponds to that iteration. When the <code class="d_inline">ref</code> keyword is not used, the loop variable is a <i>copy</i> of the actual element.
+
+<p>This can be demonstrated by the <code class="d_inline">&amp;</code> operator as well. If their addresses are the same, two variables would be referencing the same value (or the <i>same element</i> in this case):
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span>[] slice = [ 0, 1, 2, 3, 4 ];
+
+    <span class="d_keyword">foreach</span> (i, <span class="hilite"><span class="d_keyword">ref</span></span> element; slice) {
+        <span class="d_keyword">assert</span>(&amp;element == &amp;slice[i]);
+    }
+</pre>
+
+<p>Although they are separate variables, the fact that the addresses of <code class="d_inline">element</code> and <code class="d_inline">slice[i]</code> are the same proves that they have the same value identity.
+</p>
+
+<p>In other words, <code class="d_inline">element</code> and <code class="d_inline">slice[i]</code> are references of the same value. Modifying either of those affects the actual value. The following memory layout indicates a snapshot of the iteration when <code class="d_inline">i</code> is 3:
+</p>
+
+<pre class="mono">   slice[0] slice[1] slice[2] slice[3] slice[4]
+       ⇢        ⇢        ⇢   (element)
+──┬────────┬────────┬────────┬────────┬─────────┬──
+  │    0   │    1   │    2   │    3   │    4    │
+──┴────────┴────────┴────────┴────────┴─────────┴──
+</pre>
+
+</li>
+
+<li><b><code class="d_inline">ref</code> and <code class="d_inline">out</code> function parameters</b>: Function parameters that are specified as <code class="d_inline">ref</code> or <code class="d_inline">out</code> are aliases of the actual variable the function is called with.
+
+<p>The following example demonstrates this case by passing the same variable to separate <code class="d_inline">ref</code> and <code class="d_inline">out</code> parameters of a function. Again, the <code class="d_inline">&amp;</code> operator indicates that both parameters have the same value identity:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">int</span> originalVariable;
+    writeln(<span class="d_string">"address of originalVariable: "</span>, &amp;originalVariable);
+    foo(originalVariable, originalVariable);
+}
+
+<span class="d_keyword">void</span> foo(<span class="hilite"><span class="d_keyword">ref</span></span> <span class="d_keyword">int</span> refParameter, <span class="hilite"><span class="d_keyword">out</span></span> <span class="d_keyword">int</span> outParameter) {
+    writeln(<span class="d_string">"address of refParameter    : "</span>, &amp;refParameter);
+    writeln(<span class="d_string">"address of outParameter    : "</span>, &amp;outParameter);
+    <span class="d_keyword">assert</span>(<span class="hilite">&amp;</span>refParameter == <span class="hilite">&amp;</span>outParameter);
+}
+</pre>
+
+<p>Although they are defined as separate parameters, <code class="d_inline">refParameter</code> and <code class="d_inline">outParameter</code> are aliases of <code class="d_inline">originalVariable</code>:
+</p>
+
+<pre class="shell">address of originalVariable: 7FFF24172958
+address of refParameter    : 7FFF24172958
+address of outParameter    : 7FFF24172958
+</pre>
+
+</li>
+
+</ul>
+
+<h5 class="subsection"><a id="ix_Value Types and Reference Types.type, reference" content="type, reference"></a> Reference types</h5>
+
+<p>Variables of reference types have individual identities but they do not have individual values. They <i>provide access to</i> existing variables.
+</p>
+
+<p>We have already seen this concept with slices. Slices do not own elements, they provide access to existing elements:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> main() {
+    <span class="d_comment">// Although it is named as 'array' here, this variable is
+</span>    <span class="d_comment">// a slice as well. It provides access to all of the
+</span>    <span class="d_comment">// initial elements:
+</span>    <span class="d_keyword">int</span>[] array = [ 0, 1, 2, 3, 4 ];
+
+    <span class="d_comment">// A slice that provides access to elements other than the
+</span>    <span class="d_comment">// first and the last:
+</span>    <span class="d_keyword">int</span>[] slice = array[1 .. $ - 1];
+
+    <span class="d_comment">// At this point slice[0] and array[1] provide access to
+</span>    <span class="d_comment">// the same value:
+</span>    <span class="d_keyword">assert</span>(<span class="hilite">&amp;</span>slice[0] == <span class="hilite">&amp;</span>array[1]);
+
+    <span class="d_comment">// Changing slice[0] changes array[1]:
+</span>    slice[0] = 42;
+    <span class="d_keyword">assert</span>(array[1] == 42);
+}
+</pre>
+
+<p>Contrary to reference variables, reference types are not simply aliases. To see this distinction, let's define another slice as a copy of one of the existing slices:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span>[] slice2 = slice;
+</pre>
+
+<p>The two slices have their own adresses. In other words, they have separate identities:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">assert</span>(&amp;slice != &amp;slice2);
+</pre>
+
+<p>The following list is a summary of the differences between reference variables and reference types:
+</p>
+
+<ul>
+<li>Reference variables do not have identities, they are aliases of existing variables.</li>
+
+<li>Variables of reference types have identities but they do not own values; rather, they provide access to existing values.</li>
+
+</ul>
+
+<p>The way <code class="d_inline">slice</code> and <code class="d_inline">slice2</code> live in memory can be illustrated as in the following figure:
+</p>
+
+<pre class="mono">                                 slice        slice2
+ ───┬───┬───┬───┬───┬───┬───  ───┬───┬───  ───┬───┬───
+    │ 0 │<span class="hilite">&nbsp;1&nbsp;</span>│<span class="hilite">&nbsp;2&nbsp;</span>│<span class="hilite">&nbsp;3&nbsp;</span>│ 4 │        │ o │        │ o │
+ ───┴───┴───┴───┴───┴───┴───  ───┴─│─┴───  ───┴─│─┴───
+              ▲                    │            │
+              │                    │            │
+              └────────────────────┴────────────┘
+</pre>
+
+<p>The three elements that the two slices both reference are highlighted.
+</p>
+
+<p>One of the differences between C++ and D is that classes are reference types in D. Although we will cover classes in later chapters in detail, the following is a short example to demonstrate this fact:
+</p>
+
+<pre class="d_code"><span class="d_keyword">class</span> MyClass {
+    <span class="d_keyword">int</span> member;
+}
+</pre>
+
+<p>Class objects are constructed by the <code class="d_inline">new</code> keyword:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> variable = <span class="d_keyword">new</span> MyClass;
+</pre>
+
+<p><code class="d_inline">variable</code> is a reference to an anonymous <code class="d_inline">MyClass</code> object that has been constructed by <code class="d_inline">new</code>:
+</p>
+
+<pre class="mono">  (anonymous MyClass object)    variable
+ ───┬───────────────────┬───  ───┬───┬───
+    │        ...        │        │ o │
+ ───┴───────────────────┴───  ───┴─│─┴───
+              ▲                    │
+              │                    │
+              └────────────────────┘
+</pre>
+
+<p>Just like with slices, when <code class="d_inline">variable</code> is copied, the copy becomes another reference to the same object. The copy has its own address:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> variable = <span class="d_keyword">new</span> MyClass;
+    <span class="d_keyword">auto</span> variable2 = variable;
+    <span class="d_keyword">assert</span>(variable == variable2);
+    <span class="d_keyword">assert</span>(&amp;variable != &amp;variable2);
+</pre>
+
+<p>They are equal from the point of view of referencing the same object, but they are separate variables:
+</p>
+
+<pre class="mono">  (anonymous MyClass object)    variable    variable2
+ ───┬───────────────────┬───  ───┬───┬───  ───┬───┬───
+    │        ...        │        │ o │        │ o │
+ ───┴───────────────────┴───  ───┴─│─┴───  ───┴─│─┴───
+              ▲                    │            │
+              │                    │            │
+              └────────────────────┴────────────┘
+</pre>
+
+<p>This can also be shown by modifying the member of the object:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> variable = <span class="d_keyword">new</span> MyClass;
+    variable.member = 1;
+
+    <span class="d_keyword">auto</span> variable2 = variable;   <span class="d_comment">// They share the same object
+</span>    variable2.member = 2;
+
+    <span class="d_keyword">assert</span>(variable.member == 2); <span class="d_comment">// The object that variable
+</span>                                  <span class="d_comment">// provides access to has
+</span>                                  <span class="d_comment">// changed.
+</span></pre>
+
+<p>Another reference type is associative arrays. Like slices and classes, when an associative array is copied or assigned to another variable, both give access to the same set of elements:
+</p>
+
+<pre class="d_code">    string[<span class="d_keyword">int</span>] byName =
+    [
+        1   : <span class="d_string">"one"</span>,
+        10  : <span class="d_string">"ten"</span>,
+        100 : <span class="d_string">"hundred"</span>,
+    ];
+
+    <span class="d_comment">// The two associative arrays will be sharing the same
+</span>    <span class="d_comment">// set of elements
+</span>    string[<span class="d_keyword">int</span>] byName2 = byName;
+
+    <span class="d_comment">// The mapping added through the second ...
+</span>    byName2[4] = <span class="d_string">"four"</span>;
+
+    <span class="d_comment">// ... is visible through the first.
+</span>    <span class="d_keyword">assert</span>(byName[4] == <span class="d_string">"four"</span>);
+</pre>
+
+<p>As it will be explained in the next chapter, there is no element sharing if the original associative array were <code class="d_inline">null</code> to begin with.
+</p>
+
+<h6>The difference in the assignment operation</h6>
+
+<p>With value types and reference variables, the assignment operation changes <i>the actual value</i>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> main() {
+    <span class="d_keyword">int</span> number = 8;
+
+    halve(number);      <span class="d_comment">// The actual value changes
+</span>    <span class="d_keyword">assert</span>(number == 4);
+}
+
+<span class="d_keyword">void</span> halve(<span class="hilite"><span class="d_keyword">ref</span></span> <span class="d_keyword">int</span> dividend) {
+    dividend /= 2;
+}
+</pre>
+
+<p>On the other hand, with reference types, the assignment operation changes <i>which value is being accessed</i>. For example, the assignment of the <code class="d_inline">slice3</code> variable below does not change the value of any element; rather, it changes what elements <code class="d_inline">slice3</code> is now a reference of:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span>[] slice1 = [ 10, 11, 12, 13, 14 ];
+    <span class="d_keyword">int</span>[] slice2 = [ 20, 21, 22 ];
+
+    <span class="d_keyword">int</span>[] slice3 = slice1[1 .. 3]; <span class="d_comment">// Access to element 1 and
+</span>                                   <span class="d_comment">// element 2 of slice1
+</span>
+    slice3[0] = 777;
+    <span class="d_keyword">assert</span>(slice1 == [ 10, 777, 12, 13, 14 ]);
+
+    <span class="d_comment">// This assignment does not modify the elements that
+</span>    <span class="d_comment">// slice3 is providing access to. It makes slice3 provide
+</span>    <span class="d_comment">// access to other elements.
+</span>    <span class="hilite">slice3 =</span> slice2[$ - 1 .. $]; <span class="d_comment">// Access to the last element
+</span>
+    slice3[0] = 888;
+    <span class="d_keyword">assert</span>(slice2 == [ 20, 21, 888 ]);
+</pre>
+
+<p>Let's demonstrate the same effect this time with two objects of the <code class="d_inline">MyClass</code> type:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> variable1 = <span class="d_keyword">new</span> MyClass;
+    variable1.member = 1;
+
+    <span class="d_keyword">auto</span> variable2 = <span class="d_keyword">new</span> MyClass;
+    variable2.member = 2;
+
+    <span class="d_keyword">auto</span> <span class="hilite">aCopy = variable1</span>;
+    aCopy.member = 3;
+
+    <span class="hilite">aCopy = variable2</span>;
+    aCopy.member = 4;
+
+    <span class="d_keyword">assert</span>(variable1.member == 3);
+    <span class="d_keyword">assert</span>(variable2.member == 4);
+</pre>
+
+<p>The <code class="d_inline">aCopy</code> variable above first references the same object as <code class="d_inline">variable1</code>, and then the same object as <code class="d_inline">variable2</code>. As a consequence, the <code class="d_inline">.member</code> that is modified through <code class="d_inline">aCopy</code> is first <code class="d_inline">variable1</code>'s and then <code class="d_inline">variable2</code>'s.
+</p>
+
+<h6>Variables of reference types may not be referencing any object</h6>
+
+<p>With a reference variable, there is always an actual variable that it is an alias of; it can not start its life without a variable. On the other hand, variables of reference types can start their lives without referencing any object.
+</p>
+
+<p>For example, a <code class="d_inline">MyClass</code> variable can be defined without an actual object having been created by <code class="d_inline">new</code>:
+</p>
+
+<pre class="d_code">    MyClass variable;
+</pre>
+
+<p>Such variables have the special value of <code class="d_inline">null</code>. We will cover <code class="d_inline">null</code> and the <code class="d_inline">is</code> keyword in <a href="null_is.html">a later chapter</a>.
+</p>
+
+<h5 class="subsection">Fixed-length arrays are value types, slices are reference types</h5>
+
+<p>D's arrays and slices diverge when it comes to value type versus reference type.
+</p>
+
+<p>As we have already seen above, slices are reference types. On the other hand, fixed-length arrays are value types. They own their elements and behave as individual values:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span>[3] array1 = [ 10, 20, 30 ];
+
+    <span class="d_keyword">auto</span> array2 = array1; <span class="d_comment">// array2's elements are different
+</span>                          <span class="d_comment">// from array1's
+</span>    array2[0] = 11;
+
+    <span class="d_comment">// First array is not affected:
+</span>    <span class="d_keyword">assert</span>(array1[0] == 10);
+</pre>
+
+<p><code class="d_inline">array1</code> is a fixed-length array because its length is specified when it has been defined. Since <code class="d_inline">auto</code> makes the compiler infer the type of <code class="d_inline">array2</code>, it is a fixed-length array as well. The values of <code class="d_inline">array2</code>'s elements are copied from the values of the elements of <code class="d_inline">array1</code>. Each array has its own elements. Modifying an element through one does not affect the other.
+</p>
+
+
+<h5 class="subsection">Experiment</h5>
+
+<p>The following program is an experiment of applying the <code class="d_inline">==</code> operator to different types. It applies the operator to both variables of a certain type and to the addresses of those variables. The program produces the following output:
+</p>
+
+<pre class="mono">                     Type of variable                      a == b  &amp;a == &amp;b
+===========================================================================
+               variables with equal values (value type)     true    false
+           variables with different values (value type)    false    false
+                            foreach with 'ref' variable     true     true
+                         foreach without 'ref' variable     true    false
+                          function with 'out' parameter     true     true
+                          function with 'ref' parameter     true     true
+                           function with 'in' parameter     true    false
+               slices providing access to same elements     true    false
+          slices providing access to different elements    false    false
+      MyClass variables to same object (reference type)     true    false
+MyClass variables to different objects (reference type)    false    false
+</pre>
+
+<p>The table above has been generated by the following program:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.array;
+
+<span class="d_keyword">int</span> moduleVariable = 9;
+
+<span class="d_keyword">class</span> MyClass {
+    <span class="d_keyword">int</span> member;
+}
+
+<span class="d_keyword">void</span> printHeader() {
+    <span class="d_keyword">immutable</span> <span class="d_keyword">dchar</span>[] header =
+        <span class="d_string">"                     Type of variable"</span> ~
+        <span class="d_string">"                      a == b  &amp;a == &amp;b"</span>;
+
+    writeln();
+    writeln(header);
+    writeln(replicate(<span class="d_string">"="</span>, header.length));
+}
+
+<span class="d_keyword">void</span> printInfo(<span class="d_keyword">const</span> <span class="d_keyword">dchar</span>[] label,
+               <span class="d_keyword">bool</span> valueEquality,
+               <span class="d_keyword">bool</span> addressEquality) {
+    writefln(<span class="d_string">"%55s%9s%9s"</span>,
+             label, valueEquality, addressEquality);
+}
+
+<span class="d_keyword">void</span> main() {
+    printHeader();
+
+    <span class="d_keyword">int</span> number1 = 12;
+    <span class="d_keyword">int</span> number2 = 12;
+    printInfo(<span class="d_string">"variables with equal values (value type)"</span>,
+              number1 == number2,
+              &amp;number1 == &amp;number2);
+
+    <span class="d_keyword">int</span> number3 = 3;
+    printInfo(<span class="d_string">"variables with different values (value type)"</span>,
+              number1 == number3,
+              &amp;number1 == &amp;number3);
+
+    <span class="d_keyword">int</span>[] slice = [ 4 ];
+    <span class="d_keyword">foreach</span> (i, <span class="d_keyword">ref</span> element; slice) {
+        printInfo(<span class="d_string">"foreach with 'ref' variable"</span>,
+                  element == slice[i],
+                  &amp;element == &amp;slice[i]);
+    }
+
+    <span class="d_keyword">foreach</span> (i, element; slice) {
+        printInfo(<span class="d_string">"foreach without 'ref' variable"</span>,
+                  element == slice[i],
+                  &amp;element == &amp;slice[i]);
+    }
+
+    outParameter(moduleVariable);
+    refParameter(moduleVariable);
+    inParameter(moduleVariable);
+
+    <span class="d_keyword">int</span>[] longSlice = [ 5, 6, 7 ];
+    <span class="d_keyword">int</span>[] slice1 = longSlice;
+    <span class="d_keyword">int</span>[] slice2 = slice1;
+    printInfo(<span class="d_string">"slices providing access to same elements"</span>,
+              slice1 == slice2,
+              &amp;slice1 == &amp;slice2);
+
+    <span class="d_keyword">int</span>[] slice3 = slice1[0 .. $ - 1];
+    printInfo(<span class="d_string">"slices providing access to different elements"</span>,
+              slice1 == slice3,
+              &amp;slice1 == &amp;slice3);
+
+    <span class="d_keyword">auto</span> variable1 = <span class="d_keyword">new</span> MyClass;
+    <span class="d_keyword">auto</span> variable2 = variable1;
+    printInfo(
+        <span class="d_string">"MyClass variables to same object (reference type)"</span>,
+        variable1 == variable2,
+        &amp;variable1 == &amp;variable2);
+
+    <span class="d_keyword">auto</span> variable3 = <span class="d_keyword">new</span> MyClass;
+    printInfo(
+        <span class="d_string">"MyClass variables to different objects (reference type)"</span>,
+        variable1 == variable3,
+        &amp;variable1 == &amp;variable3);
+}
+
+<span class="d_keyword">void</span> outParameter(<span class="d_keyword">out</span> <span class="d_keyword">int</span> parameter) {
+    printInfo(<span class="d_string">"function with 'out' parameter"</span>,
+              parameter == moduleVariable,
+              &amp;parameter == &amp;moduleVariable);
+}
+
+<span class="d_keyword">void</span> refParameter(<span class="d_keyword">ref</span> <span class="d_keyword">int</span> parameter) {
+    printInfo(<span class="d_string">"function with 'ref' parameter"</span>,
+              parameter == moduleVariable,
+              &amp;parameter == &amp;moduleVariable);
+}
+
+<span class="d_keyword">void</span> inParameter(<span class="d_keyword">in</span> <span class="d_keyword">int</span> parameter) {
+    printInfo(<span class="d_string">"function with 'in' parameter"</span>,
+              parameter == moduleVariable,
+              &amp;parameter == &amp;moduleVariable);
+}
+</pre>
+
+<p>Notes:
+</p>
+
+<ul>
+<li><a id="ix_Value Types and Reference Types.module variable" content="module variable"></a> <a id="ix_Value Types and Reference Types.variable, module" content="variable, module"></a> The program makes use of a module variable when comparing different types of function parameters. Module variables are defined at module level, outside of all of the functions. They are globally accessible to all of the code in the module.
+</li>
+
+<li><a id="ix_Value Types and Reference Types.replicate, std.array" content="replicate, std.array"></a> The <code class="d_inline">replicate()</code> function of the <code class="d_inline">std.array</code> module takes an array (the <code class="d_inline"><span class="d_string">"="</span></code> string above) and repeats it the specified number of times.
+</li>
+
+</ul>
+
+<h5 class="subsection">Summary</h5>
+
+<ul>
+<li>Variables of value types have their own values and adresses.</li>
+
+<li>Reference variables do not have their own values nor addresses. They are aliases of existing variables.</li>
+
+<li>Variables of reference types have their own addresses but the values that they reference do not belong to them.</li>
+
+<li>With reference types, assignment does not change value, it changes which value is being accessed.</li>
+
+<li>Variables of reference types may be <code class="d_inline">null</code>.</li>
+
+</ul>
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on Sun Jun  2 09:00:33 2024
+</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

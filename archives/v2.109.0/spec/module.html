@@ -1,0 +1,881 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Modules - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Modules' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href=".."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='../contributing.html'>Contributing</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../spec/glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Google Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option selected value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+<div class="subnav-helper"></div> <div class="subnav">    <div class="head"><h2>Language Reference</h2> <p class="subnav-duplicate"><a href="../spec/spec.html">table of contents</a></p></div>
+    <ul>        <li><a href='            ../spec/intro.html'>Introduction</a></li><li><a href='            ../spec/lex.html'>Lexical</a></li><li><a href='            ../spec/istring.html'>Interpolation Expression Sequence</a></li><li><a href='            ../spec/grammar.html'>Grammar</a></li><li><a href='            ../spec/module.html'>Modules</a></li><li><a href='            ../spec/declaration.html'>Declarations</a></li><li><a href='            ../spec/type.html'>Types</a></li><li><a href='            ../spec/property.html'>Properties</a></li><li><a href='            ../spec/attribute.html'>Attributes</a></li><li><a href='            ../spec/pragma.html'>Pragmas</a></li><li><a href='            ../spec/expression.html'>Expressions</a></li><li><a href='            ../spec/statement.html'>Statements</a></li><li><a href='            ../spec/arrays.html'>Arrays</a></li><li><a href='            ../spec/hash-map.html'>Associative Arrays</a></li><li><a href='            ../spec/struct.html'>Structs and Unions</a></li><li><a href='            ../spec/class.html'>Classes</a></li><li><a href='            ../spec/interface.html'>Interfaces</a></li><li><a href='            ../spec/enum.html'>Enums</a></li><li><a href='            ../spec/const3.html'>Type Qualifiers</a></li><li><a href='            ../spec/function.html'>Functions</a></li><li><a href='            ../spec/operatoroverloading.html'>Operator Overloading</a></li><li><a href='            ../spec/template.html'>Templates</a></li><li><a href='            ../spec/template-mixin.html'>Template Mixins</a></li><li><a href='            ../spec/contracts.html'>Contract Programming</a></li><li><a href='            ../spec/version.html'>Conditional Compilation</a></li><li><a href='            ../spec/traits.html'>Traits</a></li><li><a href='            ../spec/errors.html'>Error Handling</a></li><li><a href='            ../spec/unittest.html'>Unit Tests</a></li><li><a href='            ../spec/garbage.html'>Garbage Collection</a></li><li><a href='            ../spec/float.html'>Floating Point</a></li><li><a href='            ../spec/iasm.html'>D x86 Inline Assembler</a></li><li><a href='            ../spec/ddoc.html'>Embedded Documentation</a></li><li><a href='            ../spec/interfaceToC.html'>Interfacing to C</a></li><li><a href='            ../spec/cpp_interface.html'>Interfacing to C++</a></li><li><a href='            ../spec/objc_interface.html'>Interfacing to Objective-C</a></li><li><a href='            ../spec/portability.html'>Portability Guide</a></li><li><a href='            ../spec/entity.html'>Named Character Entities</a></li><li><a href='            ../spec/memory-safe-d.html'>Memory Safety</a></li><li><a href='            ../spec/abi.html'>Application Binary Interface</a></li><li><a href='            ../spec/simd.html'>Vector Extensions</a></li><li><a href='            ../spec/betterc.html'>Better C</a></li><li><a href='            ../spec/importc.html'>ImportC</a></li><li><a href='            ../spec/ob.html'>Live Functions</a></li><li><a href='            ../spec/windows.html'>Windows Programming</a></li><li><a href='            ../spec/glossary.html'>Glossary</a></li><li><a href='            ../spec/legacy.html'>Legacy Code
+        </a></li>
+    </ul>
+</div>
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BModules%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/spec/module.dd">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Modules</h1>
+        
+<style>    body { counter-reset: h1 5; counter-increment: h1 -1; }
+    h1 { counter-reset: h2 h3 p; }
+    h2 { counter-reset: h3 h4 p; }
+    h3 { counter-reset: h4 p; }
+    h4 { counter-reset: p; }
+    h1::before {
+        counter-increment: h1;
+        content: counter(h1) ". ";
+    }
+    .hyphenate h2::before {
+        counter-increment: h2;
+        content: counter(h1) "." counter(h2) " ";
+    }
+    h3::before {
+        counter-increment: h3;
+        content: counter(h1) "." counter(h2) "." counter(h3) " ";
+    }
+    h4::before {
+        counter-increment: h4;
+        content: counter(h1) "." counter(h2) "." counter(h3) "." counter(h4) " ";
+    }
+    p::before, .spec-boxes::before {
+        counter-increment: p;
+        content: counter(p) ". ";
+    }
+    h1::before, h2::before, h3::before, h4::before, p::before, .spec-boxes::before
+    {
+        color: #999;
+        font-size: 80%;
+        margin-right: 0.25em;
+    }
+</style>
+        <div class="blankline"></div>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<div class="page-contents quickindex">    <div class="page-contents-header">        <b>Contents</b>
+    </div>
+    <ol>    <li><a href="#module_declaration">Module Declaration</a><ol>        <li><a href="#deprecated_modules">Deprecated modules</a></li>
+    </ol></li>
+    <li><a href="#import-declaration">Import Declaration</a><ol>        <li><a href="#name_lookup">Symbol Name Lookup</a></li>
+        <li><a href="#public_imports">Public Imports</a></li>
+        <li><a href="#static_imports">Static Imports</a></li>
+        <li><a href="#renamed_imports">Renamed Imports</a></li>
+        <li><a href="#selective_imports">Selective Imports</a></li>
+        <li><a href="#renamed_selective_imports">Renamed and Selective Imports</a></li>
+        <li><a href="#scoped_imports">Scoped Imports</a></li>
+    </ol></li>
+    <li><a href="#module_scope_operators">Module Scope Operator</a></li>
+    <li><a href="#staticorder">Static Construction and Destruction</a><ol>        <li><a href="#order_of_static_ctor">Order of Static Construction</a></li>
+        <li><a href="#order_of_static_ctors">Order of Static Construction within a Module</a></li>
+        <li><a href="#order_static_dtor">Order of Static Destruction</a></li>
+    </ol></li>
+    <li><a href="#order_of_unittests">Order of Unit tests</a></li>
+    <li><a href="#mixin-declaration">Mixin Declaration</a></li>
+    <li><a href="#package-module">Package Module</a></li>
+</ol>
+</div>
+<div class="blankline"></div>
+<pre class="bnf notranslate"><a id="Module"><span class="gname">Module</span></a>:
+    <a href="#ModuleDeclaration"><i>ModuleDeclaration</i></a>
+    <a href="#ModuleDeclaration"><i>ModuleDeclaration</i></a> <a href="#DeclDefs"><i>DeclDefs</i></a>
+    <a href="#DeclDefs"><i>DeclDefs</i></a>
+<div class="blankline"></div>
+<a id="DeclDefs"><span class="gname">DeclDefs</span></a>:
+    <a href="#DeclDef"><i>DeclDef</i></a>
+    <a href="#DeclDef"><i>DeclDef</i></a> <i>DeclDefs</i>
+<div class="blankline"></div>
+<a id="DeclDef"><span class="gname">DeclDef</span></a>:
+    <a href="../spec/attribute.html#AttributeSpecifier"><i>AttributeSpecifier</i></a>
+    <a href="../spec/declaration.html#Declaration"><i>Declaration</i></a>
+    <a href="../spec/class.html#Constructor"><i>Constructor</i></a>
+    <a href="../spec/class.html#Destructor"><i>Destructor</i></a>
+    <a href="../spec/struct.html#Postblit"><i>Postblit</i></a>
+    <a href="../spec/class.html#Invariant"><i>Invariant</i></a>
+    <a href="../spec/unittest.html#UnitTest"><i>UnitTest</i></a>
+    <a href="../spec/class.html#AliasThis"><i>AliasThis</i></a>
+    <a href="../spec/class.html#StaticConstructor"><i>StaticConstructor</i></a>
+    <a href="../spec/class.html#StaticDestructor"><i>StaticDestructor</i></a>
+    <a href="../spec/class.html#SharedStaticConstructor"><i>SharedStaticConstructor</i></a>
+    <a href="../spec/class.html#SharedStaticDestructor"><i>SharedStaticDestructor</i></a>
+    <a href="../spec/version.html#ConditionalDeclaration"><i>ConditionalDeclaration</i></a>
+    <a href="../spec/version.html#DebugSpecification"><i>DebugSpecification</i></a>
+    <a href="../spec/version.html#VersionSpecification"><i>VersionSpecification</i></a>
+    <a href="#MixinDeclaration"><i>MixinDeclaration</i></a>
+    <a href="#EmptyDeclaration"><i>EmptyDeclaration</i></a>
+<div class="blankline"></div>
+<a id="EmptyDeclaration"><span class="gname">EmptyDeclaration</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">;</span>
+</pre>
+<div class="blankline"></div>
+<p>Modules have a one-to-one correspondence with source files. When not
+explicitly set via a <a href="#ModuleDeclaration"><i>ModuleDeclaration</i></a>, a module's name defaults
+to the name of the file stripped of its path and extension.</p>
+<div class="blankline"></div>
+<p>A module's name automatically acts as a namespace scope for its contents. Modules
+superficially resemble classes, but differ in that:</p>
+<div class="blankline"></div>
+<ul>        <li>Only one instance of a module exists, and it is
+        statically allocated.</li>
+<div class="blankline"></div>
+        <li>Modules do not have virtual tables.</li>
+<div class="blankline"></div>
+        <li>Modules do not inherit, do not have super modules, etc.</li>
+<div class="blankline"></div>
+        <li>A source file may contain only one module.</li>
+<div class="blankline"></div>
+        <li>Symbols in a module can be imported.</li>
+<div class="blankline"></div>
+        <li>Modules are always compiled at global scope and are unaffected
+        by surrounding attributes or other modifiers.</li>
+</ul>
+<div class="blankline"></div>
+<p>Modules can be grouped into hierarchies called <i>packages</i>.</p>
+<div class="blankline"></div>
+<p>Modules offer several guarantees:</p>
+<div class="blankline"></div>
+<ul><div class="blankline"></div>
+        <li>The order in which modules are imported does not affect their
+        semantics.</li>
+<div class="blankline"></div>
+        <li>The semantics of a module are not affected by the scope in which
+        it is imported.</li>
+<div class="blankline"></div>
+        <li>If a module <span class="d_inlinecode donthyphenate notranslate">C</span> imports modules <span class="d_inlinecode donthyphenate notranslate">A</span> and <span class="d_inlinecode donthyphenate notranslate">B</span>, any modifications
+        to <span class="d_inlinecode donthyphenate notranslate">B</span> will not silently change code in <span class="d_inlinecode donthyphenate notranslate">C</span> that is dependent on <span class="d_inlinecode donthyphenate notranslate">A</span>.</li>
+</ul>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="module_declaration" href="#module_declaration">Module Declaration</a></h2>
+<div class="blankline"></div>
+<p>The <i>ModuleDeclaration</i> sets the name of the module and what package it
+belongs to. If absent, the module name is taken to be the same name (stripped of
+path and extension) of the source file name.</p>
+<div class="blankline"></div>
+<pre class="bnf notranslate"><a id="ModuleDeclaration"><span class="gname">ModuleDeclaration</span></a>:
+    <a href="#ModuleAttributes"><i>ModuleAttributes</i></a><sub>opt</sub> <span class="d_inlinecode donthyphenate notranslate">module</span> <a href="#ModuleFullyQualifiedName"><i>ModuleFullyQualifiedName</i></a> <span class="d_inlinecode donthyphenate notranslate">;</span>
+<div class="blankline"></div>
+<a id="ModuleAttributes"><span class="gname">ModuleAttributes</span></a>:
+    <a href="#ModuleAttribute"><i>ModuleAttribute</i></a>
+    <a href="#ModuleAttribute"><i>ModuleAttribute</i></a> <i>ModuleAttributes</i>
+<div class="blankline"></div>
+<a id="ModuleAttribute"><span class="gname">ModuleAttribute</span></a>:
+    <a href="../spec/attribute.html#DeprecatedAttribute"><i>DeprecatedAttribute</i></a>
+    <a href="../spec/attribute.html#UserDefinedAttribute"><i>UserDefinedAttribute</i></a>
+<div class="blankline"></div>
+<a id="ModuleFullyQualifiedName"><span class="gname">ModuleFullyQualifiedName</span></a>:
+    <a href="#ModuleName"><i>ModuleName</i></a>
+    <a href="#Packages"><i>Packages</i></a> <span class="d_inlinecode donthyphenate notranslate">.</span> <a href="#ModuleName"><i>ModuleName</i></a>
+<div class="blankline"></div>
+<a id="ModuleName"><span class="gname">ModuleName</span></a>:
+    <a href="../spec/lex.html#Identifier"><i>Identifier</i></a>
+</pre>
+<pre class="bnf notranslate"><a id="Packages"><span class="gname">Packages</span></a>:
+    <a href="#PackageName"><i>PackageName</i></a>
+    <i>Packages</i> <span class="d_inlinecode donthyphenate notranslate">.</span> <a href="#PackageName"><i>PackageName</i></a>
+<div class="blankline"></div>
+<a id="PackageName"><span class="gname">PackageName</span></a>:
+    <a href="../spec/lex.html#Identifier"><i>Identifier</i></a>
+</pre>
+<div class="blankline"></div>
+<p>The <i>Identifier</i>s preceding the rightmost <i>Identifier</i> are the <i>Packages</i> that the
+module is in. The packages correspond to directory names in the source file
+path. Package and module names cannot be <a href="../spec/lex.html#Keyword"><i>Keyword</i></a>s.</p>
+<div class="blankline"></div>
+<p>If present, the <i>ModuleDeclaration</i> must be the first and only such declaration
+in the source file, and may be preceded only by comments and <span class="d_inlinecode donthyphenate notranslate">#line</span> directives.</p>
+<div class="blankline"></div>
+<p>Example:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">module</span> c.stdio; <span class="d_comment">// module stdio in the c package
+</span></pre>
+<div class="blankline"></div>
+<p>By convention, package and module names are all lower case. This is because
+these names have a one-to-one correspondence with the operating system's
+directory and file names, and many file systems are not case sensitive. Using all
+lower case package and module names will avoid or minimize problems when moving projects
+between dissimilar file systems.</p>
+<div class="blankline"></div>
+<p>If the file name of a module is an invalid module name (e.g.
+<span class="d_inlinecode donthyphenate notranslate">foo-bar.d</span>), use a module declaration to set a valid module name:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">module</span> foo_bar;
+</pre>
+<div class="blankline"></div>
+    <div class="spec-boxes implementation-defined"><b>Implementation Defined:</b>     <ol>    <li>The mapping of package and module identifiers to directory and file names.</li>
+    </ol></div>
+
+
+<div class="blankline"></div>
+    <div class="spec-boxes best-practice"><b>Best Practices:</b>     <ol>    <li><a href="#PackageName"><i>PackageName</i></a>s and <a href="#ModuleName"><i>ModuleName</i></a>s should be composed of the ASCII
+    characters lower case letters, digits or <span class="d_inlinecode donthyphenate notranslate">_</span> to ensure maximum portability and compatibility with
+    various file systems.</li>
+    <li>The file names for packages and modules should be composed only of
+    the ASCII lower case letters, digits, and <span class="d_inlinecode donthyphenate notranslate">_</span>s, and should not be a <a href="../spec/lex.html#Keyword"><i>Keyword</i></a>.</li>
+    </ol></div>
+
+
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="deprecated_modules" href="#deprecated_modules">Deprecated modules</a></h3>
+<div class="blankline"></div>
+<p>A <i>ModuleDeclaration</i> can have an optional <a href="../spec/attribute.html#DeprecatedAttribute"><i>DeprecatedAttribute</i></a>. The compiler will produce a message when the deprecated
+module is imported.</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">deprecated</span> <span class="d_keyword">module</span> foo;
+</pre>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">module</span> bar;
+<span class="d_keyword">import</span> foo;  <span class="d_comment">// Deprecated: module foo is deprecated
+</span></pre>
+<div class="blankline"></div>
+<p>A <i>DeprecatedAttribute</i> can have an optional <a href="../spec/expression.html#AssignExpression"><i>AssignExpression</i></a> argument to provide a
+more informative message. The <i>AssignExpression</i> must evaluate to a string at compile time.
+</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">deprecated</span>(<span class="d_string">"Please use foo2 instead."</span>)
+<span class="d_keyword">module</span> foo;
+</pre>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">module</span> bar;
+<span class="d_keyword">import</span> foo;  <span class="d_comment">// Deprecated: module foo is deprecated - Please use foo2 instead.
+</span></pre>
+<div class="blankline"></div>
+    <div class="spec-boxes implementation-defined"><b>Implementation Defined:</b>     <ol>    <li>How the deprecation messages are presented to the user.</li>
+    </ol></div>
+
+
+<div class="blankline"></div>
+<div class="blankline"></div>
+<h2><span id="ImportDeclaration"><a class="anchor" title="Permalink to this section" id="import-declaration" href="#import-declaration">Import Declaration</a></span></h2>
+<div class="blankline"></div>
+<p>Symbols from one module are made available in another module by using the
+<i>ImportDeclaration</i>:</p>
+<div class="blankline"></div>
+<pre class="bnf notranslate"><a id="ImportDeclaration"><span class="gname">ImportDeclaration</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">import</span> <a href="#ImportList"><i>ImportList</i></a> <span class="d_inlinecode donthyphenate notranslate">;</span>
+    <span class="d_inlinecode donthyphenate notranslate">static import</span> <a href="#ImportList"><i>ImportList</i></a> <span class="d_inlinecode donthyphenate notranslate">;</span>
+<div class="blankline"></div>
+<a id="ImportList"><span class="gname">ImportList</span></a>:
+    <a href="#Import"><i>Import</i></a>
+    <a href="#ImportBindings"><i>ImportBindings</i></a>
+    <a href="#Import"><i>Import</i></a> <span class="d_inlinecode donthyphenate notranslate">,</span> <i>ImportList</i>
+<div class="blankline"></div>
+<a id="Import"><span class="gname">Import</span></a>:
+    <a href="#ModuleFullyQualifiedName"><i>ModuleFullyQualifiedName</i></a>
+    <a href="#ModuleAliasIdentifier"><i>ModuleAliasIdentifier</i></a> <span class="d_inlinecode donthyphenate notranslate">=</span> <a href="#ModuleFullyQualifiedName"><i>ModuleFullyQualifiedName</i></a>
+<div class="blankline"></div>
+<a id="ImportBindings"><span class="gname">ImportBindings</span></a>:
+    <a href="#Import"><i>Import</i></a> <span class="d_inlinecode donthyphenate notranslate">:</span> <a href="#ImportBindList"><i>ImportBindList</i></a>
+<div class="blankline"></div>
+<a id="ImportBindList"><span class="gname">ImportBindList</span></a>:
+    <a href="#ImportBind"><i>ImportBind</i></a>
+    <a href="#ImportBind"><i>ImportBind</i></a> <span class="d_inlinecode donthyphenate notranslate">,</span> <i>ImportBindList</i>
+<div class="blankline"></div>
+<a id="ImportBind"><span class="gname">ImportBind</span></a>:
+    <a href="../spec/lex.html#Identifier"><i>Identifier</i></a>
+    <a href="../spec/lex.html#Identifier"><i>Identifier</i></a> <span class="d_inlinecode donthyphenate notranslate">=</span> <a href="../spec/lex.html#Identifier"><i>Identifier</i></a>
+<div class="blankline"></div>
+<a id="ModuleAliasIdentifier"><span class="gname">ModuleAliasIdentifier</span></a>:
+    <a href="../spec/lex.html#Identifier"><i>Identifier</i></a>
+</pre>
+<div class="blankline"></div>
+<p>There are several forms of the <i>ImportDeclaration</i>, from generalized to
+fine-grained importing.</p>
+<div class="blankline"></div>
+<p>The order in which <i>ImportDeclaration</i>s occur has no significance.</p>
+<div class="blankline"></div>
+<p><i>ModuleFullyQualifiedName</i>s in the <i>ImportDeclaration</i> must be fully
+qualified with whatever packages they are in. They are not considered to be
+relative to the module that imports them.</p>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="name_lookup" href="#name_lookup">Symbol Name Lookup</a></h3>
+<div class="blankline"></div>
+<p>The simplest form of importing is to just list the modules being imported:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">module</span> myapp.main;
+
+<span class="d_keyword">import</span> std.stdio; <span class="d_comment">// import module stdio from package std
+</span>
+<span class="d_keyword">class</span> Foo : BaseClass
+{
+    <span class="d_keyword">import</span> myapp.foo;  <span class="d_comment">// import module myapp.foo in this class' scope
+</span>    <span class="d_keyword">void</span> bar ()
+    {
+        <span class="d_keyword">import</span> myapp.bar;  <span class="d_comment">// import module myapp.bar in this function' scope
+</span>        writeln(<span class="d_string">"hello!"</span>);  <span class="d_comment">// calls std.stdio.writeln
+</span>    }
+}
+</pre>
+<div class="blankline"></div>
+<p>When a symbol name is used unqualified, a two-phase lookup is used.
+First, the module scope is searched, starting from the innermost scope.
+For example, in the previous example, while looking for <span class="d_inlinecode donthyphenate notranslate">writeln</span>,
+the order will be:</p>
+<div class="blankline"></div>
+<ul>    <li>Declarations inside <span class="d_inlinecode donthyphenate notranslate">bar</span>.</li>
+    <li>Declarations inside <span class="d_inlinecode donthyphenate notranslate">Foo</span>.</li>
+    <li>Declarations inside <span class="d_inlinecode donthyphenate notranslate">BaseClass</span>.</li>
+    <li>Declarations at module scope.</li>
+</ul>
+<div class="blankline"></div>
+<p>If the first lookup isn't successful, a second one is performed on imports.
+In the second lookup phase inherited scopes are ignored.  This includes the scope of
+base classes and interfaces (in this example, <span class="d_inlinecode donthyphenate notranslate">BaseClass</span>'s imports
+would be ignored), as well as imports in mixed-in <span class="d_inlinecode donthyphenate notranslate">template</span>.</p>
+<div class="blankline"></div>
+<p>Symbol lookup stops as soon as a matching symbol is found. If two symbols with the
+same name are found at the same lookup phase, this ambiguity will result in a
+compilation error.</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">module</span> A;
+<span class="d_keyword">void</span> foo();
+<span class="d_keyword">void</span> bar();
+</pre>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">module</span> B;
+<span class="d_keyword">void</span> foo();
+<span class="d_keyword">void</span> bar();
+</pre>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">module</span> C;
+<span class="d_keyword">import</span> A;
+<span class="d_keyword">void</span> foo();
+<span class="d_keyword">void</span> test()
+{
+    foo(); <span class="d_comment">// C.foo() is called, it is found before imports are searched
+</span>    bar(); <span class="d_comment">// A.bar() is called, since imports are searched
+</span>}
+</pre>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">module</span> D;
+<span class="d_keyword">import</span> A;
+<span class="d_keyword">import</span> B;
+<span class="d_keyword">void</span> test()
+{
+    foo();   <span class="d_comment">// error, A.foo() or B.foo() ?
+</span>    A.foo(); <span class="d_comment">// ok, call A.foo()
+</span>    B.foo(); <span class="d_comment">// ok, call B.foo()
+</span>}
+</pre>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">module</span> E;
+<span class="d_keyword">import</span> A;
+<span class="d_keyword">import</span> B;
+<span class="d_keyword">alias</span> foo = B.foo;
+<span class="d_keyword">void</span> test()
+{
+    foo();   <span class="d_comment">// call B.foo()
+</span>    A.foo(); <span class="d_comment">// call A.foo()
+</span>    B.foo(); <span class="d_comment">// call B.foo()
+</span>}
+</pre>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="public_imports" href="#public_imports">Public Imports</a></h3>
+<div class="blankline"></div>
+<p>By default, imports are <i>private</i>. This means that if module A imports
+module B, and module B imports module C, then names inside C are visible only inside
+B and not inside A.</p>
+<div class="blankline"></div>
+<p>An import can be explicitly declared <i>public</i>, which will cause
+names from the imported module to be visible to further imports. So in the above
+example where module A imports module B, if module B <i>publicly</i> imports
+module C, names from C will be visible in A as well.</p>
+<div class="blankline"></div>
+<p>All symbols from a publicly imported module are also aliased in the
+importing module. Thus in the above example if C contains the name foo, it will
+be accessible in A as <span class="d_inlinecode donthyphenate notranslate">foo</span>, <span class="d_inlinecode donthyphenate notranslate">B.foo</span> and <span class="d_inlinecode donthyphenate notranslate">C.foo</span>.</p>
+<div class="blankline"></div>
+<p>For another example:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">module</span> W;
+<span class="d_keyword">void</span> foo() { }
+</pre>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">module</span> X;
+<span class="d_keyword">void</span> bar() { }
+</pre>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">module</span> Y;
+<span class="d_keyword">import</span> W;
+<span class="d_keyword">public</span> <span class="d_keyword">import</span> X;
+...
+foo();  <span class="d_comment">// calls W.foo()
+</span>bar();  <span class="d_comment">// calls X.bar()
+</span></pre>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">module</span> Z;
+<span class="d_keyword">import</span> Y;
+...
+foo();   <span class="d_comment">// error, foo() is undefined
+</span>bar();   <span class="d_comment">// ok, calls X.bar()
+</span>X.bar(); <span class="d_comment">// ditto
+</span>Y.bar(); <span class="d_comment">// ok, Y.bar() is an alias to X.bar()
+</span></pre>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="static_imports" href="#static_imports">Static Imports</a></h3>
+<div class="blankline"></div>
+<p>A static import requires the use of a fully qualified name
+to reference the module's names:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">static</span> <span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main()
+{
+    writeln(<span class="d_string">"hello!"</span>);           <span class="d_comment">// error, writeln is undefined
+</span>    std.stdio.writeln(<span class="d_string">"hello!"</span>); <span class="d_comment">// ok, writeln is fully qualified
+</span>}
+</pre>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="renamed_imports" href="#renamed_imports">Renamed Imports</a></h3>
+<div class="blankline"></div>
+<p>A local name for an import can be given, through which all references to the
+module's symbols must be qualified with:</p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">import</span> io = std.stdio;
+
+<span class="d_keyword">void</span> main()
+{
+    io.writeln(<span class="d_string">"hello!"</span>);        <span class="d_comment">// ok, calls std.stdio.writeln
+</span>    std.stdio.writeln(<span class="d_string">"hello!"</span>); <span class="d_comment">// error, std is undefined
+</span>    writeln(<span class="d_string">"hello!"</span>);           <span class="d_comment">// error, writeln is undefined
+</span>}
+</pre>
+
+</div>
+<div class="blankline"></div>
+    <div class="spec-boxes best-practice"><b>Best Practices:</b> Renamed imports are handy when dealing with very long import names.</div>
+
+
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="selective_imports" href="#selective_imports">Selective Imports</a></h3>
+<div class="blankline"></div>
+<p>Specific symbols can be exclusively imported from a module and bound into
+the current namespace:</p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">import</span> std.stdio : writeln, foo = write;
+
+<span class="d_keyword">void</span> main()
+{
+    std.stdio.writeln(<span class="d_string">"hello!"</span>); <span class="d_comment">// error, std is undefined
+</span>    writeln(<span class="d_string">"hello!"</span>);           <span class="d_comment">// ok, writeln bound into current namespace
+</span>    write(<span class="d_string">"world"</span>);              <span class="d_comment">// error, write is undefined
+</span>    foo(<span class="d_string">"world"</span>);                <span class="d_comment">// ok, calls std.stdio.write()
+</span>    fwritefln(stdout, <span class="d_string">"abc"</span>);    <span class="d_comment">// error, fwritefln undefined
+</span>}
+</pre>
+
+</div>
+<div class="blankline"></div>
+<p><span class="d_inlinecode donthyphenate notranslate">static</span> cannot be used with selective imports.</p>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="renamed_selective_imports" href="#renamed_selective_imports">Renamed and Selective Imports</a></h3>
+<div class="blankline"></div>
+<p>When renaming and selective importing are combined:</p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">import</span> io = std.stdio : foo = writeln;
+
+<span class="d_keyword">void</span> main()
+{
+    writeln(<span class="d_string">"bar"</span>);           <span class="d_comment">// error, writeln is undefined
+</span>    std.stdio.foo(<span class="d_string">"bar"</span>);     <span class="d_comment">// error, foo is bound into current namespace
+</span>    std.stdio.writeln(<span class="d_string">"bar"</span>); <span class="d_comment">// error, std is undefined
+</span>    foo(<span class="d_string">"bar"</span>);               <span class="d_comment">// ok, foo is bound into current namespace,
+</span>                              <span class="d_comment">// FQN not required
+</span>    io.writeln(<span class="d_string">"bar"</span>);        <span class="d_comment">// ok, io=std.stdio bound the name io in
+</span>                              <span class="d_comment">// the current namespace to refer to the entire
+</span>                              <span class="d_comment">//   module
+</span>    io.foo(<span class="d_string">"bar"</span>);            <span class="d_comment">// error, foo is bound into current namespace,
+</span>                              <span class="d_comment">// foo is not a member of io
+</span>}
+</pre>
+
+</div>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="scoped_imports" href="#scoped_imports">Scoped Imports</a></h3>
+<div class="blankline"></div>
+<p>Import declarations may be used at any scope. For example:</p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">import</span> std.stdio;
+    writeln(<span class="d_string">"bar"</span>);
+}
+</pre>
+
+</div>
+<div class="blankline"></div>
+<p>The imports are looked up to satisfy any unresolved symbols at that scope.
+Imported symbols may hide symbols from outer scopes.</p>
+<div class="blankline"></div>
+<p>In function scopes, imported symbols only become visible after the import
+declaration lexically appears in the function body. In other words, imported
+symbols at function scope cannot be forward referenced.</p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">void</span> writeln(string) {}
+    <span class="d_keyword">void</span> foo()
+    {
+        writeln(<span class="d_string">"bar"</span>); <span class="d_comment">// calls main.writeln
+</span>        <span class="d_keyword">import</span> std.stdio;
+        writeln(<span class="d_string">"bar"</span>); <span class="d_comment">// calls std.stdio.writeln
+</span>        <span class="d_keyword">void</span> writeln(string) {}
+        writeln(<span class="d_string">"bar"</span>); <span class="d_comment">// calls main.foo.writeln
+</span>    }
+    writeln(<span class="d_string">"bar"</span>); <span class="d_comment">// calls main.writeln
+</span>    std.stdio.writeln(<span class="d_string">"bar"</span>);  <span class="d_comment">// error, std is undefined
+</span>}
+</pre>
+
+</div>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="module_scope_operators" href="#module_scope_operators">Module Scope Operator</a></h2>
+<div class="blankline"></div>
+    <p>A leading dot (<span class="d_inlinecode donthyphenate notranslate">.</span>) causes the
+    identifier to be looked up in the module scope.</p>
+<div class="blankline"></div>
+<div class="runnable-examples">
+<pre class="d_code notranslate"><span class="d_keyword">const</span> <span class="d_keyword">int</span> x = 1;
+
+<span class="d_keyword">void</span> main()
+{
+    <span class="d_keyword">int</span> x = 5;
+    <span class="d_keyword">assert</span>(x == 5); <span class="d_comment">// main.x, not global x
+</span>    <span class="d_keyword">assert</span>(.x == 1); <span class="d_comment">// global x
+</span>}
+</pre>
+
+</div>
+<div class="blankline"></div>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="staticorder" href="#staticorder">Static Construction and Destruction</a></h2>
+<div class="blankline"></div>
+    <p>Static constructors are executed to initialize a module's state.
+    Static destructors terminate a module's state.
+    </p>
+<div class="blankline"></div>
+    <p>A module may have multiple static constructors and static destructors.
+    The static constructors are run in lexical order, the static destructors
+    are run in reverse lexical order.</p>
+<div class="blankline"></div>
+    <p>Non-shared static constructors and destructors are
+    run whenever threads are created or destroyed, including the main thread.</p>
+<div class="blankline"></div>
+    <p>Shared static constructors are run once before <span class="d_inlinecode donthyphenate notranslate">main()</span> is called.
+    Shared static destructors are run after the <span class="d_inlinecode donthyphenate notranslate">main()</span> function returns.
+    </p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">import</span> resource;
+
+Resource x;
+<span class="d_keyword">shared</span> Resource y;
+<span class="d_keyword">__gshared</span> Resource z;
+
+<span class="d_keyword">static</span> <span class="d_keyword">this</span>()  <span class="d_comment">// non-shared static constructor
+</span>{
+    x = acquireResource();
+}
+
+<span class="d_keyword">shared</span> <span class="d_keyword">static</span> <span class="d_keyword">this</span>()  <span class="d_comment">// shared static constructor
+</span>{
+    y = acquireSharedResource();
+    z = acquireSharedResource();
+}
+
+<span class="d_keyword">static</span> ~<span class="d_keyword">this</span>()  <span class="d_comment">// non-shared static destructor
+</span>{
+    releaseResource(x);
+}
+
+<span class="d_keyword">shared</span> <span class="d_keyword">static</span> ~<span class="d_keyword">this</span>()   <span class="d_comment">// shared static destructor
+</span>{
+    releaseSharedResource(y);
+    releaseSharedResource(z);
+}
+</pre>
+<div class="blankline"></div>
+    <div class="spec-boxes best-practice"><b>Best Practices:</b>     <ol>    <li>Shared static constructors and destructors are used to initialize and terminate
+    shared global data.</li>
+    <li>Non-shared static constructors and destructors are used to initialize and terminate
+    thread local data.</li>
+    </ol></div>
+
+
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="order_of_static_ctor" href="#order_of_static_ctor">Order of Static Construction</a></h3>
+<div class="blankline"></div>
+<p>Shared static constructors on all modules are run before any non-shared static
+constructors.</p>
+<div class="blankline"></div>
+<p>The order of static initialization is implicitly determined by the <i>import</i> declarations in each module. Each module is assumed to depend on any
+imported modules being statically constructed first.
+There is no other order imposed on the execution of module static constructors.</p>
+<div class="blankline"></div>
+<p>Cycles (circular dependencies) in the import declarations are allowed so
+long as neither, or one, but not both, of the modules, contains static constructors or static
+destructors. Violation of this rule will result in a runtime exception.</p>
+<div class="blankline"></div>
+    <div class="spec-boxes implementation-defined"><b>Implementation Defined:</b>     <ol>    <li>An implementation may provide a means of overriding the cycle detection abort.
+    A typical method uses the D Runtime switch
+    <span class="d_inlinecode donthyphenate notranslate">--DRT-oncycle=...</span> where the following behaviors are supported:
+    <ol>    <li><span class="d_inlinecode donthyphenate notranslate">abort</span> The default behavior. The normal behavior as described
+            in the previous section.</li>
+    <li><span class="d_inlinecode donthyphenate notranslate">print</span> Print all cycles detected, but do not abort execution.
+            When cycles are present, the order of static construction is
+            implementation defined, and not guaranteed to be valid.</li>
+    <li><span class="d_inlinecode donthyphenate notranslate">ignore</span> Do not abort execution or print any cycles. When
+            cycles are present, the order of static construction is implementation
+            defined, and not guaranteed to be valid.</li>
+    </ol>
+    </li></ol>
+    </div>
+
+
+<div class="blankline"></div>
+    <div class="spec-boxes best-practice"><b>Best Practices:</b>     <ol>    <li>Avoid cyclical imports where practical. They can be an indication of poor
+    decomposition of a program's structure into independent modules. Two modules
+    that import each other can often be reorganized into three modules without
+    cycles, where the third contains the declarations needed by the other two.</li>
+    </ol>
+    </div>
+
+
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="order_of_static_ctors" href="#order_of_static_ctors">Order of Static Construction within a Module</a></h3>
+<div class="blankline"></div>
+<p>Within a module, static construction occurs in the lexical order in
+which they appear.</p>
+<div class="blankline"></div>
+<h3><a class="anchor" title="Permalink to this section" id="order_static_dtor" href="#order_static_dtor">Order of Static Destruction</a></h3>
+<div class="blankline"></div>
+<p>This is defined to be in exactly the reverse order of static construction.
+Static destructors for individual modules will only be run if the
+corresponding static constructor successfully completed.</p>
+<div class="blankline"></div>
+<p>Shared static destructors are executed after static destructors.</p>
+<div class="blankline"></div>
+<h2><a class="anchor" title="Permalink to this section" id="order_of_unittests" href="#order_of_unittests">Order of Unit tests</a></h2>
+<div class="blankline"></div>
+<p>Unit tests are run in the lexical order in which they appear within a
+module.</p>
+<div class="blankline"></div>
+<h2><span id="MixinDeclaration"><a class="anchor" title="Permalink to this section" id="mixin-declaration" href="#mixin-declaration">Mixin Declaration</a></span></h2>
+<div class="blankline"></div>
+<pre class="bnf notranslate"><a id="MixinDeclaration"><span class="gname">MixinDeclaration</span></a>:
+    <span class="d_inlinecode donthyphenate notranslate">mixin</span> <span class="d_inlinecode donthyphenate notranslate">(</span> <a href="../spec/expression.html#ArgumentList"><i>ArgumentList</i></a> <span class="d_inlinecode donthyphenate notranslate">)</span> <span class="d_inlinecode donthyphenate notranslate">;</span>
+</pre>
+<div class="blankline"></div>
+<p>Each <a href="../spec/expression.html#AssignExpression"><i>AssignExpression</i></a> in the <i>ArgumentList</i> is
+    evaluated at compile time, and the result must be representable
+    as a string.
+    The resulting strings are concatenated to form a string.
+    The text contents of the string must be compilable as valid
+    <a href="#DeclDefs"><i>DeclDefs</i></a>, and is compiled as such.</p>
+<div class="blankline"></div>
+<p>The content of a mixin cannot be forward referenced by other <em>DeclDefs</em> of
+    the same scope because it is not yet pulled into the AST.</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">class</span> B : A {}      <span class="d_comment">// Error: undefined identifier `A`
+</span><span class="d_keyword">mixin</span> (<span class="d_string">"class A {}"</span>);
+</pre>
+<div class="blankline"></div>
+<p>Forward references may only work in function bodies because they
+    are processed after the declarations:</p>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">void</span> v()
+{
+    <span class="d_keyword">class</span> B : A {}
+}
+<span class="d_keyword">mixin</span> (<span class="d_string">"class A {}"</span>);
+</pre>
+<div class="blankline"></div>
+<h2><span id="PackageModule"><a class="anchor" title="Permalink to this section" id="package-module" href="#package-module">Package Module</a></span></h2>
+<div class="blankline"></div>
+<p>A package module can be used to publicly import other modules, while
+providing a simpler import syntax. This enables the conversion of a module into a package
+of modules, without breaking existing code which uses that module. Example of a
+set of library modules:</p>
+<div class="blankline"></div>
+<b>libweb/client.d:</b>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">module</span> libweb.client;
+
+<span class="d_keyword">void</span> runClient() { }
+</pre>
+<div class="blankline"></div>
+<b>libweb/server.d:</b>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">module</span> libweb.server;
+
+<span class="d_keyword">void</span> runServer() { }
+</pre>
+<div class="blankline"></div>
+<b>libweb/package.d:</b>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">module</span> libweb;
+
+<span class="d_keyword">public</span> <span class="d_keyword">import</span> libweb.client;
+<span class="d_keyword">public</span> <span class="d_keyword">import</span> libweb.server;
+</pre>
+<div class="blankline"></div>
+<p>The package module's file name must be <span class="d_inlinecode donthyphenate notranslate">package.d</span>. The module name
+is declared to be the fully qualified name of the package. Package modules can
+be imported just like any other modules:</p>
+<div class="blankline"></div>
+<b>test.d:</b>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">module</span> test;
+
+<span class="d_comment">// import the package module
+</span><span class="d_keyword">import</span> libweb;
+
+<span class="d_keyword">void</span> main()
+{
+    runClient();
+    runServer();
+}
+</pre>
+<div class="blankline"></div>
+<p>A package module can be nested inside of a sub-package:</p>
+<div class="blankline"></div>
+<b>libweb/utils/package.d:</b>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_comment">// must be declared as the fully qualified name of the package, not just 'utils'
+</span><span class="d_keyword">module</span> libweb.utils;
+
+<span class="d_comment">// publicly import modules from within the 'libweb.utils' package.
+</span><span class="d_keyword">public</span> <span class="d_keyword">import</span> libweb.utils.conv;
+<span class="d_keyword">public</span> <span class="d_keyword">import</span> libweb.utils.text;
+</pre>
+<div class="blankline"></div>
+<p>The package module can then be imported with the standard module import
+declaration:</p>
+<div class="blankline"></div>
+<b>test.d:</b>
+<div class="blankline"></div>
+<pre class="d_code notranslate"><span class="d_keyword">module</span> test;
+
+<span class="d_comment">// import the package module
+</span><span class="d_keyword">import</span> libweb.utils;
+
+<span class="d_keyword">void</span> main() { }
+</pre>
+<div class="blankline"></div>
+
+<div style="float: left"><i class="fa fa-angle-left" aria-hidden="true"></i> <a href="../spec/grammar.html">Grammar</a></div>
+<div style="float: right"><a href="../spec/declaration.html">Declarations</a> <i class="fa fa-angle-right" aria-hidden="true"></i></div>
+<div style="clear:both"></div>
+
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on (no date time)</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<script type="text/javascript" src="../js/listanchors.js"></script>
+<script type="text/javascript">jQuery(document).ready(addVersionSelector);</script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

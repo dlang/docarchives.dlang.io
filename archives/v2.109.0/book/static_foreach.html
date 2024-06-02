@@ -1,0 +1,312 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>static_foreach - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='static_foreach' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='../contributing.html'>Contributing</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5Bstatic_foreach%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/d.en/static_foreach.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>static_foreach</h1>
+        
+        
+
+
+
+<p>We saw compile-time <code class="d_inline">foreach</code> earlier in the <a href="tuples.html">Tuples chapter</a>. Compile-time <code class="d_inline">foreach</code> iterates the loop at compile time and unrolls each iteration as separate pieces of code. For example, given the following <code class="d_inline">foreach</code> loop over a tuple:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> t = tuple(42, <span class="d_string">"hello"</span>, 1.5);
+
+    <span class="d_keyword">foreach</span> (i, member; <span class="hilite">t</span>) {
+        writefln(<span class="d_string">"%s: %s"</span>, i, member);
+    }
+</pre>
+
+<p>The compiler <i>unrolls</i> the loop similar to the following equivalent code:
+</p>
+
+<pre class="d_code">    {
+        <span class="d_keyword">enum</span> size_t i = 0;
+        <span class="d_keyword">int</span> member = t[i];
+        writefln(<span class="d_string">"%s: %s"</span>, i, member);
+    }
+    {
+        <span class="d_keyword">enum</span> size_t i = 1;
+        string member = t[i];
+        writefln(<span class="d_string">"%s: %s"</span>, i, member);
+    }
+    {
+        <span class="d_keyword">enum</span> size_t i = 2;
+        <span class="d_keyword">double</span> member = t[i];
+        writefln(<span class="d_string">"%s: %s"</span>, i, member);
+    }
+</pre>
+
+<p>Although being very powerful, some properties of compile-time <code class="d_inline">foreach</code> may not be suitable in some cases:
+</p>
+
+<ul>
+<li>With compile-time <code class="d_inline">foreach</code>, each unrolling of the loop introduces a scope. As seen with the <code class="d_inline">i</code> and <code class="d_inline">member</code> variables above, this allows the use of a symbol in more than one scope without causing a multiple definition error. Although this can be desirable in some cases, it makes it impossible for code unrolled for one iteration to use code from other iterations.
+</li>
+
+<li>Compile-time <code class="d_inline">foreach</code> works only with tuples (including template arguments in the form of <code class="d_inline">AliasSeq</code>). For example, despite the elements of the following array literal being known at compile time, the loop will always be executed at run time (this may very well be the desired behavior):
+</li>
+
+</ul>
+
+<pre class="d_code"><span class="d_keyword">void</span> main() {
+    <span class="hilite"><span class="d_keyword">enum</span></span> arr = [1, 2];
+    <span class="d_comment">// Executed at run time, not unrolled at compile time:
+</span>    <span class="d_keyword">foreach</span> (i; arr) {
+        <span class="d_comment">// ...
+</span>    }
+}
+</pre>
+
+<ul>
+<li>Like regular <code class="d_inline">foreach</code>, compile-time <code class="d_inline">foreach</code> can only be used inside functions. For example, it cannot be used at module scope or inside a user-defined type definition.
+</li>
+
+</ul>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.meta;
+
+<span class="d_comment">// Attempting to define function overloads at module scope:
+</span><span class="d_keyword">foreach</span> (T; AliasSeq!(<span class="d_keyword">int</span>, <span class="d_keyword">double</span>)) {    <span class="d_comment">// ← <span class="d_hata">derleme HATASI</span></span>
+    T twoTimes(T arg) {
+        <span class="d_keyword">return</span> arg * 2;
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+}
+</pre>
+
+<pre class="shell">Error: declaration expected, not <span class="d_inlinecode donthyphenate notranslate">foreach</span>
+</pre>
+
+<ul>
+<li>With compile-time <code class="d_inline">foreach</code>, it may not be clear whether <code class="d_inline">break</code> and <code class="d_inline">continue</code> statements inside the loop body should affect the compile-time loop iteration itself or whether they should be parts of the unrolled code.
+</li>
+
+</ul>
+
+<p><code class="d_inline">static foreach</code> is a more powerful compile-time feature that provides more control:
+</p>
+
+<ul>
+<li><code class="d_inline">static foreach</code> can work with any range of elements that can be computed at compile time (including number ranges like <code class="d_inline">1..10</code>). For example, given the <code class="d_inline">FibonacciSeries</code> range from <a href="ranges.html">the Ranges chapter</a> and a function that determines whether a number is even:
+</li>
+
+</ul>
+
+<pre class="d_code">    <span class="hilite"><span class="d_keyword">static</span> <span class="d_keyword">foreach</span></span> (n; FibonacciSeries().take(10).filter!isEven) {
+        writeln(n);
+    }
+</pre>
+
+<p>The loop above would be unrolled as the following equivalent:
+</p>
+
+<pre class="d_code">    writeln(0);
+    writeln(2);
+    writeln(8);
+    writeln(34);
+</pre>
+
+<ul>
+<li><code class="d_inline">static foreach</code> can be used at module scope.</li>
+
+<li><code class="d_inline">static foreach</code> does not introduce a separate scope for each iteration. For example, the following loop defines two overloads of a function at module scope:
+</li>
+
+</ul>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.meta;
+
+<span class="d_keyword">static</span> <span class="d_keyword">foreach</span> (T; AliasSeq!(<span class="d_keyword">int</span>, <span class="d_keyword">double</span>)) {
+    T twoTimes(T arg) {
+        <span class="d_keyword">return</span> arg * 2;
+    }
+}
+
+<span class="d_keyword">void</span> main() {
+}
+</pre>
+
+<p>The loop above would be unrolled as its following equivalent:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">int</span> twoTimes(<span class="d_keyword">int</span> arg) {
+        <span class="d_keyword">return</span> arg * 2;
+    }
+
+    <span class="d_keyword">double</span> twoTimes(<span class="d_keyword">double</span> arg) {
+        <span class="d_keyword">return</span> arg * 2;
+    }
+</pre>
+
+<ul>
+<li><code class="d_inline">break</code> and <code class="d_inline">continue</code> statements inside a <code class="d_inline">static foreach</code> loop require labels for clarity. For example, the following code unrolls (generates) <code class="d_inline">case</code> clauses inside a <code class="d_inline">switch</code> statement. The <code class="d_inline">break</code> statements that are under each <code class="d_inline">case</code> clause must mention the associated <code class="d_inline">switch</code> statements by labels:
+</li>
+
+</ul>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main(string[] args) {
+
+<span class="hilite">theSwitchStatement:</span>
+    <span class="d_keyword">switch</span> (args.length) {
+        <span class="d_keyword">static</span> <span class="d_keyword">foreach</span> (i; 1..3) {
+            <span class="d_keyword">case</span> i:
+                writeln(i);
+                <span class="d_keyword">break</span> <span class="hilite">theSwitchStatement</span>;
+        }
+
+    <span class="d_keyword">default</span>:
+        writeln(<span class="d_string">"default case"</span>);
+        <span class="d_keyword">break</span>;
+    }
+}
+</pre>
+
+<p>After the loop above is unrolled, the <code class="d_inline">switch</code> statement would be the equivalent of the following code:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">switch</span> (args.length) {
+    <span class="d_keyword">case</span> 1:
+        writeln(1);
+        <span class="d_keyword">break</span>;
+
+    <span class="d_keyword">case</span> 2:
+        writeln(2);
+        <span class="d_keyword">break</span>;
+
+    <span class="d_keyword">default</span>:
+        writeln(<span class="d_string">"default case"</span>);
+        <span class="d_keyword">break</span>;
+    }
+</pre>
+
+macros:
+        TITLE=static foreach
+
+        DESCRIPTION=static foreach, one of D's compile-time feature that can generate code by iterating ranges.
+
+        KEYWORDS=d programming language tutorial book static foreach
+
+MINI_SOZLUK=
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on Sun Jun  2 09:00:32 2024
+</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

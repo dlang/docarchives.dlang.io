@@ -1,0 +1,335 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Creating Windows DLLs - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Creating Windows DLLs' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='../contributing.html'>Contributing</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../spec/glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Google Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+<div class="subnav-helper"></div> <div class="subnav">    
+    <div class="head">        <h2>Articles</h2>
+        <p class="Articles, ../articles/index.html, overview">            <a href="../articles/index.html">overview</a></p>
+    </div>
+    <ul><li><a href='        ../articles/faq.html'>FAQ</a></li><li><a href='        ../articles/const-faq.html'>const(FAQ)</a></li><li><a href='        ../articles/d-floating-point.html'>Floating Point</a></li><li><a href='        ../articles/warnings.html'>Warnings</a></li><li><a href='        ../articles/rationale.html'>Rationale</a></li><li><a href='        ../articles/builtin.html'>Builtin Rationale</a></li><li><a href='        ../articles/ctod.html'>C to D</a></li><li><a href='        ../articles/cpptod.html'>C++ to D</a></li><li><a href='        ../articles/pretod.html'>C Preprocessor vs D</a></li><li><a href='        ../articles/code_coverage.html'>Code coverage analysis</a></li><li><a href='        ../articles/exception-safe.html'>Exception Safety</a></li><li><a href='        ../articles/hijack.html'>Hijacking</a></li><li><a href='        ../articles/intro-to-datetime.html'>Introduction to std.datetime</a></li><li><a href='        ../articles/lazy-evaluation.html'>Lazy Evaluation</a></li><li><a href='        ../articles/migrate-to-shared.html'>Migrating to Shared</a></li><li><a href='        ../articles/mixin.html'>String Mixins</a></li><li><a href='        ../articles/regular-expression.html'>Regular Expressions</a></li><li><a href='        ../articles/safed.html'>SafeD</a></li><li><a href='        ../articles/templates-revisited.html'>Templates Revisited</a></li><li><a href='        ../articles/constraints.html'>Template Constraints</a></li><li><a href='        ../articles/ctarguments.html'>Compile-time Sequences</a></li><li><a href='        ../articles/variadic-function-templates.html'>Variadic Templates</a></li><li><a href='        ../articles/template-comparison.html'>Template Comparison</a></li><li><a href='        ../articles/d-array-article.html'>D Slices</a></li><li><a href='        ../articles/cppcontracts.html'>D's Contract Programming</a></li><li><a href='        ../articles/dll-linux.html'>Writing Shared Libraries for Linux</a></li><li><a href='        ../articles/RefReturnScope.html'>Coralling Wild Pointers With ref return scope</a></li><li><a href='        ../articles/dll-windows.html'>Creating Windows DLLs
+    </a></li></ul>
+</div>
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BCreating Windows DLLs%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/articles/dll-windows.dd">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Creating Windows DLLs</h1>
+        
+        
+
+
+<div class="page-contents quickindex">    <div class="page-contents-header">        <b>Contents</b>
+    </div>
+    <ol>    <li><a href="#references">References</a></li>
+</ol>
+</div>
+
+Windows DLLs (aka shared libraries) are a method of sharing instances of executable
+code and data between processes. Although they perform the same role as shared libraries
+in other systems like Linux, OSX, and FreeBSD, they are implemented quite differently.
+The information in this article is specific to Windows DLLs.
+
+
+<h2>Build a DLL</h2>
+
+<h3>Code for the DLL</h3>
+
+<ol><li>Create the file mydll.d:
+
+<pre class="d_code notranslate"><span class="d_keyword">module</span> mydll;
+
+<span class="d_keyword">import</span> core.sys.windows.dll;
+<span class="d_keyword">import</span> core.stdc.stdio;
+
+<span class="d_keyword">mixin</span> SimpleDllMain;
+
+<span class="d_keyword">export</span> <span class="d_keyword">void</span> entry()
+{
+    printf(<span class="d_string">"called mydll.entry()\n"</span>);
+}
+</pre>
+</li>
+
+<li>Compile and link the DLL:
+
+<pre class="console notranslate">dmd -shared mydll
+</pre>
+
+which will create the files <em class="tt">mydll.lib</em> (the <i>import library</i>) and
+<em class="tt">mydll.dll</em> (the <i>dll</i>).
+</li>
+
+
+<li>Create the file mydll.di:
+
+<pre class="d_code notranslate"><span class="d_keyword">module</span> mydll;
+
+<span class="d_keyword">export</span> <span class="d_keyword">void</span> entry();
+</pre>
+</li>
+
+<li>Create the file myexe.d:
+
+<pre class="d_code notranslate"><span class="d_keyword">module</span> myexe;
+
+<span class="d_keyword">import</span> mydll;
+
+<span class="d_keyword">int</span> main()
+{
+    mydll.entry();
+    <span class="d_keyword">return</span> 0;
+}
+</pre>
+</li>
+
+<li>Compile the <em class="tt">myexe.d</em> file and link is with the <em class="tt">mydll.lib</em>
+file to create the <em class="tt">myexe.exe</em> file:
+<pre class="console notranslate">dmd myexe.d mydll.lib
+</pre>
+</li>
+
+<li>Run myexe:
+
+<pre class="console notranslate">C:&gt; myexe
+called mydll.entry()
+</pre>
+</li>
+
+
+<h2>DllMain - Entry Point</h2>
+
+A Windows DLL must have an entry point, much like the <span class="d_inlinecode donthyphenate notranslate">main</span> function in an executable.
+It looks like:
+
+<pre class="d_code notranslate"><span class="d_keyword">module</span> dllmain;  <span class="d_comment">// nice to always name it this
+</span>
+<span class="d_keyword">import</span> core.sys.windows.windef : HINSTANCE, BOOL, DWORD, LPVOID;
+<span class="d_keyword">import</span> core.sys.windows.winnt;
+<span class="d_keyword">import</span> core.sys.windows.dll : dll_process_attach, dll_process_detach,
+                              dll_thread_attach, dll_thread_detach;
+
+<span class="d_keyword">__gshared</span> HINSTANCE g_hInst;  <span class="d_comment">// saved instance handle for the DLL
+</span>
+<span class="d_comment">/***********************************
+ * DLL entry point.
+ * Params:
+ *      hInstance = instance handle for the DLL
+ *      ulReason = why the DllMain is being called
+ *      fImpLoad = null if Dll is explicitly loaded, !null if implicitly loaded
+ * Returns:
+ *      true for success, false for failure
+ */</span>
+<span class="d_keyword">extern</span> (Windows)
+BOOL DllMain(HINSTANCE hInstance, ULONG ulReason, LPVOID fImpLoad)
+{
+    <span class="d_keyword">switch</span> (ulReason)
+    {
+        <span class="d_keyword">case</span> DLL_PROCESS_ATTACH: <span class="d_comment">// when the DLL is first loaded
+</span>            g_hInst = hInstance;  <span class="d_comment">// save it for later
+</span>            <span class="d_keyword">return</span> dll_process_attach(hInstance, <span class="d_keyword">true</span>); <span class="d_comment">// perform process-relative initialization
+</span>
+        <span class="d_keyword">case</span> DLL_PROCESS_DETACH: <span class="d_comment">// when DLL is being unloaded
+</span>            <span class="d_keyword">return</span> dll_process_detach(hInstance, <span class="d_keyword">true</span>); <span class="d_comment">// perform process-relative teardown
+</span>
+        <span class="d_keyword">case</span> DLL_THREAD_ATTACH:  <span class="d_comment">// new thread initialization
+</span>            <span class="d_keyword">return</span> dll_thread_attach(<span class="d_keyword">true</span>, <span class="d_keyword">true</span>); <span class="d_comment">// perform thread-relative initialization
+</span>
+        <span class="d_keyword">case</span> DLL_THREAD_DETACH:  <span class="d_comment">// thread is ending
+</span>            <span class="d_keyword">return</span> dll_thread_detach(<span class="d_keyword">true</span>, <span class="d_keyword">true</span>); <span class="d_comment">// perform thread teardown
+</span>
+        <span class="d_keyword">default</span>:
+            <span class="d_keyword">assert</span>(0);
+    }
+}
+</pre>
+
+Or, since this is just boilerplate code, this will do nicely:
+
+<pre class="d_code notranslate"><span class="d_keyword">module</span> dllmain;
+
+<span class="d_keyword">import</span> core.sys.windows.dll;
+
+<span class="d_keyword">mixin</span> SimpleDllMain;
+</pre>
+
+The compiler recognizes <span class="d_inlinecode donthyphenate notranslate">DllMain</span>, and emits a reference to <span class="d_inlinecode donthyphenate notranslate">__acrtused_dll</span> which will
+pull in the DLL support code from the C runtime library. It will also cause the addition
+of the debug runtime library
+(for symbolic debug compiles) or the default runtime library (otherwise) to be searched
+by the linker.
+
+
+<h2>Exporting Definitions</h2>
+
+In order for an executable to reference a name in the DLL, that name must be <i>exported</i>
+by the DLL. For example, to export the symbol <span class="d_inlinecode donthyphenate notranslate">func</span> from this module:
+
+<pre class="d_code notranslate"><span class="d_keyword">module</span> mydll;
+<span class="d_keyword">export</span> <span class="d_keyword">int</span> func() { <span class="d_keyword">return</span> 3; }
+</pre>
+
+the compiler inserts the following Export Definition directive into the object file:
+
+
+<pre class="console notranslate">EXPDEF expflag=x00, export '__D5mydll4funcFZi', internal '', ordinal=x0
+</pre>
+
+for OMF files, and the equivalent in MSCOFF object files.
+<em class="tt">EXPDEF</em> informs the linker that <span class="d_inlinecode donthyphenate notranslate">mydll.func</span> is to be put in the export
+table of the DLL being linked. That's the only addition to the object file.
+
+
+<h2>Importing Declarations</h2>
+
+The EXE file, when a DLL is attached to it, needs to know how to call it. This is
+called importing a declaration from the DLL. Prepare an import file <em class="tt">mydll.di</em>:
+
+<pre class="d_code notranslate"><span class="d_keyword">module</span> mydll;
+<span class="d_keyword">export</span> <span class="d_keyword">int</span> func(); <span class="d_comment">// note no function body
+</span></pre>
+
+<pre class="d_code notranslate"><span class="d_keyword">module</span> myexe;
+<span class="d_keyword">import</span> mydll;
+
+<span class="d_keyword">int</span> test() { <span class="d_keyword">return</span> func(); }
+</pre>
+
+Compiling <em class="tt">myexe.d</em> uncovers the magic:
+
+<pre class="d_code notranslate">extrn   __imp___D5mydll4funcFZi
+
+__D5myexe4testFZi       comdat
+        call    dword ptr __imp___D5mydll4funcFZi
+        ret
+</pre>
+
+A direct call is not made to <span class="d_inlinecode donthyphenate notranslate">mydll.func()</span>, instead an indirect call to <span class="d_inlinecode donthyphenate notranslate">mydll.func()</span> is
+made via a pointer to <span class="d_inlinecode donthyphenate notranslate">mydll.func()</span>, and the pointer’s name is <span class="d_inlinecode donthyphenate notranslate">__imp___D5mydll4func</span>.
+</ol>
+
+<h2>Import Library</h2>
+
+<p>Exporting the definitions from the dll's object file, and hooking the exe file up to
+the dll's exports requires an additional file, the import library. The import library is
+automatically created by the linker when the dll is linked. This library then must be added
+to the link step when linking the executable file.</p>
+
+<h2><a class="anchor" title="Permalink to this section" id="references" href="#references">References</a></h2>
+
+<ol><li><a href="https://wiki.dlang.org/Win32_DLLs_in_D">Win32 DLLs in D</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/dlls/dynamic-link-library-best-practices">Dynamic-Link Library Best Practices</a></li>
+</ol>
+
+
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on (no date time)</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>

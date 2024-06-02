@@ -1,0 +1,475 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2024 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Unions - D Programming Language</title>
+
+<link rel="stylesheet" href="../css/codemirror.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/print.css" media="print">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Unions' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="../images/dlogo.svg"></a></div>
+    <a href="../menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='../spec/spec.html'>Language Reference</a></li>
+    <li><a href='../phobos/index.html'>Library Reference</a></li>
+    <li><a href='../dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='../comparison.html'>Feature Overview</a></li>
+    <li><a href='../articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='../download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='../community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://dlang.org/blog'>Blog</a></li>
+    <li><a href='../orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li><a href='../calendar.html'>Calendar</a></li>
+    <li class="menu-divider"><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://discord.gg/bMZk9Q4'>Community Discord</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='../bugstats.html'>Issues</a></li>
+    <li><a href='../contributing.html'>Contributing</a></li>
+    <li class="menu-divider"><a href='../foundation/contributors.html'>Contributors</a></li>
+    <li><a href='../foundation/index.html'>Foundation</a></li>
+    <li><a href='..//security.html'>Security Team</a></li>
+    <li><a href='../foundation/donate.html'>Donate</a></li>
+    <li><a href='../foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='../resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='../acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='../dstyle.html'>D Style</a></li>
+    <li><a href='../glossary.html'>Glossary</a></li>
+    <li><a href='../sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="../search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://issues.dlang.org/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fdlang.org/&amp;component=dlang.org&amp;op_sys=All&amp;priority=P3&amp;product=D&amp;rep_platform=All&amp;short_desc=%5BUnions%5D&amp;version=D2&amp;bug_severity=enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a Bugzilla issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/d.en/union.d">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Unions</h1>
+        
+        
+
+
+
+<p>Unions, a low-level feature inherited from the C programming language, allow more than one member to share the same memory area.
+</p>
+
+<p>Unions are very similar to structs with the following main differences:
+</p>
+
+<ul>
+<li>Unions are defined by the <code class="d_inline">union</code> keyword.</li>
+
+<li>The members of a <code class="d_inline">union</code> are not independent; they share the same memory area.</li>
+
+</ul>
+
+<p>Just like structs, unions can have member functions as well.
+</p>
+
+<p><a id="ix_Unions.-m32, compiler switch" content="-m32, compiler switch"></a> The examples below will produce different results depending on whether they are compiled on a 32-bit or a 64-bit environment. To avoid getting confusing results, please use the <code class="d_inline">-m32</code> compiler switch when compiling the examples in this chapter. Otherwise, your results may be different than mine due to <i>alignment</i>, which we will see in a later chapter.
+</p>
+
+<p>Naturally, <code class="d_inline">struct</code> objects are as large as necessary to accommodate all of their members:
+</p>
+
+<pre class="d_code"><span class="d_comment">// Note: Please compile with the -m32 compiler switch
+</span><span class="d_keyword">struct</span> S {
+    <span class="d_keyword">int</span> i;
+    <span class="d_keyword">double</span> d;
+}
+
+<span class="d_comment">// ...
+</span>
+    writeln(S.sizeof);
+</pre>
+
+<p>Since <code class="d_inline">int</code> is 4 bytes long and <code class="d_inline">double</code> is 8 bytes long, the size of that <code class="d_inline">struct</code> is the sum of their sizes:
+</p>
+
+<pre class="shell">12
+</pre>
+
+<p>In contrast, the size of a <code class="d_inline">union</code> with the same members is only as large as its largest member:
+</p>
+
+<pre class="d_code"><span class="hilite"><span class="d_keyword">union</span></span> U {
+    <span class="d_keyword">int</span> i;
+    <span class="d_keyword">double</span> d;
+}
+
+<span class="d_comment">// ...
+</span>
+    writeln(U.sizeof);
+</pre>
+
+<p>The 4-byte <code class="d_inline">int</code> and the 8-byte <code class="d_inline">double</code> share the same area. As a result, the size of the entire <code class="d_inline">union</code> is the same as its largest member:
+</p>
+
+<pre class="shell">8
+</pre>
+
+<p>Unions are not a memory-saving feature. It is impossible to fit multiple data into the same memory location. The purpose of a union is to use the same area for different type of data at different times. Only one of the members can be used reliably at one time. However, although doing so may not be portable to different platforms, <code class="d_inline">union</code> members can be used for accessing fragments of other members.
+</p>
+
+<p>One of the examples below takes advantage of <code class="d_inline">typeid</code> to disallow access to members other than the one that is currently valid.
+</p>
+
+<p>The following diagram shows how the 8 bytes of the <code class="d_inline">union</code> above are shared by its members:
+</p>
+
+<pre class="mono">       0      1      2      3      4      5      6      7
+───┬──────┬──────┬──────┬──────┬──────┬──────┬──────┬──────┬───
+   │<span class="hilite">&lt;───  4 bytes for int  ───&gt;</span>                            │
+   │<span class="hilite">&lt;───────────────  8 bytes for double  ────────────────&gt;</span>│
+───┴──────┴──────┴──────┴──────┴──────┴──────┴──────┴──────┴───
+</pre>
+
+<p>Either all of the 8 bytes are used for the <code class="d_inline">double</code> member, or only the first 4 bytes are used for the <code class="d_inline">int</code> member and the other 4 bytes are unused.
+</p>
+
+<p>Unions can have as many members as needed. All of the members would share the same memory location.
+</p>
+
+<p>The fact that the same memory location is used for all of the members can have surprising effects. For example, let's initialize a <code class="d_inline">union</code> object by its <code class="d_inline">int</code> member and then access its <code class="d_inline">double</code> member:
+</p>
+
+<pre class="d_code">    <span class="d_keyword">auto</span> u = U(42);    <span class="d_comment">// initializing the int member
+</span>    writeln(u.d);      <span class="d_comment">// accessing the double member
+</span></pre>
+
+<p>Initializing the <code class="d_inline">int</code> member by the value 42 sets just the first 4 bytes, and this affects the <code class="d_inline">double</code> member in an unpredictable way:
+</p>
+
+<pre class="shell">2.07508e-322
+</pre>
+
+<p>Depending on the endianness of the microprocessor, the 4 bytes may be arranged in memory as 0|0|0|42, 42|0|0|0, or in some other order. For that reason, the value of the <code class="d_inline">double</code> member may appear differently on different platforms.
+</p>
+
+<h5 class="subsection"><a id="ix_Unions.anonymous union" content="anonymous union"></a> Anonymous unions</h5>
+
+<p>Anonymous unions specify what members of a user-defined type share the same area:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> S {
+    <span class="d_keyword">int</span> first;
+
+    <span class="d_keyword">union</span> {
+        <span class="d_keyword">int</span> second;
+        <span class="d_keyword">int</span> third;
+    }
+}
+
+<span class="d_comment">// ...
+</span>
+    writeln(S.sizeof);
+</pre>
+
+<p>The last two members of <code class="d_inline">S</code> share the same area. So, the size of the <code class="d_inline">struct</code> is a total of two <code class="d_inline">int</code>s: 4 bytes needed for <code class="d_inline">first</code> and another 4 bytes to be shared by <code class="d_inline">second</code> and <code class="d_inline">third</code>:
+</p>
+
+<pre class="shell">8
+</pre>
+
+<h5 class="subsection">Dissecting other members</h5>
+
+<p>Unions can be used for accessing individual bytes of variables of other types. For example, they make it easy to access the 4 bytes of an IPv4 address individually.
+</p>
+
+<p>The 32-bit value of the IPv4 address and a fixed-length array can be defined as the two members of a <code class="d_inline">union</code>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">union</span> IpAddress {
+    <span class="d_keyword">uint</span> value;
+    <span class="d_keyword">ubyte</span>[4] bytes;
+}
+</pre>
+
+<p>The members of that <code class="d_inline">union</code> would share the same memory area as in the following figure:
+</p>
+
+<pre class="mono">        0          1          2          3
+───┬──────────┬──────────┬──────────┬──────────┬───
+   │<span class="hilite"> &lt;────  32 bits of the IPv4 address  ────&gt; </span>│
+   │ bytes[0] │ bytes[1] │ bytes[2] │ bytes[3] │
+───┴──────────┴──────────┴──────────┴──────────┴───
+</pre>
+
+<p>For example, when an object of this <code class="d_inline">union</code> is initialized by 0xc0a80102 (the value that corresponds to the dotted form 192.168.1.2), the elements of the <code class="d_inline">bytes</code> array would automatically have the values of the four octets:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+
+<span class="d_keyword">void</span> main() {
+    <span class="d_keyword">auto</span> address = IpAddress(0xc0a80102);
+    writeln(address<span class="hilite">.bytes</span>);
+}
+</pre>
+
+<p>When run on a little-endian system, the octets would appear in reverse of their dotted form:
+</p>
+
+<pre class="shell">[2, 1, 168, 192]
+</pre>
+
+<p>The reverse order of the octets is another example of how accessing different members of a <code class="d_inline">union</code> may produce unpredictable results. This is because the behavior of a <code class="d_inline">union</code> is guaranteed only if that <code class="d_inline">union</code> is used through just one of its members. There are no guarantees on the values of the members other than the one that the <code class="d_inline">union</code> has been initialized with.
+</p>
+
+<p><a id="ix_Unions.bswap, std.bitop" content="bswap, std.bitop"></a> <a id="ix_Unions.endian, std.system" content="endian, std.system"></a> Although it is not directly related to this chapter, <code class="d_inline">bswap</code> from the <code class="d_inline">core.bitop</code> module is useful in dealing with endianness issues. <code class="d_inline">bswap</code> returns its parameter after swapping its bytes. Also taking advantage of the <code class="d_inline">endian</code> value from the <code class="d_inline">std.system</code> module, the octets of the previous IPv4 address can be printed in the expected order after swapping its bytes:
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.system;
+<span class="d_keyword">import</span> core.bitop;
+
+<span class="d_comment">// ...
+</span>
+    <span class="d_keyword">if</span> (endian == Endian.littleEndian) {
+        address.value = bswap(address.value);
+    }
+</pre>
+
+<p>The output:
+</p>
+
+<pre class="shell">[192, 168, 1, 2]
+</pre>
+
+<p>Please take the <code class="d_inline">IpAddress</code> type as a simple example; in general, it would be better to consider a dedicated networking module for non-trivial programs.
+</p>
+
+<h5 class="subsection">Examples</h5>
+
+<h6>Communication protocol</h6>
+
+<p>In some protocols like TCP/IP, the meanings of certain parts of a protocol packet depend on a specific value inside the same packet. Usually, it is a field in the header of the packet that determines the meanings of successive bytes. Unions can be used for representing such protocol packets.
+</p>
+
+<p>The following design represents a protocol packet that has two kinds:
+</p>
+
+<pre class="d_code"><span class="d_keyword">struct</span> Host {
+    <span class="d_comment">// ...
+</span>}
+
+<span class="d_keyword">struct</span> ProtocolA {
+    <span class="d_comment">// ...
+</span>}
+
+<span class="d_keyword">struct</span> ProtocolB {
+    <span class="d_comment">// ...
+</span>}
+
+<span class="d_keyword">enum</span> ProtocolType { A, B }
+
+<span class="d_keyword">struct</span> NetworkPacket {
+    Host source;
+    Host destination;
+    ProtocolType <span class="hilite">type</span>;
+
+    <span class="hilite"><span class="d_keyword">union</span></span> {
+        ProtocolA aParts;
+        ProtocolB bParts;
+    }
+
+    <span class="d_keyword">ubyte</span>[] payload;
+}
+</pre>
+
+<p>The <code class="d_inline">struct</code> above can make use of the <code class="d_inline">type</code> member to determine whether <code class="d_inline">aParts</code> or <code class="d_inline">bParts</code> of the <code class="d_inline">union</code> to be used.
+</p>
+
+<h6><a id="ix_Unions.discriminated union" content="discriminated union"></a> Discriminated union</h6>
+
+<p>Discriminated union is a data structure that brings type safety over a regular <code class="d_inline">union</code>. Unlike a <code class="d_inline">union</code>, it does not allow accessing the members other than the one that is currently valid.
+</p>
+
+<p>The following is a simple discriminated union type that supports only two types: <code class="d_inline">int</code> and <code class="d_inline">double</code>. In addition to a <code class="d_inline">union</code> to store the data, it maintains a <a href="object.html"><code class="d_inline">TypeInfo</code></a> member to know which one of the two <code class="d_inline">union</code> members is valid.
+</p>
+
+<pre class="d_code"><span class="d_keyword">import</span> std.stdio;
+<span class="d_keyword">import</span> std.exception;
+
+<span class="d_keyword">struct</span> Discriminated {
+<span class="d_keyword">private</span>:
+
+    TypeInfo validType_;
+
+    <span class="d_keyword">union</span> {
+        <span class="d_keyword">int</span> i_;
+        <span class="d_keyword">double</span> d_;
+    }
+
+<span class="d_keyword">public</span>:
+
+    <span class="d_keyword">this</span>(<span class="d_keyword">int</span> value) {
+        <span class="d_comment">// This is a call to the property function below:
+</span>        i = value;
+    }
+
+    <span class="d_comment">// Setter for 'int' data
+</span>    <span class="d_keyword">void</span> i(<span class="d_keyword">int</span> value) {
+        i_ = value;
+        validType_ <span class="hilite">= <span class="d_keyword">typeid</span>(<span class="d_keyword">int</span>)</span>;
+    }
+
+    <span class="d_comment">// Getter for 'int' data
+</span>    <span class="d_keyword">int</span> i() <span class="d_keyword">const</span> {
+        enforce(validType_ <span class="hilite">== <span class="d_keyword">typeid</span>(<span class="d_keyword">int</span>)</span>,
+                <span class="d_string">"The data is not an 'int'."</span>);
+        <span class="d_keyword">return</span> i_;
+    }
+
+    <span class="d_keyword">this</span>(<span class="d_keyword">double</span> value) {
+        <span class="d_comment">// This is a call to the property function below:
+</span>        d = value;
+    }
+
+    <span class="d_comment">// Setter for 'double' data
+</span>    <span class="d_keyword">void</span> d(<span class="d_keyword">double</span> value) {
+        d_ = value;
+        validType_ <span class="hilite">= <span class="d_keyword">typeid</span>(<span class="d_keyword">double</span>)</span>;
+    }
+
+    <span class="d_comment">// Getter for 'double' data
+</span>    <span class="d_keyword">double</span> d() <span class="d_keyword">const</span> {
+        enforce(validType_ <span class="hilite">== <span class="d_keyword">typeid</span>(<span class="d_keyword">double</span>)</span>,
+                <span class="d_string">"The data is not a 'double'."</span> );
+        <span class="d_keyword">return</span> d_;
+    }
+
+    <span class="d_comment">// Identifies the type of the valid data
+</span>    <span class="d_keyword">const</span>(TypeInfo) type() <span class="d_keyword">const</span> {
+        <span class="d_keyword">return</span> validType_;
+    }
+}
+
+<span class="d_keyword">unittest</span> {
+    <span class="d_comment">// Let's start with 'int' data
+</span>    <span class="d_keyword">auto</span> var = Discriminated(42);
+
+    <span class="d_comment">// The type should be reported as 'int'
+</span>    <span class="d_keyword">assert</span>(var.type == <span class="d_keyword">typeid</span>(<span class="d_keyword">int</span>));
+
+    <span class="d_comment">// 'int' getter should work
+</span>    <span class="d_keyword">assert</span>(var.i == 42);
+
+    <span class="d_comment">// 'double' getter should fail
+</span>    assertThrown(var.d);
+
+    <span class="d_comment">// Let's replace 'int' with 'double' data
+</span>    var.d = 1.5;
+
+    <span class="d_comment">// The type should be reported as 'double'
+</span>    <span class="d_keyword">assert</span>(var.type == <span class="d_keyword">typeid</span>(<span class="d_keyword">double</span>));
+
+    <span class="d_comment">// Now 'double' getter should work ...
+</span>    <span class="d_keyword">assert</span>(var.d == 1.5);
+
+    <span class="d_comment">// ... and 'int' getter should fail
+</span>    assertThrown(var.i);
+}
+</pre>
+
+<p><a id="ix_Unions.Variant, std.variant" content="Variant, std.variant"></a> <a id="ix_Unions.Algebraic, std.variant" content="Algebraic, std.variant"></a> This is just an example. You should consider using <code class="d_inline">Algebraic</code> and <code class="d_inline">Variant</code> from the <code class="d_inline">std.variant</code> module in your programs. Additionally, this code could take advantage of other features of D like <a href="templates.html">templates</a> and <a href="mixin.html">mixins</a> to reduce code duplication.
+</p>
+
+<p>Regardless of the data that is being stored, there is only one <code class="d_inline">Discriminated</code> type. (An alternative template solution could take the data type as a template parameter, in which case each instantiation of the template would be a distinct type.) For that reason, it is possible to have an array of <code class="d_inline">Discriminated</code> objects, effectively enabling a collection where elements can be of different types. However, the user must still know the valid member before accessing it. For example, the following function determines the actual type of the valid data with the <code class="d_inline">type</code> property of <code class="d_inline">Discriminated</code>:
+</p>
+
+<pre class="d_code"><span class="d_keyword">void</span> main() {
+    Discriminated[] arr = [ Discriminated(1),
+                            Discriminated(2.5) ];
+
+    <span class="d_keyword">foreach</span> (value; arr) {
+        <span class="d_keyword">if</span> (value.type <span class="hilite">== <span class="d_keyword">typeid</span>(<span class="d_keyword">int</span>)</span>) {
+            writeln(<span class="d_string">"Working with an 'int'  : "</span>, value<span class="hilite">.i</span>);
+
+        } <span class="d_keyword">else</span> <span class="d_keyword">if</span> (value.type <span class="hilite">== <span class="d_keyword">typeid</span>(<span class="d_keyword">double</span>)</span>)  {
+            writeln(<span class="d_string">"Working with a 'double': "</span>, value<span class="hilite">.d</span>);
+
+        } <span class="d_keyword">else</span> {
+            <span class="d_keyword">assert</span>(0);
+        }
+    }
+}
+</pre>
+
+<pre class="shell">Working with an 'int'  : 1
+Working with a 'double': 2.5
+</pre>
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2024 by the <a href="../foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="../spec/ddoc.html">Ddoc</a> on Sun Jun  2 09:00:34 2024
+</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="../js/jquery-1.7.2.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="../js/dlang.js"></script>
+    
+    <script type="text/javascript" src="../js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="../js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>
