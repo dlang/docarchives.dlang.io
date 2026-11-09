@@ -1,0 +1,382 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<!--
+    Copyright (c) 1999-2026 by the D Language Foundation
+    All Rights Reserved.
+    https://dlang.org/foundation_overview.html
+  -->
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="D programming language">
+<meta name="description" content="D Programming Language">
+<title>Docker and OCI images - D Programming Language</title>
+
+<link rel="stylesheet" href="css/codemirror.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/print.css" media="print">
+<link rel="shortcut icon" href="favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0">
+
+</head>
+<body id='Docker and OCI images' class='doc'>
+<script type="text/javascript">document.body.className += ' have-javascript'</script>
+<div id="top"><div class="helper"><div class="helper expand-container">    <div class="logo"><a href="."><img id="logo" alt="D Logo" src="images/dlogo.svg"></a></div>
+    <a href="menu.html" title="Menu" class="hamburger expand-toggle"><span>Menu</span></a>
+    
+<div id="cssmenu"><ul>    <li><a href='https://tour.dlang.org'><span>Learn</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='documentation.html'><span>Documentation</span></a>
+      
+<ul class='expand-content'>    <li><a href='spec/spec.html'>Language Reference</a></li>
+    <li><a href='phobos/index.html'>Library Reference</a></li>
+    <li><a href='dmd.html'>Command-line Reference</a></li>
+    <li class="menu-divider"><a href='comparison.html'>Feature Overview</a></li>
+    <li><a href='articles.html'>Articles</a></li>
+ </ul></li>
+    <li><a href='download.html'><span>Downloads</span></a></li>
+    <li><a href='https://code.dlang.org'><span>Packages</span></a></li>
+    <li class='expand-container'><a class='expand-toggle' href='community.html'><span>Community</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://blog.dlang.org'>Blog</a></li>
+    <li><a href='orgs-using-d.html'>Orgs using D</a></li>
+    <li><a href='https://twitter.com/search?q=%23dlang'>Twitter</a></li>
+    <li class="menu-divider"><a href='https://discord.gg/bMZk9Q4'>Discord (community-run)</a></li>
+    <li><a href='https://forum.dlang.org'>Forums</a></li>
+    <li><a href='irc://irc.libera.chat/d'>IRC</a></li>
+    <li><a href='https://wiki.dlang.org'>Wiki</a></li>
+    <li class="menu-divider"><a href='bugstats.html'>Issues</a></li>
+    <li><a href='contributing.html'>Contributing</a></li>
+    <li class="menu-divider"><a href='foundation/contributors.html'>Contributors</a></li>
+    <li><a href='foundation/index.html'>Foundation</a></li>
+    <li><a href='/security.html'>Security Team</a></li>
+    <li class="menu-divider"><a href='https://store.dlang.org/'>Store</a></li>
+    <li><a href='foundation/donate.html'>Donate</a></li>
+    <li><a href='foundation/sponsors.html'>Sponsors</a></li>
+ </ul></li>
+    <li class='expand-container'><a class='expand-toggle' href='resources.html'><span>Resources</span></a>
+      
+<ul class='expand-content'>    <li><a href='https://tour.dlang.org'>Tour</a></li>
+    <li><a href='https://wiki.dlang.org/Books'>Books</a></li>
+    <li><a href='https://wiki.dlang.org/Tutorials'>Tutorials</a></li>
+    <li class="menu-divider"><a href='https://wiki.dlang.org/Development_tools'>Tools</a></li>
+    <li><a href='https://wiki.dlang.org/Editors'>Editors</a></li>
+    <li><a href='https://wiki.dlang.org/IDEs'>IDEs</a></li>
+    <li><a href='https://run.dlang.io'>run.dlang.io</a></li>
+    <li><a href='http://rainers.github.io/visuald/visuald/StartPage.html'>Visual D</a></li>
+    <li class="menu-divider"><a href='acknowledgements.html'>Acknowledgments</a></li>
+    <li><a href='dstyle.html'>D Style</a></li>
+    <li><a href='spec/glossary.html'>Glossary</a></li>
+    <li><a href='sitemap.html'>Sitemap</a></li>
+ </ul></li>
+</ul></div>
+    <div class="search-container expand-container">        <a href="search.html" class="expand-toggle" title="Search"><span>Search</span></a>
+        
+    <div id="search-box">        <form method="get" action="https://google.com/search">
+            <input type="hidden" id="domains" name="domains" value="dlang.org">
+            <input type="hidden" id="sourceid" name="sourceid" value="google-search">
+            <span id="search-query"><input id="q" name="q" placeholder="Google Search"></span><span id="search-dropdown"><span class="helper">                <select id="sitesearch" name="sitesearch" size="1">
+                    <option value="dlang.org">Entire Site</option>
+                    <option  value="dlang.org/spec">Language</option>
+                    <option  value="dlang.org/phobos">Library</option>
+                    <option  value="forum.dlang.org">Forums</option>
+                    
+                </select>
+            </span></span><span id="search-submit"><button type="submit"><i class="fa fa-search"></i><span>go</span></button></span>
+        </form>
+    </div>
+    </div>
+</div></div></div>
+
+<div class="container">    
+    <div class="hyphenate" id="content">        
+<div id="tools"><div >	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/issues/new?title=%5BDocker and OCI images%5D%20&amp;label=Severity:Enhancement">Report a bug</a>
+		<div >			If you spot a problem with this page, click here to create a GitHub issue.
+		</div>
+	</div>
+	<div class="tip smallprint">		<a href="https://github.com/dlang/dlang.org/edit/master/oci.dd">Improve this page</a>
+		<div >			Quickly fork, edit online, and submit a pull request for this page.
+			Requires a signed-in GitHub account. This works well for small changes.
+			If you'd like to make larger changes you may want to consider using
+			a local clone.
+		</div>
+	</div>
+</div></div>
+        <h1>Docker and OCI images</h1>
+        
+        
+
+
+<p><b>dlang-dockerized</b> is a <em>community project</em> that packages D compilers as OCI images.
+These can be used with OCI-compliant container engines — such as
+<a href="https://docs.docker.com/engine/install/">Docker</a>
+<a href="https://podman.io/get-started">Podman</a> or
+<a href="https://kubernetes.io/docs/concepts/overview/">Kubernetes</a>.
+</p>
+
+<div class="note"><b>Note:</b> OCI stands for <strong><a href="https://opencontainers.org/">Open Container Initiative</a></strong>.
+</div>
+
+
+<h2>Quick Start</h2>
+
+<h3>Docker</h3>
+<pre><code>docker run --init --rm -it -v .:/src ghcr.io/dlang-dockerized/dmd:latest dmd</code></pre>
+
+<h3>Podman</h3>
+<pre><code>podman run --init --rm -it -v .:/src ghcr.io/dlang-dockerized/dmd:latest dmd</code></pre>
+
+<h3>Common CLI flags</h3>
+
+<p>The provided command runs the container image for <code>dmd</code> from <code>ghcr.io</code>.
+It mounts the current working directory <code>.</code> as volume (<code class="arg">-v</code>) under <code>/src</code> in the container.
+</p>
+
+<p><code class="arg">--rm</code> instructs the container engine to automatically remove the container
+and any anonymous unnamed volume associated with the container when it exits.
+</p>
+
+<p><code class="arg">-it</code> is actually a combination of the flags <code class="arg">-i</code> and <code class="arg"></code>
+and requests an interactive session — even if detached — with a pseudo-TTY.
+</p>
+
+<p>Given that most applications are not designed to be run as PID <code>1</code>,
+using <code class="arg">--init</code> the container engine can be instructed to inject a tiny <em>init system</em>
+which takes care of the <em>signal handling</em> requirements for PID <code>1</code> of the Linux kernel
+as well as <em>reaping orphaned zombie processes</em>.
+</p>
+
+Further information can be found in the corresponding manuals:
+<ul><li><a href="https://docs.docker.com/reference/cli/docker/container/run/">https://docs.docker.com/reference/cli/docker/container/run/</a></li>
+<li><a href="https://docs.podman.io/en/latest/markdown/podman-run.1.html">https://docs.podman.io/en/latest/markdown/podman-run.1.html</a></li>
+</ul>
+
+
+<h2>Containerfiles</h2>
+
+<ul><li><code>&nbsp;ghcr.io/dlang-dockerized/dmd</code></li>
+<li><code>&nbsp;ghcr.io/dlang-dockerized/ldc</code></li>
+<li><code>docker.io/dlangdockerized/dmd</code></li>
+<li><code>docker.io/dlangdockerized/ldc</code></li>
+</ul>
+
+<p>Container images are built from so-called <em>Containerfile</em>s —
+also known as <em>Dockerfile</em>s when used with <em>Docker</em>.
+</p>
+
+<p>These Containerfiles are compiled from templates and meta data.
+</p>
+
+<p>A repository providing pre-rendered Containerfiles can be found at:
+<a href="https://github.com/dlang-dockerized/containerfiles">https://github.com/dlang-dockerized/containerfiles</a>
+</p>
+
+<p>The source template files as well as the template engine are located in the <em>packaging</em> repository:
+<a href="https://github.com/dlang-dockerized/packaging">https://github.com/dlang-dockerized/packaging</a>
+</p>
+
+<p>Documentation for the format of Containerfiles can be found over there:
+<a href="https://github.com/podman-container-tools/container-libs/blob/main/common/docs/Containerfile.5.md">https://github.com/podman-container-tools/container-libs/blob/main/common/docs/Containerfile.5.md</a>
+</p>
+
+
+<h3>Packaged software</h3>
+
+<ul><li><h4>DMD — Digital Mars D Compiler</h4>
+    <ul>    <li>DUB — official package manager for the D programming language</li>
+    <li>rdmd — rapid edit-run cycle companion</li>
+    </ul>
+</li>
+<li><h4>LDC — LLVM-based D Compiler</h4>
+    <ul>    <li>DUB — official package manager for the D programming language</li>
+    <li>LLD — Linker of the LLVM project</li>
+    <li>LLDB — Debugger of the LLVM project</li>
+    <li>rdmd — rapid edit-run cycle companion</li>
+    </ul>
+</li>
+</ul>
+
+<div class="note"><b>Note:</b> Please note that not all software listed above is available across all image versions.
+This applies to images providing legacy compiler versions in particular.
+</div>
+
+
+<h3>Compiler versions</h3>
+
+<p><i>dlang-dockerized</i> aims to package the latest compilers as well as “relevant” legacy versions.
+</p>
+
+<p>To select a specific version of a container image, append a version prefix to the image name.
+</p>
+
+<div class="note"><b>Note:</b> The prefix <code>latest</code> refers to the latest stable release of the corresponding image.
+</div>
+
+<pre><code># Containerfile
+
+# latest stable release
+FROM ghcr.io/dlang-dockerized/dmd:latest
+
+# latest release of the 2.100.x branch (→ 2.100.2)
+FROM ghcr.io/dlang-dockerized/dmd:2.100
+
+# 2.100.0 release
+FROM ghcr.io/dlang-dockerized/dmd:2.100.0
+</code></pre>
+
+<p>Images are rebuilt from time to time in order to ship dependency updates and similar.
+</p>
+
+<p>For legacy versions of the bundled software it may be necessary to apply
+custom patches and/or backports in order prior to building.
+These modifications can be found in the
+<a href="https://github.com/dlang-dockerized/packaging/tree/main/resources/patches"><code>patches</code> subfolder</a>
+in the <em>packaging</em> repository.
+</p>
+
+
+<h3>Base images</h3>
+
+<p>A base image is the start of all Containerfiles.
+It serves as the base of the container and as such provides a runtime environment.
+</p>
+
+<p>A common convention is to append a suffix to the tag of the container image
+that consists of an alias referring to the base image.
+</p>
+
+<ul><li><code>ghcr.io/dlang-dockerized/dmd:<em>baseimage</em></code></li>
+<li><code>ghcr.io/dlang-dockerized/dmd:latest-<em>baseimage</em></code></li>
+<li><code>ghcr.io/dlang-dockerized/dmd:2-<em>baseimage</em></code></li>
+<li><code>ghcr.io/dlang-dockerized/dmd:2.100.2-<em>baseimage</em></code></li>
+<li><small>and so on</small></li>
+</ul>
+
+
+<h3>Maintained versions and images</h3>
+
+<p>The <strong>maintenance policy</strong> of <i>dlang-dockerized</i> is outlined in the MAINTENANCE document of the project.
+It can be found at <a href="https://github.com/dlang-dockerized/packaging/blob/main/MAINTENANCE.md">https://github.com/dlang-dockerized/packaging/blob/main/MAINTENANCE.md</a>.
+</p>
+
+<div class="note"><b>Note:</b> Keep in mind, this is work done by volunteers.
+</div>
+
+
+<h2>Container registries</h2>
+
+Container images are pushed to two container registries:
+<ul><li>GitHub Container Registry: <a href="https://github.com/orgs/dlang-dockerized/packages/container/package/dmd">https://github.com/orgs/dlang-dockerized/packages/container/package/dmd</a></li>
+<li>Docker Hub: <a href="https://hub.docker.com/r/dlangdockerized/dmd/tags">https://hub.docker.com/r/dlangdockerized/dmd/tags</a></li>
+</ul>
+
+The registry to pull an image from is selected
+by prepending the corresponding registry host and vendor name to the image name:
+<ul><li>GitHub Container Registry: <code><em>ghcr.io/dlang-dockerized/</em>dmd</code></li>
+<li>Docker Hub: <code><em>docker.io/dlangdockerized/</em>dmd</code></li>
+</ul>
+
+<div class="note"><b>Note:</b> At the time of writing, <strong><em>ghcr.io</em></strong> is the <strong>recommended registry</strong> to pull these images from.
+</div>
+
+<div class="note"><b>Note:</b> <em>Docker</em> defaults to <code>docker.io</code>;
+allowing users to omit that prefix.
+<br>
+Best practice is, however, to explicitly specify the source registry of an image.
+This ensures compatibility across container engines and user configurations.
+</div>
+
+
+<h2>Tips and tricks</h2>
+
+<h3>Debugging with LLDB</h3>
+
+<p>At the time of writing, due to a limitation in LLDB,
+<em>seccomp confinement</em> needs to be turned off for the debugger to work.
+<pre><code>docker run --security-opt seccomp=unconfined -it dlang-dockerized/ldc:latest lldb /src/my-app</code></pre>
+</p>
+
+<p>For further information check out: <a href="https://github.com/llvm/llvm-project/issues/61899">https://github.com/llvm/llvm-project/issues/61899</a>
+</p>
+
+
+<h2>Issue tracker</h2>
+
+See: <a href="https://github.com/dlang-dockerized/packaging/issues">https://github.com/dlang-dockerized/packaging/issues</a>
+
+
+<h2>Packaging your own app as container image</h2>
+
+<p>The following examples outline how one can build and package their own application using OCI containers.
+They are meant to be used as a starting point only.
+Downstream users are expected to adjust them accordingly to fit their requirements and tune them to their liking.
+</p>
+
+<div class="note"><b>Note:</b> The D community is usually more than happy to help you with getting your Containerfile set up and running.
+</div>
+
+
+<h3>No build system</h3>
+
+<ol><li>Navigate into the root folder of your project.</li>
+<li>Create a file named <code>Dockerfile</code> (no file extension) in that directory.</li>
+<li>Copy and paste the following template:
+<pre><code># build stage
+FROM ghcr.io/dlang-dockerized/dmd:latest AS build-stage
+COPY . /d-project
+RUN dmd -inline -O -i -I=/d-project/src /d-project/src/app.d -of=/my-d-app
+
+# runtime stage
+FROM docker.io/debian:latest
+COPY --from=build-stage /my-d-app /usr/local/bin/my-d-app
+CMD ["/usr/local/bin/my-d-app"]
+</code></pre>
+</li>
+<li>Adjust as needed.</li>
+<li>Run <code><b>docker build . --tag my-d-app:v1.0.0</b></code> to build the container image.</li>
+</ol>
+
+
+<h3>Using DUB</h3>
+<ol><li>Navigate into the folder of your project
+    where your <i>DUB recipe</i> (i.e. <code>dub.json</code> or <code>dub.sdl</code>) is located.</li>
+<li>Specify a <code>targetPath</code> and a <code>targetName</code> in your DUB recipe.
+<small>While this step is optional,
+it will make it easier to copy the right binary into the runtime stage later.</small>
+</li>
+<li>Create a file named <code>Dockerfile</code> (no file extension) in that directory.</li>
+<li>Copy and paste the following template:
+<pre><code># build stage
+FROM ghcr.io/dlang-dockerized/dmd:latest AS build-stage
+COPY . /d-project
+RUN dub build --build=plain
+
+# runtime stage
+FROM docker.io/debian:latest
+COPY --from=build-stage /targetPath/targetName /usr/local/bin/my-d-app
+CMD ["/usr/local/bin/my-d-app"]
+</code></pre>
+</li>
+<li>Adjust as needed.</li>
+<li>Run <code><b>docker build . --tag my-d-app:v1.0.0</b></code> to build the container image.</li>
+</ol>
+
+
+
+
+
+        <div class="smallprint" id="copyright">Copyright &copy; 1999-2026 by the <a href="foundation_overview.html">D Language Foundation</a> | Page generated by
+<a href="spec/ddoc.html">Ddoc</a> on (no date time)</div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('\x3Cscript src="js/jquery-3.7.1.min.js">\x3C/script>');</script>
+    <script type="text/javascript" src="js/dlang.js"></script>
+    
+    <script type="text/javascript" src="js/codemirror-compressed.js"></script>
+    <script type="text/javascript" src="js/run.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</body>
+</html>
